@@ -9,9 +9,6 @@ param displayName string = ''
 @description('Optional. The management group parent ID. Defaults to current scope.')
 param parentId string = ''
 
-@description('Optional. Array of role assignment objects to define RBAC on this resource.')
-param roleAssignments array = []
-
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
@@ -43,18 +40,6 @@ resource managementGroup 'Microsoft.Management/managementGroups@2021-04-01' = {
     } : null
   }
 }
-
-module managementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name)}-ManagementGroup-Rbac-${index}'
-  params: {
-    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-    principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: managementGroup.id
-  }
-  scope: managementGroup
-}]
 
 @description('The name of the management group.')
 output name string = managementGroup.name

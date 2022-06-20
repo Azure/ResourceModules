@@ -246,7 +246,7 @@ resource loadBalancer_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@
   scope: loadBalancer
 }
 
-module loadBalancer_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module loadBalancer_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-LoadBalancer-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -193,7 +193,7 @@ resource natGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty
   scope: natGateway
 }
 
-module natGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module natGateway_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-NatGateway-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

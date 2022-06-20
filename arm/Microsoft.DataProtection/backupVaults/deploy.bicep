@@ -11,12 +11,12 @@ param location string = resourceGroup().location
 param roleAssignments array = []
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -52,7 +52,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -87,14 +87,14 @@ module backupVault_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPo
     backupVaultName: backupVault.name
     name: backupPolicy.name
     properties: backupPolicy.properties
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-resource backupVault_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource backupVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${backupVault.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: backupVault

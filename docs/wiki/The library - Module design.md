@@ -116,12 +116,11 @@ Use the following naming standard for module files and folders:
   ```
 
   >**Example**: `nested_roleAssignments.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the `site` resource RBAC implementation.
-
   >``` txt
   >Microsoft.Web
   >└─ sites
   >    ├─ .bicep
-  >    |  ├─ nested_roleAssignments.bicep
+  >    |  └─ nested_roleAssignments.bicep
   >    ├─ .parameters
   >    |  └─ parameters.json
   >    ├─ deploy.bicep

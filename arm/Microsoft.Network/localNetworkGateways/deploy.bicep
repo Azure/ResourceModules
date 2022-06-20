@@ -81,7 +81,7 @@ resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = i
   scope: localNetworkGateway
 }
 
-module localNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module localNetworkGateway_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-LocalNetworkGateway-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -201,7 +201,28 @@ function Set-EnvironmentOnAgent {
         $preInstalledModulePaths = Get-ChildItem -Path '/usr/share/az_*' -Directory
         $maximumVersionPath = '/usr/share/az_{0}' -f (($preInstalledModulePaths | ForEach-Object { ($_ -split 'az_')[1] }) | ForEach-Object { [version]$_ } | Measure-Object -Maximum ).Maximum
         Write-Verbose "Found pre-installed modules in path [$maximumVersionPath]. Adding it PSModulePath environment variable." -Verbose
-        [Environment]::SetEnvironmentVariable('PSModulePath', "$env:PSModulePath;:$maximumVersionPath", 'Machine')
+
+        if ($IsWindows) {
+            # Set step module path (process)
+            $env:PSModulePath += ('{0};{1}' -f $env:PSModulePath, $maximumVersionPath)
+            # Set job module path (machine)
+            [Environment]::SetEnvironmentVariable('PSModulePath', ('{0};{1}' -f ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')), $maximumVersionPath), 'Machine')
+            # Set PS-Profile (for non-ps tasks)
+            if (-not (Test-Path $profile)) {
+                $null = New-Item -Path $profile -Force
+            }
+            Add-Content -Path $profile -Value "`$env:PSModulePath = ('{0};{1}' -f `"`$env:PSModulePath`", '$maximumVersionPath')"
+        } else {
+            # Set step module path (process)
+            $env:PSModulePath += ('{0}:{1}' -f $env:PSModulePath, $maximumVersionPath)
+            # Set job module path (machine)
+            [Environment]::SetEnvironmentVariable('PSModulePath', ('{0}:{1}' -f ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')), $maximumVersionPath), 'Machine')
+            # Set PS-Profile (for non-ps tasks)
+            if (-not (Test-Path $profile)) {
+                $null = New-Item -Path $profile -Force
+            }
+            Add-Content -Path $profile -Value "`$env:PSModulePath = ('{0}:{1}' -f `"`$env:PSModulePath`", '$maximumVersionPath')"
+        }
     }
 
     # Load already installed modules

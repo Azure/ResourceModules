@@ -121,6 +121,7 @@ For _GitHub_, you have to perform the following environment-specific steps:
 - [3.2.1 Set up secrets](#321-set-up-secrets)
 - [3.2.2 Set up variables file](#322-set-up-variables-file)
 - [3.2.3 Enable actions](#323-enable-actions)
+- [3.2.4 Set R/W Workflow permissions](#324-set-rw-workflow-permissions)
 
 ### 3.2.1 Set up secrets
 
