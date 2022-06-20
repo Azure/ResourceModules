@@ -225,9 +225,10 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   properties: {
     adminUserEnabled: acrAdminUserEnabled
     encryption: !empty(cMKKeyName) ? {
+      status: 'enabled'
       keyVaultProperties: {
-        identity: encryptionIdentity.properties.clientId
-        keyIdentifier: cmkKeyVaultKey.properties.keyUriWithVersion
+        identity: encryptionIdentity.properties.principalId
+        keyIdentifier: cmkKeyVaultKey.properties.keyUri
       }
     } : null
     policies: {
