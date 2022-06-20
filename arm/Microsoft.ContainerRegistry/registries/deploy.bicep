@@ -148,13 +148,13 @@ param diagnosticEventHubName string = ''
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the \'acrSku\' to be \'Premium\'.')
 param cMKKeyVaultResourceId string = ''
 
-@description('Optional. The name of the customer managed key to use for encryption. Requires the \'acrSku\' to be \'Premium\'.')
+@description('Optional. The name of the customer managed key to use for encryption. Note, CMK requires the \'acrSku\' to be \'Premium\'.')
 param cMKKeyName string = ''
 
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
