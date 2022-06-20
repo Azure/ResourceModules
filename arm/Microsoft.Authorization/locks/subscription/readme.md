@@ -35,4 +35,5 @@ This module deploys Authorization Locks on Subscription level.
 | :-- | :-- | :-- |
 | `name` | string | The name of the lock. |
 | `resourceId` | string | The resource ID of the lock. |
-| `subscriptionName` | string | The subscription the lock was deployed into. |
+| `scope` | string | The scope this lock applies to. |
+| `subscriptionName` | string | The subscription name the lock was deployed into. |

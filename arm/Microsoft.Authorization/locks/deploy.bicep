@@ -66,4 +66,4 @@ output name string = empty(resourceGroupName) ? lock_sub.outputs.name : lock_rg.
 output resourceId string = empty(resourceGroupName) ? lock_sub.outputs.resourceId : lock_rg.outputs.resourceId
 
 @sys.description('The scope this lock applies to.')
-output scope string = empty(resourceGroupName) ? subscription().id : any(resourceGroup(resourceGroupName))
+output scope string = empty(resourceGroupName) ? lock_sub.outputs.scope : lock_rg.outputs.scope

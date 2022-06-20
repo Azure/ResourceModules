@@ -42,5 +42,8 @@ output name string = lock.name
 @description('The resource ID of the lock.')
 output resourceId string = lock.id
 
-@description('The subscription the lock was deployed into.')
+@description('The subscription name the lock was deployed into.')
 output subscriptionName string = subscription().displayName
+
+@sys.description('The scope this lock applies to.')
+output scope string = subscription().id
