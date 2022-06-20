@@ -151,7 +151,7 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
 param cMKKeyVaultResourceId string = ''
 
-@description('Optional. The name of the customer managed key to use for encryption. Requires the \'acrSku\' to be \'Premium\'')
+@description('Optional. The name of the customer managed key to use for encryption. Requires the \'acrSku\' to be \'Premium\'.')
 param cMKKeyName string = ''
 
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
