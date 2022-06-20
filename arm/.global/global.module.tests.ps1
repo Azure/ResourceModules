@@ -114,14 +114,15 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] folder should contain one or more *parameters.json files' -TestCases $folderTestCases {
+        It '[<moduleFolderName>] folder should contain one or more *parameters.json or *parameter.bicep files' -TestCases $folderTestCases {
 
             param(
                 [string] $moduleFolderName,
                 $moduleFolderPath
             )
+
             $parameterFolderPath = Join-Path $moduleFolderPath '.deploymentTests'
-            (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force).Count | Should -BeGreaterThan 0
+            (Get-ChildItem $parameterFolderPath -Filter '*parameters.*' -Force).Count | Should -BeGreaterThan 0
         }
 
         $parameterFolderFilesTestCases = [System.Collections.ArrayList] @()
