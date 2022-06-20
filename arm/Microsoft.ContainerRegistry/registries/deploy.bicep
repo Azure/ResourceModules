@@ -54,13 +54,6 @@ param retentionPolicyStatus string = 'enabled'
 @description('Optional. The number of days to retain an untagged manifest after which it gets purged.')
 param retentionPolicyDays int = 15
 
-// @allowed([
-//   'disabled'
-//   'enabled'
-// ])
-// @description('Optional. The value that indicates whether encryption is enabled or not.')
-// param encryptionStatus string = 'disabled'
-
 @description('Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access.')
 param dataEndpointEnabled bool = false
 
