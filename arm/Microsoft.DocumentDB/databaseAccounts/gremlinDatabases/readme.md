@@ -48,7 +48,7 @@ List of graph databaseAccounts
 <summary>Parameter JSON format</summary>
 
 ```json
-"mongodbDatabases": {
+"graphs": {
   "value": [
     {
       "name": "graph01",
