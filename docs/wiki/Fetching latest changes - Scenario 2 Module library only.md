@@ -86,9 +86,9 @@ As the Template Specs scenario, Bicep Registry offers a versioning feature with 
         - TemplateFilePath = the absolute path of the module to be published.
         - ModuleVersion = the version of the module.
         - BicepRegistryName =  Name of the private bicep registry to publish to.
-        - -BicepRegistryRgName = the resource group of the private bicep registry to publish to.
+        - BicepRegistryRgName = the resource group of the private bicep registry to publish to.
 
-       To publish the Keyvault module with version 0.4.740 on a Bicep Registry called 'adpsxxazacrx001' that will be created in the resource group 'artifact-rg' you can execute the following example:
+       To publish the Keyvault module with version 0.4.740 on a Bicep Registry called 'adpsxxazacrx001' that will be created in the resource group 'artifact-rg' you can execute the following command:
          ```PowerShell
         Publish-ModuleToPrivateBicepRegistry -TemplateFilePath "D:\ResourcesModules\arm\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -BicepRegistryName 'adpsxxazacrx001'  -BicepRegistryRgName 'artifact-rg'
         ```

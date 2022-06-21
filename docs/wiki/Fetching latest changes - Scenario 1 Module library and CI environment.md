@@ -9,7 +9,7 @@ Depending on the DevOps environment you have chosen (GiutHub or DevOps) you may 
 - [Azure DevOps private git](#azure-devops-private-git)
 
 # GitHub public repository
-
+You have a public fork of poublic CARML source repository in your target organization.
 
 # GitHub private repository
 
