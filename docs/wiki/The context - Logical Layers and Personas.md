@@ -20,31 +20,34 @@ This chapter explains how the different layers of the technology stack (see belo
 ![Layers](media/Personas/layers.png)  
 
 In bottom-up order, the layers are:
+
 - **Azure Resource Manager**: At the bottom, you can see the engine, powering Azure. This layer takes API level interactions and makes changes to or reads data from Azure's management plane. To directly interact with the ARM, one would need to learn and directly leverage its REST API.
 - **Bicep**: Microsoft's new proprietary DSL (domain specific language). To build solutions based on Bicep, one would need to know all the relevant details of the DSL itself as well as all Azure resource types involved in the solution(s) to be developed.
 - **CARML**: This module library offers a consistent code base of tested, reliable and ready-to-deploy Bicep modules. To build complex, multi-module solutions based on CARML, one would need to get familiar with the library, have a good understanding of Bicep, but wouldn't need to know all details of all Azure resources, or how to author feature-rich templates for deploying the resources required by the solution.
 - **Solutions**: this layer represents a complex solution in Azure, that provides a meaningful functionality for its users. A solution can be something like an Azure Kubernetes Services (AKS) environment, that can host containers to run applications. In this model, to build a custom solution, one would need to be familiar with the modules provided by the CARML library.
-- **Applications**: an application/workload run in a cloud environment, such as an AKS platform, etc. In case of application/workload, we can typically differentiate *administrators* and *end users*.
+- **Applications**: an application/workload run in a cloud environment, such as an AKS platform, etc. In case of application/workload, we can typically differentiate **administrators** and **end users**.
 
 # Personas
 
 In the context of CARML, we differentiate three personas:
+
 - Solution Consumer
 - Solution Developer
 - Module Developer
 
 ## Solution Consumer
 
-![SolutionConsumers](./media/Personas/SolutionConsumers.png) 
+![SolutionConsumers](./media/Personas/SolutionConsumers.png)
 
-A ***Solution Consumer*** is an indirect persona. This person is rather a cloud administrator and not necessarily a developer. The focus of this persona is on **implementing and managing an end-to-end solution** (application/workload), rather than building one. A Solution Consumer can benefit from CARML's modules via a complex, multi-module solution that leverages a Bicep registry, a package, etc.; perhaps even a wizard or a click-to-deploy button. 
+A **Solution Consumer** is an indirect persona. This person is rather a cloud administrator and not necessarily a developer. The focus of this persona is on **implementing and managing an end-to-end solution** (application/workload), rather than building one. A Solution Consumer can benefit from CARML's modules via a complex, multi-module solution that leverages a Bicep registry, a package, etc.; perhaps even a wizard or a click-to-deploy button.
 This persona will need to understand the required and optional configuration data (parameters) and will need to understand the architecture and "opinion" behind the solution.
 
-- This persona isn’t consuming CARML directly, but is consuming CARML via a solution that relies on it:
-- Ex., AKS Landing Zone Accelerator
-- Ex., internally developed custom L3 patterns (i.e., Contoso's own solutions)
+This persona isn’t consuming CARML directly, but is consuming CARML via a solution that relies on it:
 
-> **Note**: Solution Consumers are not to be confused with end users. A solutions consumers are cloud administrators, deploying a complex solution and administering an application installed into such a cloud environment. An end user (also known as information worker) is someone who'll simply use an application hosted in the cloud for his/her work.
+- Example: AKS Landing Zone Accelerator
+- Example: An internally developed multi-module solution for internal application or workload pattern
+
+> **Note**: Solution Consumers are not to be confused with end users. Solution Consumers are cloud administrators, deploying a complex solution and administering an application installed into such a cloud environment. An end user is someone who will use the  application or workload hosted in the cloud for his/her work (ex., information worker or application developer).
 
 ### Typical Activities of a Solution Consumer
 
@@ -61,46 +64,44 @@ This persona will need to understand the required and optional configuration dat
 
 ## Solution Developer
 
-![SolutionDevelopers](./media/Personas/SolutionDevelopers.png) 
+![SolutionDevelopers](./media/Personas/SolutionDevelopers.png)
 
-A ***Solution Developer*** is not a user. Their focus is on using CARML to **build end-to-end solutions** that are opinionated. These solutions will be published (publicly and/or privately) for consumption by others and will be used many times by many organizations/teams, in many environments/subscriptions/landing zones). 
+A **Solution Developer** is not a user. Their focus is on using CARML to **build end-to-end solutions** that are opinionated. These solutions will be published (publicly and/or privately) for consumption by others and will be used many times by many organizations/teams, in many environments/subscriptions/landing zones).
 A Solution Developer uses the CARML library (its public or organization/customer specific implementation), with a chosen preference for using its modules via Bicep registry (public, private), or template specs, or direct reference or using Git submodules, etc. Solution Developers might benefit the most from overcoming the learning curve – because the standardization and scale they can achieve with CARML.
 
 - Modules: Use an existing code base to develop and test multi-module solutions (ex., a Landing Zone Accelerator, or an internal platform/workload team). This might also lead to creating/updating modules.
-- CI: Use the provided CI environment to improve multi-module development and testing. This might also lead to improving CI.
-- Sample 1: A contrived multi-module solution (L3 patterns) using modules that make sense together and deploy quickly but not necessarily a reference architecture
-- Sample 2: The simplest reference architecture on [Azure Architecture Center](https://docs.microsoft.com/en-us/azure/architecture/). 
-- Existing CARML solutions (These links provide examples of real world solutions using CARML. Vs the previous sample which illustrate how within the project.): 
-  - [AKS Landing Zone Accelerator](https://github.com/Azure/AKS-Landing-Zone-Accelerator)
-  - [AVD Landing Zone Accelerator](https://github.com/Azure/avdaccelerator)
-
+- Continuous Integration: Use the provided CI environment to improve multi-module development and testing. This might also lead to improving CI.
 
 ### Typical Activities of a Solution Developer
 
 - Create (develop, run integration tests for and publish) multi-module solutions for specific reference patterns (workloads, applications, environments).
 - If necessary, can modify (develop, run unit tests for and publish) existing modules to implement organization-specific standards - however, applying significant modifications or creating new modules, also qualifies this persona as [Module Developer](#module-developer).
 
+> **Note**: Existing CARML solutions (These links provide examples of real world solutions using CARML:
+> - [AKS Landing Zone Accelerator](https://github.com/Azure/AKS-Landing-Zone-Accelerator)
+> - [AVD Landing Zone Accelerator](https://github.com/Azure/avdaccelerator)
+
 ### How does a Solution Developer benefit from CARML?
 
 - Codify reference patterns (guidance, decisions, governance).
 - Focus on the requirements of the reference patterns.
-- Can adopt the toolkit’s infra-as-code guidance. 
+- Can adopt the toolkit’s infra-as-code guidance.
 - Simplify downstream usage for application/workload teams.
 
 ## Module Developer
 
-![ModuleDevelopers](./media/Personas/ModuleDevelopers.png) 
+![ModuleDevelopers](./media/Personas/ModuleDevelopers.png)
 
-A ***Module Developer*** is not a user. Their focus is on CARML itself. A Module Developer is tasked with improving the library – for their organization/customer or the whole world (open source community). They might want to add organization/company specifics to the library (either via conventions, parameters, extensions, or CI-specific changes). They might also implement/improve generic things, in a way that could be contributed back upstream, into the CARML open source repository for the greater public. A Module Developer is tasked with helping the CARML Solution Developer (see next).
+A **Module Developer** is not a user. Their focus is on CARML itself. A Module Developer is tasked with improving the library – for their organization/customer or the whole world (open source community). They might want to add organization/company specifics to the library (either via conventions, parameters, extensions, or CI-specific changes). They might also implement/improve generic things, in a way that could be contributed back upstream, into the CARML open source repository for the greater public. A Module Developer is tasked with helping the CARML Solution Developer (see previous).
 
-- Modules: Create new. Update existing. 
-- CI: Improve CI.
-- Sample 1: A simple resource, with CARML extensions, deploys fast. 
+- Modules: Create new. Update existing.
+- Continuous Integration: Improve the unit testing in the CI.
+- Sample 1: A simple resource, with CARML extensions, deploys fast.
 - Sample 2: A complex resource, with CARML extensions, child resources, “smart defaults”, PowerShell style “scenario” documentation.
 
 ### Typical Activities of a Module Developer
 
-- Create, update modules for Azure resources. 
+- Create, update modules for Azure resources.
 - Incorporate new resource providers or new capabilities, and extensions to existing resource providers.
 - Improve the CARML repository's documentation.
 - Improve continuous integration for testing/publishing CARML modules.
