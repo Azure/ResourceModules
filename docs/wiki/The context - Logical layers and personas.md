@@ -5,13 +5,13 @@ CARML can be represented as a key layer of a logical technology stack. This arti
 - [Logical layers](#logical-layers)
 - [Personas](#personas)
   - [Solution Consumer](#solution-consumer)
-    - [Typical Activities of a Solution Consumer](#typical-activities-of-a-solution-consumer)
+    - [Typical activities of a Solution Consumer](#typical-activities-of-a-solution-consumer)
     - [How does a Solution Consumer benefit from CARML?](#how-does-a-solution-consumer-benefit-from-carml)
   - [Solution Developer](#solution-developer)
     - [Typical Activities of a Solution Developer](#typical-activities-of-a-solution-developer)
     - [How does a Solution Developer benefit from CARML?](#how-does-a-solution-developer-benefit-from-carml)
   - [Module Developer](#module-developer)
-    - [Typical Activities of a Module Developer](#typical-activities-of-a-module-developer)
+    - [Typical activities of a Module Developer](#typical-activities-of-a-module-developer)
     - [How does a Module Developer benefit from CARML?](#how-does-a-module-developer-benefit-from-carml)
 
 # Logical layers
