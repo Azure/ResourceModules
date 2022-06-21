@@ -4,12 +4,10 @@ This module deploys Authorization Locks.
 
 ## Navigation
 
-- [Authorization Locks `[Microsoft.Authorization/locks]`](#authorization-locks-microsoftauthorizationlocks)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-  - [Outputs](#outputs)
-  - [Deployment examples](#deployment-examples)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 

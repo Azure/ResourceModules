@@ -4,12 +4,10 @@ This module deploys OperationsManagement Solutions.
 
 ## Navigation
 
-- [OperationsManagement Solutions `[Microsoft.OperationsManagement/solutions]`](#operationsmanagement-solutions-microsoftoperationsmanagementsolutions)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-  - [Outputs](#outputs)
-  - [Deployment examples](#deployment-examples)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
