@@ -348,6 +348,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
@@ -436,6 +437,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       ]
     }
   }
+}
 ```
 
 </details>
@@ -476,6 +478,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     name: '<<namePrefix>>-az-fw-min-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw'
   }
+}
 ```
 
 </details>
@@ -740,6 +743,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

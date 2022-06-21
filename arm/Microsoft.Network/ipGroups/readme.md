@@ -209,6 +209,7 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

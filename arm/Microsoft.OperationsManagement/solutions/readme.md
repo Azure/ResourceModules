@@ -4,10 +4,12 @@ This module deploys OperationsManagement Solutions.
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Deployment examples](#Deployment-examples)
+- [OperationsManagement Solutions `[Microsoft.OperationsManagement/solutions]`](#operationsmanagement-solutions-microsoftoperationsmanagementsolutions)
+  - [Navigation](#navigation)
+  - [Resource Types](#resource-types)
+  - [Parameters](#parameters)
+  - [Outputs](#outputs)
+  - [Deployment examples](#deployment-examples)
 
 ## Resource Types
 
@@ -78,6 +80,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     name: 'Updates'
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
   }
+}
 ```
 
 </details>
@@ -126,6 +129,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     product: 'OMSGallery'
     publisher: 'Microsoft'
   }
+}
 ```
 
 </details>
@@ -174,6 +178,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
   }
+}
 ```
 
 </details>

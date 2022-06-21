@@ -106,6 +106,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
   params: {
   
   }
+}
 ```
 
 </details>
@@ -156,6 +157,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
     }
     resourceGroupName: 'validation-rg'
   }
+}
 ```
 
 </details>
@@ -202,6 +204,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
       TestToo: 'No'
     }
   }
+}
 ```
 
 </details>

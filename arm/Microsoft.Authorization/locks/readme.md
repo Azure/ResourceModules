@@ -4,10 +4,12 @@ This module deploys Authorization Locks.
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Deployment examples](#Deployment-examples)
+- [Authorization Locks `[Microsoft.Authorization/locks]`](#authorization-locks-microsoftauthorizationlocks)
+  - [Navigation](#navigation)
+  - [Resource Types](#resource-types)
+  - [Parameters](#parameters)
+  - [Outputs](#outputs)
+  - [Deployment examples](#deployment-examples)
 
 ## Resource Types
 
@@ -81,6 +83,7 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
     resourceGroupName: 'adp-<<namePrefix>>-az-locks-rg-001'
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>

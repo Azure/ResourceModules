@@ -593,6 +593,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>
@@ -636,6 +637,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
   }
+}
 ```
 
 </details>
@@ -754,6 +756,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
