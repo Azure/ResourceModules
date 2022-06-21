@@ -51,7 +51,7 @@ This persona isn’t consuming CARML directly, but is consuming CARML via a solu
     - [AVD Landing Zone Accelerator](https://github.com/Azure/avdaccelerator)
   - An internally developed multi-module solution for internal application or workload pattern
 
-> **Note**: Solution Consumers are not to be confused with end users. Solution Consumers are cloud administrators, deploying a complex solution and administering an application installed into such a cloud environment. An end user is someone who will use the  application or workload hosted in the cloud for his/her work (ex., information worker or application developer).
+> **Note**: Solution Consumers are not to be confused with end users. Solution Consumers are cloud administrators, deploying a complex solution and administering an application installed into such a cloud environment. An end user is someone who will use the application or workload hosted in the cloud for his/her work (ex., information worker or application developer).
 
 ### Typical activities of a Solution Consumer
 
