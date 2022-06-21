@@ -53,7 +53,7 @@ This persona isn’t consuming CARML directly, but is consuming CARML via a solu
 
 > **Note**: Solution Consumers are not to be confused with end users. Solution Consumers are cloud administrators, deploying a complex solution and administering an application installed into such a cloud environment. An end user is someone who will use the  application or workload hosted in the cloud for his/her work (ex., information worker or application developer).
 
-### Typical Activities of a Solution Consumer
+### Typical activities of a Solution Consumer
 
 - Clone or reference a multi-module solution (ex., AKS Landing Zone Accelerator).
 - Understand the reference architecture, key decisions.
