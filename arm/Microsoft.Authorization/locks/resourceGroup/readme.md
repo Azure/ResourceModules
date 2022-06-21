@@ -34,5 +34,6 @@ This module deploys Authorization Locks on Resource Group level.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the lock. |
-| `resourceGroupName` | string | The name of the resource group the lock was applied to. |
+| `resourceGroupName` | string | The name of the resource group name the lock was applied to. |
 | `resourceId` | string | The resource ID of the lock. |
+| `scope` | string | The scope this lock applies to. |

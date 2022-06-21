@@ -294,6 +294,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
       }
     ]
   }
+}
 ```
 
 </details>

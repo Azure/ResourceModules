@@ -205,6 +205,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
     name: '<<namePrefix>>-az-vpngw-min-001'
     virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001'
   }
+}
 ```
 
 </details>
@@ -349,6 +350,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

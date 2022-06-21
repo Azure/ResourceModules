@@ -221,7 +221,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
       status: 'enabled'
       keyVaultProperties: {
         identity: encryptionIdentity.properties.clientId
-        keyIdentifier: cmkKeyVaultKey.properties.keyUri
+        keyIdentifier: cMKKeyVaultKey.properties.keyUri
       }
     } : null
     policies: {

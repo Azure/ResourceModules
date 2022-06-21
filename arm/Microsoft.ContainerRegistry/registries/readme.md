@@ -389,6 +389,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     cMKKeyName: 'keyEncryptionKey'
   }
+}
 ```
 
 </details>
@@ -425,6 +426,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>azacrmin001'
   }
+}
 ```
 
 </details>
@@ -581,6 +583,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

@@ -134,6 +134,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
       sshKnownHosts: ''
     }
   }
+}
 ```
 
 </details>
@@ -228,6 +229,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
       }
     }
   }
+}
 ```
 
 </details>

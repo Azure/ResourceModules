@@ -207,6 +207,7 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
       }
     ]
   }
+}
 ```
 
 </details>
