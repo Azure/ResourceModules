@@ -59,7 +59,7 @@ param retentionPolicyDays int = 15
   'enabled'
 ])
 @description('Optional. The value that indicates whether encryption is enabled or not.')
-param encryptionStatus string = 'enabled'
+param encryptionStatus string = 'disabled'
 
 @description('Optional. Identity which will be used to access key vault and Key vault uri to access the encryption key.')
 param keyVaultProperties object = {}

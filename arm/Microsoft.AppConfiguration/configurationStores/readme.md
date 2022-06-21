@@ -14,6 +14,7 @@ This module deploys an App Configuration Store.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.AppConfiguration/configurationStores` | [2021-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2021-10-01-preview/configurationStores) |
+| `Microsoft.AppConfiguration/configurationStores/keyValues` | [2021-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2021-10-01-preview/configurationStores/keyValues) |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
@@ -43,6 +44,7 @@ This module deploys an App Configuration Store.
 | `disableLocalAuth` | bool | `False` |  | Disables all authentication methods other than AAD authentication. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enablePurgeProtection` | bool | `False` |  | Property specifying whether protection against purge is enabled for this configuration store. |
+| `keyValues` | _[keyValues](keyValues/readme.md)_ array | `[]` |  | All Key / Values to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
@@ -187,6 +189,7 @@ roleAssignments: [
 </details>
 <p>
 
+=======
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
@@ -264,13 +267,14 @@ privateEndpoints:  [
 </details>
 <p>
 
+>>>>>>> 3c13c7e234f0efcae26a25417453c58843d2002d
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the app configuration. |
-| `resourceGroupName` | string | The resource group the batch account was deployed into. |
+| `resourceGroupName` | string | The resource group the app configuration store was deployed into. |
 | `resourceId` | string | The resource ID of the app configuration. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
@@ -348,6 +352,23 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         "systemAssignedIdentity": {
             "value": true
         },
+        "keyValues": {
+            "value": [
+                {
+                    "name": "keyName",
+                    "value": "valueName",
+                    "contentType": "contentType",
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -404,6 +425,21 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     systemAssignedIdentity: true
+    keyValues: [
+      {
+        name: 'keyName'
+        value: 'valueName'
+        contentType: 'contentType'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+      }
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
