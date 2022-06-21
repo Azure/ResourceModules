@@ -41,11 +41,14 @@
         },
         "notScopes": {
             "value": [
-                "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
             ]
         },
         "identity": {
-            "value": "SystemAssigned"
+            "value": "UserAssigned"
+        },
+        "userAssignedIdentityId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
         },
         "roleDefinitionIds": {
             "value": [
@@ -56,7 +59,7 @@
             "value": "<<subscriptionId>>"
         },
         "resourceGroupName": {
-            "value": "<<resourceGroupName>>"
+            "value": "validation-rg"
         }
     }
 }

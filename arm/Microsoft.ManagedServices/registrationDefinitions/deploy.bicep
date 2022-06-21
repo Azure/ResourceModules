@@ -1,9 +1,9 @@
 targetScope = 'subscription'
 
-@description('Required. Specify a unique name for your offer/registration. i.e \'<Managing Tenant> - <Remote Tenant> - <ResourceName>\'')
+@description('Required. Specify a unique name for your offer/registration. i.e \'<Managing Tenant> - <Remote Tenant> - <ResourceName>\'.')
 param name string
 
-@description('Required. Description of the offer/registration. i.e. \'Managed by <Managing Org Name>\'')
+@description('Required. Description of the offer/registration. i.e. \'Managed by <Managing Org Name>\'.')
 param registrationDescription string
 
 @description('Required. Specify the tenant ID of the tenant which homes the principals you are delegating permissions to.')
@@ -62,14 +62,14 @@ module registrationAssignment_rg '.bicep/nested_registrationAssignment.bicep' = 
   }
 }
 
-@description('The name of the registration definition')
+@description('The name of the registration definition.')
 output name string = registrationDefinition.name
 
-@description('The resource ID of the registration definition')
+@description('The resource ID of the registration definition.')
 output resourceId string = registrationDefinition.id
 
-@description('The subscription the registration definition was deployed into')
+@description('The subscription the registration definition was deployed into.')
 output subscriptionName string = subscription().displayName
 
-@description('The registration assignment resource ID')
+@description('The registration assignment resource ID.')
 output assignmentResourceId string = empty(resourceGroupName) ? registrationAssignment_sub.id : registrationAssignment_rg.outputs.resourceId

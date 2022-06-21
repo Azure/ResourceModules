@@ -1,10 +1,10 @@
-@description('Required. The name of the of the API Management service.')
+@description('Conditional. The name of the parent API Management service. Required if the template is used in a standalone deployment.')
 param apiManagementServiceName string
 
-@description('Required. The name of the of the API.')
+@description('Conditional. The name of the parent API. Required if the template is used in a standalone deployment.')
 param apiName string
 
-@description('Optional. The name of the policy')
+@description('Optional. The name of the policy.')
 param name string = 'policy'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -51,11 +51,11 @@ resource policy 'Microsoft.ApiManagement/service/apis/policies@2021-08-01' = {
   }
 }
 
-@description('The resource ID of the API policy')
+@description('The resource ID of the API policy.')
 output resourceId string = policy.id
 
-@description('The name of the API policy')
+@description('The name of the API policy.')
 output name string = policy.name
 
-@description('The resource group the API policy was deployed into')
+@description('The resource group the API policy was deployed into.')
 output resourceGroupName string = resourceGroup().name

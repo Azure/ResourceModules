@@ -20,7 +20,7 @@ With this module you can create policy definitions on a management group level.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy definition. Maximum length is 64 characters. |
-| `policyRule` | object | The Policy Rule details for the Policy Definition |
+| `policyRule` | object | The Policy Rule details for the Policy Definition. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -39,6 +39,6 @@ With this module you can create policy definitions on a management group level.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Policy Definition Name |
-| `resourceId` | string | Policy Definition resource ID |
-| `roleDefinitionIds` | array | Policy Definition Role Definition IDs |
+| `name` | string | Policy Definition Name. |
+| `resourceId` | string | Policy Definition resource ID. |
+| `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |

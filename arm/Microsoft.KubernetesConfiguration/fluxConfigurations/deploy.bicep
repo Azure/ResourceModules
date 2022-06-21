@@ -1,4 +1,4 @@
-@description('Required. The name of the Flux Configuration')
+@description('Required. The name of the Flux Configuration.')
 param name string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -13,7 +13,7 @@ param location string = resourceGroup().location
 @description('Optional. Parameters to reconcile to the GitRepository source kind type.')
 param bucket object = {}
 
-@description('Optional. Key-value pairs of protected configuration settings for the configuration')
+@description('Optional. Key-value pairs of protected configuration settings for the configuration.')
 param configurationProtectedSettings object = {}
 
 @description('Optional. Parameters to reconcile to the GitRepository source kind type.')
@@ -73,11 +73,11 @@ resource fluxConfiguration 'Microsoft.KubernetesConfiguration/fluxConfigurations
   }
 }
 
-@description('The name of the flux configuration')
+@description('The name of the flux configuration.')
 output name string = fluxConfiguration.name
 
-@description('The resource ID of the flux configuration')
+@description('The resource ID of the flux configuration.')
 output resourceId string = fluxConfiguration.id
 
-@description('The name of the resource group the flux configuration was deployed into')
+@description('The name of the resource group the flux configuration was deployed into.')
 output resourceGroupName string = resourceGroup().name

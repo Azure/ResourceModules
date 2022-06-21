@@ -359,6 +359,7 @@ jobs:
                       DeploymentName    = '$(deploymentName)'
                       TemplateFilePath  = $templateFilePath
                       ResourceGroupName = '${{ parameters.resourceGroupName }}'
+                      subscriptionId    = '${{ parameters.subscriptionId }}'
                       ManagementGroupId = '${{ parameters.managementGroupId }}'
                       Verbose           = $true
                   }

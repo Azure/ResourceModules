@@ -1,10 +1,10 @@
-@description('Required. The name of the event hub namespace')
+@description('Conditional. The name of the parent event hub namespace. Required if the template is used in a standalone deployment.')
 param namespaceName string
 
-@description('Required. The name of the event hub namespace event hub')
+@description('Conditional. The name of the parent event hub namespace event hub. Required if the template is used in a standalone deployment.')
 param eventHubName string
 
-@description('Required. The name of the authorization rule')
+@description('Required. The name of the authorization rule.')
 param name string
 
 @description('Optional. The rights associated with the rule.')
@@ -30,15 +30,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' existing = {
+resource namespace 'Microsoft.EventHub/namespaces@2021-11-01' existing = {
   name: namespaceName
 
-  resource eventhub 'eventHubs@2021-06-01-preview' existing = {
+  resource eventhub 'eventHubs@2021-11-01' existing = {
     name: eventHubName
   }
 }
 
-resource authorizationRule 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2021-06-01-preview' = {
+resource authorizationRule 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2021-11-01' = {
   name: name
   parent: namespace::eventhub
   properties: {

@@ -7,7 +7,7 @@ param endIpAddress string = '0.0.0.0'
 @description('Optional. The start IP address of the firewall rule. Must be IPv4 format. Use value \'0.0.0.0\' for all Azure-internal IP addresses.')
 param startIpAddress string = '0.0.0.0'
 
-@description('Required. The Name of SQL Server')
+@description('Conditional. The name of the parent SQL Server. Required if the template is used in a standalone deployment.')
 param serverName string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -38,11 +38,11 @@ resource firewallRule 'Microsoft.Sql/servers/firewallRules@2021-05-01-preview' =
   }
 }
 
-@description('The name of the deployed firewall rule')
+@description('The name of the deployed firewall rule.')
 output name string = firewallRule.name
 
-@description('The resource ID of the deployed firewall rule')
+@description('The resource ID of the deployed firewall rule.')
 output resourceId string = firewallRule.id
 
-@description('The resourceGroup of the deployed firewall rule')
+@description('The resource group of the deployed firewall rule.')
 output resourceGroupName string = resourceGroup().name

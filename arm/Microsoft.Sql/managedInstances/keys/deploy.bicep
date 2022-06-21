@@ -1,10 +1,10 @@
-@description('Optional. The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern')
+@description('Optional. The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern.')
 param name string = ''
 
-@description('Required. Name of the SQL managed instance.')
+@description('Conditional. The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
 
-@description('Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault"')
+@description('Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault".')
 @allowed([
   'AzureKeyVault'
   'ServiceManaged'
@@ -48,11 +48,11 @@ resource key 'Microsoft.Sql/managedInstances/keys@2021-05-01-preview' = {
   }
 }
 
-@description('The name of the deployed managed instance')
+@description('The name of the deployed managed instance.')
 output name string = key.name
 
-@description('The resource ID of the deployed managed instance')
+@description('The resource ID of the deployed managed instance.')
 output resourceId string = key.id
 
-@description('The resource group of the deployed managed instance')
+@description('The resource group of the deployed managed instance.')
 output resourceGroupName string = resourceGroup().name

@@ -19,9 +19,13 @@ This module deploys the auth settings v2.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `appName` | string |  | Name of the site parent resource. |
 | `authSettingV2Configuration` | object |  | The auth settings V2 configuration. |
 | `kind` | string | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `appName` | string | The name of the parent site resource. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -33,6 +37,10 @@ This module deploys the auth settings v2.
 
 The auth settings V2 configuration.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "siteConfig": {
     "value": [
@@ -40,6 +48,21 @@ The auth settings V2 configuration.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+siteConfig: [
+    // Check out https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

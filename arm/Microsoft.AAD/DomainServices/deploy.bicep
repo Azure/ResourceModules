@@ -12,23 +12,23 @@ param domainName string
 ])
 param sku string = 'Standard'
 
-@description('Optional. The location to deploy the Azure ADDS Services')
+@description('Optional. The location to deploy the Azure ADDS Services.')
 param location string = resourceGroup().location
 
-@description('Optional. Additional replica set for the managed domain')
+@description('Optional. Additional replica set for the managed domain.')
 param replicaSets array = []
 
-@description('Conditional. Required if secure LDAP is enabled and must be valid more than 30 days. The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file.')
+@description('Conditional. The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file. Required if secure LDAP is enabled and must be valid more than 30 days.')
 param pfxCertificate string = ''
 
-@description('Conditional. Required if secure LDAP is enabled. The password to decrypt the provided Secure LDAP certificate PFX file.')
+@description('Conditional. The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled.')
 @secure()
 param pfxCertificatePassword string = ''
 
-@description('Optional. The email recipient value to receive alerts')
+@description('Optional. The email recipient value to receive alerts.')
 param additionalRecipients array = []
 
-@description('Optional. The value is to provide domain configuration type')
+@description('Optional. The value is to provide domain configuration type.')
 @allowed([
   'FullySynced'
   'ResourceTrusting'
@@ -80,7 +80,7 @@ param kerberosRc4Encryption string = 'Enabled'
 ])
 param kerberosArmoring string = 'Enabled'
 
-@description('Optional. The value is to notify the DC Admins. ')
+@description('Optional. The value is to notify the DC Admins.')
 @allowed([
   'Enabled'
   'Disabled'
@@ -94,7 +94,7 @@ param notifyDcAdmins string = 'Enabled'
 ])
 param notifyGlobalAdmins string = 'Enabled'
 
-@description('Optional. The value is to enable the Secure LDAP for external services of Azure ADDS Services')
+@description('Optional. The value is to enable the Secure LDAP for external services of Azure ADDS Services.')
 @allowed([
   'Enabled'
   'Disabled'
@@ -128,15 +128,18 @@ param tags object = {}
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. The name of logs that will be streamed.')
@@ -172,6 +175,18 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
+
 resource domainService 'Microsoft.AAD/DomainServices@2021-05-01' = {
   name: name
   location: location
@@ -205,7 +220,7 @@ resource domainService 'Microsoft.AAD/DomainServices@2021-05-01' = {
 }
 
 resource domainService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${domainName}-diagnosticSettings'
+  name: '${domainService.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -216,16 +231,16 @@ resource domainService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
   scope: domainService
 }
 
-resource domainService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
-  name: '${domainName}-${lock}-lock'
+resource domainService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+  name: '${domainService.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: domainService
 }
 
-module domainService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module domainService_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VNet-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -236,11 +251,14 @@ module domainService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
-@description('The domain name of the Azure Active Directory Domain Services(Azure ADDS)')
+@description('The domain name of the Azure Active Directory Domain Services(Azure ADDS).')
 output name string = domainService.name
 
 @description('The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The resource ID of the Azure Active Directory Domain Services(Azure ADDS)')
+@description('The resource ID of the Azure Active Directory Domain Services(Azure ADDS).')
 output resourceId string = domainService.id
+
+@description('The location the resource was deployed into.')
+output location string = domainService.location

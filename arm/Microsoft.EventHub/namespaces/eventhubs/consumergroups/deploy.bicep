@@ -1,10 +1,10 @@
-@description('Required. The name of the event hub namespace')
+@description('Conditional. The name of the parent event hub namespace. Required if the template is used in a standalone deployment.s.')
 param namespaceName string
 
-@description('Required. The name of the event hub namespace event hub')
+@description('Conditional. The name of the parent event hub namespace event hub. Required if the template is used in a standalone deployment.')
 param eventHubName string
 
-@description('Required. The name of the consumer group')
+@description('Required. The name of the consumer group.')
 param name string
 
 @description('Optional. User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.')
@@ -25,15 +25,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' existing = {
+resource namespace 'Microsoft.EventHub/namespaces@2021-11-01' existing = {
   name: namespaceName
 
-  resource eventhub 'eventHubs@2021-06-01-preview' existing = {
+  resource eventhub 'eventHubs@2021-11-01' existing = {
     name: eventHubName
   }
 }
 
-resource consumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2021-06-01-preview' = {
+resource consumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2021-11-01' = {
   name: name
   parent: namespace::eventhub
   properties: {

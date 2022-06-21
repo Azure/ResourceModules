@@ -21,13 +21,17 @@ This module deploys Resources Tags on a resource group scope.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'default'` | The name of the tags resource. |
-| `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags |
-| `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags |
+| `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags. |
+| `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags. |
 
 
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "tags": {
@@ -42,11 +46,31 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the tags resource |
-| `resourceGroupName` | string | The name of the resource group the tags were applied to |
-| `resourceId` | string | The resourceId of the resource group the tags were applied to |
-| `tags` | object | The applied tags |
+| `name` | string | The name of the tags resource. |
+| `resourceGroupName` | string | The name of the resource group the tags were applied to. |
+| `resourceId` | string | The resource ID of the applied tags. |
+| `tags` | object | The applied tags. |

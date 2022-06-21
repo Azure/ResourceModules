@@ -4,9 +4,6 @@ param alternativeParameterValues object = {}
 @description('Optional. Specific values for some API connections.')
 param connectionApi object = {}
 
-@description('Required. Connection Kind. Example: \'V1\' when using blobs. It can change depending on the resource.')
-param connectionKind string
-
 @description('Required. Connection name for connection. Example: \'azureblob\' when using blobs.  It can change depending on the resource.')
 param name string
 
@@ -29,9 +26,6 @@ param nonSecretParameterValues object = {}
 @secure()
 param parameterValues object = {}
 
-@description('Optional. Value Type of parameter, in case alternativeParameterValues is used.')
-param parameterValueType string = ''
-
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
@@ -39,12 +33,12 @@ param roleAssignments array = []
 param statuses array = []
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -67,13 +61,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 resource connection 'Microsoft.Web/connections@2016-06-01' = {
   name: name
   location: location
-  kind: connectionKind
   tags: tags
   properties: {
     displayName: displayName
     customParameterValues: customParameterValues
-    parameterValueType: !empty(parameterValueType) ? parameterValueType : null
-    alternativeParameterValues: !empty(alternativeParameterValues) ? alternativeParameterValues : null
     api: connectionApi
     parameterValues: empty(alternativeParameterValues) ? parameterValues : null
     nonSecretParameterValues: !empty(nonSecretParameterValues) ? nonSecretParameterValues : null
@@ -82,16 +73,16 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${connection.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: connection
 }
 
-module connection_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module connection_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Connection-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -102,11 +93,14 @@ module connection_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-@description('The resource ID of the connection')
+@description('The resource ID of the connection.')
 output resourceId string = connection.id
 
-@description('The resource group the connection was deployed into')
+@description('The resource group the connection was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the connection')
+@description('The name of the connection.')
 output name string = connection.name
+
+@description('The location the resource was deployed into.')
+output location string = connection.location

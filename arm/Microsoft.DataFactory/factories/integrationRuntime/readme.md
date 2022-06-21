@@ -19,19 +19,27 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `dataFactoryName` | string |  | The name of the Azure Data Factory |
-| `name` | string |  | The name of the Integration Runtime |
-| `type` | string | `[Managed, SelfHosted]` | The type of Integration Runtime |
+| `name` | string |  | The name of the Integration Runtime. |
+| `type` | string | `[Managed, SelfHosted]` | The type of Integration Runtime. |
 | `typeProperties` | object |  | Integration Runtime type properties. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `dataFactoryName` | string | The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `managedVirtualNetworkName` | string | `''` | The name of the Managed Virtual Network if using type "Managed"  |
+| `managedVirtualNetworkName` | string | `''` | The name of the Managed Virtual Network if using type "Managed" . |
 
 
 ### Parameter Usage: [`typeProperties`](https://docs.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "typeProperties": {
@@ -41,8 +49,22 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
         }
     }
 }
-
 ```
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+typeProperties: {
+    computeProperties: {
+        location: 'AutoResolve'
+    }
+}
+```
+
+<details>
+<p>
 
 ## Outputs
 

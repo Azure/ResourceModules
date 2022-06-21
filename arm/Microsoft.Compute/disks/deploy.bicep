@@ -51,7 +51,7 @@ param sourceResourceId string = ''
 @description('Optional. If create option is Import, this is the URI of a blob to be imported into a managed disk.')
 param sourceUri string = ''
 
-@description('Optional. Required if create option is Import. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk')
+@description('Optional. Required if create option is Import. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk.')
 param storageAccountId string = ''
 
 @description('Optional. If create option is Upload, this is the size of the contents of the upload including the VHD footer.')
@@ -103,14 +103,14 @@ param publicNetworkAccess string = 'Disabled'
 param acceleratedNetwork bool = false
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the availability set resource.')
@@ -159,7 +159,7 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' = {
     hyperVGeneration: empty(osType) ? null : hyperVGeneration
     maxShares: maxShares
     networkAccessPolicy: networkAccessPolicy
-    osType: empty(osType) ? null : osType
+    osType: empty(osType) ? any(null) : osType
     publicNetworkAccess: publicNetworkAccess
     supportedCapabilities: empty(osType) ? {} : {
       acceleratedNetwork: acceleratedNetwork
@@ -167,16 +167,16 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' = {
   }
 }
 
-resource disk_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource disk_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${disk.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: disk
 }
 
-module disk_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module disk_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AvSet-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -187,11 +187,14 @@ module disk_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in ro
   }
 }]
 
-@description('The resource group the  disk was deployed into')
+@description('The resource group the  disk was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The resource ID of the disk')
+@description('The resource ID of the disk.')
 output resourceId string = disk.id
 
-@description('The name of the disk')
+@description('The name of the disk.')
 output name string = disk.name
+
+@description('The location the resource was deployed into.')
+output location string = disk.location

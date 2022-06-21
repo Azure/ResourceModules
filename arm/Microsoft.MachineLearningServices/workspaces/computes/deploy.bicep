@@ -1,7 +1,7 @@
 // ================ //
 // Parameters       //
 // ================ //
-@sys.description('Required. Name of the Machine Learning Workspace.')
+@sys.description('Conditional. The name of the parent Machine Learning Workspace. Required if the template is used in a standalone deployment.')
 param machineLearningWorkspaceName string
 
 @sys.description('Required. Name of the compute.')
@@ -134,3 +134,6 @@ output resourceGroupName string = resourceGroup().name
 
 @sys.description('The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID.')
 output systemAssignedPrincipalId string = empty(resourceId) ? (systemAssignedIdentity && contains(machineLearningWorkspaceCompute.identity, 'principalId') ? machineLearningWorkspaceCompute.identity.principalId : '') : ''
+
+@sys.description('The location the resource was deployed into.')
+output location string = machineLearningWorkspaceCompute.location

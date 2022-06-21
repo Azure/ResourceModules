@@ -16,23 +16,23 @@ This module deploys API Management Service APIs Version Set.
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `apiManagementServiceName` | string | The name of the of the API Management service. |
+| `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `'default'` | API Version set name |
-| `properties` | object | `{object}` | API Version set properties |
+| `name` | string | `'default'` | API Version set name. |
+| `properties` | object | `{object}` | API Version set properties. |
 
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the API Version set |
-| `resourceGroupName` | string | The resource group the API Version set was deployed into |
-| `resourceId` | string | The resource ID of the API Version set |
+| `name` | string | The name of the API Version set. |
+| `resourceGroupName` | string | The resource group the API Version set was deployed into. |
+| `resourceId` | string | The resource ID of the API Version set. |

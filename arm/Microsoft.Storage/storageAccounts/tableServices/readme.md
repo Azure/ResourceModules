@@ -18,10 +18,10 @@ This module deploys a storage account table service
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `storageAccountName` | string | Name of the Storage Account. |
+| `storageAccountName` | string | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -35,7 +35,7 @@ This module deploys a storage account table service
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `'default'` |  | The name of the table service |
+| `name` | string | `'default'` |  | The name of the table service. |
 | `tables` | _[tables](tables/readme.md)_ array | `[]` |  | tables to create. |
 
 
@@ -43,6 +43,6 @@ This module deploys a storage account table service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed table service |
-| `resourceGroupName` | string | The resource group of the deployed table service |
-| `resourceId` | string | The resource ID of the deployed table service |
+| `name` | string | The name of the deployed table service. |
+| `resourceGroupName` | string | The resource group of the deployed table service. |
+| `resourceId` | string | The resource ID of the deployed table service. |

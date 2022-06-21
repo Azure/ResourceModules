@@ -16,10 +16,10 @@ This module deploys a Service Fabric Cluster Application Type.
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `serviceFabricClusterName` | string | `''` | Name of the Service Fabric cluster. |
+| `serviceFabricClusterName` | string | `''` | The name of the parent Service Fabric cluster. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -33,6 +33,10 @@ This module deploys a Service Fabric Cluster Application Type.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -45,6 +49,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

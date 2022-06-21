@@ -7,7 +7,7 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Required. Name of the Azure Shared Image Gallery')
+@description('Conditional. The name of the parent Azure Shared Image Gallery. Required if the template is used in a standalone deployment.')
 @minLength(1)
 param galleryName string
 
@@ -54,7 +54,7 @@ param minRecommendedMemory int = 4
 @maxValue(4000)
 param maxRecommendedMemory int = 16
 
-@description('Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2')
+@description('Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2.')
 @allowed([
   'V1'
   'V2'
@@ -82,13 +82,13 @@ param planName string = ''
 @description('Optional. The publisher ID.')
 param planPublisherName string = ''
 
-@description('Optional. The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z')
+@description('Optional. The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z.')
 param endOfLife string = ''
 
-@description('Optional. List of the excluded disk types. E.g. Standard_LRS')
+@description('Optional. List of the excluded disk types. E.g. Standard_LRS.')
 param excludedDiskTypes array = []
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags for all resources.')
@@ -106,11 +106,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource gallery 'Microsoft.Compute/galleries@2020-09-30' existing = {
+resource gallery 'Microsoft.Compute/galleries@2021-10-01' existing = {
   name: galleryName
 }
 
-resource image 'Microsoft.Compute/galleries/images@2020-09-30' = {
+resource image 'Microsoft.Compute/galleries/images@2021-10-01' = {
   name: name
   parent: gallery
   location: location
@@ -150,7 +150,7 @@ resource image 'Microsoft.Compute/galleries/images@2020-09-30' = {
   }
 }
 
-module galleryImage_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module galleryImage_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -161,11 +161,14 @@ module galleryImage_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   }
 }]
 
-@description('The resource group the image was deployed into')
+@description('The resource group the image was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The resource ID of the image')
+@description('The resource ID of the image.')
 output resourceId string = image.id
 
-@description('The name of the image')
+@description('The name of the image.')
 output name string = image.name
+
+@description('The location the resource was deployed into.')
+output location string = image.location

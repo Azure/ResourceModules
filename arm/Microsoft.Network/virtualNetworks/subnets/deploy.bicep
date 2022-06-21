@@ -1,25 +1,25 @@
 @description('Optional. The Name of the subnet resource.')
 param name string
 
-@description('Required. The name of the parent virtual network')
+@description('Conditional. The name of the parent virtual network. Required if the template is used in a standalone deployment.')
 param virtualNetworkName string
 
 @description('Required. The address prefix for the subnet.')
 param addressPrefix string
 
-@description('Optional. The resource ID of the network security group to assign to the subnet')
+@description('Optional. The resource ID of the network security group to assign to the subnet.')
 param networkSecurityGroupId string = ''
 
-@description('Optional. The resource ID of the route table to assign to the subnet')
+@description('Optional. The resource ID of the route table to assign to the subnet.')
 param routeTableId string = ''
 
-@description('Optional. The service endpoints to enable on the subnet')
+@description('Optional. The service endpoints to enable on the subnet.')
 param serviceEndpoints array = []
 
-@description('Optional. The delegations to enable on the subnet')
+@description('Optional. The delegations to enable on the subnet.')
 param delegations array = []
 
-@description('Optional. The resource ID of the NAT Gateway to use for the subnet')
+@description('Optional. The resource ID of the NAT Gateway to use for the subnet.')
 param natGatewayId string = ''
 
 @description('Optional. enable or disable apply network policies on private endpoint in the subnet.')
@@ -44,13 +44,13 @@ param addressPrefixes array = []
 @description('Optional. Application gateway IP configurations of virtual network resource.')
 param applicationGatewayIpConfigurations array = []
 
-@description('Optional. Array of IpAllocation which reference this subnet')
+@description('Optional. Array of IpAllocation which reference this subnet.')
 param ipAllocations array = []
 
 @description('Optional. An array of service endpoint policies.')
 param serviceEndpointPolicies array = []
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -97,8 +97,8 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
   }
 }
 
-module subnet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, resourceGroup().location)}-Subnet-Rbac-${index}'
+module subnet_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, subnet.id)}-Subnet-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
@@ -108,17 +108,17 @@ module subnet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
   }
 }]
 
-@description('The resource group the virtual network peering was deployed into')
+@description('The resource group the virtual network peering was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the virtual network peering')
+@description('The name of the virtual network peering.')
 output name string = subnet.name
 
-@description('The resource ID of the virtual network peering')
+@description('The resource ID of the virtual network peering.')
 output resourceId string = subnet.id
 
-@description('The address prefix for the subnet')
+@description('The address prefix for the subnet.')
 output subnetAddressPrefix string = subnet.properties.addressPrefix
 
-@description('List of address prefixes for the subnet')
+@description('List of address prefixes for the subnet.')
 output subnetAddressPrefixes array = !empty(addressPrefixes) ? subnet.properties.addressPrefixes : []

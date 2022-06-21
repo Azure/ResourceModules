@@ -1,10 +1,10 @@
-@description('Required. The name of the Azure Databricks workspace to create')
+@description('Required. The name of the Azure Databricks workspace to create.')
 param name string
 
-@description('Optional. The managed resource group ID')
+@description('Optional. The managed resource group ID.')
 param managedResourceGroupId string = ''
 
-@description('Optional. The pricing tier of workspace')
+@description('Optional. The pricing tier of workspace.')
 @allowed([
   'trial'
   'standard'
@@ -39,12 +39,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -118,11 +118,11 @@ resource workspace 'Microsoft.Databricks/workspaces@2018-04-01' = {
   }
 }
 
-resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: workspace
 }
@@ -140,7 +140,7 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
   scope: workspace
 }
 
-module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module workspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-DataBricks-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -151,11 +151,14 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   }
 }]
 
-@description('The name of the deployed databricks workspace')
+@description('The name of the deployed databricks workspace.')
 output name string = workspace.name
 
-@description('The resource ID of the deployed databricks workspace')
+@description('The resource ID of the deployed databricks workspace.')
 output resourceId string = workspace.id
 
-@description('The resource group of the deployed databricks workspace')
+@description('The resource group of the deployed databricks workspace.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = workspace.location

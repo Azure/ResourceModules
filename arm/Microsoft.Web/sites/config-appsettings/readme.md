@@ -19,8 +19,12 @@ This module deploys the app settings.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `appName` | string |  | Name of the site parent resource. |
 | `kind` | string | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `appName` | string | The name of the parent site resource. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -37,6 +41,10 @@ This module deploys the app settings.
 AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).
 For all other app settings key-value pairs use this object.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "appSettingsKeyValuePairs": {
     "value": [
@@ -51,6 +59,28 @@ For all other app settings key-value pairs use this object.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+appSettingsKeyValuePairs: [
+    {
+        name: 'key1'
+        value: 'val1'
+    }
+    {
+        name: 'key2'
+        value: 'val2'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

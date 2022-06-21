@@ -1,10 +1,10 @@
-@description('Required. Name of the Azure Recovery Service Vault')
+@description('Conditional. The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.')
 param recoveryVaultName string
 
-@description('Required. Name of the Replication Fabric')
+@description('Conditional. The name of the parent Replication Fabric. Required if the template is used in a standalone deployment.')
 param replicationFabricName string
 
-@description('Required. The name of the replication container')
+@description('Required. The name of the replication container.')
 param name string
 
 @description('Optional. Replication containers mappings to create.')
@@ -12,6 +12,8 @@ param replicationContainerMappings array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}-rsvPolicy'
@@ -48,7 +50,7 @@ module fabric_container_containerMappings 'replicationProtectionContainerMapping
     targetProtectionContainerId: contains(mapping, 'targetProtectionContainerId') ? mapping.targetProtectionContainerId : ''
     targetContainerFabricName: contains(mapping, 'targetContainerFabricName') ? mapping.targetContainerFabricName : replicationFabricName
     targetContainerName: contains(mapping, 'targetContainerName') ? mapping.targetContainerName : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     replicationContainer

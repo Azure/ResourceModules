@@ -1,10 +1,10 @@
-@description('Required. The name of the private endpoint')
+@description('Conditional. The name of the parent private endpoint. Required if the template is used in a standalone deployment.')
 param privateEndpointName string
 
-@description('Required. List of private DNS resource IDs')
+@description('Required. List of private DNS resource IDs.')
 param privateDNSResourceIds array
 
-@description('Optional. The name of the private DNS Zone Group')
+@description('Optional. The name of the private DNS Zone Group.')
 param name string = 'default'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -23,7 +23,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 var privateDnsZoneConfigs = [for privateDNSResourceId in privateDNSResourceIds: {
-  name: privateEndpointName
+  name: last(split(privateDNSResourceId, '/'))
   properties: {
     privateDnsZoneId: privateDNSResourceId
   }
@@ -41,11 +41,11 @@ resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneG
   }
 }
 
-@description('The name of the private endpoint DNS zone group')
+@description('The name of the private endpoint DNS zone group.')
 output name string = privateDnsZoneGroup.name
 
-@description('The resource ID of the private endpoint DNS zone group')
+@description('The resource ID of the private endpoint DNS zone group.')
 output resourceId string = privateDnsZoneGroup.id
 
-@description('The resource group the private endpoint DNS zone group was deployed into')
+@description('The resource group the private endpoint DNS zone group was deployed into.')
 output resourceGroupName string = resourceGroup().name

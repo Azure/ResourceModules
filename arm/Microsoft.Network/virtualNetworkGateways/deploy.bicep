@@ -16,10 +16,10 @@ param publicIPPrefixResourceId string = ''
 @description('Optional. Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones.')
 param publicIpZones array = []
 
-@description('Optional. DNS name(s) of the Public IP resource(s). If you enabled active-active configuration, you need to provide 2 DNS names, if you want to use this feature. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com')
+@description('Optional. DNS name(s) of the Public IP resource(s). If you enabled active-active configuration, you need to provide 2 DNS names, if you want to use this feature. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com.')
 param domainNameLabel array = []
 
-@description('Required. Specifies the gateway type. E.g. VPN, ExpressRoute')
+@description('Required. Specifies the gateway type. E.g. VPN, ExpressRoute.')
 @allowed([
   'Vpn'
   'ExpressRoute'
@@ -44,23 +44,23 @@ param virtualNetworkGatewayType string
 ])
 param virtualNetworkGatewaySku string
 
-@description('Required. Specifies the VPN type')
+@description('Required. Specifies the VPN type.')
 @allowed([
   'PolicyBased'
   'RouteBased'
 ])
 param vpnType string = 'RouteBased'
 
-@description('Required. Virtual Network resource ID')
+@description('Required. Virtual Network resource ID.')
 param vNetResourceId string
 
-@description('Optional. Value to specify if the Gateway should be deployed in active-active or active-passive configuration')
+@description('Optional. Value to specify if the Gateway should be deployed in active-active or active-passive configuration.')
 param activeActive bool = true
 
-@description('Optional. Value to specify if BGP is enabled or not')
+@description('Optional. Value to specify if BGP is enabled or not.')
 param enableBgp bool = true
 
-@description('Optional. ASN value')
+@description('Optional. ASN value.')
 param asn int = 65815
 
 @description('Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network.')
@@ -89,16 +89,16 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -312,10 +312,10 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-05-01'
 }]
 
 @batchSize(1)
-resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (lock != 'NotSpecified') {
+resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (!empty(lock)) {
   name: '${virtualGatewayPublicIpName}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualGatewayPublicIP[index]
@@ -359,10 +359,10 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-05
   ]
 }
 
-resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${virtualNetworkGateway.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualNetworkGateway
@@ -381,7 +381,7 @@ resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnostic
   scope: virtualNetworkGateway
 }
 
-module virtualNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module virtualNetworkGateway_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VNetGateway-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -395,14 +395,17 @@ module virtualNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
 // ================//
 // Outputs         //
 // ================//
-@description('The resource group the virtual network gateway was deployed')
+@description('The resource group the virtual network gateway was deployed.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the virtual network gateway')
+@description('The name of the virtual network gateway.')
 output name string = virtualNetworkGateway.name
 
-@description('The resource ID of the virtual network gateway')
+@description('The resource ID of the virtual network gateway.')
 output resourceId string = virtualNetworkGateway.id
 
-@description('Shows if the virtual network gateway is configured in active-active mode')
+@description('Shows if the virtual network gateway is configured in active-active mode.')
 output activeActive bool = virtualNetworkGateway.properties.activeActive
+
+@description('The location the resource was deployed into.')
+output location string = virtualNetworkGateway.location

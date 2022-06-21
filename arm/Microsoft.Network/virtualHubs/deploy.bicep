@@ -13,16 +13,16 @@ param addressPrefix string
 @description('Optional. Flag to control transit for VirtualRouter hub.')
 param allowBranchToBranchTraffic bool = true
 
-@description('Optional. Resource ID of the Azure Firewall to link to')
+@description('Optional. Resource ID of the Azure Firewall to link to.')
 param azureFirewallId string = ''
 
-@description('Optional. Resource ID of the Express Route Gateway to link to')
+@description('Optional. Resource ID of the Express Route Gateway to link to.')
 param expressRouteGatewayId string = ''
 
-@description('Optional. Resource ID of the Point-to-Site VPN Gateway to link to')
+@description('Optional. Resource ID of the Point-to-Site VPN Gateway to link to.')
 param p2SVpnGatewayId string = ''
 
-@description('Optional. The preferred routing gateway types')
+@description('Optional. The preferred routing gateway types.')
 @allowed([
   'ExpressRoute'
   'None'
@@ -31,10 +31,10 @@ param p2SVpnGatewayId string = ''
 ])
 param preferredRoutingGateway string = ''
 
-@description('Optional. VirtualHub route tables')
+@description('Optional. VirtualHub route tables.')
 param routeTableRoutes array = []
 
-@description('Optional. ID of the Security Partner Provider to link to')
+@description('Optional. ID of the Security Partner Provider to link to.')
 param securityPartnerProviderId string = ''
 
 @description('Optional. The Security Provider name.')
@@ -56,10 +56,10 @@ param virtualRouterAsn int = -1
 @description('Optional. VirtualRouter IPs.')
 param virtualRouterIps array = []
 
-@description('Required. Resource ID of the virtual WAN to link to')
+@description('Required. Resource ID of the virtual WAN to link to.')
 param virtualWanId string
 
-@description('Optional. Resource ID of the VPN Gateway to link to')
+@description('Optional. Resource ID of the VPN Gateway to link to.')
 param vpnGatewayId string = ''
 
 @description('Optional. Route tables to create for the virtual hub.')
@@ -69,15 +69,17 @@ param hubRouteTables array = []
 param hubVirtualNetworkConnections array = []
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -128,10 +130,10 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
   }
 }
 
-resource virtualHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource virtualHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${virtualHub.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualHub
@@ -144,7 +146,7 @@ module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, 
     name: routeTable.name
     labels: contains(routeTable, 'labels') ? routeTable.labels : []
     routes: contains(routeTable, 'routes') ? routeTable.routes : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -156,18 +158,21 @@ module virtualHub_hubVirtualNetworkConnections 'hubVirtualNetworkConnections/dep
     enableInternetSecurity: contains(virtualNetworkConnection, 'enableInternetSecurity') ? virtualNetworkConnection.enableInternetSecurity : true
     remoteVirtualNetworkId: virtualNetworkConnection.remoteVirtualNetworkId
     routingConfiguration: contains(virtualNetworkConnection, 'routingConfiguration') ? virtualNetworkConnection.routingConfiguration : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     virtualHub_routeTables
   ]
 }]
 
-@description('The resource group the virtual hub was deployed into')
+@description('The resource group the virtual hub was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The resource ID of the virtual hub')
+@description('The resource ID of the virtual hub.')
 output resourceId string = virtualHub.id
 
-@description('The name of the virtual hub')
+@description('The name of the virtual hub.')
 output name string = virtualHub.name
+
+@description('The location the resource was deployed into.')
+output location string = virtualHub.location

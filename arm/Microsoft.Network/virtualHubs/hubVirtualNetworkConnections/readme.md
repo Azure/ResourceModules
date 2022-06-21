@@ -20,8 +20,12 @@ This module deploys virtual hub virtual network connections.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The connection name. |
-| `remoteVirtualNetworkId` | string | Resource ID of the virtual network to link to |
-| `virtualHubName` | string | The virtual hub name. |
+| `remoteVirtualNetworkId` | string | Resource ID of the virtual network to link to. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `virtualHubName` | string | The name of the parent virtual hub. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -39,6 +43,6 @@ This module deploys virtual hub virtual network connections.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the virtual hub connection |
-| `resourceGroupName` | string | The resource group the virtual hub connection was deployed into |
-| `resourceId` | string | The resource ID of the virtual hub connection |
+| `name` | string | The name of the virtual hub connection. |
+| `resourceGroupName` | string | The resource group the virtual hub connection was deployed into. |
+| `resourceId` | string | The resource ID of the virtual hub connection. |

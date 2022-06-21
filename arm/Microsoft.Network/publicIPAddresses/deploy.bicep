@@ -1,4 +1,4 @@
-@description('Required. The name of the Public IP Address')
+@description('Required. The name of the Public IP Address.')
 param name string
 
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
@@ -53,17 +53,17 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -148,10 +148,10 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   }
 }
 
-resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${publicIpAddress.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: publicIpAddress
@@ -170,7 +170,7 @@ resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticSettin
   scope: publicIpAddress
 }
 
-module publicIpAddress_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module publicIpAddress_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-PIPAddress-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -181,14 +181,17 @@ module publicIpAddress_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   }
 }]
 
-@description('The resource group the public IP address was deployed into')
+@description('The resource group the public IP address was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the public IP address')
+@description('The name of the public IP address.')
 output name string = publicIpAddress.name
 
-@description('The resource ID of the public IP address')
+@description('The resource ID of the public IP address.')
 output resourceId string = publicIpAddress.id
 
-@description('The public IP address of the of the public IP address resource')
+@description('The public IP address of the public IP address resource.')
 output ipAddress string = publicIpAddress.properties.ipAddress
+
+@description('The location the resource was deployed into.')
+output location string = publicIpAddress.location

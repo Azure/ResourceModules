@@ -1,22 +1,22 @@
-@description('Required. Name of the parent Service Bus Namespace for the Service Bus Queue.')
+@description('Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment.')
 @minLength(6)
 @maxLength(50)
 param namespaceName string
 
-@description('Optional. The name of the ip filter rule')
+@description('Optional. The name of the ip filter rule.')
 param name string = filterName
 
-@description('Required. The IP Filter Action')
+@description('Required. The IP Filter Action.')
 @allowed([
   'Accept'
   // 'Reject' # Reason: Only Accept IpFilterRules are accepted by API
 ])
 param action string
 
-@description('Required. IP Filter name')
+@description('Required. IP Filter name.')
 param filterName string
 
-@description('Required. IP Mask')
+@description('Required. IP Mask.')
 param ipMask string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

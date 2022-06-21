@@ -1,9 +1,9 @@
 targetScope = 'subscription'
 
-@description('Optional. Tags for the resource group. If not provided, removes existing tags')
+@description('Optional. Tags for the resource group. If not provided, removes existing tags.')
 param tags object = {}
 
-@description('Optional. Instead of overwriting the existing tags, combine them with the new tags')
+@description('Optional. Instead of overwriting the existing tags, combine them with the new tags.')
 param onlyUpdate bool = false
 
 @description('Optional. Name of the Resource Group to assign the tags to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription.')
@@ -17,6 +17,8 @@ param location string = deployment().location
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -37,7 +39,7 @@ module tags_sub 'subscriptions/deploy.bicep' = if (!empty(subscriptionId) && emp
     onlyUpdate: onlyUpdate
     tags: tags
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -47,12 +49,15 @@ module tags_rg 'resourceGroups/deploy.bicep' = if (!empty(resourceGroupName) && 
   params: {
     onlyUpdate: onlyUpdate
     tags: tags
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
-@description('The name of the tags resource')
+@description('The name of the tags resource.')
 output name string = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.name : tags_sub.outputs.name
 
-@description('The applied tags')
+@description('The applied tags.')
 output tags object = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.tags : tags_sub.outputs.tags
+
+@description('The resource ID of the applied tags.')
+output resourceId string = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.resourceId : tags_sub.outputs.resourceId

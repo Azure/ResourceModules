@@ -19,8 +19,12 @@ This module deploys a security alert policy for a SQL managed instance.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | Name of the SQL managed instance. |
-| `name` | string | The name of the security alert policy |
+| `name` | string | The name of the security alert policy. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -34,6 +38,6 @@ This module deploys a security alert policy for a SQL managed instance.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed security alert policy |
-| `resourceGroupName` | string | The resource group of the deployed security alert policy |
-| `resourceId` | string | The resource ID of the deployed security alert policy |
+| `name` | string | The name of the deployed security alert policy. |
+| `resourceGroupName` | string | The resource group of the deployed security alert policy. |
+| `resourceId` | string | The resource ID of the deployed security alert policy. |

@@ -1,7 +1,7 @@
-@description('Required. Name of the Azure Recovery Service Vault')
+@description('Required. Name of the Azure Recovery Service Vault.')
 param name string
 
-@description('Optional. The storage configuration for the Azure Recovery Service Vault')
+@description('Optional. The storage configuration for the Azure Recovery Service Vault.')
 param backupStorageConfig object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -45,16 +45,16 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -136,6 +136,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var enableReferencedModulesTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -148,7 +150,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-11-01-preview' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-02-01' = {
   name: name
   location: location
   tags: tags
@@ -167,7 +169,7 @@ module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicat
     name: contains(replicationFabric, 'name') ? replicationFabric.name : replicationFabric.location
     location: replicationFabric.location
     replicationContainers: contains(replicationFabric, 'replicationContainers') ? replicationFabric.replicationContainers : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     rsv_replicationPolicies
@@ -183,7 +185,7 @@ module rsv_replicationPolicies 'replicationPolicies/deploy.bicep' = [for (replic
     crashConsistentFrequencyInMinutes: contains(replicationPolicy, 'crashConsistentFrequencyInMinutes') ? replicationPolicy.crashConsistentFrequencyInMinutes : 5
     multiVmSyncStatus: contains(replicationPolicy, 'multiVmSyncStatus') ? replicationPolicy.multiVmSyncStatus : 'Enable'
     recoveryPointHistory: contains(replicationPolicy, 'recoveryPointHistory') ? replicationPolicy.recoveryPointHistory : 1440
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -193,7 +195,7 @@ module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!
     recoveryVaultName: rsv.name
     storageModelType: backupStorageConfig.storageModelType
     crossRegionRestoreFlag: backupStorageConfig.crossRegionRestoreFlag
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -206,7 +208,9 @@ module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (prot
     friendlyName: protectionContainer.friendlyName
     backupManagementType: protectionContainer.backupManagementType
     containerType: protectionContainer.containerType
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    protectedItems: contains(protectionContainer, 'protectedItems') ? protectionContainer.protectedItems : []
+    location: location
   }
 }]
 
@@ -216,7 +220,7 @@ module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, in
     recoveryVaultName: rsv.name
     name: backupPolicy.name
     backupPolicyProperties: backupPolicy.properties
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -231,14 +235,14 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
     storageModelType: contains(backupConfig, 'storageModelType') ? backupConfig.storageModelType : 'GeoRedundant'
     storageType: contains(backupConfig, 'storageType') ? backupConfig.storageType : 'GeoRedundant'
     storageTypeState: contains(backupConfig, 'storageTypeState') ? backupConfig.storageTypeState : 'Locked'
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
-resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${rsv.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: rsv
@@ -257,7 +261,7 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
   scope: rsv
 }
 
-module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module rsv_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-RSV-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -268,14 +272,17 @@ module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
   }
 }]
 
-@description('The resource ID of the recovery services vault')
+@description('The resource ID of the recovery services vault.')
 output resourceId string = rsv.id
 
-@description('The name of the resource group the recovery services vault was created in')
+@description('The name of the resource group the recovery services vault was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The Name of the recovery services vault')
+@description('The Name of the recovery services vault.')
 output name string = rsv.name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(rsv.identity, 'principalId') ? rsv.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = rsv.location

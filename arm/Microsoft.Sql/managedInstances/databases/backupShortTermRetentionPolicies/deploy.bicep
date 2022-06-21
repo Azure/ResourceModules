@@ -1,10 +1,10 @@
 @description('Required. The name of the Short Term Retention backup policy. For example "default".')
 param name string
 
-@description('Required. The name of the SQL managed instance database')
+@description('Conditional. The name of the parent SQL managed instance database. Required if the template is used in a standalone deployment.')
 param databaseName string
 
-@description('Required. Name of the SQL managed instance.')
+@description('Conditional. The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
 
 @description('Optional. The backup retention period in days. This is how many days Point-in-Time Restore will be supported.')
@@ -41,11 +41,11 @@ resource backupShortTermRetentionPolicy 'Microsoft.Sql/managedInstances/database
   }
 }
 
-@description('The name of the deployed database backup short-term retention policy')
+@description('The name of the deployed database backup short-term retention policy.')
 output name string = backupShortTermRetentionPolicy.name
 
-@description('The resource ID of the deployed database backup short-term retention policy')
+@description('The resource ID of the deployed database backup short-term retention policy.')
 output resourceId string = backupShortTermRetentionPolicy.id
 
-@description('The resource group of the deployed database backup short-term retention policy')
+@description('The resource group of the deployed database backup short-term retention policy.')
 output resourceGroupName string = resourceGroup().name

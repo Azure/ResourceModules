@@ -1,19 +1,19 @@
-@description('Required. Name of the Cosmos DB database account.')
+@description('Conditional. The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment.')
 param databaseAccountName string
 
-@description('Required. Name of the mongodb database')
+@description('Conditional. The name of the parent mongodb database. Required if the template is used in a standalone deployment.')
 param mongodbDatabaseName string
 
-@description('Required. Name of the collection')
+@description('Required. Name of the collection.')
 param name string
 
-@description('Optional. Name of the mongodb database')
+@description('Optional. Name of the mongodb database.')
 param throughput int = 400
 
-@description('Required. Indexes for the collection')
+@description('Required. Indexes for the collection.')
 param indexes array
 
-@description('Required. ShardKey for the collection')
+@description('Required. ShardKey for the collection.')
 param shardKey object
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

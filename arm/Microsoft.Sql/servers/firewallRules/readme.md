@@ -20,7 +20,11 @@ This module deploys an SQL Server Firewall rule.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Server Firewall Rule. |
-| `serverName` | string | The Name of SQL Server |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `serverName` | string | The name of the parent SQL Server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -34,6 +38,6 @@ This module deploys an SQL Server Firewall rule.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed firewall rule |
-| `resourceGroupName` | string | The resourceGroup of the deployed firewall rule |
-| `resourceId` | string | The resource ID of the deployed firewall rule |
+| `name` | string | The name of the deployed firewall rule. |
+| `resourceGroupName` | string | The resource group of the deployed firewall rule. |
+| `resourceId` | string | The resource ID of the deployed firewall rule. |

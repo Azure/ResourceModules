@@ -1,25 +1,25 @@
 @minLength(1)
-@description('Required. Name of the Azure Shared Image Gallery')
+@description('Required. Name of the Azure Shared Image Gallery.')
 param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Description of the Azure Shared Image Gallery')
+@description('Optional. Description of the Azure Shared Image Gallery.')
 param galleryDescription string = ''
 
-@description('Optional. Images to create')
+@description('Optional. Images to create.')
 param images array = []
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags for all resources.')
@@ -27,6 +27,8 @@ param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -40,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource gallery 'Microsoft.Compute/galleries@2020-09-30' = {
+resource gallery 'Microsoft.Compute/galleries@2021-10-01' = {
   name: name
   location: location
   tags: tags
@@ -50,16 +52,16 @@ resource gallery 'Microsoft.Compute/galleries@2020-09-30' = {
   }
 }
 
-resource gallery_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource gallery_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${gallery.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: gallery
 }
 
-module gallery_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module gallery_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Gallery-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -97,15 +99,18 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
     excludedDiskTypes: contains(image, 'excludedDiskTypes') ? image.excludedDiskTypes : []
     roleAssignments: contains(image, 'roleAssignments') ? image.roleAssignments : []
     tags: contains(image, 'tags') ? image.tags : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-@description('The resource ID of the deployed image gallery')
+@description('The resource ID of the deployed image gallery.')
 output resourceId string = gallery.id
 
-@description('The resource group of the deployed image gallery')
+@description('The resource group of the deployed image gallery.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the deployed image gallery')
+@description('The name of the deployed image gallery.')
 output name string = gallery.name
+
+@description('The location the resource was deployed into.')
+output location string = gallery.location

@@ -1,15 +1,15 @@
-@description('Required. Name of the parent Service Bus Namespace for the Service Bus Queue.')
+@description('Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment.')
 @minLength(6)
 @maxLength(50)
 param namespaceName string
 
-@description('Optional. The name of the disaster recovery config')
+@description('Optional. The name of the disaster recovery config.')
 param name string = 'default'
 
-@description('Optional. Primary/Secondary eventhub namespace name, which is part of GEO DR pairing')
+@description('Optional. Primary/Secondary eventhub namespace name, which is part of GEO DR pairing.')
 param alternateName string = ''
 
-@description('Optional. Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing')
+@description('Optional. Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing.')
 param partnerNamespaceResourceID string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

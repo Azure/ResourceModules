@@ -1,17 +1,17 @@
-@description('Required. The name of the Azure Data Factory')
+@description('Conditional. The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment.')
 param dataFactoryName string
 
-@description('Required. The name of the Integration Runtime')
+@description('Required. The name of the Integration Runtime.')
 param name string
 
 @allowed([
   'Managed'
   'SelfHosted'
 ])
-@description('Required. The type of Integration Runtime')
+@description('Required. The type of Integration Runtime.')
 param type string
 
-@description('Optional. The name of the Managed Virtual Network if using type "Managed" ')
+@description('Optional. The name of the Managed Virtual Network if using type "Managed" .')
 param managedVirtualNetworkName string = ''
 
 @description('Required. Integration Runtime type properties.')
@@ -45,7 +45,7 @@ resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes
   name: name
   parent: dataFactory
   properties: {
-    type: type
+    type: any(type)
     managedVirtualNetwork: type == 'Managed' ? managedVirtualNetwork_var : null
     typeProperties: typeProperties
   }

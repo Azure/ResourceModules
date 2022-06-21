@@ -1,7 +1,7 @@
 @description('Required. The name of the Deployment schedule.')
 param name string
 
-@description('Required. Name of the parent Automation Account')
+@description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string
 
 @description('Required. The operating system to be configured by the deployment schedule.')
@@ -30,7 +30,7 @@ param rebootSetting string
 ])
 param frequency string
 
-@description('Optional. Maximum time allowed for the deployment schedule to run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601')
+@description('Optional. Maximum time allowed for the deployment schedule to run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601.')
 param maintenanceWindow string = 'PT2H'
 
 @description('Optional. Update classification included in the deployment schedule.')
@@ -159,13 +159,13 @@ param monthlyOccurrences array = []
 @description('Optional. The start time of the deployment schedule in ISO 8601 format. To specify a specific time use YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00. For schedules where we want to start the deployment as soon as possible, specify the time segment only in 24 hour format, HH:MM, 22:00.')
 param startTime string = ''
 
-@description('Optional. The end time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00')
+@description('Optional. The end time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00.')
 param expiryTime string = ''
 
 @description('Optional. The expiry time\'s offset in minutes.')
 param expiryTimeOffsetMinutes int = 0
 
-@description('Optional. The next time the deployment schedule runs in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00')
+@description('Optional. The next time the deployment schedule runs in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00.')
 param nextRun string = ''
 
 @description('Optional. The next run\'s offset in minutes.')
@@ -180,7 +180,7 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var updateClassifications_var = '${replace(replace(replace(replace(string(updateClassifications), ',', ', '), '[', ''), ']', ''), '"', '')}'
+var updateClassifications_var = replace(replace(replace(replace(string(updateClassifications), ',', ', '), '[', ''), ']', ''), '"', '')
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -263,11 +263,11 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
   }
 }
 
-@description('The name of the deployed softwareUpdateConfiguration')
+@description('The name of the deployed softwareUpdateConfiguration.')
 output name string = softwareUpdateConfiguration.name
 
-@description('The resource ID of the deployed softwareUpdateConfiguration')
+@description('The resource ID of the deployed softwareUpdateConfiguration.')
 output resourceId string = softwareUpdateConfiguration.id
 
-@description('The resource group of the deployed softwareUpdateConfiguration')
+@description('The resource group of the deployed softwareUpdateConfiguration.')
 output resourceGroupName string = resourceGroup().name

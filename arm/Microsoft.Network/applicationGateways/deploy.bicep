@@ -68,7 +68,7 @@ param redirectConfigurations array = []
 @description('Optional. Request routing rules of the application gateway resource.')
 param requestRoutingRules array = []
 
-@description('Optional. Rewrite rules for the application gateway resource.	')
+@description('Optional. Rewrite rules for the application gateway resource.	.')
 param rewriteRuleSets array = []
 
 @description('Optional. The name of the SKU for the Application Gateway.')
@@ -174,16 +174,16 @@ param zones array = []
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
+@description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
+@description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. ')
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
 param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticEventHubName string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -236,14 +236,14 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 }]
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Resource tags.')
@@ -271,7 +271,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
   identity: identity
   properties: union({
     authenticationCertificates: authenticationCertificates
-    autoscaleConfiguration: autoscaleMaxCapacity > 0 && autoscaleMinCapacity > 0 ? {
+    autoscaleConfiguration: autoscaleMaxCapacity > 0 && autoscaleMinCapacity >= 0 ? {
       maxCapacity: autoscaleMaxCapacity
       minCapacity: autoscaleMinCapacity
     } : null
@@ -300,7 +300,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
     sku: {
       name: sku
       tier: endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_'))
-      capacity: autoscaleMaxCapacity > 0 && autoscaleMinCapacity > 0 ? null : capacity
+      capacity: autoscaleMaxCapacity > 0 && autoscaleMinCapacity >= 0 ? null : capacity
     }
     sslCertificates: sslCertificates
     sslPolicy: {
@@ -320,10 +320,10 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
   zones: zones
 }
 
-resource applicationGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource applicationGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${applicationGateway.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: applicationGateway
@@ -342,7 +342,7 @@ resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnostic
   scope: applicationGateway
 }
 
-module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module applicationGateway_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppGateway-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -353,11 +353,14 @@ module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
   }
 }]
 
-@description('The name of the application gateway')
+@description('The name of the application gateway.')
 output name string = applicationGateway.name
 
-@description('The resource ID of the application gateway')
+@description('The resource ID of the application gateway.')
 output resourceId string = applicationGateway.id
 
-@description('The resource group the application gateway was deployed into')
+@description('The resource group the application gateway was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = applicationGateway.location

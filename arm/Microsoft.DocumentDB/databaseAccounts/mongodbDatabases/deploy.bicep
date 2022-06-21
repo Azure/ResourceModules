@@ -1,13 +1,13 @@
-@description('Required. Name of the Cosmos DB database account.')
+@description('Conditional. The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment.')
 param databaseAccountName string
 
-@description('Required. Name of the mongodb database')
+@description('Required. Name of the mongodb database.')
 param name string
 
-@description('Optional. Name of the mongodb database')
+@description('Optional. Name of the mongodb database.')
 param throughput int = 400
 
-@description('Optional. Collections in the mongodb database')
+@description('Optional. Collections in the mongodb database.')
 param collections array = []
 
 @description('Optional. Tags of the resource.')
@@ -15,6 +15,8 @@ param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -54,7 +56,7 @@ module mongodbDatabase_collections 'collections/deploy.bicep' = [for collection 
     name: collection.name
     indexes: collection.indexes
     shardKey: collection.shardKey
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

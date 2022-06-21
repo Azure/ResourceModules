@@ -48,10 +48,10 @@ param scopes array = [
   subscription().id
 ]
 
-@description('Optional. The resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.')
+@description('Conditional. The resource type of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria.')
 param targetResourceType string = ''
 
-@description('Optional. The region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.')
+@description('Conditional. The region of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria.')
 param targetResourceRegion string = ''
 
 @description('Optional. The flag that indicates whether the alert should be auto resolved or not.')
@@ -68,10 +68,10 @@ param actions array = []
 ])
 param alertCriteriaType string = 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
 
-@description('Required. Criterias to trigger the alert. Array of \'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria\' or \'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria\' objects')
+@description('Required. Criterias to trigger the alert. Array of \'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria\' or \'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria\' objects.')
 param criterias array
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -111,7 +111,7 @@ resource metricAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     targetResourceType: targetResourceType
     targetResourceRegion: targetResourceRegion
     criteria: {
-      'odata.type': alertCriteriaType
+      'odata.type': any(alertCriteriaType)
       allOf: criterias
     }
     autoMitigate: autoMitigate
@@ -119,7 +119,7 @@ resource metricAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = {
   }
 }
 
-module metricAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module metricAlert_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-MetricAlert-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -130,11 +130,14 @@ module metricAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
   }
 }]
 
-@description('The resource group the metric alert was deployed into')
+@description('The resource group the metric alert was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the metric alert')
+@description('The name of the metric alert.')
 output name string = metricAlert.name
 
-@description('The resource ID of the metric alert')
+@description('The resource ID of the metric alert.')
 output resourceId string = metricAlert.id
+
+@description('The location the resource was deployed into.')
+output location string = metricAlert.location

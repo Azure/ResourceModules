@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-vm-win-01"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "encryptionAtHost": {
             "value": false
         },
@@ -12,7 +15,7 @@
             "value": {
                 "publisher": "MicrosoftWindowsServer",
                 "offer": "WindowsServer",
-                "sku": "2016-Datacenter",
+                "sku": "2019-Datacenter",
                 "version": "latest"
             }
         },
@@ -227,11 +230,6 @@
             "value": {
                 "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
             }
-        },
-        "configurationProfileAssignments": {
-            "value": [
-                "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
-            ]
         }
     }
 }

@@ -5,8 +5,8 @@
         "name": {
             "value": "azuremonitor"
         },
-        "connectionKind": {
-            "value": "V1"
+        "lock": {
+            "value": "CanNotDelete"
         },
         "displayName": {
             "value": "azuremonitorlogs"

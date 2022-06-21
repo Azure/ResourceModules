@@ -8,12 +8,12 @@ param location string = resourceGroup().location
 param tags object = {}
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -33,7 +33,7 @@ param maxUnusedVersionsToKeep int = 3
 @description('Optional. The settings to enable AAD authentication on the cluster.')
 param azureActiveDirectory object = {}
 
-@description('Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location')
+@description('Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location.')
 param certificate object = {}
 
 @description('Optional. Describes a list of server certificates referenced by common name that are used to secure the cluster.')
@@ -116,7 +116,7 @@ param upgradePauseStartTimestampUtc string = ''
 @description('Optional. Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0.')
 param upgradeWave string = 'Wave0'
 
-@description('Optional. The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used')
+@description('Optional. The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used.')
 param vmImage string = ''
 
 @allowed([
@@ -129,11 +129,13 @@ param vmssZonalUpgradeMode string = 'Hierarchical'
 @description('Optional. Boolean to pause automatic runtime version upgrades to the cluster.')
 param waveUpgradePaused bool = false
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Array of Service Fabric cluster application types.')
 param applicationTypes array = []
+
+var enableReferencedModulesTelemetry = false
 
 var clientCertificateCommonNames_var = [for clientCertificateCommonName in clientCertificateCommonNames: {
   certificateCommonName: contains(clientCertificateCommonName, 'certificateCommonName') ? clientCertificateCommonName.certificateCommonName : null
@@ -278,17 +280,17 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
 }
 
 // Service Fabric cluster resource lock
-resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${serviceFabricCluster.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: serviceFabricCluster
 }
 
 // Service Fabric cluster RBAC assignment
-module serviceFabricCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module serviceFabricCluster_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ServiceFabric-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -306,7 +308,7 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
     name: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
     tags: contains(applicationType, 'tags') ? applicationType.tags : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -321,3 +323,6 @@ output resourceId string = serviceFabricCluster.id
 
 @description('The Service Fabric Cluster endpoint.')
 output endpoint string = serviceFabricCluster.properties.clusterEndpoint
+
+@description('The location the resource was deployed into.')
+output location string = serviceFabricCluster.location

@@ -20,19 +20,23 @@ This module deploys a storage account table
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the table. |
-| `storageAccountName` | string | Name of the Storage Account. |
+
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `storageAccountName` | string |  | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
+| `tableServicesName` | string | `'default'` | The name of the parent table service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `tableServicesName` | string | `'default'` | The name of the table service |
 
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed file share service |
-| `resourceGroupName` | string | The resource group of the deployed file share service |
-| `resourceId` | string | The resource ID of the deployed file share service |
+| `name` | string | The name of the deployed file share service. |
+| `resourceGroupName` | string | The resource group of the deployed file share service. |
+| `resourceId` | string | The resource ID of the deployed file share service. |

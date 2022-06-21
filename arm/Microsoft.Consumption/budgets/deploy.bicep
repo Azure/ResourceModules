@@ -98,11 +98,11 @@ resource budget 'Microsoft.Consumption/budgets@2019-05-01' = {
   }
 }
 
-@description('The name of the budget')
+@description('The name of the budget.')
 output name string = budget.name
 
-@description('The resource ID of the budget')
+@description('The resource ID of the budget.')
 output resourceId string = budget.id
 
-@description('The subscription the budget was deployed into')
+@description('The subscription the budget was deployed into.')
 output subscriptionName string = subscription().displayName

@@ -1,10 +1,10 @@
-@description('Required. The name of the service bus namepace queue')
+@description('Required. The name of the service bus namepace queue.')
 param name string
 
-@description('Required. The name of the parent service bus namespace')
+@description('Conditional. The name of the parent Service Bus Namespace. Required if the template is used in a standalone deployment.')
 param namespaceName string
 
-@description('Required. The name of the parent service bus namespace queue')
+@description('Conditional. The name of the parent Service Bus Namespace Queue. Required if the template is used in a standalone deployment.')
 param queueName string
 
 @description('Optional. The rights associated with the rule.')

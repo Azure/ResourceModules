@@ -1,35 +1,35 @@
-@description('Required. The name of the virtual machine scale set that extension is provisioned for')
+@description('Conditional. The name of the parent virtual machine scale set that extension is provisioned for. Required if the template is used in a standalone deployment.')
 param virtualMachineScaleSetName string
 
-@description('Required. The name of the virtual machine scale set extension')
+@description('Required. The name of the virtual machine scale set extension.')
 param name string
 
-@description('Required. The name of the extension handler publisher')
+@description('Required. The name of the extension handler publisher.')
 param publisher string
 
-@description('Required. Specifies the type of the extension; an example is "CustomScriptExtension"')
+@description('Required. Specifies the type of the extension; an example is "CustomScriptExtension".')
 param type string
 
-@description('Required. Specifies the version of the script handler')
+@description('Required. Specifies the version of the script handler.')
 param typeHandlerVersion string
 
-@description('Required. Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true')
+@description('Required. Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.')
 param autoUpgradeMinorVersion bool
 
-@description('Optional. How the extension handler should be forced to update even if the extension configuration has not changed')
+@description('Optional. How the extension handler should be forced to update even if the extension configuration has not changed.')
 param forceUpdateTag string = ''
 
-@description('Optional. Any object that contains the extension specific settings')
+@description('Optional. Any object that contains the extension specific settings.')
 param settings object = {}
 
-@description('Optional. Any object that contains the extension specific protected settings')
+@description('Optional. Any object that contains the extension specific protected settings.')
 @secure()
 param protectedSettings object = {}
 
-@description('Optional. Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false')
+@description('Optional. Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false.')
 param supressFailures bool = false
 
-@description('Required. Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available')
+@description('Required. Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available.')
 param enableAutomaticUpgrade bool
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -67,10 +67,10 @@ resource extension 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07
   }
 }
 
-@description('The name of the extension')
+@description('The name of the extension.')
 output name string = extension.name
 
-@description('The ResourceId of the extension')
+@description('The ResourceId of the extension.')
 output resourceId string = extension.id
 
 @description('The name of the Resource Group the extension was created in.')

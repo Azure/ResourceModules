@@ -37,6 +37,9 @@ function Initialize-DeploymentRemoval {
         [string] $ResourceGroupName,
 
         [Parameter(Mandatory = $false)]
+        [string] $subscriptionId,
+
+        [Parameter(Mandatory = $false)]
         [string] $ManagementGroupId
     )
 
@@ -47,10 +50,17 @@ function Initialize-DeploymentRemoval {
     }
 
     process {
+
+        if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+            Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+            $null = Set-AzContext -Subscription $subscriptionId
+        }
+
         $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
 
         # The initial sequence is a general order-recommendation
         $removalSequence = @(
+            'Microsoft.Authorization/locks',
             'Microsoft.Insights/diagnosticSettings',
             'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
             'Microsoft.Network/privateEndpoints',
@@ -64,17 +74,19 @@ function Initialize-DeploymentRemoval {
 
         foreach ($deploymentName in $deploymentNames) {
             Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
-            switch ($moduleName) {
-                'virtualWans' {
-                    $removalSequence += @(
-                        'Microsoft.Network/vpnGateways',
-                        'Microsoft.Network/virtualHubs',
-                        'Microsoft.Network/vpnSites'
-                    )
-                    break
-                }
-                ### CODE LOCATION: Add custom removal sequence here
-            }
+
+            ### CODE LOCATION: Add custom removal sequence here
+            ## Add custom module-specific removal sequence following the example below
+            # switch ($moduleName) {
+            #     '<moduleName01>' {                # For example: 'virtualWans', 'automationAccounts'
+            #         $removalSequence += @(
+            #             '<resourceType01>',       # For example: 'Microsoft.Network/vpnSites', 'Microsoft.OperationalInsights/workspaces/linkedServices'
+            #             '<resourceType02>',
+            #             '<resourceType03>'
+            #         )
+            #         break
+            #     }
+            # }
 
             # Invoke removal
             $inputObject = @{

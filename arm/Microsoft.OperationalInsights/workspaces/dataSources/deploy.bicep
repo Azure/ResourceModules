@@ -1,7 +1,7 @@
-@description('Required. Name of the Log Analytics workspace')
+@description('Conditional. The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment.')
 param logAnalyticsWorkspaceName string
 
-@description('Required. Name of the solution')
+@description('Required. Name of the solution.')
 param name string
 
 @description('Required. The kind of the DataSource.')
@@ -92,11 +92,11 @@ resource dataSource 'Microsoft.OperationalInsights/workspaces/dataSources@2020-0
   }
 }
 
-@description('The resource ID of the deployed data source')
+@description('The resource ID of the deployed data source.')
 output resourceId string = dataSource.id
 
-@description('The resource group where the data source is deployed')
+@description('The resource group where the data source is deployed.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the deployed data source')
+@description('The name of the deployed data source.')
 output name string = dataSource.name

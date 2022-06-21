@@ -1,11 +1,11 @@
-@description('Required. Name of the scaling plan')
+@description('Required. Name of the scaling plan.')
 @minLength(1)
 param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Friendly Name of the scaling plan')
+@description('Optional. Friendly Name of the scaling plan.')
 param friendlyName string = name
 
 @description('Optional. Description of the scaling plan.')
@@ -88,7 +88,7 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. The name of logs that will be streamed.')
@@ -135,7 +135,7 @@ resource scalingplan_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2
   scope: scalingPlan
 }
 
-module scalingplan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module scalingplan_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Workspace-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -146,11 +146,14 @@ module scalingplan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
   }
 }]
 
-@description('The resource ID of the AVD scaling plan')
+@description('The resource ID of the AVD scaling plan.')
 output resourceId string = scalingPlan.id
 
-@description('The resource group the AVD scaling plan was deployed into')
+@description('The resource group the AVD scaling plan was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the AVD scaling plan')
+@description('The name of the AVD scaling plan.')
 output name string = scalingPlan.name
+
+@description('The location the resource was deployed into.')
+output location string = scalingPlan.location

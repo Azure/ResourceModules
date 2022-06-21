@@ -1,10 +1,10 @@
 @description('Required. The name of the Long Term Retention backup policy. For example "default".')
 param name string
 
-@description('Required. The name of the managed instance database')
+@description('Conditional. The name of the parent managed instance database. Required if the template is used in a standalone deployment.')
 param databaseName string
 
-@description('Required. Name of the managed instance.')
+@description('Conditional. The name of the parent managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
 
 @description('Optional. The week of year to take the yearly backup in an ISO 8601 format.')
@@ -53,11 +53,11 @@ resource backupLongTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases
   }
 }
 
-@description('The name of the deployed database backup long-term retention policy')
+@description('The name of the deployed database backup long-term retention policy.')
 output name string = backupLongTermRetentionPolicy.name
 
-@description('The resource ID of the deployed database backup long-term retention policy')
+@description('The resource ID of the deployed database backup long-term retention policy.')
 output resourceId string = backupLongTermRetentionPolicy.id
 
-@description('The resource group of the deployed database backup long-term retention policy')
+@description('The resource group of the deployed database backup long-term retention policy.')
 output resourceGroupName string = resourceGroup().name

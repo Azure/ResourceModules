@@ -1,7 +1,7 @@
-@description('Required. Name of the Firewall Policy.')
+@description('Conditional. The name of the parent Firewall Policy. Required if the template is used in a standalone deployment.')
 param firewallPolicyName string
 
-@description('Required. The name of the rule collection group to deploy')
+@description('Required. The name of the rule collection group to deploy.')
 param name string
 
 @description('Required. Priority of the Firewall Policy Rule Collection Group resource.')
@@ -38,11 +38,11 @@ resource ruleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionG
   }
 }
 
-@description('The name of the deployed rule collection group')
+@description('The name of the deployed rule collection group.')
 output name string = ruleCollectionGroup.name
 
-@description('The resource ID of the deployed rule collection group')
+@description('The resource ID of the deployed rule collection group.')
 output resourceId string = ruleCollectionGroup.id
 
-@description('The resource group of the deployed rule collection group')
+@description('The resource group of the deployed rule collection group.')
 output resourceGroupName string = resourceGroup().name

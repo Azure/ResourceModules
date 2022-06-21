@@ -12,10 +12,10 @@ param actions array = []
 @sys.description('Optional. List of denied actions.')
 param notActions array = []
 
-@sys.description('Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes')
+@sys.description('Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes.')
 param dataActions array = []
 
-@sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes')
+@sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes.')
 param notDataActions array = []
 
 @sys.description('Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment.')
@@ -35,6 +35,8 @@ param assignableScopes array = []
 
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -60,7 +62,7 @@ module roleDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscription
     assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     managementGroupId: managementGroupId
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -77,7 +79,7 @@ module roleDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptionI
     assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     subscriptionId: subscriptionId
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -94,15 +96,15 @@ module roleDefinition_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroup
     assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
-@sys.description('The GUID of the Role Definition')
+@sys.description('The GUID of the Role Definition.')
 output name string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.name : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.name : roleDefinition_rg.outputs.name)
 
-@sys.description('The resource ID of the Role Definition')
+@sys.description('The resource ID of the Role Definition.')
 output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.resourceId : roleDefinition_rg.outputs.resourceId)
 
-@sys.description('The scope this Role Definition applies to')
+@sys.description('The scope this Role Definition applies to.')
 output roleDefinitionScope string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.scope : roleDefinition_rg.outputs.scope)

@@ -8,6 +8,7 @@ This module deploys a deployment script.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -35,7 +36,7 @@ This module deploys a deployment script.
 | `environmentVariables` | array | `[]` |  | The environment variables to pass over to the script. Must have a 'name' and a 'value' or a 'secretValue' property. |
 | `kind` | string | `'AzurePowerShell'` | `[AzurePowerShell, AzureCLI]` | Type of the script. AzurePowerShell, AzureCLI. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `primaryScriptUri` | string | `''` |  | Uri for the external script. This is the entry point for the external script. To run an internal script, use the scriptContent instead. |
 | `retentionInterval` | string | `'P1D'` |  | Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week). |
 | `runOnce` | bool | `False` |  | When set to false, script will run every time the template is deployed. When set to true, the script will only run once. |
@@ -55,6 +56,10 @@ This module deploys a deployment script.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -68,9 +73,33 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `userAssignedIdentities`
 
 You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "userAssignedIdentities": {
@@ -78,17 +107,186 @@ You can specify multiple user assigned identities to a resource by providing add
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
-},
+}
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployment script |
-| `resourceGroupName` | string | The resource group the deployment script was deployed into |
-| `resourceId` | string | The resource ID of the deployment script |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployment script. |
+| `resourceGroupName` | string | The resource group the deployment script was deployed into. |
+| `resourceId` | string | The resource ID of the deployment script. |
 
 ## Considerations
 
 This module requires a User Assigned Identity (MSI, managed service identity) to exist, and this MSI has to have contributor rights on the subscription - that allows the Deployment Script to create the required Storage Account and the Azure Container Instance.
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-ds-cli-001"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "kind": {
+            "value": "AzureCLI"
+        },
+        "azCliVersion": {
+            "value": "2.15.0"
+        },
+        "scriptContent": {
+            "value": "echo \"Hello from inside the script\""
+        },
+        "retentionInterval": {
+            "value": "P1D"
+        },
+        "runOnce": {
+            "value": false
+        },
+        "cleanupPreference": {
+            "value": "Always"
+        },
+        "timeout": {
+            "value": "PT30M"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  params: {
+    name: '<<namePrefix>>-az-ds-cli-001'
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    kind: 'AzureCLI'
+    azCliVersion: '2.15.0'
+    scriptContent: 'echo \'Hello from inside the script\''
+    retentionInterval: 'P1D'
+    runOnce: false
+    cleanupPreference: 'Always'
+    timeout: 'PT30M'
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-ds-ps-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "kind": {
+            "value": "AzurePowerShell"
+        },
+        "azPowerShellVersion": {
+            "value": "3.0"
+        },
+        "scriptContent": {
+            "value": "Write-Host 'Running PowerShell from template'"
+        },
+        "retentionInterval": {
+            "value": "P1D"
+        },
+        "runOnce": {
+            "value": false
+        },
+        "cleanupPreference": {
+            "value": "Always"
+        },
+        "timeout": {
+            "value": "PT30M"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  params: {
+    name: '<<namePrefix>>-az-ds-ps-001'
+    lock: 'CanNotDelete'
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    kind: 'AzurePowerShell'
+    azPowerShellVersion: '3.0'
+    scriptContent: 'Write-Host 'Running PowerShell from template''
+    retentionInterval: 'P1D'
+    runOnce: false
+    cleanupPreference: 'Always'
+    timeout: 'PT30M'
+  }
+}
+```
+
+</details>
+<p>

@@ -27,7 +27,7 @@ param metadata object = {}
 @sys.description('Optional. The policy definition parameters that can be used in policy definition references.')
 param parameters object = {}
 
-@sys.description('Required. The Policy Rule details for the Policy Definition')
+@sys.description('Required. The Policy Rule details for the Policy Definition.')
 param policyRule object
 
 @sys.description('Optional. The group ID of the Management Group. If not provided, will use the current scope for deployment.')
@@ -65,11 +65,11 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
   }
 }
 
-@sys.description('Policy Definition Name')
+@sys.description('Policy Definition Name.')
 output name string = policyDefinition.name
 
-@sys.description('Policy Definition resource ID')
+@sys.description('Policy Definition resource ID.')
 output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policyDefinitions', policyDefinition.name)
 
-@sys.description('Policy Definition Role Definition IDs')
+@sys.description('Policy Definition Role Definition IDs.')
 output roleDefinitionIds array = (contains(policyDefinition.properties.policyRule.then, 'details') ? ((contains(policyDefinition.properties.policyRule.then.details, 'roleDefinitionIds') ? policyDefinition.properties.policyRule.then.details.roleDefinitionIds : [])) : [])

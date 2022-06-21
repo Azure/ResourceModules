@@ -37,6 +37,6 @@ With this module you can create role definitions on a management group level
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The GUID of the Role Definition |
-| `resourceId` | string | The resource ID of the Role Definition |
-| `scope` | string | The scope this Role Definition applies to |
+| `name` | string | The GUID of the Role Definition. |
+| `resourceId` | string | The resource ID of the Role Definition. |
+| `scope` | string | The scope this Role Definition applies to. |

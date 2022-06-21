@@ -22,9 +22,13 @@ This module deploys a Replication Protection Container.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the replication container |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault |
-| `replicationFabricName` | string | Name of the Replication Fabric |
+| `name` | string | The name of the replication container. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
+| `replicationFabricName` | string | The name of the parent Replication Fabric. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -34,6 +38,10 @@ This module deploys a Replication Protection Container.
 
 
 ### Parameter Usage: `replicationContainerMappings`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "replicationContainerMappings": {
@@ -51,6 +59,30 @@ This module deploys a Replication Protection Container.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+replicationContainerMappings: [
+    {
+        targetProtectionContainerId: '/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-dr-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container1'
+        policyId: '/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-dr-001/replicationPolicies/Default_values'
+    }
+    {
+        name: null //Optional
+        policyName: 'Default_values'
+        targetContainerFabricName: 'WestEurope'
+        targetContainerName: 'we-container'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

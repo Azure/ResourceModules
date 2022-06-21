@@ -20,7 +20,11 @@ This module deploys VPN Gateways NATRules
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the NAT rule. |
-| `vpnGatewayName` | string | The name of the VPN gateway this NAT rule is associated with. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `vpnGatewayName` | string | The name of the parent VPN gateway this NAT rule is associated with. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -37,6 +41,6 @@ This module deploys VPN Gateways NATRules
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the NAT rule |
-| `resourceGroupName` | string | The name of the resource group the NAT rule was deployed into |
-| `resourceId` | string | The resource ID of the NAT rule |
+| `name` | string | The name of the NAT rule. |
+| `resourceGroupName` | string | The name of the resource group the NAT rule was deployed into. |
+| `resourceId` | string | The resource ID of the NAT rule. |

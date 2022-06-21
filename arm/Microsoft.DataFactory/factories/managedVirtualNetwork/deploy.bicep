@@ -1,7 +1,7 @@
-@description('Required. The name of the Azure Data Factory')
+@description('Conditional. The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment.')
 param dataFactoryName string
 
-@description('Required. The name of the Managed Virtual Network')
+@description('Required. The name of the Managed Virtual Network.')
 param name string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

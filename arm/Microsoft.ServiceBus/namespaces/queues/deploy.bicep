@@ -1,4 +1,4 @@
-@description('Required. Name of the parent Service Bus Namespace for the Service Bus Queue.')
+@description('Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment.')
 @minLength(6)
 @maxLength(50)
 param namespaceName string
@@ -35,7 +35,7 @@ param duplicateDetectionHistoryTimeWindow string = 'PT10M'
 @description('Optional. The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.')
 param maxDeliveryCount int = 10
 
-@description('Optional. Enumerates the possible values for the status of a messaging entity. - Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming, Unknown')
+@description('Optional. Enumerates the possible values for the status of a messaging entity. - Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming, Unknown.')
 @allowed([
   'Active'
   'Disabled'
@@ -55,7 +55,7 @@ param enablePartitioning bool = false
 @description('Optional. A value that indicates whether Express Entities are enabled. An express queue holds a message in memory temporarily before writing it to persistent storage.')
 param enableExpress bool = false
 
-@description('Optional. Authorization Rules for the Service Bus Queue')
+@description('Optional. Authorization Rules for the Service Bus Queue.')
 param authorizationRules array = [
   {
     name: 'RootManageSharedAccessKey'
@@ -70,18 +70,20 @@ param authorizationRules array = [
 ]
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -125,20 +127,20 @@ module queue_authorizationRules 'authorizationRules/deploy.bicep' = [for (author
     queueName: queue.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-resource queue_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource queue_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${queue.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: queue
 }
 
-module queue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module queue_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -149,11 +151,11 @@ module queue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   }
 }]
 
-@description('The name of the deployed queue')
+@description('The name of the deployed queue.')
 output name string = queue.name
 
-@description('The resource ID of the deployed queue')
+@description('The resource ID of the deployed queue.')
 output resourceId string = queue.id
 
-@description('The resource group of the deployed queue')
+@description('The resource group of the deployed queue.')
 output resourceGroupName string = resourceGroup().name

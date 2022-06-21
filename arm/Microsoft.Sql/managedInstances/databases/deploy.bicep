@@ -1,7 +1,7 @@
 @description('Required. The name of the SQL managed instance database.')
 param name string
 
-@description('Required. The name of the SQL managed instance.')
+@description('Conditional. The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
 
 @description('Optional. Location for all resources.')
@@ -10,13 +10,10 @@ param location string = resourceGroup().location
 @description('Optional. Collation of the managed instance database.')
 param collation string = 'SQL_Latin1_General_CP1_CI_AS'
 
-@description('Optional. Conditional. If createMode is PointInTimeRestore, this value is required. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.')
-param restorePointInTime string = ''
-
 @description('Optional. Collation of the managed instance.')
 param catalogCollation string = 'SQL_Latin1_General_CP1_CI_AS'
 
-@description('Optional. Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore.')
+@description('Optional. Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup (longTermRetentionBackupResourceId required).')
 @allowed([
   'Default'
   'RestoreExternalBackup'
@@ -26,22 +23,25 @@ param catalogCollation string = 'SQL_Latin1_General_CP1_CI_AS'
 ])
 param createMode string = 'Default'
 
-@description('Optional. Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the uri of the storage container where backups for this restore are stored.')
-param storageContainerUri string = ''
-
-@description('Optional. Conditional. The resource identifier of the source database associated with create operation of this database.')
+@description('Conditional. The resource identifier of the source database associated with create operation of this database. Required if createMode is PointInTimeRestore.')
 param sourceDatabaseId string = ''
 
-@description('Optional. Conditional. The restorable dropped database resource ID to restore when creating this database.')
+@description('Conditional. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. Required if createMode is PointInTimeRestore.')
+param restorePointInTime string = ''
+
+@description('Optional. The restorable dropped database resource ID to restore when creating this database.')
 param restorableDroppedDatabaseId string = ''
 
-@description('Optional. Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas token.')
+@description('Conditional. Specifies the uri of the storage container where backups for this restore are stored. Required if createMode is RestoreExternalBackup.')
+param storageContainerUri string = ''
+
+@description('Conditional. Specifies the storage container sas token. Required if createMode is RestoreExternalBackup.')
 param storageContainerSasToken string = ''
 
-@description('Optional. Conditional. The resource identifier of the recoverable database associated with create operation of this database.')
+@description('Conditional. The resource identifier of the recoverable database associated with create operation of this database. Required if createMode is Recovery.')
 param recoverableDatabaseId string = ''
 
-@description('Optional. Conditional. The name of the Long Term Retention backup to be used for restore of this managed database.')
+@description('Conditional. The resource ID of the Long Term Retention backup to be used for restore of this managed database. Required if createMode is RestoreLongTermRetentionBackup.')
 param longTermRetentionBackupResourceId string = ''
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -62,17 +62,17 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
-@description('Optional. The configuration for the backup short term retention policy definition')
+@description('Optional. The configuration for the backup short term retention policy definition.')
 param backupShortTermRetentionPoliciesObj object = {}
 
-@description('Optional. The configuration for the backup long term retention policy definition')
+@description('Optional. The configuration for the backup long term retention policy definition.')
 param backupLongTermRetentionPoliciesObj object = {}
 
 @description('Optional. Tags of the resource.')
@@ -106,6 +106,8 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -142,11 +144,11 @@ resource database 'Microsoft.Sql/managedInstances/databases@2021-05-01-preview' 
   }
 }
 
-resource database_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource database_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${last(split(database.name, '/'))}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: database
 }
@@ -170,7 +172,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
     databaseName: last(split(database.name, '/'))
     name: backupShortTermRetentionPoliciesObj.name
     retentionDays: contains(backupShortTermRetentionPoliciesObj, 'retentionDays') ? backupShortTermRetentionPoliciesObj.retentionDays : 35
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -184,15 +186,18 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
     weeklyRetention: contains(backupLongTermRetentionPoliciesObj, 'weeklyRetention') ? backupLongTermRetentionPoliciesObj.weeklyRetention : 'P1M'
     monthlyRetention: contains(backupLongTermRetentionPoliciesObj, 'monthlyRetention') ? backupLongTermRetentionPoliciesObj.monthlyRetention : 'P1Y'
     yearlyRetention: contains(backupLongTermRetentionPoliciesObj, 'yearlyRetention') ? backupLongTermRetentionPoliciesObj.yearlyRetention : 'P5Y'
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
-@description('The name of the deployed database')
+@description('The name of the deployed database.')
 output name string = database.name
 
-@description('The resource ID of the deployed database')
+@description('The resource ID of the deployed database.')
 output resourceId string = database.id
 
-@description('The resource group the database was deployed into')
+@description('The resource group the database was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = database.location

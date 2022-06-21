@@ -3,7 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-la-x-001"
+            "value": "<<namePrefix>>-az-law-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "publicNetworkAccessForIngestion": {
             "value": "Disabled"
@@ -31,7 +34,7 @@
             "value": [
                 {
                     "name": "Automation",
-                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001"
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001"
                 }
             ]
         },

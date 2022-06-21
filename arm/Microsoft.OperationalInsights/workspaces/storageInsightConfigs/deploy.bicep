@@ -1,7 +1,7 @@
-@description('Required. Name of the Log Analytics workspace.')
+@description('Conditional. The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment.')
 param logAnalyticsWorkspaceName string
 
-@description('Optional. The name of the storage insights config')
+@description('Optional. The name of the storage insights config.')
 param name string = '${last(split(storageAccountId, '/'))}-stinsconfig'
 
 @description('Required. The Azure Resource Manager ID of the storage account resource.')
@@ -53,11 +53,11 @@ resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageI
   }
 }
 
-@description('The resource ID of the deployed storage insights configuration')
+@description('The resource ID of the deployed storage insights configuration.')
 output resourceId string = storageinsightconfig.id
 
-@description('The resource group where the storage insight configuration is deployed')
+@description('The resource group where the storage insight configuration is deployed.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the storage insights configuration')
+@description('The name of the storage insights configuration.')
 output name string = storageinsightconfig.name

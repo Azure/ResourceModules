@@ -19,8 +19,12 @@ This module deploys private dns zone virtual network links.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateDnsZoneName` | string | Private DNS zone name. |
 | `virtualNetworkResourceId` | string | Link to another virtual network resource ID. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateDnsZoneName` | string | The name of the parent Private DNS zone. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -28,13 +32,17 @@ This module deploys private dns zone virtual network links.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `'global'` | The location of the PrivateDNSZone. Should be global. |
 | `name` | string | `[format('{0}-vnetlink', last(split(parameters('virtualNetworkResourceId'), '/')))]` | The name of the virtual network link. |
-| `registrationEnabled` | bool | `False` | Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? |
+| `registrationEnabled` | bool | `False` | Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?. |
 | `tags` | object | `{object}` | Tags of the resource. |
 
 
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "tags": {
@@ -49,10 +57,31 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed virtual network link |
-| `resourceGroupName` | string | The resource group of the deployed virtual network link |
-| `resourceId` | string | The resource ID of the deployed virtual network link |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed virtual network link. |
+| `resourceGroupName` | string | The resource group of the deployed virtual network link. |
+| `resourceId` | string | The resource ID of the deployed virtual network link. |

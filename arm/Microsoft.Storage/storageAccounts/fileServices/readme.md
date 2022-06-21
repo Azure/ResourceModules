@@ -19,10 +19,10 @@ This module can be used to deploy a file share service into a storage account.
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `storageAccountName` | string | Name of the Storage Account. |
+| `storageAccountName` | string | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -36,8 +36,8 @@ This module can be used to deploy a file share service into a storage account.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `'default'` |  | The name of the file service |
-| `protocolSettings` | object | `{object}` |  | Protocol settings for file service |
+| `name` | string | `'default'` |  | The name of the file service. |
+| `protocolSettings` | object | `{object}` |  | Protocol settings for file service. |
 | `shareDeleteRetentionPolicy` | object | `{object}` |  | The service properties for soft delete. |
 | `shares` | _[shares](shares/readme.md)_ array | `[]` |  | File shares to create. |
 
@@ -46,6 +46,6 @@ This module can be used to deploy a file share service into a storage account.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed file share service |
-| `resourceGroupName` | string | The resource group of the deployed file share service |
-| `resourceId` | string | The resource ID of the deployed file share service |
+| `name` | string | The name of the deployed file share service. |
+| `resourceGroupName` | string | The resource group of the deployed file share service. |
+| `resourceId` | string | The resource ID of the deployed file share service. |

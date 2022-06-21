@@ -18,8 +18,12 @@
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | ID of the Cosmos DB database account. |
-| `name` | string | Name of the SQL database  |
+| `name` | string | Name of the SQL database . |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `databaseAccountName` | string | The name of the parent Database Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -27,12 +31,16 @@
 | `containers` | _[containers](containers/readme.md)_ array | `[]` | Array of containers to deploy in the SQL database. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `tags` | object | `{object}` | Tags of the SQL database resource. |
-| `throughput` | int | `400` | Request units per second |
+| `throughput` | int | `400` | Request units per second. |
 
 
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "tags": {
@@ -46,6 +54,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

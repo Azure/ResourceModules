@@ -19,15 +19,19 @@ This module deploys load balancers inbound NAT rules.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `frontendIPConfigurationName` | string | The name of the frontend IP address to set for the inbound NAT rule |
-| `frontendPort` | int | The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer.  |
-| `loadBalancerName` | string | The name of the parent load balancer |
-| `name` | string | The name of the inbound NAT rule |
+| `frontendIPConfigurationName` | string | The name of the frontend IP address to set for the inbound NAT rule. |
+| `frontendPort` | int | The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. |
+| `name` | string | The name of the inbound NAT rule. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `loadBalancerName` | string | The name of the parent load balancer. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backendAddressPoolName` | string | `''` |  | Name of the backend address pool |
+| `backendAddressPoolName` | string | `''` |  | Name of the backend address pool. |
 | `backendPort` | int | `[parameters('frontendPort')]` |  | The port used for the internal endpoint. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableFloatingIP` | bool | `False` |  | Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint. |
@@ -42,6 +46,6 @@ This module deploys load balancers inbound NAT rules.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the inbound NAT rule |
-| `resourceGroupName` | string | The resource group the inbound NAT rule was deployed into |
-| `resourceId` | string | The resource ID of the inbound NAT rule |
+| `name` | string | The name of the inbound NAT rule. |
+| `resourceGroupName` | string | The resource group the inbound NAT rule was deployed into. |
+| `resourceId` | string | The resource ID of the inbound NAT rule. |

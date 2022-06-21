@@ -1,10 +1,10 @@
-@description('Required. Name of the VPN gateway')
+@description('Required. Name of the VPN gateway.')
 param name string
 
 @description('Optional. Location where all resources will be created.')
 param location string = resourceGroup().location
 
-@description('Optional. The connections to create in the VPN gateway')
+@description('Optional. The connections to create in the VPN gateway.')
 param connections array = []
 
 @description('Optional. List of all the NAT Rules to associate with the gateway.')
@@ -29,15 +29,17 @@ param vpnGatewayScaleUnit int = 2
 param tags object = {}
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -66,10 +68,10 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
   }
 }
 
-resource vpnGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource vpnGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${vpnGateway.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: vpnGateway
@@ -85,7 +87,7 @@ module vpnGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in na
     ipConfigurationId: contains(natRule, 'ipConfigurationId') ? natRule.ipConfigurationId : ''
     mode: contains(natRule, 'mode') ? natRule.mode : ''
     type: contains(natRule, 'type') ? natRule.type : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -105,15 +107,18 @@ module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, ind
     useLocalAzureIpAddress: contains(connection, 'useLocalAzureIpAddress') ? connection.useLocalAzureIpAddress : false
     usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors : false
     vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType : 'IKEv2'
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-@description('The name of the VPN gateway')
+@description('The name of the VPN gateway.')
 output name string = vpnGateway.name
 
-@description('The resource ID of the VPN gateway')
+@description('The resource ID of the VPN gateway.')
 output resourceId string = vpnGateway.id
 
-@description('The name of the resource group the VPN gateway was deployed into')
+@description('The name of the resource group the VPN gateway was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = vpnGateway.location

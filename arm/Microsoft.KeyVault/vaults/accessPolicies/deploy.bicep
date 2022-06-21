@@ -1,7 +1,7 @@
-@description('Required. The name of the key vault')
+@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
 param keyVaultName string
 
-@description('Optional. The access policy deployment')
+@description('Optional. The access policy deployment.')
 param name string = 'add'
 
 @description('Optional. An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault\'s tenant ID.')
@@ -44,8 +44,8 @@ resource policies 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' 
 @description('The name of the resource group the access policies assignment was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the access policies assignment')
+@description('The name of the access policies assignment.')
 output name string = policies.name
 
-@description('The resource ID of the access policies assignment')
+@description('The resource ID of the access policies assignment.')
 output resourceId string = policies.id

@@ -19,10 +19,14 @@ This module deploys AVD Applications.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `appGroupName` | string | Name of the Application Group to create the application(s) in. |
 | `filePath` | string | Specifies a path for the executable file for the application. |
 | `friendlyName` | string | Friendly name of Application.. |
 | `name` | string | Name of the Application to be created in the Application Group. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `appGroupName` | string | The name of the parent Application Group to create the application(s) in. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -40,6 +44,6 @@ This module deploys AVD Applications.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `applicationResourceIds` | string | The resource ID of the deployed Application. |
 | `name` | string | The Name of the Application Group to register the Application in. |
 | `resourceGroupName` | string | The name of the Resource Group the AVD Application was created in. |
+| `resourceId` | string | The resource ID of the deployed Application. |

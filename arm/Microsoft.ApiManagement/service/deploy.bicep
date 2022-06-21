@@ -1,7 +1,7 @@
 @description('Optional. Additional datacenter locations of the API Management service.')
 param additionalLocations array = []
 
-@description('Required. The name of the of the API Management service.')
+@description('Required. The name of the API Management service.')
 param name string
 
 @description('Optional. List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.')
@@ -47,12 +47,12 @@ param userAssignedIdentities object = {}
 param location string = resourceGroup().location
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Limit control plane API calls to API Management service with version equal to or newer than this value.')
 param minApiVersion string = ''
@@ -69,7 +69,7 @@ param publisherName string
 @description('Optional. Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.')
 param restore bool = false
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. The pricing tier of this API Management service.')
@@ -152,6 +152,8 @@ param subscriptions array = []
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var enableReferencedModulesTelemetry = false
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
@@ -246,7 +248,7 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
     type: contains(api, 'type') ? api.type : 'http'
     value: contains(api, 'value') ? api.value : ''
     wsdlSelector: contains(api, 'wsdlSelector') ? api.wsdlSelector : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     apiVersionSet_resource
@@ -259,7 +261,7 @@ module apiVersionSet_resource 'apiVersionSets/deploy.bicep' = [for (apiVersionSe
     apiManagementServiceName: apiManagementService.name
     name: apiVersionSet.name
     properties: contains(apiVersionSet, 'properties') ? apiVersionSet.properties : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -290,7 +292,7 @@ module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' 
     supportState: contains(authorizationServer, 'supportState') ? authorizationServer.supportState : false
     tokenBodyParameters: contains(authorizationServer, 'tokenBodyParameters') ? authorizationServer.tokenBodyParameters : []
     tokenEndpoint: contains(authorizationServer, 'tokenEndpoint') ? authorizationServer.tokenEndpoint : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -311,7 +313,7 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
       validateCertificateChain: false
       validateCertificateName: false
     }
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -324,7 +326,7 @@ module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
     name: cache.name
     resourceId: contains(cache, 'resourceId') ? cache.resourceId : ''
     useFromLocation: cache.useFromLocation
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -344,7 +346,7 @@ module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identi
     identityProviderSignInTenant: contains(identityProvider, 'identityProviderSignInTenant') ? identityProvider.identityProviderSignInTenant : ''
     identityProviderSignUpPolicyName: contains(identityProvider, 'identityProviderSignUpPolicyName') ? identityProvider.identityProviderSignUpPolicyName : ''
     identityProviderType: contains(identityProvider, 'identityProviderType') ? identityProvider.identityProviderType : 'aad'
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -358,7 +360,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
     namedValueTags: contains(namedValue, 'namedValueTags') ? namedValue.namedValueTags : []
     secret: contains(namedValue, 'secret') ? namedValue.secret : false
     value: contains(namedValue, 'value') ? namedValue.value : newGuidValue
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -368,7 +370,7 @@ module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetti
     apiManagementServiceName: apiManagementService.name
     name: portalSetting.name
     properties: contains(portalSetting, 'properties') ? portalSetting.properties : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -378,7 +380,7 @@ module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policie
     apiManagementServiceName: apiManagementService.name
     value: policy.value
     format: contains(policy, 'format') ? policy.format : 'xml'
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -395,7 +397,7 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
     subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : false
     subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : 1
     terms: contains(product, 'terms') ? product.terms : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     apis_resource
@@ -413,14 +415,14 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
     scope: contains(subscription, 'scope') ? subscription.scope : '/apis'
     secondaryKey: contains(subscription, 'secondaryKey') ? subscription.secondaryKey : ''
     state: contains(subscription, 'state') ? subscription.state : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-resource apiManagementService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource apiManagementService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${apiManagementService.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: apiManagementService
@@ -439,7 +441,7 @@ resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticS
   scope: apiManagementService
 }
 
-module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module apiManagementService_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Apim-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -450,14 +452,17 @@ module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
   }
 }]
 
-@description('The name of the API management service')
+@description('The name of the API management service.')
 output name string = apiManagementService.name
 
-@description('The resource ID of the API management service')
+@description('The resource ID of the API management service.')
 output resourceId string = apiManagementService.id
 
-@description('The resource group the API management service was deployed into')
+@description('The resource group the API management service was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(apiManagementService.identity, 'principalId') ? apiManagementService.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = apiManagementService.location

@@ -20,14 +20,18 @@ This module deploys an administrator for the SQL managed instance
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `login` | string | Login name of the managed instance administrator. |
-| `managedInstanceName` | string | Name of the SQL managed instance. |
 | `sid` | string | SID (object ID) of the managed instance administrator. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `'ActiveDirectory'` | The name of the managed instance administrator |
+| `name` | string | `'ActiveDirectory'` | The name of the managed instance administrator. |
 | `tenantId` | string | `''` | Tenant ID of the managed instance administrator. |
 
 
@@ -35,6 +39,6 @@ This module deploys an administrator for the SQL managed instance
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed managed instance |
-| `resourceGroupName` | string | The resource group of the deployed managed instance |
-| `resourceId` | string | The resource ID of the deployed managed instance |
+| `name` | string | The name of the deployed managed instance. |
+| `resourceGroupName` | string | The resource group of the deployed managed instance. |
+| `resourceId` | string | The resource ID of the deployed managed instance. |

@@ -10,6 +10,8 @@ parameters:
     type: boolean
     default: false
 
+pr: none
+
 trigger:
   batch: true
   branches:
@@ -18,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.frontdoors.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.Network/frontDoors/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:

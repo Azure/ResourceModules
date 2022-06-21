@@ -59,12 +59,12 @@ param timeout string = 'PT1H'
 param baseTime string = utcNow('yyyy-MM-dd-HH-mm-ss')
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -117,20 +117,23 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
 }
 
-resource deploymentScript_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource deploymentScript_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${deploymentScript.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: deploymentScript
 }
 
-@description('The resource ID of the deployment script')
+@description('The resource ID of the deployment script.')
 output resourceId string = deploymentScript.id
 
-@description('The resource group the deployment script was deployed into')
+@description('The resource group the deployment script was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the deployment script')
+@description('The name of the deployment script.')
 output name string = deploymentScript.name
+
+@description('The location the resource was deployed into.')
+output location string = deploymentScript.location
