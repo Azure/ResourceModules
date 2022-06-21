@@ -71,7 +71,7 @@ This persona isn’t consuming CARML directly, but is consuming CARML via a solu
 ![SolutionDevelopers](./media/Personas/SolutionDevelopers.png)
 
 A **Solution Developer** is not a user. Their focus is on using CARML to **build end-to-end solutions** that are opinionated. These solutions will be published (publicly and/or privately) for consumption by others and will be used many times by many organizations/teams, in many environments/subscriptions/landing zones).
-A Solution Developer uses the CARML library (its public or organization/customer specific implementation), with a chosen preference for using its modules via Bicep registry (public, private), or template specs, or direct reference or using Git submodules, etc. Solution Developers might benefit the most from overcoming the learning curve – because the standardization and scale they can achieve with CARML.
+A Solution Developer uses the CARML library (its public or organization/customer specific implementation), with a chosen preference for using its modules via Bicep registry (public, private), or template specs, or direct reference, or using Git submodules, etc. Solution Developers might benefit the most from overcoming the learning curve – because of the standardization and scale they can achieve with CARML.
 
 - Modules: Use an existing code base to develop and test multi-module solutions (ex., a Landing Zone Accelerator, or an internal platform/workload team). This might also lead to creating/updating modules.
 - Continuous Integration: Use the provided CI environment to improve multi-module development and testing. This might also lead to improving CI.
