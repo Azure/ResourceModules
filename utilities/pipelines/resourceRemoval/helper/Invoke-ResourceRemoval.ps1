@@ -48,6 +48,11 @@ function Invoke-ResourceRemoval {
             Start-Sleep 10
             break
         }
+        'Microsoft.KeyVault/vaults/keys' {
+            Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
+            # Also, we don't want to accidently remove keys of the dependency key vault
+            break
+        }
         'Microsoft.KeyVault/vaults/accessPolicies' {
             Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
             break
