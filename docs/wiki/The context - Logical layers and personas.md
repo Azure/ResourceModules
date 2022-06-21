@@ -76,7 +76,7 @@ A Solution Developer uses the CARML library (its public or organization/customer
 - Modules: Use an existing code base to develop and test multi-module solutions (ex., a Landing Zone Accelerator, or an internal platform/workload team). This might also lead to creating/updating modules.
 - Continuous Integration: Use the provided CI environment to improve multi-module development and testing. This might also lead to improving CI.
 
-### Typical Activities of a Solution Developer
+### Typical activities of a Solution Developer
 
 - Create (develop, run integration tests for and publish) multi-module solutions for specific reference patterns (workloads, applications, environments).
 - If necessary, can modify (develop, run unit tests for and publish) existing modules to implement organization-specific standards - however, applying significant modifications or creating new modules, also qualifies this persona as [Module Developer](#module-developer).
