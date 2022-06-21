@@ -205,6 +205,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     }
   }
+}
 ```
 
 </details>
@@ -355,6 +356,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     }
     managementGroupId: '<<managementGroupId>>'
   }
+}
 ```
 
 </details>
@@ -443,6 +445,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     }
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>
@@ -593,6 +596,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     }
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>

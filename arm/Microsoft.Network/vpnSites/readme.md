@@ -365,6 +365,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     ipAddress: '1.2.3.4'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
   }
+}
 ```
 
 </details>
@@ -523,6 +524,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

@@ -203,6 +203,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     name: '<<namePrefix>>-min-mg-polAss'
     policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
   }
+}
 ```
 
 </details>
@@ -315,6 +316,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     ]
     managementGroupId: '<<managementGroupId>>'
   }
+}
 ```
 
 </details>
@@ -363,6 +365,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     subscriptionId: '<<subscriptionId>>'
     resourceGroupName: 'validation-rg'
   }
+}
 ```
 
 </details>
@@ -483,6 +486,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     subscriptionId: '<<subscriptionId>>'
     resourceGroupName: 'validation-rg'
   }
+}
 ```
 
 </details>
@@ -527,6 +531,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>
@@ -643,6 +648,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     ]
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>

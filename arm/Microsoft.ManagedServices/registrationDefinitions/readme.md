@@ -240,6 +240,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       }
     ]
   }
+}
 ```
 
 </details>
@@ -324,6 +325,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       }
     ]
   }
+}
 ```
 
 </details>

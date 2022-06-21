@@ -363,6 +363,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-bv-min-001'
   }
+}
 ```
 
 </details>
@@ -529,6 +530,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

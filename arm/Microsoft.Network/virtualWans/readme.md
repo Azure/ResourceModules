@@ -180,6 +180,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-vw-min-001'
   }
+}
 ```
 
 </details>
@@ -254,6 +255,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

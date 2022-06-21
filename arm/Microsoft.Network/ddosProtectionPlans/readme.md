@@ -198,6 +198,7 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
       }
     ]
   }
+}
 ```
 
 </details>

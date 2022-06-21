@@ -189,6 +189,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
       }
     ]
   }
+}
 ```
 
 </details>
@@ -327,6 +328,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     }
     managementGroupId: '<<managementGroupId>>'
   }
+}
 ```
 
 </details>
@@ -393,6 +395,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     ]
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>
@@ -531,6 +534,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     }
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>

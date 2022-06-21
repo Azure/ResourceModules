@@ -8,7 +8,6 @@ This section provides a guideline on how to use the CARML Bicep modules.
   - [PowerShell](#powershell)
   - [Azure CLI](#azure-cli)
 - [Orchestrate deployment](#orchestrate-deployment)
-  - [Template-orchestration](#template-orchestration)
 ---
 
 # Deploy template
@@ -41,7 +40,7 @@ $inputObject = @{
 New-AzResourceGroupDeployment @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment).
 
 </details>
 
@@ -65,7 +64,7 @@ $inputObject = @{
 New-AzDeployment @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azdeployment).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azdeployment).
 
 </details>
 
@@ -90,7 +89,7 @@ $inputObject = @{
 New-AzManagementGroupDeployment @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azmanagementgroupdeployment).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azmanagementgroupdeployment).
 
 </details>
 
@@ -114,7 +113,7 @@ $inputObject = @{
 New-AzTenantDeployment @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-aztenantdeployment).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-aztenantdeployment).
 
 </details>
 
@@ -141,7 +140,7 @@ $inputObject = @(
 az deployment group create @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest#az-deployment-group-create).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest#az-deployment-group-create).
 
 </details>
 
@@ -165,7 +164,7 @@ $inputObject = @(
 az deployment sub create @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/sub?view=azure-cli-latest#az-deployment-sub-create).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/sub?view=azure-cli-latest#az-deployment-sub-create).
 
 </details>
 
@@ -190,7 +189,7 @@ $inputObject = @(
 az deployment mg create @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/mg?view=azure-cli-latest#az-deployment-mg-create).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/mg?view=azure-cli-latest#az-deployment-mg-create).
 
 </details>
 
@@ -214,7 +213,7 @@ $inputObject = @(
 az deployment tenant create @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/tenant?view=azure-cli-latest#az-deployment-tenant-create).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/tenant?view=azure-cli-latest#az-deployment-tenant-create).
 
 </details>
 

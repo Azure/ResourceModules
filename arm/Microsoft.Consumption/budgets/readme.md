@@ -103,6 +103,7 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
       'dummy@contoso.com'
     ]
   }
+}
 ```
 
 </details>
