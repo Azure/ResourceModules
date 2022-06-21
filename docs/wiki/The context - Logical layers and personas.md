@@ -18,7 +18,7 @@ CARML can be represented as a key layer of a logical technology stack. This arti
 
 This chapter explains how the different layers of the technology stack (see below) and the solutions developed based on it rely on each other.
 
-![Layers](media/Personas/layers.png)  
+![Layers](media/Personas/layers.png)
 
 In bottom-up order, the layers are:
 
@@ -96,8 +96,8 @@ A **Module Developer** is not a user. Their focus is on CARML itself. A Module D
 
 - Modules: Create new. Update existing.
 - Continuous Integration: Improve the unit testing in the CI.
-- Sample 1: A simple resource, with CARML extensions, deploys fast.
-- Sample 2: A complex resource, with CARML extensions, child resources, “smart defaults”, PowerShell style “scenario” documentation.
+- Sample 1: A simple resource, with supported extension resources, deploys fast.
+- Sample 2: A complex resource, with supported extension resources and child resources.
 
 ### Typical activities of a Module Developer
 
