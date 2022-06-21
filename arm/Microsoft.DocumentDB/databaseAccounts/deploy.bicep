@@ -50,14 +50,18 @@ param maxIntervalInSeconds int = 300
   '3.2'
   '3.6'
   '4.0'
+  '4.2'
 ])
-param serverVersion string = '4.0'
+param serverVersion string = '4.2'
 
 @description('Optional. SQL Databases configurations.')
 param sqlDatabases array = []
 
 @description('Optional. MongoDB Databases configurations.')
 param mongodbDatabases array = []
+
+@description('Optional. Gremlin Databases configurations.')
+param gremlinDatabases array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -125,6 +129,16 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@allowed([
+  'EnableCassandra'
+  'EnableTable'
+  'EnableGremlin'
+  'EnableMongo'
+  'DisableRateLimitingResponses'
+  'EnableServerless'
+])
+param capabilitiesToAdd array = []
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -177,25 +191,36 @@ var databaseAccount_locations = [for location in locations: {
   locationName: location.locationName
 }]
 
-var kind = !empty(sqlDatabases) ? 'GlobalDocumentDB' : (!empty(mongodbDatabases) ? 'MongoDB' : 'Parse')
+var kind = !empty(sqlDatabases) || !empty(gremlinDatabases) ? 'GlobalDocumentDB' : (!empty(mongodbDatabases) ? 'MongoDB' : 'Parse')
 
 var enableReferencedModulesTelemetry = false
+
+var capabilities = [for capability in capabilitiesToAdd: {
+  name: capability
+}]
 
 var databaseAccount_properties = !empty(sqlDatabases) ? {
   consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
   locations: databaseAccount_locations
   databaseAccountOfferType: databaseAccountOfferType
   enableAutomaticFailover: automaticFailover
-} : (!empty(mongodbDatabases) ? {
+  capabilities: capabilities
+} : !empty(mongodbDatabases) ? {
   consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
   locations: databaseAccount_locations
   databaseAccountOfferType: databaseAccountOfferType
   apiProperties: {
     serverVersion: serverVersion
   }
+  capabilities: capabilities
+} : !empty(gremlinDatabases) ? {
+  consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
+  locations: databaseAccount_locations
+  databaseAccountOfferType: databaseAccountOfferType
+  capabilities: capabilities
 } : {
   databaseAccountOfferType: databaseAccountOfferType
-})
+}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -267,6 +292,16 @@ module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbD
     databaseAccountName: databaseAccount.name
     name: mongodbDatabase.name
     collections: contains(mongodbDatabase, 'collections') ? mongodbDatabase.collections : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module gremlinDatabases_resource 'gremlinDatabases/deploy.bicep' = [for gremlinDatabase in gremlinDatabases: {
+  name: '${uniqueString(deployment().name, location)}-mongodb-${gremlinDatabase.name}'
+  params: {
+    databaseAccountName: databaseAccount.name
+    name: gremlinDatabase.name
+    graphs: contains(gremlinDatabase, 'graphs') ? gremlinDatabase.graphs : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

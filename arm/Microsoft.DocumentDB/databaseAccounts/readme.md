@@ -299,6 +299,73 @@ mongodbDatabases: [
 
 Please reference the documentation for [mongodbDatabases](./mongodbDatabases/readme.md)
 
+### Parameter Usage: `gremlinDatabases`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"mongodbDatabases": {
+  "value": [
+    {
+      "name": "graphDb01",
+      "graphs": [
+        {
+          "name": "graph01",
+          "automaticIndexing": true,
+          "partitionKeyPaths": [
+            "/name"
+          ]
+        },
+        {
+          "name": "graph02",
+          "automaticIndexing": true,
+          "partitionKeyPaths": [
+            "/name"
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+gremlinDatabases: [
+  {
+    name: 'graphDb01'
+    graphs: [
+      {
+        name: 'graph01'
+        automaticIndexing: true
+        partitionKeyPaths: [
+          '/name'
+        ]
+      }
+      {
+        name: 'graph02'
+        automaticIndexing: true
+        partitionKeyPaths: [
+          '/name'
+        ]
+      }
+    ]
+  }
+]
+```
+
+</details>
+<p>
+
+Please reference the documentation for [gremlinDatabases](./gremlinDatabases/readme.md)
+
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
