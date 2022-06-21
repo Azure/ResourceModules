@@ -23,6 +23,7 @@ on:
   #     - 'utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   location: 'WestEurope'
   defaultResourceGroupName: 'validation-rg'
   resourceGroupNameArtifacts: 'artifacts-rg'
@@ -33,6 +34,7 @@ env:
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
+  TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
 
 jobs:
   job_deploy_rg:
@@ -43,7 +45,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['validation.parameters.json', 'locks.parameters.json']
+        parameterFilePaths:
+          ['validation.parameters.json', 'locks.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -253,7 +256,12 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['appi.parameters.json', 'aut.parameters.json', 'sol.parameters.json', 'parameters.json']
+          [
+            'appi.parameters.json',
+            'aut.parameters.json',
+            'sol.parameters.json',
+            'parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -321,11 +329,17 @@ jobs:
 
           # Define PS modules to install on the runner
           $Modules = @(
-              @{ Name = 'Az.Storage' }
+              @{ Name = 'Az.Storage' },
+              @{ Name = 'powershell-yaml'; Version = '0.4.2'}
           )
 
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
+
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
 
       - name: Azure Login
         uses: azure/login@v1
@@ -342,23 +356,26 @@ jobs:
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
-            # Replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
+            # Construct Token Function Input
             $ConvertTokensInputs = @{
-                FilePath    = $parameterFilePath
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+              Tokens       = @{}
+              FilePath     = $parameterFilePath
+              TokenPrefix  = '${{ env.tokenPrefix }}'
+              TokenSuffix  = '${{ env.tokenSuffix }}'
             }
 
-            # Add local tokens
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
+            # Add local (source control) tokens
+            $tokenMap = @{}
+            foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+              $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+            }
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens += $tokenMap
+
+            # Swap 'namePrefix' token if provided as a GitHub secret
+            if(-not [String]::IsNullOrEmpty('${{ env.TOKEN_NAMEPREFIX }}')){
+              Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+              $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
             }
 
             $null = Convert-TokensInFile @ConvertTokensInputs
@@ -481,11 +498,17 @@ jobs:
           # Define PS modules to install on the runner
           $Modules = @(
               @{ Name = 'Az.ImageBuilder' },
-              @{ Name = 'Az.Storage' }
+              @{ Name = 'Az.Storage' },
+              @{ Name = 'powershell-yaml'; Version = '0.4.2'}
           )
 
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
+
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
 
       - name: Azure Login
         uses: azure/login@v1
@@ -512,22 +535,25 @@ jobs:
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
-            # Prepare replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
+            # Construct Token Function Input
             $ConvertTokensInputs = @{
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+              Tokens       = @{}
+              TokenPrefix  = '${{ env.tokenPrefix }}'
+              TokenSuffix  = '${{ env.tokenSuffix }}'
             }
 
-            # Add local tokens
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
+            # Add local (source control) tokens
+            $tokenMap = @{}
+            foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+              $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+            }
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens += $tokenMap
+
+            # Swap 'namePrefix' token if provided as a GitHub secret
+            if(-not [String]::IsNullOrEmpty('${{ env.TOKEN_NAMEPREFIX }}')){
+              Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+              $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
             }
 
             # Retrieving parameters from previous job outputs and parameter files
@@ -778,7 +804,7 @@ jobs:
             'lb.parameters.json',
             'lb.min.parameters.json',
             'fw.parameters.json',
-            'fw.additional.parameters.json'
+            'fw.additional.parameters.json',
           ]
     steps:
       - name: 'Checkout'
@@ -974,11 +1000,17 @@ jobs:
 
           # Define PS modules to install on the runner
           $Modules = @(
-              @{ Name = 'Az.KeyVault' }
+              @{ Name = 'Az.KeyVault' },
+              @{ Name = 'powershell-yaml'; Version = '0.4.2'}
           )
 
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
+
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
 
       - name: Azure Login
         uses: azure/login@v1
@@ -995,31 +1027,29 @@ jobs:
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
-            # Replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
+            # Construct Token Function Input
             $ConvertTokensInputs = @{
-                FilePath    = $parameterFilePath
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+              Tokens       = @{}
+              TokenPrefix  = '${{ env.tokenPrefix }}'
+              TokenSuffix  = '${{ env.tokenSuffix }}'
             }
-            $NoprConvertTokensInputs = @{
-                FilePath    = $noprParameterFilePath
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+
+            # Add local (source control) tokens
+            $tokenMap = @{}
+            foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+              $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
             }
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
-                $NoprConvertTokensInputs.Tokens += $tokenMap
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens += $tokenMap
+
+            # Swap 'namePrefix' token if provided as a GitHub secret
+            if(-not [String]::IsNullOrEmpty('${{ env.TOKEN_NAMEPREFIX }}')){
+              Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+              $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
             }
-            $null = Convert-TokensInFile @ConvertTokensInputs
-            $null = Convert-TokensInFile @NoprConvertTokensInputs
+
+            $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath
+            $null = Convert-TokensInFile @NoprConvertTokensInputs -FilePath $noprParameterFilePath
 
             # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
@@ -1027,7 +1057,6 @@ jobs:
 
             $noprKeyVaultParameters = (ConvertFrom-Json (Get-Content -Path $noprParameterFilePath -Raw)).parameters
             $noprKeyVaultName = $noprKeyVaultParameters.name.value
-
 
             # Generate values
             $usernameString = ( -join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | ForEach-Object { [char]$_ + "$_" })).substring(0, 19) # max length
@@ -1037,10 +1066,11 @@ jobs:
             $vpnSharedKeyString = (New-Guid).Guid.SubString(0, 32)
             $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
 
-            $namePrefixToken = $Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }
+            $namePrefixToken = $ConvertTokensInputs.Tokens['namePrefix']
+
             $certInputObject = @{
-                Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken.value
-                DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken.value
+                Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken
+                DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken
                 CertStoreLocation = 'cert:\LocalMachine\My'
                 KeyExportPolicy   = 'Exportable'
                 Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
@@ -1154,11 +1184,17 @@ jobs:
 
           # Define PS modules to install on the runner
           $Modules = @(
-              @{ Name = 'Az.KeyVault' }
+              @{ Name = 'Az.KeyVault' },
+              @{ Name = 'powershell-yaml'; Version = '0.4.2'}
           )
 
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
+
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
 
       - name: Azure Login
         uses: azure/login@v1
@@ -1174,23 +1210,26 @@ jobs:
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
-            # Replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
+            # Construct Token Function Input
             $ConvertTokensInputs = @{
-                FilePath    = $parameterFilePath
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+              Tokens       = @{}
+              FilePath     = $parameterFilePath
+              TokenPrefix  = '${{ env.tokenPrefix }}'
+              TokenSuffix  = '${{ env.tokenSuffix }}'
             }
 
-            # Add local tokens
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
+            # Add local (source control) tokens
+            $tokenMap = @{}
+            foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+              $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+            }
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens += $tokenMap
+
+            # Swap 'namePrefix' token if provided as a GitHub secret
+            if(-not [String]::IsNullOrEmpty('${{ env.TOKEN_NAMEPREFIX }}')){
+              Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+              $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
             }
 
             $null = Convert-TokensInFile @ConvertTokensInputs
@@ -1306,7 +1345,7 @@ jobs:
             '11.azfw.parameters.json',
             '12.bastion.parameters.json',
             '13.bastion.parameters.json',
-            'parameters.json'
+            'parameters.json',
           ]
     steps:
       - name: 'Checkout'
