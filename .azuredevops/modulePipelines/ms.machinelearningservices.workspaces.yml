@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.machinelearningservices.workspaces.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.MachineLearningServices/workspaces/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:

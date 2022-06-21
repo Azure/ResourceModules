@@ -6,12 +6,12 @@ param name string
 param location string = 'global'
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -28,7 +28,7 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -55,17 +55,17 @@ module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (sc
     name: scopedResource.name
     privateLinkScopeName: privateLinkScope.name
     linkedResourceId: scopedResource.linkedResourceId
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-resource privateLinkScope_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource privateLinkScope_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${privateLinkScope.name}-${lock}-lock'
-  scope: privateLinkScope
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
+  scope: privateLinkScope
 }
 
 module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
@@ -77,9 +77,9 @@ module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoin
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(privateLinkScope.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: privateLinkScope.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
@@ -88,7 +88,7 @@ module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoin
   }
 }]
 
-module privateLinkScope_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module privateLinkScope_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-PvtLinkScope-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

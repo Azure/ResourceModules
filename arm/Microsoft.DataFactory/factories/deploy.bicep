@@ -52,12 +52,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -135,7 +135,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -165,7 +165,7 @@ module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = 
   params: {
     name: managedVirtualNetworkName
     dataFactoryName: dataFactory.name
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -177,18 +177,18 @@ module dataFactory_integrationRuntime 'integrationRuntime/deploy.bicep' = if (!e
     type: integrationRuntime.type
     managedVirtualNetworkName: contains(integrationRuntime, 'managedVirtualNetworkName') ? integrationRuntime.managedVirtualNetworkName : ''
     typeProperties: integrationRuntime.typeProperties
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     dataFactory_managedVirtualNetwork
   ]
 }
 
-resource dataFactory_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource dataFactory_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${dataFactory.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: dataFactory
 }
@@ -206,7 +206,7 @@ resource dataFactory_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2
   scope: dataFactory
 }
 
-module dataFactory_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module dataFactory_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-DataFactory-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

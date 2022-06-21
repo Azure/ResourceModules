@@ -17,6 +17,9 @@
         "requireInfrastructureEncryption": {
             "value": true
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "privateEndpoints": {
             "value": [
                 {

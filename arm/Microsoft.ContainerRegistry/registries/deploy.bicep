@@ -12,7 +12,7 @@ param location string = resourceGroup().location
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Configuration Details for private endpoints.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @description('Optional. Tier of your Azure container registry.')
@@ -97,13 +97,16 @@ param zoneRedundancy string = 'Disabled'
 @description('Optional. All replications to create.')
 param replications array = []
 
+@description('Optional. All webhooks to create.')
+param webhooks array = []
+
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -181,7 +184,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -245,15 +248,36 @@ module registry_replications 'replications/deploy.bicep' = [for (replication, in
     regionEndpointEnabled: contains(replication, 'regionEndpointEnabled') ? replication.regionEndpointEnabled : true
     zoneRedundancy: contains(replication, 'zoneRedundancy') ? replication.zoneRedundancy : 'Disabled'
     tags: contains(replication, 'tags') ? replication.tags : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-resource registry_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+module registry_webhooks 'webhooks/deploy.bicep' = [for (webhook, index) in webhooks: {
+  name: '${uniqueString(deployment().name, location)}-Registry-Webhook-${index}'
+  params: {
+    name: webhook.name
+    registryName: registry.name
+    location: contains(webhook, 'location') ? webhook.location : location
+    action: contains(webhook, 'action') ? webhook.action : [
+      'chart_delete'
+      'chart_push'
+      'delete'
+      'push'
+      'quarantine'
+    ]
+    customHeaders: contains(webhook, 'customHeaders') ? webhook.customHeaders : {}
+    scope: contains(webhook, 'scope') ? webhook.scope : ''
+    status: contains(webhook, 'status') ? webhook.status : 'enabled'
+    serviceUri: webhook.serviceUri
+    tags: contains(webhook, 'tags') ? webhook.tags : {}
+  }
+}]
+
+resource registry_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${registry.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: registry
 }
@@ -271,7 +295,7 @@ resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2
   scope: registry
 }
 
-module registry_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module registry_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ContainerRegistry-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -291,9 +315,9 @@ module registry_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(registry.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: registry.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}

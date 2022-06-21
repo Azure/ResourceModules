@@ -42,6 +42,9 @@ param publicNetworkAccess string = 'Enabled'
 @maxValue(7)
 param softDeleteRetentionInDays int = 1
 
+@description('Optional. All Key / Values to create.')
+param keyValues array = []
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -60,12 +63,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -99,6 +102,8 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
 @description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
+
+var enableReferencedModulesTelemetry = false
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
@@ -138,7 +143,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-10-01-preview' = {
+resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021-10-01-preview' = {
   name: name
   location: location
   tags: tags
@@ -155,16 +160,28 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-1
   }
 }
 
-resource appConfiguration_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
-  name: '${appConfiguration.name}-${lock}-lock'
-  properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+module configurationStore_keyValues 'keyValues/deploy.bicep' = [for (keyValue, index) in keyValues: {
+  name: '${uniqueString(deployment().name, location)}-appConfig-KeyValues-${index}'
+  params: {
+    appConfigurationName: configurationStore.name
+    name: keyValue.name
+    value: keyValue.value
+    contentType: contains(keyValue, 'contentType') ? keyValue.contentType : ''
+    tags: contains(keyValue, 'tags') ? keyValue.tags : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
-  scope: appConfiguration
+}]
+
+resource configurationStore_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+  name: '${configurationStore.name}-${lock}-lock'
+  properties: {
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: configurationStore
 }
 
-resource appConfiguration_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+resource configurationStore_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
@@ -174,32 +191,32 @@ resource appConfiguration_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
-  scope: appConfiguration
+  scope: configurationStore
 }
 
-module appConfiguration_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module configurationStore_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppConfig-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: appConfiguration.id
+    resourceId: configurationStore.id
   }
 }]
 
-module appConfiguration_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-appConfiguration-PrivateEndpoint-${index}'
+module configurationStore_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-configurationStore-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(appConfiguration.id, '/'))}-${privateEndpoint.service}-${index}'
-    serviceResourceId: appConfiguration.id
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(configurationStore.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: configurationStore.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
@@ -209,16 +226,16 @@ module appConfiguration_privateEndpoints '../../Microsoft.Network/privateEndpoin
 }]
 
 @description('The name of the app configuration.')
-output name string = appConfiguration.name
+output name string = configurationStore.name
 
 @description('The resource ID of the app configuration.')
-output resourceId string = appConfiguration.id
+output resourceId string = configurationStore.id
 
-@description('The resource group the batch account was deployed into.')
+@description('The resource group the app configuration store was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(appConfiguration.identity, 'principalId') ? appConfiguration.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(configurationStore.identity, 'principalId') ? configurationStore.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
-output location string = appConfiguration.location
+output location string = configurationStore.location

@@ -55,7 +55,7 @@ This module deploys Network ApplicationGateways.
 | `httpListeners` | array | `[]` |  | Http listeners of the application gateway resource. |
 | `loadDistributionPolicies` | array | `[]` |  | Load distribution policies of the application gateway resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateLinkConfigurations` | array | `[]` |  | PrivateLink configurations on application gateway. |
 | `probes` | array | `[]` |  | Probes of the application gateway resource. |
 | `redirectConfigurations` | array | `[]` |  | Redirect configurations of the application gateway resource. |
@@ -235,6 +235,9 @@ userAssignedIdentities: {
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-apgw-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "userAssignedIdentities": {
             "value": {
@@ -561,7 +564,7 @@ userAssignedIdentities: {
                 {
                     "name": "<<namePrefix>>-az-apgw-x-001-ssl-certificate",
                     "properties": {
-                        "keyVaultSecretId": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate02/40b9b1a7a69e48cfa1e36f24b97b8799"
+                        "keyVaultSecretId": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate"
                     }
                 }
             ]
@@ -607,6 +610,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
   name: '${uniqueString(deployment().name)}-applicationGateways'
   params: {
     name: '<<namePrefix>>-az-apgw-x-001'
+    lock: 'CanNotDelete'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
@@ -905,7 +909,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
       {
         name: '<<namePrefix>>-az-apgw-x-001-ssl-certificate'
         properties: {
-          keyVaultSecretId: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate02/40b9b1a7a69e48cfa1e36f24b97b8799'
+          keyVaultSecretId: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate'
         }
       }
     ]

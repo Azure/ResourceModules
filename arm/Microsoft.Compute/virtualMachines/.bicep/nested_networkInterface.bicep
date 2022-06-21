@@ -10,7 +10,7 @@ param dnsServers array = []
 param networkSecurityGroupResourceId string = ''
 
 param ipConfigurations array
-param lock string
+param lock string = ''
 param diagnosticStorageAccountId string
 param diagnosticLogsRetentionInDays int
 param diagnosticWorkspaceId string
@@ -32,6 +32,8 @@ param pipDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettin
 @description('Optional. The name of the NIC diagnostic setting, if deployed.')
 param nicDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettings'
 
+var enableReferencedModulesTelemetry = false
+
 module networkInterface_publicIPAddresses '../../../Microsoft.Network/publicIPAddresses/deploy.bicep' = [for (ipConfiguration, index) in ipConfigurations: if (contains(ipConfiguration, 'pipconfiguration')) {
   name: '${deployment().name}-publicIP-${index}'
   params: {
@@ -44,7 +46,7 @@ module networkInterface_publicIPAddresses '../../../Microsoft.Network/publicIPAd
     diagnosticSettingsName: pipDiagnosticSettingsName
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticWorkspaceId: diagnosticWorkspaceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
     publicIPAddressVersion: contains(ipConfiguration, 'publicIPAddressVersion') ? ipConfiguration.publicIPAddressVersion : 'IPv4'
@@ -69,7 +71,6 @@ module networkInterface '../../../Microsoft.Network/networkInterfaces/deploy.bic
       privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
       publicIPAddressResourceId: contains(ipConfiguration, 'pipconfiguration') ? resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}') : null
       subnetId: ipConfiguration.subnetId
-
       loadBalancerBackendAddressPools: contains(ipConfiguration, 'loadBalancerBackendAddressPools') ? ipConfiguration.loadBalancerBackendAddressPools : null
       applicationSecurityGroups: contains(ipConfiguration, 'applicationSecurityGroups') ? ipConfiguration.applicationSecurityGroups : null
       applicationGatewayBackendAddressPools: contains(ipConfiguration, 'applicationGatewayBackendAddressPools') ? ipConfiguration.applicationGatewayBackendAddressPools : null
@@ -89,7 +90,7 @@ module networkInterface '../../../Microsoft.Network/networkInterfaces/deploy.bic
     diagnosticWorkspaceId: diagnosticWorkspaceId
     dnsServers: !empty(dnsServers) ? dnsServers : []
     enableAcceleratedNetworking: enableAcceleratedNetworking
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     enableIPForwarding: enableIPForwarding
     lock: lock
     networkSecurityGroupResourceId: !empty(networkSecurityGroupResourceId) ? networkSecurityGroupResourceId : ''

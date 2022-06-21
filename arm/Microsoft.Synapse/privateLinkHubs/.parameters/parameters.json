@@ -5,6 +5,9 @@
     "name": {
       "value": "synplhstandard001"
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
     "roleAssignments": {
       "value": [
         {

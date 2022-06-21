@@ -78,12 +78,12 @@ param diagnosticEventHubName string = ''
 param location string = resourceGroup().location
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -131,6 +131,7 @@ var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPub
 // 1. Use existing public ip
 // 2. Use new public ip created in this module
 // 3. Do not use a public ip if isCreateDefaultPublicIP is false
+
 var subnet_var = {
   subnet: {
     id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
@@ -148,12 +149,12 @@ var newPip = {
 }
 
 var ipConfigurations = concat([
-  {
-    name: 'IpConfAzureFirewallSubnet'
-    //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
-    properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
-  }
-], additionalPublicIpConfigurations_var)
+    {
+      name: 'IpConfAzureFirewallSubnet'
+      //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
+      properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+    }
+  ], additionalPublicIpConfigurations_var)
 
 // ----------------------------------------------------------------------------
 
@@ -189,7 +190,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 // create a public ip address if one is not provided and the flag is true
-module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(azureFirewallSubnetPublicIpId) && isCreateDefaultPublicIP) {
+module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' = if (empty(azureFirewallSubnetPublicIpId) && isCreateDefaultPublicIP) {
   name: '${uniqueString(deployment().name, location)}-Firewall-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
@@ -245,10 +246,10 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
   }
 }
 
-resource azureFirewall_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource azureFirewall_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${azureFirewall.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: azureFirewall
@@ -267,7 +268,7 @@ resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
   scope: azureFirewall
 }
 
-module azureFirewall_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module azureFirewall_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AzFW-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

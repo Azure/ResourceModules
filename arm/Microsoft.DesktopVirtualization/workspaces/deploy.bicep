@@ -4,7 +4,7 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Required. Resource IDs fo the existing Application groups this workspace will group together.')
+@description('Required. Resource IDs for the existing Application groups this workspace will group together.')
 param appGroupResourceIds array = []
 
 @description('Optional. The friendly name of the Workspace to be created.')
@@ -31,12 +31,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -96,11 +96,11 @@ resource workspace 'Microsoft.DesktopVirtualization/workspaces@2021-07-12' = {
   }
 }
 
-resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: workspace
 }
@@ -117,7 +117,7 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
   scope: workspace
 }
 
-module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module workspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Workspace-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

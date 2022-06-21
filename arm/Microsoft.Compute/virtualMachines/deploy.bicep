@@ -240,12 +240,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -335,7 +335,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -487,7 +487,7 @@ module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoi
     protectedSettings: {
       Password: extensionDomainJoinPassword
     }
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -502,7 +502,7 @@ module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensio
     autoUpgradeMinorVersion: contains(extensionAntiMalwareConfig, 'autoUpgradeMinorVersion') ? extensionAntiMalwareConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
     settings: extensionAntiMalwareConfig.settings
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -527,7 +527,7 @@ module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (exte
     protectedSettings: {
       workspaceKey: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -541,7 +541,7 @@ module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDepe
     typeHandlerVersion: contains(extensionDependencyAgentConfig, 'typeHandlerVersion') ? extensionDependencyAgentConfig.typeHandlerVersion : '9.5'
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -555,7 +555,7 @@ module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extension
     typeHandlerVersion: contains(extensionNetworkWatcherAgentConfig, 'typeHandlerVersion') ? extensionNetworkWatcherAgentConfig.typeHandlerVersion : '1.4'
     autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -571,7 +571,7 @@ module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (ext
     enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
     settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
     protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -589,7 +589,7 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
     protectedSettings: extensionCustomScriptProtectedSetting
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     vm_desiredStateConfigurationExtension
@@ -608,7 +608,7 @@ module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskE
     enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
     forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
     settings: extensionDiskEncryptionConfig.settings
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     vm_customScriptExtension
@@ -625,6 +625,7 @@ module virtualMachine_backup '../../Microsoft.RecoveryServices/vaults/protection
     protectionContainerName: 'iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
     recoveryVaultName: backupVaultName
     sourceResourceId: virtualMachine.id
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   scope: az.resourceGroup(backupVaultResourceGroup)
   dependsOn: [
@@ -638,16 +639,16 @@ module virtualMachine_backup '../../Microsoft.RecoveryServices/vaults/protection
   ]
 }
 
-resource virtualMachine_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource virtualMachine_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${virtualMachine.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualMachine
 }
 
-module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module virtualMachine_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VM-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

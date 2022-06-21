@@ -16,7 +16,7 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -56,7 +56,7 @@ module mongodbDatabase_collections 'collections/deploy.bicep' = [for collection 
     name: collection.name
     indexes: collection.indexes
     shardKey: collection.shardKey
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
