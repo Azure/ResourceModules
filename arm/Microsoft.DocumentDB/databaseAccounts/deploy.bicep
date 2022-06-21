@@ -137,7 +137,40 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
   'DisableRateLimitingResponses'
   'EnableServerless'
 ])
+@description('Optional. List of Cosmos DB capabilities for the account.')
 param capabilitiesToAdd array = []
+
+@allowed([
+  'Periodic'
+  'Continuous'
+])
+@description('Optional. Describes the mode of backups.')
+param backupPolicyType string = 'Continuous'
+
+@allowed([
+  'Continuous30Days'
+  'Continuous7Days'
+])
+@description('Optional. Configuration values for continuous mode backup.')
+param backupPolicyContinuousTier string = 'Continuous30Days'
+
+@minValue(60)
+@maxValue(1440)
+@description('Optional. An integer representing the interval in minutes between two backups. Only applies to periodic backup type.')
+param backupIntervalInMinutes int = 240
+
+@minValue(2)
+@maxValue(720)
+@description('Optional. An integer representing the time (in hours) that each backup is retained. Only applies to periodic backup type.')
+param backupRetentionIntervalInHours int = 8
+
+@allowed([
+  'Geo'
+  'Local'
+  'Zone'
+])
+@description('Optional. Enum to indicate type of backup residency. Only applies to periodic backup type.')
+param backupStorageRedundancy string = 'Local'
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
@@ -199,12 +232,27 @@ var capabilities = [for capability in capabilitiesToAdd: {
   name: capability
 }]
 
+var backupPolicy = backupPolicyType == 'Continuous' ? {
+  type: backupPolicyType
+  continuousModeProperties: {
+    tier: backupPolicyContinuousTier
+  }
+} : {
+  type: backupPolicyType
+  periodicModeProperties: {
+    backupIntervalInMinutes: backupIntervalInMinutes
+    backupRetentionIntervalInHours: backupRetentionIntervalInHours
+    backupStorageRedundancy: backupStorageRedundancy
+  }
+}
+
 var databaseAccount_properties = !empty(sqlDatabases) ? {
   consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
   locations: databaseAccount_locations
   databaseAccountOfferType: databaseAccountOfferType
   enableAutomaticFailover: automaticFailover
   capabilities: capabilities
+  backupPolicy: backupPolicy
 } : !empty(mongodbDatabases) ? {
   consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
   locations: databaseAccount_locations
@@ -213,11 +261,13 @@ var databaseAccount_properties = !empty(sqlDatabases) ? {
     serverVersion: serverVersion
   }
   capabilities: capabilities
+  backupPolicy: backupPolicy
 } : !empty(gremlinDatabases) ? {
   consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
   locations: databaseAccount_locations
   databaseAccountOfferType: databaseAccountOfferType
   capabilities: capabilities
+  backupPolicy: backupPolicy
 } : {
   databaseAccountOfferType: databaseAccountOfferType
 }
@@ -234,7 +284,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' = {
   name: name
   location: location
   tags: tags
