@@ -4,7 +4,7 @@ The objective of this repository is to provide a template library that can accel
 
 This wiki describes the content of this repository, its modules, pipelines, and possible options on how to use them and how to contribute to this project.
 
-If you're unfamiliar with Infrastructure as Code, or wonder how you can use the content of this repository in your deployments, check out [The context](./The%20context) section of this wiki.
+If you're unfamiliar with Infrastructure as Code or wonder how you can use the content of this repository in your deployments, check out [The context](./The%20context) section of this wiki.
 
 ### _Navigation_
 
@@ -12,6 +12,7 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [CARML overview](./The%20context%20-%20CARML%20overview)
     - [The library](./The%20context%20-%20CARML%20library)
     - [The CI environment](./The%20context%20-%20CARML%20CI%20environment)
+  - [Logical Layers and Personas](./The%20context%20-%20Logical%20Layers%20and%20Personas)
 - [Getting started](./Getting%20started)
   - [**Scenario 1:** Consume module library only](./Getting%20started%20-%20Scenario%201%20Consume%20library)
   - [**Scenario 2:** Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment)
@@ -37,7 +38,7 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
   - [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally)
 - [Solution creation](./Solution%20creation)
-- Upgrade guideline.mds
+- Upgrade guideline
   - [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0)
 - [Known issues](./Known%20issues)
 
