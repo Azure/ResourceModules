@@ -320,6 +320,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   params: {
   
   }
+}
 ```
 
 </details>
@@ -634,6 +635,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

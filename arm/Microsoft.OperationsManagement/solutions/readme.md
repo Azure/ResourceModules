@@ -78,6 +78,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     name: 'Updates'
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
   }
+}
 ```
 
 </details>
@@ -126,6 +127,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     product: 'OMSGallery'
     publisher: 'Microsoft'
   }
+}
 ```
 
 </details>
@@ -174,6 +176,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
   }
+}
 ```
 
 </details>

@@ -81,6 +81,7 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
     resourceGroupName: 'adp-<<namePrefix>>-az-locks-rg-001'
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>

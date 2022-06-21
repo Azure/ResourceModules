@@ -142,6 +142,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     addressPrefix: '10.0.0.0/16'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
   }
+}
 ```
 
 </details>
@@ -246,6 +247,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

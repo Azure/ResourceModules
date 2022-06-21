@@ -180,6 +180,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
   params: {
     location: 'northeurope'
   }
+}
 ```
 
 </details>
@@ -376,6 +377,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

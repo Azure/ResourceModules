@@ -387,6 +387,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       '10.0.0.0/16'
     ]
   }
+}
 ```
 
 </details>
@@ -577,6 +578,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>
@@ -683,6 +685,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

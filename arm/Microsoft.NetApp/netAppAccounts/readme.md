@@ -185,6 +185,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-anf-min-001'
   }
+}
 ```
 
 </details>
@@ -393,6 +394,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
       Role: 'DeploymentValidation'
     }
   }
+}
 ```
 
 </details>
@@ -617,6 +619,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
       Role: 'DeploymentValidation'
     }
   }
+}
 ```
 
 </details>
