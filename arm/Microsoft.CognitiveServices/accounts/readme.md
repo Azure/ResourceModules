@@ -556,7 +556,12 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         "networkAcls": {
             "value": {
                 "defaultAction": "deny",
-                "virtualNetworkRules": []
+                "virtualNetworkRules": [
+                    {
+                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+                        "action": "Allow"
+                    }
+                ]
             }
         },
         "customSubDomainName": {
@@ -614,7 +619,12 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     ]
     networkAcls: {
       defaultAction: 'deny'
-      virtualNetworkRules: []
+      virtualNetworkRules: [
+        {
+          id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          action: 'Allow'
+        }
+      ]
     }
     customSubDomainName: '<<namePrefix>>xdomain'
     systemAssignedIdentity: true
