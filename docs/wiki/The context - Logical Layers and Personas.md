@@ -17,6 +17,7 @@ CARML can be represented as a key layer of a logical technology stack. This arti
 # Logical layers
 
 This chapter explains how the different layers of the technology stack (see below) and the solutions developed based on it rely on each other.
+
 ![Layers](media/Personas/layers.png)  
 
 In bottom-up order, the layers are:
@@ -44,8 +45,11 @@ This persona will need to understand the required and optional configuration dat
 
 This persona isn’t consuming CARML directly, but is consuming CARML via a solution that relies on it:
 
-- Example: AKS Landing Zone Accelerator
-- Example: An internally developed multi-module solution for internal application or workload pattern
+- Examples:
+  - Existing CARML solutions (These links provide examples of real world solutions using CARML):
+    - [AKS Landing Zone Accelerator](https://github.com/Azure/AKS-Landing-Zone-Accelerator)
+    - [AVD Landing Zone Accelerator](https://github.com/Azure/avdaccelerator)
+  - An internally developed multi-module solution for internal application or workload pattern
 
 > **Note**: Solution Consumers are not to be confused with end users. Solution Consumers are cloud administrators, deploying a complex solution and administering an application installed into such a cloud environment. An end user is someone who will use the  application or workload hosted in the cloud for his/her work (ex., information worker or application developer).
 
@@ -76,10 +80,6 @@ A Solution Developer uses the CARML library (its public or organization/customer
 
 - Create (develop, run integration tests for and publish) multi-module solutions for specific reference patterns (workloads, applications, environments).
 - If necessary, can modify (develop, run unit tests for and publish) existing modules to implement organization-specific standards - however, applying significant modifications or creating new modules, also qualifies this persona as [Module Developer](#module-developer).
-
-> **Note**: Existing CARML solutions (These links provide examples of real world solutions using CARML:
-> - [AKS Landing Zone Accelerator](https://github.com/Azure/AKS-Landing-Zone-Accelerator)
-> - [AVD Landing Zone Accelerator](https://github.com/Azure/avdaccelerator)
 
 ### How does a Solution Developer benefit from CARML?
 
