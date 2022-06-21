@@ -99,7 +99,7 @@ A **Module Developer** is not a user. Their focus is on CARML itself. A Module D
 - Sample 1: A simple resource, with CARML extensions, deploys fast.
 - Sample 2: A complex resource, with CARML extensions, child resources, “smart defaults”, PowerShell style “scenario” documentation.
 
-### Typical Activities of a Module Developer
+### Typical activities of a Module Developer
 
 - Create, update modules for Azure resources.
 - Incorporate new resource providers or new capabilities, and extensions to existing resource providers.
