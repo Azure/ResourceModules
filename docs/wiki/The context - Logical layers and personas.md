@@ -109,4 +109,4 @@ A **Module Developer** is not a user. Their focus is on CARML itself. A Module D
 
 ### How does a Module Developer benefit from CARML?
 
-- Contributes to building and maintaining a common code base. Particularly beneficial to customer that have an Enterprise or Distributed Operating model.
+- Contributes to building and maintaining a common code base. Particularly beneficial to customers that have an Enterprise or Distributed Operating model.
