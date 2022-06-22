@@ -475,6 +475,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       }
     }
   }
+}
 ```
 
 </details>
@@ -515,6 +516,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     name: '<<namePrefix>>-az-cgs-min-001'
     kind: 'SpeechServices'
   }
+}
 ```
 
 </details>
