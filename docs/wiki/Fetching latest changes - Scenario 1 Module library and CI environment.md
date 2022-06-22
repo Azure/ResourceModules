@@ -38,7 +38,3 @@ The update process is similar to the onboarding one:
 1. [(Optional) Convert library to ARM](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only.md#6-optional-convert-library-to-arm)
 1. Push the updated local code to your remote target repository
 1. Be sure to merge the updated code into your main branch and that the registered pipelines are running and publishing updated artifacts.
-
-
-
-https://github.com/Azure/ResourceModules/blob/users/ee/1459_internalizedCarml/docs/wiki/Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md#322-set-up-variables-file
