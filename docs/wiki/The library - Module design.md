@@ -60,7 +60,7 @@ They can be deployed in different configurations just by changing the input para
 A **CARML module** consists of
 
 - The Bicep template deployment file (`deploy.bicep`).
-- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.deploymentTests` subfolder.
+- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.parameters` subfolder.
 - A `readme.md` file which describes the module itself.
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `arm` folder.
@@ -109,7 +109,7 @@ Use the following naming standard for module files and folders:
   └─ <service>
       ├─ .bicep
       |  ├─ nested_extensionResource1.bicep
-      ├─ .deploymentTests
+      ├─ .parameters
       |  └─ parameters.json
       ├─ deploy.bicep
       └─ readme.md
@@ -121,7 +121,7 @@ Use the following naming standard for module files and folders:
   >└─ sites
   >    ├─ .bicep
   >    |  └─ nested_roleAssignments.bicep
-  >    ├─ .deploymentTests
+  >    ├─ .parameters
   >    |  └─ parameters.json
   >    ├─ deploy.bicep
   >    └─ readme.md
@@ -527,8 +527,8 @@ Note the following recommendations:
 # Parameter files
 
 Parameter files in CARML leverage the common `deploymentParameters.json` schema for ARM deployments. As parameters are usually specific to their corresponding template, we only have a few general recommendations:
-- Parameter filenames should ideally relate to the content they deploy. For example, a parameter file `min.deploymentTests.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
-- Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.deploymentTests.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
+- Parameter filenames should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
+- Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
 - A module should have as many parameter files as it needs to evaluate all parts of the module's functionality.
 - Sensitive data should not be stored inside the parameter file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
 

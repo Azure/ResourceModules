@@ -92,13 +92,13 @@ function Test-NamePrefixAvailability {
             # Extract Parameter Names
             # -----------------------
             $storageAccountFiles = $parameterFiles | Where-Object { $_ -match 'Microsoft.Storage/storageAccounts' }
-            $storageAccountNames = $storageAccountFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).deploymentTests.name.value } | Where-Object { $null -ne $_ }
+            $storageAccountNames = $storageAccountFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).parameters.value } | Where-Object { $null -ne $_ }
 
             $keyVaultFiles = $parameterFiles | Where-Object { $_ -match 'Microsoft.KeyVault/vaults' }
-            $keyVaultNames = $keyVaultFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).deploymentTests.name.value } | Where-Object { $null -ne $_ }
+            $keyVaultNames = $keyVaultFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).parameters.value } | Where-Object { $null -ne $_ }
 
             $acrFiles = $parameterFiles | Where-Object { $_ -match 'Microsoft.ContainerRegistry/registries' }
-            $acrNames = $acrFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).deploymentTests.name.value } | Where-Object { $null -ne $_ }
+            $acrNames = $acrFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).parameters.value } | Where-Object { $null -ne $_ }
 
             $subscriptionId = (Get-AzContext).Subscription.Id
 

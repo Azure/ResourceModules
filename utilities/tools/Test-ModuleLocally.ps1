@@ -35,7 +35,7 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
-    ParameterFilePath          = 'C:\Microsoft.Network\routeTables\.deploymentTests\parameters.json'
+    ParameterFilePath          = 'C:\Microsoft.Network\routeTables\.parameters\parameters.json'
     PesterTest                 = $false
     DeploymentTest             = $false
     ValidationTest             = $true
@@ -115,7 +115,7 @@ function Test-ModuleLocally {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $parameterFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.deploymentTests'),
+        [string] $parameterFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.parameters'),
 
         [Parameter(Mandatory = $false)]
         [Psobject] $ValidateOrDeployParameters = @{},

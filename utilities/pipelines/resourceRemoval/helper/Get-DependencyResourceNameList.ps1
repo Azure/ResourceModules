@@ -55,7 +55,7 @@ function Get-DependencyResourceNameList {
     $dependencyResourceNames = [System.Collections.ArrayList]@()
     foreach ($parameterFilePath in $deploymentTestPaths) {
         $paramFileContent = ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)
-        if ($nameParam = $paramFileContent.deploymentTests.name.value) {
+        if ($nameParam = $paramFileContent.parameters.name.value) {
             $dependencyResourceNames += $nameParam
         }
     }

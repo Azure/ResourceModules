@@ -22,18 +22,18 @@ function Get-DeploymentTestFileList {
         [string] $ModulePath
     )
 
-    $deploymentTests = (Get-ChildItem -Path (Join-Path $ModulePath '.deploymentTests') -Include ('*parameters.json', '*parameters.bicep') -Recurse -File).FullName
+    $parameters = (Get-ChildItem -Path (Join-Path $ModulePath '.parameters') -Include ('*parameters.json', '*parameters.bicep') -Recurse -File).FullName
 
-    if (-not $deploymentTests) {
+    if (-not $parameters) {
         throw "No deployment test files found for module [$ModulePath]"
     }
 
-    $deploymentTests = $deploymentTests | ForEach-Object {
+    $parameters = $parameters | ForEach-Object {
         $_.Replace($ModulePath, '').Trim('\').Trim('/')
     }
 
     Write-Verbose 'Found parameter files'
-    $deploymentTests | ForEach-Object { Write-Verbose "- $_" }
+    $parameters | ForEach-Object { Write-Verbose "- $_" }
 
-    return $deploymentTests
+    return $parameters
 }

@@ -89,10 +89,10 @@ Describe 'File/folder tests' -Tag Modules {
             (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [.deploymentTests] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        It '[<moduleFolderName>] Module should contain a [.parameters] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
             param( [string] $moduleFolderPath )
-            Test-Path (Join-Path -Path $moduleFolderPath '.deploymentTests') | Should -Be $true
+            Test-Path (Join-Path -Path $moduleFolderPath '.parameters') | Should -Be $true
         }
 
         It '[<moduleFolderName>] Module should contain a [version.json] file' -TestCases $moduleFolderTestCases {
@@ -102,11 +102,11 @@ Describe 'File/folder tests' -Tag Modules {
         }
     }
 
-    Context '.deploymentTests folder' {
+    Context '.parameters folder' {
 
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.deploymentTests')) {
+            if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
                 $folderTestCases += @{
                     moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                     moduleFolderPath = $moduleFolderPath
@@ -114,20 +114,19 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] folder should contain one or more *parameters.json or *parameter.bicep files' -TestCases $folderTestCases {
+        It '[<moduleFolderName>] folder should contain one or more *parameters.json files' -TestCases $folderTestCases {
 
             param(
                 [string] $moduleFolderName,
                 $moduleFolderPath
             )
-
-            $parameterFolderPath = Join-Path $moduleFolderPath '.deploymentTests'
-            (Get-ChildItem $parameterFolderPath -Filter '*parameters.*' -Force).Count | Should -BeGreaterThan 0
+            $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
+            (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force).Count | Should -BeGreaterThan 0
         }
 
         $parameterFolderFilesTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $parameterFolderPath = Join-Path $moduleFolderPath '.deploymentTests'
+            $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
             if (Test-Path $parameterFolderPath) {
                 foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force)) {
                     $parameterFolderFilesTestCases += @{
@@ -138,7 +137,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] *parameters.json files in the .deploymentTests folder should be valid json' -TestCases $parameterFolderFilesTestCases {
+        It '[<moduleFolderName>] *parameters.json files in the .parameters folder should be valid json' -TestCases $parameterFolderFilesTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -291,7 +290,7 @@ Describe 'Readme tests' -Tag Readme {
             $expectColumnsInOrder = @('Required', 'Conditional', 'Optional', 'Generated')
 
             ## Get all descriptions
-            $descriptions = $templateContent.deploymentTests.Values.metadata.description
+            $descriptions = $templateContent.parameters.Values.metadata.description
 
             ## Get the module parameter categories
             $expectedParamCategories = $descriptions | ForEach-Object { $_.Split('.')[0] } | Select-Object -Unique # Get categories in template
@@ -312,7 +311,7 @@ Describe 'Readme tests' -Tag Readme {
             )
 
             ## Get all descriptions
-            $descriptions = $templateContent.deploymentTests.Values.metadata.description
+            $descriptions = $templateContent.parameters.Values.metadata.description
 
             ## Get the module parameter categories
             $paramCategories = $descriptions | ForEach-Object { $_.Split('.')[0] } | Select-Object -Unique
@@ -320,7 +319,7 @@ Describe 'Readme tests' -Tag Readme {
             foreach ($paramCategory in $paramCategories) {
 
                 # Filter to relevant items
-                [array] $categoryParameters = $templateContent.deploymentTests.Values | Where-Object { $_.metadata.description -like "$paramCategory. *" } | Sort-Object -Property 'Name' -Culture 'en-US'
+                [array] $categoryParameters = $templateContent.parameters.Values | Where-Object { $_.metadata.description -like "$paramCategory. *" } | Sort-Object -Property 'Name' -Culture 'en-US'
 
                 # Check properties for later reference
                 $shouldHaveDefault = $categoryParameters.defaultValue.count -gt 0
@@ -347,7 +346,7 @@ Describe 'Readme tests' -Tag Readme {
             )
 
             # Get Template data
-            $parameters = $templateContent.deploymentTests.Keys
+            $parameters = $templateContent.parameters.Keys
 
             # Get ReadMe data
             ## Get section start index
@@ -502,14 +501,14 @@ Describe 'Deployment template tests' -Tag Template {
 
             # Parameter file test cases
             $parameterFileTestCases = @()
-            $templateFile_Parameters = $templateContent.deploymentTests
+            $templateFile_Parameters = $templateContent.parameters
             $TemplateFile_AllParameterNames = $templateFile_Parameters.Keys | Sort-Object
             $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.Keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
 
-            if (Test-Path (Join-Path $moduleFolderPath '.deploymentTests')) {
-                $deploymentTestPaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.deploymentTests' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
-                foreach ($ParameterFilePath in $deploymentTestPaths) {
-                    $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).deploymentTests.Keys | Sort-Object
+            if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
+                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
+                foreach ($ParameterFilePath in $ParameterFilePaths) {
+                    $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.Keys | Sort-Object
                     $parameterFileTestCases += @{
                         parameterFile_Path                   = $ParameterFilePath
                         parameterFile_Name                   = Split-Path $ParameterFilePath -Leaf
@@ -616,7 +615,7 @@ Describe 'Deployment template tests' -Tag Template {
                 [string] $moduleFolderName,
                 [hashtable] $templateContent
             )
-            if ($lock = $templateContent.deploymentTests.lock) {
+            if ($lock = $templateContent.parameters.lock) {
                 $lock.Keys | Should -Contain 'defaultValue'
                 $lock.defaultValue | Should -Be ''
             }
@@ -629,13 +628,13 @@ Describe 'Deployment template tests' -Tag Template {
                 [hashtable] $templateContent
             )
 
-            if (-not $templateContent.deploymentTests) {
+            if (-not $templateContent.parameters) {
                 Set-ItResult -Skipped -Because 'the module template has no parameters.'
                 return
             }
 
             $CamelCasingFlag = @()
-            $Parameter = $templateContent.deploymentTests.Keys
+            $Parameter = $templateContent.parameters.Keys
             foreach ($Param in $Parameter) {
                 if ($Param.substring(0, 1) -cnotmatch '[a-z]' -or $Param -match '-' -or $Param -match '_') {
                     $CamelCasingFlag += $false
@@ -717,8 +716,8 @@ Describe 'Deployment template tests' -Tag Template {
             $LocationFlag = $true
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
-                $Locationparamoutputvalue = $templateContent.deploymentTests.location.defaultValue
-                $Locationparamoutput = $templateContent.deploymentTests.Keys
+                $Locationparamoutputvalue = $templateContent.parameters.location.defaultValue
+                $Locationparamoutput = $templateContent.parameters.Keys
                 if ($Locationparamoutput -contains 'Location') {
                     if ($Locationparamoutputvalue -eq '[resourceGroup().Location]' -or $Locationparamoutputvalue -eq 'global') {
                         $LocationFlag = $true
@@ -816,15 +815,15 @@ Describe 'Deployment template tests' -Tag Template {
                 [hashtable] $templateContent
             )
 
-            if (-not $templateContent.deploymentTests) {
+            if (-not $templateContent.parameters) {
                 Set-ItResult -Skipped -Because 'the module template has no parameters.'
                 return
             }
 
             $incorrectParameters = @()
-            $templateParameters = $templateContent.deploymentTests.Keys
+            $templateParameters = $templateContent.parameters.Keys
             foreach ($parameter in $templateParameters) {
-                $data = ($templateContent.deploymentTests.$parameter.metadata).description
+                $data = ($templateContent.parameters.$parameter.metadata).description
                 if ($data -notmatch '(?s)^[A-Z][a-zA-Z]+\. .+\.$') {
                     $incorrectParameters += $parameter
                 }
@@ -839,15 +838,15 @@ Describe 'Deployment template tests' -Tag Template {
                 [hashtable] $templateContent
             )
 
-            if (-not $templateContent.deploymentTests) {
+            if (-not $templateContent.parameters) {
                 Set-ItResult -Skipped -Because 'the module template has no parameters.'
                 return
             }
 
             $incorrectParameters = @()
-            $templateParameters = $templateContent.deploymentTests.Keys
+            $templateParameters = $templateContent.parameters.Keys
             foreach ($parameter in $templateParameters) {
-                $data = ($templateContent.deploymentTests.$parameter.metadata).description
+                $data = ($templateContent.parameters.$parameter.metadata).description
                 switch -regex ($data) {
                     '^Conditional. .*' {
                         if ($data -notmatch '.*\. Required if .*') {
@@ -918,9 +917,9 @@ Describe 'Deployment template tests' -Tag Template {
         $parameterFileTokenTestCases = @()
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.deploymentTests')) {
-                $deploymentTestPaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.deploymentTests' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
-                foreach ($ParameterFilePath in $deploymentTestPaths) {
+            if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
+                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
+                foreach ($ParameterFilePath in $ParameterFilePaths) {
                     foreach ($token in $enforcedTokenList.Keys) {
                         $parameterFileTokenTestCases += @{
                             parameterFilePath = $ParameterFilePath
@@ -1078,4 +1077,5 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -First 3
         ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
     }
+}
 }

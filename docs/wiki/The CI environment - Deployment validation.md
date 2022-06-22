@@ -21,7 +21,7 @@ The deployment validation phase can be divided into three steps, running in sequ
 
 # Template validation
 
-The template validation step performs a dry-run with each parameter file in the module's `'.deploymentTests'` folder
+The template validation step performs a dry-run with each parameter file in the module's `'.parameters'` folder
 
 In particular, the step runs a `Test-AzDeployment` cmdlet (_the command may vary based on the template schema_) for each provided module parameter file to verify if the template could be deployed using them.
 

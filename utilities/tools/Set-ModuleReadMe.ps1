@@ -134,7 +134,7 @@ function Set-ParametersSection {
     )
 
     # Get all descriptions
-    $descriptions = $TemplateFileContent.deploymentTests.Values.metadata.description
+    $descriptions = $TemplateFileContent.parameters.Values.metadata.description
 
     # Get the module parameter categories
     $paramCategories = $descriptions | ForEach-Object { $_.Split('.')[0] } | Select-Object -Unique
@@ -149,7 +149,7 @@ function Set-ParametersSection {
     $folderNames = ($null -ne $currentLevelFolders) ? ($currentLevelFolders.FullName | ForEach-Object { Split-Path $_ -Leaf }) : @()
 
     # Add name as property for later reference
-    $TemplateFileContent.deploymentTests.Keys | ForEach-Object { $TemplateFileContent.deploymentTests[$_]['name'] = $_ }
+    $TemplateFileContent.parameters.Keys | ForEach-Object { $TemplateFileContent.parameters[$_]['name'] = $_ }
 
     $newSectionContent = [System.Collections.ArrayList]@()
     # Create parameter blocks
@@ -157,7 +157,7 @@ function Set-ParametersSection {
 
         # 1. Prepare
         # Filter to relevant items
-        [array] $categoryParameters = $TemplateFileContent.deploymentTests.Values | Where-Object { $_.metadata.description -like "$category. *" } | Sort-Object -Property 'Name' -Culture 'en-US'
+        [array] $categoryParameters = $TemplateFileContent.parameters.Values | Where-Object { $_.metadata.description -like "$category. *" } | Sort-Object -Property 'Name' -Culture 'en-US'
 
         # Check properties for later reference
         $hasDefault = $categoryParameters.defaultValue.count -gt 0
@@ -211,7 +211,7 @@ function Set-ParametersSection {
         if ($resourceUsageSourceFiles = Get-ChildItem (Join-Path $PSScriptRoot 'moduleReadMeSource') -Recurse -Filter 'resourceUsage-*') {
             foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
                 $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
-                if ($templateFileContent.deploymentTests.Keys -contains $parameterName) {
+                if ($templateFileContent.parameters.Keys -contains $parameterName) {
                     $subSectionStartIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName
 
                     # Build result
@@ -351,7 +351,7 @@ function Set-DeploymentExamplesSection {
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $resourceTypeIdentifier = $moduleRoot.Split('arm')[1].Replace('\', '/').TrimStart('/')
-    $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.deploymentTests') -Filter '*parameters.json' -Recurse
+    $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.parameters') -Filter '*parameters.json' -Recurse
 
     $index = 1
     foreach ($parameterFilePath in $parameterFiles.FullName) {
@@ -377,7 +377,7 @@ function Set-DeploymentExamplesSection {
         }
 
         if ($addBicep) {
-            $JSONParametersHashTable = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).deploymentTests
+            $JSONParametersHashTable = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).parameters
 
             # Handle KeyVaut references
             $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }
