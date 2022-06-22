@@ -45,8 +45,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/azure.deploymentTests.json
-            - path: $(modulePath)/.deploymentTests/kubenet.deploymentTests.json
+            - path: $(modulePath)/.parameters/azure.parameters.json
+            - path: $(modulePath)/.parameters/kubenet.parameters.json
 
   - stage: Publishing
     displayName: Publishing
