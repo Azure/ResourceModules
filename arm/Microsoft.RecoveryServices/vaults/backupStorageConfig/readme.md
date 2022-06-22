@@ -11,7 +11,7 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupstorageconfig) |
+| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupstorageconfig) |
 
 ## Parameters
 
@@ -24,11 +24,9 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `crossRegionRestoreFlag` | bool | `True` |  | Opt in details of Cross Region Restore feature. |
-| `dedupState` | string | `'Disabled'` | `[Disabled, Enabled, Invalid]` | Change Vault Dedup state. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'vaultstorageconfig'` |  | The name of the backup storage config. |
 | `storageModelType` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Change Vault Storage Type (Works if vault has not registered any backup instance). |
-| `xcoolState` | string | `'Disabled'` | `[Disabled, Enabled, Invalid]` | Change Vault x-cool state. |
 
 
 ## Outputs

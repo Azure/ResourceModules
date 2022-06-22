@@ -12,7 +12,7 @@ This module deploys recovery services vault backup config.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupconfig) |
+| `Microsoft.RecoveryServices/vaults/backupconfig` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-10-01/vaults/backupconfig) |
 
 ## Parameters
 
@@ -26,7 +26,6 @@ This module deploys recovery services vault backup config.
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enhancedSecurityState` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations. |
-| `isSoftDeleteFeatureStateEditable` | bool | `True` |  | Is soft delete feature state editable. |
 | `name` | string | `'vaultconfig'` |  | Name of the Azure Recovery Service Vault Backup Policy. |
 | `resourceGuardOperationRequests` | array | `[]` |  | ResourceGuard Operation Requests. |
 | `softDeleteFeatureState` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM and SAP HANA in Azure VM from accidental deletes. |

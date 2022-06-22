@@ -1,19 +1,19 @@
-# RecoveryServices Vaults ProtectionContainers `[Microsoft.RecoveryServices/vaults/protectionContainers]`
+# RecoveryServicesProtectionContainer `[Microsoft.RecoveryServices/vaults/protectionContainers]`
 
-This module deploys RecoveryServices Vaults ProtectionContainers.
-// TODO: Replace Resource and fill in description
+This module deploys a Protection Container for a Recovery Services Vault
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
+- [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 
-## Resource Types
+## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupFabrics/protectionContainers) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-06-01/vaults/backupFabrics/protectionContainers/protectedItems) |
 
 ## Parameters
 
@@ -34,12 +34,10 @@ This module deploys RecoveryServices Vaults ProtectionContainers.
 | `containerType` | string | `''` | `[AzureBackupServerContainer, AzureSqlContainer, GenericContainer, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, SQLAGWorkLoadContainer, StorageContainer, VMAppContainer, Windows, ]` | Type of the container. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `friendlyName` | string | `''` |  | Friendly name of the Protection Container. |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `protectedItems` | _[protectedItems](protectedItems/readme.md)_ array | `[]` |  | Protected items to register in the container. |
 | `sourceResourceId` | string | `''` |  | Resource ID of the target resource for the Protection Container. |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

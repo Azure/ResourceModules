@@ -14,7 +14,7 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationPolicies) |
+| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2021-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationPolicies) |
 
 ## Parameters
 

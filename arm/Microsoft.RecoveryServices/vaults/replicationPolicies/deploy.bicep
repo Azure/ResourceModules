@@ -35,7 +35,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource replicationPolicy 'Microsoft.RecoveryServices/vaults/replicationPolicies@2022-02-01' = {
+resource replicationPolicy 'Microsoft.RecoveryServices/vaults/replicationPolicies@2021-12-01' = {
   name: '${recoveryVaultName}/${name}'
   properties: {
     providerSpecificInput: {
