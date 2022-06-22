@@ -13,7 +13,7 @@ param replicationContainerMappings array = []
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var enableReferencedModulesTelemetry = false
+var enableChildTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}-rsvPolicy'
@@ -50,7 +50,7 @@ module fabric_container_containerMappings 'replicationProtectionContainerMapping
     targetProtectionContainerId: contains(mapping, 'targetProtectionContainerId') ? mapping.targetProtectionContainerId : ''
     targetContainerFabricName: contains(mapping, 'targetContainerFabricName') ? mapping.targetContainerFabricName : replicationFabricName
     targetContainerName: contains(mapping, 'targetContainerName') ? mapping.targetContainerName : ''
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
   dependsOn: [
     replicationContainer

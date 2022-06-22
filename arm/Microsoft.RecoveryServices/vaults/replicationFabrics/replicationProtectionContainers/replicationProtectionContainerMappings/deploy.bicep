@@ -30,7 +30,7 @@ param enableDefaultTelemetry bool = true
 
 var policyResourceId = policyId != '' ? policyId : subscriptionResourceId('Microsoft.RecoveryServices/vaults/replicationPolicies', recoveryVaultName, policyName)
 var targetProtectionContainerResourceId = targetProtectionContainerId != '' ? targetProtectionContainerId : subscriptionResourceId('Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers', recoveryVaultName, targetContainerFabricName, targetContainerName)
-var mappingName = !empty(name) ? name : '${sourceProtectionContainerName}-${split(targetProtectionContainerResourceId, '/')[10]}'
+var mappingName = name != '' ? name : concat(sourceProtectionContainerName, '-', split(targetProtectionContainerResourceId, '/')[10])
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}-rsvPolicy'

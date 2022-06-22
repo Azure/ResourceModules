@@ -4,9 +4,6 @@ param recoveryVaultName string
 @description('Required. Name of the Azure Recovery Service Vault Protection Container.')
 param name string
 
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
-
 @description('Optional. Backup management type to execute the current Protection Container job.')
 @allowed([
   'AzureBackupServer'
@@ -27,9 +24,6 @@ param sourceResourceId string = ''
 
 @description('Optional. Friendly name of the Protection Container.')
 param friendlyName string = ''
-
-@description('Optional. Protected items to register in the container.')
-param protectedItems array = []
 
 @description('Optional. Type of the container.')
 @allowed([
@@ -61,7 +55,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers@2021-08-01' = {
+resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers@2022-02-01' = {
   name: '${recoveryVaultName}/Azure/${name}'
   properties: {
     sourceResourceId: !empty(sourceResourceId) ? sourceResourceId : null
@@ -70,23 +64,6 @@ resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/pr
     containerType: !empty(containerType) ? any(containerType) : null
   }
 }
-
-module protectionContainer_protectedItems 'protectedItems/deploy.bicep' = [for (protectedItem, index) in protectedItems: {
-  name: '${uniqueString(deployment().name, location)}-ProtectedItem-${index}'
-  params: {
-    policyId: protectedItem.policyId
-    name: protectedItem.name
-    protectedItemType: protectedItem.protectedItemType
-    protectionContainerName: name
-    recoveryVaultName: recoveryVaultName
-    sourceResourceId: protectedItem.sourceResourceId
-    location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
-  }
-  dependsOn: [
-    protectionContainer
-  ]
-}]
 
 @description('The name of the Resource Group the Protection Container was created in.')
 output resourceGroupName string = resourceGroup().name
