@@ -26,6 +26,23 @@
         "systemAssignedIdentity": {
             "value": true
         },
+        "keyValues": {
+            "value": [
+                {
+                    "name": "keyName",
+                    "value": "valueName",
+                    "contentType": "contentType",
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {

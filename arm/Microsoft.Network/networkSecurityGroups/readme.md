@@ -186,6 +186,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   params: {
     name: '<<namePrefix>>-az-nsg-min-001'
   }
+}
 ```
 
 </details>
@@ -394,6 +395,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

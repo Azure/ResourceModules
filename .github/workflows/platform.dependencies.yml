@@ -43,13 +43,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        deploymentTestPaths: ['validation.deploymentTests.json']
+        parameterFilePaths:
+          ['validation.parameters.json', 'locks.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -197,8 +197,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        deploymentTestPaths:
-          ['mg.deploymentTests.json', 'sub.deploymentTests.json']
+        deploymentTestPaths: ['mg.parameters.json', 'sub.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -256,9 +255,9 @@ jobs:
       matrix:
         deploymentTestPaths:
           [
-            'appi.deploymentTests.json',
-            'aut.deploymentTests.json',
-            'sol.deploymentTests.json',
+            'appi.parameters.json',
+            'aut.parameters.json',
+            'sol.parameters.json',
             'parameters.json',
           ]
     steps:
@@ -289,11 +288,7 @@ jobs:
       fail-fast: false
       matrix:
         deploymentTestPaths:
-          [
-            'fa.deploymentTests.json',
-            'law.deploymentTests.json',
-            'parameters.json',
-          ]
+          ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -375,7 +370,7 @@ jobs:
             $null = Convert-TokensInFile @ConvertTokensInputs
 
             # Get storage account name
-            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).deploymentTests
+            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
             # Upload files to storage account
             $functionInput = @{
@@ -549,12 +544,12 @@ jobs:
             Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.saNamespace }}' 'parameters' 'parameters.json'
             $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).deploymentTests
+            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
             Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.imgtNamespace }}' 'parameters' 'parameters.json'
             $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-            $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).deploymentTests
+            $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
             # Initializing parameters before the blob copy
             Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
@@ -683,7 +678,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        deploymentTestPaths: ['sqlMi.deploymentTests.json']
+        deploymentTestPaths: ['sqlMi.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -715,10 +710,10 @@ jobs:
       matrix:
         deploymentTestPaths:
           [
-            'apgw.deploymentTests.json',
-            'ase.deploymentTests.json',
-            'bastion.deploymentTests.json',
-            'aadds.deploymentTests.json',
+            'apgw.parameters.json',
+            'ase.parameters.json',
+            'bastion.parameters.json',
+            'aadds.parameters.json',
             'parameters.json',
           ]
     steps:
@@ -751,7 +746,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        deploymentTestPaths: ['sqlmi.deploymentTests.json']
+        deploymentTestPaths: ['sqlmi.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -783,13 +778,13 @@ jobs:
       matrix:
         deploymentTestPaths:
           [
-            'apgw.deploymentTests.json',
-            'bas.deploymentTests.json',
-            'bas.additional.deploymentTests.json',
-            'lb.deploymentTests.json',
-            'lb.min.deploymentTests.json',
-            'fw.deploymentTests.json',
-            'fw.additional.deploymentTests.json',
+            'apgw.parameters.json',
+            'bas.parameters.json',
+            'bas.additional.parameters.json',
+            'lb.parameters.json',
+            'lb.min.parameters.json',
+            'fw.parameters.json',
+            'fw.additional.parameters.json',
           ]
     steps:
       - name: 'Checkout'
@@ -944,11 +939,7 @@ jobs:
       fail-fast: false
       matrix:
         deploymentTestPaths:
-          [
-            'parameters.json',
-            'pe.deploymentTests.json',
-            'nopr.deploymentTests.json',
-          ]
+          ['parameters.json', 'pe.parameters.json', 'nopr.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1006,7 +997,7 @@ jobs:
         with:
           inlineScript: |
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'parameters.json'
-            $noprParameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'nopr.deploymentTests.json'
+            $noprParameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'nopr.parameters.json'
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
@@ -1037,10 +1028,10 @@ jobs:
             $null = Convert-TokensInFile @NoprConvertTokensInputs
 
             # Get key vault name
-            $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).deploymentTests
+            $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
             $keyVaultName = $keyVaultParameters.name.value
 
-            $noprKeyVaultParameters = (ConvertFrom-Json (Get-Content -Path $noprParameterFilePath -Raw)).deploymentTests
+            $noprKeyVaultParameters = (ConvertFrom-Json (Get-Content -Path $noprParameterFilePath -Raw)).parameters
             $noprKeyVaultName = $noprKeyVaultParameters.name.value
 
 
@@ -1128,7 +1119,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        deploymentTestPaths: ['sqlmi.deploymentTests.json']
+        deploymentTestPaths: ['sqlmi.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1185,7 +1176,7 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'sqlmi.deploymentTests.json'
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'sqlmi.parameters.json'
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
@@ -1211,7 +1202,7 @@ jobs:
             $null = Convert-TokensInFile @ConvertTokensInputs
 
             # Get key vault name
-            $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).deploymentTests
+            $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
             $keyVaultName = $keyVaultParameters.name.value
 
             # Generate values
@@ -1309,18 +1300,18 @@ jobs:
       matrix:
         deploymentTestPaths:
           [
-            '1.bastion.deploymentTests.json',
-            '2.vnetpeer01.deploymentTests.json',
-            '3.vnetpeer02.deploymentTests.json',
-            '4.azfw.deploymentTests.json',
-            '5.aks.deploymentTests.json',
-            '7.virtualHubConnection.deploymentTests.json',
-            '8.aadds.deploymentTests.json',
-            '9.azfw.deploymentTests.json',
-            '10.azfw.deploymentTests.json',
-            '11.azfw.deploymentTests.json',
-            '12.bastion.deploymentTests.json',
-            '13.bastion.deploymentTests.json',
+            '1.bastion.parameters.json',
+            '2.vnetpeer01.parameters.json',
+            '3.vnetpeer02.parameters.json',
+            '4.azfw.parameters.json',
+            '5.aks.parameters.json',
+            '7.virtualHubConnection.parameters.json',
+            '8.aadds.parameters.json',
+            '9.azfw.parameters.json',
+            '10.azfw.parameters.json',
+            '11.azfw.parameters.json',
+            '12.bastion.parameters.json',
+            '13.bastion.parameters.json',
             'parameters.json',
           ]
     steps:
@@ -1352,7 +1343,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        deploymentTestPaths: ['6.sqlmi.deploymentTests.json']
+        deploymentTestPaths: ['6.sqlmi.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1438,7 +1429,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        deploymentTestPaths: ['internal.deploymentTests.json']
+        deploymentTestPaths: ['internal.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

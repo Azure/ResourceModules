@@ -452,6 +452,7 @@ function Set-DeploymentExamplesSection {
                 '  params: {'
                 ($bicepParamsArray | ForEach-Object { "  $_" }),
                 '  }'
+                '}'
                 '```',
                 '',
                 '</details>'

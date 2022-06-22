@@ -224,6 +224,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
       }
     ]
   }
+}
 ```
 
 </details>

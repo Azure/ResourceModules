@@ -204,24 +204,24 @@ function Set-EnvironmentOnAgent {
 
         if ($IsWindows) {
             # Set step module path (process)
-            $env:PSModulePath += ('{0};{1}' -f $env:PSModulePath, $maximumVersionPath)
+            $env:PSModulePath += ";$maximumVersionPath"
             # Set job module path (machine)
             [Environment]::SetEnvironmentVariable('PSModulePath', ('{0};{1}' -f ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')), $maximumVersionPath), 'Machine')
             # Set PS-Profile (for non-ps tasks)
             if (-not (Test-Path $profile)) {
                 $null = New-Item -Path $profile -Force
             }
-            Add-Content -Path $profile -Value "`$env:PSModulePath = ('{0};{1}' -f `"`$env:PSModulePath`", '$maximumVersionPath')"
+            Add-Content -Path $profile -Value "`$env:PSModulePath += `";$maximumVersionPath`""
         } else {
             # Set step module path (process)
-            $env:PSModulePath += ('{0}:{1}' -f $env:PSModulePath, $maximumVersionPath)
+            $env:PSModulePath += ":$maximumVersionPath"
             # Set job module path (machine)
             [Environment]::SetEnvironmentVariable('PSModulePath', ('{0}:{1}' -f ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')), $maximumVersionPath), 'Machine')
             # Set PS-Profile (for non-ps tasks)
             if (-not (Test-Path $profile)) {
                 $null = New-Item -Path $profile -Force
             }
-            Add-Content -Path $profile -Value "`$env:PSModulePath = ('{0}:{1}' -f `"`$env:PSModulePath`", '$maximumVersionPath')"
+            Add-Content -Path $profile -Value "`$env:PSModulePath += `":$maximumVersionPath`""
         }
     }
 

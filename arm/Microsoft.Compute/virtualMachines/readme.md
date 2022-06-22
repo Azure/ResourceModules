@@ -1123,6 +1123,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     ]
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
   }
+}
 ```
 
 </details>
@@ -1247,6 +1248,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
@@ -1639,6 +1641,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       commandToExecute: 'sudo apt-get update'
     }
   }
+}
 ```
 
 </details>
@@ -1757,6 +1760,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     ]
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
   }
+}
 ```
 
 </details>
@@ -1871,6 +1875,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
@@ -2297,6 +2302,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command \'& .\\scriptExtensionMasterInstaller.ps1\''
     }
   }
+}
 ```
 
 </details>

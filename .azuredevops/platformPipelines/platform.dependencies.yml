@@ -47,6 +47,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/validation.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Validation Resource Group
+            - path: $(dependencyPath)/$(resourceType)/parameters/locks.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Locks Resource Group
 
   - stage: deploy_ppg
     displayName: Deploy proximity placement group

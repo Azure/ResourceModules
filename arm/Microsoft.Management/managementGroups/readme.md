@@ -162,6 +162,7 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
     displayName: 'Test MG'
     parentId: '<<managementGroupId>>'
   }
+}
 ```
 
 </details>
