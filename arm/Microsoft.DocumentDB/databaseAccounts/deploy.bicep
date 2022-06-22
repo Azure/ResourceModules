@@ -347,7 +347,7 @@ module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbD
 }]
 
 module gremlinDatabases_resource 'gremlinDatabases/deploy.bicep' = [for gremlinDatabase in gremlinDatabases: {
-  name: '${uniqueString(deployment().name, location)}-mongodb-${gremlinDatabase.name}'
+  name: '${uniqueString(deployment().name, location)}-gremlin-${gremlinDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
     name: gremlinDatabase.name
