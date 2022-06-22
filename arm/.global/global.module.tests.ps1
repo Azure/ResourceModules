@@ -1078,4 +1078,3 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
     }
 }
-}
