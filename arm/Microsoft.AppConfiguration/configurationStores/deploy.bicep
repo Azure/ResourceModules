@@ -42,6 +42,9 @@ param publicNetworkAccess string = 'Enabled'
 @maxValue(7)
 param softDeleteRetentionInDays int = 1
 
+@description('Optional. All Key / Values to create.')
+param keyValues array = []
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -151,11 +154,23 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
   properties: {
     createMode: createMode
     disableLocalAuth: disableLocalAuth
-    enablePurgeProtection: enablePurgeProtection
+    enablePurgeProtection: sku == 'Free' ? false : enablePurgeProtection
     publicNetworkAccess: publicNetworkAccess
-    softDeleteRetentionInDays: softDeleteRetentionInDays
+    softDeleteRetentionInDays: sku == 'Free' ? 0 : softDeleteRetentionInDays
   }
 }
+
+module configurationStore_keyValues 'keyValues/deploy.bicep' = [for (keyValue, index) in keyValues: {
+  name: '${uniqueString(deployment().name, location)}-appConfig-KeyValues-${index}'
+  params: {
+    appConfigurationName: configurationStore.name
+    name: keyValue.name
+    value: keyValue.value
+    contentType: contains(keyValue, 'contentType') ? keyValue.contentType : ''
+    tags: contains(keyValue, 'tags') ? keyValue.tags : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 resource configurationStore_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${configurationStore.name}-${lock}-lock'
@@ -179,7 +194,7 @@ resource configurationStore_diagnosticSettings 'Microsoft.Insights/diagnosticset
   scope: configurationStore
 }
 
-module configurationStore_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module configurationStore_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppConfig-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -191,7 +206,7 @@ module configurationStore_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
 }]
 
 module configurationStore_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-appConfiguration-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-configurationStore-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
@@ -216,7 +231,7 @@ output name string = configurationStore.name
 @description('The resource ID of the app configuration.')
 output resourceId string = configurationStore.id
 
-@description('The resource group the batch account was deployed into.')
+@description('The resource group the app configuration store was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')

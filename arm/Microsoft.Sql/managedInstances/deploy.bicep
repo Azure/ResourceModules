@@ -270,7 +270,7 @@ resource managedInstance_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
   scope: managedInstance
 }
 
-module managedInstance_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module managedInstance_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-SqlMi-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

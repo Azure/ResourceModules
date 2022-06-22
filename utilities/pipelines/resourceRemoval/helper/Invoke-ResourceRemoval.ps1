@@ -39,6 +39,20 @@ function Invoke-ResourceRemoval {
             }
             break
         }
+        'Microsoft.Authorization/locks' {
+            $lockName = ($resourceId -split '/')[-1]
+            $lockScope = ($resourceId -split '/providers/Microsoft.Authorization/locks')[0]
+
+            $null = Remove-AzResourceLock -LockName $lockName -Scope $lockScope -Force
+            Write-Verbose "Removed lock [$resourceName]. Waiting 10 seconds for propagation." -Verbose
+            Start-Sleep 10
+            break
+        }
+        'Microsoft.KeyVault/vaults/keys' {
+            Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
+            # Also, we don't want to accidently remove keys of the dependency key vault
+            break
+        }
         'Microsoft.KeyVault/vaults/accessPolicies' {
             Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
             break

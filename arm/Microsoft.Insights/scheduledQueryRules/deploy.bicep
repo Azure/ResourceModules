@@ -105,7 +105,7 @@ resource queryRule 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' =
   }
 }
 
-module queryRule_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module queryRule_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-QueryRule-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

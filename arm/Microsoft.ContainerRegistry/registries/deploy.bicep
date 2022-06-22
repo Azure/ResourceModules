@@ -12,7 +12,7 @@ param location string = resourceGroup().location
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Configuration Details for private endpoints.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @description('Optional. Tier of your Azure container registry.')
@@ -53,16 +53,6 @@ param retentionPolicyStatus string = 'enabled'
 
 @description('Optional. The number of days to retain an untagged manifest after which it gets purged.')
 param retentionPolicyDays int = 15
-
-@allowed([
-  'disabled'
-  'enabled'
-])
-@description('Optional. The value that indicates whether encryption is enabled or not.')
-param encryptionStatus string = 'disabled'
-
-@description('Optional. Identity which will be used to access key vault and Key vault uri to access the encryption key.')
-param keyVaultProperties object = {}
 
 @description('Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access.')
 param dataEndpointEnabled bool = false
@@ -158,6 +148,15 @@ param diagnosticEventHubName string = ''
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the \'acrSku\' to be \'Premium\'.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption. Note, CMK requires the \'acrSku\' to be \'Premium\'.')
+param cMKKeyName string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -198,6 +197,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource encryptionIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
+  name: last(split(cMKUserAssignedIdentityResourceId, '/'))
+  scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
+}
+
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   name: name
   location: location
@@ -208,9 +217,12 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   }
   properties: {
     adminUserEnabled: acrAdminUserEnabled
-    encryption: acrSku == 'Premium' ? {
-      keyVaultProperties: !empty(keyVaultProperties) ? keyVaultProperties : null
-      status: encryptionStatus
+    encryption: !empty(cMKKeyName) ? {
+      status: 'enabled'
+      keyVaultProperties: {
+        identity: encryptionIdentity.properties.clientId
+        keyIdentifier: cMKKeyVaultKey.properties.keyUri
+      }
     } : null
     policies: {
       exportPolicy: acrSku == 'Premium' ? {
@@ -295,7 +307,7 @@ resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2
   scope: registry
 }
 
-module registry_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module registry_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ContainerRegistry-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -43,13 +43,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['validation.parameters.json']
+        parameterFilePaths: ['validation.parameters.json', 'locks.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -254,7 +253,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['appi.parameters.json', 'aut.parameters.json', 'parameters.json']
+          ['appi.parameters.json', 'aut.parameters.json', 'sol.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

@@ -209,6 +209,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       'vault'
     ]
   }
+}
 ```
 
 </details>
@@ -299,6 +300,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

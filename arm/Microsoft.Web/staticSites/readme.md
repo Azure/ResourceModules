@@ -302,6 +302,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-wss-min-001'
   }
+}
 ```
 
 </details>
@@ -402,6 +403,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

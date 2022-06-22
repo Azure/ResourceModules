@@ -1,10 +1,10 @@
 # Common Azure Resource Modules Library
 
-The objective of this repository is to provide a template library that can be reused in Infrastructure as Code scenarios, such as landing zone, workloads or individual service deployments.
+The objective of this repository is to provide a template library that can accelerate deployments in Infrastructure as Code scenarios, such as Azure landing zones, landing zone accelerators and aspiring landing zone accelerators (workloads/applications/multi-module solutions) or individual service deployments.
 
-This wiki describes the content of this repository, the modules, pipelines, possible options on how to use them and how to contribute to this project.
+This wiki describes the content of this repository, its modules, pipelines, and possible options on how to use them and how to contribute to this project.
 
-If you're unfamiliar with Infrastructure as Code, or wonder how you can use the contents of this repository in your deployments please check out [The context](./The%20context) section of this wiki.
+If you're unfamiliar with Infrastructure as Code or wonder how you can use the content of this repository in your deployments, check out [The context](./The%20context) section of this wiki.
 
 ### _Navigation_
 
@@ -12,10 +12,11 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [CARML overview](./The%20context%20-%20CARML%20overview)
     - [The library](./The%20context%20-%20CARML%20library)
     - [The CI environment](./The%20context%20-%20CARML%20CI%20environment)
+  - [Logical layers and personas](./The%20context%20-%20Logical%20layers%20and%20personas)
 - [Getting started](./Getting%20started)
-  - [**Scenario 1:** Onboard module library and CI environment](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment)
+  - [**Scenario 1:** Consume module library only](./Getting%20started%20-%20Scenario%201%20Consume%20library)
+  - [**Scenario 2:** Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment)
     - [Check namePrefix availability](./Getting%20started%20-%20Check%20NamePrefix%20availability)
-  - [**Scenario 2:** Consume module library only](./Getting%20started%20-%20Scenario%202%20Consume%20library)
   - [**Scenario 3:** Contribute](./Getting%20started%20-%20Scenario%203%20Contribute)
 - [The library](./The%20library)
   - [Module design](./The%20library%20-%20Module%20design)
@@ -37,7 +38,7 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
   - [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally)
 - [Solution creation](./Solution%20creation)
-- Upgrade guidelines
+- Upgrade guideline
   - [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0)
 - [Known issues](./Known%20issues)
 
@@ -45,30 +46,33 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
 
 # Scope
 
-Following you can find an abstract overview of everything in- and out-of-scope of this repository.
+Following, you can find an abstract overview of everything in- and out-of-scope of this repository.
 
 ## In Scope
-- **Module library:** A collection of comprehensive, reusable, Bicep-based building blocks to deploy Azure resources, that can be combined to create & orchestrate more complex Azure solutions.
+
+- **Module library:** A collection of comprehensive, reusable, Bicep-based building blocks to deploy Azure resources, that can be combined to create & orchestrate more complex, multi-module Azure solutions.
 - **CI environment:** Pipelines to validate modules & publish the successfully validated ones to a target location, using semantic versioning. Available with both GitHub Workflows and Azure DevOps pipelines.
-- **Documentation:** Including design principles and usage of [The library](./The%20library) and [The CI environment](./The%20CI%20environment) as well as step-by-step guidelines on how to start leveraging those in the [Getting started](./Getting%20started).
+- **Documentation:** Including design principles and usage of [The library](./The%20library) and [The CI environment](./The%20CI%20environment) as well as step-by-step guidelines on how to start leveraging them - see in the [Getting started](./Getting%20started) section.
 
 ## Out of Scope
-- **Orchestration:** Orchestrated solutions such as workloads or entire environments intended for production environments
-- **Real-time Updates:** Modules are updated on a best effort basis by a group of dedicated contributors
-- **Languages:** Other design languages like _Terraform_
+
+- **Orchestration:** Orchestrated, multi-module solutions such as workloads or applications intended for production environments.
+- **Real-time Updates:** Modules are updated on a best effort basis by a group of committed contributors.
+- **Languages:** Other domain-specific languages (DSL), like _Terraform_.
 
 # Reporting Issues
 
 ## Bugs
 
-If you find any bugs, please file an issue in the [GitHub Issues][GitHubIssues] page. Please fill out the provided template with the appropriate information.
+If you find any bugs, please file an issue on the [GitHub Issues][GitHubIssues] page by filling out the provided template with the appropriate information.
+
 > Please search the existing issues before filing new issues to avoid duplicates.
 
 If you are taking the time to mention a problem, even a seemingly minor one, it is greatly appreciated, and a totally valid contribution to this project. **Thank you!**
 
 ## Feature requests
 
-If there is a feature you would like to see in here, please file an issue or feature request in the [GitHub Issues][GitHubIssues] page to provide direct feedback.
+If there is a feature you would like to see in here, please file an issue or feature request on the [GitHub Issues][GitHubIssues] page to provide direct feedback.
 
 ---
 

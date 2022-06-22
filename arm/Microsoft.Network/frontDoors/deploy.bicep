@@ -157,7 +157,7 @@ resource frontDoor_diagnosticSettingName 'Microsoft.Insights/diagnosticSettings@
   scope: frontDoor
 }
 
-module frontDoor_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module frontDoor_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppGateway-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -155,7 +155,7 @@ roleAssignments: [
         "defaultAction": "Deny",
         "virtualNetworkRules": [
             {
-                "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
             }
         ],
         "ipRules": [
@@ -180,7 +180,7 @@ networkAcls: {
     defaultAction: 'Deny'
     virtualNetworkRules: [
         {
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         }
     ]
     ipRules: [
@@ -435,6 +435,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     cMKKeyName: 'keyEncryptionKey'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
   }
+}
 ```
 
 </details>
@@ -471,6 +472,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   params: {
     allowBlobPublicAccess: false
   }
+}
 ```
 
 </details>
@@ -591,6 +593,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>
@@ -955,6 +958,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>
@@ -995,6 +999,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     storageAccountKind: 'Storage'
     allowBlobPublicAccess: false
   }
+}
 ```
 
 </details>

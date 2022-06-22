@@ -29,11 +29,18 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | :-- | :-- | :-- |
 | `name` | string | Name of your Azure container registry. |
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Note, CMK requires the 'acrSku' to be 'Premium'. Required if 'cMKeyName' is not empty. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `acrAdminUserEnabled` | bool | `False` |  | Enable admin user that have push / pull permission to the registry. |
 | `acrSku` | string | `'Basic'` | `[Basic, Premium, Standard]` | Tier of your Azure container registry. |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Note, CMK requires the 'acrSku' to be 'Premium'. |
+| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the 'acrSku' to be 'Premium'. |
 | `dataEndpointEnabled` | bool | `False` |  | Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -44,15 +51,13 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `encryptionStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether encryption is enabled or not. |
 | `exportPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the export policy is enabled or not. |
-| `keyVaultProperties` | object | `{object}` |  | Identity which will be used to access key vault and Key vault uri to access the encryption key. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkRuleBypassOptions` | string | `'AzureServices'` |  | Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None. |
 | `networkRuleSetDefaultAction` | string | `'Deny'` | `[Allow, Deny]` | The default action of allow or deny when no other rules match. |
 | `networkRuleSetIpRules` | array | `[]` |  | The IP ACL rules. |
-| `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
+| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | Whether or not public network access is allowed for the container registry. - Enabled or Disabled. |
 | `quarantinePolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the quarantine policy is enabled or not. |
 | `replications` | _[replications](replications/readme.md)_ array | `[]` |  | All replications to create. |
@@ -337,6 +342,71 @@ userAssignedIdentities: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
+            "value": "<<namePrefix>>azacrencr001"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "publicNetworkAccess": {
+            "value": "Disabled"
+        },
+        "acrSku": {
+            "value": "Premium"
+        },
+        "cMKUserAssignedIdentityResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        },
+        "cMKKeyVaultResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+        },
+        "cMKKeyName": {
+            "value": "keyEncryptionKey"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-registries'
+  params: {
+    name: '<<namePrefix>>azacrencr001'
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    publicNetworkAccess: 'Disabled'
+    acrSku: 'Premium'
+    cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    cMKKeyName: 'keyEncryptionKey'
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
             "value": "<<namePrefix>>azacrmin001"
         }
     }
@@ -356,12 +426,13 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>azacrmin001'
   }
+}
 ```
 
 </details>
 <p>
 
-<h3>Example 2</h3>
+<h3>Example 3</h3>
 
 <details>
 
@@ -442,6 +513,9 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
         },
+        "publicNetworkAccess": {
+            "value": "Disabled"
+        },
         "privateEndpoints": {
             "value": [
                 {
@@ -501,6 +575,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
+    publicNetworkAccess: 'Disabled'
     privateEndpoints: [
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
@@ -508,6 +583,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
