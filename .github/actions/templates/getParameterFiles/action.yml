@@ -7,15 +7,15 @@ inputs:
     required: true
 
 outputs:
-  deploymentTestPaths:
+  parameterFilePaths:
     description: 'The parameter files to use for template evaluation'
-    value: ${{ steps.get-deployment-test-paths.outputs.deploymentTestPaths }}
+    value: ${{ steps.get-parameter-file-paths.outputs.deploymentTestPaths }}
 
 runs:
   using: 'composite'
   steps:
     - name: 'Get parameter file paths'
-      id: get-deployment-test-paths
+      id: get-parameter-file-paths
       shell: pwsh
       run: |
         # Grouping task logs
