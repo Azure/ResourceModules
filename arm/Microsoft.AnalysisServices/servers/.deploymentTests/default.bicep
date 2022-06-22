@@ -23,16 +23,13 @@ param serviceShort string = 'aspar'
 
 // General resources
 // =================
-module resourceGroup '../../../Microsoft.Resources/resourceGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-rg'
-  params: {
-    name: resourceGroupName
-    location: location
-  }
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: resourceGroupName
+  location: location
 }
 
-module managedIdentity 'nestedTemplates/parameters.nested.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
+module managedIdentity 'nestedTemplates/default.nested.bicep' = {
+  scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-${namePrefix}-az-msi-${serviceShort}-01'
@@ -42,7 +39,7 @@ module managedIdentity 'nestedTemplates/parameters.nested.bicep' = {
 // Diagnostics
 // ===========
 module diagnosticDependencies '../../../.global/dependencyConstructs/diagnostic.dependencies.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
+  scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
     storageAccountName: 'adp${namePrefix}azsa${serviceShort}01'
@@ -58,7 +55,7 @@ module diagnosticDependencies '../../../.global/dependencyConstructs/diagnostic.
 // ============== //
 
 module servers '../deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
+  scope: resourceGroup
   name: '${uniqueString(deployment().name)}-servers-${serviceShort}'
   params: {
     name: '${namePrefix}azas${serviceShort}001'
