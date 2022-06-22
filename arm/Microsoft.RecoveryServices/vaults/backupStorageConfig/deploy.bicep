@@ -16,6 +16,22 @@ param storageModelType string = 'GeoRedundant'
 @description('Optional. Opt in details of Cross Region Restore feature.')
 param crossRegionRestoreFlag bool = true
 
+@description('Optional. Change Vault Dedup state.')
+@allowed([
+  'Disabled'
+  'Enabled'
+  'Invalid'
+])
+param dedupState string = 'Disabled'
+
+@description('Optional. Change Vault x-cool state.')
+@allowed([
+  'Disabled'
+  'Enabled'
+  'Invalid'
+])
+param xcoolState string = 'Disabled'
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -31,16 +47,18 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' existing = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-02-01' existing = {
   name: recoveryVaultName
 }
 
-resource backupStorageConfig 'Microsoft.RecoveryServices/vaults/backupstorageconfig@2021-08-01' = {
+resource backupStorageConfig 'Microsoft.RecoveryServices/vaults/backupstorageconfig@2022-02-01' = {
   name: name
   parent: rsv
   properties: {
     storageModelType: storageModelType
     crossRegionRestoreFlag: crossRegionRestoreFlag
+    dedupState: dedupState
+    xcoolState: xcoolState
   }
 }
 
