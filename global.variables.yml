@@ -4,6 +4,7 @@ variables:
   ###########################################################################################################################
 
   modulesFolderRelativePath: 'arm'
+  pesterTestsFolderRelativePath: 'arm/.global'
 
   ######################################
   # Validation deployment settings
