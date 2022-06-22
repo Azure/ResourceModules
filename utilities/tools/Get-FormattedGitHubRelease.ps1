@@ -25,16 +25,16 @@ Optional. The target branch to fetch the Pull Request information for. For examp
 Optional. The previous release tag to get the diff in Pull Requests for. Defaults to the latest release. For eaxample 'v0.0.0'
 
 .EXAMPLE
-Format-Release -TargetReleaseTag 'v0.6.0' -PersonalAccessToken '<A PAT>'
+Get-FormattedGitHubRelease -TargetReleaseTag 'v0.6.0' -PersonalAccessToken '<A PAT>'
 
 Get the formatted release notes for a future release with tag 'v0.6.0'.
 
 .EXAMPLE
-Format-Release -TargetReleaseTag 'v1.0.0' -PreviousReleaseTag 'v0.4.0' -PersonalAccessToken '<A PAT>'
+Get-FormattedGitHubRelease -TargetReleaseTag 'v1.0.0' -PreviousReleaseTag 'v0.4.0' -PersonalAccessToken '<A PAT>'
 
 Get the formatted release notes for a future release with tag 'v1.0.0' - containing all the Pull Requests in between tag 'v0.4.0' and 'v1.0.0'.
 #>
-function Format-Release {
+function Get-FormattedGitHubRelease {
 
     [CmdletBinding()]
     param (
