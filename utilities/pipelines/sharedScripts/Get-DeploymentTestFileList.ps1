@@ -22,18 +22,26 @@ function Get-DeploymentTestFileList {
         [string] $ModulePath
     )
 
-    $parameters = (Get-ChildItem -Path (Join-Path $ModulePath '.parameters') -Include ('*parameters.json', '*parameters.bicep') -Recurse -File).FullName
+    $deploymentTests = @()
+    if (Test-Path (Join-Path $ModulePath '.deploymentTests')) {
+        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath '.deploymentTests') -Filter '*.bicep' -File).FullName
+    }
 
-    if (-not $parameters) {
+    # Can be removed once all modules are migrated
+    if (Test-Path (Join-Path $ModulePath '.parameters')) {
+        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath '.parameters') -Include ('*parameters.json') -Recurse -File).FullName
+    }
+
+    if (-not $deploymentTests) {
         throw "No deployment test files found for module [$ModulePath]"
     }
 
-    $parameters = $parameters | ForEach-Object {
+    $deploymentTests = $deploymentTests | ForEach-Object {
         $_.Replace($ModulePath, '').Trim('\').Trim('/')
     }
 
     Write-Verbose 'Found parameter files'
-    $parameters | ForEach-Object { Write-Verbose "- $_" }
+    $deploymentTests | ForEach-Object { Write-Verbose "- $_" }
 
-    return $parameters
+    return $deploymentTests
 }
