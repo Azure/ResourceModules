@@ -12,7 +12,7 @@
             "value": "Face"
         },
         "sku": {
-            "value": "F0"
+            "value": "S0"
         },
         "roleAssignments": {
             "value": [
@@ -23,6 +23,20 @@
                     ]
                 }
             ]
+        },
+        "networkAcls": {
+            "value": {
+                "defaultAction": "deny",
+                "virtualNetworkRules": [
+                    {
+                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+                        "action": "Allow"
+                    }
+                ]
+            }
+        },
+        "customSubDomainName": {
+            "value": "<<namePrefix>>xdomain"
         },
         "systemAssignedIdentity": {
             "value": true
