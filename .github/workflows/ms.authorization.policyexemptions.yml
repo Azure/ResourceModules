@@ -59,7 +59,7 @@ jobs:
           modulePath: '${{ env.modulePath }}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-      deploymentTestPaths: ${{ steps.get-parameter-file-paths.outputs.deploymentTestPaths }}
+      parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
   #########################
   #   Static validation   #
@@ -89,7 +89,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        deploymentTestPaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.deploymentTestPaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -102,11 +102,11 @@ jobs:
       # ------------------- #
       ##  Deploy & Remove  ##
       # ------------------- #
-      - name: 'Using parameter file [${{ matrix.deploymentTestPaths }}]'
+      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/${{ matrix.deploymentTestPaths }}'
+          parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
