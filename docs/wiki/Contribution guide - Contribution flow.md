@@ -65,8 +65,10 @@ Once the contribution is implemented and the changes are pushed to your forked r
 
 Finally, once your contribution is implemented and validated, open a PR for the CARML maintainers to review. Make sure you:
 
+- Make sure you provide a meaningful PR title and description.
 - Follow instructions you find in the PR template.
 - Set your Github handle as assignee.
+- Assign the PR with meaningful labels, based on the intended improvements (e.g., modules, pipelines, bug, documentation).
 - Reference the issue number as per the [Create or pick up an issue](#create-or-pick-up-an-issue) step.
 - If applicable, please reference the badge status of your pipeline run. This badge will show the reviewer that the code changes were successfully validated & tested in your environment. To create a badge, first select the three dots (`...`) at the top right of the pipeline, and then chose the `Create status badge` option.
 
