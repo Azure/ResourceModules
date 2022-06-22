@@ -53,7 +53,7 @@ jobs:
         with:
           workflowPath: '${{ env.workflowPath}}'
       - name: 'Get parameter file paths'
-        id: get-deployment-test-paths
+        id: get-parameter-file-paths
         uses: ./.github/actions/templates/getParameterFiles
         with:
           modulePath: '${{ env.modulePath }}'
