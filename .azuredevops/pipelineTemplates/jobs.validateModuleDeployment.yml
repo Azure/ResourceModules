@@ -81,7 +81,6 @@ jobs:
         vmImage: ${{ parameters.vmImage }}
       ${{ if ne(parameters.poolName, '') }}:
         name: ${{ parameters.poolName }}
-    ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
       dependsOn:
         - getParameterFilePaths
       strategy:
@@ -140,8 +139,9 @@ jobs:
                 # Load Settings File
                 $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
 
-                Write-Verbose '$(parameterFilePath)' -Verbose
-                Write-Verbose '${{ parameters.parameterFilePath }}' -Verbose
+                if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
+                  Write-Verbose 'Skipping token replacement as the deployment test file is no JSON-Parameter file' -Verbose
+                }
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
@@ -201,7 +201,13 @@ jobs:
             # ----------- #
             # INVOKE TEST #
             # ----------- #
-            $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+
+            if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
+            } else {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            }
+
             $functionInput    = @{
               templateFilePath     = $templateFilePath
               location             = '${{ parameters.location }}'
@@ -211,7 +217,7 @@ jobs:
               additionalParameters = @{}
             }
 
-            if ( '${{ parameters.templateFilePath }}' -inotmatch '.dependencies' ) {
+            if((Split-Path '$(parameterFilePath)' -Extension) -eq '.json') {
               $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
 
@@ -261,6 +267,12 @@ jobs:
             # ----------------- #
             # INVOKE DEPLOYMENT #
             # ----------------- #
+            if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
+            } else {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            }
+
             $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             $functionInput = @{
               templateFilePath     = $templateFilePath
@@ -272,7 +284,7 @@ jobs:
               additionalParameters = @{}
             }
 
-            if ( '${{ parameters.templateFilePath }}' -inotmatch '.dependencies' ) {
+            if((Split-Path '$(parameterFilePath)' -Extension) -eq '.json') {
               $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
 
@@ -340,8 +352,8 @@ jobs:
             # Load used function
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
-            if(-not [String]::IsNullOrEmpty('${{ parameters.templateFilePath }}')) {
-              $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
             } else {
               # Use default path
               $templateFilePath = (Test-Path (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep')) ?
