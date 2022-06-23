@@ -113,14 +113,14 @@ param description string = ''
 @sys.description('Optional. URL for the discovery service to identify regional endpoints for machine learning experimentation services.')
 param discoveryUrl string = ''
 
-@sys.description('Optional. The Resource ID of the user assigned identity that will be used to access the customer managed key vault.')
-param encryptionIdentity string = ''
+@sys.description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
 
-@sys.description('Conditional. Key vault URI to access the encryption key. Required if an \'encryptionIdentity\' was provided.')
-param encryptionKeyIdentifier string = ''
+@sys.description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
+param cMKKeyName string = ''
 
-@sys.description('Conditional. The ResourceID of the keyVault where the customer owned encryption key is present. Required if an \'encryptionIdentity\' was provided.')
-param encryptionKeyVaultResourceId string = ''
+@sys.description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
 
 @sys.description('Optional. The compute name for image build.')
 param imageBuildCompute string = ''
@@ -181,6 +181,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
   name: name
   location: location
@@ -200,15 +205,15 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     allowPublicAccessWhenBehindVnet: allowPublicAccessWhenBehindVnet
     description: description
     discoveryUrl: discoveryUrl
-    encryption: any({
-      identity: !empty(encryptionIdentity) ? {
-        userAssignedIdentity: encryptionIdentity
-      } : null
-      keyVaultProperties: !empty(encryptionIdentity) ? {
-        keyIdentifier: encryptionKeyIdentifier
-        keyVaultArmId: encryptionKeyVaultResourceId
-      } : null
-    })
+    encryption: !empty(cMKKeyName) ? {
+      identity: {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      }
+      keyVaultProperties: {
+        keyVaultArmId: cMKKeyVaultResourceId
+        keyIdentifier: cMKKeyVaultKey.properties.keyUri
+      }
+    } : null
     imageBuildCompute: imageBuildCompute
     primaryUserAssignedIdentity: primaryUserAssignedIdentity
     publicNetworkAccess: publicNetworkAccess

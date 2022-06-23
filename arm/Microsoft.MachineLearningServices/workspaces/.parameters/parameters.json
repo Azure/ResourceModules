@@ -34,13 +34,13 @@
         "discoveryUrl": {
             "value": "http://example.com"
         },
-        "encryptionIdentity": {
+        "cMKUserAssignedIdentityResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
         },
-        "encryptionKeyIdentifier": {
-            "value": "https://adp-carml-az-kv-nopr-002.vault.azure.net/keys/keyEncryptionKey/5263fcde203347baa7cda35d074073b2" // ID must be updated for new keys
+        "cMKKeyName": {
+            "value": "keyEncryptionKey"
         },
-        "encryptionKeyVaultResourceId": {
+        "cMKKeyVaultResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-carml-az-kv-nopr-002"
         },
         "imageBuildCompute": {
