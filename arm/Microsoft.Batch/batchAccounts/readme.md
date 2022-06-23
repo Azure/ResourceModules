@@ -497,7 +497,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
                         }
                     },
                     "displayName": "hellotest",
-                    "interNodeCommunication": "enabled",
+                    "interNodeCommunication": "Enabled",
                     "metadata": "helloworld",
                     "networkConfiguration": {
                         "dynamicVNetAssignmentScope": "Job",
@@ -573,7 +573,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
           }
         }
         displayName: 'hellotest'
-        interNodeCommunication: 'enabled'
+        interNodeCommunication: 'Enabled'
         metadata: 'helloworld'
         networkConfiguration: {
           dynamicVNetAssignmentScope: 'Job'
