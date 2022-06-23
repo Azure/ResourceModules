@@ -89,13 +89,11 @@ Describe 'File/folder tests' -Tag Modules {
             (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [.parameters/.deploymentTests] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        It '[<moduleFolderName>] Module should contain a [.deploymentTests] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
             param( [string] $moduleFolderPath )
 
-            $hasParameterTestFolder = Test-Path (Join-Path -Path $moduleFolderPath '.parameters')
             $hasDeploymentTestFolder = Test-Path (Join-Path -Path $moduleFolderPath '.deploymentTests')
-
             $hasParameterTestFolder -or $hasDeploymentTestFolder | Should -Be $true
         }
 
@@ -509,14 +507,22 @@ Describe 'Deployment template tests' -Tag Template {
             $TemplateFile_AllParameterNames = $templateFile_Parameters.Keys | Sort-Object
             $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.Keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
 
-            if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
-                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
-                foreach ($ParameterFilePath in $ParameterFilePaths) {
-                    $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.Keys | Sort-Object
+            if (Test-Path (Join-Path $moduleFolderPath '.deploymentTests')) {
+
+                # Can be removed over migration to bicep test files
+                $deploymentTestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.deploymentTests')).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+
+                foreach ($deploymentTestFilePath in $deploymentTestFilePaths) {
+                    if ((Split-Path $deploymentTestFilePath -Extension) -eq '.json') {
+                        $deploymentTestFile_AllParameterNames = ((Get-Content $deploymentTestFilePath) | ConvertFrom-Json -AsHashtable).parameters.Keys | Sort-Object
+                    } else {
+                        $deploymentFileContent = az bicep build --file $deploymentTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                        $deploymentTestFile_AllParameterNames = $deploymentFileContent.resources[-1].properties.parameters.keys | Sort-Object # The last resource should be the test
+                    }
                     $parameterFileTestCases += @{
-                        parameterFile_Path                   = $ParameterFilePath
-                        parameterFile_Name                   = Split-Path $ParameterFilePath -Leaf
-                        parameterFile_AllParameterNames      = $parameterFile_AllParameterNames
+                        parameterFile_Path                   = $deploymentTestFilePath
+                        parameterFile_Name                   = Split-Path $deploymentTestFilePath -Leaf
+                        parameterFile_AllParameterNames      = $deploymentTestFile_AllParameterNames
                         templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
                         templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
                         tokenSettings                        = $Settings.parameterFileTokens
