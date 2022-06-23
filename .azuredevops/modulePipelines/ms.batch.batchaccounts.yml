@@ -49,6 +49,7 @@ stages:
             - path: $(modulePath)/.parameters/parameters.json
             - path: $(modulePath)/.parameters/pool.min.parameters.json
             - path: $(modulePath)/.parameters/pool.parameters.json
+            - path: $(modulePath)/.parameters/app.parameters.json
 
   - stage: Publishing
     displayName: Publishing
