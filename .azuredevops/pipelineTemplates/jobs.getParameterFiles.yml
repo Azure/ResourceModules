@@ -39,10 +39,10 @@ jobs:
             $deploymentTestPaths = Get-DeploymentTestFileList @functionInput -Verbose
 
             $testTable = @{}
-            foreach($parameterFilePath in $deploymentTestPaths) {
-              $parameterFileName = Split-Path $parameterFilePath -Leaf
-              $testTable[$parameterFileName] = @{
-                parameterFilePath = $parameterFilePath
+            foreach($deploymentTestPath in $deploymentTestPaths) {
+              $deploymentTestFileName = Split-Path $deploymentTestPath -Leaf
+              $testTable[$deploymentTestFileName] = @{
+                parameterFilePath = $deploymentTestPath
               }
             }
 

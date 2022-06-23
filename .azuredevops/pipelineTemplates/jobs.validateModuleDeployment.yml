@@ -81,10 +81,10 @@ jobs:
         vmImage: ${{ parameters.vmImage }}
       ${{ if ne(parameters.poolName, '') }}:
         name: ${{ parameters.poolName }}
-      dependsOn:
-        - getParameterFilePaths
-      strategy:
-        matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+    dependsOn:
+      - getParameterFilePaths
+    strategy:
+      matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
     ##---------------------------------------------##
     ## TEMPLATE LOGIC                              ##
     ##---------------------------------------------##
