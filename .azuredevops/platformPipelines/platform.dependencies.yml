@@ -134,23 +134,23 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Function App
 
-  - stage: deploy_pa
-    displayName: Deploy policy assignment
-    dependsOn:
-      - deploy_rg
-    variables:
-      resourceType: 'Microsoft.Authorization/policyAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/mg.parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: Policy assignment (mg)
-            - path: $(dependencyPath)/$(resourceType)/parameters/sub.parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: Policy assignment (sub)
+  #- stage: deploy_pa
+  #  displayName: Deploy policy assignment
+  #  dependsOn:
+  #    - deploy_rg
+  #  variables:
+  #    resourceType: 'Microsoft.Authorization/policyAssignments'
+  #    templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+  #  jobs:
+  #    - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+  #      parameters:
+  #        deploymentBlocks:
+  #          - path: $(dependencyPath)/$(resourceType)/parameters/mg.parameters.json
+  #            templateFilePath: $(templateFilePath)
+  #            displayName: Policy assignment (mg)
+  #          - path: $(dependencyPath)/$(resourceType)/parameters/sub.parameters.json
+  #            templateFilePath: $(templateFilePath)
+  #            displayName: Policy assignment (sub)
 
   - stage: deploy_evh
     displayName: Deploy event hub
