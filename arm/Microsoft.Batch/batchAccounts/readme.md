@@ -516,7 +516,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
                         "fixedScale": {
                             "resizeTimeout": "PT15M",
                             "targetDedicatedNodes": 1,
-                            "targetLowPriorityNodes": 1
+                            "targetLowPriorityNodes": 0
                         }
                     },
                     "startTask": {
@@ -595,7 +595,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
           fixedScale: {
             resizeTimeout: 'PT15M'
             targetDedicatedNodes: 1
-            targetLowPriorityNodes: 1
+            targetLowPriorityNodes: 0
           }
         }
         startTask: {
