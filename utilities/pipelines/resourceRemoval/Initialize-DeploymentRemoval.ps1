@@ -56,7 +56,7 @@ function Initialize-DeploymentRemoval {
             $null = Set-AzContext -Subscription $subscriptionId
         }
 
-        $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
+        $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase # TODO: For deployment test files, this needs to go one level up (not for classic tests though)
 
         # The initial sequence is a general order-recommendation
         $removalSequence = @(
