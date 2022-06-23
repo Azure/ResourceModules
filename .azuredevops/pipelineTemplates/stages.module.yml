@@ -4,10 +4,10 @@ parameters:
   templateFilePath: ''
 
 stages:
-  - stage: validation
-    displayName: Static validation
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+  # - stage: validation
+  #   displayName: Static validation
+  #   jobs:
+  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: deployment
     displayName: Deployment validation
