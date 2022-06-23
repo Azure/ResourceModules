@@ -203,13 +203,19 @@ jobs:
             # INVOKE TEST #
             # ----------- #
 
+            # Collecting information
             if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
               $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             } else {
               $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
             }
 
-            $functionInput    = @{
+            $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+            $parameters = $templateContent.parameters.Keys
+            $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+
+            # Building input object
+            $functionInput = @{
               templateFilePath     = $templateFilePath
               location             = '${{ parameters.location }}'
               resourceGroupName    = '${{ parameters.resourceGroupName }}'
@@ -222,10 +228,6 @@ jobs:
               $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
 
-            # Collect information
-            $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
-            $parameters = $templateContent.parameters.Keys
-
             # Pass required parameters
             if($parameters -contains 'namePrefix') {
               $functionInput['additionalParameters'] += @{
@@ -233,7 +235,6 @@ jobs:
               }
             }
 
-            $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
             if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
@@ -267,13 +268,19 @@ jobs:
             # ----------------- #
             # INVOKE DEPLOYMENT #
             # ----------------- #
+
             if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
               $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             } else {
               $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
             }
 
-            $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            # Collect information
+            $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+            $parameters = $templateContent.parameters.Keys
+            $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+
+            # Building input object
             $functionInput = @{
               templateFilePath     = $templateFilePath
               location             = '${{ parameters.location }}'
@@ -288,10 +295,6 @@ jobs:
               $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
 
-            # Collect information
-            $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
-            $parameters = $templateContent.parameters.Keys
-
             # Pass required parameters
             if($parameters -contains 'namePrefix') {
               $functionInput['additionalParameters'] += @{
@@ -299,7 +302,6 @@ jobs:
               }
             }
 
-            $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
             if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
