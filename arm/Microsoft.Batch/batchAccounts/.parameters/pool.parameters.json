@@ -28,7 +28,7 @@
                         }
                     },
                     "displayName": "hellotest",
-                    "interNodeCommunication": "enabled",
+                    "interNodeCommunication": "Enabled",
                     "metadata": "helloworld",
                     "networkConfiguration": {
                         "dynamicVNetAssignmentScope": "Job",
