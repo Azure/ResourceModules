@@ -1,5 +1,5 @@
-name: 'Get parameter files'
-description: 'Retrieve the parameter file paths of a given module'
+name: 'Get deployment test files'
+description: 'Retrieve the deployment test file paths of a given module'
 
 inputs:
   modulePath:
@@ -14,7 +14,7 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Get parameter file paths'
+    - name: 'Get deployment test file paths'
       id: get-parameter-file-paths
       shell: pwsh
       run: |
@@ -22,18 +22,23 @@ runs:
         Write-Output "::group::Get parameter files"
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-DeploymentTestFileList.ps1')
+
         $functionInput = @{
           ModulePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.modulePath }}'
         }
+
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
         # Get the list of parameter file paths
         $deploymentTestPaths = Get-DeploymentTestFileList @functionInput -Verbose
+
         # Output values to be accessed by next jobs
         $compressedOutput = $deploymentTestPaths | ConvertTo-Json -Compress
         if($compressedOutput -notmatch "\[.*\]") {
           $compressedOutput = "[$compressedOutput]"
         }
+
         Write-Verbose "Publishing output: $compressedOutput" -Verbose
         Write-Output "::set-output name=deploymentTestPaths::$compressedOutput"
         Write-Output "::endgroup::"
