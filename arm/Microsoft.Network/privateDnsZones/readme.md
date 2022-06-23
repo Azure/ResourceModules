@@ -194,6 +194,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-privdns-x-001.com'
   }
+}
 ```
 
 </details>
@@ -586,6 +587,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

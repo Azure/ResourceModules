@@ -199,6 +199,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
       }
     ]
   }
+}
 ```
 
 </details>

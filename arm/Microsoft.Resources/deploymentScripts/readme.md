@@ -208,6 +208,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     cleanupPreference: 'Always'
     timeout: 'PT30M'
   }
+}
 ```
 
 </details>
@@ -284,6 +285,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     cleanupPreference: 'Always'
     timeout: 'PT30M'
   }
+}
 ```
 
 </details>

@@ -145,6 +145,7 @@ module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bice
     }
     workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
   }
+}
 ```
 
 </details>

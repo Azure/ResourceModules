@@ -256,6 +256,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   params: {
     name: 'synplhmin001'
   }
+}
 ```
 
 </details>
@@ -340,6 +341,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

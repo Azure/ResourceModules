@@ -210,6 +210,7 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

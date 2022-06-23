@@ -332,6 +332,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
@@ -420,6 +421,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
       ]
     }
   }
+}
 ```
 
 </details>
@@ -460,6 +462,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     name: '<<namePrefix>>-az-bas-min-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002'
   }
+}
 ```
 
 </details>
@@ -554,6 +557,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

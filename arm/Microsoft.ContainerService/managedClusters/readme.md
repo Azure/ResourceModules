@@ -589,6 +589,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     systemAssignedIdentity: true
   }
+}
 ```
 
 </details>
@@ -819,6 +820,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
+}
 ```
 
 </details>

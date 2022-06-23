@@ -1,4 +1,4 @@
-This section provides the step-by-step process we suggest to follow for contributions to our repository. It also provides details on specific utilities developed to support you with this task.
+This section provides the step-by-step process we suggest to follow for contributions to the CARML repository. It also provides details on specific utilities developed to support you with this task.
 
 ---
 

@@ -180,6 +180,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-avs-min-001'
   }
+}
 ```
 
 </details>
@@ -242,6 +243,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
     ]
     proximityPlacementGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-x-001'
   }
+}
 ```
 
 </details>

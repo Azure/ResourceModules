@@ -381,6 +381,7 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
     enableBgp: false
     location: 'eastus'
   }
+}
 ```
 
 </details>
