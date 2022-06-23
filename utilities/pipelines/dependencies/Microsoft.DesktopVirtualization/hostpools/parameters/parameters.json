@@ -48,7 +48,7 @@
                 }
             }
         },
-        "validationEnviroment": {
+        "validationEnvironment": {
             "value": false
         }
     }

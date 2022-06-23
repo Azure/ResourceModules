@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>azacrx001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "acrAdminUserEnabled": {
             "value": false
         },
@@ -25,6 +28,14 @@
                 {
                     "name": "northeurope",
                     "location": "northeurope"
+                }
+            ]
+        },
+        "webhooks": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>azacrx001webhook",
+                    "serviceUri": "https://www.contoso.com/webhook"
                 }
             ]
         },
@@ -60,6 +71,9 @@
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
+        },
+        "publicNetworkAccess": {
+            "value": "Disabled"
         },
         "privateEndpoints": {
             "value": [

@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-sbn-x-002"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "skuName": {
             "value": "Premium"
         },
@@ -151,6 +154,14 @@
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "namespace"
+                }
+            ]
         }
     }
 }

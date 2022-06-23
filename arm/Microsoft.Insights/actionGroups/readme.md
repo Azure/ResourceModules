@@ -7,6 +7,7 @@ This module deploys an Action Group.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -47,37 +48,74 @@ This module deploys an Action Group.
 
 See [Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
 
-Example:
+<details>
+
+<summary>Parameter JSON file</summary>
 
 ```json
-"emailReceivers":{
-  "value":[
-    {
-      "name": "TestUser_-EmailAction-",
-      "emailAddress": "test.user@testcompany.com",
-      "useCommonAlertSchema": true
-    },
-    {
-      "name": "TestUser2",
-      "emailAddress": "test.user2@testcompany.com",
-      "useCommonAlertSchema": true
-    }
-  ]
+"emailReceivers": {
+    "value": [
+        {
+            "name": "TestUser_-EmailAction-",
+            "emailAddress": "test.user@testcompany.com",
+            "useCommonAlertSchema": true
+        },
+        {
+            "name": "TestUser2",
+            "emailAddress": "test.user2@testcompany.com",
+            "useCommonAlertSchema": true
+        }
+    ]
 },
-"smsReceivers":{
-  "value": [
-    {
-      "name": "TestUser_-SMSAction-",
-      "countryCode": "1",
-      "phoneNumber": "2345678901"
-    }
-  ]
+"smsReceivers": {
+    "value": [
+        {
+            "name": "TestUser_-SMSAction-",
+            "countryCode": "1",
+            "phoneNumber": "2345678901"
+        }
+    ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+emailReceivers: [
+    {
+        name: 'TestUser_-EmailAction-'
+        emailAddress: 'test.user@testcompany.com'
+        useCommonAlertSchema: true
+    }
+    {
+        name: 'TestUser2'
+        emailAddress: 'test.user2@testcompany.com'
+        useCommonAlertSchema: true
+    }
+]
+smsReceivers: [
+    {
+        name: 'TestUser_-SMSAction-'
+        countryCode: '1'
+        phoneNumber: '2345678901'
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "roleAssignments": {
@@ -101,9 +139,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "tags": {
@@ -117,6 +188,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ### Additional notes on parameters
 
@@ -138,3 +229,106 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the action group . |
 | `resourceGroupName` | string | The resource group the action group was deployed into. |
 | `resourceId` | string | The resource ID of the action group . |
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-ag-x-001"
+        },
+        "groupShortName": {
+            "value": "azagweux001"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "emailReceivers": {
+            "value": [
+                {
+                    "name": "TestUser_-EmailAction-",
+                    "emailAddress": "test.user@testcompany.com",
+                    "useCommonAlertSchema": true
+                },
+                {
+                    "name": "TestUser2",
+                    "emailAddress": "test.user2@testcompany.com",
+                    "useCommonAlertSchema": true
+                }
+            ]
+        },
+        "smsReceivers": {
+            "value": [
+                {
+                    "name": "TestUser_-SMSAction-",
+                    "countryCode": "1",
+                    "phoneNumber": "2345678901"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-actionGroups'
+  params: {
+    name: '<<namePrefix>>-az-ag-x-001'
+    groupShortName: 'azagweux001'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    emailReceivers: [
+      {
+        name: 'TestUser_-EmailAction-'
+        emailAddress: 'test.user@testcompany.com'
+        useCommonAlertSchema: true
+      }
+      {
+        name: 'TestUser2'
+        emailAddress: 'test.user2@testcompany.com'
+        useCommonAlertSchema: true
+      }
+    ]
+    smsReceivers: [
+      {
+        name: 'TestUser_-SMSAction-'
+        countryCode: '1'
+        phoneNumber: '2345678901'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>

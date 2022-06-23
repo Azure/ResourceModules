@@ -7,6 +7,7 @@ This module deploys an AVD Scaling Plan.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -51,50 +52,107 @@ Multiple schedules can be provided as needed. If a schedule is not provided, a d
 ```json
 "schedules" : {
     "value": [
-    {
-        "rampUpStartTime": {
-            "hour": 7,
-            "minute": 0
-        },
+        {
+            "rampUpStartTime": {
+                "hour": 7,
+                "minute": 0
+            },
             "peakStartTime": {
-            "hour": 9,
-            "minute": 0
-        },
+                "hour": 9,
+                "minute": 0
+            },
             "rampDownStartTime": {
-            "hour": 18,
-            "minute": 0
-        },
-        "offPeakStartTime": {
-            "hour": 20,
-            "minute": 0
-        },
-        "name": "weekdays_schedule",
+                "hour": 18,
+                "minute": 0
+            },
+            "offPeakStartTime": {
+                "hour": 20,
+                "minute": 0
+            },
+            "name": "weekdays_schedule",
             "daysOfWeek": [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday"
-        ],
-        "rampUpLoadBalancingAlgorithm": "DepthFirst",
-        "rampUpMinimumHostsPct": 20,
-        "rampUpCapacityThresholdPct": 60,
-        "peakLoadBalancingAlgorithm": "DepthFirst",
-        "rampDownLoadBalancingAlgorithm": "DepthFirst",
-        "rampDownMinimumHostsPct": 10,
-        "rampDownCapacityThresholdPct": 90,
-        "rampDownForceLogoffUsers": true,
-        "rampDownWaitTimeMinutes": 30,
-        "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
-        "rampDownStopHostsWhen": "ZeroSessions",
-        "offPeakLoadBalancingAlgorithm": "DepthFirst"
-    }]
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+            ],
+            "rampUpLoadBalancingAlgorithm": "DepthFirst",
+            "rampUpMinimumHostsPct": 20,
+            "rampUpCapacityThresholdPct": 60,
+            "peakLoadBalancingAlgorithm": "DepthFirst",
+            "rampDownLoadBalancingAlgorithm": "DepthFirst",
+            "rampDownMinimumHostsPct": 10,
+            "rampDownCapacityThresholdPct": 90,
+            "rampDownForceLogoffUsers": true,
+            "rampDownWaitTimeMinutes": 30,
+            "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
+            "rampDownStopHostsWhen": "ZeroSessions",
+            "offPeakLoadBalancingAlgorithm": "DepthFirst"
+        }
+    ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+'schedules': [
+    {
+        rampUpStartTime: {
+            hour: 7
+            minute: 0
+        }
+        peakStartTime: {
+            hour: 9
+            minute: 0
+        }
+        rampDownStartTime: {
+            hour: 18
+            minute: 0
+        }
+        offPeakStartTime: {
+            hour: 20
+            minute: 0
+        }
+        name: 'weekdays_schedule'
+        daysOfWeek: [
+            'Monday'
+            'Tuesday'
+            'Wednesday'
+            'Thursday'
+            'Friday'
+        ]
+        rampUpLoadBalancingAlgorithm: 'DepthFirst'
+        rampUpMinimumHostsPct: 20
+        rampUpCapacityThresholdPct: 60
+        peakLoadBalancingAlgorithm: 'DepthFirst'
+        rampDownLoadBalancingAlgorithm: 'DepthFirst'
+        rampDownMinimumHostsPct: 10
+        rampDownCapacityThresholdPct: 90
+        rampDownForceLogoffUsers: true
+        rampDownWaitTimeMinutes: 30
+        rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
+        rampDownStopHostsWhen: 'ZeroSessions'
+        offPeakLoadBalancingAlgorithm: 'DepthFirst'
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "tags": {
@@ -109,9 +167,33 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "roleAssignments": {
@@ -135,6 +217,35 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -143,3 +254,42 @@ Create a role assignment for the given resource. If you want to assign a service
 | `name` | string | The name of the AVD scaling plan. |
 | `resourceGroupName` | string | The resource group the AVD scaling plan was deployed into. |
 | `resourceId` | string | The resource ID of the AVD scaling plan. |
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-avdsp-x-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-scalingplans'
+  params: {
+    name: '<<namePrefix>>-az-avdsp-x-001'
+  }
+}
+```
+
+</details>
+<p>

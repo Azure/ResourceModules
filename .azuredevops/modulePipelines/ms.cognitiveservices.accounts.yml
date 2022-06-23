@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.cognitiveservices.accounts.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.CognitiveServices/accounts/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
@@ -46,6 +46,9 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/speech.parameters.json
+            - path: $(modulePath)/.parameters/encr.parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
 
   - stage: Publishing
     displayName: Publishing

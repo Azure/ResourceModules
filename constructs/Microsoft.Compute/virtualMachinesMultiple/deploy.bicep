@@ -247,21 +247,18 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
-
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = true
 
 @description('Generated. Do not provide a value! This date value is used to generate a registration token.')
 param baseTime string = utcNow('u')
@@ -295,11 +292,13 @@ param additionalUnattendContent array = []
 param winRM object = {}
 
 @description('Optional. Any VM configuration profile assignments.')
-param configurationProfileAssignments array = []
+param configurationProfileAssignments string = ''
 
 var vmGeneratedNames = [for instance in range(0, vmNumberOfInstances): '${vmNamePrefix}${padLeft((instance + vmInitialNumber), 3, '0')}']
 
 var vmNamesToApply = !empty(vmNames) ? vmNames : vmGeneratedNames
+
+var enableReferencedModulesTelemetry = false
 
 module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bicep' = [for (vmName, index) in vmNamesToApply: {
   name: '${deployment().name}-vm-${index}'
@@ -322,7 +321,7 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
     bootDiagnosticStorageAccountName: bootDiagnosticStorageAccountName
     bootDiagnosticStorageAccountUri: bootDiagnosticStorageAccountUri
     certificatesToBeInstalled: certificatesToBeInstalled
-    configurationProfileAssignments: configurationProfileAssignments
+    configurationProfile: configurationProfileAssignments
     customData: customData
     dataDisks: dataDisks
     dedicatedHostId: dedicatedHostId
@@ -333,7 +332,7 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
     diagnosticWorkspaceId: diagnosticWorkspaceId
     disablePasswordAuthentication: disablePasswordAuthentication
     enableAutomaticUpdates: enableAutomaticUpdates
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     enableEvictionPolicy: enableEvictionPolicy
     enableServerSideEncryption: enableServerSideEncryption
     encryptionAtHost: encryptionAtHost

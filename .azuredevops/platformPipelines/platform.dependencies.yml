@@ -47,6 +47,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Validation Resource Group
+            - path: $(dependencyPath)/$(resourceType)/parameters/locks.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Locks Resource Group
 
   - stage: deploy_ppg
     displayName: Deploy proximity placement group
@@ -296,158 +299,143 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default SIG and SID
 
-  - stage: deploy_bat
-    displayName: Deploy batch account
-    dependsOn:
-      - deploy_sa
-    variables:
-      resourceType: 'Microsoft.Batch/batchAccounts'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: Batch account
-
-  - stage: deploy_imgt
-    displayName: Deploy image template
-    condition: and(succeeded(), eq('${{ parameters.deployVhdDependencies }}', true))
-    dependsOn:
-      - deploy_rolea
-      - deploy_sig
-      - deploy_sa
-    variables:
-      resourceType: 'Microsoft.VirtualMachineImages\imageTemplates'
-      saResourceType: 'Microsoft.Storage\storageAccounts'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: Image template
-              jobName: job_deploy_imgt
-      - job:
-        displayName: Trigger vhd build and store it to a storage account blob container
+  - ${{ if eq( parameters.deployVhdDependencies, true) }}:
+      - stage: deploy_imgt
+        displayName: Deploy image template
         dependsOn:
-          - job_deploy_imgt
-        pool:
-          ${{ if eq(variables['vmImage'], '') }}:
-            name: $(poolName)
-          ${{ if eq(variables['poolName'], '') }}:
-            vmImage: $(vmImage)
+          - deploy_rolea
+          - deploy_sig
+          - deploy_sa
         variables:
-          deploymentOutput: $[ dependencies.job_deploy_imgt.outputs['DeployModule.deploymentOutput'] ]
-        steps:
-          - task: PowerShell@2
-            displayName: 'Setup agent'
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+          resourceType: 'Microsoft.VirtualMachineImages\imageTemplates'
+          saResourceType: 'Microsoft.Storage\storageAccounts'
+          templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+        jobs:
+          - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+            parameters:
+              deploymentBlocks:
+                - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+                  templateFilePath: $(templateFilePath)
+                  displayName: Image template
+                  jobName: job_deploy_imgt
+          - job:
+            displayName: Trigger vhd build and store it to a storage account blob container
+            dependsOn:
+              - job_deploy_imgt
+            pool:
+              ${{ if eq(variables['vmImage'], '') }}:
+                name: $(poolName)
+              ${{ if eq(variables['poolName'], '') }}:
+                vmImage: $(vmImage)
+            variables:
+              deploymentOutput: $[ dependencies.job_deploy_imgt.outputs['DeployModule.deploymentOutput'] ]
+            steps:
+              - task: PowerShell@2
+                displayName: 'Setup agent'
+                inputs:
+                  targetType: inline
+                  pwsh: true
+                  script: |
+                    # Load used functions
+                    . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-                # Define PS modules to install on the runner
-                $Modules = @(
-                    @{ Name = 'Az.ImageBuilder' },
-                    @{ Name = 'Az.Storage' }
-                )
+                    # Define PS modules to install on the runner
+                    $Modules = @(
+                        @{ Name = 'Az.ImageBuilder' },
+                        @{ Name = 'Az.Storage' }
+                    )
 
-                # Set agent up
-                Set-EnvironmentOnAgent -PSModules $Modules
-          - task: AzurePowerShell@5
-            displayName: Trigger building new image
-            inputs:
-              azureSubscription: $(serviceConnection)
-              ScriptType: 'InlineScript'
-              Inline: |
-                # Retrieving parameters from previous job outputs
-                Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
-                $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
-                $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
+                    # Set agent up
+                    Set-EnvironmentOnAgent -PSModules $Modules
+              - task: AzurePowerShell@5
+                displayName: Trigger building new image
+                inputs:
+                  azureSubscription: $(serviceConnection)
+                  ScriptType: 'InlineScript'
+                  Inline: |
+                    # Retrieving parameters from previous job outputs
+                    Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
+                    $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
+                    $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
 
-                # Trigger new image creation
-                Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
-                Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
-              azurePowerShellVersion: 'LatestVersion'
-              pwsh: true
-          - task: AzurePowerShell@5
-            displayName: Copy baked vhd to a storage account
-            inputs:
-              azureSubscription: $(serviceConnection)
-              ScriptType: 'InlineScript'
-              Inline: |
+                    # Trigger new image creation
+                    Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
+                    Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
+                  azurePowerShellVersion: 'LatestVersion'
+                  pwsh: true
+              - task: AzurePowerShell@5
+                displayName: Copy baked vhd to a storage account
+                inputs:
+                  azureSubscription: $(serviceConnection)
+                  ScriptType: 'InlineScript'
+                  Inline: |
 
-                # Load used functions
-                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+                    # Load used functions
+                    . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
-                # Prepare replace tokens in parameter file
-                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
-                $ConvertTokensInputs = @{
-                    TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
-                }
-                if ($Settings.parameterFileTokens.localTokens) {
-                    $tokenMap = @{}
-                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                        $tokenMap += @{ $token.name = $token.value }
+                    # Prepare replace tokens in parameter file
+                    $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                    $ConvertTokensInputs = @{
+                        TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+                        TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
                     }
-                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                    $ConvertTokensInputs.Tokens = $tokenMap
-                }
+                    if ($Settings.parameterFileTokens.localTokens) {
+                        $tokenMap = @{}
+                        foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                            $tokenMap += @{ $token.name = $token.value }
+                        }
+                        Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                        $ConvertTokensInputs.Tokens = $tokenMap
+                    }
 
-                # Retrieving parameters from previous job outputs and parameter files
-                Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
-                $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
-                $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
+                    # Retrieving parameters from previous job outputs and parameter files
+                    Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
+                    $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
+                    $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
 
-                Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
-                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(saResourceType)' 'parameters' 'parameters.json'
-                $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-                $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+                    Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
+                    $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(saResourceType)' 'parameters' 'parameters.json'
+                    $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
+                    $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
-                Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
-                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
-                $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-                $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+                    Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
+                    $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                    $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
+                    $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
-                # Initializing parameters before the blob copy
-                Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
-                $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
-                $sourceUri = $imgtRunOutput.ArtifactUri
-                $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
-                $sourceStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $sourceStorageAccountName
-                $sourceStorageAccountContext = $sourceStorageAccount.Context
-                $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
-                Write-Verbose "Retrieving artifact uri $sourceUri stored in resource group $sourceStorageAccountRGName" -Verbose
+                    # Initializing parameters before the blob copy
+                    Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
+                    $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
+                    $sourceUri = $imgtRunOutput.ArtifactUri
+                    $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
+                    $sourceStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $sourceStorageAccountName
+                    $sourceStorageAccountContext = $sourceStorageAccount.Context
+                    $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
+                    Write-Verbose "Retrieving artifact uri $sourceUri stored in resource group $sourceStorageAccountRGName" -Verbose
 
-                Write-Verbose "Initializing destination storage account parameters before the blob copy" -Verbose
-                $destinationStorageAccountName = $storageAccountParameters.name.value
-                $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
-                $destinationStorageAccountContext = $destinationStorageAccount.Context
-                $destinationContainerName = 'vhds'
-                $destinationBlobName = $imageTemplateParameters.name.value
-                $destinationBlobName = "$destinationBlobName.vhd"
-                Write-Verbose "Planning for destination blob name $destinationBlobName in container $destinationContainerName and storage account $destinationStorageAccountName" -Verbose
+                    Write-Verbose "Initializing destination storage account parameters before the blob copy" -Verbose
+                    $destinationStorageAccountName = $storageAccountParameters.name.value
+                    $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
+                    $destinationStorageAccountContext = $destinationStorageAccount.Context
+                    $destinationContainerName = 'vhds'
+                    $destinationBlobName = $imageTemplateParameters.name.value
+                    $destinationBlobName = "$destinationBlobName.vhd"
+                    Write-Verbose "Planning for destination blob name $destinationBlobName in container $destinationContainerName and storage account $destinationStorageAccountName" -Verbose
 
-                # Copying the vhd to a destination blob container
-                Write-Verbose "Copying the vhd to a destination blob container" -Verbose
-                $resourceActionInputObject = @{
-                    AbsoluteUri   = $sourceUri
-                    Context       = $sourceStorageAccountContext
-                    DestContext   = $destinationStorageAccountContext
-                    DestBlob      = $destinationBlobName
-                    DestContainer = $destinationContainerName
-                    Force         = $true
-                }
-                Start-AzStorageBlobCopy @resourceActionInputObject
-              azPSVersion: 'latest'
-              azurePowerShellVersion: 'LatestVersion'
-              pwsh: true
+                    # Copying the vhd to a destination blob container
+                    Write-Verbose "Copying the vhd to a destination blob container" -Verbose
+                    $resourceActionInputObject = @{
+                        AbsoluteUri   = $sourceUri
+                        Context       = $sourceStorageAccountContext
+                        DestContext   = $destinationStorageAccountContext
+                        DestBlob      = $destinationBlobName
+                        DestContainer = $destinationContainerName
+                        Force         = $true
+                    }
+                    Start-AzStorageBlobCopy @resourceActionInputObject
+                  azPSVersion: 'latest'
+                  azurePowerShellVersion: 'LatestVersion'
+                  pwsh: true
 
   - stage: deploy_ag
     displayName: Deploy action groups
@@ -559,7 +547,12 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/fw.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Firewall Public IP
-
+            - path: $(dependencyPath)/$(resourceType)/parameters/fw.additional.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Firewall Additional Public IP
+            - path: $(dependencyPath)/$(resourceType)/parameters/bas.additional.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion Additional Public IP
   - stage: deploy_appi
     displayName: Deploy application insight
     dependsOn:
@@ -805,7 +798,6 @@ stages:
       - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
           - job:
             displayName: Set sqlmi key vault secrets and keys
-            condition: eq(${{ parameters.deploySqlMiDependencies }}, true)
             dependsOn:
               - sqlmi_kv
             pool:
@@ -939,7 +931,7 @@ stages:
               displayName: Default Virtual Network
             - path: $(dependencyPath)/$(resourceType)/parameters/1.bastion.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Bastion Virtual Network
+              displayName: Bastion Virtual Network Min
             - path: $(dependencyPath)/$(resourceType)/parameters/2.vnetpeer01.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: VNET PEering 1 Virtual Network
@@ -958,6 +950,22 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/8.aadds.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AADDS Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/9.azfw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Firewall Virtual Network Min
+            - path: $(dependencyPath)/$(resourceType)/parameters/10.azfw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Firewall Virtual Network Additonal
+            - path: $(dependencyPath)/$(resourceType)/parameters/11.azfw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Firewall Virtual Network Custom
+            - path: $(dependencyPath)/$(resourceType)/parameters/12.bastion.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion Virtual Network Additional
+            - path: $(dependencyPath)/$(resourceType)/parameters/13.bastion.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion Virtual Network Custom
+
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)

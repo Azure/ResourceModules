@@ -203,7 +203,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     enableFIPS: enableFIPS
     enableNodePublicIP: enableNodePublicIP
     enableUltraSSD: enableUltraSSD
-    gpuInstanceProfile: !empty(gpuInstanceProfile) ? gpuInstanceProfile : null
+    gpuInstanceProfile: !empty(gpuInstanceProfile) ? any(gpuInstanceProfile) : null
     kubeletDiskType: kubeletDiskType
     maxCount: maxCount != -1 ? maxCount : null
     maxPods: maxPods != -1 ? maxPods : null
@@ -214,14 +214,14 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     nodeTaints: nodeTaints
     orchestratorVersion: orchestratorVersion
     osDiskSizeGB: osDiskSizeGB != -1 ? osDiskSizeGB : null
-    osDiskType: !empty(osDiskType) ? osDiskType : null
-    osSKU: !empty(osSku) ? osSku : null
+    osDiskType: !empty(osDiskType) ? any(osDiskType) : null
+    osSKU: !empty(osSku) ? any(osSku) : null
     osType: osType
     podSubnetID: !empty(podSubnetId) ? podSubnetId : null
     proximityPlacementGroupID: !empty(proximityPlacementGroupId) ? proximityPlacementGroupId : null
     scaleDownMode: scaleDownMode
     scaleSetEvictionPolicy: scaleSetEvictionPolicy
-    scaleSetPriority: !empty(scaleSetPriority) ? scaleSetPriority : null
+    scaleSetPriority: !empty(scaleSetPriority) ? any(scaleSetPriority) : null
     spotMaxPrice: spotMaxPrice
     tags: tags
     type: type

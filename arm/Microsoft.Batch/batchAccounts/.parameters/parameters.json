@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>azbaweux001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },

@@ -37,27 +37,54 @@ This module deploys a variable to an Azure Automation Account.
 
 ### Parameter Usage: `value`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
-    //Boolean format
-    "value": {
-        "value": "false"
-    }
+//Boolean format
+"value": {
+    "value": "false"
+}
 
-    //DateTime format
-    "value": {
-        "value": "\"\\/Date(1637934042656)\\/\""
-    }
+//DateTime format
+"value": {
+    "value": "\"\\/Date(1637934042656)\\/\""
+}
 
-    //Integer format
-    "value": {
-        "value": "500"
-    }
+//Integer format
+"value": {
+    "value": "500"
+}
 
-    //String format
-    "value": {
-        "value": "\"TestString\""
-    }
+//String format
+"value": {
+    "value": "\"TestString\""
+}
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+//Boolean format
+value: 'false'
+
+//DateTime format
+value: '\'\\/Date(1637934042656)\\/\''
+
+//Integer format
+value: '500'
+
+//String format
+value: '\'TestString\''
+```
+
+</details>
+<p>
 
 ## Outputs
 

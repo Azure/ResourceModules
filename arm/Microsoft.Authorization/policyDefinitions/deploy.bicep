@@ -42,6 +42,8 @@ param location string = deployment().location
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableReferencedModulesTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   location: location
@@ -68,7 +70,7 @@ module policyDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscripti
     parameters: !empty(parameters) ? parameters : {}
     policyRule: policyRule
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -85,7 +87,7 @@ module policyDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptio
     parameters: !empty(parameters) ? parameters : {}
     policyRule: policyRule
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 

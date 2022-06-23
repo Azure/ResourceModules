@@ -30,7 +30,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module nested_rbac_mg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module nested_role_assignments_mg '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignment-mg-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
     principalIds: roleAssignment.principalIds
@@ -40,7 +40,7 @@ module nested_rbac_mg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   }
 }]
 
-module nested_rbac_sub '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module nested_role_assignments_sub '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignment-sub-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
     principalIds: roleAssignment.principalIds
@@ -50,7 +50,7 @@ module nested_rbac_sub '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-module nested_rbac_rg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module nested_role_assignments_rg '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: 'roleAssignment-rg-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
     principalIds: roleAssignment.principalIds
@@ -62,7 +62,7 @@ module nested_rbac_rg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 }]
 
 @description('The scope of the deployed role assignments.')
-output roleAssignmentScope string = !empty(managementGroupId) ? nested_rbac_mg[0].outputs.roleAssignmentScope : (!empty(resourceGroupName) ? nested_rbac_rg[0].outputs.roleAssignmentScope : nested_rbac_sub[0].outputs.roleAssignmentScope)
+output roleAssignmentScope string = !empty(managementGroupId) ? nested_role_assignments_mg[0].outputs.roleAssignmentScope : (!empty(resourceGroupName) ? nested_role_assignments_rg[0].outputs.roleAssignmentScope : nested_role_assignments_sub[0].outputs.roleAssignmentScope)
 
 @description('The names of the deployed role assignments.')
 output roleAssignments array = roleAssignments

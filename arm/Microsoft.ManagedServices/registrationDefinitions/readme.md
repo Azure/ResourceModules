@@ -1,6 +1,6 @@
 # Registration Definitions `[Microsoft.ManagedServices/registrationDefinitions]`
 
-This module deploys `registrationDefinitions` and `registrationAssignments` (often refered to as 'Lighthouse' or 'resource delegation')
+This module deploys `registrationDefinitions` and `registrationAssignments` (often referred to as 'Lighthouse' or 'resource delegation')
 on subscription or resource group scopes. This type of delegation is very similar to role assignments but here the principal that is
 assigned a role is in a remote/managing Azure Active Directory tenant. The templates are run towards the tenant where
 the Azure resources you want to delegate access to are, providing 'authorizations' (aka. access delegation) to principals in a
@@ -12,6 +12,7 @@ remote/managing tenant.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -46,6 +47,10 @@ remote/managing tenant.
 | `principalIdDisplayName` | string | `principalId` |                 | Optional. A display name of the principal that is delegated permissions to.                 |
 | `roleDefinitionId`       | string |               | GUID            | Required. The role definition ID to delegate to the principal in the managing tenant.       |
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "authorizations": {
     "value": [
@@ -69,6 +74,37 @@ remote/managing tenant.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+authorizations: [
+    // Delegates 'Reader' to a group in managing tenant (managedByTenantId)
+    {
+        principalId: '9d949eef-00d5-45d9-8586-56be91a13398'
+        principalIdDisplayName: 'Reader-Group'
+        roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+    }
+    // Delegates 'Contributor' to a group in managing tenant (managedByTenantId)
+    {
+        principalId: '06eb144f-1a10-4935-881b-757efd1d0b58'
+        roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+    }
+    // Delegates 'Managed Services Registration assignment Delete Role' to a group in managing tenant (managedByTenantId)
+    {
+        principalId: '9cd792b0-dc7c-4551-84f8-dd87388030fb'
+        principalIdDisplayName: 'LighthouseManagement-Group'
+        roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -127,7 +163,170 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 **More info on this topic:**
 
 
+## Deployment examples
 
-=======
-- [Current limitations - Cross-tenant management experiences | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/cross-tenant-management-experience#current-limitations)
-- [Troubleshooting - Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer#troubleshooting)
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "Component Validation - Subscription assignment"
+        },
+        "registrationDescription": {
+            "value": "Managed by Lighthouse"
+        },
+        "managedByTenantId": {
+            "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
+        },
+        "authorizations": {
+            "value": [
+                {
+                    "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+                    "principalIdDisplayName": "ResourceModules-Reader",
+                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+                },
+                {
+                    "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+                    "principalIdDisplayName": "ResourceModules-Contributor",
+                    "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                },
+                {
+                    "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+                    "principalIdDisplayName": "ResourceModules-LHManagement",
+                    "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-registrationDefinitions'
+  params: {
+    name: 'Component Validation - Subscription assignment'
+    registrationDescription: 'Managed by Lighthouse'
+    managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
+    authorizations: [
+      {
+        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalIdDisplayName: 'ResourceModules-Reader'
+        roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+      }
+      {
+        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalIdDisplayName: 'ResourceModules-Contributor'
+        roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalIdDisplayName: 'ResourceModules-LHManagement'
+        roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "Component Validation - Resource group assignment"
+        },
+        "registrationDescription": {
+            "value": "Managed by Lighthouse"
+        },
+        "managedByTenantId": {
+            "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
+        },
+        "resourceGroupName": {
+            "value": "validation-rg"
+        },
+        "authorizations": {
+            "value": [
+                {
+                    "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+                    "principalIdDisplayName": "ResourceModules-Reader",
+                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+                },
+                {
+                    "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+                    "principalIdDisplayName": "ResourceModules-Contributor",
+                    "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                },
+                {
+                    "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+                    "principalIdDisplayName": "ResourceModules-LHManagement",
+                    "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-registrationDefinitions'
+  params: {
+    name: 'Component Validation - Resource group assignment'
+    registrationDescription: 'Managed by Lighthouse'
+    managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
+    resourceGroupName: 'validation-rg'
+    authorizations: [
+      {
+        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalIdDisplayName: 'ResourceModules-Reader'
+        roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+      }
+      {
+        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalIdDisplayName: 'ResourceModules-Contributor'
+        roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalIdDisplayName: 'ResourceModules-LHManagement'
+        roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>

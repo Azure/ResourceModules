@@ -64,12 +64,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -148,10 +148,10 @@ resource trafficManagerProfile 'Microsoft.Network/trafficmanagerprofiles@2018-08
   }
 }
 
-resource trafficManagerProfile_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource trafficManagerProfile_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${trafficManagerProfile.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: trafficManagerProfile
@@ -170,7 +170,7 @@ resource trafficManagerProfile_diagnosticSettings 'Microsoft.Insights/diagnostic
   scope: trafficManagerProfile
 }
 
-module trafficManagerProfile_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module trafficManagerProfile_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name)}-TrafficManagerProfile-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -181,11 +181,11 @@ module trafficManagerProfile_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
-@description('The resource ID of the traffix manager.')
+@description('The resource ID of the traffic manager.')
 output resourceId string = trafficManagerProfile.id
 
-@description('The resource group the traffix manager was deployed into.')
+@description('The resource group the traffic manager was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the traffix manager was deployed into.')
+@description('The name of the traffic manager was deployed into.')
 output name string = trafficManagerProfile.name

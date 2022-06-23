@@ -47,7 +47,7 @@ The following resources are required to be able to deploy this resource.
 | `tls` | object | `{object}` | Backend TLS Properties. |
 
 
-### Parameters - credentials
+### Parameter Usage: Credentials
 
 | Parameter Name| Type | Default Value  | Possible values | Description |
 | :-- | :-- | :--- | :-- | :- |
@@ -57,6 +57,10 @@ The following resources are required to be able to deploy this resource.
 | `authorization` | object | | | Optional. Authorization header authentication |
 
 ### Parameter Usage: `credentials`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "credentials": {
@@ -74,56 +78,34 @@ The following resources are required to be able to deploy this resource.
 }
 ```
 
-### Parameter Usage: `proxy`
+</details>
 
-| Parameter Name | Type | Default Value | Possible values | Description |
-| :- | :- | :- | :- | :- |
-| `url` | string | | | WebProxy Server AbsoluteUri property which includes the entire URI stored in the URI instance, including all fragments and query strings.|
-| `username` | string | | | Username to connect to the WebProxy server|
-| `password`| string | | | Password to connect to the WebProxy Server|
+<details>
 
-```json
-"proxy": {
-    "value":{
-        "url": "string",
-        "username": "string",
-        "password": "string"
+<summary>Bicep format</summary>
+
+```bicep
+credentials: {
+    certificate: [
+        'string'
+    ]
+    query: {}
+    header: {}
+    authorization: {
+        scheme: 'Authentication Scheme name.-string'
+        parameter: 'Authentication Parameter value. - string'
     }
 }
 ```
 
-### Parameter Usage: `serviceFabricCluster`
-
-| Parameter Name  | Type | Default Value | Possible values | Description |
-| :-- | :-- | :--- | :-- | :- |
-| `clientCertificatethumbprint` | string | | | Required (if this object is used).The client certificate thumbprint for the management endpoint.|
-| `maxPartitionResolutionRetries` | integer | | | Optional. Maximum number of retries while attempting resolve the partition. |
-| `managementEndpoints` | array | | | Required (if this object is used). The cluster management endpoint. - string|
-| `serverCertificateThumbprints`| array | | | Optional. Thumbprints of certificates cluster management service uses for TLS communication - string|
-| `serverX509Names` | array | | | Optional. Server X509 Certificate Names Collection|
-
-```json
-"serviceFabricCluster": {
-    "value":{
-        "clientCertificatethumbprint": "string",
-        "maxPartitionResolutionRetries": "integer",
-        "managementEndpoints": [
-          "string"
-        ],
-        "serverCertificateThumbprints": [
-          "string"
-        ],
-        "serverX509Names": [
-          {
-            "name": "Common Name of the Certificate.- string",
-            "issuerCertificateThumbprint": "Thumbprint for the Issuer of the Certificate. - string"
-          }
-        ]
-    }
-}
-```
+</details>
+<p>
 
 ### Parameter Usage: `tls`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "tls": {
@@ -133,6 +115,22 @@ The following resources are required to be able to deploy this resource.
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tls: {
+    validateCertificateChain: 'Flag indicating whether SSL certificate chain validation should be done when using self-signed certificates for this backend host. - boolean'
+    validateCertificateName: 'Flag indicating whether SSL certificate name validation should be done when using self-signed certificates for this backend host. - boolean'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

@@ -7,6 +7,7 @@ This template deploys a virtual network gateway connection.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -31,7 +32,7 @@ This template deploys a virtual network gateway connection.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec]. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `peer` | object | `{object}` |  | The remote peer. Used for connection type [ExpressRoute]. |
 | `routingWeight` | int | `-1` |  | The weight added to routes learned from this BGP speaker. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -45,45 +46,131 @@ This template deploys a virtual network gateway connection.
 
 The primary virtual network gateway object.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
-"virtualNetworkGateway1" : {
-    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway01",
+"virtualNetworkGateway1": {
+    "value": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway01"
+    }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+virtualNetworkGateway1: {
+    id: '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway01'
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `virtualNetworkGateway2`
 
 The secondary virtual network gateway used for VNET to VNET connections.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "virtualNetworkGateway2" : {
-    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02"ss
+    "value": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02"
+    }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+virtualNetworkGateway2 : {
+    id: '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02'
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `localNetworkGateway2`
 
 The local virtual network gateway object.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
-"localNetworkGateway2" : {
-    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/localNetworkGateways/myGateway"
+"localNetworkGateway2": {
+    "value": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/localNetworkGateways/myGateway"
+    }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+localNetworkGateway2: {
+    id: '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/localNetworkGateways/myGateway'
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `peer`
 
 The remote peer object used for ExpressRoute connections
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
-"peer" : {
+"peer": {
     "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/expressRouteCircuits/expressRoute"
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+'peer': {
+    id: '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/expressRouteCircuits/expressRoute'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `customIPSecPolicy`
 
 If ipsecEncryption parameter is empty, customIPSecPolicy will not be deployed. The parameter file should look like below.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "customIPSecPolicy": {
@@ -97,10 +184,36 @@ If ipsecEncryption parameter is empty, customIPSecPolicy will not be deployed. T
         "dhGroup": "",
         "pfsGroup": ""
     }
-},
+}
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+customIPSecPolicy: {
+    saLifeTimeSeconds: 0
+    saDataSizeKilobytes: 0
+    ipsecEncryption: ''
+    ipsecIntegrity: ''
+    ikeEncryption: ''
+    ikeIntegrity: ''
+    dhGroup: ''
+    pfsGroup: ''
+}
+```
+
+</details>
+<p>
+
 Format of the full customIPSecPolicy parameter in parameter file.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "customIPSecPolicy": {
@@ -114,12 +227,38 @@ Format of the full customIPSecPolicy parameter in parameter file.
         "dhGroup": "DHGroup14",
         "pfsGroup": "None"
     }
-},
+}
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+customIPSecPolicy: {
+    saLifeTimeSeconds: 28800
+    saDataSizeKilobytes: 102400000
+    ipsecEncryption: 'AES256'
+    ipsecIntegrity: 'SHA256'
+    ikeEncryption: 'AES256'
+    ikeIntegrity: 'SHA256'
+    dhGroup: 'DHGroup14'
+    pfsGroup: 'None'
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "tags": {
@@ -134,6 +273,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -142,3 +301,88 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the remote connection. |
 | `resourceGroupName` | string | The resource group the remote connection was deployed into. |
 | `resourceId` | string | The resource ID of the remote connection. |
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-vnetgwc-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "virtualNetworkGateway1": {
+            "value": {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
+            }
+        },
+        "virtualNetworkGateway2": {
+            "value": {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002"
+            }
+        },
+        "vpnSharedKey": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "vpnSharedKey"
+            }
+        },
+        "virtualNetworkGatewayConnectionType": {
+            "value": "Vnet2Vnet"
+        },
+        "enableBgp": {
+            "value": false
+        },
+        "location": {
+            "value": "eastus"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','validation-rg')
+}
+
+module connections './Microsoft.Network/connections/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-connections'
+  params: {
+    name: '<<namePrefix>>-az-vnetgwc-x-001'
+    lock: 'CanNotDelete'
+    virtualNetworkGateway1: {
+      id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
+    }
+    virtualNetworkGateway2: {
+      id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
+    }
+    vpnSharedKey: kv1.getSecret('vpnSharedKey')
+    virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
+    enableBgp: false
+    location: 'eastus'
+  }
+}
+```
+
+</details>
+<p>
