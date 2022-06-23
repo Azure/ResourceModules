@@ -348,12 +348,9 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
             if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
-              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             } else {
-              # Use default path
-              $templateFilePath = (Test-Path (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep')) ?
-                (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep') :
-                (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.json')
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
             }
 
             $functionInput = @{
