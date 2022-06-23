@@ -222,15 +222,14 @@ jobs:
               $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
 
-            # Passing the resource group name as a deployment parameter if accepted
-            $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
-            if ($deploymentScope -ne 'resourceGroup' -and -not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
-              $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-              $parameters = $templateContent.parameters.Keys
-              if($parameters -contains 'resourceGroupName') {
-                $functionInput['additionalParameters'] = @{
-                  resourceGroupName = '${{ parameters.resourceGroupName }}'
-                }
+            # Collect information
+            $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $parameters = $templateContent.parameters.Keys
+
+            # Pass required parameters
+            if($parameters -contains 'namePrefix') {
+              $functionInput['additionalParameters'] += @{
+                namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
               }
             }
 
@@ -289,15 +288,14 @@ jobs:
               $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
 
-            # Passing the resource group name as a deployment parameter if accepted
-            $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
-            if ($deploymentScope -ne 'resourceGroup' -and -not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
-              $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-              $parameters = $templateContent.parameters.Keys
-              if($parameters -contains 'resourceGroupName') {
-                $functionInput['additionalParameters'] = @{
-                  resourceGroupName = '${{ parameters.resourceGroupName }}'
-                }
+            # Collect information
+            $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $parameters = $templateContent.parameters.Keys
+
+            # Pass required parameters
+            if($parameters -contains 'namePrefix') {
+              $functionInput['additionalParameters'] += @{
+                namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
               }
             }
 
