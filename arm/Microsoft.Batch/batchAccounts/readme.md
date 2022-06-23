@@ -505,7 +505,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
                         }
                     ],
                     "networkConfiguration": {
-                        "dynamicVNetAssignmentScope": "Job",
+                        "dynamicVNetAssignmentScope": "None",
                         "publicIPAddressConfiguration": {
                             "ipAddressIds": [],
                             "provision": "BatchManaged"
@@ -584,7 +584,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
           }
         ]
         networkConfiguration: {
-          dynamicVNetAssignmentScope: 'Job'
+          dynamicVNetAssignmentScope: 'None'
           publicIPAddressConfiguration: {
             ipAddressIds: []
             provision: 'BatchManaged'

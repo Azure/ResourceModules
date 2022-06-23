@@ -36,7 +36,7 @@
                         }
                     ],
                     "networkConfiguration": {
-                        "dynamicVNetAssignmentScope": "Job",
+                        "dynamicVNetAssignmentScope": "None",
                         "publicIPAddressConfiguration": {
                             "ipAddressIds": [],
                             "provision": "BatchManaged"
