@@ -958,6 +958,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
@@ -994,6 +995,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-rsv-min-001'
   }
+}
 ```
 
 </details>
@@ -1566,6 +1568,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
+}
 ```
 
 </details>

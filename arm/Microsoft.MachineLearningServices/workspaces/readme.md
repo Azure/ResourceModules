@@ -448,6 +448,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
     systemAssignedIdentity: true
   }
+}
 ```
 
 </details>
@@ -658,6 +659,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       }
     ]
   }
+}
 ```
 
 </details>

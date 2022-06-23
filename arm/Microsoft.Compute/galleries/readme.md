@@ -259,6 +259,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
@@ -317,6 +318,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

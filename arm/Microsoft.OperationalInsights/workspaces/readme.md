@@ -471,6 +471,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-law-min-001'
   }
+}
 ```
 
 </details>
@@ -801,6 +802,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

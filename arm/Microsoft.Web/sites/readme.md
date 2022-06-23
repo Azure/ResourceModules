@@ -439,6 +439,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       alwaysOn: true
     }
   }
+}
 ```
 
 </details>
@@ -713,6 +714,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
@@ -757,6 +759,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     kind: 'app'
     serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
   }
+}
 ```
 
 </details>
@@ -889,6 +892,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

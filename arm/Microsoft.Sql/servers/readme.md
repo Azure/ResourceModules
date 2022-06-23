@@ -364,6 +364,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       tenantId: '<<tenantId>>'
     }
   }
+}
 ```
 
 </details>
@@ -565,6 +566,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
