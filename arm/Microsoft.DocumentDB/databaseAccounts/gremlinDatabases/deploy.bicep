@@ -13,7 +13,7 @@ param userAssignedIdentities object = {}
 @description('Conditional. The name of the parent Gremlin database. Required if the template is used in a standalone deployment.')
 param databaseAccountName string
 
-@description('Optional. Array of graphs to deploy in the SQL database.')
+@description('Optional. Array of graphs to deploy in the Gremlin database.')
 param graphs array = []
 
 @description('Optional. Represents maximum throughput, the resource can scale up to.')
@@ -50,18 +50,20 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-previ
   name: databaseAccountName
 }
 
+var databaseOptions = contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? {} : {
+  autoscaleSettings: {
+    maxThroughput: maxThroughput == maxThroughput
+  }
+  throughput: throughput == throughput
+}
+
 resource gremlinDatabase 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases@2022-02-15-preview' = {
   name: name
   tags: tags
   parent: databaseAccount
   identity: identity
   properties: {
-    options: {
-      autoscaleSettings: {
-        maxThroughput: maxThroughput == 0 ? null : maxThroughput
-      }
-      throughput: throughput == 0 ? null : throughput
-    }
+    options: databaseOptions
     resource: {
       id: name
     }
@@ -69,20 +71,16 @@ resource gremlinDatabase 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases
 }
 
 module gremlinGraphs 'graphs/deploy.bicep' = [for graph in graphs: {
-  name: '${uniqueString(deployment().name, gremlinDatabase.name)}-sqldb-${graph.name}'
+  name: '${uniqueString(deployment().name, gremlinDatabase.name)}-gremlindb-${graph.name}'
   params: {
     name: graph.name
     gremlinDatabaseName: name
     databaseAccountName: databaseAccountName
-    kind: !empty(graph.kind) ? graph.kind : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    automaticIndexing: !empty(graph.automaticIndexing) ? graph.automaticIndexing : null
-    indexingMode: !empty(graph.indexingMode) ? graph.indexingMode : null
-    indexingPaths: !empty(graph.indexingPaths) ? graph.indexingPaths : null
-    partitionKeyPaths: !empty(graph.partitionKeyPaths) ? graph.partitionKeyPaths : null
-    maxThroughput: !empty(graph.maxThroughput) ? graph.maxThroughput : null
-    throughput: !empty(graph.throughput) ? graph.throughput : null
-    uniqueKeyPaths: !empty(graph.uniqueKeyPaths) ? graph.uniqueKeyPaths : null
+    automaticIndexing: contains(graph, 'automaticIndexing') ? graph.automaticIndexing : true
+    partitionKeyPaths: !empty(graph.partitionKeyPaths) ? graph.partitionKeyPaths : []
+    maxThroughput: contains(graph, 'maxThroughput') ? graph.maxThroughput : null
+    throughput: contains(graph, 'throughput') ? graph.throughput : null
   }
 }]
 
