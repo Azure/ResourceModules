@@ -221,6 +221,65 @@ roleAssignments: [
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
+            "value": "<<namePrefix>>azbaweux001"
+        },
+        "storageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "applications": {
+            "value": [
+                {
+                    "name": "halloworldapp",
+                    "allowUpdates": true,
+                    "defaultVersion": "0.1.0",
+                    "displayName": "Hallo World App"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-batchAccounts'
+  params: {
+    name: '<<namePrefix>>azbaweux001'
+    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    applications: [
+      {
+        name: 'halloworldapp'
+        allowUpdates: true
+        defaultVersion: '0.1.0'
+        displayName: 'Hallo World App'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
             "value": "<<namePrefix>>azbaweumin001"
         },
         "storageAccountId": {
@@ -250,7 +309,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
+<h3>Example 3</h3>
 
 <details>
 
@@ -349,7 +408,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
+<h3>Example 4</h3>
 
 <details>
 
@@ -460,7 +519,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4</h3>
+<h3>Example 5</h3>
 
 <details>
 
@@ -480,7 +539,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         "pools": {
             "value": [
                 {
-                    "batchAccountName": "<<namePrefix>>azbaweux001",
                     "poolName": "helloworld",
                     "userAssignedIdentities": {
                         "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
@@ -559,7 +617,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     pools: [
       {
-        batchAccountName: '<<namePrefix>>azbaweux001'
         poolName: 'helloworld'
         userAssignedIdentities: {
           '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
