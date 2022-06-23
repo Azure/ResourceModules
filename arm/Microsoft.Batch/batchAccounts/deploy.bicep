@@ -243,7 +243,7 @@ module pool 'pools/deploy.bicep' = [for (pool, index) in pools: {
     userAssignedIdentities: contains(pool, 'userAssignedIdentities') ? pool.userAssignedIdentities : {}
     applicationLicenses: contains(pool, 'applicationLicenses') ? pool.applicationLicenses : []
     applicationPackages: contains(pool, 'applicationPackages') ? pool.applicationPackages : []
-    certificates: contains(pool, 'certif<icates') ? pool.certificates : []
+    certificates: contains(pool, 'certificates') ? pool.certificates : []
     deploymentConfiguration: pool.deploymentConfiguration
     displayName: pool.displayName
     interNodeCommunication: contains(pool, 'interNodeCommunication') ? pool.interNodeCommunication : 'Disabled'

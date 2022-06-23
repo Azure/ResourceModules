@@ -28,10 +28,10 @@
                     },
                     "displayName": "hellotest",
                     "networkConfiguration": {
-                        "dynamicVNetAssignmentScope": "None"
-                    },
-                    "publicIPAddressConfiguration": {
-                        "provision": "BatchManaged"
+                        "dynamicVNetAssignmentScope": "None",
+                        "publicIPAddressConfiguration": {
+                            "provision": "BatchManaged"
+                        }
                     },
                     "scaleSettings": {
                         "fixedScale": {

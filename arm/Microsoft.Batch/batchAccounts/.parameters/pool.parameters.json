@@ -11,10 +11,11 @@
         "pools": {
             "value": [
                 {
+                    "batchAccountName": "<<namePrefix>>azbaweux001",
+                    "poolName": "helloworld",
                     "userAssignedIdentities": {
                         "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
                     },
-                    "poolName": "helloworld",
                     "deploymentConfiguration": {
                         "virtualMachineConfiguration": {
                             "imageReference": {
@@ -27,11 +28,15 @@
                         }
                     },
                     "displayName": "hellotest",
+                    "interNodeCommunication": "enabled",
+                    "metadata": "helloworld",
                     "networkConfiguration": {
-                        "dynamicVNetAssignmentScope": "None"
-                    },
-                    "publicIPAddressConfiguration": {
-                        "provision": "BatchManaged"
+                        "dynamicVNetAssignmentScope": "Job",
+                        "publicIPAddressConfiguration": {
+                            "ipAddressIds": [],
+                            "provision": "BatchManaged"
+                        },
+                        "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
                     },
                     "scaleSettings": {
                         "fixedScale": {
@@ -40,6 +45,25 @@
                             "targetLowPriorityNodes": 1
                         }
                     },
+                    "startTask": {
+                        "commandLine": "cmd /c ipconfig",
+                        "maxTaskRetryCount": 4,
+                        "waitForSuccess": false
+                    },
+                    "taskSchedulingPolicy": {
+                        "nodeFillType": "Pack"
+                    },
+                    "taskSlotsPerNode": 1,
+                    "userAccounts": [
+                        {
+                            "elevationLevel": "Admin",
+                            "name": "carmladmin",
+                            "password": "VeryGeheim!",
+                            "windowsUserConfiguration": {
+                                "loginMode": "Interactive"
+                            }
+                        }
+                    ],
                     "vmSize": "Standard_D2S_v3"
                 }
             ]
