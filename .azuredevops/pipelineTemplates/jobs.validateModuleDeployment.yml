@@ -223,7 +223,7 @@ jobs:
             }
 
             # Collect information
-            $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
             $parameters = $templateContent.parameters.Keys
 
             # Pass required parameters
@@ -289,7 +289,7 @@ jobs:
             }
 
             # Collect information
-            $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
             $parameters = $templateContent.parameters.Keys
 
             # Pass required parameters
