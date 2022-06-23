@@ -20,7 +20,6 @@ param location string = resourceGroup().location
 // =========== //
 // Deployments //
 // =========== //
-
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: storageAccountName
   location: location
@@ -61,7 +60,6 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
 // ======= //
 // Outputs //
 // ======= //
-
 output storageAccountResourceId string = storageAccount.id
 output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id
 output eventHubNamespaceResourceId string = eventHubNamespace.id
