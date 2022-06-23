@@ -35,7 +35,6 @@
 | `tags` | object | `{object}` |  | Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Request Units per second. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -86,7 +85,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 <summary>Parameter JSON format</summary>
 
 ```json
- "indexingPolicy": {
+"indexingPolicy": {
     "indexingMode": "consistent",
     "includedPaths": [
         {
@@ -95,7 +94,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     ],
     "excludedPaths": [
     ]
-},
+}
 ```
 
 </details>
@@ -105,7 +104,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 <summary>Bicep format</summary>
 
 ```bicep
- indexingPolicy: {
+indexingPolicy: {
     indexingMode: 'consistent'
     includedPaths: [
     {
