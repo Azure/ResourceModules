@@ -498,7 +498,12 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
                     },
                     "displayName": "hellotest",
                     "interNodeCommunication": "Enabled",
-                    "metadata": "helloworld",
+                    "metadata": [
+                        {
+                            "name": "carmlTest",
+                            "value": "helloworld"
+                        }
+                    ],
                     "networkConfiguration": {
                         "dynamicVNetAssignmentScope": "Job",
                         "publicIPAddressConfiguration": {
@@ -574,7 +579,12 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         }
         displayName: 'hellotest'
         interNodeCommunication: 'Enabled'
-        metadata: 'helloworld'
+        metadata: [
+          {
+            name: 'carmlTest'
+            value: 'helloworld'
+          }
+        ]
         networkConfiguration: {
           dynamicVNetAssignmentScope: 'Job'
           publicIPAddressConfiguration: {
