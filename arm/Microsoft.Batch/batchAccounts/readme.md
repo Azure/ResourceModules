@@ -524,9 +524,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
                         "maxTaskRetryCount": 4,
                         "waitForSuccess": false
                     },
-                    "taskSchedulingPolicy": {
-                        "nodeFillType": "Pack"
-                    },
+                    "taskSchedulingPolicy": "Pack",
                     "taskSlotsPerNode": 1,
                     "userAccounts": [
                         {
@@ -605,9 +603,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
           maxTaskRetryCount: 4
           waitForSuccess: false
         }
-        taskSchedulingPolicy: {
-          nodeFillType: 'Pack'
-        }
+        taskSchedulingPolicy: 'Pack'
         taskSlotsPerNode: 1
         userAccounts: [
           {
