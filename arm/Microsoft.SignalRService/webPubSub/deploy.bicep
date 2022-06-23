@@ -59,8 +59,8 @@ param clientCertEnabled bool = false
 @description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.')
 param networkAcls array = []
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
-param roleAssignments array = []
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 var resourceLogConfiguration = [for configuration in resourceLogConfigurationsToEnable: {
   name: configuration
@@ -76,12 +76,24 @@ var identity = {
 
 @description('Optional. Network ACLs for the resource. The values for the \'allow\' and \'deny\' array can be one or more of: ClientConnection, ServerConnection, RESTAPI.')
 var webPubSubNetworkAcls = [for acl in networkAcls: {
-  defaultAction: !empty(acl.defaultAction) ? contains([ 'Allow',  'Deny' ],  acl.defaultAction) ? acl.defaultAction : 'Deny' : null
+  defaultAction: !empty(acl.defaultAction) ? contains([ 'Allow', 'Deny' ], acl.defaultAction) ? acl.defaultAction : 'Deny' : null
   publicNetwork: {
     allow: !empty(acl.allow) ? acl.allow : []
     deny: !empty(acl.deny) ? acl.deny : []
   }
 }]
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
 
 resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   name: name
@@ -108,12 +120,10 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   }
 }
 
-module webPubSub_privateEndpoints '../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module webPubSub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-appConfiguration-PrivateEndpoint-${index}'
   params: {
-    groupIds: [
-      privateEndpoint.service
-    ]
+    groupIds: [ privateEndpoint.service ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(webPubSub.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: webPubSub.id
     subnetResourceId: privateEndpoint.subnetResourceId
@@ -135,27 +145,3 @@ resource webPubSub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(
   }
   scope: webPubSub
 }
-
-
-module webPubSub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-AppGateway-Rbac-${index}'
-  params: {
-    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-    principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: webPubSub.id
-  }
-}]
-
-@description('The name of the Web PubSub service.')
-output name string = webPubSub.name
-
-@description('The resource ID of the Web PubSub service.')
-output resourceId string = webPubSub.id
-
-@description('The resource group the Web PubSub service was deployed into.')
-output resourceGroupName string = resourceGroup().name
-
-@description('The location the Web PubSub service was deployed into.')
-output location string = webPubSub.location

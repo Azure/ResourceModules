@@ -32,6 +32,7 @@ This module deploys a Web PubSub resource.
 | `clientCertEnabled` | bool | `False` |  | Request client certificate during TLS handshake if enabled. |
 | `disableAadAuth` | bool | `False` |  | When set as true, connection with AuthType=aad won't work. |
 | `disableLocalAuth` | bool | `False` |  | Disables all authentication methods other than AAD authentication. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Web PubSub service. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkAcls` | array | `[]` |  | Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny. |
