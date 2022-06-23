@@ -1091,7 +1091,16 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
                             "paths": [
                                 "/myPartitionKey"
                             ],
-                            "kind": "Hash"
+                            "kind": "Hash",
+                            "indexingPolicy": {
+                                "indexingMode": "consistent",
+                                "includedPaths": [
+                                    {
+                                        "path": "/*"
+                                    }
+                                ],
+                                "excludedPaths": []
+                            }
                         }
                     ]
                 },
@@ -1168,6 +1177,15 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               '/myPartitionKey'
             ]
             kind: 'Hash'
+            indexingPolicy: {
+              indexingMode: 'consistent'
+              includedPaths: [
+                {
+                  path: '/*'
+                }
+              ]
+              excludedPaths: []
+            }
           }
         ]
       }
