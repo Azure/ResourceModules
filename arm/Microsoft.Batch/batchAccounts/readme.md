@@ -139,6 +139,65 @@ userAssignedIdentities: {
 </details>
 <p>
 
+### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ],
+            "principalType": "ServicePrincipal"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -237,6 +296,16 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         },
         "storageAccessIdentity": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
         }
     }
 }
@@ -265,6 +334,284 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     systemAssignedIdentity: true
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     storageAccessIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>azbaweux001"
+        },
+        "storageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "pools": {
+            "value": [
+                {
+                    "userAssignedIdentities": {
+                        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+                    },
+                    "poolName": "helloworld",
+                    "deploymentConfiguration": {
+                        "virtualMachineConfiguration": {
+                            "imageReference": {
+                                "publisher": "microsoftwindowsserver",
+                                "offer": "windowsserver",
+                                "sku": "2022-datacenter",
+                                "version": "latest"
+                            },
+                            "nodeAgentSkuId": "batch.node.windows amd64"
+                        }
+                    },
+                    "displayName": "hellotest",
+                    "networkConfiguration": {
+                        "dynamicVNetAssignmentScope": "None",
+                        "publicIPAddressConfiguration": {
+                            "provision": "BatchManaged"
+                        }
+                    },
+                    "scaleSettings": {
+                        "fixedScale": {
+                            "resizeTimeout": "PT15M",
+                            "targetDedicatedNodes": 1,
+                            "targetLowPriorityNodes": 1
+                        }
+                    },
+                    "vmSize": "Standard_D2S_v3"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-batchAccounts'
+  params: {
+    name: '<<namePrefix>>azbaweux001'
+    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    pools: [
+      {
+        userAssignedIdentities: {
+          '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+        }
+        poolName: 'helloworld'
+        deploymentConfiguration: {
+          virtualMachineConfiguration: {
+            imageReference: {
+              publisher: 'microsoftwindowsserver'
+              offer: 'windowsserver'
+              sku: '2022-datacenter'
+              version: 'latest'
+            }
+            nodeAgentSkuId: 'batch.node.windows amd64'
+          }
+        }
+        displayName: 'hellotest'
+        networkConfiguration: {
+          dynamicVNetAssignmentScope: 'None'
+          publicIPAddressConfiguration: {
+            provision: 'BatchManaged'
+          }
+        }
+        scaleSettings: {
+          fixedScale: {
+            resizeTimeout: 'PT15M'
+            targetDedicatedNodes: 1
+            targetLowPriorityNodes: 1
+          }
+        }
+        vmSize: 'Standard_D2S_v3'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>azbaweux001"
+        },
+        "storageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "pools": {
+            "value": [
+                {
+                    "batchAccountName": "<<namePrefix>>azbaweux001",
+                    "poolName": "helloworld",
+                    "userAssignedIdentities": {
+                        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+                    },
+                    "deploymentConfiguration": {
+                        "virtualMachineConfiguration": {
+                            "imageReference": {
+                                "publisher": "microsoftwindowsserver",
+                                "offer": "windowsserver",
+                                "sku": "2022-datacenter",
+                                "version": "latest"
+                            },
+                            "nodeAgentSkuId": "batch.node.windows amd64"
+                        }
+                    },
+                    "displayName": "hellotest",
+                    "interNodeCommunication": "enabled",
+                    "metadata": "helloworld",
+                    "networkConfiguration": {
+                        "dynamicVNetAssignmentScope": "Job",
+                        "publicIPAddressConfiguration": {
+                            "ipAddressIds": [],
+                            "provision": "BatchManaged"
+                        },
+                        "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                    },
+                    "scaleSettings": {
+                        "fixedScale": {
+                            "resizeTimeout": "PT15M",
+                            "targetDedicatedNodes": 1,
+                            "targetLowPriorityNodes": 1
+                        }
+                    },
+                    "startTask": {
+                        "commandLine": "cmd /c ipconfig",
+                        "maxTaskRetryCount": 4,
+                        "waitForSuccess": false
+                    },
+                    "taskSchedulingPolicy": {
+                        "nodeFillType": "Pack"
+                    },
+                    "taskSlotsPerNode": 1,
+                    "userAccounts": [
+                        {
+                            "elevationLevel": "Admin",
+                            "name": "carmladmin",
+                            "password": "VeryGeheim!",
+                            "windowsUserConfiguration": {
+                                "loginMode": "Interactive"
+                            }
+                        }
+                    ],
+                    "vmSize": "Standard_D2S_v3"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-batchAccounts'
+  params: {
+    name: '<<namePrefix>>azbaweux001'
+    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    pools: [
+      {
+        batchAccountName: '<<namePrefix>>azbaweux001'
+        poolName: 'helloworld'
+        userAssignedIdentities: {
+          '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+        }
+        deploymentConfiguration: {
+          virtualMachineConfiguration: {
+            imageReference: {
+              publisher: 'microsoftwindowsserver'
+              offer: 'windowsserver'
+              sku: '2022-datacenter'
+              version: 'latest'
+            }
+            nodeAgentSkuId: 'batch.node.windows amd64'
+          }
+        }
+        displayName: 'hellotest'
+        interNodeCommunication: 'enabled'
+        metadata: 'helloworld'
+        networkConfiguration: {
+          dynamicVNetAssignmentScope: 'Job'
+          publicIPAddressConfiguration: {
+            ipAddressIds: []
+            provision: 'BatchManaged'
+          }
+          subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+        }
+        scaleSettings: {
+          fixedScale: {
+            resizeTimeout: 'PT15M'
+            targetDedicatedNodes: 1
+            targetLowPriorityNodes: 1
+          }
+        }
+        startTask: {
+          commandLine: 'cmd /c ipconfig'
+          maxTaskRetryCount: 4
+          waitForSuccess: false
+        }
+        taskSchedulingPolicy: {
+          nodeFillType: 'Pack'
+        }
+        taskSlotsPerNode: 1
+        userAccounts: [
+          {
+            elevationLevel: 'Admin'
+            name: 'carmladmin'
+            password: 'VeryGeheim!'
+            windowsUserConfiguration: {
+              loginMode: 'Interactive'
+            }
+          }
+        ]
+        vmSize: 'Standard_D2S_v3'
+      }
+    ]
   }
 }
 ```
