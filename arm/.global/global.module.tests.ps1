@@ -104,11 +104,11 @@ Describe 'File/folder tests' -Tag Modules {
         }
     }
 
-    Context '.parameters folder' {
+    Context '.deploymentTests folder' {
 
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
+            if (Test-Path (Join-Path $moduleFolderPath '.deploymentTests')) {
                 $folderTestCases += @{
                     moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                     moduleFolderPath = $moduleFolderPath
@@ -116,36 +116,41 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] folder should contain one or more *parameters.json files' -TestCases $folderTestCases {
+        It '[<moduleFolderName>] folder should contain one or more test files' -TestCases $folderTestCases {
 
             param(
                 [string] $moduleFolderName,
-                $moduleFolderPath
+                [string] $moduleFolderPath
             )
-            $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
-            (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force).Count | Should -BeGreaterThan 0
+
+            $deploymentTestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.deploymentTests')).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+            $deploymentTestFilePaths.Count | Should -BeGreaterThan 0
         }
 
         $parameterFolderFilesTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
+            $parameterFolderPath = Join-Path $moduleFolderPath '.deploymentTests'
             if (Test-Path $parameterFolderPath) {
-                foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force)) {
+                foreach ($parameterFilePath in ((Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.deploymentTests')).FullName | Where-Object { $_ -match '.+\.[bicep|json]' })) {
                     $parameterFolderFilesTestCases += @{
                         moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
-                        parameterFilePath = $parameterFile.FullName
+                        parameterFilePath = $parameterFilePath
                     }
                 }
             }
         }
 
-        It '[<moduleFolderName>] *parameters.json files in the .parameters folder should be valid json' -TestCases $parameterFolderFilesTestCases {
+        It '[<moduleFolderName>] *parameters.json files in the .deploymentTests folder should be valid json' -TestCases $parameterFolderFilesTestCases {
 
             param(
                 [string] $moduleFolderName,
-                $parameterFilePath
+                [string] $parameterFilePath
             )
-            (Get-Content $parameterFilePath) | ConvertFrom-Json
+            if ((Split-Path $parameterFilePath -Extension) -eq '.json') {
+                ((Get-Content $parameterFilePath) | ConvertFrom-Json) | Should -Not -Throw
+            } else {
+                Set-ItResult -Skipped -Because 'the module has no JSON parameter file.'
+            }
         }
     }
 }
@@ -927,8 +932,8 @@ Describe 'Deployment template tests' -Tag Template {
         $parameterFileTokenTestCases = @()
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
-                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
+            if (Test-Path (Join-Path $moduleFolderPath '.deploymentTests')) {
+                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.deploymentTests' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
                 foreach ($ParameterFilePath in $ParameterFilePaths) {
                     foreach ($token in $enforcedTokenList.Keys) {
                         $parameterFileTokenTestCases += @{
