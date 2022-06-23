@@ -141,6 +141,7 @@ jobs:
 
                 if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
                   Write-Verbose 'Skipping token replacement as the deployment test file is no JSON-Parameter file' -Verbose
+                  return
                 }
 
                 # Construct Token Function Input
@@ -203,9 +204,9 @@ jobs:
             # ----------- #
 
             if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
-              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             } else {
-              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
             }
 
             $functionInput    = @{
@@ -268,9 +269,9 @@ jobs:
             # INVOKE DEPLOYMENT #
             # ----------------- #
             if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
-              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             } else {
-              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
             }
 
             $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
