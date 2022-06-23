@@ -74,7 +74,7 @@ parameters:
 jobs:
   - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
   - job: deploy
-    displayName: Deploy with [${{ replace( '$(parameterFilePath)', '$(modulePath)', '') }}]
+    displayName: Deploy
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
