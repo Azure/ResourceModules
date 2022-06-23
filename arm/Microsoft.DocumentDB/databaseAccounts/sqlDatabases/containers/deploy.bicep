@@ -16,6 +16,9 @@ param tags object = {}
 @description('Optional. List of paths using which data within the container can be partitioned.')
 param paths array = []
 
+@description('Optional. Indexing policy of the container.')
+param indexingPolicy object = {}
+
 @description('Optional. Indicates the kind of algorithm used for partitioning.')
 @allowed([
   'Hash'
@@ -54,6 +57,7 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
   properties: {
     resource: {
       id: name
+      indexingPolicy: !empty(indexingPolicy) ? indexingPolicy : null
       partitionKey: {
         paths: paths
         kind: kind
