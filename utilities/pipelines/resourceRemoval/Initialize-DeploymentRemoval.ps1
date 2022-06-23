@@ -56,7 +56,12 @@ function Initialize-DeploymentRemoval {
             $null = Set-AzContext -Subscription $subscriptionId
         }
 
-        $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase # TODO: For deployment test files, this needs to go one level up (not for classic tests though)
+        if (-not (Split-Path (Split-Path $templateFilePath -Parent) -LeafBase)) {
+            # In case of new dependency approach (template is in subfolder)
+            $moduleName = Split-Path (Split-Path (Split-Path $templateFilePath -Parent) -Parent) -LeafBase
+        } else {
+            $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
+        }
 
         # The initial sequence is a general order-recommendation
         $removalSequence = @(
