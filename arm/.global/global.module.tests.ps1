@@ -89,10 +89,14 @@ Describe 'File/folder tests' -Tag Modules {
             (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [.parameters] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        It '[<moduleFolderName>] Module should contain a [.parameters/.deploymentTests] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
             param( [string] $moduleFolderPath )
-            Test-Path (Join-Path -Path $moduleFolderPath '.parameters') | Should -Be $true
+
+            $hasParameterTestFolder = Test-Path (Join-Path -Path $moduleFolderPath '.parameters')
+            $hasDeploymentTestFolder = Test-Path (Join-Path -Path $moduleFolderPath '.deploymentTests')
+
+            $hasParameterTestFolder -or $hasDeploymentTestFolder | Should -Be $true
         }
 
         It '[<moduleFolderName>] Module should contain a [version.json] file' -TestCases $moduleFolderTestCases {
