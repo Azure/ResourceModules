@@ -154,9 +154,9 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
   properties: {
     createMode: createMode
     disableLocalAuth: disableLocalAuth
-    enablePurgeProtection: enablePurgeProtection
+    enablePurgeProtection: sku == 'Free' ? false : enablePurgeProtection
     publicNetworkAccess: publicNetworkAccess
-    softDeleteRetentionInDays: softDeleteRetentionInDays
+    softDeleteRetentionInDays: sku == 'Free' ? 0 : softDeleteRetentionInDays
   }
 }
 

@@ -32,6 +32,9 @@
             },
             {
               "service": "Microsoft.KeyVault"
+            },
+            {
+              "service": "Microsoft.CognitiveServices"
             }
           ]
         },

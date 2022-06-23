@@ -1,7 +1,7 @@
 @description('Required. The name of Cognitive Services account.')
 param name string
 
-@description('Required. Kind of the Cognitive Services. Use \'Get-AzCognitiveServicesAccountSku\' to determine a valid combinations of \'kind\' and \'sku\' for your Azure region.')
+@description('Required. Kind of the Cognitive Services. Use \'Get-AzCognitiveServicesAccountSku\' to determine a valid combinations of \'kind\' and \'SKU\' for your Azure region.')
 @allowed([
   'AnomalyDetector'
   'Bing.Autosuggest.v7'
@@ -28,7 +28,7 @@ param name string
 ])
 param kind string
 
-@description('Optional. SKU of the Cognitive Services resource. Use \'Get-AzCognitiveServicesAccountSku\' to determine a valid combinations of \'kind\' and \'sku\' for your Azure region.')
+@description('Optional. SKU of the Cognitive Services resource. Use \'Get-AzCognitiveServicesAccountSku\' to determine a valid combinations of \'kind\' and \'SKU\' for your Azure region.')
 @allowed([
   'C2'
   'C3'
@@ -70,15 +70,16 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Conditional. Subdomain name used for token-based authentication. Required if \'networkAcls\' are set.')
+@description('Conditional. Subdomain name used for token-based authentication. Required if \'networkAcls\' or \'privateEndpoints\' are set.')
 param customSubDomainName string = ''
 
 @description('Optional. Whether or not public endpoint access is allowed for this account.')
 @allowed([
+  ''
   'Enabled'
   'Disabled'
 ])
-param publicNetworkAccess string = 'Enabled'
+param publicNetworkAccess string = ''
 
 @description('Optional. Service endpoint object information.')
 param networkAcls object = {}
@@ -86,7 +87,7 @@ param networkAcls object = {}
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
-@description('Optional. The ID(s) to assign to the resource.')
+@description('Conditional. The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
 param userAssignedIdentities object = {}
 
 @allowed([
@@ -112,8 +113,8 @@ param allowedFqdnList array = []
 @description('Optional. The API properties for special APIs.')
 param apiProperties object = {}
 
-@description('Optional. Allow only Azure AD authentication.')
-param disableLocalAuth bool = false
+@description('Optional. Allow only Azure AD authentication. Should be enabled for security reasons.')
+param disableLocalAuth bool = true
 
 @description('Optional. Properties to configure encryption.')
 param encryption object = {}
@@ -182,12 +183,6 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var networkAcls_var = {
-  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-  virtualNetworkRules: !empty(networkAcls) ? ((length(networkAcls.virtualNetworkRules) == 0) ? [] : networkAcls.virtualNetworkRules) : null
-  ipRules: !empty(networkAcls) ? ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules) : null
-}
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -211,8 +206,8 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   }
   properties: {
     customSubDomainName: !empty(customSubDomainName) ? customSubDomainName : null
-    networkAcls: !empty(networkAcls) ? networkAcls_var : null
-    publicNetworkAccess: publicNetworkAccess
+    networkAcls: networkAcls
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     allowedFqdnList: allowedFqdnList
     apiProperties: apiProperties
     disableLocalAuth: disableLocalAuth
