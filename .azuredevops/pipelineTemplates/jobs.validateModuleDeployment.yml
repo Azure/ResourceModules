@@ -74,7 +74,7 @@ parameters:
 jobs:
   - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
   - job: deploy
-    displayName: 'Deploy: '
+    displayName: 'Deploying '
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
@@ -184,10 +184,7 @@ jobs:
       # [Validation] task(s)
       #---------------------
       - task: AzurePowerShell@5
-        ${{ if not(contains( parameters.templateFilePath, '.dependencies')) }}:
-          displayName: 'Validate parameter file via connection [${{ parameters.serviceConnection }}]'
-        ${{ if contains( parameters.templateFilePath, '.dependencies') }}:
-          displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
+        displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: 'latestVersion'
@@ -250,10 +247,7 @@ jobs:
       #---------------------
       - task: AzurePowerShell@5
         name: deployModule
-        ${{ if not(contains( parameters.templateFilePath, '.dependencies')) }}:
-          displayName: 'Deploy parameter file via connection [${{ parameters.serviceConnection }}]'
-        ${{ if contains( parameters.templateFilePath, '.dependencies') }}:
-          displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
+        displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: 'latestVersion'
