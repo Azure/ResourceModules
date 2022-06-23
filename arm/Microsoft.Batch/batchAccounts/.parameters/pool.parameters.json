@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>azbaweux001"
+        },
+        "storageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "pools": {
+            "value": [
+                {
+                    "userAssignedIdentities": {
+                        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+                    },
+                    "poolName": "helloworld",
+                    "deploymentConfiguration": {
+                        "virtualMachineConfiguration": {
+                            "imageReference": {
+                                "publisher": "microsoftwindowsserver",
+                                "offer": "windowsserver",
+                                "sku": "2022-datacenter",
+                                "version": "latest"
+                            },
+                            "nodeAgentSkuId": "batch.node.windows amd64"
+                        }
+                    },
+                    "displayName": "hellotest",
+                    "networkConfiguration": {
+                        "dynamicVNetAssignmentScope": "None"
+                    },
+                    "publicIPAddressConfiguration": {
+                        "provision": "BatchManaged"
+                    },
+                    "scaleSettings": {
+                        "fixedScale": {
+                            "resizeTimeout": "PT15M",
+                            "targetDedicatedNodes": 1,
+                            "targetLowPriorityNodes": 1
+                        }
+                    },
+                    "vmSize": "Standard_D2S_v3"
+                }
+            ]
+        }
+    }
+}
