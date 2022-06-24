@@ -92,13 +92,10 @@ param queues array = []
 @description('Optional. The topics to create in the service bus namespace.')
 param topics array = []
 
-@description('Optional. Enable service encryption.')
-param enableEncryption bool = true
-
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
 param cMKKeyVaultResourceId string = ''
 
-@description('Optional. The name of the customer managed key to use for encryption.')
+@description('Optional. The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key.')
 param cMKKeyName string = ''
 
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
@@ -178,7 +175,7 @@ resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empt
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName) && empty(cMKKeyVersion)) {
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
   name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
@@ -193,8 +190,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview
   identity: identity
   properties: {
     zoneRedundant: zoneRedundant
-    encryption: enableEncryption && !empty(cMKKeyName) ? {
-      // Customer-managed key
+    encryption: !empty(cMKKeyName) ? {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: [
         {
@@ -207,9 +203,6 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview
         }
       ]
       requireInfrastructureEncryption: requireInfrastructureEncryption
-    } : enableEncryption ? {
-      // Service-managed key
-      keySource: 'Microsoft.ServiceBus/namespaces'
     } : null
   }
 }
