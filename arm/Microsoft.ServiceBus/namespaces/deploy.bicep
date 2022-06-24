@@ -98,10 +98,10 @@ param cMKKeyVaultResourceId string = ''
 @description('Optional. The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key.')
 param cMKKeyName string = ''
 
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
+@description('Conditional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Conditional. The version of the customer managed key to reference for encryption. Required if \'cMKeyName\' is not empty.')
+@description('Conditional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
 @description('Optional. Enable Infrastructure Encryption (Double Encryption).')
@@ -194,9 +194,9 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: [
         {
-          identity: {
+          identity: !empty(cMKUserAssignedIdentityResourceId) ? {
             userAssignedIdentity: cMKUserAssignedIdentityResourceId
-          }
+          } : null
           keyName: cMKKeyName
           keyVaultUri: cMKKeyVault.properties.vaultUri
           keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
