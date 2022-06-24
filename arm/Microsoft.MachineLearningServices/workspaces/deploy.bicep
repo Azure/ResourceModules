@@ -116,7 +116,7 @@ param discoveryUrl string = ''
 @sys.description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
 param cMKKeyVaultResourceId string = ''
 
-@sys.description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
+@sys.description('Optional. The name of the customer managed key to use for encryption.')
 param cMKKeyName string = ''
 
 @sys.description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
