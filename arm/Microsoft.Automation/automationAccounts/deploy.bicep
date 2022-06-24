@@ -20,7 +20,7 @@ param cMKKeyName string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Conditional. The version of the customer managed key to reference for encryption.')
+@description('Conditional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
 @description('Optional. List of modules to be created in the automation account.')

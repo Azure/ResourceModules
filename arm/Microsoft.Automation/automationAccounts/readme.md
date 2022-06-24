@@ -38,7 +38,7 @@ This module deploys an Azure Automation Account.
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `cMKKeyVersion` | string | `''` | The version of the customer managed key to reference for encryption. |
+| `cMKKeyVersion` | string | `''` | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKeyName' is not empty. |
 
 **Optional parameters**
