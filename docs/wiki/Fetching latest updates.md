@@ -21,9 +21,9 @@ Before to proceed with the updates it's always recommended to check the new rele
 ## Customization
 Another factor to take into account before updating your local copy of the library is the customization.
 ### Option 1 - Library improvement
-In most cases you customize the library because you need a module or a feature that is not implemented yet, or because you find a bug.
+As a [Solution Developer](./The%20context%20-%20Logical%20layers%20and%20personas.md#solution-developer) you may need to modify existing modules to impplement a new feature that is not implemented yet or to fix a bug.
 
-If this is the scenario we recommend to [contribute](./Contribution%20guide.md) to the public CARML repository, in the spirit of collaboration and open source principles.
+If this is the scenario we recommend to [contribute](./Contribution%20guide.md) to the public CARML repository, in the spirit of collaboration and open source principles, helping to maintain a common code base.
 
 In this way your improved code will be part of next updates and releases of the public CARML library and you won't need to take care of customization and do code comparison each time you'll update your local version of the library.
 Another advantage is that CARML public modules are tested, so you won't need to mange the test of your customization at each update.
@@ -31,11 +31,13 @@ Another advantage is that CARML public modules are tested, so you won't need to 
 If can also specify an urgency when you [create](./Contribution%20guide%20-%20Contribution%20flow.md#create-or-pick-up-an-issue) the issue so that the right priority is considered when updating the public library.
 
 ### Option 2 - Specific requirements
-May be you need to apply changes to the library that are specific for your environment and you don't consider them as an improvement that can be useful for other customers.
+As a [Module Developer](./The%20context%20-%20Logical%20layers%20and%20personas.md#module-developer) you might add to the library  company/organization specifics, either via conventions, parameters, extensions, or CI-specific changes.
 
-In this scenario every time you'll update your own library you'll have to compare the new code with your customized one and re-apply your customizations to the updated code. This process can be automated, by script or CI, if customization tasks are repeatable.
+In this scenario every time you'll update your own library you'll have to compare the new public code with your customized one and re-apply your customizations to the updated code. This process can be automated, by script or CI, if customization tasks are repeatable.
 
-Public CARML module are not tested with your customization, so you'll need to manage the test of your updated and customized modules. We recommend to adopt module library with the CI environment in this case, to speed up the test process.
+Public CARML module are not tested with your customization, so you'll also need to manage the test of your updated and customized modules.
+
+We recommend to adopt module library with the CI environment in this case, to automate the import of new code and speed up the test process.
 
 ## Update procedure
 A different scenario can apply depending on your use of the library:
