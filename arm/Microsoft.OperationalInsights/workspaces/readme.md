@@ -19,6 +19,7 @@ This template deploys a log analytics workspace.
 | `Microsoft.OperationalInsights/workspaces` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces) |
 | `Microsoft.OperationalInsights/workspaces/dataSources` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources) |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices) |
+| `Microsoft.OperationalInsights/workspaces/linkedStorageAccounts` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedStorageAccounts) |
 | `Microsoft.OperationalInsights/workspaces/savedSearches` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/savedSearches) |
 | `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs) |
 | `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
@@ -48,6 +49,7 @@ This template deploys a log analytics workspace.
 | `forceCmkForQuery` | bool | `True` |  | Indicates whether customer managed storage is mandatory for query management. |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the log analytics workspace. |
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | List of services to be linked. |
+| `linkedStorageAccounts` | _[linkedStorageAccounts](linkedStorageAccounts/readme.md)_ array | `[]` |  | List of Storage Accounts to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccessForIngestion` | string | `'Enabled'` | `[Enabled, Disabled]` | The network access type for accessing Log Analytics ingestion. |
@@ -453,6 +455,121 @@ tags: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
+            "value": "<<namePrefix>>-az-law-cmk-001"
+        },
+        "linkedServices": {
+            "value": [
+                {
+                    "name": "Automation",
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001"
+                }
+            ]
+        },
+        "linkedStorageAccounts": {
+            "value": [
+                {
+                    "name": "Query",
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001"
+                }
+            ]
+        },
+        // "savedSearches": {
+        //     "value": [
+        //         {
+        //             "name": "VMSSQueries",
+        //             "displayName": "VMSS Instance Count2",
+        //             "category": "VDC Saved Searches",
+        //             "query": "Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer"
+        //         }
+        //     ]
+        // },
+        "gallerySolutions": {
+            "value": [
+                {
+                    "name": "AzureAutomation",
+                    "product": "OMSGallery",
+                    "publisher": "Microsoft"
+                }
+            ]
+        },
+        "storageInsightsConfigs": {
+            "value": [
+                {
+                    "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001",
+                    "tables": [
+                        "WADWindowsEventLogsTable",
+                        "WADETWEventTable",
+                        "WADServiceFabric*EventTable",
+                        "LinuxsyslogVer2v0"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-workspaces'
+  params: {
+    name: '<<namePrefix>>-az-law-cmk-001'
+    linkedServices: [
+      {
+        name: 'Automation'
+        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001'
+      }
+    ]
+    linkedStorageAccounts: [
+      {
+        name: 'Query'
+        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
+      }
+    ]
+    gallerySolutions: [
+      {
+        name: 'AzureAutomation'
+        product: 'OMSGallery'
+        publisher: 'Microsoft'
+      }
+    ]
+    storageInsightsConfigs: [
+      {
+        storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
+        tables: [
+          'WADWindowsEventLogsTable'
+          'WADETWEventTable'
+          'WADServiceFabric*EventTable'
+          'LinuxsyslogVer2v0'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
             "value": "<<namePrefix>>-az-law-min-001"
         }
     }
@@ -478,7 +595,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
+<h3>Example 3</h3>
 
 <details>
 

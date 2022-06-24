@@ -19,6 +19,9 @@ param storageInsightsConfigs array = []
 @description('Optional. List of services to be linked.')
 param linkedServices array = []
 
+@description('Optional. List of Storage Accounts to be linked.')
+param linkedStorageAccounts array = []
+
 @description('Optional. Kusto Query Language searches to save.')
 param savedSearches array = []
 
@@ -198,6 +201,16 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for
     name: linkedService.name
     resourceId: contains(linkedService, 'resourceId') ? linkedService.resourceId : ''
     writeAccessResourceId: contains(linkedService, 'writeAccessResourceId') ? linkedService.writeAccessResourceId : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module logAnalyticsWorkspace_linkedStorageAccounts 'linkedStorageAccounts/deploy.bicep' = [for (linkedStorageAccount, index) in linkedStorageAccounts: {
+  name: '${uniqueString(deployment().name, location)}-LAW-LinkedStorageAccount-${index}'
+  params: {
+    logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
+    name: linkedStorageAccount.name
+    resourceId: linkedStorageAccount.resourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
