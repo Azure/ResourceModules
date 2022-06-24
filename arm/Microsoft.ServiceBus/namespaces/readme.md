@@ -36,10 +36,18 @@ This module deploys a service bus namespace resource.
 | :-- | :-- | :-- | :-- | :-- |
 | `skuName` | string | `'Basic'` | `[Basic, Standard, Premium]` | Name of this SKU. - Basic, Standard, Premium. |
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `cMKKeyVersion` | string | `''` | The version of the customer managed key to reference for encryption. Required if 'cMKeyName' is not empty. |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKeyName' is not empty. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Authorization Rules for the Service Bus namespace. |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
+| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[OperationalLogs]` | `[OperationalLogs]` | The name of logs that will be streamed. |
@@ -50,6 +58,7 @@ This module deploys a service bus namespace resource.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disasterRecoveryConfigs` | _[disasterRecoveryConfigs](disasterRecoveryConfigs/readme.md)_ object | `{object}` |  | The disaster recovery configuration. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableEncryption` | bool | `True` |  | Enable service encryption. |
 | `ipFilterRules` | _[ipFilterRules](ipFilterRules/readme.md)_ array | `[]` |  | IP Filter Rules for the Service Bus namespace. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -57,6 +66,7 @@ This module deploys a service bus namespace resource.
 | `name` | string | `''` |  | Name of the Service Bus Namespace. If no name is provided, then unique name will be created. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | The queues to create in the service bus namespace. |
+| `requireInfrastructureEncryption` | bool | `True` |  | Enable Infrastructure Encryption (Double Encryption) |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -497,6 +507,15 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
                     "service": "namespace"
                 }
             ]
+        },
+        "cMKUserAssignedIdentityResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        },
+        "cMKKeyName": {
+            "value": "keyEncryptionKey"
+        },
+        "cMKKeyVaultResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
         }
     }
 }
@@ -634,6 +653,9 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         service: 'namespace'
       }
     ]
+    cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    cMKKeyName: 'keyEncryptionKey'
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
   }
 }
 ```

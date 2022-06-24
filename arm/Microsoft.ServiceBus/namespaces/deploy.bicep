@@ -92,6 +92,24 @@ param queues array = []
 @description('Optional. The topics to create in the service bus namespace.')
 param topics array = []
 
+@description('Optional. Enable service encryption.')
+param enableEncryption bool = true
+
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
+@description('Conditional. The version of the customer managed key to reference for encryption. Required if \'cMKeyName\' is not empty.')
+param cMKKeyVersion string = ''
+
+@description('Optional. Enable Infrastructure Encryption (Double Encryption)')
+param requireInfrastructureEncryption bool = true
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'OperationalLogs'
@@ -155,6 +173,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName) && empty(cMKKeyVersion)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
   name: !empty(name) ? name : uniqueServiceBusNamespaceName
   location: location
@@ -165,6 +193,24 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview
   identity: identity
   properties: {
     zoneRedundant: zoneRedundant
+    encryption: enableEncryption && !empty(cMKKeyName) ? {
+      // Customer-managed key
+      keySource: 'Microsoft.KeyVault'
+      keyVaultProperties: [
+        {
+          identity: {
+            userAssignedIdentity: cMKUserAssignedIdentityResourceId
+          }
+          keyName: cMKKeyName
+          keyVaultUri: cMKKeyVault.properties.vaultUri
+          keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
+        }
+      ]
+      requireInfrastructureEncryption: requireInfrastructureEncryption
+    } : enableEncryption ? {
+      // Service-managed key
+      keySource: 'Microsoft.ServiceBus/namespaces'
+    } : null
   }
 }
 
