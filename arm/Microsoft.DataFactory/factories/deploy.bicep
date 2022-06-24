@@ -65,21 +65,6 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
-param privateEndpoints array = []
-
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
-param cMKKeyVaultResourceId string = ''
-
-@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
-param cMKKeyName string = ''
-
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
-param cMKUserAssignedIdentityResourceId string = ''
-
-@description('Conditional. The version of the customer managed key to reference for encryption. Required if \'cMKeyName\' is not empty.')
-param cMKKeyVersion string = ''
-
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'ActivityRuns'
@@ -152,11 +137,6 @@ var identity = identityType != 'None' ? {
 
 var enableReferencedModulesTelemetry = false
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
-}
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -177,14 +157,6 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   properties: {
     repoConfiguration: bool(gitConfigureLater) ? null : json('{"type": "${gitRepoType}","accountName": "${gitAccountName}","repositoryName": "${gitRepositoryName}",${((gitRepoType == 'FactoryVSTSConfiguration') ? '"projectName": "${gitProjectName}",' : '')}"collaborationBranch": "${gitCollaborationBranch}","rootFolder": "${gitRootFolder}"}')
     publicNetworkAccess: bool(publicNetworkAccess) ? 'Enabled' : 'Disabled'
-    encryption: !empty(cMKKeyName) ? {
-      identity: {
-        userAssignedIdentity: cMKUserAssignedIdentityResourceId
-      }
-      keyName: cMKKeyName
-      keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
-      vaultBaseUrl: cMKKeyVault.properties.vaultUri
-    } : null
   }
 }
 
@@ -242,26 +214,6 @@ module dataFactory_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssign
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: dataFactory.id
-  }
-}]
-
-module dataFactory_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-Workspace-PrivateEndpoint-${index}'
-  params: {
-    groupIds: [
-      privateEndpoint.service
-    ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(dataFactory.id, '/'))}-${privateEndpoint.service}-${index}'
-    serviceResourceId: dataFactory.id
-    subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
-    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
-    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
-    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
-    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
 
