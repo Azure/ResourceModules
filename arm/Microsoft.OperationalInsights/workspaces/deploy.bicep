@@ -19,7 +19,7 @@ param storageInsightsConfigs array = []
 @description('Optional. List of services to be linked.')
 param linkedServices array = []
 
-@description('Optional. List of Storage Accounts to be linked.')
+@description('Conditional. List of Storage Accounts to be linked. Required if \'forceCmkForQuery\' is set to \'true\' and \'savedSearches\' is not empty.')
 param linkedStorageAccounts array = []
 
 @description('Optional. Kusto Query Language searches to save.')

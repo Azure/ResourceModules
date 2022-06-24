@@ -31,6 +31,11 @@ This template deploys a log analytics workspace.
 | :-- | :-- | :-- |
 | `name` | string | Name of the Log Analytics workspace. |
 
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `linkedStorageAccounts` | _[linkedStorageAccounts](linkedStorageAccounts/readme.md)_ array | List of Storage Accounts to be linked. Required if 'forceCmkForQuery' is set to 'true' and 'savedSearches' is not empty. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
@@ -49,7 +54,6 @@ This template deploys a log analytics workspace.
 | `forceCmkForQuery` | bool | `True` |  | Indicates whether customer managed storage is mandatory for query management. |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the log analytics workspace. |
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | List of services to be linked. |
-| `linkedStorageAccounts` | _[linkedStorageAccounts](linkedStorageAccounts/readme.md)_ array | `[]` |  | List of Storage Accounts to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccessForIngestion` | string | `'Enabled'` | `[Enabled, Disabled]` | The network access type for accessing Log Analytics ingestion. |
