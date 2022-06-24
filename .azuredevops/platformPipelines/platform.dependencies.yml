@@ -728,7 +728,7 @@ stages:
                 }
 
                 $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath
-                $null = Convert-TokensInFile @NoprConvertTokensInputs -FilePath $noprParameterFilePath
+                $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $noprParameterFilePath
 
                 # Get key vault name
                 $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
