@@ -119,7 +119,7 @@ param cMKKeyVaultResourceId string = ''
 @sys.description('Optional. The name of the customer managed key to use for encryption.')
 param cMKKeyName string = ''
 
-@sys.description('Conditional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
+@sys.description('Optional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
 param cMKUserAssignedIdentityResourceId string = ''
 
 @sys.description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
