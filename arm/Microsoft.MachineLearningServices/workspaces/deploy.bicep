@@ -210,7 +210,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     discoveryUrl: discoveryUrl
     encryption: !empty(cMKKeyName) ? {
       status: 'Enabled'
-      identity: !emtpy(cMKUserAssignedIdentityResourceId) ? {
+      identity: !empty(cMKUserAssignedIdentityResourceId) ? {
         userAssignedIdentity: cMKUserAssignedIdentityResourceId
       } : null
       keyVaultProperties: {
