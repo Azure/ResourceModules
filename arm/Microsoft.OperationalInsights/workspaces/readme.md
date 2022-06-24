@@ -455,121 +455,6 @@ tags: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-law-cmk-001"
-        },
-        "linkedServices": {
-            "value": [
-                {
-                    "name": "Automation",
-                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001"
-                }
-            ]
-        },
-        "linkedStorageAccounts": {
-            "value": [
-                {
-                    "name": "Query",
-                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001"
-                }
-            ]
-        },
-        // "savedSearches": {
-        //     "value": [
-        //         {
-        //             "name": "VMSSQueries",
-        //             "displayName": "VMSS Instance Count2",
-        //             "category": "VDC Saved Searches",
-        //             "query": "Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer"
-        //         }
-        //     ]
-        // },
-        "gallerySolutions": {
-            "value": [
-                {
-                    "name": "AzureAutomation",
-                    "product": "OMSGallery",
-                    "publisher": "Microsoft"
-                }
-            ]
-        },
-        "storageInsightsConfigs": {
-            "value": [
-                {
-                    "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001",
-                    "tables": [
-                        "WADWindowsEventLogsTable",
-                        "WADETWEventTable",
-                        "WADServiceFabric*EventTable",
-                        "LinuxsyslogVer2v0"
-                    ]
-                }
-            ]
-        }
-    }
-}
-
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
-  params: {
-    name: '<<namePrefix>>-az-law-cmk-001'
-    linkedServices: [
-      {
-        name: 'Automation'
-        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001'
-      }
-    ]
-    linkedStorageAccounts: [
-      {
-        name: 'Query'
-        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
-      }
-    ]
-    gallerySolutions: [
-      {
-        name: 'AzureAutomation'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-      }
-    ]
-    storageInsightsConfigs: [
-      {
-        storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
-        tables: [
-          'WADWindowsEventLogsTable'
-          'WADETWEventTable'
-          'WADServiceFabric*EventTable'
-          'LinuxsyslogVer2v0'
-        ]
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
             "value": "<<namePrefix>>-az-law-min-001"
         }
     }
@@ -595,7 +480,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
+<h3>Example 2</h3>
 
 <details>
 
@@ -639,6 +524,14 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
                 {
                     "name": "Automation",
                     "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001"
+                }
+            ]
+        },
+        "linkedStorageAccounts": {
+            "value": [
+                {
+                    "name": "Query",
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001"
                 }
             ]
         },
@@ -806,6 +699,12 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
       {
         name: 'Automation'
         resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001'
+      }
+    ]
+    linkedStorageAccounts: [
+      {
+        name: 'Query'
+        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
       }
     ]
     savedSearches: [

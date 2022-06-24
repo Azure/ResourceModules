@@ -229,6 +229,9 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
     version: contains(savedSearch, 'version') ? savedSearch.version : 2
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    logAnalyticsWorkspace_linkedStorageAccounts
+  ]
 }]
 
 module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (dataSource, index) in dataSources: {
