@@ -71,6 +71,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
+@description('Optional. Indicates whether customer managed storage is mandatory for query management.')
+param forceCmkForQuery bool = true
+
 @allowed([
   ''
   'CanNotDelete'
@@ -160,6 +163,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08
     }
     publicNetworkAccessForIngestion: publicNetworkAccessForIngestion
     publicNetworkAccessForQuery: publicNetworkAccessForQuery
+    forceCmkForQuery: forceCmkForQuery
   }
 }
 
