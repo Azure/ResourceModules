@@ -119,10 +119,10 @@ param cMKKeyVaultResourceId string = ''
 @sys.description('Optional. The name of the customer managed key to use for encryption.')
 param cMKKeyName string = ''
 
-@sys.description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
+@sys.description('Conditional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@sys.description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
+@sys.description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
 @sys.description('Optional. The compute name for image build.')
@@ -210,9 +210,9 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     discoveryUrl: discoveryUrl
     encryption: !empty(cMKKeyName) ? {
       status: 'Enabled'
-      identity: {
+      identity: !emtpy(cMKUserAssignedIdentityResourceId) ? {
         userAssignedIdentity: cMKUserAssignedIdentityResourceId
-      }
+      } : null
       keyVaultProperties: {
         keyVaultArmId: cMKKeyVaultResourceId
         keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
