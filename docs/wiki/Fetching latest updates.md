@@ -23,7 +23,7 @@ Another factor to take into account before updating your local copy of the libra
 ### Option 1 - Library improvement
 As a [Solution Developer](./The%20context%20-%20Logical%20layers%20and%20personas.md#solution-developer) you may need to modify existing modules to get a new feature that is not implemented yet or to fix a bug.
 
-In this scenario we recommend to [contribute](./Contribution%20guide.md) to the public CARML repository, in the spirit of collaboration and open source principles, helping to maintain a common code base.
+In this scenario we recommend to [contribute](./Contribution%20guide.md) to the public CARML repository, in the spirit of collaboration and open source principles, helping to maintain a common codebase.
 
 In this way your improved code will be part of next updates and releases of the public CARML library and you won't need to take care of customization and do code comparison each time you'll update your local version of the library.
 Another advantage is that CARML public modules are tested, so you won't need to mange the test of your customization at each update.
