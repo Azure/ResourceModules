@@ -73,21 +73,14 @@ param tags object = {}
 @description('Optional. List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.')
 param allowedAuthenticationModes array = []
 
-@allowed([
-  'Microsoft.Batch'
-  'Microsoft.KeyVault'
-])
-@description('Optional. Type of the key source.')
-param encryptionKeySource string = 'Microsoft.Batch'
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
 
-@description('Conditional. Full path to the versioned secret. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
-param encryptionKeyIdentifier string = ''
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
 
-@description('Conditional. The resource ID of the Azure key vault associated with the Batch account. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
-param keyVaultResourceId string = ''
-
-@description('Conditional. The URL of the Azure key vault associated with the Batch account. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
-param keyVaultUri string = ''
+@description('Conditional. The version of the customer managed key to reference for encryption.')
+param cMKKeyVersion string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -159,6 +152,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
   name: name
   location: location
@@ -167,16 +170,16 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
   properties: {
     allowedAuthenticationModes: allowedAuthenticationModes
     autoStorage: autoStorageConfig
-    encryption: {
-      keySource: encryptionKeySource
-      keyVaultProperties: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true || poolAllocationMode == 'UserSubscription' ? {
-        keyIdentifier: encryptionKeyIdentifier
-      } : null
-    }
-    keyVaultReference: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true || poolAllocationMode == 'UserSubscription' ? {
-      id: keyVaultResourceId
-      url: keyVaultUri
+    encryption: !empty(cMKKeyName) ? {
+      keySource: 'Microsoft.KeyVault'
+      keyVaultProperties: {
+        keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
+      }
     } : null
+    // keyVaultReference: !empty(cMKKeyName) ? { // && (systemAssignedIdentity == true || poolAllocationMode == 'UserSubscription') ? {
+    //   id: cMKKeyVaultResourceId
+    //   url: cMKKeyVault.properties.vaultUri
+    // } : null
     poolAllocationMode: poolAllocationMode
     publicNetworkAccess: publicNetworkAccess
   }

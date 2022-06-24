@@ -38,7 +38,7 @@ This module deploys an Azure Automation Account.
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `cMKKeyVersion` | string | `''` | The version of the customer managed key to reference for encryption. Required if 'cMKeyName' is not empty. |
+| `cMKKeyVersion` | string | `''` | The version of the customer managed key to reference for encryption. |
 | `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKeyName' is not empty. |
 
 **Optional parameters**
@@ -57,7 +57,6 @@ This module deploys an Azure Automation Account.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the linked log analytics workspace. |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | List of jobSchedules to be created in the automation account. |
-| `keyVersion` | string | `''` |  | The key version of the key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
 | `linkedWorkspaceResourceId` | string | `''` |  | ID of the log analytics workspace to be linked to the deployed automation account. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |

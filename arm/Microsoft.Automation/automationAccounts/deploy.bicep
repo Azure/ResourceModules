@@ -20,11 +20,8 @@ param cMKKeyName string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Conditional. The version of the customer managed key to reference for encryption. Required if \'cMKeyName\' is not empty.')
+@description('Conditional. The version of the customer managed key to reference for encryption.')
 param cMKKeyVersion string = ''
-
-@description('Optional. The key version of the key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource.')
-param keyVersion string = ''
 
 @description('Optional. List of modules to be created in the automation account.')
 param modules array = []
