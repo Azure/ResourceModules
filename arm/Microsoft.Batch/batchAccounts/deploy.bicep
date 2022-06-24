@@ -89,6 +89,12 @@ param keyVaultResourceId string = ''
 @description('Conditional. The URL of the Azure key vault associated with the Batch account. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
 param keyVaultUri string = ''
 
+@description('Optional. A list of application package definitions.')
+param applications array = []
+
+@description('Optional. A list of node pool configurations.')
+param pools array = []
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -110,6 +116,9 @@ param diagnosticMetricsToEnable array = [
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+param roleAssignments array = []
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
@@ -203,6 +212,52 @@ resource batchAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
   }
   scope: batchAccount
 }
+
+module batchAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-batchAccount-Rbac-${index}'
+  params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
+    principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: batchAccount.id
+  }
+}]
+
+module application 'applications/deploy.bicep' = [for app in applications: {
+  name: '${uniqueString(deployment().name, batchAccount.name)}-${app.name}'
+  params: {
+    batchName: batchAccount.name
+    appName: app.name
+    allowUpdates: app.allowUpdates
+    defaultVersion: app.defaultVersion
+    displayName: app.displayName
+  }
+}]
+
+module pool 'pools/deploy.bicep' = [for (pool, index) in pools: {
+  name: '${uniqueString(deployment().name, batchAccount.name)}-pool-${index}'
+  params: {
+    batchAccountName: batchAccount.name
+    poolName: pool.poolName
+    userAssignedIdentities: contains(pool, 'userAssignedIdentities') ? pool.userAssignedIdentities : {}
+    applicationLicenses: contains(pool, 'applicationLicenses') ? pool.applicationLicenses : []
+    applicationPackages: contains(pool, 'applicationPackages') ? pool.applicationPackages : []
+    certificates: contains(pool, 'certificates') ? pool.certificates : []
+    deploymentConfiguration: pool.deploymentConfiguration
+    displayName: pool.displayName
+    interNodeCommunication: contains(pool, 'interNodeCommunication') ? pool.interNodeCommunication : 'Disabled'
+    metadata: contains(pool, 'metadata') ? pool.metadata : []
+    mountConfiguration: contains(pool, 'mountConfiguration') ? pool.mountConfiguration : []
+    networkConfiguration: pool.networkConfiguration
+    scaleSettings: pool.scaleSettings
+    startTask: contains(pool, 'startTask') ? pool.startTask : {}
+    taskSchedulingPolicy: contains(pool, 'taskSchedulingPolicy') ? pool.taskSchedulingPolicy : 'Pack'
+    taskSlotsPerNode: contains(pool, 'taskSlotsPerNode') ? pool.taskSlotsPerNode : 1
+    userAccounts: contains(pool, 'userAccounts') ? pool.userAccounts : []
+    vmSize: pool.vmSize
+  }
+}]
 
 @description('The name of the batch account.')
 output name string = batchAccount.name
