@@ -175,8 +175,16 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   tags: tags
   identity: identity
   properties: {
-    repoConfiguration: bool(gitConfigureLater) ? null : json('{"type": "${gitRepoType}","accountName": "${gitAccountName}","repositoryName": "${gitRepositoryName}",${((gitRepoType == 'FactoryVSTSConfiguration') ? '"projectName": "${gitProjectName}",' : '')}"collaborationBranch": "${gitCollaborationBranch}","rootFolder": "${gitRootFolder}"}')
-    publicNetworkAccess: bool(publicNetworkAccess) ? 'Enabled' : 'Disabled'
+    repoConfiguration: bool(gitConfigureLater) ? null : union({
+        type: gitRepoType
+        accountName: gitAccountName
+        repositoryName: gitRepositoryName
+        collaborationBranch: gitCollaborationBranch
+        rootFolder: gitRootFolder
+      }, (gitRepoType == 'FactoryVSTSConfiguration' ? {
+        projectName: gitProjectName
+      } : {}), {})
+    publicNetworkAccess: publicNetworkAccess && empty(privateEndpoints) ? 'Enabled' : 'Disabled'
     encryption: !empty(cMKKeyName) ? {
       identity: {
         userAssignedIdentity: cMKUserAssignedIdentityResourceId
