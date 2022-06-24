@@ -71,13 +71,13 @@ param privateEndpoints array = []
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
 param cMKKeyVaultResourceId string = ''
 
-@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
+@description('Optional. The name of the customer managed key to use for encryption.')
 param cMKKeyName string = ''
 
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Conditional. The version of the customer managed key to reference for encryption. Required if \'cMKeyName\' is not empty.')
+@description('Conditional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
 @description('Optional. The name of logs that will be streamed.')
