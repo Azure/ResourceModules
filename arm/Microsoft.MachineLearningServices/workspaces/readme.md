@@ -504,7 +504,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
             "value": "keyEncryptionKey"
         },
         "cMKKeyVaultResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-carml-az-kv-nopr-002"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
         },
         "imageBuildCompute": {
             "value": "testcompute"
@@ -607,7 +607,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     discoveryUrl: 'http://example.com'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
     cMKKeyName: 'keyEncryptionKey'
-    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-carml-az-kv-nopr-002'
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     imageBuildCompute: 'testcompute'
     publicNetworkAccess: 'Enabled'
     primaryUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
