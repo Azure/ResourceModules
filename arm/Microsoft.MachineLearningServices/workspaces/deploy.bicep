@@ -43,7 +43,7 @@ param allowPublicAccessWhenBehindVnet bool = false
 @sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@sys.description('Optional. Configuration Details for private endpoints.')
+@sys.description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @sys.description('Optional. Computes to create respectively attach to the workspace.')
@@ -206,6 +206,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     description: description
     discoveryUrl: discoveryUrl
     encryption: !empty(cMKKeyName) ? {
+      status: 'Enabled'
       identity: {
         userAssignedIdentity: cMKUserAssignedIdentityResourceId
       }
