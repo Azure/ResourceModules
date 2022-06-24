@@ -46,6 +46,14 @@ param securityAlertPolicies array = []
 @description('Conditional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
 param administrators object = {}
 
+@allowed([
+  '1.0'
+  '1.1'
+  '1.2'
+])
+@description('Optional. Minimal TLS version allowed.')
+param minimalTlsVersion string = '1.2'
+
 @description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
@@ -90,6 +98,7 @@ resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
       tenantId: administrators.tenantId
     } : null
     version: '12.0'
+    minimalTlsVersion: minimalTlsVersion
   }
 }
 
