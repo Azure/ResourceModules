@@ -21,7 +21,7 @@ The update process is the following:
 1. [Update module parameter files](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md#5-update-module-parameter-files)
 1. [(Optional) Convert library to ARM](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only.md#6-optional-convert-library-to-arm)
 1. Push the updated local code to your remote public fork
-1. Test eventual customized modules
+1. (Optional) Test customized modules
 1. Publish updated artifacts
 
 # GitHub private repository
@@ -36,7 +36,7 @@ The update process is similar to the onboarding one:
 1. [Update module parameter files](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md#5-update-module-parameter-files)
 1. [(Optional) Convert library to ARM](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only.md#6-optional-convert-library-to-arm)
 1. Push the updated local code to your remote target repository
-1. Test eventual customized modules
+1. (Optional) Test customized modules
 1. Publish updated artifacts
 
 # Azure DevOps private git
@@ -51,5 +51,5 @@ The update process is similar to the onboarding one:
 1. [Update module parameter files](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md#5-update-module-parameter-files)
 1. [(Optional) Convert library to ARM](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only.md#6-optional-convert-library-to-arm)
 1. Push the updated local code to your remote target repository
-1. Test eventual customized modules
+1. (Optional) Test customized modules
 1. Publish updated artifacts
