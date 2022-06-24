@@ -47,6 +47,7 @@ This module deploys a Machine Learning Services Workspace.
 | `associatedContainerRegistryResourceId` | string | `''` |  | The resource ID of the associated Container Registry. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled. |
 | `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
+| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
 | `computes` | _[computes](computes/readme.md)_ array | `[]` |  | Computes to create respectively attach to the workspace. |
 | `description` | string | `''` |  | The description of this workspace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |

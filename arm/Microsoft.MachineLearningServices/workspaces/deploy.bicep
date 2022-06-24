@@ -122,6 +122,9 @@ param cMKKeyName string = ''
 @sys.description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
+@sys.description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
+param cMKKeyVersion string = ''
+
 @sys.description('Optional. The compute name for image build.')
 param imageBuildCompute string = ''
 
@@ -212,7 +215,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
       }
       keyVaultProperties: {
         keyVaultArmId: cMKKeyVaultResourceId
-        keyIdentifier: cMKKeyVaultKey.properties.keyUriWithVersion
+        keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       }
     } : null
     imageBuildCompute: imageBuildCompute
