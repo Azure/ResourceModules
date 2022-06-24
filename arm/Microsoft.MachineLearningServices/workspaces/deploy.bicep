@@ -212,7 +212,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
       }
       keyVaultProperties: {
         keyVaultArmId: cMKKeyVaultResourceId
-        keyIdentifier: cMKKeyVaultKey.properties.keyUri
+        keyIdentifier: cMKKeyVaultKey.properties.keyUriWithVersion
       }
     } : null
     imageBuildCompute: imageBuildCompute
