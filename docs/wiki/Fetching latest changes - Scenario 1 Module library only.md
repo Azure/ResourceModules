@@ -56,7 +56,7 @@ When the modules are stored in Template Specs a versioning feature with access t
          ```PowerShell
         Publish-ModuleToTemplateSpec -TemplateFilePath "D:\ResourcesModules\arm\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
         ```
-        As the modules to be published are more than one a Powershell Script that calls the `'Publish-ModuleToTemplateSpec'` function for each of the modules can be created.
+        As the modules to be published are more than one a script that calls the `'Publish-ModuleToTemplateSpec'` function for each of the modules can be created.
     </details>
     <p
 1. Update your master template in order to use the new version of the published modules.
@@ -92,7 +92,7 @@ As the Template Specs scenario, Bicep Registry offers a versioning feature with 
          ```PowerShell
         Publish-ModuleToPrivateBicepRegistry -TemplateFilePath "D:\ResourcesModules\arm\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -BicepRegistryName 'adpsxxazacrx001'  -BicepRegistryRgName 'artifact-rg'
         ```
-        As the modules to be published are more than one a Powershell Script that calls the `'Publish-ModuleToPrivateBicepRegistry'` function for each of the modules can be created.
+        As the modules to be published are more than one a script that calls the `'Publish-ModuleToPrivateBicepRegistry'` function for each of the modules can be created.
     </details>
     <p
 1. Update your master template in order to use the new version of the published modules.
