@@ -27,10 +27,10 @@ param storageAccessIdentity string = ''
   'BatchService'
   'UserSubscription'
 ])
-@description('Optional. The allocation mode for creating pools in the Batch account. Determines which quota will be used. If set, the service principal \'Microsoft Azure Batch\' must be granted contributor permissions on the subscription.')
+@description('Optional. The allocation mode for creating pools in the Batch account. Determines which quota will be used.')
 param poolAllocationMode string = 'BatchService'
 
-@description('Conditional. The key vault to associate with the Batch account. Required if the \'poolAllocationMode\' is set to \'UserSubscription\'.')
+@description('Conditional. The key vault to associate with the Batch account. Required if the \'poolAllocationMode\' is set to \'UserSubscription\' and requires the service principal \'Microsoft Azure Batch\' to be granted contributor permissions on this key vault.')
 param keyVaultReferenceResourceId string = ''
 
 @allowed([
