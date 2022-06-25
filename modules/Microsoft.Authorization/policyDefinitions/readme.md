@@ -113,7 +113,7 @@ module policydefinition 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.aut
 ```
 **Local Path Reference**
 ```bicep
-module policydefinition 'yourpath/arm/Microsoft.Authorization.policyDefinitions/subscription/deploy.bicep' = {}
+module policydefinition 'yourpath/modules/Microsoft.Authorization.policyDefinitions/subscription/deploy.bicep' = {}
 ```
 
 ## Outputs

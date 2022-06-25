@@ -15,7 +15,7 @@
 ##   |=======================================================================================================================================================================================================|
 ##   | Parameter                | Required | Default | Description                                                                                      | Example                                            |
 ##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|----------------------------------------------------|
-##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'arm/Microsoft.ApiManagement/service/deploy.bicep' |
+##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'modules/Microsoft.ApiManagement/service/deploy.bicep' |
 ##   | templateSpecsRgName      | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to           | 'artifacts-rg'                                     |
 ##   | templateSpecsRgLocation  | false    | ''      | Required to publish to template spec. Location of the template spec resource group               | 'WestEurope'                                       |
 ##   | templateSpecsDescription | false    | ''      | Required to publish to template spec. Description of the template spec to publish to             | 'This is an API-Management service template'       |
@@ -116,7 +116,7 @@ runs:
 
           # Publish the modified child resources
           foreach ($ModuleToPublish in $ModulesToPublish) {
-            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
 
             $functionInput = @{
@@ -160,7 +160,7 @@ runs:
 
           # Publish the modified child resources
           foreach ($ModuleToPublish in $ModulesToPublish) {
-            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
 
             $functionInput = @{

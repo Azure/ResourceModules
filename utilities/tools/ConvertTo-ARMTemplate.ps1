@@ -56,7 +56,7 @@ param (
 )
 
 $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
-$armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
+$armFolderPath = Join-Path -Path $rootPath -ChildPath 'modules'
 if ($ConvertChildren) {
     $BicepFilesToConvert = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force
 } else {

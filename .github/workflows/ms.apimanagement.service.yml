@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.apimanagement.service.yml'
-      - 'arm/Microsoft.ApiManagement/service/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.ApiManagement/service/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.ApiManagement/service'
+  modulePath: 'modules/Microsoft.ApiManagement/service'
   workflowPath: '.github/workflows/ms.apimanagement.service.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

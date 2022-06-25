@@ -154,7 +154,7 @@ module policyassignment 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.aut
 ```
 **Local Path Reference**
 ```bicep
-module policyassignment 'yourpath/arm/Microsoft.Authorization.policyAssignments/subscription/deploy.bicep' = {}
+module policyassignment 'yourpath/modules/Microsoft.Authorization.policyAssignments/subscription/deploy.bicep' = {}
 ```
 
 ## Outputs
