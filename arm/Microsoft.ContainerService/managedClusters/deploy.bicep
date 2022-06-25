@@ -137,7 +137,7 @@ param appGatewayResourceId string = ''
 @description('Optional. Specifies whether the aciConnectorLinux add-on is enabled or not.')
 param aciConnectorLinuxEnabled bool = false
 
-@description('Optional. Specifies whether the azurepolicy add-on is enabled or not.')
+@description('Optional. Specifies whether the azurepolicy add-on is enabled or not. For security reasons, this setting should be enabled.')
 param azurePolicyEnabled bool = true
 
 @description('Optional. Specifies the azure policy version to use.')
