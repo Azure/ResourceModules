@@ -44,7 +44,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = {
+resource keyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = {
   name: '${last(split(keyVaultResourceId, '/'))}/${keyName}'
   scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
 }
@@ -61,7 +61,7 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
       sourceVault: {
         id: keyVaultResourceId
       }
-      keyUrl: !empty(keyVersion) ? '${keyVault.properties.keyUri}/${keyVersion}' : keyVault.properties.keyUriWithVersion
+      keyUrl: !empty(keyVersion) ? '${keyVaultKey.properties.keyUri}/${keyVersion}' : keyVaultKey.properties.keyUriWithVersion
     }
     encryptionType: encryptionType
     rotationToLatestKeyVersionEnabled: rotationToLatestKeyVersionEnabled
