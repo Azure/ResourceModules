@@ -5,10 +5,13 @@ param name string
 param location string = resourceGroup().location
 
 @description('Required. Resource ID of the KeyVault containing the key or secret.')
-param keyVaultId string
+param keyVaultResourceId string
 
 @description('Required. Key URL (with version) pointing to a key or secret in KeyVault.')
-param keyUrl string
+param keyName string
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param keyVersion string
 
 @description('Optional. The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys.')
 @allowed([
@@ -41,6 +44,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource keyVault 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = {
+  name: '${last(split(keyVaultResourceId, '/'))}/${keyName}'
+  scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
+}
+
 resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
   name: name
   location: location
@@ -51,9 +59,9 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
   properties: {
     activeKey: {
       sourceVault: {
-        id: keyVaultId
+        id: keyVaultResourceId
       }
-      keyUrl: keyUrl
+      keyUrl: !empty(keyVersion) ? '${keyVault.properties.keyUri}/${keyVersion}' : keyVault.properties.keyUriWithVersion
     }
     encryptionType: encryptionType
     rotationToLatestKeyVersionEnabled: rotationToLatestKeyVersionEnabled
@@ -63,7 +71,7 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
 module keyVaultAccessPolicies '../../Microsoft.KeyVault/vaults/accessPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
   params: {
-    keyVaultName: last(split(keyVaultId, '/'))
+    keyVaultName: last(split(keyVaultResourceId, '/'))
     accessPolicies: [
       {
         tenantId: subscription().tenantId
@@ -81,7 +89,7 @@ module keyVaultAccessPolicies '../../Microsoft.KeyVault/vaults/accessPolicies/de
     ]
   }
   // This is to support access policies to KV in different subscription and resource group than the disk encryption set.
-  scope: resourceGroup(split(keyVaultId, '/')[2], split(keyVaultId, '/')[4])
+  scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
 }
 
 module diskEncryptionSet_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -108,7 +116,7 @@ output resourceGroupName string = resourceGroup().name
 output systemAssignedPrincipalId string = diskEncryptionSet.identity.principalId
 
 @description('The name of the key vault with the disk encryption key.')
-output keyVaultName string = last(split(keyVaultId, '/'))
+output keyVaultName string = last(split(keyVaultResourceId, '/'))
 
 @description('The location the resource was deployed into.')
 output location string = diskEncryptionSet.location
