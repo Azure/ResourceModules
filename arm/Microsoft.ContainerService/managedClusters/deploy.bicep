@@ -384,7 +384,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-03-02-p
     tier: aksClusterSkuTier
   }
   properties: {
-    diskEncryptionSetID: diskEncryptionSetID
+    diskEncryptionSetID: !empty(diskEncryptionSetID) ? diskEncryptionSetID : null
     kubernetesVersion: (empty(aksClusterKubernetesVersion) ? null : aksClusterKubernetesVersion)
     dnsPrefix: aksClusterDnsPrefix
     agentPoolProfiles: primaryAgentPoolProfile
