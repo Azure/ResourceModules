@@ -11,7 +11,7 @@ param keyVaultResourceId string
 param keyName string
 
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
-param keyVersion string
+param keyVersion string = ''
 
 @description('Optional. The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys.')
 @allowed([
