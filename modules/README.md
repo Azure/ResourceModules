@@ -8,12 +8,8 @@ In this section you can find useful information regarding the Modules that are c
 | [Analysis Services Servers](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.AnalysisServices/servers) | `MS.AnalysisServices` | [servers](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.AnalysisServices/servers) |
 | [API Management Services](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.ApiManagement/service) | `MS.ApiManagement` | [service](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.ApiManagement/service) |
 | [App Configuration](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.AppConfiguration/configurationStores) | `MS.AppConfiguration` | [configurationStores](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.AppConfiguration/configurationStores) |
-<<<<<<< HEAD
 | [Authorization Locks](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/locks) | `MS.Authorization` | [locks](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/locks) |
 | [Policy Assignments](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/policyAssignments) |  | [policyAssignments](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/policyAssignments) |
-=======
-| [Policy Assignments](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/policyAssignments) | `MS.Authorization` | [policyAssignments](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/policyAssignments) |
->>>>>>> cc920848f21b57e5f4f2dfbd39e040465d4e5dd6
 | [Policy Definitions](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/policyDefinitions) |  | [policyDefinitions](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/policyDefinitions) |
 | [Policy Exemptions](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/policyExemptions) |  | [policyExemptions](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/policyExemptions) |
 | [Policy Set Definitions](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/policySetDefinitions) |  | [policySetDefinitions](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/policySetDefinitions) |
@@ -36,10 +32,7 @@ In this section you can find useful information regarding the Modules that are c
 | [Azure Kubernetes Services](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.ContainerService/managedClusters) | `MS.ContainerService` | [managedClusters](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.ContainerService/managedClusters) |
 | [Azure Databricks](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Databricks/workspaces) | `MS.Databricks` | [workspaces](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Databricks/workspaces) |
 | [Data Factories](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.DataFactory/factories) | `MS.DataFactory` | [factories](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.DataFactory/factories) |
-<<<<<<< HEAD
 | [DataProtection BackupVaults](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.DataProtection/backupVaults) | `MS.DataProtection` | [backupVaults](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.DataProtection/backupVaults) |
-=======
->>>>>>> cc920848f21b57e5f4f2dfbd39e040465d4e5dd6
 | [AVD Application Groups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.DesktopVirtualization/applicationgroups) | `MS.DesktopVirtualization` | [applicationgroups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.DesktopVirtualization/applicationgroups) |
 | [AVD Host Pools](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.DesktopVirtualization/hostpools) |  | [hostpools](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.DesktopVirtualization/hostpools) |
 | [AVD Scaling Plans](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.DesktopVirtualization/scalingplans) |  | [scalingplans](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.DesktopVirtualization/scalingplans) |
@@ -94,10 +87,7 @@ In this section you can find useful information regarding the Modules that are c
 | [VPN Gateways](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/vpnGateways) |  | [vpnGateways](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/vpnGateways) |
 | [VPN Sites](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/vpnSites) |  | [vpnSites](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/vpnSites) |
 | [Log Analytics Workspaces](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.OperationalInsights/workspaces) | `MS.OperationalInsights` | [workspaces](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.OperationalInsights/workspaces) |
-<<<<<<< HEAD
 | [OperationsManagement Solutions](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.OperationsManagement/solutions) | `MS.OperationsManagement` | [solutions](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.OperationsManagement/solutions) |
-=======
->>>>>>> cc920848f21b57e5f4f2dfbd39e040465d4e5dd6
 | [Recovery Services Vaults](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.RecoveryServices/vaults) | `MS.RecoveryServices` | [vaults](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.RecoveryServices/vaults) |
 | [Deployment Scripts](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Resources/deploymentScripts) | `MS.Resources` | [deploymentScripts](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Resources/deploymentScripts) |
 | [Resource Groups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Resources/resourceGroups) |  | [resourceGroups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Resources/resourceGroups) |
