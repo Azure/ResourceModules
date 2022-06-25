@@ -553,6 +553,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/bas.additional.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Additional Public IP
+
   - stage: deploy_appi
     displayName: Deploy application insight
     dependsOn:
@@ -880,6 +881,21 @@ stages:
                     }
                   azurePowerShellVersion: 'LatestVersion'
                   pwsh: true
+
+  - stage: deploy_des
+    displayName: Deploy Disk Encryption Set
+    dependsOn:
+      - deploy_kv
+    variables:
+      resourceType: 'Microsoft.Compute/diskEncryptionSets'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Application Group
 
   - stage: deploy_avdag
     displayName: Deploy AVD application group
