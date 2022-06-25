@@ -203,8 +203,8 @@ if (-not $SkipPipelineUpdate) {
                 $_ | Set-Content -Value $content
             }
         }
-    }Verbose 'Update#pipelineefilesn-dDone'
-    Invoke-History
-    #endregionegion
+    }
+
+    Write-Verbose 'Update pipeline files - Done'
 }
 #endregion
