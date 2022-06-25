@@ -350,9 +350,6 @@ userAssignedIdentities: {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
         },
-        "systemAssignedIdentity": {
-            "value": true
-        },
         "publicNetworkAccess": {
             "value": "Disabled"
         },
@@ -387,7 +384,6 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
-    systemAssignedIdentity: true
     publicNetworkAccess: 'Disabled'
     acrSku: 'Premium'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
