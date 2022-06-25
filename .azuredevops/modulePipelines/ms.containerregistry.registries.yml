@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.containerregistry.registries.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.ContainerRegistry/registries/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.ContainerRegistry/registries/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.ContainerRegistry/registries'
+    value: '/modules/Microsoft.ContainerRegistry/registries'
 
 stages:
   - stage: Validation

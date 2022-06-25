@@ -350,7 +350,7 @@ function Set-DeploymentExamplesSection {
     $SectionContent = [System.Collections.ArrayList]@()
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $resourceTypeIdentifier = $moduleRoot.Split('arm')[1].Replace('\', '/').TrimStart('/')
+    $resourceTypeIdentifier = $moduleRoot.Split('modules')[1].Replace('\', '/').TrimStart('/')
     $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.parameters') -Filter '*parameters.json' -Recurse
 
     $index = 1
@@ -639,7 +639,7 @@ function Set-ModuleReadMe {
         throw "Failed to compile [$TemplateFilePath]"
     }
 
-    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
+    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/modules/')[1]
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
@@ -674,7 +674,7 @@ function Set-ModuleReadMe {
     }
 
     # Update title
-    if ($TemplateFilePath.Replace('\', '/') -like '*/arm/*') {
+    if ($TemplateFilePath.Replace('\', '/') -like '*/modules/*') {
 
         if ($readMeFileContent[0] -notlike "*``[$fullResourcePath]``") {
             # Cut outdated

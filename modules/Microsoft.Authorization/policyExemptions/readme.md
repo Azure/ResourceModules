@@ -132,7 +132,7 @@ module policyexemption 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.auth
 ```
 **Local Path Reference**
 ```bicep
-module policyexemption 'yourpath/arm/Microsoft.Authorization.policyExemptions/subscription/deploy.bicep' = {}
+module policyexemption 'yourpath/modules/Microsoft.Authorization.policyExemptions/subscription/deploy.bicep' = {}
 ```
 
 ## Outputs

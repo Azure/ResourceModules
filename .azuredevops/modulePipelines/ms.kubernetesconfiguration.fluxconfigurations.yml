@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.kubernetesconfiguration.fluxconfigurations.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.KubernetesConfiguration/fluxConfigurations/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.KubernetesConfiguration/fluxConfigurations/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.KubernetesConfiguration/fluxConfigurations'
+    value: '/modules/Microsoft.KubernetesConfiguration/fluxConfigurations'
 
 stages:
   - stage: Validation
