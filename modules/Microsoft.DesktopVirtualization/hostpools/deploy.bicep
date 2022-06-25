@@ -186,7 +186,7 @@ resource hostPool_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021
   scope: hostPool
 }
 
-module hostPool_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module hostPool_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-HostPool-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

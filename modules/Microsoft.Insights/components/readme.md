@@ -146,6 +146,7 @@ tags: {
 | `name` | string | The name of the application insights component. |
 | `resourceGroupName` | string | The resource group the application insights component was deployed into. |
 | `resourceId` | string | The resource ID of the application insights component. |
+| `instrumentationKey` | string | Application Insights Instrumentation key. A read-only value that applications can use to identify the destination for all telemetry sent to Azure Application Insights. This value will be supplied upon construction of each new Application Insights component. |
 
 ## Deployment examples
 
