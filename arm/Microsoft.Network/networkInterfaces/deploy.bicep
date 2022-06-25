@@ -144,7 +144,7 @@ resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (
   scope: networkInterface
 }
 
-module networkInterface_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module networkInterface_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-NIC-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

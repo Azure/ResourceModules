@@ -208,7 +208,7 @@ resource logicApp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021
   scope: logicApp
 }
 
-module logicApp_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module logicApp_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-LogicApp-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
