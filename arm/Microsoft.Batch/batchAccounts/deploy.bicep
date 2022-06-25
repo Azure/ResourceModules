@@ -27,8 +27,11 @@ param storageAccessIdentity string = ''
   'BatchService'
   'UserSubscription'
 ])
-@description('Optional. The allocation mode for creating pools in the Batch account. Determines which quota will be used.')
+@description('Optional. The allocation mode for creating pools in the Batch account. Determines which quota will be used. If set, the service principal \'Microsoft Azure Batch\' must be granted contributor permissions on the subscription.')
 param poolAllocationMode string = 'BatchService'
+
+@description('Conditional. The key vault to associate with the Batch account. Required if the \'poolAllocationMode\' is set to \'UserSubscription\'.')
+param keyVaultReferenceResourceId string = ''
 
 @allowed([
   'Disabled'
@@ -152,9 +155,9 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+resource keyVaultReferenceKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(keyVaultReferenceResourceId)) {
+  name: last(split(keyVaultReferenceResourceId, '/'))
+  scope: resourceGroup(split(keyVaultReferenceResourceId, '/')[2], split(keyVaultReferenceResourceId, '/')[4])
 }
 
 resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
@@ -176,10 +179,10 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
         keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       }
     } : null
-    // keyVaultReference: !empty(cMKKeyName) ? { // && (systemAssignedIdentity == true || poolAllocationMode == 'UserSubscription') ? {
-    //   id: cMKKeyVaultResourceId
-    //   url: cMKKeyVault.properties.vaultUri
-    // } : null
+    keyVaultReference: poolAllocationMode == 'UserSubscription' ? {
+      id: keyVaultReferenceResourceId
+      url: keyVaultReferenceKeyVault.properties.vaultUri
+    } : null
     poolAllocationMode: poolAllocationMode
     publicNetworkAccess: publicNetworkAccess
   }
