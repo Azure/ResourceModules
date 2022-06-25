@@ -104,7 +104,7 @@ tags: {
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-tags'
   params: {
-  
+
   }
 }
 ```
