@@ -1,4 +1,8 @@
 {
     "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
+<<<<<<< HEAD
     "version": "0.2"
+=======
+    "version": "0.1"
+>>>>>>> cc920848f21b57e5f4f2dfbd39e040465d4e5dd6
 }

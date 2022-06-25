@@ -2,7 +2,7 @@
 ## VALIDATION PIPELINE                                 ##
 #########################################################
 ##
-## This pipeline template contains the logic to validate a given module's ARM template using the provided parameter file(s)
+## This pipeline template contains the logic to validate a given module using the provided parameter file(s)
 ##
 ## Enabled levels of validation
 ## - Resource-Group-Level
@@ -30,8 +30,8 @@
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                    |
 ##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                           |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                      | 'c:/KeyVault'                          |
-##   | location                        | '$(location)'                 | The location to validate with                                                                             | 'France Central'                       |
-##   | resourceGroupName               | '$(resourceGroupName)'        | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                        |
+##   | location                        | '$(location)'                        | The location to validate with                                                                             | 'France Central'                       |
+##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                        |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to validate with. Required only for Management-Group-Level validations     | '477c9620-cb01-454f-9ebc-fc6b1df48c14' |
 ##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                            |

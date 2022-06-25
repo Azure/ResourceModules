@@ -3,7 +3,11 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
+<<<<<<< HEAD
             "value": "<<namePrefix>>-az-law-min-001"
+=======
+            "value": "<<namePrefix>>-az-bv-min-001"
+>>>>>>> cc920848f21b57e5f4f2dfbd39e040465d4e5dd6
         }
     }
 }
