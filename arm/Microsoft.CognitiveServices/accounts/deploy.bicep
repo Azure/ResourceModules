@@ -261,7 +261,7 @@ module cognitiveServices_privateEndpoints '../../Microsoft.Network/privateEndpoi
   }
 }]
 
-module cognitiveServices_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module cognitiveServices_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-CognitiveServices-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

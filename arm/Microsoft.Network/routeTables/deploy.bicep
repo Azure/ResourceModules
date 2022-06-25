@@ -58,7 +58,7 @@ resource routeTable_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty
   scope: routeTable
 }
 
-module routeTable_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module routeTable_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-RouteTable-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

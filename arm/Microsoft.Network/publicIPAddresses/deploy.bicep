@@ -170,7 +170,7 @@ resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticSettin
   scope: publicIpAddress
 }
 
-module publicIpAddress_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module publicIpAddress_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-PIPAddress-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
