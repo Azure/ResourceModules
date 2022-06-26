@@ -22,7 +22,7 @@
 ##   | Parameter                       | Default Value                        | Description                                                                                             | Example                                |
 ##   |---------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|----------------------------------------|
 ##   | displayName                     | 'Publishing'                         | Name for the pipeline job                                                                               | 'Publish KeyVault'                     |
-##   | serviceConnection               | '$(serviceConnectionPublish)'        | The service connection that connects to Azure                                                           | 'demo-internal'                        |
+##   | serviceConnection               | '$(serviceConnectionPublishing)'     | The service connection that connects to Azure                                                           | 'demo-internal'                        |
 ##   | subscriptionId                  | '$(ARM_PUBLISHING_SUBSCRIPTION_ID)'  | The id of the subscription to deploy into when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'Custom Deployment Pool'               |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                          |
@@ -48,7 +48,7 @@ parameters:
   # Pipeline-related parameters
   checkoutRepositories: ''
   displayName: 'Publishing'
-  serviceConnection: '$(serviceConnectionPublish)'
+  serviceConnection: '$(serviceConnectionPublishing)'
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
