@@ -205,7 +205,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -294,7 +293,6 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

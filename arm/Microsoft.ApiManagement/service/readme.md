@@ -452,7 +452,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -706,7 +705,6 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

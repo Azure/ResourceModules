@@ -270,53 +270,53 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
   tags: tags
   identity: identity
   properties: union({
-    authenticationCertificates: authenticationCertificates
-    autoscaleConfiguration: autoscaleMaxCapacity > 0 && autoscaleMinCapacity >= 0 ? {
-      maxCapacity: autoscaleMaxCapacity
-      minCapacity: autoscaleMinCapacity
-    } : null
-    backendAddressPools: backendAddressPools
-    backendHttpSettingsCollection: backendHttpSettingsCollection
-    customErrorConfigurations: customErrorConfigurations
-    enableHttp2: enableHttp2
-    firewallPolicy: !empty(firewallPolicyId) ? {
-      id: firewallPolicyId
-    } : null
-    forceFirewallPolicyAssociation: !empty(firewallPolicyId)
-    frontendIPConfigurations: frontendIPConfigurations
-    frontendPorts: frontendPorts
-    gatewayIPConfigurations: gatewayIPConfigurations
-    globalConfiguration: {
-      enableRequestBuffering: enableRequestBuffering
-      enableResponseBuffering: enableResponseBuffering
-    }
-    httpListeners: httpListeners
-    loadDistributionPolicies: loadDistributionPolicies
-    privateLinkConfigurations: privateLinkConfigurations
-    probes: probes
-    redirectConfigurations: redirectConfigurations
-    requestRoutingRules: requestRoutingRules
-    rewriteRuleSets: rewriteRuleSets
-    sku: {
-      name: sku
-      tier: endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_'))
-      capacity: autoscaleMaxCapacity > 0 && autoscaleMinCapacity >= 0 ? null : capacity
-    }
-    sslCertificates: sslCertificates
-    sslPolicy: {
-      cipherSuites: sslPolicyCipherSuites
-      minProtocolVersion: sslPolicyMinProtocolVersion
-      policyName: empty(sslPolicyName) ? null : sslPolicyName
-      policyType: sslPolicyType
-    }
-    sslProfiles: sslProfiles
-    trustedClientCertificates: trustedClientCertificates
-    trustedRootCertificates: trustedRootCertificates
-    urlPathMaps: urlPathMaps
-    webApplicationFirewallConfiguration: webApplicationFirewallConfiguration
-  }, (enableFips ? {
-    enableFips: enableFips
-  } : {}), {})
+      authenticationCertificates: authenticationCertificates
+      autoscaleConfiguration: autoscaleMaxCapacity > 0 && autoscaleMinCapacity >= 0 ? {
+        maxCapacity: autoscaleMaxCapacity
+        minCapacity: autoscaleMinCapacity
+      } : null
+      backendAddressPools: backendAddressPools
+      backendHttpSettingsCollection: backendHttpSettingsCollection
+      customErrorConfigurations: customErrorConfigurations
+      enableHttp2: enableHttp2
+      firewallPolicy: !empty(firewallPolicyId) ? {
+        id: firewallPolicyId
+      } : null
+      forceFirewallPolicyAssociation: !empty(firewallPolicyId)
+      frontendIPConfigurations: frontendIPConfigurations
+      frontendPorts: frontendPorts
+      gatewayIPConfigurations: gatewayIPConfigurations
+      globalConfiguration: {
+        enableRequestBuffering: enableRequestBuffering
+        enableResponseBuffering: enableResponseBuffering
+      }
+      httpListeners: httpListeners
+      loadDistributionPolicies: loadDistributionPolicies
+      privateLinkConfigurations: privateLinkConfigurations
+      probes: probes
+      redirectConfigurations: redirectConfigurations
+      requestRoutingRules: requestRoutingRules
+      rewriteRuleSets: rewriteRuleSets
+      sku: {
+        name: sku
+        tier: endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_'))
+        capacity: autoscaleMaxCapacity > 0 && autoscaleMinCapacity >= 0 ? null : capacity
+      }
+      sslCertificates: sslCertificates
+      sslPolicy: {
+        cipherSuites: sslPolicyCipherSuites
+        minProtocolVersion: sslPolicyMinProtocolVersion
+        policyName: empty(sslPolicyName) ? null : sslPolicyName
+        policyType: sslPolicyType
+      }
+      sslProfiles: sslProfiles
+      trustedClientCertificates: trustedClientCertificates
+      trustedRootCertificates: trustedRootCertificates
+      urlPathMaps: urlPathMaps
+      webApplicationFirewallConfiguration: webApplicationFirewallConfiguration
+    }, (enableFips ? {
+      enableFips: enableFips
+    } : {}), {})
   zones: zones
 }
 
@@ -342,7 +342,7 @@ resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnostic
   scope: applicationGateway
 }
 
-module applicationGateway_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module applicationGateway_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppGateway-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

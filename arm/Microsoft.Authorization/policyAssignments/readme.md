@@ -187,7 +187,6 @@ module policyassignment 'yourpath/arm/Microsoft.Authorization.policyAssignments/
         }
     }
 }
-
 ```
 
 </details>
@@ -275,7 +274,6 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         }
     }
 }
-
 ```
 
 </details>
@@ -347,7 +345,6 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         }
     }
 }
-
 ```
 
 </details>
@@ -443,7 +440,6 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         }
     }
 }
-
 ```
 
 </details>
@@ -514,7 +510,6 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         }
     }
 }
-
 ```
 
 </details>
@@ -606,7 +601,6 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         }
     }
 }
-
 ```
 
 </details>

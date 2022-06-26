@@ -270,7 +270,6 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
         }
     }
 }
-
 ```
 
 </details>

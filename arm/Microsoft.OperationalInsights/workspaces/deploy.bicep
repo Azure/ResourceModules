@@ -256,7 +256,7 @@ resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2017-04-01' =
   scope: logAnalyticsWorkspace
 }
 
-module logAnalyticsWorkspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module logAnalyticsWorkspace_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-LAW-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

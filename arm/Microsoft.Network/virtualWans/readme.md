@@ -165,7 +165,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -227,7 +226,6 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

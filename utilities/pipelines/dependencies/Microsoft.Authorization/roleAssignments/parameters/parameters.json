@@ -1,15 +1,15 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "roleDefinitionIdOrName": {
-      "value": "Contributor"
-    },
-    "principalId": {
-      "value": "<<msiPrincipalID>>" // The object ID of the deployed MSI. Replaced by the pipeline
-    },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "roleDefinitionIdOrName": {
+            "value": "Contributor"
+        },
+        "principalId": {
+            "value": "<<msiPrincipalID>>" // The object ID of the deployed MSI. Replaced by the pipeline
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        }
     }
-  }
 }

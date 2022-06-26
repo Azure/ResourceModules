@@ -230,7 +230,6 @@ roleAssignments: [
         }
     }
 }
-
 ```
 
 </details>
@@ -300,7 +299,6 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -368,7 +366,6 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

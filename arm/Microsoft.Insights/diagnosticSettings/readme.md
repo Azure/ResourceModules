@@ -72,7 +72,6 @@ This module deploys a subscription wide export of the activity log.
         }
     }
 }
-
 ```
 
 </details>

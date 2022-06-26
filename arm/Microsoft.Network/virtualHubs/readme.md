@@ -125,7 +125,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -203,7 +202,6 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
