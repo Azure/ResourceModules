@@ -22,7 +22,7 @@
 ##   | Parameter                       | Default Value                        | Description                                                                                             | Example                                |
 ##   |---------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|----------------------------------------|
 ##   | displayName                     | 'Publishing'                         | Name for the pipeline job                                                                               | 'Publish KeyVault'                     |
-##   | serviceConnectionPublish        | '$(serviceConnectionPublish)'        | The service connection that connects to Azure                                                           | 'demo-internal'                        |
+##   | serviceConnection               | '$(serviceConnectionPublish)'        | The service connection that connects to Azure                                                           | 'demo-internal'                        |
 ##   | subscriptionId                  | '$(ARM_PUBLISH_SUBSCRIPTION_ID)'     | The id of the subscription to deploy into when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'Custom Deployment Pool'               |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                          |
@@ -48,7 +48,7 @@ parameters:
   # Pipeline-related parameters
   checkoutRepositories: ''
   displayName: 'Publishing'
-  serviceConnectionPublish: '$(serviceConnectionPublish)'
+  serviceConnection: '$(serviceConnectionPublish)'
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
@@ -209,7 +209,7 @@ jobs:
           )
         enabled: true
         inputs:
-          azureSubscription: '${{ parameters.serviceConnectionPublish }}'
+          azureSubscription: '${{ parameters.serviceConnection }}'
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
           preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
           pwsh: true
@@ -266,7 +266,7 @@ jobs:
           )
         inputs:
           addSpnToEnvironment: true
-          azureSubscription: '${{ parameters.serviceConnectionPublish }}'
+          azureSubscription: '${{ parameters.serviceConnection }}'
           scriptType: pscore
           scriptLocation: inlineScript
           inlineScript: |
