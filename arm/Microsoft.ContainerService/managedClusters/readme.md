@@ -485,7 +485,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -718,7 +717,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         }
     }
 }
-
 ```
 
 </details>

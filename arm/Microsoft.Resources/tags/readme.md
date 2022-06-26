@@ -91,7 +91,6 @@ tags: {
     "contentVersion": "1.0.0.0",
     "parameters": {}
 }
-
 ```
 
 </details>
@@ -137,7 +136,6 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -185,7 +183,6 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

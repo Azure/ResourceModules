@@ -183,7 +183,6 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
         }
     }
 }
-
 ```
 
 </details>
@@ -259,7 +258,6 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>

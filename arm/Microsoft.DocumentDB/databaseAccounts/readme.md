@@ -703,7 +703,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -993,7 +992,6 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
     }
 }
-
 ```
 
 </details>
@@ -1123,7 +1121,6 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
     }
 }
-
 ```
 
 </details>

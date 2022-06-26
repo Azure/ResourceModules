@@ -170,7 +170,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -297,7 +296,6 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -513,7 +511,6 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

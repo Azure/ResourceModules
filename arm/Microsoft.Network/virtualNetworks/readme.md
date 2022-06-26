@@ -369,7 +369,6 @@ The network security group and route table resources must reside in the same res
         }
     }
 }
-
 ```
 
 </details>
@@ -496,7 +495,6 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -643,7 +641,6 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

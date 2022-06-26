@@ -348,7 +348,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -452,7 +451,6 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

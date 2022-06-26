@@ -305,7 +305,6 @@ userAssignedIdentities: {
     "contentVersion": "1.0.0.0",
     "parameters": {}
 }
-
 ```
 
 </details>
@@ -500,7 +499,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

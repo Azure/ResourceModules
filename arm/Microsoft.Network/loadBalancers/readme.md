@@ -567,7 +567,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -680,7 +679,6 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -843,7 +841,6 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

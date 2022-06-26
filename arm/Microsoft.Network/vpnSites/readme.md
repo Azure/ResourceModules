@@ -15,7 +15,7 @@ This module deploys a VPN Site.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/vpnSites` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnSites) |
+| `Microsoft.Network/vpnSites` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/vpnSites) |
 
 ## Parameters
 
@@ -345,7 +345,6 @@ roleAssignments: [
         }
     }
 }
-
 ```
 
 </details>
@@ -455,7 +454,6 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

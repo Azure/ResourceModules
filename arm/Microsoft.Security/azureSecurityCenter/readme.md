@@ -123,7 +123,6 @@ securityContactProperties: {
         }
     }
 }
-
 ```
 
 </details>
