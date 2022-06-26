@@ -189,12 +189,12 @@ Optional. The Azure DevOps project to run the pipelines in. Required if the chos
 Optional. The folder in Azure DevOps the pipelines are registerd in. Required if the chosen environment is `AzureDevOps`. Defaults to 'CARML-Modules'.
 
 .EXAMPLE
-Invoke-PipelinesForBranch -PAT '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'GitHub' -PipelineFilter 'ms.network.*'
+Invoke-PipelinesForBranch -PersonalAccessToken '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'GitHub' -PipelineFilter 'ms.network.*'
 
 Run all GitHub workflows that start with 'ms.network.*' using branch 'feature/branch'. Also returns all GitHub status badges.
 
 .EXAMPLE
-Invoke-PipelinesForBranch -PAT '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'AzureDevOps'  -PipelineFilter 'ms.network.*' -AzureDevOpsOrganizationName 'contoso' -AzureDevOpsProjectName 'Sanchez' -AzureDevOpsPipelineFolderPath 'CARML-Modules'
+Invoke-PipelinesForBranch -PersonalAccessToken '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'AzureDevOps'  -PipelineFilter 'ms.network.*' -AzureDevOpsOrganizationName 'contoso' -AzureDevOpsProjectName 'Sanchez' -AzureDevOpsPipelineFolderPath 'CARML-Modules'
 
 Run all Azure DevOps pipelines that start with 'ms.network.*' using branch 'feature/branch'. Also returns all Azure DevOps pipeline status badges.
 #>
