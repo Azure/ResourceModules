@@ -194,12 +194,12 @@ function Invoke-PipelinesForBranch {
             GitHubRepositoryName  = $GitHubRepositoryName
         }
 
-        # List all workflows
+        Write-Verbose 'Fetching current GitHub workflows' -Verbose
         $workflows = Get-GitHubModuleWorkflowList @baseInputObject -Filter $PipelineFilter
 
         $gitHubWorkflowBadges = [System.Collections.ArrayList]@()
 
-        # Invoke workflows for target branch
+        Write-Verbose "Triggering GitHub workflows for branch [$TargetBranch]" -Verbose
         foreach ($workflow in $workflows) {
 
             $workflowName = $workflow.name
@@ -241,7 +241,6 @@ function Invoke-PipelinesForBranch {
         $azurePipelines = az pipelines list --organization $azureDevOpsOrgUrl --project $AzureDevOpsProjectName --folder-path $AzureDevOpsPipelineFolderPath | ConvertFrom-Json
 
         Write-Verbose 'Fetching details' # Required as we need the original file path for filtering (which is only available when fetching the pipeline directly)
-
         $detailedAzurePipelines = $azurePipelines | ForEach-Object -ThrottleLimit 10 -Parallel {
             Write-Verbose ('Fetching detailed information for pipeline [{0}]' -f $PSItem.name)
             az pipelines show --organization $USING:azureDevOpsOrgUrl --project $USING:AzureDevOpsProjectName --id $PSItem.id | ConvertFrom-Json
@@ -251,7 +250,7 @@ function Invoke-PipelinesForBranch {
 
         $azureDevOpsPipelineBadges = [System.Collections.ArrayList]@()
 
-        # Invoke pipelines for target branch
+        Write-Verbose "Triggering Azure DevOps pipelines for branch [$TargetBranch]" -Verbose
         foreach ($modulePipeline in $modulePipelines) {
 
 
