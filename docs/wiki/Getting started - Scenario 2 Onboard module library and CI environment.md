@@ -127,7 +127,7 @@ For _GitHub_, you have to perform the following environment-specific steps:
 
 To use the environment's pipelines you should use the information you gathered during the [Azure setup](#1-configure-your-azure-environment) to set up the following repository secrets:
 
-<!-- TODO: OVERHAUL DOC -->
+<!-- TODO: Update this to use OIDC -->
 | Secret Name | Example | Description |
 | - | - | - |
 | `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
@@ -158,6 +158,7 @@ To use the environment's pipelines you should use the information you gathered d
 
 <p>
 
+<!-- TODO: Update this to use OIDC -->
 > Special case: `AZURE_CREDENTIALS`,
 > This secret represent the service connection to Azure, and its value is a compressed JSON object that must match the following format:
 >
@@ -259,7 +260,7 @@ The variable group `PLATFORM_VARIABLES` must be set up in Azure DevOps as descri
 
 Based on the information you gathered in the [Azure setup](#1-configure-your-azure-environment), you must configure the following secrets in the variable group:
 
-<!-- TODO: OVERHAUL DOC -->
+<!-- TODO: Update this to use OIDC -->
 | Secret Name | Example | Description |
 | - | - | - |
 | `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |

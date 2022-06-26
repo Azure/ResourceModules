@@ -412,7 +412,7 @@ permissions:
   pull-requests: write # enricomi/publish-unit-test-result-action
 
 env:
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }} # TODO: Update this to use OIDC
   removeDeployment: false
   variablesPath: 'global.variables.yml'
 
