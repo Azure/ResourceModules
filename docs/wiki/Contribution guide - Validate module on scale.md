@@ -1,4 +1,4 @@
-Use this script to test a branch across multiple modules using the CI environment. As the script will trigger the pipelines as you would in the CI environment, both static & deployment tests are executed.
+Use this script to tests multiple modules with a given branch, using the CI environment. The script will start the pipelines in the CI environment causing both static & deployment tests to run.
 
 ---
 
