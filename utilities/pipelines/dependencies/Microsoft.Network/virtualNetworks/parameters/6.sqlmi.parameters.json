@@ -1,32 +1,32 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "adp-<<namePrefix>>-az-vnet-x-sqlmi"
-    },
-    "addressPrefixes": {
-      "value": [
-        "10.6.0.0/16"
-      ]
-    },
-    "subnets": {
-      "value": [
-        {
-          "name": "<<namePrefix>>-az-subnet-x-sqlmi", // SQLMi subnet
-          "addressPrefix": "10.6.0.0/24",
-          "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-sqlmi",
-          "routeTableNameId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-sqlmi",
-          "delegations": [
-            {
-              "name": "sqlMiDel",
-              "properties": {
-                "serviceName": "Microsoft.Sql/managedInstances"
-              }
-            }
-          ]
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-vnet-x-sqlmi"
+        },
+        "addressPrefixes": {
+            "value": [
+                "10.6.0.0/16"
+            ]
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-subnet-x-sqlmi", // SQLMi subnet
+                    "addressPrefix": "10.6.0.0/24",
+                    "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-sqlmi",
+                    "routeTableNameId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-sqlmi",
+                    "delegations": [
+                        {
+                            "name": "sqlMiDel",
+                            "properties": {
+                                "serviceName": "Microsoft.Sql/managedInstances"
+                            }
+                        }
+                    ]
+                }
+            ]
         }
-      ]
     }
-  }
 }

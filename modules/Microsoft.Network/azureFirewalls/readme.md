@@ -326,7 +326,6 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
         }
     }
 }
-
 ```
 
 </details>
@@ -398,7 +397,6 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -462,7 +460,6 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -626,7 +623,6 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

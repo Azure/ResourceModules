@@ -109,15 +109,15 @@ resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/work
   parent: machineLearningWorkspace
   identity: empty(resourceId) ? identity : any(null)
   properties: union({
-    description: description
-    disableLocalAuth: disableLocalAuth
-    computeType: computeType
-  }, (!empty(resourceId) ? {
-    resourceId: resourceId
-  } : {
-    computeLocation: computeLocation
-    properties: properties
-  }))
+      description: description
+      disableLocalAuth: disableLocalAuth
+      computeType: computeType
+    }, (!empty(resourceId) ? {
+      resourceId: resourceId
+    } : {
+      computeLocation: computeLocation
+      properties: properties
+    }))
 }
 
 // =========== //

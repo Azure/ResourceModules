@@ -366,7 +366,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -411,7 +410,6 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -526,7 +524,6 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

@@ -29,7 +29,7 @@ The intention of this test is to **fail fast**, before getting to the later depl
 
 # Azure deployment validation
 
-This step performs the actual Azure deployments using each available & configured module parameter file. The purpose of this step is to prove the module can be deployed in different configurations based on the different parameters provided. Deployments for the different variants happen in parallel. 
+This step performs the actual Azure deployments using each available & configured module parameter file. The purpose of this step is to prove the module can be deployed in different configurations based on the different parameters provided. Deployments for the different variants happen in parallel.
 
 If any of these parallel deployments require multiple/different/specific resource instances already present, these resources are deployed by the [dependencies pipeline](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline). E.g., for the Azure Firewall to be tested with multiple configurations, the dependencies pipeline deploys multiple VNET instances, with a dedicated "AzureFirewallSubnet" in each.
 

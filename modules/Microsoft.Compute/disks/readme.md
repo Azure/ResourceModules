@@ -200,7 +200,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -270,7 +269,6 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -335,7 +333,6 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -416,7 +413,6 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

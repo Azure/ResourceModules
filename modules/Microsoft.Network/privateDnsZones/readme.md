@@ -179,7 +179,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -405,7 +404,6 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

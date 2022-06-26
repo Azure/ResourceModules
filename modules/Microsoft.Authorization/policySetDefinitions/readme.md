@@ -162,7 +162,6 @@ module policysetdefinition 'yourpath/modules/Microsoft.Authorization.policySetDe
         }
     }
 }
-
 ```
 
 </details>
@@ -268,7 +267,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         }
     }
 }
-
 ```
 
 </details>
@@ -367,7 +365,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         }
     }
 }
-
 ```
 
 </details>
@@ -474,7 +471,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         }
     }
 }
-
 ```
 
 </details>

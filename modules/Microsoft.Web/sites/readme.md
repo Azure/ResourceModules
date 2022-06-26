@@ -419,7 +419,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -598,7 +597,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -742,7 +740,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -842,7 +839,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

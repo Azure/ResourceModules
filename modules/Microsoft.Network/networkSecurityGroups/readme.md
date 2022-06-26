@@ -171,7 +171,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -302,7 +301,6 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
         }
     }
 }
-
 ```
 
 </details>

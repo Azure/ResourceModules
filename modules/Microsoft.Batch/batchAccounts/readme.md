@@ -159,7 +159,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -230,7 +229,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

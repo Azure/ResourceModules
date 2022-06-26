@@ -355,7 +355,7 @@ function Set-DeploymentExamplesSection {
 
     $index = 1
     foreach ($parameterFilePath in $parameterFiles.FullName) {
-        $contentInJSONFormat = Get-Content -Path $parameterFilePath -Raw
+        $contentInJSONFormat = Get-Content -Path $parameterFilePath -Encoding 'utf8' | Out-String
 
         $SectionContent += @(
             "<h3>Example $index</h3>"
@@ -369,7 +369,7 @@ function Set-DeploymentExamplesSection {
                 '<summary>via JSON Parameter file</summary>',
                 '',
                 '```json',
-                $contentInJSONFormat,
+                $contentInJSONFormat.TrimEnd(),
                 '```',
                 '',
                 '</details>'
@@ -450,7 +450,7 @@ function Set-DeploymentExamplesSection {
                 "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
                 "  name: '`${uniqueString(deployment().name)}-$resourceType'"
                 '  params: {'
-                ($bicepParamsArray | ForEach-Object { "  $_" }),
+                ($bicepParamsArray | ForEach-Object { "  $_" }).TrimEnd(),
                 '  }'
                 '}'
                 '```',

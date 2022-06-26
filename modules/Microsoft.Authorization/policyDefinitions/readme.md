@@ -168,7 +168,6 @@ module policydefinition 'yourpath/modules/Microsoft.Authorization.policyDefiniti
         }
     }
 }
-
 ```
 
 </details>
@@ -290,7 +289,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         }
     }
 }
-
 ```
 
 </details>
@@ -407,7 +405,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         }
     }
 }
-
 ```
 
 </details>
@@ -530,7 +527,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         }
     }
 }
-
 ```
 
 </details>

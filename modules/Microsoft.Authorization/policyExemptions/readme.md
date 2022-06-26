@@ -168,7 +168,6 @@ module policyexemption 'yourpath/modules/Microsoft.Authorization.policyExemption
         }
     }
 }
-
 ```
 
 </details>
@@ -226,7 +225,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         }
     }
 }
-
 ```
 
 </details>
@@ -280,7 +278,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         }
     }
 }
-
 ```
 
 </details>
@@ -343,7 +340,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         }
     }
 }
-
 ```
 
 </details>
@@ -395,7 +391,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         }
     }
 }
-
 ```
 
 </details>
@@ -454,7 +449,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         }
     }
 }
-
 ```
 
 </details>

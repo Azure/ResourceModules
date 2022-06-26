@@ -64,7 +64,6 @@ This module deploys Authorization Locks.
         }
     }
 }
-
 ```
 
 </details>

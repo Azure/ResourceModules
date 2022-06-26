@@ -62,7 +62,6 @@ This module deploys OperationsManagement Solutions.
         }
     }
 }
-
 ```
 
 </details>
@@ -109,7 +108,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -158,7 +156,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

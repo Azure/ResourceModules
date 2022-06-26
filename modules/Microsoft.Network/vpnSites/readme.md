@@ -345,7 +345,6 @@ roleAssignments: [
         }
     }
 }
-
 ```
 
 </details>
@@ -455,7 +454,6 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
