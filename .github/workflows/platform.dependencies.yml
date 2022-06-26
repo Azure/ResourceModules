@@ -51,7 +51,7 @@ jobs:
       matrix:
         parameterFilePaths:
           ['validation.parameters.json', 'locks.parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -79,7 +79,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -110,7 +110,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -151,7 +151,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -180,7 +180,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -209,7 +209,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['mg.parameters.json', 'sub.parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -238,7 +238,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -273,7 +273,7 @@ jobs:
             'sol.parameters.json',
             'parameters.json',
           ]
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -303,7 +303,7 @@ jobs:
       matrix:
         parameterFilePaths:
           ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -328,7 +328,7 @@ jobs:
       namespace: 'Microsoft.Storage\storageAccounts'
     needs:
       - job_deploy_sa
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -415,7 +415,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -449,7 +449,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -492,7 +492,7 @@ jobs:
     needs:
       - job_deploy_imgt
       - job_deploy_sa
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -617,7 +617,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -646,7 +646,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -675,7 +675,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -705,7 +705,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['sqlMi.parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -743,7 +743,7 @@ jobs:
             'aadds.parameters.json',
             'parameters.json',
           ]
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -775,7 +775,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['sqlmi.parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -815,7 +815,7 @@ jobs:
             'fw.parameters.json',
             'fw.additional.parameters.json',
           ]
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -846,7 +846,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -877,7 +877,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -908,7 +908,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -940,7 +940,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -974,7 +974,7 @@ jobs:
       matrix:
         parameterFilePaths:
           ['parameters.json', 'pe.parameters.json', 'nopr.parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1001,7 +1001,7 @@ jobs:
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_kv
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1158,7 +1158,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['sqlmi.parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1185,7 +1185,7 @@ jobs:
       - job_deploy_sqlmi_kv
     env:
       namespace: 'Microsoft.KeyVault\vaults'
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1284,7 +1284,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1313,7 +1313,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1358,7 +1358,7 @@ jobs:
             '13.bastion.parameters.json',
             'parameters.json',
           ]
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1389,7 +1389,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['6.sqlmi.parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1418,7 +1418,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1449,7 +1449,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1478,7 +1478,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['internal.parameters.json']
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
