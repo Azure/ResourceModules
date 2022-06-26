@@ -260,8 +260,8 @@ tags: {
 <summary>via Bicep module</summary>
 
 ```bicep
-module serverf './Microsoft.Web/serverf/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-serverf'
+module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-serverfarms'
   params: {
     name: '<<namePrefix>>-az-asp-x-001'
     lock: 'CanNotDelete'
