@@ -212,7 +212,7 @@ function Invoke-PipelinesForBranch {
 
             # Generate pipeline badges
             if ($GeneratePipelineBadges) {
-                $encodedBranch = [System.Web.HttpUtility]::UrlEncode($TargetBranch)
+                $encodedBranch = [uri]::EscapeDataString($TargetBranch)
                 $workflowUrl = "https://github.com/$GitHubRepositoryOwner/$GitHubRepositoryName/actions/workflows/$workflowFileName"
 
                 $gitHubWorkflowBadges += "[![$workflowName]($workflowUrl/badge.svg?branch=$encodedBranch)]($workflowUrl)"
@@ -229,30 +229,60 @@ function Invoke-PipelinesForBranch {
 
     if ($Environment -eq 'AzureDevOps') {
 
-        Write-Verbose "Log into Azure DevOps project $OrganizationName/$AzureDevOpsProjectName with a PAT"
         $azureDevOpsOrgUrl = "https://dev.azure.com/$AzureDevOpsOrganizationName/"
+
+        # Login into Azure DevOps project with a PAT
         $PersonalAccessToken | az devops login
 
-        Write-Verbose "Set default Azure DevOps configuration to [$AzureDevOpsOrganizationName/$AzureDevOpsProjectName]"
+        # Set default Azure DevOps configuration (to not continously specify it on every command)
         az devops configure --defaults organization=$orgUazureDevOpsOrgUrlrl project=$AzureDevOpsProjectName --use-git-aliases $true
 
-        Write-Verbose "Get and list all Azure Pipelines in $PipelineTargetPath"
-        $azurePipelines = az pipelines list --organization $azureDevOpsOrgUrl --project $AzureDevOpsProjectName --folder-path $AzureDevOpsPipelineFolderPath | ConvertFrom-Json | Sort-Object name
+        Write-Verbose "Get and list all [$AzureDevOpsOrganizationName/$AzureDevOpsProjectName] Azure DevOps pipelines in folder [$AzureDevOpsPipelineFolderPath]"
+        $azurePipelines = az pipelines list --organization $azureDevOpsOrgUrl --project $AzureDevOpsProjectName --folder-path $AzureDevOpsPipelineFolderPath | ConvertFrom-Json | Sort-Object 'name'
 
-        # List all pipelines
-        # Filter to only module pipelines
+        Write-Verbose 'Fetching details' # Required as we need the original file path for filtering (which is only available when fetching the pipeline directly)
+
+        $detailedAzurePipelines = $azurePipelines | ForEach-Object -ThrottleLimit 10 -Parallel {
+            Write-Verbose ('Fetching detailed information for pipeline [{0}]' -f $PSItem.name)
+            az pipelines show --organization $USING:azureDevOpsOrgUrl --project $USING:AzureDevOpsProjectName --id $PSItem.id | ConvertFrom-Json
+        }
+
+        $modulePipelines = $detailedAzurePipelines | Where-Object { (Split-Path $_.process.yamlFileName -Leaf) -like $PipelineFilter }
+
+        $azureDevOpsPipelineBadges = [System.Collections.ArrayList]@()
+
         # Invoke pipelines for target branch
-
-        # Generate pipeline badges
-        if ($GeneratePipelineBadges) {
-
-            $encodedBranch = [System.Web.HttpUtility]::UrlEncode($TargetBranch)
-            $workflowUrl = "https://dev.azure.com/$AzureDevOpsOrganizationName/$AzureDevOpsProjectName/_apis/build/status/$AzureDevOpsPipelineFolderPath/{0}?branchName=$encodedBranch"
-
-            $gitHubWorkflowBadges += "[![$workflowName]($workflowUrl/badge.svg?branch=$encodedBranch)]($workflowUrl)"
+        foreach ($modulePipeline in $modulePipelines) {
 
 
-            # [![Build Status](https://dev.azure.com/servicescode/infra-as-code-source/_apis/build/status/CARML-Modules/AnalysisServices%20-%20Servers?branchName=issue%2F1127)](https://dev.azure.com/servicescode/infra-as-code-source/_build/latest?definitionId=2156&branchName=issue%2F1127)
+            if ($PSCmdlet.ShouldProcess("GitHub workflow [$WorkflowFileName] for branch [$TargetBranch]", 'Invoke')) {
+                $null = az pipelines run --branch $TargetBranch --id $modulePipeline.id
+            }
+
+
+            # Generate pipeline badges
+            if ($GeneratePipelineBadges) {
+
+                $pipelineDefinitionId = $modulePipeline.id
+                $encodedPipelineName = [uri]::EscapeDataString($modulePipeline.Name)
+                $encodedBranch = [uri]::EscapeDataString($TargetBranch)
+                $primaryUrl = 'https://dev.azure.com/{0}/{1}/_apis/build/status/{2}/{3}?branchName={4}' -f $AzureDevOpsOrganizationName, $AzureDevOpsProjectName, $AzureDevOpsPipelineFolderPath, $encodedPipelineName, $encodedBranch
+                $secondaryUrl = 'https://dev.azure.com/{0}/{1}/_build/latest?definitionId={2}&branchName={3}' -f $AzureDevOpsOrganizationName, $AzureDevOpsProjectName, $pipelineDefinitionId, $encodedBranch
+
+                $azureDevOpsPipelineBadges += "[![Build Status]($primaryUrl)]($secondaryUrl)"
+
+                # [
+                #    ![Build Status]
+                #       (https://dev.azure.com/servicescode/infra-as-code-source/_apis/build/status/CARML-Modules/AnalysisServices%20-%20Servers?branchName=issue%2F1127)
+                # ]
+                # (https://dev.azure.com/servicescode/infra-as-code-source/_build/latest?definitionId=2156&branchName=issue%2F1127)
+            }
+        }
+
+        if ($azureDevOpsPipelineBadges.Count -gt 0) {
+            Write-Verbose 'Azure DevOps Pipeline Badges' -Verbose
+            Write-Verbose '============================' -Verbose
+            Write-Verbose ($azureDevOpsPipelineBadges | Sort-Object | Out-String) -Verbose
         }
     }
 }
