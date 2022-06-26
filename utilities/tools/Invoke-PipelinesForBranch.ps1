@@ -147,6 +147,57 @@ function Get-GitHubModuleWorkflowList {
 }
 #endregion
 
+<#
+.SYNOPSIS
+Trigger all pipelines for either Azure DevOps or GitHub
+
+.DESCRIPTION
+Trigger all pipelines for either Azure DevOps or GitHub. By default, pipelines are filtered to CARML module pipelines.
+Note, for Azure DevOps you'll need the 'azure-devops' extension: `az extension add --upgrade -n azure-devops`
+
+.PARAMETER PersonalAccessToken
+Mandatory. The PAT to use to interact with either GitHub / Azure DevOps.
+
+.PARAMETER TargetBranch
+Mandatory. The branch to run the pipelines for (e.g. `main`).
+
+.PARAMETER PipelineFilter
+Optional. The pipeline files to filter down to. By default only files with a name that starts with 'ms.*' are considered. E.g. 'ms.network*'.
+
+.PARAMETER Environment
+Optional. The environment to run the pipelines for. By default it's GitHub.
+
+.PARAMETER GeneratePipelineBadges
+Optional. Generate pipeline status badges for the given pipeline configuration.
+
+.PARAMETER RepositoryRoot
+Optional. The root of the repository. Used to load related functions in their folder path.
+
+.PARAMETER GitHubRepositoryOwner
+Optional. The GitHub organization to run the workfows in. Required if the chosen environment is `GitHub`. Defaults to 'Azure'.
+
+.PARAMETER GitHubRepositoryName
+Optional. The GitHub repository to run the workfows in. Required if the chosen environment is `GitHub`. Defaults to 'ResourceModules'.
+
+.PARAMETER AzureDevOpsOrganizationName
+Optional. The Azure DevOps organization to run the pipelines in. Required if the chosen environment is `AzureDevOps`.
+
+.PARAMETER AzureDevOpsProjectName
+Optional. The Azure DevOps project to run the pipelines in. Required if the chosen environment is `AzureDevOps`.
+
+.PARAMETER AzureDevOpsPipelineFolderPath
+Optional. The folder in Azure DevOps the pipelines are registerd in. Required if the chosen environment is `AzureDevOps`. Defaults to 'CARML-Modules'.
+
+.EXAMPLE
+Invoke-PipelinesForBranch -PAT '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'GitHub' -PipelineFilter 'ms.network.*'
+
+Run all GitHub workflows that start with 'ms.network.*' using branch 'feature/branch'. Also returns all GitHub status badges.
+
+.EXAMPLE
+Invoke-PipelinesForBranch -PAT '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'AzureDevOps'  -PipelineFilter 'ms.network.*' -AzureDevOpsOrganizationName 'contoso' -AzureDevOpsProjectName 'Sanchez' -AzureDevOpsPipelineFolderPath 'CARML-Modules'
+
+Run all Azure DevOps pipelines that start with 'ms.network.*' using branch 'feature/branch'. Also returns all Azure DevOps pipeline status badges.
+#>
 function Invoke-PipelinesForBranch {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -177,10 +228,10 @@ function Invoke-PipelinesForBranch {
         [string] $GitHubRepositoryName = 'ResourceModules',
 
         [Parameter(Mandatory = $false, ParameterSetName = 'AzureDevOps')]
-        [string] $AzureDevOpsOrganizationName = 'ResourceModules',
+        [string] $AzureDevOpsOrganizationName = '',
 
         [Parameter(Mandatory = $false, ParameterSetName = 'AzureDevOps')]
-        [string] $AzureDevOpsProjectName = 'ResourceModules',
+        [string] $AzureDevOpsProjectName,
 
         [Parameter(Mandatory = $false, ParameterSetName = 'AzureDevOps')]
         [string] $AzureDevOpsPipelineFolderPath = 'CARML-Modules'
