@@ -286,7 +286,7 @@ function Invoke-PipelinesForBranch {
         $PersonalAccessToken | az devops login
 
         # Set default Azure DevOps configuration (to not continously specify it on every command)
-        az devops configure --defaults organization=$orgUazureDevOpsOrgUrlrl project=$AzureDevOpsProjectName --use-git-aliases $true
+        az devops configure --defaults organization=$azureDevOpsOrgUrl project=$AzureDevOpsProjectName --use-git-aliases $true
 
         Write-Verbose "Get and list all [$AzureDevOpsOrganizationName/$AzureDevOpsProjectName] Azure DevOps pipelines in folder [$AzureDevOpsPipelineFolderPath]"
         $azurePipelines = az pipelines list --organization $azureDevOpsOrgUrl --project $AzureDevOpsProjectName --folder-path $AzureDevOpsPipelineFolderPath | ConvertFrom-Json
