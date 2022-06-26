@@ -156,7 +156,7 @@ Describe 'Readme tests' -Tag Readme {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
-            $moduleFolderPathKey = $moduleFolderPath.Split('modules')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+            $moduleFolderPathKey = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Trim('/').Replace('/', '-')
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
@@ -471,7 +471,7 @@ Describe 'Deployment template tests' -Tag Template {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
-            $moduleFolderPathKey = $moduleFolderPath.Split('modules')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+            $moduleFolderPathKey = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Trim('/').Replace('/', '-')
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
@@ -963,7 +963,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
 
         # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
-        $moduleFolderPathKey = $moduleFolderPath.Split('modules')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+        $moduleFolderPathKey = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Trim('/').Replace('/', '-')
         if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
