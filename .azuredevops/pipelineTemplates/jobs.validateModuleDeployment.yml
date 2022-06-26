@@ -180,7 +180,7 @@ jobs:
                   resourceGroupName = '${{ parameters.resourceGroupName }}'
                   subscriptionId    = '${{ parameters.subscriptionId }}'
                   managementGroupId = '${{ parameters.managementGroupId }}'
-                  tenantId          = '$(ARM_TENANT_ID)'
+                  tenantId          = '$(AZURE_TENANT_ID)'
                   deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
                 }
 

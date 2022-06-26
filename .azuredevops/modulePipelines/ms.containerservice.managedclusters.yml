@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.containerservice.managedclusters.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.ContainerService/managedClusters/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:

@@ -48,7 +48,7 @@ This module deploys a web or function app.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `httpsOnly` | bool | `True` |  | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `serverFarmResourceId` | string | `''` |  | The resource ID of the app service plan to use for the site. |
@@ -419,7 +419,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -439,6 +438,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       alwaysOn: true
     }
   }
+}
 ```
 
 </details>
@@ -457,6 +457,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-fa-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "kind": {
             "value": "functionapp"
@@ -594,7 +597,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -608,6 +610,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-sites'
   params: {
     name: '<<namePrefix>>-az-fa-x-001'
+    lock: 'CanNotDelete'
     kind: 'functionapp'
     serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
     siteConfig: {
@@ -709,6 +712,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
@@ -733,10 +737,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         },
         "serverFarmResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
-        },
+        }
     }
 }
-
 ```
 
 </details>
@@ -753,6 +756,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     kind: 'app'
     serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
   }
+}
 ```
 
 </details>
@@ -835,7 +839,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -885,6 +888,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

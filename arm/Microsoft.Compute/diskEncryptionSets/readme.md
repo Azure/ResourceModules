@@ -182,7 +182,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -207,6 +206,7 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
       }
     ]
   }
+}
 ```
 
 </details>

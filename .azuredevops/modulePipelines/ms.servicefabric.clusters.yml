@@ -20,8 +20,8 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.servicefabric.clusters.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/Microsoft.ServiceFabric/clusters/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/arm/Microsoft.ServiceFabric/clusters/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'

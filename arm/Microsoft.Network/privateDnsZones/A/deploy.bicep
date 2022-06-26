@@ -45,7 +45,7 @@ resource A 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
   }
 }
 
-module A_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module A_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name)}-PDNSA-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -45,7 +45,7 @@ resource TXT 'Microsoft.Network/privateDnsZones/TXT@2020-06-01' = {
   }
 }
 
-module TXT_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module TXT_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name)}-PDNSTXT-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

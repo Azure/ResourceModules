@@ -61,12 +61,12 @@ param authSettingV2Configuration object = {}
 
 // Lock
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 // Private Endpoints
 @description('Optional. Configuration details for private endpoints.')
@@ -163,7 +163,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 // =========== //
 // Deployments //
@@ -208,7 +208,7 @@ module app_appsettings 'config-appsettings/deploy.bicep' = if (!empty(appSetting
     appInsightId: appInsightId
     setAzureWebJobsDashboard: setAzureWebJobsDashboard
     appSettingsKeyValuePairs: appSettingsKeyValuePairs
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -218,14 +218,14 @@ module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(auth
     appName: app.name
     kind: kind
     authSettingV2Configuration: authSettingV2Configuration
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
-resource app_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource app_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${app.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: app
@@ -244,7 +244,7 @@ resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
   scope: app
 }
 
-module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module app_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Site-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -264,9 +264,9 @@ module app_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bic
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(app.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: app.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}

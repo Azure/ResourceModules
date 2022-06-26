@@ -42,12 +42,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @sys.description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
@@ -82,7 +82,7 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   }
 }]
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -112,11 +112,11 @@ resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12'
   }
 }
 
-resource appGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource appGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${appGroup.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: appGroup
 }
@@ -146,11 +146,11 @@ module appGroup_applications 'applications/deploy.bicep' = [for (application, in
     showInPortal: contains(application, 'showInPortal') ? application.showInPortal : false
     iconPath: contains(application, 'iconPath') ? application.iconPath : application.filePath
     iconIndex: contains(application, 'iconIndex') ? application.iconIndex : 0
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-module appGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module appGroup_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppGroup-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -41,7 +41,7 @@ This template deploys a private DNS zone.
 | `cname` | _[cname](cname/readme.md)_ array | `[]` |  | Array of CNAME records. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `'global'` |  | The location of the PrivateDNSZone. Should be global. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `mx` | _[mx](mx/readme.md)_ array | `[]` |  | Array of MX records. |
 | `ptr` | _[ptr](ptr/readme.md)_ array | `[]` |  | Array of PTR records. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -179,7 +179,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -194,6 +193,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-privdns-x-001.com'
   }
+}
 ```
 
 </details>
@@ -212,6 +212,9 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-privdns-x-002.com"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "roleAssignments": {
             "value": [
@@ -401,7 +404,6 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -415,6 +417,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateDnsZones'
   params: {
     name: '<<namePrefix>>-az-privdns-x-002.com'
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -582,6 +585,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

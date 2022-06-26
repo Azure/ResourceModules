@@ -39,7 +39,7 @@ This module deploys an app service plan.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maximumElasticWorkerCount` | int | `1` |  | Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. |
 | `perSiteScaling` | bool | `False` |  | If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -212,6 +212,9 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-asp-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "sku": {
             "value": {
                 "name": "S1",
@@ -248,7 +251,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -262,6 +264,7 @@ module serverf './Microsoft.Web/serverf/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-serverf'
   params: {
     name: '<<namePrefix>>-az-asp-x-001'
+    lock: 'CanNotDelete'
     sku: {
       name: 'S1'
       tier: 'Standard'
@@ -283,6 +286,7 @@ module serverf './Microsoft.Web/serverf/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

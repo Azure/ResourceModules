@@ -50,7 +50,7 @@ This module deploys a recovery service vault.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `protectionContainers` | _[protectionContainers](protectionContainers/readme.md)_ array | `[]` |  | List of all protection containers. |
 | `replicationFabrics` | _[replicationFabrics](replicationFabrics/readme.md)_ array | `[]` |  | List of all replication fabrics. |
 | `replicationPolicies` | _[replicationPolicies](replicationPolicies/readme.md)_ array | `[]` |  | List of all replication policies. |
@@ -888,7 +888,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -958,6 +957,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
@@ -979,7 +979,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -994,6 +993,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-rsv-min-001'
   }
+}
 ```
 
 </details>
@@ -1012,6 +1012,9 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-rsv-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "backupConfig": {
             "value": {
@@ -1292,7 +1295,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -1306,6 +1308,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
     name: '<<namePrefix>>-az-rsv-x-001'
+    lock: 'CanNotDelete'
     backupConfig: {
       enhancedSecurityState: 'Disabled'
       softDeleteFeatureState: 'Disabled'
@@ -1562,6 +1565,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
+}
 ```
 
 </details>

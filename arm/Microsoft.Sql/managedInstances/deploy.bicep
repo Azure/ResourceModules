@@ -100,12 +100,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -199,7 +199,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -248,11 +248,11 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
   }
 }
 
-resource managedInstance_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource managedInstance_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${managedInstance.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: managedInstance
 }
@@ -270,7 +270,7 @@ resource managedInstance_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
   scope: managedInstance
 }
 
-module managedInstance_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module managedInstance_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-SqlMi-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -294,7 +294,7 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
     diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''
     location: contains(database, 'location') ? database.location : managedInstance.location
-    lock: contains(database, 'lock') ? database.lock : lock
+    lock: contains(database, 'lock') ? database.lock : ''
     longTermRetentionBackupResourceId: contains(database, 'longTermRetentionBackupResourceId') ? database.longTermRetentionBackupResourceId : ''
     recoverableDatabaseId: contains(database, 'recoverableDatabaseId') ? database.recoverableDatabaseId : ''
     restorableDroppedDatabaseId: contains(database, 'restorableDroppedDatabaseId') ? database.restorableDroppedDatabaseId : ''
@@ -306,7 +306,7 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
     diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     backupShortTermRetentionPoliciesObj: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
     backupLongTermRetentionPoliciesObj: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -317,7 +317,7 @@ module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' 
     name: securityAlertPoliciesObj.name
     emailAccountAdmins: contains(securityAlertPoliciesObj, 'emailAccountAdmins') ? securityAlertPoliciesObj.emailAccountAdmins : false
     state: contains(securityAlertPoliciesObj, 'state') ? securityAlertPoliciesObj.state : 'Disabled'
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -330,7 +330,7 @@ module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.
     recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
     recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
     vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     managedInstance_securityAlertPolicy
@@ -344,7 +344,7 @@ module managedInstance_key 'keys/deploy.bicep' = [for (key, index) in keys: {
     name: contains(key, 'name') ? key.name : ''
     serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
     uri: contains(key, 'uri') ? key.uri : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -356,7 +356,7 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
     name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
     serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -367,7 +367,7 @@ module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(
     login: administratorsObj.name
     sid: administratorsObj.sid
     tenantId: contains(administratorsObj, 'tenantId') ? administratorsObj.tenantId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 

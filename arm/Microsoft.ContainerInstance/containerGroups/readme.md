@@ -36,7 +36,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `imageRegistryCredentials` | array | `[]` |  | The image registry credentials by which the container group is created from. |
 | `ipAddressType` | string | `'Public'` |  | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `memoryInGB` | int | `2` |  | The amount of memory to allocate to the container in gigabytes. |
 | `osType` | string | `'Linux'` |  | The operating system type required by the containers in the container group. - Windows or Linux. |
 | `ports` | array | `[System.Collections.Hashtable]` |  | Port to open on the container and the public IP address. |
@@ -184,6 +184,9 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-acg-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "containerName": {
             "value": "<<namePrefix>>-az-aci-x-001"
         },
@@ -212,7 +215,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -226,6 +228,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
   name: '${uniqueString(deployment().name)}-containerGroups'
   params: {
     name: '<<namePrefix>>-az-acg-x-001'
+    lock: 'CanNotDelete'
     containerName: '<<namePrefix>>-az-aci-x-001'
     image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
     ports: [
@@ -243,6 +246,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
+}
 ```
 
 </details>

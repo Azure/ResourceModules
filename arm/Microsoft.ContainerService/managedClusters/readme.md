@@ -15,7 +15,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-02-01/managedClusters) |
+| `Microsoft.ContainerService/managedClusters` | [2022-03-02-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-03-02-preview/managedClusters) |
 | `Microsoft.ContainerService/managedClusters/agentPools` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
@@ -100,7 +100,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedOutboundIPCount` | int | `0` |  | Outbound IP Count for the Load balancer. |
 | `monitoringWorkspaceId` | string | `''` |  | Resource ID of the monitoring log analytics workspace. |
 | `nodeResourceGroup` | string | `[format('{0}_aks_{1}_nodes', resourceGroup().name, parameters('name'))]` |  | Name of the resource group containing agent pool nodes. |
@@ -372,6 +372,9 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-aks-azure-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "primaryAgentPoolProfile": {
             "value": [
                 {
@@ -482,7 +485,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -496,6 +498,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   name: '${uniqueString(deployment().name)}-managedClusters'
   params: {
     name: '<<namePrefix>>-az-aks-azure-001'
+    lock: 'CanNotDelete'
     primaryAgentPoolProfile: [
       {
         name: 'systempool'
@@ -585,6 +588,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     systemAssignedIdentity: true
   }
+}
 ```
 
 </details>
@@ -713,7 +717,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         }
     }
 }
-
 ```
 
 </details>
@@ -815,6 +818,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
+}
 ```
 
 </details>

@@ -46,7 +46,7 @@ This module deploys a DocumentDB database account and its child resources.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxIntervalInSeconds` | int | `300` |  | Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400. |
 | `maxStalenessPrefix` | int | `100000` |  | Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000. |
 | `mongodbDatabases` | _[mongodbDatabases](mongodbDatabases/readme.md)_ array | `[]` |  | MongoDB Databases configurations. |
@@ -703,7 +703,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -929,6 +928,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     systemAssignedIdentity: true
   }
+}
 ```
 
 </details>
@@ -947,6 +947,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-cdb-plain-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "locations": {
             "value": [
@@ -989,7 +992,6 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
     }
 }
-
 ```
 
 </details>
@@ -1003,6 +1005,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
   name: '${uniqueString(deployment().name)}-databaseAccounts'
   params: {
     name: '<<namePrefix>>-az-cdb-plain-001'
+    lock: 'CanNotDelete'
     locations: [
       {
         locationName: 'West Europe'
@@ -1029,6 +1032,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>
@@ -1117,7 +1121,6 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
     }
 }
-
 ```
 
 </details>
@@ -1179,6 +1182,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
+}
 ```
 
 </details>

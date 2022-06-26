@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.virtualmachines.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.Compute/virtualMachines/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:

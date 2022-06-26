@@ -8,12 +8,12 @@ param location string = resourceGroup().location
 param tags object = {}
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -135,7 +135,7 @@ param roleAssignments array = []
 @description('Optional. Array of Service Fabric cluster application types.')
 param applicationTypes array = []
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 var clientCertificateCommonNames_var = [for clientCertificateCommonName in clientCertificateCommonNames: {
   certificateCommonName: contains(clientCertificateCommonName, 'certificateCommonName') ? clientCertificateCommonName.certificateCommonName : null
@@ -183,26 +183,26 @@ var notifications_var = [for notification in notifications: {
 }]
 
 var upgradeDescription_var = union({
-  deltaHealthPolicy: {
-    applicationDeltaHealthPolicies: contains(upgradeDescription, 'applicationDeltaHealthPolicies') ? upgradeDescription.applicationDeltaHealthPolicies : {}
-    maxPercentDeltaUnhealthyApplications: contains(upgradeDescription, 'maxPercentDeltaUnhealthyApplications') ? upgradeDescription.maxPercentDeltaUnhealthyApplications : 0
-    maxPercentDeltaUnhealthyNodes: contains(upgradeDescription, 'maxPercentDeltaUnhealthyNodes') ? upgradeDescription.maxPercentDeltaUnhealthyNodes : 0
-    maxPercentUpgradeDomainDeltaUnhealthyNodes: contains(upgradeDescription, 'maxPercentUpgradeDomainDeltaUnhealthyNodes') ? upgradeDescription.maxPercentUpgradeDomainDeltaUnhealthyNodes : 0
-  }
-  forceRestart: contains(upgradeDescription, 'forceRestart') ? upgradeDescription.forceRestart : false
-  healthCheckRetryTimeout: contains(upgradeDescription, 'healthCheckRetryTimeout') ? upgradeDescription.healthCheckRetryTimeout : '00:45:00'
-  healthCheckStableDuration: contains(upgradeDescription, 'healthCheckStableDuration') ? upgradeDescription.healthCheckStableDuration : '00:01:00'
-  healthCheckWaitDuration: contains(upgradeDescription, 'healthCheckWaitDuration') ? upgradeDescription.healthCheckWaitDuration : '00:00:30'
-  upgradeDomainTimeout: contains(upgradeDescription, 'upgradeDomainTimeout') ? upgradeDescription.upgradeDomainTimeout : '02:00:00'
-  upgradeReplicaSetCheckTimeout: contains(upgradeDescription, 'upgradeReplicaSetCheckTimeout') ? upgradeDescription.upgradeReplicaSetCheckTimeout : '1.00:00:00'
-  upgradeTimeout: contains(upgradeDescription, 'upgradeTimeout') ? upgradeDescription.upgradeTimeout : '02:00:00'
-}, contains(upgradeDescription, 'healthPolicy') ? {
-  healthPolicy: {
-    applicationHealthPolicies: contains(upgradeDescription.healthPolicy, 'applicationHealthPolicies') ? upgradeDescription.healthPolicy.applicationHealthPolicies : {}
-    maxPercentUnhealthyApplications: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyApplications') ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : 0
-    maxPercentUnhealthyNodes: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyNodes') ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : 0
-  }
-} : {})
+    deltaHealthPolicy: {
+      applicationDeltaHealthPolicies: contains(upgradeDescription, 'applicationDeltaHealthPolicies') ? upgradeDescription.applicationDeltaHealthPolicies : {}
+      maxPercentDeltaUnhealthyApplications: contains(upgradeDescription, 'maxPercentDeltaUnhealthyApplications') ? upgradeDescription.maxPercentDeltaUnhealthyApplications : 0
+      maxPercentDeltaUnhealthyNodes: contains(upgradeDescription, 'maxPercentDeltaUnhealthyNodes') ? upgradeDescription.maxPercentDeltaUnhealthyNodes : 0
+      maxPercentUpgradeDomainDeltaUnhealthyNodes: contains(upgradeDescription, 'maxPercentUpgradeDomainDeltaUnhealthyNodes') ? upgradeDescription.maxPercentUpgradeDomainDeltaUnhealthyNodes : 0
+    }
+    forceRestart: contains(upgradeDescription, 'forceRestart') ? upgradeDescription.forceRestart : false
+    healthCheckRetryTimeout: contains(upgradeDescription, 'healthCheckRetryTimeout') ? upgradeDescription.healthCheckRetryTimeout : '00:45:00'
+    healthCheckStableDuration: contains(upgradeDescription, 'healthCheckStableDuration') ? upgradeDescription.healthCheckStableDuration : '00:01:00'
+    healthCheckWaitDuration: contains(upgradeDescription, 'healthCheckWaitDuration') ? upgradeDescription.healthCheckWaitDuration : '00:00:30'
+    upgradeDomainTimeout: contains(upgradeDescription, 'upgradeDomainTimeout') ? upgradeDescription.upgradeDomainTimeout : '02:00:00'
+    upgradeReplicaSetCheckTimeout: contains(upgradeDescription, 'upgradeReplicaSetCheckTimeout') ? upgradeDescription.upgradeReplicaSetCheckTimeout : '1.00:00:00'
+    upgradeTimeout: contains(upgradeDescription, 'upgradeTimeout') ? upgradeDescription.upgradeTimeout : '02:00:00'
+  }, contains(upgradeDescription, 'healthPolicy') ? {
+    healthPolicy: {
+      applicationHealthPolicies: contains(upgradeDescription.healthPolicy, 'applicationHealthPolicies') ? upgradeDescription.healthPolicy.applicationHealthPolicies : {}
+      maxPercentUnhealthyApplications: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyApplications') ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : 0
+      maxPercentUnhealthyNodes: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyNodes') ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : 0
+    }
+  } : {})
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -280,17 +280,17 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
 }
 
 // Service Fabric cluster resource lock
-resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${serviceFabricCluster.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: serviceFabricCluster
 }
 
 // Service Fabric cluster RBAC assignment
-module serviceFabricCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module serviceFabricCluster_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ServiceFabric-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -308,7 +308,7 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
     name: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
     tags: contains(applicationType, 'tags') ? applicationType.tags : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

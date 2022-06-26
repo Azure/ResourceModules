@@ -15,7 +15,7 @@ This template deploys a log analytics workspace.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/diagnosticSettings) |
 | `Microsoft.OperationalInsights/workspaces` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces) |
 | `Microsoft.OperationalInsights/workspaces/dataSources` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources) |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices) |
@@ -45,10 +45,10 @@ This template deploys a log analytics workspace.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `gallerySolutions` | array | `[]` |  | LAW gallerySolutions from the gallery. |
+| `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the log analytics workspace. |
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccessForIngestion` | string | `'Enabled'` | `[Enabled, Disabled]` | The network access type for accessing Log Analytics ingestion. |
 | `publicNetworkAccessForQuery` | string | `'Enabled'` | `[Enabled, Disabled]` | The network access type for accessing Log Analytics query. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -61,6 +61,8 @@ This template deploys a log analytics workspace.
 
 ### Parameter Usage: `gallerySolutions`
 
+Ref cross-referenced _[solutions](../../Microsoft.OperationsManagement/solutions/readme.md)_
+
 <details>
 
 <summary>Parameter JSON format</summary>
@@ -70,122 +72,122 @@ This template deploys a log analytics workspace.
     "value": [
         {
             "name": "AgentHealthAssessment",
-            "product": "OMSGallery/AgentHealthAssessment",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AlertManagement",
-            "product": "OMSGallery/AlertManagement",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AntiMalware",
-            "product": "OMSGallery/AntiMalware",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureActivity",
-            "product": "OMSGallery/AzureActivity",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureAutomation",
-            "product": "OMSGallery/AzureAutomation",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureCdnCoreAnalytics",
-            "product": "OMSGallery/AzureCdnCoreAnalytics",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureDataFactoryAnalytics",
-            "product": "OMSGallery/AzureDataFactoryAnalytics",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureNSGAnalytics",
-            "product": "OMSGallery/AzureNSGAnalytics",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureSQLAnalytics",
-            "product": "OMSGallery/AzureSQLAnalytics",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "ChangeTracking",
-            "product": "OMSGallery/ChangeTracking",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "Containers",
-            "product": "OMSGallery/Containers",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "InfrastructureInsights",
-            "product": "OMSGallery/InfrastructureInsights",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "KeyVaultAnalytics",
-            "product": "OMSGallery/KeyVaultAnalytics",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "LogicAppsManagement",
-            "product": "OMSGallery/LogicAppsManagement",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "NetworkMonitoring",
-            "product": "OMSGallery/NetworkMonitoring",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "Security",
-            "product": "OMSGallery/Security",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "SecurityCenterFree",
-            "product": "OMSGallery/SecurityCenterFree",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "ServiceFabric",
-            "product": "OMSGallery/ServiceFabric",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "ServiceMap",
-            "product": "OMSGallery/ServiceMap",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "SQLAssessment",
-            "product": "OMSGallery/SQLAssessment",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "Updates",
-            "product": "OMSGallery/Updates",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "VMInsights",
-            "product": "OMSGallery/VMInsights",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "WireData2",
-            "product": "OMSGallery/WireData2",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "WaaSUpdateInsights",
-            "product": "OMSGallery/WaaSUpdateInsights",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         }
     ]
@@ -202,122 +204,122 @@ This template deploys a log analytics workspace.
 gallerySolutions: [
     {
         name: 'AgentHealthAssessment'
-        product: 'OMSGallery/AgentHealthAssessment'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AlertManagement'
-        product: 'OMSGallery/AlertManagement'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AntiMalware'
-        product: 'OMSGallery/AntiMalware'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureActivity'
-        product: 'OMSGallery/AzureActivity'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureAutomation'
-        product: 'OMSGallery/AzureAutomation'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureCdnCoreAnalytics'
-        product: 'OMSGallery/AzureCdnCoreAnalytics'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureDataFactoryAnalytics'
-        product: 'OMSGallery/AzureDataFactoryAnalytics'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureNSGAnalytics'
-        product: 'OMSGallery/AzureNSGAnalytics'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureSQLAnalytics'
-        product: 'OMSGallery/AzureSQLAnalytics'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'ChangeTracking'
-        product: 'OMSGallery/ChangeTracking'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'Containers'
-        product: 'OMSGallery/Containers'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'InfrastructureInsights'
-        product: 'OMSGallery/InfrastructureInsights'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'KeyVaultAnalytics'
-        product: 'OMSGallery/KeyVaultAnalytics'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'LogicAppsManagement'
-        product: 'OMSGallery/LogicAppsManagement'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'NetworkMonitoring'
-        product: 'OMSGallery/NetworkMonitoring'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'Security'
-        product: 'OMSGallery/Security'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'SecurityCenterFree'
-        product: 'OMSGallery/SecurityCenterFree'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'ServiceFabric'
-        product: 'OMSGallery/ServiceFabric'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'ServiceMap'
-        product: 'OMSGallery/ServiceMap'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'SQLAssessment'
-        product: 'OMSGallery/SQLAssessment'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'Updates'
-        product: 'OMSGallery/Updates'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'VMInsights'
-        product: 'OMSGallery/VMInsights'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'WireData2'
-        product: 'OMSGallery/WireData2'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'WaaSUpdateInsights'
-        product: 'OMSGallery/WaaSUpdateInsights'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
 ]
@@ -450,11 +452,10 @@ tags: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-la-min-001"
+            "value": "<<namePrefix>>-az-law-min-001"
         }
     }
 }
-
 ```
 
 </details>
@@ -467,8 +468,9 @@ tags: {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-la-min-001'
+    name: '<<namePrefix>>-az-law-min-001'
   }
+}
 ```
 
 </details>
@@ -486,7 +488,10 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-la-x-001"
+            "value": "<<namePrefix>>-az-law-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "publicNetworkAccessForIngestion": {
             "value": "Disabled"
@@ -514,7 +519,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
             "value": [
                 {
                     "name": "Automation",
-                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001"
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001"
                 }
             ]
         },
@@ -649,7 +654,6 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -662,7 +666,8 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-la-x-001'
+    name: '<<namePrefix>>-az-law-x-001'
+    lock: 'CanNotDelete'
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
     dailyQuotaGb: 10
@@ -680,7 +685,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     linkedServices: [
       {
         name: 'Automation'
-        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001'
+        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001'
       }
     ]
     savedSearches: [
@@ -795,6 +800,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

@@ -44,7 +44,7 @@ This template deploys a virtual network (vNet).
 | `dnsServers` | array | `[]` |  | DNS Servers associated to the Virtual Network. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `subnets` | _[subnets](subnets/readme.md)_ array | `[]` |  | An Array of subnets to deploy to the Virtual Network. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -369,7 +369,6 @@ The network security group and route table resources must reside in the same res
         }
     }
 }
-
 ```
 
 </details>
@@ -387,6 +386,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       '10.0.0.0/16'
     ]
   }
+}
 ```
 
 </details>
@@ -405,6 +405,9 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-vnet-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "addressPrefixes": {
             "value": [
@@ -492,7 +495,6 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -506,6 +508,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworks'
   params: {
     name: '<<namePrefix>>-az-vnet-x-001'
+    lock: 'CanNotDelete'
     addressPrefixes: [
       '10.0.0.0/16'
     ]
@@ -573,6 +576,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>
@@ -637,7 +641,6 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -679,6 +682,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

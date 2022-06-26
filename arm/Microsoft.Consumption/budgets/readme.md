@@ -78,7 +78,6 @@ This module deploys budgets for subscriptions.
         }
     }
 }
-
 ```
 
 </details>
@@ -103,6 +102,7 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
       'dummy@contoso.com'
     ]
   }
+}
 ```
 
 </details>

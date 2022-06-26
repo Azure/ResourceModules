@@ -44,7 +44,7 @@ The following resources are required to be able to deploy this resource:
 | `customDnsConfigs` | array | `[]` |  | Custom DNS configurations. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `manualPrivateLinkServiceConnections` | array | `[]` |  | Manual PrivateLink Service Connections. |
 | `privateDnsZoneGroups` | _[privateDnsZoneGroups](privateDnsZoneGroups/readme.md)_ array | `[]` |  | Array of Private DNS zone groups configuration on the private endpoint. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -189,7 +189,6 @@ roleAssignments: [
         }
     }
 }
-
 ```
 
 </details>
@@ -209,6 +208,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       'vault'
     ]
   }
+}
 ```
 
 </details>
@@ -227,6 +227,9 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-pe-kvlt-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "subnetResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
@@ -260,7 +263,6 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -274,6 +276,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateEndpoints'
   params: {
     name: '<<namePrefix>>-az-pe-kvlt-001'
+    lock: 'CanNotDelete'
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
     serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
     groupIds: [
@@ -295,6 +298,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

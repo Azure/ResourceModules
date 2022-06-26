@@ -106,7 +106,6 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
         }
     }
 }
-
 ```
 
 </details>
@@ -134,6 +133,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
       sshKnownHosts: ''
     }
   }
+}
 ```
 
 </details>
@@ -190,7 +190,6 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
         }
     }
 }
-
 ```
 
 </details>
@@ -228,6 +227,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
       }
     }
   }
+}
 ```
 
 </details>

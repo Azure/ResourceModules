@@ -284,7 +284,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -327,6 +326,7 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

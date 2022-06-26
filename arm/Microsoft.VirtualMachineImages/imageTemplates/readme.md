@@ -34,7 +34,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `imageReplicationRegions` | array | `[]` |  | List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedImageName` | string | `''` |  | Name of the managed image that will be created in the AIB resourcegroup. |
 | `osDiskSizeGB` | int | `128` |  | Specifies the size of OS disk. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -274,6 +274,9 @@ roleAssignments: [
         "name": {
             "value": "<<namePrefix>>-az-imgt-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "userMsiName": {
             "value": "adp-<<namePrefix>>-az-msi-x-001"
         },
@@ -333,7 +336,6 @@ roleAssignments: [
         }
     }
 }
-
 ```
 
 </details>
@@ -347,6 +349,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
   name: '${uniqueString(deployment().name)}-imageTemplates'
   params: {
     name: '<<namePrefix>>-az-imgt-x-001'
+    lock: 'CanNotDelete'
     userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
     userMsiResourceGroup: 'validation-rg'
     buildTimeoutInMinutes: 0
@@ -379,6 +382,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       }
     ]
   }
+}
 ```
 
 </details>

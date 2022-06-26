@@ -35,7 +35,7 @@ This module deploys a Protection Container for a Recovery Services Vault
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `friendlyName` | string | `''` |  | Friendly name of the Protection Container. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `protectedItems` | _[protectedItems](protectedItems/readme.md)_ array | `[]` |  | Protected items to register in the container |
+| `protectedItems` | _[protectedItems](protectedItems/readme.md)_ array | `[]` |  | Protected items to register in the container. |
 | `sourceResourceId` | string | `''` |  | Resource ID of the target resource for the Protection Container. |
 
 

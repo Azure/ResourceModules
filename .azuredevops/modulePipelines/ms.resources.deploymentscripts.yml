@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.resources.deploymentscripts.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.Resources/deploymentScripts/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
@@ -47,7 +47,6 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/cli.parameters.json
             - path: $(modulePath)/.parameters/ps.parameters.json
-
 
   - stage: Publishing
     displayName: Publishing

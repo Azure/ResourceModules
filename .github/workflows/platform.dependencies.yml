@@ -22,17 +22,23 @@ on:
   #     - '.github/workflows/platform.dependencies.yml'
   #     - 'utilities/pipelines/dependencies/**'
 
+permissions:
+  id-token: write # OIDC
+  contents: read # OIDC
+  checks: write # enricomi/publish-unit-test-result-action
+  pull-requests: write # enricomi/publish-unit-test-result-action
+
 env:
-  location: "WestEurope"
-  defaultResourceGroupName: "validation-rg"
-  resourceGroupNameArtifacts: "artifacts-rg"
-  removeDeployment: "false"
-  dependencyPath: "utilities/pipelines/dependencies"
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  ARM_VALIDATION_SUBSCRIPTION_ID: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-  ARM_MGMTGROUP_ID: "${{ secrets.ARM_MGMTGROUP_ID }}"
-  ARM_TENANT_ID: "${{ secrets.ARM_TENANT_ID }}"
-  DEPLOYMENT_SP_ID: "${{ secrets.DEPLOYMENT_SP_ID }}"
+  location: 'WestEurope'
+  defaultResourceGroupName: 'validation-rg'
+  resourceGroupNameArtifacts: 'artifacts-rg'
+  removeDeployment: 'false'
+  dependencyPath: 'utilities/pipelines/dependencies'
+  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  AZURE_TENANT_ID: '${{ secrets.AZURE_TENANT_ID }}'
+  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
   job_deploy_rg:
@@ -43,7 +49,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["validation.parameters.json"]
+        parameterFilePaths:
+          ['validation.parameters.json', 'locks.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -52,13 +60,13 @@ jobs:
       - name: "Deploy module"
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_ppg:
     runs-on: ubuntu-20.04
@@ -70,22 +78,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_msi:
     runs-on: ubuntu-20.04
@@ -99,23 +109,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         id: deploy_msi
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
       - name: Set msi principal ID output
         id: print_msi_prinId
         uses: azure/powershell@v1
@@ -137,22 +150,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_app:
     runs-on: ubuntu-20.04
@@ -164,22 +179,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_pa:
     runs-on: ubuntu-20.04
@@ -191,22 +208,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["mg.parameters.json", "sub.parameters.json"]
+        parameterFilePaths: ['mg.parameters.json', 'sub.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_evh:
     runs-on: ubuntu-20.04
@@ -218,22 +237,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_law:
     runs-on: ubuntu-20.04
@@ -246,22 +267,29 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ["appi.parameters.json", "aut.parameters.json", "parameters.json"]
+          [
+            'appi.parameters.json',
+            'aut.parameters.json',
+            'sol.parameters.json',
+            'parameters.json',
+          ]
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_sa:
     runs-on: ubuntu-20.04
@@ -274,22 +302,24 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ["fa.parameters.json", "law.parameters.json", "parameters.json"]
+          ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_sa_upload_storage_files:
     runs-on: ubuntu-20.04
@@ -298,12 +328,14 @@ jobs:
       namespace: 'Microsoft.Storage\storageAccounts'
     needs:
       - job_deploy_sa
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Setup agent"
+
+      - name: 'Setup agent'
         shell: pwsh
         run: |
           # Load used functions
@@ -316,11 +348,15 @@ jobs:
 
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
+
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
+
       - name: Run PowerShell
         uses: azure/powershell@v1
         with:
@@ -378,22 +414,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_imgt:
     runs-on: ubuntu-20.04
@@ -410,24 +448,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         id: deploy_imgt
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
-      - name: "Set image template output"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
+      - name: 'Set image template output'
         id: print_imgt_output
         uses: azure/powershell@v1
         with:
@@ -451,12 +492,14 @@ jobs:
     needs:
       - job_deploy_imgt
       - job_deploy_sa
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Setup agent"
+
+      - name: 'Setup agent'
         shell: pwsh
         run: |
           # Load used functions
@@ -470,12 +513,16 @@ jobs:
 
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
+
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
-      - name: "Trigger building new image"
+
+      - name: 'Trigger building new image'
         uses: azure/powershell@v1
         with:
           inlineScript: |
@@ -485,8 +532,9 @@ jobs:
 
             Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
             Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
-          azPSVersion: "latest"
-      - name: "Copy baked vhd to a storage account"
+          azPSVersion: 'latest'
+
+      - name: 'Copy baked vhd to a storage account'
         uses: azure/powershell@v1
         with:
           inlineScript: |
@@ -568,22 +616,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_asg:
     runs-on: ubuntu-20.04
@@ -595,22 +645,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_udr:
     runs-on: ubuntu-20.04
@@ -622,22 +674,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_sqlmi_udr:
     runs-on: ubuntu-20.04
@@ -650,22 +704,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["sqlMi.parameters.json"]
+        parameterFilePaths: ['sqlMi.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_nsg:
     runs-on: ubuntu-20.04
@@ -687,21 +743,23 @@ jobs:
             "aadds.parameters.json",
             "parameters.json",
           ]
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_sqlmi_nsg:
     runs-on: ubuntu-20.04
@@ -716,22 +774,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["sqlmi.parameters.json"]
+        parameterFilePaths: ['sqlmi.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_pip:
     runs-on: ubuntu-20.04
@@ -747,28 +807,31 @@ jobs:
       matrix:
         parameterFilePaths:
           [
-            "apgw.parameters.json",
-            "bas.parameters.json",
-            "lb.parameters.json",
-            "lb.min.parameters.json",
-            "fw.parameters.json",
-            "fw.additional.parameters.json",
+            'apgw.parameters.json',
+            'bas.parameters.json',
+            'bas.additional.parameters.json',
+            'lb.parameters.json',
+            'lb.min.parameters.json',
+            'fw.parameters.json',
+            'fw.additional.parameters.json',
           ]
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_appi:
     runs-on: ubuntu-20.04
@@ -782,22 +845,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_aut:
     runs-on: ubuntu-20.04
@@ -811,22 +876,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_avdhp:
     runs-on: ubuntu-20.04
@@ -840,22 +907,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_rsv:
     runs-on: ubuntu-20.04
@@ -870,22 +939,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_kv:
@@ -902,22 +973,24 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ["parameters.json", "pe.parameters.json", "nopr.parameters.json"]
+          ['parameters.json', 'pe.parameters.json', 'nopr.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_kv_secrets:
@@ -928,12 +1001,14 @@ jobs:
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_kv
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Setup agent"
+
+      - name: 'Setup agent'
         shell: pwsh
         run: |
           # Load used functions
@@ -946,12 +1021,16 @@ jobs:
 
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
+
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
-      - name: "Set key vault secrets keys and certificates"
+
+      - name: 'Set key vault secrets keys and certificates'
         uses: azure/powershell@v1
         with:
           inlineScript: |
@@ -1078,22 +1157,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["sqlmi.parameters.json"]
+        parameterFilePaths: ['sqlmi.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_sqlmi_kv_secrets:
@@ -1104,12 +1185,14 @@ jobs:
       - job_deploy_sqlmi_kv
     env:
       namespace: 'Microsoft.KeyVault\vaults'
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Setup agent"
+
+      - name: 'Setup agent'
         shell: pwsh
         run: |
           # Load used functions
@@ -1126,9 +1209,12 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
-      - name: "Set sqlmi key vault secrets and keys"
+
+      - name: 'Set sqlmi key vault secrets and keys'
         uses: azure/powershell@v1
         with:
           inlineScript: |
@@ -1197,22 +1283,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_rolea:
     runs-on: ubuntu-20.04
@@ -1224,22 +1312,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/subscription/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/subscription/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_vnet:
@@ -1254,32 +1344,37 @@ jobs:
       matrix:
         parameterFilePaths:
           [
-            "1.bastion.parameters.json",
-            "2.vnetpeer01.parameters.json",
-            "3.vnetpeer02.parameters.json",
-            "4.azfw.parameters.json",
-            "5.aks.parameters.json",
-            "7.virtualHubConnection.parameters.json",
-            "8.aadds.parameters.json",
-            "9.azfw.parameters.json",
-            "10.azfw.parameters.json",
-            "parameters.json",
+            '1.bastion.parameters.json',
+            '2.vnetpeer01.parameters.json',
+            '3.vnetpeer02.parameters.json',
+            '4.azfw.parameters.json',
+            '5.aks.parameters.json',
+            '7.virtualHubConnection.parameters.json',
+            '8.aadds.parameters.json',
+            '9.azfw.parameters.json',
+            '10.azfw.parameters.json',
+            '11.azfw.parameters.json',
+            '12.bastion.parameters.json',
+            '13.bastion.parameters.json',
+            'parameters.json',
           ]
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_sqlmi_vnet:
     runs-on: ubuntu-20.04
@@ -1293,22 +1388,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["6.sqlmi.parameters.json"]
+        parameterFilePaths: ['6.sqlmi.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_dnszone:
     runs-on: ubuntu-20.04
@@ -1320,22 +1417,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_vm:
     runs-on: ubuntu-20.04
@@ -1349,22 +1448,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_lb:
     runs-on: ubuntu-20.04
@@ -1376,19 +1477,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["internal.parameters.json"]
+        parameterFilePaths: ['internal.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Deploy module"
+
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: "arm/${{ env.namespace }}/deploy.bicep"
-          parameterFilePath: "${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.location }}"
-          resourceGroupName: "${{ env.defaultResourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ env.removeDeployment }}"
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'

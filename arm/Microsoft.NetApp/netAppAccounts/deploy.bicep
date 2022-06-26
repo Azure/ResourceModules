@@ -30,12 +30,12 @@ param roleAssignments array = []
 param location string = resourceGroup().location
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Tags for all resources.')
 param tags object = {}
@@ -43,7 +43,7 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 var activeDirectoryConnectionProperties = [
   {
@@ -77,16 +77,16 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
   }
 }
 
-resource netAppAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource netAppAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${netAppAccount.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: netAppAccount
 }
 
-module netAppAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module netAppAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ANFAccount-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -109,7 +109,7 @@ module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacity
     volumes: contains(capacityPool, 'volumes') ? capacityPool.volumes : []
     coolAccess: contains(capacityPool, 'coolAccess') ? capacityPool.coolAccess : false
     roleAssignments: contains(capacityPool, 'roleAssignments') ? capacityPool.roleAssignments : []
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

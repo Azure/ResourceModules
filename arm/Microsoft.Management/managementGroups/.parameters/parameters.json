@@ -10,16 +10,6 @@
         },
         "parentId": {
             "value": "<<managementGroupId>>"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
         }
     }
 }

@@ -41,7 +41,7 @@ This module deploys Network Interfaces.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableIPForwarding` | bool | `False` |  | Indicates whether IP forwarding is enabled on this network interface. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkSecurityGroupResourceId` | string | `''` |  | The network security group (NSG) to attach to the network interface. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -203,7 +203,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -224,6 +223,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
       }
     ]
   }
+}
 ```
 
 </details>
@@ -242,6 +242,9 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-nic-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "roleAssignments": {
             "value": [
@@ -288,7 +291,6 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
         }
     }
 }
-
 ```
 
 </details>
@@ -302,6 +304,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
   name: '${uniqueString(deployment().name)}-networkInterfaces'
   params: {
     name: '<<namePrefix>>-az-nic-x-001'
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -332,6 +335,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

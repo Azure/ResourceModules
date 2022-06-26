@@ -152,7 +152,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -167,6 +166,7 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-fwpol-min-001'
   }
+}
 ```
 
 </details>
@@ -228,7 +228,6 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -281,6 +280,7 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>
