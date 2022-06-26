@@ -238,7 +238,7 @@ function Invoke-PipelinesForBranch {
         az devops configure --defaults organization=$orgUazureDevOpsOrgUrlrl project=$AzureDevOpsProjectName --use-git-aliases $true
 
         Write-Verbose "Get and list all [$AzureDevOpsOrganizationName/$AzureDevOpsProjectName] Azure DevOps pipelines in folder [$AzureDevOpsPipelineFolderPath]"
-        $azurePipelines = az pipelines list --organization $azureDevOpsOrgUrl --project $AzureDevOpsProjectName --folder-path $AzureDevOpsPipelineFolderPath | ConvertFrom-Json | Sort-Object 'name'
+        $azurePipelines = az pipelines list --organization $azureDevOpsOrgUrl --project $AzureDevOpsProjectName --folder-path $AzureDevOpsPipelineFolderPath | ConvertFrom-Json
 
         Write-Verbose 'Fetching details' # Required as we need the original file path for filtering (which is only available when fetching the pipeline directly)
 
@@ -247,7 +247,7 @@ function Invoke-PipelinesForBranch {
             az pipelines show --organization $USING:azureDevOpsOrgUrl --project $USING:AzureDevOpsProjectName --id $PSItem.id | ConvertFrom-Json
         }
 
-        $modulePipelines = $detailedAzurePipelines | Where-Object { (Split-Path $_.process.yamlFileName -Leaf) -like $PipelineFilter }
+        $modulePipelines = $detailedAzurePipelines | Where-Object { (Split-Path $_.process.yamlFileName -Leaf) -like $PipelineFilter } | Sort-Object -Property 'Name'
 
         $azureDevOpsPipelineBadges = [System.Collections.ArrayList]@()
 
@@ -259,10 +259,8 @@ function Invoke-PipelinesForBranch {
                 $null = az pipelines run --branch $TargetBranch --id $modulePipeline.id
             }
 
-
             # Generate pipeline badges
             if ($GeneratePipelineBadges) {
-
                 $pipelineDefinitionId = $modulePipeline.id
                 $encodedPipelineName = [uri]::EscapeDataString($modulePipeline.Name)
                 $encodedBranch = [uri]::EscapeDataString($TargetBranch)
@@ -270,12 +268,6 @@ function Invoke-PipelinesForBranch {
                 $secondaryUrl = 'https://dev.azure.com/{0}/{1}/_build/latest?definitionId={2}&branchName={3}' -f $AzureDevOpsOrganizationName, $AzureDevOpsProjectName, $pipelineDefinitionId, $encodedBranch
 
                 $azureDevOpsPipelineBadges += "[![Build Status]($primaryUrl)]($secondaryUrl)"
-
-                # [
-                #    ![Build Status]
-                #       (https://dev.azure.com/servicescode/infra-as-code-source/_apis/build/status/CARML-Modules/AnalysisServices%20-%20Servers?branchName=issue%2F1127)
-                # ]
-                # (https://dev.azure.com/servicescode/infra-as-code-source/_build/latest?definitionId=2156&branchName=issue%2F1127)
             }
         }
 
