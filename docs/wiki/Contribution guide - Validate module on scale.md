@@ -20,7 +20,7 @@ The most important parameter is the 'Environment' you want to run the pipelines 
 Upon triggering, the utility will:
 1. Fetch all pipelines in the target environment & filter them down to, by default, module pipelines.
 1. Trigger these pipelines for the provided targeted branch (e.g. `main`)
-1. Return the formatted status badges for the just triggered pipelines
+1. Return the formatted status badges for the pipelines that were triggered.
 
 # How to use it
 
