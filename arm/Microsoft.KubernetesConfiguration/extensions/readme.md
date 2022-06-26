@@ -93,7 +93,6 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
         }
     }
 }
-
 ```
 
 </details>
@@ -112,6 +111,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
     releaseTrain: 'Stable'
     releaseNamespace: 'flux-system'
   }
+}
 ```
 
 </details>
@@ -158,7 +158,6 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -185,6 +184,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
       'image-reflector-controller.enabled': 'false'
     }
   }
+}
 ```
 
 </details>

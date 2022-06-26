@@ -193,7 +193,6 @@ This module can be deployed both at subscription or resource group level:
         }
     }
 }
-
 ```
 
 </details>
@@ -212,6 +211,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Compute/galleries/images/read'
     ]
   }
+}
 ```
 
 </details>
@@ -267,7 +267,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -302,6 +301,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     ]
     managementGroupId: '<<managementGroupId>>'
   }
+}
 ```
 
 </details>
@@ -335,7 +335,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -356,6 +355,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     subscriptionId: '<<subscriptionId>>'
     resourceGroupName: '<<resourceGroupName>>'
   }
+}
 ```
 
 </details>
@@ -414,7 +414,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -450,6 +449,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     subscriptionId: '<<subscriptionId>>'
     resourceGroupName: '<<resourceGroupName>>'
   }
+}
 ```
 
 </details>
@@ -480,7 +480,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -500,6 +499,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     ]
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>
@@ -555,7 +555,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -590,6 +589,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     ]
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>

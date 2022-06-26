@@ -75,7 +75,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `keys` | _[keys](keys/readme.md)_ array | `[]` |  | The keys to configure. |
 | `licenseType` | string | `'LicenseIncluded'` | `[LicenseIncluded, BasePrice]` | The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedInstanceCreateMode` | string | `'Default'` | `[Default, PointInTimeRestore]` | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
 | `proxyOverride` | string | `'Proxy'` | `[Proxy, Redirect, Default]` | Connection type used for connecting to the instance. |
 | `publicDataEndpointEnabled` | bool | `False` |  | Whether or not the public data endpoint is enabled. |
@@ -288,6 +288,9 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-sqlmi-x-002"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "administratorLogin": {
             "reference": {
                 "keyVault": {
@@ -428,7 +431,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -447,6 +449,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managedInstances'
   params: {
     name: '<<namePrefix>>-az-sqlmi-x-002'
+    lock: 'CanNotDelete'
     administratorLogin: kv1.getSecret('administratorLogin')
     administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
     subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi'
@@ -518,6 +521,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

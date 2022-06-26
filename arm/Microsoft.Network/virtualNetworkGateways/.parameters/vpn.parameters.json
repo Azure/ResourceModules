@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-gw-vpn-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "domainNameLabel": {
             "value": [
                 "<<namePrefix>>-az-gw-vpn-dm-001"

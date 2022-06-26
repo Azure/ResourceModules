@@ -48,12 +48,12 @@ param consumerGroups array = [
 ]
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -96,7 +96,7 @@ param captureDescriptionSkipEmptyArchives bool = false
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 var eventHubPropertiesSimple = {
   messageRetentionInDays: messageRetentionInDays
@@ -146,10 +146,10 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
   properties: captureDescriptionEnabled ? eventHubPropertiesWithCapture : eventHubPropertiesSimple
 }
 
-resource eventHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource eventHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${eventHub.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: eventHub
@@ -162,7 +162,7 @@ module eventHub_consumergroups 'consumergroups/deploy.bicep' = [for (consumerGro
     eventHubName: eventHub.name
     name: consumerGroup.name
     userMetadata: contains(consumerGroup, 'userMetadata') ? consumerGroup.userMetadata : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -173,11 +173,11 @@ module eventHub_authorizationRules 'authorizationRules/deploy.bicep' = [for (aut
     eventHubName: eventHub.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-module eventHub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module eventHub_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

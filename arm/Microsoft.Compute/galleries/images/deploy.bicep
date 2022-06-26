@@ -106,11 +106,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource gallery 'Microsoft.Compute/galleries@2020-09-30' existing = {
+resource gallery 'Microsoft.Compute/galleries@2021-10-01' existing = {
   name: galleryName
 }
 
-resource image 'Microsoft.Compute/galleries/images@2020-09-30' = {
+resource image 'Microsoft.Compute/galleries/images@2021-10-01' = {
   name: name
   parent: gallery
   location: location
@@ -150,7 +150,7 @@ resource image 'Microsoft.Compute/galleries/images@2020-09-30' = {
   }
 }
 
-module galleryImage_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module galleryImage_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -1,26 +1,39 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "adp-<<namePrefix>>-az-nsg-x-ase"
-    },
-    "securityRules": {
-      "value": [
-        {
-          "name": "AllowPortsForASE",
-          "properties": {
-            "protocol": "*",
-            "sourcePortRange": "*",
-            "sourceAddressPrefix": "AppServiceManagement",
-            "destinationPortRange": "454-455",
-            "destinationAddressPrefix": "10.0.7.0/24",
-            "access": "Allow",
-            "priority": 1010,
-            "direction": "Inbound"
-          }
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-nsg-x-ase"
+        },
+        "securityRules": {
+            "value": [
+                {
+                    "name": "AllowPortsForASE",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "sourceAddressPrefix": "AppServiceManagement",
+                        "destinationPortRange": "454-455",
+                        "destinationAddressPrefix": "10.0.7.0/24",
+                        "access": "Allow",
+                        "priority": 1010,
+                        "direction": "Inbound"
+                    }
+                },
+                {
+                    "name": "AllowPortsForASE2",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "sourceAddressPrefix": "AppServiceManagement",
+                        "destinationPortRange": "454-455",
+                        "destinationAddressPrefix": "10.0.9.0/24",
+                        "access": "Allow",
+                        "priority": 1020,
+                        "direction": "Inbound"
+                    }
+                }
+            ]
         }
-      ]
     }
-  }
 }

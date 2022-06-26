@@ -38,7 +38,7 @@ This template deploys a network security group (NSG) with optional security rule
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `securityRules` | _[securityRules](securityRules/readme.md)_ array | `[]` |  | Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed. |
 | `tags` | object | `{object}` |  | Tags of the NSG resource. |
@@ -171,7 +171,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -186,6 +185,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   params: {
     name: '<<namePrefix>>-az-nsg-min-001'
   }
+}
 ```
 
 </details>
@@ -204,6 +204,9 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-nsg-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "securityRules": {
             "value": [
@@ -298,7 +301,6 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
         }
     }
 }
-
 ```
 
 </details>
@@ -312,6 +314,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   name: '${uniqueString(deployment().name)}-networkSecurityGroups'
   params: {
     name: '<<namePrefix>>-az-nsg-x-001'
+    lock: 'CanNotDelete'
     securityRules: [
       {
         name: 'Specific'
@@ -390,6 +393,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

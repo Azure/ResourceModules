@@ -168,7 +168,6 @@ module policyexemption 'yourpath/arm/Microsoft.Authorization.policyExemptions/su
         }
     }
 }
-
 ```
 
 </details>
@@ -184,6 +183,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>-min-mg-polexem'
     policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
   }
+}
 ```
 
 </details>
@@ -225,7 +225,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         }
     }
 }
-
 ```
 
 </details>
@@ -248,6 +247,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     expiresOn: '2025-10-02T03:57:00Z'
     managementGroupId: '<<managementGroupId>>'
   }
+}
 ```
 
 </details>
@@ -278,7 +278,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         }
     }
 }
-
 ```
 
 </details>
@@ -296,6 +295,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     subscriptionId: '<<subscriptionId>>'
     resourceGroupName: '<<resourceGroupName>>'
   }
+}
 ```
 
 </details>
@@ -340,7 +340,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         }
     }
 }
-
 ```
 
 </details>
@@ -364,6 +363,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     subscriptionId: '<<subscriptionId>>'
     resourceGroupName: '<<resourceGroupName>>'
   }
+}
 ```
 
 </details>
@@ -391,7 +391,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         }
     }
 }
-
 ```
 
 </details>
@@ -408,6 +407,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>
@@ -449,7 +449,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         }
     }
 }
-
 ```
 
 </details>
@@ -472,6 +471,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     expiresOn: '2025-10-02T03:57:00Z'
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>

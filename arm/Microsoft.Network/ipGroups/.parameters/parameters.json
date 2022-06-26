@@ -5,6 +5,9 @@
         "name": {
             "value": "iacsGroup-servers"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "ipAddresses": {
             "value": [
                 "10.0.0.1",

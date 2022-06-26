@@ -17,7 +17,7 @@ Get-LinkedModuleList
 Invoke the function with the default path. Returns an object such as:
 {
     "Microsoft.Compute/availabilitySets": {
-        "localPathReferences": ".bicep/nested_rbac.bicep",
+        "localPathReferences": ".bicep/nested_roleAssignments.bicep",
         "remoteReferences": null,
         "resourceReferences": [
             "Microsoft.Resources/deployments@2021-04-01",

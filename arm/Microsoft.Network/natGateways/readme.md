@@ -40,7 +40,7 @@ This module deploys a NAT gateway.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `idleTimeoutInMinutes` | int | `5` |  | The idle timeout of the nat gateway. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `natGatewayDomainNameLabel` | string | `''` |  | DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com. |
 | `natGatewayPipName` | string | `''` |  | Specifies the name of the Public IP used by the NAT Gateway. If it's not provided, a '-pip' suffix will be appended to the Bastion's name. |
 | `natGatewayPublicIpAddress` | bool | `False` |  | Use to have a new Public IP Address created for the NAT Gateway. |
@@ -177,6 +177,9 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-ngw-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "natGatewayPublicIpAddress": {
             "value": true
         },
@@ -207,7 +210,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -221,6 +223,7 @@ module natGateways './Microsoft.Network/natGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-natGateways'
   params: {
     name: '<<namePrefix>>-az-ngw-x-001'
+    lock: 'CanNotDelete'
     natGatewayPublicIpAddress: true
     roleAssignments: [
       {
@@ -236,6 +239,7 @@ module natGateways './Microsoft.Network/natGateways/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

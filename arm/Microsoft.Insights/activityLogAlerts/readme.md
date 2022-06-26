@@ -448,7 +448,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -493,6 +492,7 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
       }
     ]
   }
+}
 ```
 
 </details>

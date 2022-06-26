@@ -1,0 +1,34 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-cgs-encr-001"
+        },
+        "kind": {
+            "value": "SpeechServices"
+        },
+        "sku": {
+            "value": "S0"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "publicNetworkAccess": {
+            "value": "Enabled"
+        },
+        "encryption": {
+            "value": {
+                "keySource": "Microsoft.KeyVault",
+                "keyVaultProperties": {
+                    "identityClientId": "c907a696-36f4-49fe-b926-39e3aabba814", // ID must be updated for new identity
+                    "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
+                    "keyName": "keyEncryptionKey",
+                    "keyversion": "4570a207ec394a0bbbe4fc9adc663a51" // Version must be updated for new keys
+                }
+            }
+        }
+    }
+}

@@ -273,7 +273,6 @@ roleAssignments: [
         }
     }
 }
-
 ```
 
 </details>
@@ -288,6 +287,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
   params: {
     name: '<<namePrefix>>-az-avdsp-x-001'
   }
+}
 ```
 
 </details>

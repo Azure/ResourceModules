@@ -60,7 +60,7 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
   }
 }
 
-module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' = {
+module keyVaultAccessPolicies '../../Microsoft.KeyVault/vaults/accessPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
   params: {
     keyVaultName: last(split(keyVaultId, '/'))
@@ -84,7 +84,7 @@ module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' = {
   scope: resourceGroup(split(keyVaultId, '/')[2], split(keyVaultId, '/')[4])
 }
 
-module diskEncryptionSet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module diskEncryptionSet_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -23,7 +23,7 @@ This module deploys an Azure virtual desktop workspace.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `appGroupResourceIds` | array | Resource IDs fo the existing Application groups this workspace will group together. |
+| `appGroupResourceIds` | array | Resource IDs for the existing Application groups this workspace will group together. |
 | `name` | string | The name of the workspace to be attach to new Application Group. |
 
 **Optional parameters**
@@ -38,7 +38,7 @@ This module deploys an Azure virtual desktop workspace.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `workspaceDescription` | string | `''` |  | The description of the Workspace to be created. |
@@ -170,6 +170,9 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-avdws-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "location": {
             "value": "westeurope"
         },
@@ -211,7 +214,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -225,6 +227,7 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     name: '<<namePrefix>>-az-avdws-x-001'
+    lock: 'CanNotDelete'
     location: 'westeurope'
     appGroupResourceIds: [
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.DesktopVirtualization/applicationgroups/adp-<<namePrefix>>-az-avdag-x-001'
@@ -245,6 +248,7 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.storage.storageaccounts.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.Storage/storageAccounts/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
@@ -49,6 +49,7 @@ stages:
             - path: $(modulePath)/.parameters/nfs.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
             - path: $(modulePath)/.parameters/v1.parameters.json
+            - path: $(modulePath)/.parameters/encr.parameters.json
 
   - stage: Publishing
     displayName: Publishing

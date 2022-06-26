@@ -32,7 +32,7 @@ This template deploys a virtual WAN.
 | `disableVpnEncryption` | bool | `False` |  | VPN encryption to be disabled or not. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `type` | string | `'Standard'` | `[Standard, Basic]` | The type of the Virtual WAN. |
@@ -165,7 +165,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -180,6 +179,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-vw-min-001'
   }
+}
 ```
 
 </details>
@@ -198,6 +198,9 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-vw-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "type": {
             "value": "Basic"
@@ -223,7 +226,6 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -237,6 +239,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualWans'
   params: {
     name: '<<namePrefix>>-az-vw-x-001'
+    lock: 'CanNotDelete'
     type: 'Basic'
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
@@ -250,6 +253,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

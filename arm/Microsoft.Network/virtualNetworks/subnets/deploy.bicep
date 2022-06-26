@@ -97,7 +97,7 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
   }
 }
 
-module subnet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module subnet_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, subnet.id)}-Subnet-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

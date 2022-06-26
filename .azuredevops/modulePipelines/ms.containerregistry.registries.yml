@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.containerregistry.registries.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.ContainerRegistry/registries/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
@@ -46,6 +46,7 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/encr.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
