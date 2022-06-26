@@ -186,7 +186,6 @@ This module can be deployed at the management group, subscription or resource gr
         }
     }
 }
-
 ```
 
 </details>
@@ -236,7 +235,6 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -286,7 +284,6 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -341,7 +338,6 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -389,7 +385,6 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -440,7 +435,6 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>

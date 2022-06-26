@@ -215,7 +215,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>

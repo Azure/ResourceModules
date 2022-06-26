@@ -193,7 +193,6 @@ This module can be deployed both at subscription or resource group level:
         }
     }
 }
-
 ```
 
 </details>
@@ -268,7 +267,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -337,7 +335,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -417,7 +414,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -484,7 +480,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>
@@ -560,7 +555,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>

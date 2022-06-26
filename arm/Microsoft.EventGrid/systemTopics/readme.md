@@ -291,7 +291,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -364,7 +363,6 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

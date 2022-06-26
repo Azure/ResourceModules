@@ -381,7 +381,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -426,7 +425,6 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         }
     }
 }
-
 ```
 
 </details>
@@ -653,7 +651,6 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         }
     }
 }
-
 ```
 
 </details>

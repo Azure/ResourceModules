@@ -445,7 +445,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -500,7 +499,6 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -594,7 +592,6 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -686,7 +683,6 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

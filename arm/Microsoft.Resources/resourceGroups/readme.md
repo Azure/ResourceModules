@@ -183,7 +183,6 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
         }
     }
 }
-
 ```
 
 </details>
