@@ -20,7 +20,7 @@ This module deploys an Azure Automation Account Module.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Automation Account module. |
-| `uri` | string | Module package uri, e.g. https://www.powershellgallery.com/api/v2/package. |
+| `uri` | string | Module package URI, e.g. https://www.powershellgallery.com/api/v2/package. |
 
 **Conditional parameters**
 | Parameter Name | Type | Description |

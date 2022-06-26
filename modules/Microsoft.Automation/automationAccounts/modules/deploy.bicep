@@ -4,7 +4,7 @@ param name string
 @description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string
 
-@description('Required. Module package uri, e.g. https://www.powershellgallery.com/api/v2/package.')
+@description('Required. Module package URI, e.g. https://www.powershellgallery.com/api/v2/package.')
 param uri string
 
 @description('Optional. Module version or specify latest to get the latest version.')
