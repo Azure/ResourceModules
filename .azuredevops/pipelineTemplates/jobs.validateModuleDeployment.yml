@@ -24,7 +24,7 @@
 ##   |=================================================================================================================================================================================================================================|
 ##   | Parameter                       | Default Value                        | Description                                                                                               | Example                                    |
 ##   |---------------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------|--------------------------------------------|
-##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                             | 'demo-internal'                            |
+##   | serviceConnectionValidation     | '$(serviceConnectionValidation)'     | The service connection that connects to Azure                                                             | 'demo-internal'                            |
 ##   | removeDeployment                | '$(removeDeployment)'                | Set to [true] to flag resource for removal. If not provided, defaults to false.                           | 'true'                                     |
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'Custom Deployment Pool'                   |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                              |
@@ -34,7 +34,7 @@
 ##   | deploymentBlocks                |                                      | The parameter file(s) to deploy with. Must be provided                                                    | path: 'C:/parameters.json'                 |
 ##   | location                        | '$(location)'                        | The location to deploy with                                                                               | 'EastUs2'                                  |
 ##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments                      | 'validation-rg'                            |
-##   | subscriptionId                  | '$(AZURE_SUBSCRIPTION_ID)'           | The id of the subscription to deploy into when using a Management group service connection                | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'     |
+##   | subscriptionId                  | '$(ARM_VALIDATION_SUBSCRIPTION_ID)'  | The id of the subscription to deploy into when using a Management group service connection                | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'     |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to deploy into. Required only for Management-Group-Level deployments       | '6ycc9620-cb01-454f-9ebc-fc6b1df48d64'     |
 ##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                                |
 ##   | modulesRepository               | '$(modulesRepository)'               | The respository with the modules.                                                                         | 'Components'                               |
@@ -46,7 +46,7 @@
 
 parameters:
   # Pipeline-related parameters
-  serviceConnection: '$(serviceConnection)'
+  serviceConnectionValidation: '$(serviceConnectionValidation)'
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
@@ -58,7 +58,7 @@ parameters:
   deploymentBlocks: ''
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
-  subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+  subscriptionId: '$(ARM_VALIDATION_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   parametersRepository: '$(Build.Repository.Name)'
   modulesRepository: '$(modulesRepository)'
@@ -153,9 +153,9 @@ jobs:
           # [Agent] Replace tokens
           #-----------------------
           - task: AzurePowerShell@5
-            displayName: 'Replace Tokens [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
+            displayName: 'Replace Tokens [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnectionValidation }}]'
             inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
+              azureSubscription: ${{ parameters.serviceConnectionValidation }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
               preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
               ScriptType: InlineScript
@@ -207,9 +207,9 @@ jobs:
           # [Validation] task(s)
           #---------------------
           - task: AzurePowerShell@5
-            displayName: 'Validate [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
+            displayName: 'Validate [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnectionValidation }}]'
             inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
+              azureSubscription: ${{ parameters.serviceConnectionValidation }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
               preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
               ScriptType: InlineScript
@@ -258,10 +258,10 @@ jobs:
           # [Deployment] task(s)
           #---------------------
           - task: AzurePowerShell@5
-            displayName: 'Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
+            displayName: 'Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnectionValidation }}]'
             name: 'DeployModule'
             inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
+              azureSubscription: ${{ parameters.serviceConnectionValidation }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
               preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
               pwsh: true
@@ -332,10 +332,10 @@ jobs:
           # [Removal] task(s)
           #------------------
           - task: AzurePowerShell@5
-            displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
+            displayName: 'Remove deployed resources via [${{ parameters.serviceConnectionValidation }}]'
             condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
             inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
+              azureSubscription: ${{ parameters.serviceConnectionValidation }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
               preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
               ScriptType: InlineScript

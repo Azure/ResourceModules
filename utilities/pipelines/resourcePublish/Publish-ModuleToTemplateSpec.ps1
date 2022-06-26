@@ -48,7 +48,10 @@ function Publish-ModuleToTemplateSpec {
         [string] $TemplateSpecsRgLocation,
 
         [Parameter(Mandatory)]
-        [string] $TemplateSpecsDescription
+        [string] $TemplateSpecsDescription,
+
+        [Parameter(Mandatory = $false)]
+        [string] $subscriptionId
     )
 
     begin {
@@ -66,6 +69,14 @@ function Publish-ModuleToTemplateSpec {
             if ($PSCmdlet.ShouldProcess("Resource group [$TemplateSpecsRgName] to location [$TemplateSpecsRgLocation]", 'Deploy')) {
                 New-AzResourceGroup -Name $TemplateSpecsRgName -Location $TemplateSpecsRgLocation
             }
+        }
+
+        #############################
+        ##      set AzContext      ##
+        #############################
+        if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+            Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+            $null = Set-AzContext -Subscription $subscriptionId
         }
 
         ################################
