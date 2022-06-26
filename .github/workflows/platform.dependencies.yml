@@ -22,13 +22,19 @@ on:
   #     - '.github/workflows/platform.dependencies.yml'
   #     - 'utilities/pipelines/dependencies/**'
 
+permissions:
+  id-token: write # OIDC
+  contents: read # OIDC
+  checks: write # enricomi/publish-unit-test-result-action
+  pull-requests: write # enricomi/publish-unit-test-result-action
+
 env:
   location: 'WestEurope'
   defaultResourceGroupName: 'validation-rg'
   resourceGroupNameArtifacts: 'artifacts-rg'
   removeDeployment: 'false'
   dependencyPath: 'utilities/pipelines/dependencies'
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
@@ -44,6 +50,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['validation.parameters.json', 'locks.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -71,6 +78,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -101,6 +109,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -141,6 +150,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -169,6 +179,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -197,6 +208,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['mg.parameters.json', 'sub.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -225,6 +237,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -254,6 +267,7 @@ jobs:
       matrix:
         parameterFilePaths:
           ['appi.parameters.json', 'aut.parameters.json', 'sol.parameters.json', 'parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -283,6 +297,7 @@ jobs:
       matrix:
         parameterFilePaths:
           ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -307,6 +322,7 @@ jobs:
       namespace: 'Microsoft.Storage\storageAccounts'
     needs:
       - job_deploy_sa
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -330,7 +346,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
 
       - name: Run PowerShell
@@ -391,6 +409,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -424,6 +443,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -466,6 +486,7 @@ jobs:
     needs:
       - job_deploy_imgt
       - job_deploy_sa
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -490,7 +511,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
 
       - name: 'Trigger building new image'
@@ -588,6 +611,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -616,6 +640,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -644,6 +669,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -673,6 +699,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['sqlMi.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -710,6 +737,7 @@ jobs:
             'aadds.parameters.json',
             'parameters.json',
           ]
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -741,6 +769,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['sqlmi.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -778,8 +807,9 @@ jobs:
             'lb.parameters.json',
             'lb.min.parameters.json',
             'fw.parameters.json',
-            'fw.additional.parameters.json'
+            'fw.additional.parameters.json',
           ]
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -810,6 +840,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -840,6 +871,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -870,6 +902,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -901,6 +934,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -934,6 +968,7 @@ jobs:
       matrix:
         parameterFilePaths:
           ['parameters.json', 'pe.parameters.json', 'nopr.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -960,6 +995,7 @@ jobs:
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_kv
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -983,7 +1019,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
 
       - name: 'Set key vault secrets keys and certificates'
@@ -1114,6 +1152,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['sqlmi.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1140,6 +1179,7 @@ jobs:
       - job_deploy_sqlmi_kv
     env:
       namespace: 'Microsoft.KeyVault\vaults'
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1163,7 +1203,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
 
       - name: 'Set sqlmi key vault secrets and keys'
@@ -1236,6 +1278,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1264,6 +1307,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1308,6 +1352,7 @@ jobs:
             '13.bastion.parameters.json',
             'parameters.json'
           ]
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1338,6 +1383,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['6.sqlmi.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1366,6 +1412,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1396,6 +1443,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1424,6 +1472,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['internal.parameters.json']
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

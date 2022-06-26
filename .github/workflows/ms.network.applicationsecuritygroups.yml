@@ -25,11 +25,17 @@ on:
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
+permissions:
+  id-token: write # OIDC
+  contents: read # OIDC
+  checks: write # enricomi/publish-unit-test-result-action
+  pull-requests: write # enricomi/publish-unit-test-result-action
+
 env:
   variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.Network/applicationSecurityGroups'
   workflowPath: '.github/workflows/ms.network.applicationsecuritygroups.yml'
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
@@ -42,6 +48,7 @@ jobs:
   job_initialize_pipeline:
     runs-on: ubuntu-20.04
     name: 'Initialize pipeline'
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -67,6 +74,7 @@ jobs:
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Static validation'
+    environment: 'Engineering'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -83,6 +91,7 @@ jobs:
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment validation'
+    environment: 'Engineering'
     needs:
       - job_initialize_pipeline
       - job_module_pester_validation
@@ -115,6 +124,7 @@ jobs:
   ##################
   job_publish_module:
     name: 'Publishing'
+    environment: 'Engineering'
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
