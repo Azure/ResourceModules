@@ -25,6 +25,10 @@ Example: 'artifacts-rg'
 Optional. The location of the resourceGroup the private bicep registry is deployed to. Required if the resource group is not yet existing.
 Example: 'West Europe'
 
+.PARAMETER SubscriptionId
+Optional. SubscriptionId to use for the bicep registry. If not specified, the default context/subscription is used.
+Example: 'a6d228a7-0321-4099-9ef5-b3bcf0605c89'
+
 .EXAMPLE
 Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
@@ -50,7 +54,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $BicepRegistryRgLocation,
 
         [Parameter(Mandatory = $false)]
-        [string] $subscriptionId
+        [string] $SubscriptionId
     )
 
     begin {
@@ -66,9 +70,9 @@ function Publish-ModuleToPrivateBicepRegistry {
         }
 
         # set AzContext
-        if (-not [String]::IsNullOrEmpty($subscriptionId)) {
-            Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
-            $null = Set-AzContext -Subscription $subscriptionId
+        if (-not [String]::IsNullOrEmpty($SubscriptionId)) {
+            Write-Verbose ('Setting context to subscription [{0}]' -f $SubscriptionId)
+            $null = Set-AzContext -Subscription $SubscriptionId
         }
 
         # Resource Group

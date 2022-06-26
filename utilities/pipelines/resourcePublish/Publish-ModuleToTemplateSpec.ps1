@@ -26,6 +26,10 @@ Example: 'West Europe'
 Mandatory. The description of the parent template spec.
 Example: 'iacs key vault'
 
+.PARAMETER SubscriptionId
+Optional. SubscriptionId to publish the template spec to. If not specified, the default context/subscription is used.
+Example: 'a6d228a7-0321-4099-9ef5-b3bcf0605c89'
+
 .EXAMPLE
 Publish-ModuleToTemplateSpec -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
 
@@ -51,7 +55,7 @@ function Publish-ModuleToTemplateSpec {
         [string] $TemplateSpecsDescription,
 
         [Parameter(Mandatory = $false)]
-        [string] $subscriptionId
+        [string] $SubscriptionId
     )
 
     begin {
@@ -74,9 +78,9 @@ function Publish-ModuleToTemplateSpec {
         #############################
         ##      set AzContext      ##
         #############################
-        if (-not [String]::IsNullOrEmpty($subscriptionId)) {
-            Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
-            $null = Set-AzContext -Subscription $subscriptionId
+        if (-not [String]::IsNullOrEmpty($SubscriptionId)) {
+            Write-Verbose ('Setting context to subscription [{0}]' -f $SubscriptionId)
+            $null = Set-AzContext -Subscription $SubscriptionId
         }
 
         ################################

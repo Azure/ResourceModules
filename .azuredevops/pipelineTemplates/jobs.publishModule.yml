@@ -245,7 +245,7 @@ jobs:
                 TemplateSpecsRgName      = '${{ parameters.templateSpecsRgName }}'
                 TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
                 TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
-                subscriptionId          = '${{ parameters.subscriptionId }}'
+                SubscriptionId           = '${{ parameters.subscriptionId }}'
                 ModuleVersion            = $ModuleToPublish.Version
               }
 
@@ -306,7 +306,7 @@ jobs:
                 BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
-                subscriptionId          = '${{ parameters.subscriptionId }}'
+                SubscriptionId          = '${{ parameters.subscriptionId }}'
                 ModuleVersion           = $ModuleToPublish.Version
               }
 
