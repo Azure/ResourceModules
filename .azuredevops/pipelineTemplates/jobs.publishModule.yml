@@ -23,7 +23,7 @@
 ##   |---------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|----------------------------------------|
 ##   | displayName                     | 'Publishing'                         | Name for the pipeline job                                                                               | 'Publish KeyVault'                     |
 ##   | serviceConnection               | '$(serviceConnectionPublish)'        | The service connection that connects to Azure                                                           | 'demo-internal'                        |
-##   | subscriptionId                  | '$(ARM_PUBLISH_SUBSCRIPTION_ID)'     | The id of the subscription to deploy into when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
+##   | subscriptionId                  | '$(ARM_PUBLISHING_SUBSCRIPTION_ID)'  | The id of the subscription to deploy into when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'Custom Deployment Pool'               |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                          |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                | 120                                    |
@@ -53,7 +53,7 @@ parameters:
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
   modulesRepository: '$(modulesRepository)'
-  subscriptionId: '$(ARM_PUBLISH_SUBSCRIPTION_ID)'
+  subscriptionId: '$(ARM_PUBLISHING_SUBSCRIPTION_ID)'
 
   # Logic-related parameters
   ## Module-related
