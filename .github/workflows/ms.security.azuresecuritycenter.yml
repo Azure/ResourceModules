@@ -35,10 +35,10 @@ env:
   variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.Security/azureSecurityCenter'
   workflowPath: '.github/workflows/ms.security.azuresecuritycenter.yml'
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+  AZURE_TENANT_ID: '${{ secrets.AZURE_TENANT_ID }}'
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
@@ -48,7 +48,7 @@ jobs:
   job_initialize_pipeline:
     runs-on: ubuntu-20.04
     name: 'Initialize pipeline'
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -74,7 +74,7 @@ jobs:
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Static validation'
-    environment: 'Engineering'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -91,7 +91,7 @@ jobs:
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment validation'
-    environment: 'Engineering'
+    environment: 'Validation'
     needs:
       - job_initialize_pipeline
       - job_module_pester_validation
@@ -115,7 +115,7 @@ jobs:
           parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
 
@@ -124,7 +124,7 @@ jobs:
   ##################
   job_publish_module:
     name: 'Publishing'
-    environment: 'Engineering'
+    environment: 'Publishing'
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:

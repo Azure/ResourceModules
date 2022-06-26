@@ -30,9 +30,9 @@
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                    |
 ##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                           |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                      | 'c:/KeyVault'                          |
-##   | location                        | '$(location)'                 | The location to validate with                                                                             | 'France Central'                       |
-##   | resourceGroupName               | '$(resourceGroupName)'        | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                        |
-##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
+##   | location                        | '$(location)'                        | The location to validate with                                                                             | 'France Central'                       |
+##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                        |
+##   | subscriptionId                  | '$(AZURE_SUBSCRIPTION_ID)'           | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to validate with. Required only for Management-Group-Level validations     | '477c9620-cb01-454f-9ebc-fc6b1df48c14' |
 ##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                            |
 ##   | modulesRepository               | '$(modulesRepository)'               | The respository with the modules.                                                                         | 'Components'                           |
@@ -54,7 +54,7 @@ parameters:
   parametersRepository: '$(Build.Repository.Name)'
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
-  subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
+  subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   modulesRepository: '$(modulesRepository)'
   # Azure PowerShell Version parameter
@@ -155,8 +155,8 @@ jobs:
             if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SP_ID)')) {
                 $enforcedTokenList['deploymentSpId'] = '$(DEPLOYMENT_SP_ID)'
             }
-            if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
-                $enforcedTokenList['tenantId'] =  '$(ARM_TENANT_ID)'
+            if (-not [String]::IsNullOrEmpty('$(AZURE_TENANT_ID)')) {
+                $enforcedTokenList['tenantId'] =  '$(AZURE_TENANT_ID)'
             }
 
             # --------------------- #
