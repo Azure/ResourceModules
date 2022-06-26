@@ -1,16 +1,16 @@
-name: '.Platform: Dependencies'
+name: ".Platform: Dependencies"
 
 on:
   workflow_dispatch:
     inputs:
       deploySqlMiDependencies:
         type: boolean
-        description: 'Enable SqlMi dependencies deployment'
+        description: "Enable SqlMi dependencies deployment"
         required: false
         default: false
       deployVhdDependencies:
         type: boolean
-        description: 'Enable deployment of a vhd stored in a blob container'
+        description: "Enable deployment of a vhd stored in a blob container"
         required: false
         default: false
 
@@ -43,7 +43,7 @@ env:
 jobs:
   job_deploy_rg:
     runs-on: ubuntu-20.04
-    name: 'Deploy resource group'
+    name: "Deploy resource group"
     env:
       namespace: 'Microsoft.Resources\resourceGroups'
     strategy:
@@ -53,11 +53,11 @@ jobs:
           ['validation.parameters.json', 'locks.parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Deploy module'
+      - name: "Deploy module"
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
@@ -70,7 +70,7 @@ jobs:
 
   job_deploy_ppg:
     runs-on: ubuntu-20.04
-    name: 'Deploy proximity placement group'
+    name: "Deploy proximity placement group"
     env:
       namespace: 'Microsoft.Compute\proximityPlacementGroups'
     needs:
@@ -81,7 +81,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -99,7 +99,7 @@ jobs:
 
   job_deploy_msi:
     runs-on: ubuntu-20.04
-    name: 'Deploy user assigned identity'
+    name: "Deploy user assigned identity"
     env:
       namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
     needs:
@@ -112,7 +112,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -138,13 +138,13 @@ jobs:
             $msiPrincipalId = (ConvertFrom-Json $deploymentOutput).principalId
             Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
             Write-Output ('::set-output name={0}::{1}' -f 'msiPrincipalId', $msiPrincipalId)
-          azPSVersion: 'latest'
+          azPSVersion: "latest"
 
   job_deploy_sf:
     runs-on: ubuntu-20.04
-    name: 'Deploy server farm'
+    name: "Deploy server farm"
     env:
-      namespace: 'Microsoft.Web/serverfarms'
+      namespace: "Microsoft.Web/serverfarms"
     needs:
       - job_deploy_rg
     strategy:
@@ -153,7 +153,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -171,9 +171,9 @@ jobs:
 
   job_deploy_app:
     runs-on: ubuntu-20.04
-    name: 'Deploy app'
+    name: "Deploy app"
     env:
-      namespace: 'Microsoft.Web/sites'
+      namespace: "Microsoft.Web/sites"
     needs:
       - job_deploy_sf
     strategy:
@@ -182,7 +182,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -200,7 +200,7 @@ jobs:
 
   job_deploy_pa:
     runs-on: ubuntu-20.04
-    name: 'Deploy policy assignment'
+    name: "Deploy policy assignment"
     env:
       namespace: 'Microsoft.Authorization\policyAssignments'
     needs:
@@ -211,7 +211,7 @@ jobs:
         parameterFilePaths: ['mg.parameters.json', 'sub.parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -229,7 +229,7 @@ jobs:
 
   job_deploy_evh:
     runs-on: ubuntu-20.04
-    name: 'Deploy eventhub'
+    name: "Deploy eventhub"
     env:
       namespace: 'Microsoft.EventHub\namespaces'
     needs:
@@ -240,7 +240,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -258,7 +258,7 @@ jobs:
 
   job_deploy_law:
     runs-on: ubuntu-20.04
-    name: 'Deploy log analytics workspace'
+    name: "Deploy log analytics workspace"
     env:
       namespace: 'Microsoft.OperationalInsights\workspaces'
     needs:
@@ -275,7 +275,7 @@ jobs:
           ]
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -293,7 +293,7 @@ jobs:
 
   job_deploy_sa:
     runs-on: ubuntu-20.04
-    name: 'Deploy storage account'
+    name: "Deploy storage account"
     env:
       namespace: 'Microsoft.Storage\storageAccounts'
     needs:
@@ -305,7 +305,7 @@ jobs:
           ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -323,14 +323,14 @@ jobs:
 
   job_sa_upload_storage_files:
     runs-on: ubuntu-20.04
-    name: 'Upload files to storage account'
+    name: "Upload files to storage account"
     env:
       namespace: 'Microsoft.Storage\storageAccounts'
     needs:
       - job_deploy_sa
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -402,11 +402,11 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             Export-ContentToBlob @functionInput -Verbose
-          azPSVersion: 'latest'
+          azPSVersion: "latest"
 
   job_deploy_sig:
     runs-on: ubuntu-20.04
-    name: 'Deploy shared image gallery and definition'
+    name: "Deploy shared image gallery and definition"
     env:
       namespace: 'Microsoft.Compute\galleries'
     needs:
@@ -417,7 +417,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -435,7 +435,7 @@ jobs:
 
   job_deploy_imgt:
     runs-on: ubuntu-20.04
-    name: 'Deploy image template'
+    name: "Deploy image template"
     if: github.event.inputs.deployVhdDependencies == 'true'
     env:
       namespace: 'Microsoft.VirtualMachineImages\imageTemplates'
@@ -451,7 +451,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -480,11 +480,11 @@ jobs:
             Write-Verbose "imageTemplateResourceGroup: $imageTemplateResourceGroup" -Verbose
             Write-Output ('::set-output name={0}::{1}' -f 'imageTemplateName', $imageTemplateName)
             Write-Output ('::set-output name={0}::{1}' -f 'imageTemplateResourceGroup', $imageTemplateResourceGroup)
-          azPSVersion: 'latest'
+          azPSVersion: "latest"
 
   job_deploy_vhd_to_sa:
     runs-on: ubuntu-20.04
-    name: 'Trigger vhd build and store it to a storage account blob container'
+    name: "Trigger vhd build and store it to a storage account blob container"
     if: github.event.inputs.deployVhdDependencies == 'true'
     env:
       imgtNamespace: 'Microsoft.VirtualMachineImages\imageTemplates'
@@ -494,7 +494,7 @@ jobs:
       - job_deploy_sa
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -604,11 +604,11 @@ jobs:
                 Force         = $true
             }
             Start-AzStorageBlobCopy @resourceActionInputObject
-          azPSVersion: 'latest'
+          azPSVersion: "latest"
 
   job_deploy_ag:
     runs-on: ubuntu-20.04
-    name: 'Deploy action groups'
+    name: "Deploy action groups"
     env:
       namespace: 'Microsoft.Insights\actionGroups'
     needs:
@@ -619,7 +619,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -637,7 +637,7 @@ jobs:
 
   job_deploy_asg:
     runs-on: ubuntu-20.04
-    name: 'Deploy application security groups'
+    name: "Deploy application security groups"
     env:
       namespace: 'Microsoft.Network\applicationSecurityGroups'
     needs:
@@ -648,7 +648,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -666,7 +666,7 @@ jobs:
 
   job_deploy_udr:
     runs-on: ubuntu-20.04
-    name: 'Deploy route tables'
+    name: "Deploy route tables"
     env:
       namespace: 'Microsoft.Network\routeTables'
     needs:
@@ -677,7 +677,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -695,7 +695,7 @@ jobs:
 
   job_deploy_sqlmi_udr:
     runs-on: ubuntu-20.04
-    name: 'Deploy sqlmi route tables'
+    name: "Deploy sqlmi route tables"
     if: github.event.inputs.deploySqlMiDependencies == 'true'
     env:
       namespace: 'Microsoft.Network\routeTables'
@@ -707,7 +707,7 @@ jobs:
         parameterFilePaths: ['sqlMi.parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -725,7 +725,7 @@ jobs:
 
   job_deploy_nsg:
     runs-on: ubuntu-20.04
-    name: 'Deploy network security groups'
+    name: "Deploy network security groups"
     env:
       namespace: 'Microsoft.Network\networkSecurityGroups'
     needs:
@@ -737,15 +737,15 @@ jobs:
       matrix:
         parameterFilePaths:
           [
-            'apgw.parameters.json',
-            'ase.parameters.json',
-            'bastion.parameters.json',
-            'aadds.parameters.json',
-            'parameters.json',
+            "apgw.parameters.json",
+            "ase.parameters.json",
+            "bastion.parameters.json",
+            "aadds.parameters.json",
+            "parameters.json",
           ]
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -763,7 +763,7 @@ jobs:
 
   job_deploy_sqlmi_nsg:
     runs-on: ubuntu-20.04
-    name: 'Deploy sqlmi network security group'
+    name: "Deploy sqlmi network security group"
     if: github.event.inputs.deploySqlMiDependencies == 'true'
     env:
       namespace: 'Microsoft.Network\networkSecurityGroups'
@@ -777,7 +777,7 @@ jobs:
         parameterFilePaths: ['sqlmi.parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -795,7 +795,7 @@ jobs:
 
   job_deploy_pip:
     runs-on: ubuntu-20.04
-    name: 'Deploy public IP addresses'
+    name: "Deploy public IP addresses"
     env:
       namespace: 'Microsoft.Network\publicIPAddresses'
     needs:
@@ -817,7 +817,7 @@ jobs:
           ]
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -835,7 +835,7 @@ jobs:
 
   job_deploy_appi:
     runs-on: ubuntu-20.04
-    name: 'Deploy application insight'
+    name: "Deploy application insight"
     env:
       namespace: 'Microsoft.Insights\components'
     needs:
@@ -848,7 +848,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -866,7 +866,7 @@ jobs:
 
   job_deploy_aut:
     runs-on: ubuntu-20.04
-    name: 'Deploy automation account'
+    name: "Deploy automation account"
     env:
       namespace: 'Microsoft.Automation\automationAccounts'
     needs:
@@ -879,7 +879,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -897,7 +897,7 @@ jobs:
 
   job_deploy_avdhp:
     runs-on: ubuntu-20.04
-    name: 'Deploy AVD host pool'
+    name: "Deploy AVD host pool"
     env:
       namespace: 'Microsoft.DesktopVirtualization\hostpools'
     needs:
@@ -910,7 +910,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -928,7 +928,7 @@ jobs:
 
   job_deploy_rsv:
     runs-on: ubuntu-20.04
-    name: 'Deploy recovery services vault'
+    name: "Deploy recovery services vault"
     env:
       namespace: 'Microsoft.RecoveryServices\vaults'
     needs:
@@ -942,7 +942,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -961,7 +961,7 @@ jobs:
 
   job_deploy_kv:
     runs-on: ubuntu-20.04
-    name: 'Deploy key vaults'
+    name: "Deploy key vaults"
     env:
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
@@ -976,7 +976,7 @@ jobs:
           ['parameters.json', 'pe.parameters.json', 'nopr.parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -996,14 +996,14 @@ jobs:
   job_deploy_kv_secrets:
     # Must run on windows as the used `New-SelfSignedCertificate` function is not available on linux
     runs-on: windows-2022
-    name: 'Set key vault secrets keys and certificates'
+    name: "Set key vault secrets keys and certificates"
     env:
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_kv
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -1141,11 +1141,11 @@ jobs:
                 Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $noprKeyVaultName) -Verbose
 
             }
-          azPSVersion: 'latest'
+          azPSVersion: "latest"
 
   job_deploy_sqlmi_kv:
     runs-on: ubuntu-20.04
-    name: 'Deploy sqlmi key vault'
+    name: "Deploy sqlmi key vault"
     if: github.event.inputs.deploySqlMiDependencies == 'true'
     env:
       namespace: 'Microsoft.KeyVault\vaults'
@@ -1160,7 +1160,7 @@ jobs:
         parameterFilePaths: ['sqlmi.parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -1179,7 +1179,7 @@ jobs:
 
   job_deploy_sqlmi_kv_secrets:
     runs-on: ubuntu-20.04
-    name: 'Set sqlmi key vault secrets and keys'
+    name: "Set sqlmi key vault secrets and keys"
     if: github.event.inputs.deploySqlMiDependencies == 'true'
     needs:
       - job_deploy_sqlmi_kv
@@ -1187,7 +1187,7 @@ jobs:
       namespace: 'Microsoft.KeyVault\vaults'
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -1271,11 +1271,11 @@ jobs:
                 $null = Add-AzKeyVaultKey -VaultName $keyVaultName -Name $_.name -Destination $_.Destination
                 Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
             }
-          azPSVersion: 'latest'
+          azPSVersion: "latest"
 
   job_deploy_avdag:
     runs-on: ubuntu-20.04
-    name: 'Deploy AVD application group'
+    name: "Deploy AVD application group"
     env:
       namespace: 'Microsoft.DesktopVirtualization\applicationgroups'
     needs:
@@ -1286,7 +1286,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -1304,7 +1304,7 @@ jobs:
 
   job_deploy_rolea:
     runs-on: ubuntu-20.04
-    name: 'Deploy role assignments'
+    name: "Deploy role assignments"
     env:
       namespace: 'Microsoft.Authorization\roleAssignments'
     needs:
@@ -1315,7 +1315,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -1334,7 +1334,7 @@ jobs:
 
   job_deploy_vnet:
     runs-on: ubuntu-20.04
-    name: 'Deploy virtual networks'
+    name: "Deploy virtual networks"
     env:
       namespace: 'Microsoft.Network\virtualNetworks'
     needs:
@@ -1360,7 +1360,7 @@ jobs:
           ]
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -1378,7 +1378,7 @@ jobs:
 
   job_deploy_sqlmi_vnet:
     runs-on: ubuntu-20.04
-    name: 'Deploy sqlmi virtual network'
+    name: "Deploy sqlmi virtual network"
     if: github.event.inputs.deploySqlMiDependencies == 'true'
     env:
       namespace: 'Microsoft.Network\virtualNetworks'
@@ -1391,7 +1391,7 @@ jobs:
         parameterFilePaths: ['6.sqlmi.parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -1409,7 +1409,7 @@ jobs:
 
   job_deploy_dnszone:
     runs-on: ubuntu-20.04
-    name: 'Deploy private DNS zones'
+    name: "Deploy private DNS zones"
     env:
       namespace: 'Microsoft.Network\privateDnsZones'
     needs:
@@ -1420,7 +1420,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -1438,7 +1438,7 @@ jobs:
 
   job_deploy_vm:
     runs-on: ubuntu-20.04
-    name: 'Deploy virtual machines'
+    name: "Deploy virtual machines"
     env:
       namespace: 'Microsoft.Compute\virtualMachines'
     needs:
@@ -1451,7 +1451,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -1469,7 +1469,7 @@ jobs:
 
   job_deploy_lb:
     runs-on: ubuntu-20.04
-    name: 'Deploy load balancers'
+    name: "Deploy load balancers"
     env:
       namespace: 'Microsoft.Network\loadBalancers'
     needs:
@@ -1480,7 +1480,7 @@ jobs:
         parameterFilePaths: ['internal.parameters.json']
     environment: 'Validation'
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
