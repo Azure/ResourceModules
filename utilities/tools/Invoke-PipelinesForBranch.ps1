@@ -299,32 +299,27 @@ function Invoke-PipelinesForBranch {
 
         $modulePipelines = $detailedAzurePipelines | Where-Object { (Split-Path $_.process.yamlFileName -Leaf) -like $PipelineFilter } | Sort-Object -Property 'Name'
 
-        $azureDevOpsPipelineBadges = [System.Collections.ArrayList]@()
-
         Write-Verbose "Triggering Azure DevOps pipelines for branch [$TargetBranch]" -Verbose
-        foreach ($modulePipeline in $modulePipelines) {
-
-
-            if ($PSCmdlet.ShouldProcess(('GitHub workflow [{0}] for branch [{1}]' -f $modulePipeline.name, $TargetBranch), 'Invoke')) {
-                $null = az pipelines run --branch $TargetBranch --id $modulePipeline.id
+        $modulePipelines | ForEach-Object -ThrottleLimit 10 -Parallel {
+            if ($Using:WhatIfPreference) {
+                Write-Verbose ("Would performing the operation `"Invoke`" on target `"GitHub workflow [{0}] for branch [{1}]`"." -f $PSItem.Name, $USING:TargetBranch) -Verbose
+            } else {
+                $null = az pipelines run --branch $USING:TargetBranch --id $PSItem.id --organization $USING:azureDevOpsOrgUrl --project $USING:AzureDevOpsProjectName
             }
+        }
 
-            # Generate pipeline badges
-            if ($GeneratePipelineBadges) {
+        if ($GeneratePipelineBadges) {
+            foreach ($modulePipeline in $modulePipelines) {
+
+                # Generate pipeline badges
                 $pipelineDefinitionId = $modulePipeline.id
                 $encodedPipelineName = [uri]::EscapeDataString($modulePipeline.Name)
                 $encodedBranch = [uri]::EscapeDataString($TargetBranch)
                 $primaryUrl = 'https://dev.azure.com/{0}/{1}/_apis/build/status/{2}/{3}?branchName={4}' -f $AzureDevOpsOrganizationName, $AzureDevOpsProjectName, $AzureDevOpsPipelineFolderPath, $encodedPipelineName, $encodedBranch
                 $secondaryUrl = 'https://dev.azure.com/{0}/{1}/_build/latest?definitionId={2}&branchName={3}' -f $AzureDevOpsOrganizationName, $AzureDevOpsProjectName, $pipelineDefinitionId, $encodedBranch
 
-                $azureDevOpsPipelineBadges += "[![Build Status]($primaryUrl)]($secondaryUrl)"
+                Write-Verbose "[![Build Status]($primaryUrl)]($secondaryUrl)" -Verbose
             }
-        }
-
-        if ($azureDevOpsPipelineBadges.Count -gt 0) {
-            Write-Verbose 'Azure DevOps Pipeline Badges' -Verbose
-            Write-Verbose '============================' -Verbose
-            Write-Verbose ($azureDevOpsPipelineBadges | Sort-Object | Out-String) -Verbose
         }
     }
 }
