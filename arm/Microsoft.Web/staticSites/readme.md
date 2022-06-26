@@ -287,7 +287,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -365,7 +364,6 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

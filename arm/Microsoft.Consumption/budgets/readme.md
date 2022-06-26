@@ -78,7 +78,6 @@ This module deploys budgets for subscriptions.
         }
     }
 }
-
 ```
 
 </details>

@@ -293,7 +293,6 @@ userAssignedIdentities: {
     "contentVersion": "1.0.0.0",
     "parameters": {}
 }
-
 ```
 
 </details>
@@ -466,7 +465,6 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

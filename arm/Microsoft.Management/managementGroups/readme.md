@@ -145,7 +145,6 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
         }
     }
 }
-
 ```
 
 </details>

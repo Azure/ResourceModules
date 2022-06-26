@@ -275,7 +275,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -534,7 +533,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -759,7 +757,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

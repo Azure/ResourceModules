@@ -392,7 +392,6 @@ privateEndpoints:  [
     "contentVersion": "1.0.0.0",
     "parameters": {}
 }
-
 ```
 
 </details>
@@ -553,7 +552,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

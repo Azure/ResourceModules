@@ -189,7 +189,6 @@ roleAssignments: [
         }
     }
 }
-
 ```
 
 </details>
@@ -264,7 +263,6 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
