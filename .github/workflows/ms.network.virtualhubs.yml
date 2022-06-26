@@ -35,7 +35,7 @@ env:
   variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.Network/virtualHubs'
   workflowPath: '.github/workflows/ms.network.virtualhubs.yml'
-  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
   AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   AZURE_TENANT_ID: '${{ secrets.AZURE_TENANT_ID }}'
