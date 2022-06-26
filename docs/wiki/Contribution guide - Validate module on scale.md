@@ -18,7 +18,7 @@ You can find the script under [`/utilities/tools/Invoke-PipelinesForBranch.ps1`]
 The most important parameter is the 'Environment' you want to run the pipelines for, that is, either GitHub or Azure DevOps. Depending on your choice you'll have to provide a Personal Access Token that grants the permissions to read & trigger pipelines in the desired environment.
 
 Upon triggering, the utility will:
-1. Fetch all pipelines in the target environment & filter them down to, by default, module pipelines.
+1. Fetch all pipelines in the target environment and filter them down to module pipelines by default.
 1. Trigger these pipelines for the provided targeted branch (e.g. `main`)
 1. Return the formatted status badges for the pipelines that were triggered.
 
