@@ -289,7 +289,7 @@ function Invoke-PipelinesForBranch {
         az devops configure --defaults organization=$azureDevOpsOrgUrl project=$AzureDevOpsProjectName --use-git-aliases $true
 
         Write-Verbose "Get and list all [$AzureDevOpsOrganizationName/$AzureDevOpsProjectName] Azure DevOps pipelines in folder [$AzureDevOpsPipelineFolderPath]"
-        $azurePipelines = az pipelines list --organization $azureDevOpsOrgUrl --project $AzureDevOpsProjectName --folder-path $AzureDevOpsPipelineFolderPath | ConvertFrom-Json
+        $azurePipelines = az pipelines list --folder-path $AzureDevOpsPipelineFolderPath | ConvertFrom-Json
 
         Write-Verbose 'Fetching details' # Required as we need the original file path for filtering (which is only available when fetching the pipeline directly)
         $detailedAzurePipelines = $azurePipelines | ForEach-Object -ThrottleLimit 10 -Parallel {
@@ -305,7 +305,7 @@ function Invoke-PipelinesForBranch {
         foreach ($modulePipeline in $modulePipelines) {
 
 
-            if ($PSCmdlet.ShouldProcess("GitHub workflow [$WorkflowFileName] for branch [$TargetBranch]", 'Invoke')) {
+            if ($PSCmdlet.ShouldProcess(('GitHub workflow [{0}] for branch [{1}]' -f $modulePipeline.name, $TargetBranch), 'Invoke')) {
                 $null = az pipelines run --branch $TargetBranch --id $modulePipeline.id
             }
 
