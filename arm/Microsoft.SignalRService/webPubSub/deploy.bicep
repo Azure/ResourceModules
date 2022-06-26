@@ -40,10 +40,14 @@ param userAssignedIdentities object = {}
 @description('Optional. When set as true, connection with AuthType=aad won\'t work.')
 param disableAadAuth bool = false
 
-@description('Optional. Disables all authentication methods other than AAD authentication.')
-param disableLocalAuth bool = false
+@description('Optional. Disables all authentication methods other than AAD authentication. For security reasons, this value should be set to `true`.')
+param disableLocalAuth bool = true
 
-@description('Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled.')
+@description('Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled. For security reasons, this value should be set to `Disabled`'.)
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param publicNetworkAccess string = 'Enabled'
 
 @allowed([
