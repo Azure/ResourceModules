@@ -202,7 +202,7 @@ jobs:
       # [template-spec publish] task(s)
       #--------------------------------
       - task: AzurePowerShell@5
-        displayName: 'Publish module to template specs'
+        displayName: 'Publish module to template specs via connection [${{ parameters.serviceConnection }}]'
         condition: and(
           eq(variables['templateSpecsDoPublish'], true),
           succeeded()
@@ -259,7 +259,7 @@ jobs:
       # [private bicep registry publish] task(s)
       #-------------------------------------------
       - task: AzureCLI@2
-        displayName: 'Publish module to private bicep registry'
+        displayName: 'Publish module to private bicep registry via connection [${{ parameters.serviceConnection }}]'
         condition: and(
           eq(variables['bicepRegistryDoPublish'], true),
           succeeded()
