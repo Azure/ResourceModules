@@ -1,4 +1,4 @@
-@description('Optional. The location to deploy the Web PubSub service.')
+@description('Optional. The location for all Web PubSub resources.')
 param location string = resourceGroup().location
 
 @description('Required. The name of the Web PubSub resource.')
@@ -21,7 +21,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('The unit count of the resource. 1 by default.')
+@description('Optional. The unit count of the resource. 1 by default.')
 param capacity int = 1
 
 @allowed([
@@ -111,8 +111,7 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   properties: {
     disableAadAuth: disableAadAuth
     disableLocalAuth: disableLocalAuth
-    networkACLs: !empty(webPubSubNetworkAcls) ? {
-    } : null
+    networkACLs: !empty(webPubSubNetworkAcls) && sku != 'Free_F1' ? webPubSubNetworkAcls : null
     publicNetworkAccess: publicNetworkAccess
     resourceLogConfiguration: {
       categories: resourceLogConfiguration
@@ -159,3 +158,27 @@ module webPubSub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
     resourceId: webPubSub.id
   }
 }]
+
+@description('The Web PubSub name.')
+output name string = webPubSub.name
+
+@description('The Web PubSub resource group.')
+output resourceGroupName string = resourceGroup().name
+
+@description('The Web PubSub resource ID.')
+output resourceId string = webPubSub.id
+
+@description('The Web PubSub externalIP.')
+output externalIP string = webPubSub.properties.externalIP
+
+@description('The Web PubSub hostName.')
+output hostName string = webPubSub.properties.hostName
+
+@description('The Web PubSub publicPort.')
+output publicPort int = webPubSub.properties.publicPort
+
+@description('The Web PubSub serverPort.')
+output serverPort int = webPubSub.properties.serverPort
+
+@description('The location the resource was deployed into.')
+output location string = webPubSub.location
