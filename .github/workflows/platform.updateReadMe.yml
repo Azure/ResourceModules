@@ -10,8 +10,8 @@ on:
     branches:
       - main
     paths:
-      - 'arm/**/deploy.bicep'
-      - 'arm/**/deploy.json'
+      - 'modules/**/deploy.bicep'
+      - 'modules/**/deploy.json'
 
 env:
   pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
@@ -34,7 +34,7 @@ jobs:
           . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ReadMeModuleTable.ps1"
 
           $functionInput = @{
-            ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
+            ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
@@ -55,8 +55,8 @@ jobs:
           . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ReadMeModuleTable.ps1"
 
           $functionInput = @{
-            ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
-            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'arm/README.md'
+            ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
+            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'modules/README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')

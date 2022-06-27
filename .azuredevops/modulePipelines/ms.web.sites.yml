@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.web.sites.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Web/sites/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Web/sites/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Web/sites'
+    value: '/modules/Microsoft.Web/sites'
 
 stages:
   - stage: Validation

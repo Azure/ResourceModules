@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.privatelinkscopes.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Insights/privateLinkScopes/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Insights/privateLinkScopes/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Insights/privateLinkScopes'
+    value: '/modules/Microsoft.Insights/privateLinkScopes'
 
 stages:
   - stage: Validation
