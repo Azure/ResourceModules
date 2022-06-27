@@ -153,11 +153,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-04-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-03-01' = {
   name: name
   location: location
   tags: tags
-  identity: identity
+  identity: any(identity)
   sku: {
     name: 'RS0'
     tier: 'Standard'
