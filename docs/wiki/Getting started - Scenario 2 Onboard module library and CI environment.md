@@ -222,7 +222,7 @@ To do so, perform the following steps:
 
 ### 3.2.4 Set R/W Workflow permissions
 
-To let the worflow engine publish their results into your repository, you have to enable the read / write access for the github actions.
+To let the workflow engine publish their results into your repository, you have to enable the read / write access for the github actions.
 
 1. Navigate to the `Settings` tab on the top of your repository page.
 
