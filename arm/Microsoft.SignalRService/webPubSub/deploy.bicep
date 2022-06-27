@@ -29,7 +29,7 @@ param capacity int = 1
   'Standard_S1'
 ])
 @description('Optional. Pricing tier of App Configuration.')
-param sku string = 'Free_F1'
+param sku string = 'Standard_S1'
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
