@@ -42,7 +42,16 @@
                             "paths": [
                                 "/myPartitionKey"
                             ],
-                            "kind": "Hash"
+                            "kind": "Hash",
+                            "indexingPolicy": {
+                                "indexingMode": "consistent",
+                                "includedPaths": [
+                                    {
+                                        "path": "/*"
+                                    }
+                                ],
+                                "excludedPaths": []
+                            }
                         }
                     ]
                 },
