@@ -20,15 +20,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.automation.automationaccounts.yml'
-      - 'arm/Microsoft.Automation/automationAccounts/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Automation/automationAccounts/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Automation/automationAccounts'
+  modulePath: 'modules/Microsoft.Automation/automationAccounts'
   workflowPath: '.github/workflows/ms.automation.automationaccounts.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}

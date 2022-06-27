@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.web.staticsites.yml'
-      - 'arm/Microsoft.Web/staticSites/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Web/staticSites/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Web/staticSites'
+  modulePath: 'modules/Microsoft.Web/staticSites'
   workflowPath: '.github/workflows/ms.web.staticsites.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

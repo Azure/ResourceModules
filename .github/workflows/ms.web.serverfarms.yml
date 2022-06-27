@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.web.serverfarms.yml'
-      - 'arm/Microsoft.Web/serverfarms/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Web/serverfarms/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Web/serverfarms'
+  modulePath: 'modules/Microsoft.Web/serverfarms'
   workflowPath: '.github/workflows/ms.web.serverfarms.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
