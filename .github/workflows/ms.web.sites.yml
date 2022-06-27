@@ -19,8 +19,8 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.web.sites.yml'
-      - 'arm/Microsoft.Web/sites/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Web/sites/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
@@ -33,7 +33,7 @@ permissions:
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Web/sites'
+  modulePath: 'modules/Microsoft.Web/sites'
   workflowPath: '.github/workflows/ms.web.sites.yml'
   AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
   AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'

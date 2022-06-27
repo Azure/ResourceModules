@@ -19,8 +19,8 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.authorization.locks.yml'
-      - 'arm/Microsoft.Authorization/locks/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Authorization/locks/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
@@ -33,7 +33,7 @@ permissions:
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Authorization/locks'
+  modulePath: 'modules/Microsoft.Authorization/locks'
   workflowPath: '.github/workflows/ms.authorization.locks.yml'
   AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
   AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'

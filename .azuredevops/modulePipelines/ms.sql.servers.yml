@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.sql.servers.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Sql/servers/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Sql/servers/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Sql/servers'
+    value: '/modules/Microsoft.Sql/servers'
 
 stages:
   - stage: Validation

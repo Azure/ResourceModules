@@ -19,8 +19,8 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.ipgroups.yml'
-      - 'arm/Microsoft.Network/ipGroups/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Network/ipGroups/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
@@ -33,7 +33,7 @@ permissions:
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Network/ipGroups'
+  modulePath: 'modules/Microsoft.Network/ipGroups'
   workflowPath: '.github/workflows/ms.network.ipgroups.yml'
   AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
   AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'

@@ -19,8 +19,8 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.appconfiguration.configurationstores.yml'
-      - 'arm/Microsoft.AppConfiguration/configurationStores/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.AppConfiguration/configurationStores/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
@@ -33,7 +33,7 @@ permissions:
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.AppConfiguration/configurationStores'
+  modulePath: 'modules/Microsoft.AppConfiguration/configurationStores'
   workflowPath: '.github/workflows/ms.appconfiguration.configurationstores.yml'
   AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
   AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'

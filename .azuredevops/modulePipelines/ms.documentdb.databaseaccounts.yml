@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.documentdb.databaseaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.DocumentDB/databaseAccounts/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.DocumentDB/databaseAccounts/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.DocumentDB/databaseAccounts'
+    value: '/modules/Microsoft.DocumentDB/databaseAccounts'
 
 stages:
   - stage: Validation

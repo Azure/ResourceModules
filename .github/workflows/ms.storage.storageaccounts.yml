@@ -19,8 +19,8 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.storage.storageaccounts.yml'
-      - 'arm/Microsoft.Storage/storageAccounts/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Storage/storageAccounts/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
@@ -33,7 +33,7 @@ permissions:
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Storage/storageAccounts'
+  modulePath: 'modules/Microsoft.Storage/storageAccounts'
   workflowPath: '.github/workflows/ms.storage.storageaccounts.yml'
   AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
   AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'

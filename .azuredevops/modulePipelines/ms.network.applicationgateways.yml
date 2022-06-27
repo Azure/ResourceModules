@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.applicationgateways.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Network/applicationGateways/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Network/applicationGateways/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/applicationGateways'
+    value: '/modules/Microsoft.Network/applicationGateways'
 
 stages:
   - stage: Validation

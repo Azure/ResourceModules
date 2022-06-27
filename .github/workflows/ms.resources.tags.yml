@@ -19,8 +19,8 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.resources.tags.yml'
-      - 'arm/Microsoft.Resources/tags/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Resources/tags/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
@@ -33,7 +33,7 @@ permissions:
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Resources/tags'
+  modulePath: 'modules/Microsoft.Resources/tags'
   workflowPath: '.github/workflows/ms.resources.tags.yml'
   AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
   AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'

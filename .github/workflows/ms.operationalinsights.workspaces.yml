@@ -19,8 +19,8 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.operationalinsights.workspaces.yml'
-      - 'arm/Microsoft.OperationalInsights/workspaces/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.OperationalInsights/workspaces/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
@@ -33,7 +33,7 @@ permissions:
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.OperationalInsights/workspaces'
+  modulePath: 'modules/Microsoft.OperationalInsights/workspaces'
   workflowPath: '.github/workflows/ms.operationalinsights.workspaces.yml'
   AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
   AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'

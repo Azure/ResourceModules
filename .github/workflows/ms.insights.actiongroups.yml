@@ -19,8 +19,8 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.actiongroups.yml'
-      - 'arm/Microsoft.Insights/actionGroups/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Insights/actionGroups/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
@@ -33,7 +33,7 @@ permissions:
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Insights/actionGroups'
+  modulePath: 'modules/Microsoft.Insights/actionGroups'
   workflowPath: '.github/workflows/ms.insights.actiongroups.yml'
   AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
   AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'

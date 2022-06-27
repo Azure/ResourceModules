@@ -19,8 +19,8 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.virtualnetworkgateways.yml'
-      - 'arm/Microsoft.Network/virtualNetworkGateways/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Network/virtualNetworkGateways/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
@@ -33,7 +33,7 @@ permissions:
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Network/virtualNetworkGateways'
+  modulePath: 'modules/Microsoft.Network/virtualNetworkGateways'
   workflowPath: '.github/workflows/ms.network.virtualnetworkgateways.yml'
   AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
   AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'

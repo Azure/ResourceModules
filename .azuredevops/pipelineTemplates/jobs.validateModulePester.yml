@@ -2,7 +2,7 @@
 ## VALIDATION PIPELINE                                 ##
 #########################################################
 ##
-## This pipeline template contains the logic to validate a given module's ARM template using the provided parameter file(s)
+## This pipeline template contains the logic to validate a given module using the provided parameter file(s)
 ##
 ## Enabled levels of validation
 ## - Resource-Group-Level
@@ -156,7 +156,7 @@ jobs:
                 $enforcedTokenList['deploymentSpId'] = '$(DEPLOYMENT_SP_ID)'
             }
             if (-not [String]::IsNullOrEmpty('$(AZURE_TENANT_ID)')) {
-                $enforcedTokenList['tenantId'] =  '$(AZURE_TENANT_ID)'
+                $enforcedTokenList['tenantId'] = '$(AZURE_TENANT_ID)'
             }
 
             # --------------------- #
@@ -164,14 +164,14 @@ jobs:
             # --------------------- #
             Invoke-Pester -Configuration @{
               Run        = @{
-                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
+                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'modules' '.global' 'global.module.tests.ps1') -Data @{
                   moduleFolderPaths = $moduleFolderPaths
                   enforcedTokenList = $enforcedTokenList
                 }
               }
               TestResult = @{
                 TestSuiteName = 'Global Module Tests'
-                OutputPath    = 'arm/.global/global-testResults.xml'
+                OutputPath    = 'modules/.global/global-testResults.xml'
                 OutputFormat  = 'NUnitXml'
                 Enabled       = $true
               }
@@ -188,6 +188,6 @@ jobs:
           testResultsFormat: NUnit
           testResultsFiles: global-testResults.xml
           failTaskOnFailedTests: true
-          searchFolder: 'arm/.global'
+          searchFolder: 'modules/.global'
         continueOnError: false
         condition: succeededOrFailed()
