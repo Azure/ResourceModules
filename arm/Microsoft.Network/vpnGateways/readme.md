@@ -189,7 +189,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -286,7 +285,6 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

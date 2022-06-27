@@ -158,7 +158,7 @@ resource appServicePlan_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!e
   scope: appServicePlan
 }
 
-module appServicePlan_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module appServicePlan_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppServicePlan-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

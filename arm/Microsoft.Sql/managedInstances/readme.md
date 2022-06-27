@@ -431,7 +431,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>

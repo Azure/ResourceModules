@@ -196,7 +196,7 @@ resource expressRouteCircuits_diagnosticSettings 'Microsoft.Insights/diagnosticS
   scope: expressRouteCircuits
 }
 
-module expressRouteCircuits_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module expressRouteCircuits_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ExpRouteCircuits-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

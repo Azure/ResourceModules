@@ -647,7 +647,7 @@ resource vm_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) 
   scope: vm
 }
 
-module vm_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module vm_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VM-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -392,7 +392,6 @@ privateEndpoints:  [
     "contentVersion": "1.0.0.0",
     "parameters": {}
 }
-
 ```
 
 </details>
@@ -405,7 +404,7 @@ privateEndpoints:  [
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
-  
+
   }
 }
 ```
@@ -553,7 +552,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

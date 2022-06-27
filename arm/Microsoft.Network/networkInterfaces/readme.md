@@ -203,7 +203,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -292,7 +291,6 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
         }
     }
 }
-
 ```
 
 </details>

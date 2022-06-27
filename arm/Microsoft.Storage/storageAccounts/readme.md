@@ -409,7 +409,6 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
         }
     }
 }
-
 ```
 
 </details>
@@ -457,7 +456,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -549,7 +547,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -798,7 +795,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -983,7 +979,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

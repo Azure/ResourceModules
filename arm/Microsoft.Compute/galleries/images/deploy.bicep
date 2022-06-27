@@ -150,7 +150,7 @@ resource image 'Microsoft.Compute/galleries/images@2021-10-01' = {
   }
 }
 
-module galleryImage_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module galleryImage_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

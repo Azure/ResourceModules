@@ -93,7 +93,6 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
         }
     }
 }
-
 ```
 
 </details>
@@ -159,7 +158,6 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
         }
     }
 }
-
 ```
 
 </details>

@@ -91,7 +91,7 @@ module capacityPool_volumes 'volumes/deploy.bicep' = [for (volume, index) in vol
   }
 }]
 
-module capacityPool_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module capacityPool_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

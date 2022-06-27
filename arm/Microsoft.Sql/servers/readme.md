@@ -343,7 +343,6 @@ privateEndpoints:  [
         }
     }
 }
-
 ```
 
 </details>
@@ -487,7 +486,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
