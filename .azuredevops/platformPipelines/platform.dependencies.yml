@@ -43,7 +43,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
               templateFilePath: $(templateFilePath)
@@ -62,7 +61,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -78,7 +76,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -117,7 +114,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -133,7 +129,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -149,7 +144,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/mg.parameters.json
               templateFilePath: $(templateFilePath)
@@ -168,7 +162,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -184,7 +177,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -206,7 +198,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -303,7 +294,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -323,7 +313,6 @@ stages:
         jobs:
           - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
             parameters:
-              serviceConnection: $(serviceConnectionValidation)
               deploymentBlocks:
                 - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
                   templateFilePath: $(templateFilePath)
@@ -458,7 +447,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -474,7 +462,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -490,7 +477,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -512,7 +498,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -546,7 +531,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
               templateFilePath: $(templateFilePath)
@@ -582,7 +566,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -600,7 +583,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -618,7 +600,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -638,7 +619,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -659,7 +639,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -850,7 +829,6 @@ stages:
                   azureSubscription: $(serviceConnectionValidation)
                   ScriptType: 'InlineScript'
                   Inline: |
-
                     $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
                     # Load used functions
                     . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
@@ -913,7 +891,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -930,7 +907,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -949,7 +925,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -1006,7 +981,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -1024,7 +998,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
@@ -1040,7 +1013,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          serviceConnection: $(serviceConnectionValidation)
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/internal.parameters.json
               templateFilePath: $(templateFilePath)
