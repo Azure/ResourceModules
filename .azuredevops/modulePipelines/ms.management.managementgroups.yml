@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.management.managementgroups.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Management/managementGroups/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Management/managementGroups/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Management/managementGroups'
+    value: '/modules/Microsoft.Management/managementGroups'
 
 stages:
   - stage: Validation

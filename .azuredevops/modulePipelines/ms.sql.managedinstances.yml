@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.sql.managedinstances.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Sql/managedInstances/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Sql/managedInstances/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Sql/managedInstances'
+    value: '/modules/Microsoft.Sql/managedInstances'
 
 stages:
   - stage: Validation

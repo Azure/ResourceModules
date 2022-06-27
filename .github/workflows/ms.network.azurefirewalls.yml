@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.azurefirewalls.yml'
-      - 'arm/Microsoft.Network/azureFirewalls/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Network/azureFirewalls/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Network/azureFirewalls'
+  modulePath: 'modules/Microsoft.Network/azureFirewalls'
   workflowPath: '.github/workflows/ms.network.azurefirewalls.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
