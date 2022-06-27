@@ -21,7 +21,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.firewallpolicies.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Network/firewallpolicies/*'
+      - '/modules/Microsoft.Network/firewallPolicies/*'
       - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Network/firewallpolicies'
+    value: '/modules/Microsoft.Network/firewallPolicies'
 
 stages:
   - stage: Validation
