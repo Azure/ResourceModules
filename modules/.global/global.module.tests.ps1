@@ -102,7 +102,7 @@ Describe 'File/folder tests' -Tag Modules {
         }
     }
 
-    Context '.parameters folder' {
+    Context '.deploymentTests folder' {
 
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
