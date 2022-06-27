@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.virtualmachineimages.imagetemplates.yml'
-      - 'modules/Microsoft.VirtualMachineImages/imageTemplates/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.VirtualMachineImages/imageTemplates/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.VirtualMachineImages/imageTemplates'
+  modulePath: 'arm/Microsoft.VirtualMachineImages/imageTemplates'
   workflowPath: '.github/workflows/ms.virtualmachineimages.imagetemplates.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

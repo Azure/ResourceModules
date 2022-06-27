@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.bastionhosts.yml'
-      - 'modules/Microsoft.Network/bastionHosts/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.Network/bastionHosts/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.Network/bastionHosts'
+  modulePath: 'arm/Microsoft.Network/bastionHosts'
   workflowPath: '.github/workflows/ms.network.bastionhosts.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

@@ -30,7 +30,7 @@ variables:
   - name: dependencyPath
     value: 'utilities/pipelines/dependencies'
   - name: modulesPath
-    value: 'modules'
+    value: 'arm'
   - name: defaultResourceGroupName
     value: 'validation-rg'
 

@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.servicefabric.clusters.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.ServiceFabric/clusters/*'
-      - '/modules/.global/global.module.tests.ps1'
+      - '/arm/Microsoft.ServiceFabric/clusters/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,24 +30,24 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.ServiceFabric/clusters'
+    value: '/arm/Microsoft.ServiceFabric/clusters'
 
 stages:
   - stage: Validation
     displayName: Static validation
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
 
   - stage: Deployment
     displayName: Deployment validation
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/min.parameters.json
-            - path: $(modulePath)/.deploymentTests/full.parameters.json
-            - path: $(modulePath)/.deploymentTests/cert.parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/full.parameters.json
+            - path: $(modulePath)/.parameters/cert.parameters.json
 
   - stage: Publishing
     displayName: Publishing

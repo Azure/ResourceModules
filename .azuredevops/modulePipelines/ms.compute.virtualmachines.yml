@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.virtualmachines.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Compute/virtualMachines/*'
-      - '/modules/.global/global.module.tests.ps1'
+      - '/arm/Microsoft.Compute/virtualMachines/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Compute/virtualMachines'
+    value: '/arm/Microsoft.Compute/virtualMachines'
 
 stages:
   - stage: Validation
@@ -45,12 +45,12 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/linux.min.parameters.json
-            - path: $(modulePath)/.deploymentTests/linux.parameters.json
-            - path: $(modulePath)/.deploymentTests/linux.autmg.parameters.json
-            - path: $(modulePath)/.deploymentTests/windows.min.parameters.json
-            - path: $(modulePath)/.deploymentTests/windows.parameters.json
-            - path: $(modulePath)/.deploymentTests/windows.autmg.parameters.json
+            - path: $(modulePath)/.parameters/linux.min.parameters.json
+            - path: $(modulePath)/.parameters/linux.parameters.json
+            - path: $(modulePath)/.parameters/linux.autmg.parameters.json
+            - path: $(modulePath)/.parameters/windows.min.parameters.json
+            - path: $(modulePath)/.parameters/windows.parameters.json
+            - path: $(modulePath)/.parameters/windows.autmg.parameters.json
 
   - stage: Publishing
     displayName: Publishing

@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.storage.storageaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Storage/storageAccounts/*'
-      - '/modules/.global/global.module.tests.ps1'
+      - '/arm/Microsoft.Storage/storageAccounts/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Storage/storageAccounts'
+    value: '/arm/Microsoft.Storage/storageAccounts'
 
 stages:
   - stage: Validation
@@ -45,11 +45,11 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/min.parameters.json
-            - path: $(modulePath)/.deploymentTests/nfs.parameters.json
-            - path: $(modulePath)/.deploymentTests/parameters.json
-            - path: $(modulePath)/.deploymentTests/v1.parameters.json
-            - path: $(modulePath)/.deploymentTests/encr.parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/nfs.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/v1.parameters.json
+            - path: $(modulePath)/.parameters/encr.parameters.json
 
   - stage: Publishing
     displayName: Publishing

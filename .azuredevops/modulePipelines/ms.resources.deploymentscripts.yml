@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.resources.deploymentscripts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Resources/deploymentScripts/*'
-      - '/modules/.global/global.module.tests.ps1'
+      - '/arm/Microsoft.Resources/deploymentScripts/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Resources/deploymentScripts'
+    value: '/arm/Microsoft.Resources/deploymentScripts'
 
 stages:
   - stage: Validation
@@ -45,8 +45,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/cli.parameters.json
-            - path: $(modulePath)/.deploymentTests/ps.parameters.json
+            - path: $(modulePath)/.parameters/cli.parameters.json
+            - path: $(modulePath)/.parameters/ps.parameters.json
 
   - stage: Publishing
     displayName: Publishing

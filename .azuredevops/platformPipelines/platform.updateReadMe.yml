@@ -9,8 +9,8 @@ trigger:
       - main
   paths:
     include:
-      - 'modules/**/deploy.bicep'
-      - 'modules/**/deploy.json'
+      - 'arm/**/deploy.bicep'
+      - 'arm/**/deploy.json'
 
 variables:
   - template: '../../global.variables.yml'
@@ -39,7 +39,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-ReadMeModuleTable.ps1')
 
             $functionInput = @{
-              ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
+              ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'arm'
               FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'README.md'
               Organization   = '$(System.CollectionUri)'.Split('/')[3]
               RepositoryName = '$(Build.Repository.Name)'
@@ -63,8 +63,8 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-ReadMeModuleTable.ps1')
 
             $functionInput = @{
-              ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
-              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'modules/README.md'
+              ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'arm'
+              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'arm/README.md'
               Organization   = '$(System.CollectionUri)'.Split('/')[3]
               RepositoryName = '$(Build.Repository.Name)'
               ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')

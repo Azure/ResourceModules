@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.desktopvirtualization.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.DesktopVirtualization/workspaces/*'
-      - '/modules/.global/global.module.tests.ps1'
+      - '/arm/Microsoft.DesktopVirtualization/workspaces/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.DesktopVirtualization/workspaces'
+    value: '/arm/Microsoft.DesktopVirtualization/workspaces'
 
 stages:
   - stage: Validation
@@ -45,7 +45,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
     displayName: Publishing

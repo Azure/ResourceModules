@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.resources.tags.yml'
-      - 'modules/Microsoft.Resources/tags/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.Resources/tags/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.Resources/tags'
+  modulePath: 'arm/Microsoft.Resources/tags'
   workflowPath: '.github/workflows/ms.resources.tags.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.authorization.roleassignments.yml'
-      - 'modules/Microsoft.Authorization/roleAssignments/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.Authorization/roleAssignments/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.Authorization/roleAssignments'
+  modulePath: 'arm/Microsoft.Authorization/roleAssignments'
   workflowPath: '.github/workflows/ms.authorization.roleassignments.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

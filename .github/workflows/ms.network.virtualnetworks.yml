@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.virtualnetworks.yml'
-      - 'modules/Microsoft.Network/virtualNetworks/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.Network/virtualNetworks/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.Network/virtualNetworks'
+  modulePath: 'arm/Microsoft.Network/virtualNetworks'
   workflowPath: '.github/workflows/ms.network.virtualnetworks.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

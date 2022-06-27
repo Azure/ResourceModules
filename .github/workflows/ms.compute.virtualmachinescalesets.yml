@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.virtualmachinescalesets.yml'
-      - 'modules/Microsoft.Compute/virtualMachineScaleSets/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.Compute/virtualMachineScaleSets/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.Compute/virtualMachineScaleSets'
+  modulePath: 'arm/Microsoft.Compute/virtualMachineScaleSets'
   workflowPath: '.github/workflows/ms.compute.virtualmachinescalesets.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

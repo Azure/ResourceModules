@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.netapp.netappaccounts.yml'
-      - 'modules/Microsoft.NetApp/netAppAccounts/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.NetApp/netAppAccounts/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.NetApp/netAppAccounts'
+  modulePath: 'arm/Microsoft.NetApp/netAppAccounts'
   workflowPath: '.github/workflows/ms.netapp.netappaccounts.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

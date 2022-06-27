@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.vpngateways.yml'
-      - 'modules/Microsoft.Network/vpnGateways/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.Network/vpnGateways/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.Network/vpnGateways'
+  modulePath: 'arm/Microsoft.Network/vpnGateways'
   workflowPath: '.github/workflows/ms.network.vpngateways.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.galleries.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Compute/galleries/*'
-      - '/modules/.global/global.module.tests.ps1'
+      - '/arm/Microsoft.Compute/galleries/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Compute/galleries'
+    value: '/arm/Microsoft.Compute/galleries'
 
 stages:
   - stage: Validation
@@ -39,8 +39,8 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
         parameters:
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/images.parameters.json
-            - path: $(modulePath)/.deploymentTests/parameters.json
+            - path: $(modulePath)/.parameters/images.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Deployment
     displayName: Deployment validation
@@ -49,8 +49,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/images.parameters.json
-            - path: $(modulePath)/.deploymentTests/parameters.json
+            - path: $(modulePath)/.parameters/images.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
     displayName: Publishing

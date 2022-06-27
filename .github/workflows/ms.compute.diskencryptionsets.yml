@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.diskencryptionsets.yml'
-      - 'modules/Microsoft.Compute/diskEncryptionSets/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.Compute/diskEncryptionSets/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.Compute/diskEncryptionSets'
+  modulePath: 'arm/Microsoft.Compute/diskEncryptionSets'
   workflowPath: '.github/workflows/ms.compute.diskencryptionsets.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

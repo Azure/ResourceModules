@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.networksecuritygroups.yml'
-      - 'modules/Microsoft.Network/networkSecurityGroups/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.Network/networkSecurityGroups/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.Network/networkSecurityGroups'
+  modulePath: 'arm/Microsoft.Network/networkSecurityGroups'
   workflowPath: '.github/workflows/ms.network.networksecuritygroups.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

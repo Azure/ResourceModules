@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.trafficmanagerprofiles.yml'
-      - 'modules/Microsoft.Network/trafficmanagerprofiles/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.Network/trafficmanagerprofiles/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.Network/trafficmanagerprofiles'
+  modulePath: 'arm/Microsoft.Network/trafficmanagerprofiles'
   workflowPath: '.github/workflows/ms.network.trafficmanagerprofiles.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.eventhub.namespaces.yml'
-      - 'modules/Microsoft.EventHub/namespaces/**'
-      - 'modules/.global/global.module.tests.ps1'
+      - 'arm/Microsoft.EventHub/namespaces/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'modules/Microsoft.EventHub/namespaces'
+  modulePath: 'arm/Microsoft.EventHub/namespaces'
   workflowPath: '.github/workflows/ms.eventhub.namespaces.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
