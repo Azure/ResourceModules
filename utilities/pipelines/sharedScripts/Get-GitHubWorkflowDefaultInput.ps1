@@ -9,11 +9,11 @@ Retrieve input parameter default values for a specified workflow. Return hashtab
 Mandatory. The path to the github workflow file.
 
 .EXAMPLE
-Get-WorkflowDefaultInput -workflowPath 'path/to/workflow' -verbose
+Get-GitHubWorkflowDefaultInput -workflowPath 'path/to/workflow' -verbose
 
 Retrieve input parameter default values for the 'path/to/workflow' workflow.
 #>
-function Get-WorkflowDefaultInput {
+function Get-GitHubWorkflowDefaultInput {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]

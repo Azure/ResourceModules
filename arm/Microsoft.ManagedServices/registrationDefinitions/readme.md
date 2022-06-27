@@ -206,7 +206,6 @@ There are a couple of limitations that you should be aware of with Lighthouse:
         }
     }
 }
-
 ```
 
 </details>
@@ -290,7 +289,6 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
         }
     }
 }
-
 ```
 
 </details>

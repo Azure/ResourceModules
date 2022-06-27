@@ -154,9 +154,9 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
   properties: {
     createMode: createMode
     disableLocalAuth: disableLocalAuth
-    enablePurgeProtection: enablePurgeProtection
+    enablePurgeProtection: sku == 'Free' ? false : enablePurgeProtection
     publicNetworkAccess: publicNetworkAccess
-    softDeleteRetentionInDays: softDeleteRetentionInDays
+    softDeleteRetentionInDays: sku == 'Free' ? 0 : softDeleteRetentionInDays
   }
 }
 
@@ -194,7 +194,7 @@ resource configurationStore_diagnosticSettings 'Microsoft.Insights/diagnosticset
   scope: configurationStore
 }
 
-module configurationStore_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module configurationStore_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppConfig-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

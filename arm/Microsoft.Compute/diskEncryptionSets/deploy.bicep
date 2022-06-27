@@ -84,7 +84,7 @@ module keyVaultAccessPolicies '../../Microsoft.KeyVault/vaults/accessPolicies/de
   scope: resourceGroup(split(keyVaultId, '/')[2], split(keyVaultId, '/')[4])
 }
 
-module diskEncryptionSet_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module diskEncryptionSet_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

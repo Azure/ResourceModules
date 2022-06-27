@@ -390,7 +390,7 @@ The modules provided in this repo can be orchestrated to create more complex inf
 
 ### Repo structure
 
-   <img src="../media/MultiRepoTestFolderStructure.png" alt="Repo Structure">
+   <img src="./media/MultiRepoTestFolderStructure.png" alt="Repository Structure" height="300">
 
 ### YAML pipeline
 

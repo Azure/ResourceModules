@@ -596,7 +596,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>

@@ -181,7 +181,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -283,7 +282,6 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
         }
     }
 }
-
 ```
 
 </details>
