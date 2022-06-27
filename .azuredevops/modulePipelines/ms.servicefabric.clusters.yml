@@ -36,12 +36,12 @@ stages:
   - stage: Validation
     displayName: Static validation
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
     displayName: Deployment validation
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
