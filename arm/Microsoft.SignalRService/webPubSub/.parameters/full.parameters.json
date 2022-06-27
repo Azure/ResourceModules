@@ -6,7 +6,7 @@
       "value": "westeurope"
     },
     "name": {
-      "value": "fullWebPubSubDeployment"
+      "value": "<<namePrefix>>-az-pubsub-full-001"
     },
     "capacity": {
       "value": 2
