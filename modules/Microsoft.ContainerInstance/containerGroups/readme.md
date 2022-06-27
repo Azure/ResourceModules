@@ -204,9 +204,6 @@ userAssignedIdentities: {
         },
         "cMKKeyName": {
             "value": "keyEncryptionKey"
-        },
-        "cMKKeyVersion": {
-            "value": "590ebf5bfd9948698e5286ab924249a0" // ID must be updated for new keys
         }
     }
 }
@@ -230,7 +227,6 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     }
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     cMKKeyName: 'keyEncryptionKey'
-    cMKKeyVersion: '590ebf5bfd9948698e5286ab924249a0'
   }
 }
 ```
