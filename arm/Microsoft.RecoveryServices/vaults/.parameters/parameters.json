@@ -232,7 +232,7 @@
         "value": "adp-<<namePrefix>>-az-evh-x-001"
       },
       "systemAssignedIdentity": {
-        "value": true
+        "value": false
       },
       "userAssignedIdentities": {
         "value": {

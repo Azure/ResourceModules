@@ -1320,7 +1320,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         "value": "adp-<<namePrefix>>-az-evh-x-001"
       },
       "systemAssignedIdentity": {
-        "value": true
+        "value": false
       },
       "userAssignedIdentities": {
         "value": {
@@ -1600,7 +1600,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    systemAssignedIdentity: true
+    systemAssignedIdentity: false
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
