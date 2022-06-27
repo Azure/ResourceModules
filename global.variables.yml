@@ -17,7 +17,7 @@ variables:
   templateSpecsDoPublish: true # Set to true, if you would like to publish module templates as template specs
   templateSpecsRGName: 'artifacts-rg' # The name of the resource group to publish to. If the resource group does not exist, it will be created.
   templateSpecsRGLocation: 'West Europe' # The location of the resource group to publish to
-  templateSpecsDescription: 'components' # The description to add to template specs published by this platform
+  templateSpecsDescription: components # The description to add to template specs published by this platform
 
   ######################################
   # Publish: Private Bicep Registry settings
