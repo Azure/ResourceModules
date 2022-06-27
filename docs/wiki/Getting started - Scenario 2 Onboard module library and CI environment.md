@@ -390,7 +390,6 @@ For this reason, make sure to update the references in the following modules onc
 | `modules\Microsoft.Web\sites\.parameters\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
 | `modules\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
 | `modules\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
-| `modules\Microsoft.ContainerInstance\containerGroups\.parameters\encr.parameters.json` | `cMKKeyVersion` |
 
 </details>
 
