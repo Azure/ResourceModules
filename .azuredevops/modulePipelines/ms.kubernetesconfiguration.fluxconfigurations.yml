@@ -1,4 +1,4 @@
-name: 'KubernetesConfiguration: FluxConfigurations'
+name: 'KubernetesConfiguration - FluxConfigurations'
 
 parameters:
   - name: removeDeployment
