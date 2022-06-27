@@ -36,7 +36,7 @@ stages:
   - stage: Validation
     displayName: Static validation
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
     displayName: Deployment validation
