@@ -25,7 +25,7 @@ function Get-ModuleParameterFiles {
     # Note: Should be 'recurse', but is not working with powershell 7.2.1 on GitHub hosted agents but needs 7.2.2
     # $parameterFilePaths = (Get-ChildItem -Recurse -Path $ModulePath -Filter '*parameters.json' -File).FullName
 
-    $parameterFilePaths = (Get-ChildItem -Path "$ModulePath/.parameters" -Filter '*parameters.json' -File).FullName
+    $parameterFilePaths = (Get-ChildItem -Path "$ModulePath/.deploymentTests" -Filter '*parameters.json' -File).FullName
 
     if (-not $parameterFilePaths) {
         throw "No parameter files found for module [$ModulePath]"

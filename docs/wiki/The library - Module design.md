@@ -109,7 +109,7 @@ Use the following naming standard for module files and folders:
   └─ <service>
       ├─ .bicep
       |  ├─ nested_extensionResource1.bicep
-      ├─ .parameters
+      ├─ .deploymentTests
       |  └─ parameters.json
       ├─ deploy.bicep
       └─ readme.md
@@ -121,7 +121,7 @@ Use the following naming standard for module files and folders:
   >└─ sites
   >    ├─ .bicep
   >    |  └─ nested_roleAssignments.bicep
-  >    ├─ .parameters
+  >    ├─ .deploymentTests
   >    |  └─ parameters.json
   >    ├─ deploy.bicep
   >    └─ readme.md

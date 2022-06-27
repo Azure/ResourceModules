@@ -214,8 +214,8 @@ Check for the existens of any nested module levels
 
 .DESCRIPTION
 Check for the existens of any nested module levels.
-A module is identified by folders that do not contain module-specific folders such as '.parameters'.
-In other words, a module would contain a folder with e.g. a '.parameters' folder and would hence not count towards the hierarchy of parent folders.
+A module is identified by folders that do not contain module-specific folders such as '.deploymentTests'.
+In other words, a module would contain a folder with e.g. a '.deploymentTests' folder and would hence not count towards the hierarchy of parent folders.
 
 .PARAMETER path
 Mandatory. The path to search in.
@@ -234,10 +234,10 @@ function Measure-FolderHasNestedModule {
         [string] $Path
     )
 
-    # Get all folder paths that exist in the given path as long as they are not '.bicep' or '.parameters' folders
+    # Get all folder paths that exist in the given path as long as they are not '.bicep' or '.deploymentTests' folders
     # This works as long as the folder structure is consistent (e.g. no empty folders are created etc.)
-    $rawFoundFolders = Get-ChildItem $Path -Directory -Recurse -Exclude @('.bicep', '.parameters') -Force
-    $foundFolders = $rawFoundFolders | Where-Object { (Get-ChildItem $_.FullName -Directory -Depth 0 -Include '.parameters' -Force).count -gt 0 }
+    $rawFoundFolders = Get-ChildItem $Path -Directory -Recurse -Exclude @('.bicep', '.deploymentTests') -Force
+    $foundFolders = $rawFoundFolders | Where-Object { (Get-ChildItem $_.FullName -Directory -Depth 0 -Include '.deploymentTests' -Force).count -gt 0 }
     if ($foundFolders) {
         return $true
     } else {
@@ -323,9 +323,9 @@ function Get-ResolvedSubServiceRow {
         [string]$ProjectName = ''
     )
 
-    $rawSubFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', '.parameters') -Force
+    $rawSubFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', '.deploymentTests') -Force
     # Only consider those folders that have their own parameters, i.e. are top-level modules and not child-resource modules
-    $subFolders = $rawSubFolders | Where-Object { (Get-ChildItem $_.FullName -Directory -Depth 0 -Include '.parameters' -Force).count -gt 0 }
+    $subFolders = $rawSubFolders | Where-Object { (Get-ChildItem $_.FullName -Directory -Depth 0 -Include '.deploymentTests' -Force).count -gt 0 }
 
     foreach ($subfolder in $subFolders.FullName) {
 
@@ -517,7 +517,7 @@ function Get-ModulesAsMarkdownTable {
     foreach ($topLevelFolder in $topLevelFolders) {
         $provider = Split-Path $topLevelFolder -Leaf
 
-        $containedFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.parameters') -Depth 0 -Force
+        $containedFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.deploymentTests') -Depth 0 -Force
 
         foreach ($containedFolder in $containedFolders.FullName) {
             $containedFolderName = (Split-Path $containedFolder -Leaf)
