@@ -60,7 +60,7 @@ They can be deployed in different configurations just by changing the input para
 A **CARML module** consists of
 
 - The Bicep template deployment file (`deploy.bicep`).
-- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.parameters` subfolder.
+- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.deploymentTests` subfolder.
 - A `readme.md` file which describes the module itself.
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `modules` folder.
