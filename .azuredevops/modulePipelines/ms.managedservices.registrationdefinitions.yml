@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.managedservices.registrationdefinitions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.ManagedServices/registrationDefinitions/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.ManagedServices/registrationDefinitions/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.ManagedServices/registrationDefinitions'
+    value: '/modules/Microsoft.ManagedServices/registrationDefinitions'
 
 stages:
   - stage: Validation

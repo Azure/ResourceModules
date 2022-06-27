@@ -79,9 +79,9 @@ This function will search the current directory and all parent directories for a
 Mandatory. Path to the folder/file that should be searched
 
 .EXAMPLE
-Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\.bicep\nested_roleAssignments.bicep"
+Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\.bicep\nested_roleAssignments.bicep"
 
-    Directory: C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables
+    Directory: C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
@@ -98,7 +98,7 @@ function Find-TemplateFile {
 
     $FolderPath = Split-Path $Path -Parent
     $FolderName = Split-Path $Path -Leaf
-    if ($FolderName -eq 'arm') {
+    if ($FolderName -eq 'modules') {
         return $null
     }
 
@@ -126,9 +126,9 @@ Find the closest deploy.bicep/json file to the changed files in the module folde
 Mandatory. Path to the main/parent module folder.
 
 .EXAMPLE
-Get-TemplateFileToPublish -ModuleFolderPath "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\"
+Get-TemplateFileToPublish -ModuleFolderPath "C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\"
 
-C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep
+C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep
 
 Gets the closest deploy.bicep/json file to the changed files in the module folder structure.
 Assuming there is a changed file in 'Microsoft.Storage\storageAccounts\tableServices\tables'
@@ -142,7 +142,7 @@ function Get-TemplateFileToPublish {
         [Parameter(Mandatory)]
         [string] $ModuleFolderPath
     )
-    $ModuleFolderRelPath = $ModuleFolderPath.Split('/arm/')[-1]
+    $ModuleFolderRelPath = $ModuleFolderPath.Split('/modules/')[-1]
     $ModifiedFiles = Get-ModifiedFileList -Verbose
     Write-Verbose "Looking for modified files under: [$ModuleFolderRelPath]" -Verbose
     $ModifiedModuleFiles = $ModifiedFiles | Where-Object { $_.FullName -like "*$ModuleFolderPath*" }
@@ -157,7 +157,7 @@ function Get-TemplateFileToPublish {
 
     Write-Verbose ('Modified modules found: [{0}]' -f $TemplateFilesToPublish.count) -Verbose
     $TemplateFilesToPublish | ForEach-Object {
-        $RelPath = ($_.FullName).Split('/arm/')[-1]
+        $RelPath = ($_.FullName).Split('/modules/')[-1]
         $RelPath = $RelPath.Split('/deploy.')[0]
         Write-Verbose " - [$RelPath]" -Verbose
     }
@@ -179,15 +179,15 @@ Mandatory. Path to a deploy.bicep/json file.
 Optional. If true, the function will recurse up the folder structure to find the closest deploy.bicep/json file.
 
 .EXAMPLE
-Get-ParentModuleTemplateFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep' -Recurse
+Get-ParentModuleTemplateFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep' -Recurse
 
-    Directory: C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices
+    Directory: C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
 la---          05.12.2021    22:45           1427 deploy.bicep
 
-    Directory: C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts
+    Directory: C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
@@ -268,7 +268,7 @@ The file needs to be in the same folder as the template file itself.
 Mandatory. Path to a deploy.bicep/json file.
 
 .EXAMPLE
-Get-ModuleVersionFromFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
+Get-ModuleVersionFromFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
 
 0.3
 
@@ -307,7 +307,7 @@ Patch version number is calculated based on the git commit count on the branch.
 Mandatory. Path to a deploy.bicep/json file.
 
 .EXAMPLE
-Get-NewModuleVersion -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
+Get-NewModuleVersion -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
 
 0.3.630
 
@@ -347,16 +347,16 @@ Generates a hashtable with template file paths to publish with a new version.
 Mandatory. Path to a deploy.bicep/json file.
 
 .EXAMPLE
-Get-ModulesToPublish -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep'
+Get-ModulesToPublish -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\deploy.bicep'
 
 
 Name               Value
 ----               -----
-TemplateFilePath   C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\fileServices\shares\deploy.bicep
+TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\fileServices\shares\deploy.bicep
 Version            0.3.848-prerelease
-TemplateFilePath   C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\fileServices\deploy.bicep
+TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\fileServices\deploy.bicep
 Version            0.3.848-prerelease
-TemplateFilePath   C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep
+TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\deploy.bicep
 Version            0.3.848-prerelease
 
 Generates a hashtable with template file paths to publish and their new versions.
@@ -429,7 +429,7 @@ function Get-ModulesToPublish {
     if ($ModulesToPublish.count -gt 0) {
         Write-Verbose 'Publish the following modules:'-Verbose
         $ModulesToPublish | ForEach-Object {
-            $RelPath = ($_.TemplateFilePath).Split('/arm/')[-1]
+            $RelPath = ($_.TemplateFilePath).Split('/modules/')[-1]
             $RelPath = $RelPath.Split('/deploy.')[0]
             Write-Verbose (' - [{0}] [{1}] ' -f $RelPath, $_.Version) -Verbose
         }

@@ -38,7 +38,7 @@ Publish a new version of a given module to an Azure DevOps artifact feed as a un
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
-Example: 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep'
+Example: 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep'
 
 .PARAMETER ModuleVersion
 Mandatory. Version of the module to publish, following SemVer convention.
@@ -60,7 +60,7 @@ Example: 'Artifacts'.
 Optional. The bearer token to use to authenticate the request. If not provided it MUST be existing in your environment as `$env:TOKEN`
 
 .EXAMPLE
-Publish-ModuleToUniversalArtifactFeed -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
+Publish-ModuleToUniversalArtifactFeed -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a Universal Package Feed called 'Artifacts' under the project 'IaC'.
 #>
@@ -102,9 +102,9 @@ function Publish-ModuleToUniversalArtifactFeed {
         #################################
 
         # Universal package names => lowercase alphanumerics, dashes, dots or underscores, under 256 characters.
-        # 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' => 'microsoft.keyvault.vaults'
+        # 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' => 'microsoft.keyvault.vaults'
         $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
-        $universalPackageModuleName = $ModuleFolderPath.Replace('\', '/').Split('/arm/')[1]
+        $universalPackageModuleName = $ModuleFolderPath.Replace('\', '/').Split('/modules/')[1]
         $universalPackageModuleName = ($universalPackageModuleName.Replace('\', '.').Replace('/', '.').toLower() -Replace '[^a-z0-9\.\-_]')[0..255] -join ''
         Write-Verbose "The universal package name is [$universalPackageModuleName]" -Verbose
 
