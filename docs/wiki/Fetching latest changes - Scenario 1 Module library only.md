@@ -96,4 +96,4 @@ As the Template Specs scenario, Bicep Registry offers a versioning feature with 
     </details>
     <p
 1. Update your master template in order to use the new version of the published modules.
-    For the [Private Bicep Registry's example in Solutions](./Solution%20creation.md#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
+    For the [Private Bicep Registry's example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
