@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.aad.domainservices.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.AAD/DomainServices/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.AAD/DomainServices/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.AAD/DomainServices'
+    value: '/modules/Microsoft.AAD/DomainServices'
 
 stages:
   - stage: Validation

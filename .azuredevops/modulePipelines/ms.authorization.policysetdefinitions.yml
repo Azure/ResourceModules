@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.authorization.policysetdefinitions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Authorization/policySetDefinitions/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Authorization/policySetDefinitions/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Authorization/policySetDefinitions'
+    value: '/modules/Microsoft.Authorization/policySetDefinitions'
 
 stages:
   - stage: Validation

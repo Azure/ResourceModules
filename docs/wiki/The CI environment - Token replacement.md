@@ -17,7 +17,7 @@ This section provides details on the tokens replacement functionality that enabl
 
 Tokens allow you to test deploying modules in your own environment (i.e., using tokens for your naming conventions), or apply other customizations to your resources (i.e., injecting a subscription ID inside a Resource ID string).
 
-The [module pipelines](./The%20CI%20environment%20-%20Pipeline%20design.md#module-pipelines) leverage a token replacement function that enables parameter files to contain tokens (i.e., `<<subscriptionId>>`, `<<tenantId>>`) instead of using static values. This helps with the following:
+The [module pipelines](./The%20CI%20environment%20-%20Pipeline%20design#module-pipelines) leverage a token replacement function that enables parameter files to contain tokens (i.e., `<<subscriptionId>>`, `<<tenantId>>`) instead of using static values. This helps with the following:
 
 - Allows the repository to be portable without having static values from where it was cloned.
 - Enables dynamic updates of the tokens from single locations without having to modify all files.
@@ -69,7 +69,7 @@ Once the Key Vault is deployed, you'll notice that the Key Vault name in Azure w
 
 The token prefix `'<<'` and suffix `'>>'` in the above example are also configurable in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file.
 
-The solution comes with one predefined local token `namePrefix`. When validating modules through the CI environment, you must update it to a custom value as described in the [Update default nameprefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md#31-update-default-nameprefix) paragraph. This is done to avoid conflicts with resources requiring a globally unique name, such as storage accounts or Key Vaults.
+The solution comes with one predefined local token `namePrefix`. When validating modules through the CI environment, you must update it to a custom value as described in the [Update default nameprefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#31-update-default-nameprefix) paragraph. This is done to avoid conflicts with resources requiring a globally unique name, such as storage accounts or Key Vaults.
 
 > **Note**: Do not store sensitive information in this location as they will be present in your Git History. Follow best [practices and guidelines](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/best-practices#security-recommendations-for-parameters) on how to handle secrets in template deployments.
 

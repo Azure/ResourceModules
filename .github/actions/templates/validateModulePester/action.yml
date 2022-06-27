@@ -3,7 +3,7 @@
 #########################################################
 ##
 ## This composite action contains the logic to validate a module using a set of Pester tests
-## The tests are implemented in file 'arm/.global/global.module.tests.ps1'
+## The tests are implemented in file 'modules/.global/global.module.tests.ps1'
 ##
 #########################################################
 ##
@@ -11,11 +11,11 @@
 ## ACTION PARAMETERS                         ##
 ##-------------------------------------------##
 ##
-##   |===========================================================================================================|
-##   | Parameter  | Required | Default | Description                     | Example                               |
-##   |------------|----------|---------|---------------------------------|---------------------------------------|
-##   | modulePath | true     | ''      | The path to the module's folder | 'arm/Microsoft.ApiManagement/service' |
-##   |===========================================================================================================|
+##   |===============================================================================================================|
+##   | Parameter  | Required | Default | Description                     | Example                                   |
+##   |------------|----------|---------|---------------------------------|-------------------------------------------|
+##   | modulePath | true     | ''      | The path to the module's folder | 'modules/Microsoft.ApiManagement/service' |
+##   |===============================================================================================================|
 ##
 ##---------------------------------------------##
 
@@ -110,14 +110,14 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+            Container = New-PesterContainer -Path 'modules/.global/global.module.tests.ps1' -Data @{
               moduleFolderPaths  = $moduleFolderPaths
               tokenConfiguration = $tokenConfiguration
             }
           }
           TestResult = @{
             TestSuiteName = 'Global Module Tests'
-            OutputPath    = 'arm/.global/global-testResults.xml'
+            OutputPath    = 'modules/.global/global-testResults.xml'
             OutputFormat  = 'JUnitXml'
             Enabled       = $true
           }
@@ -130,4 +130,4 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: 'arm/.global/*-testResults.xml'
+        files: 'modules/.global/*-testResults.xml'

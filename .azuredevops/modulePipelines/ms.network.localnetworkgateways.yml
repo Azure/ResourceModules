@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.localnetworkgateways.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Network/localNetworkGateways/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Network/localNetworkGateways/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/localNetworkGateways'
+    value: '/modules/Microsoft.Network/localNetworkGateways'
 
 stages:
   - stage: Validation
