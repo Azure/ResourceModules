@@ -1,0 +1,116 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-aks-kubenet-001"
+        },
+        "primaryAgentPoolProfile": {
+            "value": [
+                {
+                    "name": "systempool",
+                    "osDiskSizeGB": 0,
+                    "count": 1,
+                    "enableAutoScaling": true,
+                    "minCount": 1,
+                    "maxCount": 3,
+                    "vmSize": "Standard_DS2_v2",
+                    "osType": "Linux",
+                    "storageProfile": "ManagedDisks",
+                    "type": "VirtualMachineScaleSets",
+                    "mode": "System",
+                    "serviceCidr": "",
+                    "maxPods": 30,
+                    "availabilityZones": [
+                        "1"
+                    ]
+                }
+            ]
+        },
+        "aksClusterNetworkPlugin": {
+            "value": "kubenet"
+        },
+        "agentPools": {
+            "value": [
+                {
+                    "name": "userpool1",
+                    "vmSize": "Standard_DS2_v2",
+                    "osDiskSizeGB": 128,
+                    "count": 2,
+                    "osType": "Linux",
+                    "maxCount": 3,
+                    "minCount": 1,
+                    "enableAutoScaling": true,
+                    "scaleSetPriority": "Regular",
+                    "scaleSetEvictionPolicy": "Delete",
+                    "nodeLabels": {},
+                    "nodeTaints": [
+                        "CriticalAddonsOnly=true:NoSchedule"
+                    ],
+                    "type": "VirtualMachineScaleSets",
+                    "availabilityZones": [
+                        "1"
+                    ],
+                    "minPods": 2,
+                    "maxPods": 30,
+                    "storageProfile": "ManagedDisks",
+                    "mode": "User"
+                },
+                {
+                    "name": "userpool2",
+                    "vmSize": "Standard_DS2_v2",
+                    "osDiskSizeGB": 128,
+                    "count": 2,
+                    "osType": "Linux",
+                    "maxCount": 3,
+                    "minCount": 1,
+                    "enableAutoScaling": true,
+                    "scaleSetPriority": "Regular",
+                    "scaleSetEvictionPolicy": "Delete",
+                    "nodeLabels": {},
+                    "nodeTaints": [
+                        "CriticalAddonsOnly=true:NoSchedule"
+                    ],
+                    "type": "VirtualMachineScaleSets",
+                    "availabilityZones": [
+                        "1"
+                    ],
+                    "minPods": 2,
+                    "maxPods": 30,
+                    "storageProfile": "ManagedDisks",
+                    "mode": "User"
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        }
+    }
+}

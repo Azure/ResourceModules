@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "roleName": {
+            "value": "<<namePrefix>>-az-testRole-mg-min"
+        },
+        "actions": {
+            "value": [
+                "Microsoft.Compute/galleries/read",
+                "Microsoft.Compute/galleries/images/read"
+            ]
+        }
+    }
+}

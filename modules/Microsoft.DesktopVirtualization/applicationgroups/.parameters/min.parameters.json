@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-avdag-min-001"
+        },
+        "applicationGroupType": {
+            "value": "RemoteApp"
+        },
+        "hostpoolName": {
+            "value": "adp-<<namePrefix>>-az-avdhp-x-001"
+        }
+    }
+}

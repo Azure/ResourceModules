@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-mg-min-policySet"
+        },
+        "policyDefinitions": {
+            "value": [
+                {
+                    "parameters": {
+                        "listOfAllowedLocations": {
+                            "value": [
+                                "australiaeast"
+                            ]
+                        }
+                    },
+                    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
+                }
+            ]
+        }
+    }
+}

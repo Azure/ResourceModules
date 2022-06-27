@@ -351,7 +351,11 @@ function Set-DeploymentExamplesSection {
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
+<<<<<<< HEAD
     $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.deploymentTests') -Filter '*parameters.json' -Recurse
+=======
+    $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.parameters') -Filter '*parameters.json' -Recurse
+>>>>>>> main
 
     $index = 1
     foreach ($parameterFilePath in $parameterFiles.FullName) {

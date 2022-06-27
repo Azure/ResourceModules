@@ -1,0 +1,106 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-anf-nfs41-001"
+        },
+        "capacityPools": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-anfcp-x-001",
+                    "serviceLevel": "Premium",
+                    "size": 4398046511104,
+                    "volumes": [
+                        {
+                            "name": "anf4-vol01-nfsv41",
+                            "usageThreshold": 107374182400,
+                            "protocolTypes": [
+                                "NFSv4.1"
+                            ],
+                            "exportPolicyRules": [
+                                {
+                                    "ruleIndex": 1,
+                                    "unixReadOnly": false,
+                                    "unixReadWrite": true,
+                                    "nfsv3": false,
+                                    "nfsv41": true,
+                                    "allowedClients": "0.0.0.0/0"
+                                }
+                            ],
+                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
+                            "roleAssignments": [
+                                {
+                                    "roleDefinitionIdOrName": "Reader",
+                                    "principalIds": [
+                                        "<<deploymentSpId>>"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "anf4-vol02-nfsv41",
+                            "usageThreshold": 107374182400,
+                            "protocolTypes": [
+                                "NFSv4.1"
+                            ],
+                            "exportPolicyRules": [
+                                {
+                                    "ruleIndex": 1,
+                                    "unixReadOnly": false,
+                                    "unixReadWrite": true,
+                                    "nfsv3": false,
+                                    "nfsv41": true,
+                                    "allowedClients": "0.0.0.0/0"
+                                }
+                            ],
+                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004"
+                        }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "<<namePrefix>>-az-anfcp-x-002",
+                    "serviceLevel": "Premium",
+                    "size": 4398046511104,
+                    "volumes": [],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "tags": {
+            "value": {
+                "Environment": "Non-Prod",
+                "Contact": "test.user@testcompany.com",
+                "PurchaseOrder": "1234",
+                "CostCenter": "7890",
+                "ServiceName": "DeploymentValidation",
+                "Role": "DeploymentValidation"
+            }
+        }
+    }
+}

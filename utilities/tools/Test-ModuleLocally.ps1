@@ -166,7 +166,11 @@ function Test-ModuleLocally {
 
                 Invoke-Pester -Configuration @{
                     Run    = @{
+<<<<<<< HEAD
                         Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'araobal/global.module.tests.ps1') -Data @{
+=======
+                        Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'modules/.global/global.module.tests.ps1') -Data @{
+>>>>>>> main
                             moduleFolderPaths = Split-Path $TemplateFilePath -Parent
                             enforcedTokenList = $enforcedTokenList
                         }
