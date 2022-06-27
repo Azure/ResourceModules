@@ -88,7 +88,7 @@ To configure the CI environment you have to perform several steps:
 
 To lower the barrier to entry and allow users to easily define their own naming conventions, we introduced a default `'name prefix'` for all deployed resources.
 
-> **Note:** This prefix is only used by the CI environment you validate your modules in, and doesn't affect the naming of any resources you deploy as part of any multi-module solutions (applications/workloads) based on the modules. 
+> **Note:** This prefix is only used by the CI environment you validate your modules in, and doesn't affect the naming of any resources you deploy as part of any multi-module solutions (applications/workloads) based on the modules.
 
 Each pipeline in CARML deploying resources uses a logic that automatically replaces "tokens" (i.e., placeholders) in any parameter file. Tokens are stored in only a few central locations to facilitate maintenance (e.g., local `settings.json`, repository secrets or variable groups).
 
@@ -222,7 +222,7 @@ To do so, perform the following steps:
 
 ### 3.2.4 Set R/W Workflow permissions
 
-To let the worflow engine publish their results into your repository, you have to enable the read / write access for the github actions.
+To let the workflow engine publish their results into your repository, you have to enable the read / write access for the GitHub actions.
 
 1. Navigate to the `Settings` tab on the top of your repository page.
 
@@ -231,7 +231,7 @@ To let the worflow engine publish their results into your repository, you have t
 1. Make sure to enable `Read and write permissions`
 
     <img src="./media/SetupEnvironment/workflow_permissions.png" alt="Workflow Permissions">
-    
+
 </details>
 
 <p>
@@ -379,16 +379,16 @@ For this reason, make sure to update the references in the following modules onc
 
 | File | Parameter | Notes |
 | - | - | - |
-| `arm\Microsoft.Compute\diskEncryptionSets\.parameters\parameters.json` |`keyUrl.value` | |
-| `arm\Microsoft.Compute\virtualMachines\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Compute\virtualMachines\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` | |
-| `arm\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
-| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
-| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
-| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
+| `modules\Microsoft.Compute\diskEncryptionSets\.parameters\parameters.json` |`keyUrl.value` | |
+| `modules\Microsoft.Compute\virtualMachines\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `modules\Microsoft.Compute\virtualMachines\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `modules\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `modules\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `modules\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` | |
+| `modules\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
+| `modules\Microsoft.Web\sites\.parameters\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
+| `modules\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
+| `modules\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
 
 </details>
 

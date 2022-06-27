@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.actiongroups.yml'
-      - 'arm/Microsoft.Insights/actionGroups/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Insights/actionGroups/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Insights/actionGroups'
+  modulePath: 'modules/Microsoft.Insights/actionGroups'
   workflowPath: '.github/workflows/ms.insights.actiongroups.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

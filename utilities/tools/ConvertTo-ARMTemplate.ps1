@@ -56,20 +56,20 @@ param (
 )
 
 $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
-$armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
+$modulesFolderPath = Join-Path -Path $rootPath -ChildPath 'modules'
 if ($ConvertChildren) {
-    $BicepFilesToConvert = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force
+    $BicepFilesToConvert = Get-ChildItem -Path $modulesFolderPath -Filter 'deploy.bicep' -Recurse -Force
 } else {
-    $BicepFilesToConvert = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force -Depth 2
+    $BicepFilesToConvert = Get-ChildItem -Path $modulesFolderPath -Filter 'deploy.bicep' -Recurse -Force -Depth 2
 }
 
 #region Remove existing deploy.json files
 Write-Verbose 'Remove existing deploy.json files'
 
-if (Test-Path -Path (Join-Path -Path $armFolderPath -ChildPath 'deploy.bicep')) {
-    $JsonFilesToRemove = Get-ChildItem -Path $armFolderPath -Filter 'deploy.json' -Recurse -Force -File
+if (Test-Path -Path (Join-Path -Path $modulesFolderPath -ChildPath 'deploy.bicep')) {
+    $JsonFilesToRemove = Get-ChildItem -Path $modulesFolderPath -Filter 'deploy.json' -Recurse -Force -File
     Write-Verbose "Remove existing deploy.json files - Remove [$($JsonFilesToRemove.count)] file(s)"
-    if ($PSCmdlet.ShouldProcess("[$($JsonFilesToRemove.count)] deploy.json files(s) in path [$armFolderPath]", 'Remove-Item')) {
+    if ($PSCmdlet.ShouldProcess("[$($JsonFilesToRemove.count)] deploy.json files(s) in path [$modulesFolderPath]", 'Remove-Item')) {
         $JsonFilesToRemove | Remove-Item -Force
     }
     Write-Verbose 'Remove existing deploy.json files - Done'
@@ -81,7 +81,7 @@ if (Test-Path -Path (Join-Path -Path $armFolderPath -ChildPath 'deploy.bicep')) 
 Write-Verbose 'Convert bicep files to json'
 
 Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] file(s)"
-if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$armFolderPath]", 'az bicep build')) {
+if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$modulesFolderPath]", 'az bicep build')) {
     # parallelism is not supported on GitHub runners
     #$BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
     $BicepFilesToConvert | ForEach-Object {
@@ -97,7 +97,7 @@ if (-not $SkipMetadataCleanup) {
     Write-Verbose 'Remove Bicep metadata from json'
 
     Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
-    if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$armFolderPath]", 'Set-Content')) {
+    if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$modulesFolderPath]", 'Set-Content')) {
         # parallelism is not supported on GitHub runners
         #$BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
         $BicepFilesToConvert | ForEach-Object {
@@ -153,15 +153,15 @@ if (-not $SkipMetadataCleanup) {
 if (-not $SkipBicepCleanUp) {
     Write-Verbose 'Remove bicep files and folders'
 
-    $dotBicepFoldersToRemove = Get-ChildItem -Path $armFolderPath -Filter '.bicep' -Recurse -Force -Directory
+    $dotBicepFoldersToRemove = Get-ChildItem -Path $modulesFolderPath -Filter '.bicep' -Recurse -Force -Directory
     Write-Verbose "Remove bicep files and folders - Remove [$($dotBicepFoldersToRemove.count)] .bicep folder(s)"
-    if ($PSCmdlet.ShouldProcess("[$($dotBicepFoldersToRemove.count)] .bicep folder(s) in path [$armFolderPath]", 'Remove-Item')) {
+    if ($PSCmdlet.ShouldProcess("[$($dotBicepFoldersToRemove.count)] .bicep folder(s) in path [$modulesFolderPath]", 'Remove-Item')) {
         $dotBicepFoldersToRemove | Remove-Item -Recurse -Force
     }
 
-    $BicepFilesToRemove = Get-ChildItem -Path $armFolderPath -Filter '*.bicep' -Recurse -Force -File
+    $BicepFilesToRemove = Get-ChildItem -Path $modulesFolderPath -Filter '*.bicep' -Recurse -Force -File
     Write-Verbose "Remove bicep files and folders - Remove [$($BicepFilesToRemove.count)] *.bicep file(s)"
-    if ($PSCmdlet.ShouldProcess("[$($BicepFilesToRemove.count)] *.bicep file(s) in path [$armFolderPath]", 'Remove-Item')) {
+    if ($PSCmdlet.ShouldProcess("[$($BicepFilesToRemove.count)] *.bicep file(s) in path [$modulesFolderPath]", 'Remove-Item')) {
         $BicepFilesToRemove | Remove-Item -Force
     }
 
