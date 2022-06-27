@@ -345,7 +345,7 @@ This section will explain what is required to publish the modules to [Azure Arti
 1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
 #### Implementation Guidance
-Each `./azuredevops/modulePipelines` yaml pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1).
+Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1).
 
 </details>
 
@@ -357,9 +357,9 @@ In order to successfully deploy and test all modules in your desired environment
 
 The repository comes with a platform pipeline, i.e., the '*dependencies pipeline*', that deploys a set of Azure services such as Virtual Networks and Key Vaults (along with dummy secrets) to be used by the module pipeline tests.
 
-Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage.md#operate-the-dependencies-pipeline) section.
+Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#operate-the-dependencies-pipeline) section.
 
-> **Note**: For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
+> **Note**: For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design#dependencies-pipeline) section.
 
 ## 4.1 Manual Dependencies
 
