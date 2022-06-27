@@ -1,4 +1,4 @@
-name: 'Network: VPNGateways'
+name: 'Network - VPNGateways'
 
 parameters:
   - name: removeDeployment
