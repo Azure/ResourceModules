@@ -369,7 +369,6 @@ stages:
                   azureSubscription: $(serviceConnectionValidation)
                   ScriptType: 'InlineScript'
                   Inline: |
-
                     # Load used functions
                     . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
