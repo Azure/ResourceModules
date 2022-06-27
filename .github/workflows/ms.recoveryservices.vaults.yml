@@ -16,7 +16,6 @@ on:
   push:
     branches:
       - main
-      - ismalik/recoveryServicesVaults_addPrivateEndpoint
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.recoveryservices.vaults.yml'
