@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.ddosprotectionplans.yml'
-      - 'arm/Microsoft.Network/ddosProtectionPlans/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Network/ddosProtectionPlans/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Network/ddosProtectionPlans'
+  modulePath: 'modules/Microsoft.Network/ddosProtectionPlans'
   workflowPath: '.github/workflows/ms.network.ddosprotectionplans.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
