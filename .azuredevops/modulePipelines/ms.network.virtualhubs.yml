@@ -1,4 +1,4 @@
-name: 'Network: VirtualHubs'
+name: 'Network - VirtualHubs'
 
 parameters:
   - name: removeDeployment
