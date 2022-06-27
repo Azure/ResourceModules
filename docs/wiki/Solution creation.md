@@ -406,10 +406,8 @@ on:
       - '.github/workflows/network-hub.yml'
 
 permissions:
-  id-token: write      # OIDC
-  contents: read       # OIDC
-  checks: write        # enricomi/publish-unit-test-result-action
-  pull-requests: write # enricomi/publish-unit-test-result-action
+  id-token: write      # Required for OIDC
+  contents: read       # Required for OIDC
 
 env:
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }} # TODO: Update this to use OIDC

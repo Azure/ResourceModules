@@ -23,8 +23,8 @@ on:
   #     - 'utilities/pipelines/dependencies/**'
 
 permissions:
-  id-token: write # OIDC
-  contents: read # OIDC
+  id-token: write # Required for OIDC
+  contents: read # Required for OIDC
 
 env:
   location: 'WestEurope'

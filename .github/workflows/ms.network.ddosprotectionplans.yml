@@ -26,8 +26,8 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 permissions:
-  id-token: write # OIDC
-  contents: read # OIDC
+  id-token: write # Required for OIDC
+  contents: read # Required for OIDC
   checks: write # enricomi/publish-unit-test-result-action
   pull-requests: write # enricomi/publish-unit-test-result-action
 
