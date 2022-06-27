@@ -256,9 +256,9 @@ In addition to the above resources, the following secrets, keys and certificates
 
 The repository includes two major ReadMe files that should stay in sync with the available modules.
 
-The first can be found in the repository root (`README.md`) and the second in the modules folder (`arm/README.md`).
+The first can be found in the repository root (`README.md`) and the second in the modules folder (`modules/README.md`).
 
-The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `arm` folder is being altered. The pipeline leverages the script documented on the [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update) page.
+The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `modules` folder is being altered. The pipeline leverages the script documented in the [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update) page.
 
 Once triggered, the pipeline crawls through the library and updates the tables in each corresponding ReadMe file, creating links to the corresponding pipeline runs and updating the list of entries.
 
