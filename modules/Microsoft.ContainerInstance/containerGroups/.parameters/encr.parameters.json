@@ -21,9 +21,6 @@
         },
         "cMKKeyName": {
             "value": "keyEncryptionKey"
-        },
-        "cMKKeyVersion": {
-            "value": "590ebf5bfd9948698e5286ab924249a0" // ID must be updated for new keys
         }
     }
 }
