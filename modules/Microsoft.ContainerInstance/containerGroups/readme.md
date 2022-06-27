@@ -27,16 +27,12 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `image` | string | Name of the image. |
 | `name` | string | Name for the container group. |
 
-**Conditional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `cMKKeyVersion` | string | `''` | The version of the customer managed key to reference for encryption. Required if 'cMKeyName' is not empty. |
-
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
-| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKeyName' is not empty. |
+| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
+| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `cpuCores` | int | `2` |  | The number of CPU cores to allocate to the container. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `environmentVariables` | array | `[]` |  | Environment variables of the container group. |
@@ -214,7 +210,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -237,6 +232,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVersion: '590ebf5bfd9948698e5286ab924249a0'
   }
+}
 ```
 
 </details>
