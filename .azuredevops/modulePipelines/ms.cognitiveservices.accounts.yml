@@ -20,9 +20,9 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.cognitiveservices.accounts.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.CognitiveServices/accounts/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.CognitiveServices/accounts/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.CognitiveServices/accounts'
+    value: '/modules/Microsoft.CognitiveServices/accounts'
 
 stages:
   - stage: Validation
@@ -47,6 +47,8 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/parameters.json
             - path: $(modulePath)/.parameters/speech.parameters.json
+            - path: $(modulePath)/.parameters/encr.parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
 
   - stage: Publishing
     displayName: Publishing

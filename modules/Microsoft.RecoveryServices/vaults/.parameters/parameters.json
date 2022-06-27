@@ -1,0 +1,289 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-rsv-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "backupConfig": {
+            "value": {
+                "enhancedSecurityState": "Disabled",
+                "softDeleteFeatureState": "Disabled"
+            }
+        },
+        "backupPolicies": {
+            "value": [
+                {
+                    "name": "VMpolicy",
+                    "properties": {
+                        "backupManagementType": "AzureIaasVM",
+                        "instantRPDetails": {},
+                        "schedulePolicy": {
+                            "schedulePolicyType": "SimpleSchedulePolicy",
+                            "scheduleRunFrequency": "Daily",
+                            "scheduleRunTimes": [
+                                "2019-11-07T07:00:00Z"
+                            ],
+                            "scheduleWeeklyFrequency": 0
+                        },
+                        "retentionPolicy": {
+                            "retentionPolicyType": "LongTermRetentionPolicy",
+                            "dailySchedule": {
+                                "retentionTimes": [
+                                    "2019-11-07T07:00:00Z"
+                                ],
+                                "retentionDuration": {
+                                    "count": 180,
+                                    "durationType": "Days"
+                                }
+                            },
+                            "weeklySchedule": {
+                                "daysOfTheWeek": [
+                                    "Sunday"
+                                ],
+                                "retentionTimes": [
+                                    "2019-11-07T07:00:00Z"
+                                ],
+                                "retentionDuration": {
+                                    "count": 12,
+                                    "durationType": "Weeks"
+                                }
+                            },
+                            "monthlySchedule": {
+                                "retentionScheduleFormatType": "Weekly",
+                                "retentionScheduleWeekly": {
+                                    "daysOfTheWeek": [
+                                        "Sunday"
+                                    ],
+                                    "weeksOfTheMonth": [
+                                        "First"
+                                    ]
+                                },
+                                "retentionTimes": [
+                                    "2019-11-07T07:00:00Z"
+                                ],
+                                "retentionDuration": {
+                                    "count": 60,
+                                    "durationType": "Months"
+                                }
+                            },
+                            "yearlySchedule": {
+                                "retentionScheduleFormatType": "Weekly",
+                                "monthsOfYear": [
+                                    "January"
+                                ],
+                                "retentionScheduleWeekly": {
+                                    "daysOfTheWeek": [
+                                        "Sunday"
+                                    ],
+                                    "weeksOfTheMonth": [
+                                        "First"
+                                    ]
+                                },
+                                "retentionTimes": [
+                                    "2019-11-07T07:00:00Z"
+                                ],
+                                "retentionDuration": {
+                                    "count": 10,
+                                    "durationType": "Years"
+                                }
+                            }
+                        },
+                        "instantRpRetentionRangeInDays": 2,
+                        "timeZone": "UTC",
+                        "protectedItemsCount": 0
+                    }
+                },
+                {
+                    "name": "sqlpolicy",
+                    "properties": {
+                        "backupManagementType": "AzureWorkload",
+                        "workLoadType": "SQLDataBase",
+                        "settings": {
+                            "timeZone": "UTC",
+                            "issqlcompression": true,
+                            "isCompression": true
+                        },
+                        "subProtectionPolicy": [
+                            {
+                                "policyType": "Full",
+                                "schedulePolicy": {
+                                    "schedulePolicyType": "SimpleSchedulePolicy",
+                                    "scheduleRunFrequency": "Weekly",
+                                    "scheduleRunDays": [
+                                        "Sunday"
+                                    ],
+                                    "scheduleRunTimes": [
+                                        "2019-11-07T22:00:00Z"
+                                    ],
+                                    "scheduleWeeklyFrequency": 0
+                                },
+                                "retentionPolicy": {
+                                    "retentionPolicyType": "LongTermRetentionPolicy",
+                                    "weeklySchedule": {
+                                        "daysOfTheWeek": [
+                                            "Sunday"
+                                        ],
+                                        "retentionTimes": [
+                                            "2019-11-07T22:00:00Z"
+                                        ],
+                                        "retentionDuration": {
+                                            "count": 104,
+                                            "durationType": "Weeks"
+                                        }
+                                    },
+                                    "monthlySchedule": {
+                                        "retentionScheduleFormatType": "Weekly",
+                                        "retentionScheduleWeekly": {
+                                            "daysOfTheWeek": [
+                                                "Sunday"
+                                            ],
+                                            "weeksOfTheMonth": [
+                                                "First"
+                                            ]
+                                        },
+                                        "retentionTimes": [
+                                            "2019-11-07T22:00:00Z"
+                                        ],
+                                        "retentionDuration": {
+                                            "count": 60,
+                                            "durationType": "Months"
+                                        }
+                                    },
+                                    "yearlySchedule": {
+                                        "retentionScheduleFormatType": "Weekly",
+                                        "monthsOfYear": [
+                                            "January"
+                                        ],
+                                        "retentionScheduleWeekly": {
+                                            "daysOfTheWeek": [
+                                                "Sunday"
+                                            ],
+                                            "weeksOfTheMonth": [
+                                                "First"
+                                            ]
+                                        },
+                                        "retentionTimes": [
+                                            "2019-11-07T22:00:00Z"
+                                        ],
+                                        "retentionDuration": {
+                                            "count": 10,
+                                            "durationType": "Years"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "policyType": "Differential",
+                                "schedulePolicy": {
+                                    "schedulePolicyType": "SimpleSchedulePolicy",
+                                    "scheduleRunFrequency": "Weekly",
+                                    "scheduleRunDays": [
+                                        "Monday"
+                                    ],
+                                    "scheduleRunTimes": [
+                                        "2017-03-07T02:00:00Z"
+                                    ],
+                                    "scheduleWeeklyFrequency": 0
+                                },
+                                "retentionPolicy": {
+                                    "retentionPolicyType": "SimpleRetentionPolicy",
+                                    "retentionDuration": {
+                                        "count": 30,
+                                        "durationType": "Days"
+                                    }
+                                }
+                            },
+                            {
+                                "policyType": "Log",
+                                "schedulePolicy": {
+                                    "schedulePolicyType": "LogSchedulePolicy",
+                                    "scheduleFrequencyInMins": 120
+                                },
+                                "retentionPolicy": {
+                                    "retentionPolicyType": "SimpleRetentionPolicy",
+                                    "retentionDuration": {
+                                        "count": 15,
+                                        "durationType": "Days"
+                                    }
+                                }
+                            }
+                        ],
+                        "protectedItemsCount": 0
+                    }
+                },
+                {
+                    "name": "filesharepolicy",
+                    "properties": {
+                        "backupManagementType": "AzureStorage",
+                        "workloadType": "AzureFileShare",
+                        "schedulePolicy": {
+                            "schedulePolicyType": "SimpleSchedulePolicy",
+                            "scheduleRunFrequency": "Daily",
+                            "scheduleRunTimes": [
+                                "2019-11-07T04:30:00Z"
+                            ],
+                            "scheduleWeeklyFrequency": 0
+                        },
+                        "retentionPolicy": {
+                            "retentionPolicyType": "LongTermRetentionPolicy",
+                            "dailySchedule": {
+                                "retentionTimes": [
+                                    "2019-11-07T04:30:00Z"
+                                ],
+                                "retentionDuration": {
+                                    "count": 30,
+                                    "durationType": "Days"
+                                }
+                            }
+                        },
+                        "timeZone": "UTC",
+                        "protectedItemsCount": 0
+                    }
+                }
+            ]
+        },
+        "backupStorageConfig": {
+            "value": {
+                "storageModelType": "GeoRedundant",
+                "crossRegionRestoreFlag": true
+            }
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        }
+    }
+}

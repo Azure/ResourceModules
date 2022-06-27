@@ -1,0 +1,129 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-lb-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "frontendIPConfigurations": {
+            "value": [
+                {
+                    "name": "publicIPConfig1",
+                    "publicIPAddressId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-lb"
+                }
+            ]
+        },
+        "backendAddressPools": {
+            "value": [
+                {
+                    "name": "backendAddressPool1"
+                },
+                {
+                    "name": "backendAddressPool2"
+                }
+            ]
+        },
+        "loadBalancingRules": {
+            "value": [
+                {
+                    "name": "publicIPLBRule1",
+                    "frontendIPConfigurationName": "publicIPConfig1",
+                    "frontendPort": 80,
+                    "backendPort": 80,
+                    "enableFloatingIP": false,
+                    "idleTimeoutInMinutes": 5,
+                    "protocol": "Tcp",
+                    "enableTcpReset": false,
+                    "loadDistribution": "Default",
+                    "disableOutboundSnat": true,
+                    "probeName": "probe1",
+                    "backendAddressPoolName": "backendAddressPool1"
+                },
+                {
+                    "name": "publicIPLBRule2",
+                    "frontendIPConfigurationName": "publicIPConfig1",
+                    "frontendPort": 8080,
+                    "backendPort": 8080,
+                    "loadDistribution": "Default",
+                    "probeName": "probe2",
+                    "backendAddressPoolName": "backendAddressPool2"
+                }
+            ]
+        },
+        "inboundNatRules": {
+            "value": [
+                {
+                    "name": "inboundNatRule1",
+                    "frontendIPConfigurationName": "publicIPConfig1",
+                    "frontendPort": 443,
+                    "backendPort": 443,
+                    "enableFloatingIP": false,
+                    "idleTimeoutInMinutes": 4,
+                    "protocol": "Tcp",
+                    "enableTcpReset": false
+                },
+                {
+                    "name": "inboundNatRule2",
+                    "frontendIPConfigurationName": "publicIPConfig1",
+                    "frontendPort": 3389,
+                    "backendPort": 3389
+                }
+            ]
+        },
+        "outboundRules": {
+            "value": [
+                {
+                    "name": "outboundRule1",
+                    "frontendIPConfigurationName": "publicIPConfig1",
+                    "backendAddressPoolName": "backendAddressPool1",
+                    "allocatedOutboundPorts": 63984
+                }
+            ]
+        },
+        "probes": {
+            "value": [
+                {
+                    "name": "probe1",
+                    "protocol": "Tcp",
+                    "port": 80,
+                    "intervalInSeconds": 10,
+                    "numberOfProbes": 5
+                },
+                {
+                    "name": "probe2",
+                    "protocol": "Https",
+                    "port": 443,
+                    "requestPath": "/"
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        }
+    }
+}

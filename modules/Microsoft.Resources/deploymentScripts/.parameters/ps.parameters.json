@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-ds-ps-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "kind": {
+            "value": "AzurePowerShell"
+        },
+        "azPowerShellVersion": {
+            "value": "3.0"
+        },
+        "scriptContent": {
+            "value": "Write-Host 'Running PowerShell from template'"
+        },
+        "retentionInterval": {
+            "value": "P1D"
+        },
+        "runOnce": {
+            "value": false
+        },
+        "cleanupPreference": {
+            "value": "Always"
+        },
+        "timeout": {
+            "value": "PT30M"
+        }
+    }
+}

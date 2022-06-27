@@ -20,9 +20,9 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.privatednszones.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/privateDnsZones/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Network/privateDnsZones/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/privateDnsZones'
+    value: '/modules/Microsoft.Network/privateDnsZones'
 
 stages:
   - stage: Validation

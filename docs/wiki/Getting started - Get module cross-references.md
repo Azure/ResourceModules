@@ -1,37 +1,38 @@
-The `'Get-LinkedLocalModuleList'` function provides you with the capability to check for any local module references in a given path. This can be useful to determine which modules folder you'd need if you don't want to keep the entire library.
+The `'Get-LinkedLocalModuleList'` function helps you with discovering cross-modules dependencies. It checks for any local module references in a given path. This can be useful to determine which modules' folder you'd need to keep in case you'd only want to cherry-pick certain modules from the library.
 
 ---
 
 ### _Navigation_
 
 - [Location](#location)
-- [How it works](#what-it-does)
+- [How it works](#how-it-works)
 - [How to use it](#how-to-use-it)
+  - [Example output](#example-output)
 - [Related function: _Get-LinkedModuleList_](#related-function-get-linkedmodulelist)
 
 ---
 # Location
 
-You can find the script under `'utilities/tools/Get-LinkedLocalModuleList.ps1'`
+You can find the script under `'utilities/tools/Get-LinkedLocalModuleList.ps1'`.
 
 # How it works
 
 When invoking the script:
 
-1. The function leverages the utility [Get-LinkedModuleList](#related-function-get-linkedmodulelist) to fetch all references implemented in the modules in a given path
-1. The function filters these references down to only local references (i.e. cross-module references) and formats them to show a consistent '\<ProviderNameSpace\>/\<ResourceType\>' format.
+1. The function leverages the utility [Get-LinkedModuleList](#related-function-get-linkedmodulelist) to fetch all references implemented in the modules in a given path.
+1. The function filters these references down to only local references (i.e., cross-module references) and formats them to show a consistent '\<ProviderNameSpace\>/\<ResourceType\>' format.
 1. Finally, it prints the references to the invoking terminal, group by ResourceType.
 
 # How to use it
 
-> **Note:** The script must be loaded before the function can be invoked
+> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.
 
-For details on how to use the function please refer to the script's local documentation.
+For details on how to use the function, please refer to the script's local documentation.
 
 ## Example output
 
 ```PowerShell
-VERBOSE: The modules in path [ResourceModules\arm] have the following local folder dependencies:
+VERBOSE: The modules in path [ResourceModules\modules] have the following local folder dependencies:
 VERBOSE:
 VERBOSE: Resource: Microsoft.ApiManagement/service
 VERBOSE: - Microsoft.ApiManagement/authorizationServers
@@ -97,6 +98,6 @@ The function `'Get-LinkedModuleList'` (also in path `'utilities/tools'`) is leve
 - Cross-Module references
 - Remove-Module references (e.g., Bicep Registry)
 
-> **Note:** The script must be loaded before the function can be invoked
+> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.
 
-For details on how to use the function please refer to the script's local documentation.
+For details on how to use the function, please refer to the script's local documentation.

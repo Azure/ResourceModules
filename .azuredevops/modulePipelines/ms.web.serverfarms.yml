@@ -20,9 +20,9 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.web.serverfarms.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Web/serverfarms/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Web/serverfarms/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Web/serverfarms'
+    value: '/modules/Microsoft.Web/serverfarms'
 
 stages:
   - stage: Validation

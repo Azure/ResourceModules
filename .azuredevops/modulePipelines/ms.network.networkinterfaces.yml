@@ -20,9 +20,9 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.networkinterfaces.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/networkInterfaces/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Network/networkInterfaces/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/networkInterfaces'
+    value: '/modules/Microsoft.Network/networkInterfaces'
 
 stages:
   - stage: Validation

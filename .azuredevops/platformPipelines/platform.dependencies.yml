@@ -30,7 +30,7 @@ variables:
   - name: dependencyPath
     value: 'utilities/pipelines/dependencies'
   - name: modulesPath
-    value: 'arm'
+    value: 'modules'
   - name: defaultResourceGroupName
     value: 'validation-rg'
 
@@ -47,6 +47,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Validation Resource Group
+            - path: $(dependencyPath)/$(resourceType)/parameters/locks.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Locks Resource Group
 
   - stage: deploy_ppg
     displayName: Deploy proximity placement group
@@ -547,6 +550,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/fw.additional.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Firewall Additional Public IP
+            - path: $(dependencyPath)/$(resourceType)/parameters/bas.additional.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion Additional Public IP
   - stage: deploy_appi
     displayName: Deploy application insight
     dependsOn:
@@ -925,7 +931,7 @@ stages:
               displayName: Default Virtual Network
             - path: $(dependencyPath)/$(resourceType)/parameters/1.bastion.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Bastion Virtual Network
+              displayName: Bastion Virtual Network Min
             - path: $(dependencyPath)/$(resourceType)/parameters/2.vnetpeer01.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: VNET PEering 1 Virtual Network
@@ -949,7 +955,17 @@ stages:
               displayName: Azure Firewall Virtual Network Min
             - path: $(dependencyPath)/$(resourceType)/parameters/10.azfw.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Azure Firewall Virtual Network Custom Pip
+              displayName: Azure Firewall Virtual Network Additonal
+            - path: $(dependencyPath)/$(resourceType)/parameters/11.azfw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Firewall Virtual Network Custom
+            - path: $(dependencyPath)/$(resourceType)/parameters/12.bastion.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion Virtual Network Additional
+            - path: $(dependencyPath)/$(resourceType)/parameters/13.bastion.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion Virtual Network Custom
+
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)

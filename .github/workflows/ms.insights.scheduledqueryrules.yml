@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.scheduledqueryrules.yml'
-      - 'arm/Microsoft.Insights/scheduledQueryRules/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Insights/scheduledQueryRules/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Insights/scheduledQueryRules'
+  modulePath: 'modules/Microsoft.Insights/scheduledQueryRules'
   workflowPath: '.github/workflows/ms.insights.scheduledqueryrules.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

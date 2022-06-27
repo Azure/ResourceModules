@@ -9,7 +9,7 @@ As an output you will receive a hashtable that (for each provider namespace) lis
 - Linked remote module tempaltes (e.g. via "module rg 'br/modules:(..):(..)'")
 
 .PARAMETER path
-Optional. The path to search in. Defaults to the 'arm' folder
+Optional. The path to search in. Defaults to the 'modules' folder
 
 .EXAMPLE
 Get-LinkedModuleList
@@ -17,7 +17,7 @@ Get-LinkedModuleList
 Invoke the function with the default path. Returns an object such as:
 {
     "Microsoft.Compute/availabilitySets": {
-        "localPathReferences": ".bicep/nested_rbac.bicep",
+        "localPathReferences": ".bicep/nested_roleAssignments.bicep",
         "remoteReferences": null,
         "resourceReferences": [
             "Microsoft.Resources/deployments@2021-04-01",
@@ -40,7 +40,7 @@ function Get-LinkedModuleList {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'arm')
+        [string] $path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules')
     )
 
     $resultSet = @{}

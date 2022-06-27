@@ -1,59 +1,59 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "adp-<<namePrefix>>-az-kv-x-001"
-    },
-    "accessPolicies": {
-      "value": [
-        {
-          "tenantId": "<<tenantId>>",
-          "objectId": "bab643ad-2988-4560-9f2b-c8282ba345f0", // Backup Management Service needs access to back up the keys and secrets, along with the associated VMs
-          "permissions": {
-            "keys": [
-              "Get",
-              "List",
-              "Backup"
-            ],
-            "secrets": [
-              "Get",
-              "List",
-              "Backup"
-            ],
-            "certificates": []
-          }
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-kv-x-001"
         },
-        {
-          "tenantId": "<<tenantId>>",
-          "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI. Replaced by the pipeline
-          "permissions": {
-            "keys": [],
-            "secrets": [
-              "Get"
-            ],
-            "certificates": []
-          }
-        },
-        {
-          "tenantId": "<<tenantId>>",
-          "objectId": "<<deploymentSpId>>", // dependency access
-          "permissions": {
-            "keys": [
-              "all"
-            ],
-            "secrets": [
-              "all"
-            ],
-            "certificates": [
-              "all"
+        "accessPolicies": {
+            "value": [
+                {
+                    "tenantId": "<<tenantId>>",
+                    "objectId": "bab643ad-2988-4560-9f2b-c8282ba345f0", // Backup Management Service needs access to back up the keys and secrets, along with the associated VMs
+                    "permissions": {
+                        "keys": [
+                            "Get",
+                            "List",
+                            "Backup"
+                        ],
+                        "secrets": [
+                            "Get",
+                            "List",
+                            "Backup"
+                        ],
+                        "certificates": []
+                    }
+                },
+                {
+                    "tenantId": "<<tenantId>>",
+                    "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI. Replaced by the pipeline
+                    "permissions": {
+                        "keys": [],
+                        "secrets": [
+                            "Get"
+                        ],
+                        "certificates": []
+                    }
+                },
+                {
+                    "tenantId": "<<tenantId>>",
+                    "objectId": "<<deploymentSpId>>", // dependency access
+                    "permissions": {
+                        "keys": [
+                            "all"
+                        ],
+                        "secrets": [
+                            "all"
+                        ],
+                        "certificates": [
+                            "all"
+                        ]
+                    }
+                }
             ]
-          }
+        },
+        "enablePurgeProtection": {
+            "value": false
         }
-      ]
-    },
-    "enablePurgeProtection": {
-      "value": false
     }
-  }
 }
