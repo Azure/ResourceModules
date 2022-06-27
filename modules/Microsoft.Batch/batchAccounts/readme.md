@@ -179,7 +179,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
