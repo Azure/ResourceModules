@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-apim-min-001"
+        },
+        "publisherEmail": {
+            "value": "apimgmt-noreply@mail.windowsazure.com"
+        },
+        "publisherName": {
+            "value": "<<namePrefix>>-az-amorg-x-001"
+        }
+    }
+}
