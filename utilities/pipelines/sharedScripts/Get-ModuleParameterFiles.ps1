@@ -10,7 +10,7 @@ The relative path is returned instead of the full one to make paths easier to re
 Mandatory. The module path to search in.
 
 .EXAMPLE
-Get-ModuleParameterFiles -ModulePath 'C:\ResourceModules\arm\Microsoft.Compute\virtualMachines'
+Get-ModuleParameterFiles -ModulePath 'C:\ResourceModules\modules\Microsoft.Compute\virtualMachines'
 
 Returns the relative file paths of all parameter files of the virtual machines module.
 #>

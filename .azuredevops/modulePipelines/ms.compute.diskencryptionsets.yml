@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.diskencryptionsets.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Compute/diskEncryptionSets/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Compute/diskEncryptionSets/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Compute/diskEncryptionSets'
+    value: '/modules/Microsoft.Compute/diskEncryptionSets'
 
 stages:
   - stage: Validation

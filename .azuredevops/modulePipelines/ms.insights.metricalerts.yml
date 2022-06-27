@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.metricalerts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Insights/metricAlerts/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Insights/metricAlerts/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Insights/metricAlerts'
+    value: '/modules/Microsoft.Insights/metricAlerts'
 
 stages:
   - stage: Validation
