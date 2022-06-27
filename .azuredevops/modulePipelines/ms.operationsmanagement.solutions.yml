@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.operationsmanagement.solutions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.OperationsManagement/solutions/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.OperationsManagement/solutions/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.OperationsManagement/solutions'
+    value: '/modules/Microsoft.OperationsManagement/solutions'
 
 stages:
   - stage: Validation

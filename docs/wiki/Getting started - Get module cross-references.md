@@ -32,7 +32,7 @@ For details on how to use the function, please refer to the script's local docum
 ## Example output
 
 ```PowerShell
-VERBOSE: The modules in path [ResourceModules\arm] have the following local folder dependencies:
+VERBOSE: The modules in path [ResourceModules\modules] have the following local folder dependencies:
 VERBOSE:
 VERBOSE: Resource: Microsoft.ApiManagement/service
 VERBOSE: - Microsoft.ApiManagement/authorizationServers
