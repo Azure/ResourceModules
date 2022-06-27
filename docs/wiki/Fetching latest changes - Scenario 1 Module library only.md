@@ -72,7 +72,7 @@ As the Template Specs scenario, Bicep Registry offers a versioning feature with 
     <details>
     <summary>Modules publishing in Bicep Registry</summary>
 
-    The preferred method to publish modules to Bicep Registry is to leverage CARML ready [CI environment](./The%20CI%20environment.md), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
+    The preferred method to publish modules to Bicep Registry is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
 
     To publish a module by running the script:
     1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
