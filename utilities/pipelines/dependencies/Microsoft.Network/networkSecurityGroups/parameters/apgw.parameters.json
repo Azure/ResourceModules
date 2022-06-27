@@ -1,26 +1,26 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "adp-<<namePrefix>>-az-nsg-x-apgw"
-    },
-    "securityRules": {
-      "value": [
-        {
-          "name": "AllowPortsForAppGateway",
-          "properties": {
-            "protocol": "*",
-            "sourcePortRange": "*",
-            "sourceAddressPrefix": "GatewayManager",
-            "destinationPortRange": "65200-65535",
-            "destinationAddressPrefix": "*",
-            "access": "Allow",
-            "priority": 1000,
-            "direction": "Inbound"
-          }
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-nsg-x-apgw"
+        },
+        "securityRules": {
+            "value": [
+                {
+                    "name": "AllowPortsForAppGateway",
+                    "properties": {
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "sourceAddressPrefix": "GatewayManager",
+                        "destinationPortRange": "65200-65535",
+                        "destinationAddressPrefix": "*",
+                        "access": "Allow",
+                        "priority": 1000,
+                        "direction": "Inbound"
+                    }
+                }
+            ]
         }
-      ]
     }
-  }
 }

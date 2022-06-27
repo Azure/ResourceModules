@@ -52,7 +52,7 @@ module resourceGroup_lock '../../Microsoft.Authorization/locks/resourceGroup/dep
   scope: resourceGroup
 }
 
-module resourceGroup_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module resourceGroup_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-RG-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

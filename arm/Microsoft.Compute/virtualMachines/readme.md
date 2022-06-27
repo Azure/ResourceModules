@@ -1071,7 +1071,6 @@ For further details on automanage please refer to [Automanage virtual machines](
         }
     }
 }
-
 ```
 
 </details>
@@ -1197,7 +1196,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -1479,7 +1477,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -1712,7 +1709,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -1828,7 +1824,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -2123,7 +2118,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

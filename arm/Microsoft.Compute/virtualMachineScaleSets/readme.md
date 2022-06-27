@@ -943,7 +943,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -1198,7 +1197,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         }
     }
 }
-
 ```
 
 </details>
@@ -1409,7 +1407,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         }
     }
 }
-
 ```
 
 </details>
@@ -1659,7 +1656,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         }
     }
 }
-
 ```
 
 </details>

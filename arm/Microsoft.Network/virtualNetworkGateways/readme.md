@@ -308,7 +308,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -426,7 +425,6 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
         }
     }
 }
-
 ```
 
 </details>

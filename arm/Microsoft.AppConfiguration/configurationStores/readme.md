@@ -296,7 +296,6 @@ privateEndpoints:  [
         }
     }
 }
-
 ```
 
 </details>
@@ -404,7 +403,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         }
     }
 }
-
 ```
 
 </details>

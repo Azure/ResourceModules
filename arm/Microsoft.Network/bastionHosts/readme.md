@@ -310,7 +310,6 @@ roleAssignments: [
         }
     }
 }
-
 ```
 
 </details>
@@ -382,7 +381,6 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -446,7 +444,6 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -524,7 +521,6 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

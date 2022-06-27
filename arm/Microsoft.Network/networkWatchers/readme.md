@@ -165,7 +165,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -285,7 +284,6 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

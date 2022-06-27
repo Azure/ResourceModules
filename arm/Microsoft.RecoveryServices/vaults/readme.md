@@ -888,7 +888,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -980,7 +979,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
@@ -1297,7 +1295,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

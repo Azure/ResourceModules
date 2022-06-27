@@ -55,7 +55,7 @@ resource ipGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lo
   scope: ipGroup
 }
 
-module ipGroup_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module ipGroup_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-IPGroup-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

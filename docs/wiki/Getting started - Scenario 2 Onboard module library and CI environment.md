@@ -88,7 +88,7 @@ To configure the CI environment you have to perform several steps:
 
 To lower the barrier to entry and allow users to easily define their own naming conventions, we introduced a default `'name prefix'` for all deployed resources.
 
-> **Note:** This prefix is only used by the CI environment you validate your modules in, and doesn't affect the naming of any resources you deploy as part of any multi-module solutions (applications/workloads) based on the modules. 
+> **Note:** This prefix is only used by the CI environment you validate your modules in, and doesn't affect the naming of any resources you deploy as part of any multi-module solutions (applications/workloads) based on the modules.
 
 Each pipeline in CARML deploying resources uses a logic that automatically replaces "tokens" (i.e., placeholders) in any parameter file. Tokens are stored in only a few central locations to facilitate maintenance (e.g., local `settings.json`, repository secrets or variable groups).
 
@@ -222,7 +222,7 @@ To do so, perform the following steps:
 
 ### 3.2.4 Set R/W Workflow permissions
 
-To let the worflow engine publish their results into your repository, you have to enable the read / write access for the github actions.
+To let the workflow engine publish their results into your repository, you have to enable the read / write access for the GitHub actions.
 
 1. Navigate to the `Settings` tab on the top of your repository page.
 
@@ -231,7 +231,7 @@ To let the worflow engine publish their results into your repository, you have t
 1. Make sure to enable `Read and write permissions`
 
     <img src="./media/SetupEnvironment/workflow_permissions.png" alt="Workflow Permissions">
-    
+
 </details>
 
 <p>

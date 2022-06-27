@@ -152,7 +152,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -229,7 +228,6 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>

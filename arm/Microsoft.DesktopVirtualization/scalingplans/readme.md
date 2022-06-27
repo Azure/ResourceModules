@@ -273,7 +273,6 @@ roleAssignments: [
         }
     }
 }
-
 ```
 
 </details>

@@ -165,7 +165,6 @@ tags: {
         }
     }
 }
-
 ```
 
 </details>
@@ -218,7 +217,6 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
         }
     }
 }
-
 ```
 
 </details>
