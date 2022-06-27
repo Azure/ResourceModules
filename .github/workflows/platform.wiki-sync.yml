@@ -5,6 +5,7 @@
 name: '.Platform: Sync Docs/Wiki'
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main

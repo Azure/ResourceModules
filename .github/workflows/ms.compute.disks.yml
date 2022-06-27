@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.disks.yml'
-      - 'arm/Microsoft.Compute/disks/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Compute/disks/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Compute/disks'
+  modulePath: 'modules/Microsoft.Compute/disks'
   workflowPath: '.github/workflows/ms.compute.disks.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

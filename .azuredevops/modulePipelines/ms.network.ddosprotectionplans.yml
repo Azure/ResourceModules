@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.ddosprotectionplans.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Network/ddosProtectionPlans/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Network/ddosProtectionPlans/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/ddosProtectionPlans'
+    value: '/modules/Microsoft.Network/ddosProtectionPlans'
 
 stages:
   - stage: Validation

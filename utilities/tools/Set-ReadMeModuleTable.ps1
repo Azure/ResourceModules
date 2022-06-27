@@ -25,7 +25,7 @@ Mandatory. The set of columns to add to the table in the order you expect them i
 Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
 
 .EXAMPLE
-Set-ReadMeModuleTable -FilePath 'C:\readme.md' -ModulesPath 'C:\arm' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','Status')
+Set-ReadMeModuleTable -FilePath 'C:\readme.md' -ModulesPath 'C:\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','Status')
 
 Update the defined table section in the 'readme.md' file with a table that has the columns 'Name' & 'Status'
 #>
