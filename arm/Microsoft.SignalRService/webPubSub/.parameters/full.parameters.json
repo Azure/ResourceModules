@@ -26,6 +26,16 @@
     "sku": {
       "value": "Standard_S1"
     },
+    "roleAssignments": {
+       "value": [
+           {
+               "roleDefinitionIdOrName": "Reader",
+               "principalIds": [
+                   "<<deploymentSpId>>"
+               ]
+           }
+       ]
+   },
     "systemAssignedIdentity": {
       "value": true
     },
