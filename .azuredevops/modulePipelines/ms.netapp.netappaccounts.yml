@@ -45,9 +45,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/nfs3.parameters.json
-            - path: $(modulePath)/.parameters/nfs41.parameters.json
+            - path: $(modulePath)/.deploymentTests/min.parameters.json
+            - path: $(modulePath)/.deploymentTests/nfs3.parameters.json
+            - path: $(modulePath)/.deploymentTests/nfs41.parameters.json
 
   - stage: Publishing
     displayName: Publishing

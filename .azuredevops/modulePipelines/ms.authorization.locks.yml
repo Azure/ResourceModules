@@ -45,7 +45,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/rg.parameters.json
+            - path: $(modulePath)/.deploymentTests/rg.parameters.json
               templateFilePath: $(modulePath)/deploy.bicep
 
   - stage: Publishing
