@@ -6,7 +6,7 @@
       "value": "westeurope"
     },
     "name": {
-      "value": "minimalWebPubSubDeployment"
+      "value": "<<namePrefix>>-az-pubsub-min-001"
     }
   }
 }
