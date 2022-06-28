@@ -45,9 +45,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/mongodb.parameters.json
-            - path: $(modulePath)/.deploymentTests/plain.parameters.json
-            - path: $(modulePath)/.deploymentTests/sqldb.parameters.json
+            - path: $(modulePath)/.test/mongodb.parameters.json
+            - path: $(modulePath)/.test/plain.parameters.json
+            - path: $(modulePath)/.test/sqldb.parameters.json
 
   - stage: Publishing
     displayName: Publishing

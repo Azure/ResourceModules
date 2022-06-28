@@ -45,8 +45,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/parameters.json
-            - path: $(modulePath)/.deploymentTests/vnetPeering.parameters.json
+            - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/vnetPeering.parameters.json
 
   - stage: Publishing
     displayName: Publishing

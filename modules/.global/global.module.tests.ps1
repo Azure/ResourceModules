@@ -89,10 +89,10 @@ Describe 'File/folder tests' -Tag Modules {
             (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [.deploymentTests] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        It '[<moduleFolderName>] Module should contain a [.test] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
             param( [string] $moduleFolderPath )
-            Test-Path (Join-Path -Path $moduleFolderPath '.deploymentTests') | Should -Be $true
+            Test-Path (Join-Path -Path $moduleFolderPath '.test') | Should -Be $true
         }
 
         It '[<moduleFolderName>] Module should contain a [version.json] file' -TestCases $moduleFolderTestCases {
@@ -102,11 +102,11 @@ Describe 'File/folder tests' -Tag Modules {
         }
     }
 
-    Context '.deploymentTests folder' {
+    Context '.test folder' {
 
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.deploymentTests')) {
+            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
                 $folderTestCases += @{
                     moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                     moduleFolderPath = $moduleFolderPath
@@ -120,13 +120,13 @@ Describe 'File/folder tests' -Tag Modules {
                 [string] $moduleFolderName,
                 $moduleFolderPath
             )
-            $parameterFolderPath = Join-Path $moduleFolderPath '.deploymentTests'
+            $parameterFolderPath = Join-Path $moduleFolderPath '.test'
             (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force).Count | Should -BeGreaterThan 0
         }
 
         $parameterFolderFilesTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $parameterFolderPath = Join-Path $moduleFolderPath '.deploymentTests'
+            $parameterFolderPath = Join-Path $moduleFolderPath '.test'
             if (Test-Path $parameterFolderPath) {
                 foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force)) {
                     $parameterFolderFilesTestCases += @{
@@ -505,8 +505,8 @@ Describe 'Deployment template tests' -Tag Template {
             $TemplateFile_AllParameterNames = $templateFile_Parameters.Keys | Sort-Object
             $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.Keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
 
-            if (Test-Path (Join-Path $moduleFolderPath '.deploymentTests')) {
-                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.deploymentTests' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
+            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
+                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
                 foreach ($ParameterFilePath in $ParameterFilePaths) {
                     $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.Keys | Sort-Object
                     $parameterFileTestCases += @{
@@ -917,8 +917,8 @@ Describe 'Deployment template tests' -Tag Template {
         $parameterFileTokenTestCases = @()
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.deploymentTests')) {
-                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.deploymentTests' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
+            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
+                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.testeters.json') -Recurse -Force).FullName
                 foreach ($ParameterFilePath in $ParameterFilePaths) {
                     foreach ($token in $enforcedTokenList.Keys) {
                         $parameterFileTokenTestCases += @{
@@ -948,7 +948,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
             if ($incorrectReferencesFound.Matches) {
-                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Parameter file should not contain the [{0}] value, instead should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
+                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Parameter file should not contain the [ { 0 }] value, instead should reference the token value [ { 1 }]. Please check the { 2 } lines: [ { 3 }]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
             }
         }
     }
@@ -1067,7 +1067,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         $resourceTypeApiVersions = ($namespaceResourceTypes | Where-Object { $_.ResourceTypeName -eq $resourceType }).ApiVersions
 
         if (-not $resourceTypeApiVersions) {
-            Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
+            Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [ { 0 }/ { 1 }]' -f $ProviderNamespace, $resourceType)
             continue
         }
 

@@ -45,8 +45,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/asev2.parameters.json
-            - path: $(modulePath)/.deploymentTests/asev3.parameters.json
+            - path: $(modulePath)/.test/asev2.parameters.json
+            - path: $(modulePath)/.test/asev3.parameters.json
           defaultJobTimeoutInMinutes: 180
 
   - stage: Publishing

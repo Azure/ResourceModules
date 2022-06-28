@@ -45,9 +45,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.deploymentTests/min.parameters.json
-            - path: $(modulePath)/.deploymentTests/nonms.parameters.json
-            - path: $(modulePath)/.deploymentTests/ms.parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/nonms.parameters.json
+            - path: $(modulePath)/.test/ms.parameters.json
 
   - stage: Publishing
     displayName: Publishing

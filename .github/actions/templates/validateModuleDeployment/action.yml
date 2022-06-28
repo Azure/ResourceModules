@@ -15,7 +15,7 @@
 ##   | Parameter                 | Required | Default | Description                                           | Example                                                                    |
 ##   |---------------------------|----------|---------|-------------------------------------------------------|----------------------------------------------------------------------------|
 ##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'modules/Microsoft.ApiManagement/service/deploy.bicep'                     |
-##   | parameterFilePath         | true     | ''      | The path to the parameter file to use for deployment  | 'modules/Microsoft.ApiManagement/service/.deploymentTests/parameters.json' |
+##   | parameterFilePath         | true     | ''      | The path to the parameter file to use for deployment  | 'modules/Microsoft.ApiManagement/service/.test/parameters.json' |
 ##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                               |
 ##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                            |
 ##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |

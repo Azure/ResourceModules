@@ -23,8 +23,8 @@ function Get-DeploymentTestFileList {
     )
 
     $deploymentTests = @()
-    if (Test-Path (Join-Path $ModulePath '.deploymentTests')) {
-        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath '.deploymentTests') -Depth 0 -Include ('*.json', '*.bicep') -File).FullName
+    if (Test-Path (Join-Path $ModulePath '.test')) {
+        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath '.test') -Depth 0 -Include ('*.json', '*.bicep') -File).FullName
     }
 
     if (-not $deploymentTests) {
