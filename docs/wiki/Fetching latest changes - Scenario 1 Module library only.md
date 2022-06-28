@@ -21,7 +21,7 @@ In case you consume the module library with a local repository, the update proce
     </details>
 
 1. [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library#1-download-the-library)
-1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library.md#2-optional-convert-library-to-arm)
+1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library#2-optional-convert-library-to-arm)
 
 If you have customized modules, you'll need to apply customizations on the new updated modules.
 
