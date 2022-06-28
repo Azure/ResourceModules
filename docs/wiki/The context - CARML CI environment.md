@@ -43,7 +43,7 @@ Also, if you reference a module version that was tested in and has passed throug
 To ensure the modules hosted by the CARML library are valid and can perform the intended deployments, the repository comes with a continuous integration (CI) environment for each module.
 If the validation is successful, the CI environment is also publishing versioned modules to one or multiple target locations, from where they can be referenced by solutions consuming them.
 
-The CARML CI environment covers `Phase #1`, (the validation) & `Phase #2` (the publishing) of the [deployment flow](#deployment-flow) section - these include the steps typically performed by the *CARML module developer* persona. 
+The CARML CI environment covers `Phase #1`, (the validation) & `Phase #2` (the publishing) of the [deployment flow](#deployment-flow) section - these include the steps typically performed by the *CARML module developer* persona.
 
 The *CARML solution developer* and *solution consumer* personas are usually working in `Phase #2` and `Phase #3`, i.e., building/leveraging complex, multi-module solutions by consuming the already tested and versioned modules previously placed in an artifact store.
 

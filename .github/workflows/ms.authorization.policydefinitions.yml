@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.authorization.policydefinitions.yml'
-      - 'arm/Microsoft.Authorization/policyDefinitions/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Authorization/policyDefinitions/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Authorization/policyDefinitions'
+  modulePath: 'modules/Microsoft.Authorization/policyDefinitions'
   workflowPath: '.github/workflows/ms.authorization.policydefinitions.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

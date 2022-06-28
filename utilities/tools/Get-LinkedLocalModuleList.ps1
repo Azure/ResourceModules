@@ -6,14 +6,14 @@ Print a list of all local references for the modules in a given path
 The result will be a list of all modules in the given path alongside their individual references to other modules in the folder structure
 
 .PARAMETER path
-Optional. The path to search in. Defaults to the 'arm' folder
+Optional. The path to search in. Defaults to the 'modules' folder
 
 .EXAMPLE
 Get-LinkedLocalModuleList
 
 Invoke the function with the default path. Prints a list such as:
 
-> The modules in path [C:\dev\ip\Azure-ResourceModules\ResourceModules\arm] have the following local folder dependencies:
+> The modules in path [C:\dev\ip\Azure-ResourceModules\ResourceModules\modules] have the following local folder dependencies:
 >
 > Resource: Microsoft.EventGrid/topics
 > - Microsoft.EventGrid/Microsoft.Network/privateEndpoints
@@ -26,7 +26,7 @@ Get-LinkedLocalModuleList -Path './Microsoft.Sql'
 
 Get only the references of the modules in folder path './Microsoft.Sql'
 
-> The modules in path [..\..\arm\Microsoft.Sql\] have the following local folder dependencies:
+> The modules in path [..\..\modules\Microsoft.Sql\] have the following local folder dependencies:
 >
 > Resource: Microsoft.Sql/servers
 > - Microsoft.Sql/Microsoft.Network/privateEndpoints
@@ -36,7 +36,7 @@ function Get-LinkedLocalModuleList {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'arm')
+        [string] $path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules')
     )
 
     # Load used functions
