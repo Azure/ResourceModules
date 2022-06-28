@@ -32,7 +32,7 @@ The purpose of each module pipeline is twofold:
 1. **Validation**: To ensure the modules hosted by the CARML library are valid and can perform the intended deployments.
 1. **Publishing**: To publish _versioned_ and already validated modules to one or multiple target locations, from where they can be referenced by solutions consuming them.
 
-As such, each pipeline can be mapped to `Phases 1 and 2` described in the [Deployment flow](./The%20context%20-%20CARML%20CI%20environment.md#deployment-flow) section.
+As such, each pipeline can be mapped to `Phases 1 and 2` described in the [Deployment flow](./The%20context%20-%20CARML%20CI%20environment#deployment-flow) section.
 
 <img src="./media/CIEnvironment/pipelineDesign.png" alt="Pipeline phases" height="500">
 
@@ -84,7 +84,7 @@ Technical documentation for each composite action, such as required input and ou
 <img src="./media/CIEnvironment/pipelinePhasesADO.png" alt="Pipeline phases ADO" height="300">
 
 Azure DevOps pipelines map each pipeline phase to a dedicated pipeline template, to maximize code reusability.
-The mapping to the specific yaml template file is provided below:
+The mapping to the specific YAML template file is provided below:
 
 | Template Name | Pipeline phase |
 | - | - |
@@ -169,7 +169,7 @@ This group of resources has a dependency only on the resource group which will h
       > **Note**: The object ID of the \[user assigned identity] is needed by several dependency parameter files. However, before running the dependencies pipeline for the first time, the \[user assigned identity] resource does not exist yet, thus its object ID is unknown. For this reason, instead of the object ID value, some dependency parameter files contain the `"<<msiPrincipalId>>"` token, for which the correct value is retrieved and replaced by the pipeline at runtime.
   1. Shared image gallery and definition: These resources are leveraged by the \[image template] resource.
   1. Route table: This resource is leveraged by the virtual network subnet dedicated to test \[SQL managed instance].
-      >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
+      >**Note**: This resource is deployed and configured only if SQL-MI dependency resources are enabled.
   1. Route table: This resource is leveraged by a test subnet deployment of the \[Virtual Network] module.
   1. Action group: This resource is leveraged by \[activity log alert] and \[metric alert] resources.
   1. Application security group: This resource is leveraged by the \[network security group] resource.
@@ -202,7 +202,7 @@ This group of resources has a dependency on one or more resources in the group a
       - '_adp-\<<namePrefix\>>-az-kv-x-001_': KV with required secrets, keys, certificates and access policies to be leveraged by all resources requiring access to a Key Vault key, secret and/or certificate, i.e., \[application gateway], \[azure NetApp file], \[azure SQL server], \[disk encryption set], \[machine learning service], \[virtual machine], \[virtual machine scale set], \[virtual network gateway connection].
       - '_adp-\<<namePrefix\>>-az-kv-x-pe_': KV to be leveraged by the \[private endpoint] resource.
       - '_adp-\<<namePrefix\>>-az-kv-x-sqlmi_': KV with required secrets, keys and access policies to be leveraged by the \[SQL managed instance] resource.
-        >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
+        >**Note**: This resource is deployed and configured only if SQL-MI dependency resources are enabled.
       >**Note**: This resource has a global scope name.
   1. Recovery services vault: This resource supports monitoring, hence it has a dependency on the \[storage account], \[log analytics workspace] and \[event hub] deployed in the group above. This resource is leveraged by the \[virtual machine] resource when backup is enabled.
 
@@ -259,7 +259,7 @@ The repository includes two major ReadMe files that should stay in sync with the
 
 The first can be found in the repository root (`README.md`) and the second in the modules folder (`modules/README.md`).
 
-The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `modules` folder is being altered. The pipeline leverages the script documented in the [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update) page.
+The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `modules` folder is being altered. The pipeline leverages the script documented on the [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update) page.
 
 Once triggered, the pipeline crawls through the library and updates the tables in each corresponding ReadMe file, creating links to the corresponding pipeline runs and updating the list of entries.
 
