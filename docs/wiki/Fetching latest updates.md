@@ -31,7 +31,7 @@ Another advantage is that CARML public modules are tested, so you won't need to 
 You can also specify a priority when you [create](./Contribution%20guide%20-%20Contribution%20flow.md#create-or-pick-up-an-issue) the issue so that it's evaluated when updating the public library.
 
 ### Option 2 - Specific requirements
-As a [Module Developer](./The%20context%20-%20Logical%20layers%20and%20personas.md#module-developer) you might add to the library  company/organization specifics, either via conventions, parameters, extensions, or CI-specific changes.
+As a [Module Developer](./The%20context%20-%20Logical%20layers%20and%20personas#module-developer) you might add to the library  company/organization specifics, either via conventions, parameters, extensions, or CI-specific changes.
 
 In this scenario every time you'll update your own library you'll have to compare the new public code with your customized one and re-apply your customizations to the updated code. This process can be automated, by script or CI, if customization tasks are repeatable.
 
