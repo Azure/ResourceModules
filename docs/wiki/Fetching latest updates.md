@@ -42,6 +42,6 @@ We recommend to adopt module library with the CI environment in this case, to au
 ## Update procedure
 A different scenario can apply depending on your use of the library:
 - [**Scenario 1:** module library only](./Fetching%20latest%20changes%20-%20Scenario%201%20Module%20library%20only.md). In this case we refer to the update of your copy of module templates that can be stored locally, as Template Specs or on a private Bicep Registry, as explained in [Template Orchestration](./Solution%20creation.md#template-orchestration).
-- [**Scenario 2:** module library and CI environment](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20and%20CI%20environment.md). In this case we refer to the update of your internalized library's repository and the related CI environment, this usually happens when adopting the [Pipeline Orchestration](./Solution%20creation.md#pipeline-orchestration) approach.
+- [**Scenario 2:** module library and CI environment](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20and%20CI%20environment). In this case we refer to the update of your internalized library's repository and the related CI environment, this usually happens when adopting the [Pipeline Orchestration](./Solution%20creation.md#pipeline-orchestration) approach.
 
 
