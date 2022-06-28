@@ -1067,7 +1067,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         $resourceTypeApiVersions = ($namespaceResourceTypes | Where-Object { $_.ResourceTypeName -eq $resourceType }).ApiVersions
 
         if (-not $resourceTypeApiVersions) {
-            Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [ { 0 }/ { 1 }]' -f $ProviderNamespace, $resourceType)
+            Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
             continue
         }
 
