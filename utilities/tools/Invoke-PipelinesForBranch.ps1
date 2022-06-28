@@ -51,7 +51,7 @@ function Invoke-GitHubWorkflow {
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-GitHubWorkflowDefaultInput.ps1')
 
     $workflowFileName = Split-Path $WorkflowFilePath -Leaf
-    $workflowParameters = Get-GitHubWorkflowDefaultInput -workflowPath $WorkflowFilePath
+    $workflowParameters = Get-GitHubWorkflowDefaultInput -workflowPath $WorkflowFilePath -Verbose:$false
     $removeDeploymentFlag = $workflowParameters.removeDeployment
 
     $requestInputObject = @{
