@@ -43,7 +43,7 @@ param disableAadAuth bool = false
 @description('Optional. Disables all authentication methods other than AAD authentication. For security reasons, this value should be set to `true`.')
 param disableLocalAuth bool = true
 
-@description('Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled. For security reasons, this value should be set to `Disabled`'.)
+@description('Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled. For security reasons, this value should be set to `Disabled`.')
 @allowed([
   'Enabled'
   'Disabled'
@@ -115,7 +115,7 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   properties: {
     disableAadAuth: disableAadAuth
     disableLocalAuth: disableLocalAuth
-    networkACLs: !empty(webPubSubNetworkAcls) && sku != 'Free_F1' ? webPubSubNetworkAcls : null
+    networkACLs: !empty(webPubSubNetworkAcls) && sku != 'Free_F1' ? any(webPubSubNetworkAcls) : null
     publicNetworkAccess: publicNetworkAccess
     resourceLogConfiguration: {
       categories: resourceLogConfiguration

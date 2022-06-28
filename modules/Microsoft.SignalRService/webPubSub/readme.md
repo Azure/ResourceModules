@@ -1,4 +1,4 @@
-# SignalRService `[Microsoft.SignalRService]`
+# SignalRService `[Microsoft.SignalRService/webPubSub]`
 
 This module deploys a Web PubSub resource.
 
@@ -7,6 +7,7 @@ This module deploys a Web PubSub resource.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -28,19 +29,19 @@ This module deploys a Web PubSub resource.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `capacity` | int | `1` | The unit count of the resource. 1 by default. |
+| `capacity` | int | `1` |  | The unit count of the resource. 1 by default. |
 | `clientCertEnabled` | bool | `False` |  | Request client certificate during TLS handshake if enabled. |
 | `disableAadAuth` | bool | `False` |  | When set as true, connection with AuthType=aad won't work. |
-| `disableLocalAuth` | bool | `False` |  | Disables all authentication methods other than AAD authentication. |
+| `disableLocalAuth` | bool | `True` |  | Disables all authentication methods other than AAD authentication. For security reasons, this value should be set to `true`. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | The location to deploy the Web PubSub service. |
+| `location` | string | `[resourceGroup().location]` |  | The location for all Web PubSub resources. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkAcls` | array | `[]` |  | Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `'Enabled'` |  | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
+| `publicNetworkAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. For security reasons, this value should be set to `Disabled`. |
 | `resourceLogConfigurationsToEnable` | array | `[ConnectivityLogs, MessagingLogs]` | `[ConnectivityLogs, MessagingLogs]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'Free_F1'` | `[Free_F1, Standard_S1]` | Pricing tier of App Configuration. |
+| `sku` | string | `'Standard_S1'` | `[Free_F1, Standard_S1]` | Pricing tier of App Configuration. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -260,7 +261,155 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the Web PubSub service was deployed into. |
-| `name` | string | The name of the Web PubSub service. |
-| `resourceGroupName` | string | The resource group the Web PubSub service was deployed into. |
-| `resourceId` | string | The resource ID of the Web PubSub service. |
+| `externalIP` | string | The Web PubSub externalIP. |
+| `hostName` | string | The Web PubSub hostName. |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The Web PubSub name. |
+| `publicPort` | int | The Web PubSub publicPort. |
+| `resourceGroupName` | string | The Web PubSub resource group. |
+| `resourceId` | string | The Web PubSub resource ID. |
+| `serverPort` | int | The Web PubSub serverPort. |
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "westeurope"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-pubsub-full-001"
+    },
+    "capacity": {
+      "value": 2
+    },
+    "clientCertEnabled": {
+      "value": false
+    },
+    "disableAadAuth": {
+      "value": false
+    },
+    "disableLocalAuth": {
+      "value": true
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "sku": {
+      "value": "Standard_S1"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ]
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "tags": {
+      "value": {
+        "purpose": "test"
+      }
+    },
+    "resourceLogConfigurationsToEnable": {
+      "value": [
+        "ConnectivityLogs"
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-webPubSub'
+  params: {
+    location: 'westeurope'
+    name: '<<namePrefix>>-az-pubsub-full-001'
+    capacity: 2
+    clientCertEnabled: false
+    disableAadAuth: false
+    disableLocalAuth: true
+    lock: 'CanNotDelete'
+    sku: 'Standard_S1'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    systemAssignedIdentity: true
+    tags: {
+      purpose: 'test'
+    }
+    resourceLogConfigurationsToEnable: [
+      'ConnectivityLogs'
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "westeurope"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-pubsub-min-001"
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-webPubSub'
+  params: {
+    location: 'westeurope'
+    name: '<<namePrefix>>-az-pubsub-min-001'
+  }
+}
+```
+
+</details>
+<p>
