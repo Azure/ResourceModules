@@ -6,7 +6,7 @@ This section provides an overview on how to get your library updated.
 Updates can have different impacts on your version of the library:
 - impacts limited to the CI framework
 
-    a general **pipeline update** can be done by copying/replacing any code outside of the  `arm` folder. Refer to [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0.md#general-pipeline-updates) as an example.
+    a general **pipeline update** can be done by copying/replacing any code outside of the `arm` folder. Refer to [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0#general-pipeline-updates) as an example.
 
 - impacts limited to specific modules
 
