@@ -51,7 +51,7 @@ function Invoke-GitHubWorkflow {
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-GitHubWorkflowDefaultInput.ps1')
 
     $workflowFileName = Split-Path $WorkflowFilePath -Leaf
-    $workflowParameters = Get-GitHubWorkflowDefaultInput -workflowPath $WorkflowFilePath -Verbose
+    $workflowParameters = Get-GitHubWorkflowDefaultInput -workflowPath $WorkflowFilePath
     $removeDeploymentFlag = $workflowParameters.removeDeployment
 
     $requestInputObject = @{
@@ -69,7 +69,7 @@ function Invoke-GitHubWorkflow {
         } | ConvertTo-Json
     }
     if ($PSCmdlet.ShouldProcess("GitHub workflow [$workflowFileName] for branch [$TargetBranch]", 'Invoke')) {
-        $response = Invoke-RestMethod @requestInputObject
+        $response = Invoke-RestMethod @requestInputObject -Verbose:$false
 
         if ($response) {
             Write-Error "Request failed. Reponse: [$response]"
@@ -257,8 +257,12 @@ function Invoke-PipelinesForBranch {
             $workflowFilePath = $workflow.path
             $WorkflowFileName = Split-Path $Workflow.path -Leaf
 
-            if ($PSCmdlet.ShouldProcess("GitHub workflow [$WorkflowFileName] for branch [$TargetBranch]", 'Invoke')) {
-                $null = Invoke-GitHubWorkflow @baseInputObject -TargetBranch $TargetBranch -WorkflowFilePath (Join-Path $RepositoryRoot $workflowFilePath)
+            if (Test-Path (Join-Path $RepositoryRoot $workflowFilePath)) {
+                if ($PSCmdlet.ShouldProcess("GitHub workflow [$WorkflowFileName] for branch [$TargetBranch]", 'Invoke')) {
+                    $null = Invoke-GitHubWorkflow @baseInputObject -TargetBranch $TargetBranch -WorkflowFilePath (Join-Path $RepositoryRoot $workflowFilePath)
+                }
+            } else {
+                Write-Warning ('Warning: Workflow [{0}] is registered, but no workflow file in the target branch [{1}] available' -f (Join-Path $RepositoryRoot $workflowFilePath), $TargetBranch) -Verbose
             }
 
             # Generate pipeline badges
