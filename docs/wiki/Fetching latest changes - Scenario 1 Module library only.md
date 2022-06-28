@@ -29,7 +29,7 @@ If you have customized modules, you'll need to apply customizations on the new u
 When the modules are stored in Template Specs a versioning feature with access to old versions is available, but a backup of the local folder can be useful if you have customized modules, as you'll need to apply the customization to the new downloaded version of the modules. The update steps are the following:
 1. Backup your local repository to maintain a backup copy: you can rename the local repository as showed in the above section.
 1. [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library#1-download-the-library)
-1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library.md#2-optional-convert-library-to-arm)
+1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library#2-optional-convert-library-to-arm)
 1. Apply customizations to the new version of modules if needed
 1. Publish modules to Template Spec
     <details>
