@@ -27,7 +27,7 @@ The update process is the following:
 # GitHub private repository
 You have created your GitHub target repository and uploaded there the content of the CARML repository.
 The update process is similar to the onboarding one:
-1. Clone/download CARML repository to create a local copy of it, as explained in Azure DevOps Repository section in [Getting started - Scenario 2 Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md#2-forkclone-the-repository-into-your-devops-environment)
+1. Clone/download CARML repository to create a local copy of it, as explained in Azure DevOps Repository section in [Getting started - Scenario 2 Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#2-forkclone-the-repository-into-your-devops-environment)
 1. Personalize files with your specific settings:
     1. [Update default name prefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#31-update-default-nameprefix)
     1. Update variables file ([`global.variables.yml`](https://github.com/Azure/ResourceModules/blob/main/global.variables.yml)) as explained in [Set up variables file](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#322-set-up-variables-file)
