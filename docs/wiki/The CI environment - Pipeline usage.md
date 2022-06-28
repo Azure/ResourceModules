@@ -61,7 +61,7 @@ To run the dependencies pipeline you can perform the following steps:
 
 By default, i.e., by keeping the optional flags disables, the dependencies pipeline may take up to 30 minutes to run.
 
-> **Note:** For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
+> **Note:** For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design#dependencies-pipeline) section.
 
 ## Add a new dependency
 
@@ -92,7 +92,7 @@ This section focuses on _GitHub_ Actions & Workflows.
 
      <img src="./media/CIEnvironment/gHtriggerPipeline.png" alt="Run workflow" height="350">
 
-  >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design.md#module-pipeline-inputs) section.
+  >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module-pipeline-inputs) section.
 
   ### Register a workflow
 
@@ -124,7 +124,7 @@ This section focuses on _Azure DevOps_ pipelines.
 
      <img src="./media/CIEnvironment/pipelineStart3.png" alt="Pipeline start step 3" height="400">
 
-  >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design.md#module-pipeline-inputs) section.
+  >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module-pipeline-inputs) section.
 
   ### Register a pipeline
 
