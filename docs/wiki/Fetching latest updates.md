@@ -28,7 +28,7 @@ In this scenario we recommend to [contribute](./Contribution%20guide.md) to the 
 In this way your improved code will be part of next updates and releases of the public CARML library and you won't need to take care of customization and do code comparison each time you'll update your local version of the library.
 Another advantage is that CARML public modules are tested, so you won't need to mange the test of your customization at each update.
 
-You can also specify a priority when you [create](./Contribution%20guide%20-%20Contribution%20flow.md#create-or-pick-up-an-issue) the issue so that it's evaluated when updating the public library.
+You can also specify a priority when you [create](./Contribution%20guide%20-%20Contribution%20flow#create-or-pick-up-an-issue) the issue so that it's evaluated when updating the public library.
 
 ### Option 2 - Specific requirements
 As a [Module Developer](./The%20context%20-%20Logical%20layers%20and%20personas#module-developer) you might add to the library  company/organization specifics, either via conventions, parameters, extensions, or CI-specific changes.
