@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.signalrservice.webpubsub.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.SignalRService/webPubSub/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.SignalRService/webPubSub/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.SignalRService/webPubSub'
+    value: '/modules/Microsoft.SignalRService/webPubSub'
 
 stages:
   - stage: Validation

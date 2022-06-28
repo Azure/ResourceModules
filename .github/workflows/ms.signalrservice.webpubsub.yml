@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.signalrservice.webpubsub.yml'
-      - 'arm/Microsoft.SignalRService/webPubSub/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.SignalRService/webPubSub/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.SignalRService/webPubSub'
+  modulePath: 'modules/Microsoft.SignalRService/webPubSub'
   workflowPath: '.github/workflows/ms.signalrservice.webpubsub.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
