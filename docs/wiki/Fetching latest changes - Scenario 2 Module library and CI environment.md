@@ -49,7 +49,7 @@ The update process is similar to the onboarding one:
 1. (Optional) Re-apply your customizations
 1. Run the '*dependencies pipeline*' to update dependencies configuration that can be updated on the downloaded CARML release. Follow [Deploy dependencies](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only.md4-deploy-dependencies) section in Getting started - Scenario 2 Onboard module library and CI environment documentation to do this.
 1. [Update module parameter files](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#5-update-module-parameter-files)
-1. [(Optional) Convert library to ARM](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only.md#6-optional-convert-library-to-arm)
+1. [(Optional) Convert library to ARM](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only#6-optional-convert-library-to-arm)
 1. Push the updated local code to your remote target repository
 1. (Optional) Test customized modules
 1. Publish updated artifacts
