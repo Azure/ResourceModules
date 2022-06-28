@@ -14,7 +14,7 @@ The update process is the following:
 1. Keep your fork synced to the fork upstream repository, on the GitHub web UI or through the GitHub CLI or the command line, as explaind in [Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) documentation.
 1. Sync your local copy of the fork taking care of eventual customizations you can have in place.
 1. Personalize files with your specific settings:
-    1. [Update default name prefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md#31-update-default-nameprefix)
+    1. [Update default name prefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#31-update-default-nameprefix)
     1. Update variables file ([`global.variables.yml`](https://github.com/Azure/ResourceModules/blob/main/global.variables.yml)) as explained in [Set up variables file](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md#322-set-up-variables-file)
 1. (Optional) Re-apply your customizations
 1. Run the '*dependencies pipeline*' to update dependencies configuration that can be updated on the downloaded CARML release. Follow [Deploy dependencies](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only.md4-deploy-dependencies) section in Getting started - Scenario 2 Onboard module library and CI environment documentation to do this.
