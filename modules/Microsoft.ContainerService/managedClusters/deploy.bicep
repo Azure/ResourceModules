@@ -137,7 +137,7 @@ param appGatewayResourceId string = ''
 @description('Optional. Specifies whether the aciConnectorLinux add-on is enabled or not.')
 param aciConnectorLinuxEnabled bool = false
 
-@description('Optional. Specifies whether the azurepolicy add-on is enabled or not.')
+@description('Optional. Specifies whether the azurepolicy add-on is enabled or not. For security reasons, this setting should be enabled.')
 param azurePolicyEnabled bool = true
 
 @description('Optional. Specifies the azure policy version to use.')
@@ -286,6 +286,9 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@description('Optional. The resource ID of the disc encryption set to apply to the clsuter. For security reasons, this value should be provided.')
+param diskEncryptionSetID string = ''
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'kube-apiserver'
@@ -381,6 +384,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-03-02-p
     tier: aksClusterSkuTier
   }
   properties: {
+    diskEncryptionSetID: !empty(diskEncryptionSetID) ? diskEncryptionSetID : null
     kubernetesVersion: (empty(aksClusterKubernetesVersion) ? null : aksClusterKubernetesVersion)
     dnsPrefix: aksClusterDnsPrefix
     agentPoolProfiles: primaryAgentPoolProfile
