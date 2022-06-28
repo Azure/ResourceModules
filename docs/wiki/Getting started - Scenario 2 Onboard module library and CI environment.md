@@ -379,8 +379,6 @@ For this reason, make sure to update the references in the following modules onc
 
 | File | Parameter | Notes |
 | - | - | - |
-<<<<<<< HEAD
-| `modules\Microsoft.Compute\diskEncryptionSets\.deploymentTests\parameters.json` |`keyUrl.value` | |
 | `modules\Microsoft.Compute\virtualMachines\.deploymentTests\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
 | `modules\Microsoft.Compute\virtualMachines\.deploymentTests\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
 | `modules\Microsoft.Compute\virtualMachineScaleSets\.deploymentTests\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
@@ -390,18 +388,6 @@ For this reason, make sure to update the references in the following modules onc
 | `modules\Microsoft.Web\sites\.deploymentTests\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
 | `modules\Microsoft.Web\sites\.deploymentTests\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
 | `modules\Microsoft.Web\sites\.deploymentTests\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
-=======
-| `modules\Microsoft.Compute\diskEncryptionSets\.parameters\parameters.json` |`keyUrl.value` | |
-| `modules\Microsoft.Compute\virtualMachines\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Compute\virtualMachines\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` | |
-| `modules\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
-| `modules\Microsoft.Web\sites\.parameters\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
-| `modules\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
-| `modules\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
->>>>>>> main
 
 </details>
 

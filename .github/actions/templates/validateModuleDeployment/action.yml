@@ -11,22 +11,18 @@
 ## ACTION PARAMETERS                         ##
 ##-------------------------------------------##
 ##
-##   |================================================================================================================================================================================|
-##   | Parameter                 | Required | Default | Description                                           | Example                                                               |
-##   |---------------------------|----------|---------|-------------------------------------------------------|-----------------------------------------------------------------------|
-##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'modules/Microsoft.ApiManagement/service/deploy.bicep'                |
-<<<<<<< HEAD
+##   |=====================================================================================================================================================================================|
+##   | Parameter                 | Required | Default | Description                                           | Example                                                                    |
+##   |---------------------------|----------|---------|-------------------------------------------------------|----------------------------------------------------------------------------|
+##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'modules/Microsoft.ApiManagement/service/deploy.bicep'                     |
 ##   | parameterFilePath         | true     | ''      | The path to the parameter file to use for deployment  | 'modules/Microsoft.ApiManagement/service/.deploymentTests/parameters.json' |
-=======
-##   | parameterFilePath         | true     | ''      | The path to the parameter file to use for deployment  | 'modules/Microsoft.ApiManagement/service/.parameters/parameters.json' |
->>>>>>> main
-##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                          |
-##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                       |
-##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                                |
-##   | managementGroupId         | false    | ''      | The managementGroupId to deploy to                    | '1a97b80a-4dda-4f50-ab53-349e29344654'                                |
-##   | customParameterFileTokens | false    | ''      | Additional parameter file token pairs in json format. | '{"tokenName":"tokenValue"}'                                          |
-##   | removeDeployment          | false    | 'true'  | Set "true" to set module up for removal               | 'true'                                                                |
-##   |================================================================================================================================================================================|
+##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                               |
+##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                            |
+##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
+##   | managementGroupId         | false    | ''      | The managementGroupId to deploy to                    | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
+##   | customParameterFileTokens | false    | ''      | Additional parameter file token pairs in json format. | '{"tokenName":"tokenValue"}'                                               |
+##   | removeDeployment          | false    | 'true'  | Set "true" to set module up for removal               | 'true'                                                                     |
+##   |=====================================================================================================================================================================================|
 ##
 #########################################################
 ##
