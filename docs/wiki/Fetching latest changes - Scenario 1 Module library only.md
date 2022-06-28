@@ -1,4 +1,4 @@
-When the CARML library is consumed with the [*Template Orchestration*](./Solution%20creation.md#template-orchestration) approach modules need to be stored in an available location, where the Azure Resource Manager (ARM) can access them. This can be achieved by storing the modules templates in an accessible location like local, Template Specs or the Bicep Registry.
+When the CARML library is consumed with the [*Template Orchestration*](./Solution%20creation#template-orchestration) approach modules need to be stored in an available location, where the Azure Resource Manager (ARM) can access them. This can be achieved by storing the modules templates in an accessible location like local, Template Specs or the Bicep Registry.
 
 ---
 ### _Navigation_
