@@ -60,7 +60,7 @@ When the modules are stored in Template Specs a versioning feature with access t
     </details>
     <p
 1. Update your master template in order to use the new version of the published modules.
-    For the [Template Specs' example in Solutions](./Solution%20creation.md#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
+    For the [Template Specs' example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
 
 # Bicep Registry
 As the Template Specs scenario, Bicep Registry offers a versioning feature with access to old versions of modules, but a backup of the local folder can be useful if you have customized modules, as you'll need to apply the customization to the new downloaded version of the modules. The update steps are the following:
