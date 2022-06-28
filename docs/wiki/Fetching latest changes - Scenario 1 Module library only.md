@@ -20,7 +20,7 @@ In case you consume the module library with a local repository, the update proce
     This can be done, for example, by the `'Compare selected'` [function](https://vscode.one/diff-vscode/) of Visual Studio Code
     </details>
 
-1. [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md#1-download-the-library)
+1. [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library#1-download-the-library)
 1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library.md#2-optional-convert-library-to-arm)
 
 If you have customized modules, you'll need to apply customizations on the new updated modules.
