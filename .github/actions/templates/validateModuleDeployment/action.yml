@@ -200,7 +200,7 @@ runs:
             $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
           } else {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
-            $moduleTemplateFilePath =  Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
           }
 
           if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
@@ -214,7 +214,6 @@ runs:
           # INVOKE TEST #
           # ----------- #
           $functionInput = @{
-            templateFilePath     = $moduleTestFilePath
             location             = $location
             resourceGroupName    = $resourceGroupName
             subscriptionId       = $subscriptionId
@@ -222,21 +221,34 @@ runs:
             additionalParameters = @{}
           }
 
-          if (-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+          # Handle template file
+          if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
+
+            # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
+            # ===============================================
+
+            $functionInput['templateFilePath'] = $moduleTemplateFilePath
             $functionInput['parameterFilePath'] = $moduleTestFilePath
-          }
 
-          # Handle test template parameters
-          # -------------------------------
-          if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-            $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
           } else {
-            $testTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
-          }
 
-          if ($testTemplatePossibleParameters -contains 'namePrefix') {
-            $functionInput['additionalParameters'] += @{
-              namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+            # CASE: MODULE USES NEW TEST FILES
+            # ================================
+
+            $functionInput['templateFilePath'] = $moduleTestFilePath
+
+            # Handle test template parameters
+            # -------------------------------
+            if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+              $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
+            } else {
+              $testTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+            }
+
+            if ($testTemplatePossibleParameters -contains 'namePrefix') {
+              $functionInput['additionalParameters'] += @{
+                namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+              }
             }
           }
 
@@ -284,7 +296,7 @@ runs:
             $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
           } else {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
-            $moduleTemplateFilePath =  Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
           }
 
           if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
@@ -298,7 +310,6 @@ runs:
           # INVOKE TEST #
           # ----------- #
           $functionInput = @{
-            templateFilePath     = $moduleTestFilePath
             location             = $location
             resourceGroupName    = $resourceGroupName
             subscriptionId       = $subscriptionId
@@ -306,21 +317,34 @@ runs:
             additionalParameters = @{}
           }
 
-          if (-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+          # Handle template file
+          if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
+
+            # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
+            # ===============================================
+
+            $functionInput['templateFilePath'] = $moduleTemplateFilePath
             $functionInput['parameterFilePath'] = $moduleTestFilePath
-          }
 
-          # Handle test template parameters
-          # -------------------------------
-          if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-            $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
           } else {
-            $testTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
-          }
 
-          if ($testTemplatePossibleParameters -contains 'namePrefix') {
-            $functionInput['additionalParameters'] += @{
-              namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+            # CASE: MODULE USES NEW TEST FILES
+            # ================================
+
+            $functionInput['templateFilePath'] = $moduleTestFilePath
+
+            # Handle test template parameters
+            # -------------------------------
+            if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+              $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
+            } else {
+              $testTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+            }
+
+            if ($testTemplatePossibleParameters -contains 'namePrefix') {
+              $functionInput['additionalParameters'] += @{
+                namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+              }
             }
           }
 
