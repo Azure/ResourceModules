@@ -120,15 +120,15 @@ Describe 'File/folder tests' -Tag Modules {
                 [string] $moduleFolderName,
                 $moduleFolderPath
             )
-            $parameterFolderPath = Join-Path $moduleFolderPath '.test'
-            (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force).Count | Should -BeGreaterThan 0
+            $testFolderPath = Join-Path $moduleFolderPath '.test'
+            (Get-ChildItem $testFolderPath -Filter '*parameters.json' -Force).Count | Should -BeGreaterThan 0
         }
 
         $parameterFolderFilesTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $parameterFolderPath = Join-Path $moduleFolderPath '.test'
-            if (Test-Path $parameterFolderPath) {
-                foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force)) {
+            $testFolderPath = Join-Path $moduleFolderPath '.test'
+            if (Test-Path $testFolderPath) {
+                foreach ($parameterFile in (Get-ChildItem $testFolderPath -Filter '*parameters.json' -Force)) {
                     $parameterFolderFilesTestCases += @{
                         moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                         parameterFilePath = $parameterFile.FullName
