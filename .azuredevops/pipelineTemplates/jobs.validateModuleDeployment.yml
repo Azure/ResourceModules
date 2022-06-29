@@ -239,7 +239,7 @@ jobs:
 
                 # Handle test template parameters
                 # -------------------------------
-                if (Split-Path $moduleTestFilePath -eq '.bicep') {
+                if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
                     $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                     $testTemplatePossibleParameters = $testFileContent.parameters.Keys
                 } else {
@@ -329,7 +329,7 @@ jobs:
 
                 # Handle test template parameters
                 # -------------------------------
-                if (Split-Path $moduleTestFilePath -eq '.bicep') {
+                if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
                     $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                     $testTemplatePossibleParameters = $testFileContent.parameters.Keys
                 } else {
