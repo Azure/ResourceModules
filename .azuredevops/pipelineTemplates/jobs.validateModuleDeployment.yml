@@ -204,7 +204,7 @@ jobs:
             if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
               $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             } else {
-              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             }
 
             $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
@@ -266,7 +266,7 @@ jobs:
             if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
               $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             } else {
-              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             }
 
             # Collect information
@@ -350,7 +350,7 @@ jobs:
             if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
               $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             } else {
-              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             }
 
             $functionInput = @{
