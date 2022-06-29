@@ -29,7 +29,7 @@ $script:jsonTemplateLoadFailedException = "Unable to load the deploy.json templa
 $script:templateNotFoundException = 'No template file found in folder [{0}]' # -f $moduleFolderPath
 
 # Import any helper function used in this test script
-Import-Module (Join-Path $PSScriptRoot 'shared\helper.psm1') -Force
+Import-Module (Join-Path $PSScriptRoot 'helper\helper.psm1') -Force
 
 Describe 'File/folder tests' -Tag Modules {
 
