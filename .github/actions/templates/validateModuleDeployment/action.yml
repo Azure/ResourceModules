@@ -204,6 +204,7 @@ runs:
           }
 
           # Passing the resource group name as a deployment parameter if accepted
+          # TODO: MUST ALSO WORK WITH PURE JSON
           $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
           $parameters = $templateContent.parameters.Keys
 

@@ -210,26 +210,45 @@ jobs:
             }
 
             # Handle template file
-            if((Split-Path '$(parameterFilePath)' -Extension) -eq '.bicep') {
-              // MODULE USES BICEP TEST FILES
+            if((Split-Path '$(parameterFilePath)' -Leaf) -like '.parameters.') {
+              // CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
+              // ===============================================
+              $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+              $moduleTemplatePossibleParameters = (Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashtable
+            } else {
+              // CASE: MODULE USES NEW TEST FILES
+              // ================================
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
-              $templateContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
-              $parameters = $templateContent.parameters.Keys
 
-              if($parameters -contains 'namePrefix') {
+              // Handle test template parameters
+              // -------------------------------
+              if((Split-Path $functionInput.templateFilePath -Extension) -eq '.bicep') {
+                $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                $testTemplatePossibleParameters = $testFileContent.parameters.Keys
+              } else {
+                $testTemplatePossibleParameters = (Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable
+              }
+
+              if($testTemplatePossibleParameters.Keys -contains 'namePrefix') {
                 $functionInput['additionalParameters'] += @{
                   namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
                 }
               }
-            } else {
-              // MODULE USES JSON PARAMETER FILES
-              $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+
+              // Handle module template parameters
+              // ---------------------------------
+              if(Test-Path (Join-Path '$(modulePath)' 'deploy.bicep')) {
+                $moduleTemplateContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+              } else {
+                $moduleTemplatePossibleParameters = (Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable
+              }
             }
 
             # Handle additional parameters
             $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry') {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
                 }
@@ -271,26 +290,45 @@ jobs:
             }
 
             # Handle template file
-            if((Split-Path '$(parameterFilePath)' -Extension) -eq '.bicep') {
-              // MODULE USES BICEP TEST FILES
+            if((Split-Path '$(parameterFilePath)' -Leaf) -like '.parameters.') {
+              // CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
+              // ===============================================
+              $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+              $moduleTemplatePossibleParameters = (Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashtable
+            } else {
+              // CASE: MODULE USES NEW TEST FILES
+              // ================================
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
-              $templateContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
-              $parameters = $templateContent.parameters.Keys
 
-              if($parameters -contains 'namePrefix') {
+              // Handle test template parameters
+              // -------------------------------
+              if((Split-Path $functionInput.templateFilePath -Extension) -eq '.bicep') {
+                $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                $testTemplatePossibleParameters = $testFileContent.parameters.Keys
+              } else {
+                $testTemplatePossibleParameters = (Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable
+              }
+
+              if($testTemplatePossibleParameters.Keys -contains 'namePrefix') {
                 $functionInput['additionalParameters'] += @{
                   namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
                 }
               }
-            } else {
-              // MODULE USES JSON PARAMETER FILES
-              $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+
+              // Handle module template parameters
+              // ---------------------------------
+              if(Test-Path (Join-Path '$(modulePath)' 'deploy.bicep')) {
+                $moduleTemplateContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+              } else {
+                $moduleTemplatePossibleParameters = (Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable
+              }
             }
 
             # Handle additional parameters
             $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry') {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
                 }
@@ -350,10 +388,10 @@ jobs:
             }
 
             if((Split-Path '$(parameterFilePath)' -Extension) -eq '.bicep') {
-              // MODULE USES BICEP TEST FILES
+              // MODULE USES NEW TEST FILES
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             } else {
-              // MODULE USES JSON PARAMETER FILES
+              // MODULE USES ORIGINAL JSON PARAMETER FILES
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             }
 
