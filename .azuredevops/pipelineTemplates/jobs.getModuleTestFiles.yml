@@ -10,7 +10,7 @@ parameters:
 ## TEMPLATE LOGIC                              ##
 ##---------------------------------------------##
 jobs:
-  - job: getParameterFilePaths
+  - job: getModuleTestFiles
     displayName: Get deployment test file paths
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
@@ -20,7 +20,7 @@ jobs:
     steps:
       - task: PowerShell@2
         displayName: 'Get parameter files'
-        name: getParameterFilePathsTask
+        name: getModuleTestFilesTask
         inputs:
           targetType: inline
           pwsh: true

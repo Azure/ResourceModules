@@ -7,15 +7,15 @@ inputs:
     required: true
 
 outputs:
-  parameterFilePaths:
-    description: 'The parameter files to use for template evaluation'
-    value: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
+  moduleTestFilePaths:
+    description: 'The module test files to use for template evaluation'
+    value: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
 
 runs:
   using: 'composite'
   steps:
     - name: 'Get parameter file paths'
-      id: get-parameter-file-paths
+      id: get-module-test-file-paths
       shell: pwsh
       run: |
         # Grouping task logs
@@ -28,12 +28,12 @@ runs:
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
         # Get the list of parameter file paths
-        $parameterFilePaths = Get-ModuleTestFileList @functionInput -Verbose
+        $moduleTestFilePaths = Get-ModuleTestFileList @functionInput -Verbose
         # Output values to be accessed by next jobs
-        $compressedOutput = $parameterFilePaths | ConvertTo-Json -Compress
+        $compressedOutput = $moduleTestFilePaths | ConvertTo-Json -Compress
         if($compressedOutput -notmatch "\[.*\]") {
           $compressedOutput = "[$compressedOutput]"
         }
         Write-Verbose "Publishing output: $compressedOutput" -Verbose
-        Write-Output "::set-output name=parameterFilePaths::$compressedOutput"
+        Write-Output "::set-output name=moduleTestFilePaths::$compressedOutput"
         Write-Output "::endgroup::"

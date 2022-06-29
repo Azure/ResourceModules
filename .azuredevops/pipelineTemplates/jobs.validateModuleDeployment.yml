@@ -72,7 +72,7 @@ parameters:
 ## TEMPLATE LOGIC                              ##
 ##---------------------------------------------##
 jobs:
-  - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
+  - template: /.azuredevops/pipelineTemplates/jobs.getModuleTestFiles.yml
   - job: deploy
     displayName: 'Deploying '
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
@@ -82,9 +82,9 @@ jobs:
       ${{ if ne(parameters.poolName, '') }}:
         name: ${{ parameters.poolName }}
     dependsOn:
-      - getParameterFilePaths
+      - getModuleTestFiles
     strategy:
-      matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+      matrix: $[ dependencies.getModuleTestFiles.outputs['getModuleTestFilesTask.parameterTests'] ]
     ##---------------------------------------------##
     ## TEMPLATE LOGIC                              ##
     ##---------------------------------------------##
