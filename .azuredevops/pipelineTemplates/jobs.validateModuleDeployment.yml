@@ -197,57 +197,64 @@ jobs:
 
             $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
 
+            # Fetching parameters
+            $location = '${{ parameters.location }}'
+            $resourceGroupName = '${{ parameters.resourceGroupName }}'
+            $subscriptionId = '${{ parameters.subscriptionId }}'
+            $managementGroupId = '${{ parameters.managementGroupId }}'
+
+            $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+
+            if (Split-Path $moduleTemplateFilePath -eq '.bicep') {
+                $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+            } else {
+                $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+            }
+
             # ----------- #
             # INVOKE TEST #
             # ----------- #
 
             # Building input object
             $functionInput = @{
-              location             = '${{ parameters.location }}'
-              resourceGroupName    = '${{ parameters.resourceGroupName }}'
-              subscriptionId       = '${{ parameters.subscriptionId }}'
-              managementGroupId    = '${{ parameters.managementGroupId }}'
-              additionalParameters = @{}
+                location             = $location
+                resourceGroupName    = $resourceGroupName
+                subscriptionId       = $subscriptionId
+                managementGroupId    = $managementGroupId
+                additionalParameters = @{}
             }
 
             # Handle template file
-            if((Split-Path '$(parameterFilePath)' -Leaf) -like '*parameters.*') {
-              # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
-              # ===============================================
-              $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
-              $moduleTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable).parameters.keys
+            if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
+                # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
+                # ===============================================
+                $functionInput['templateFilePath'] = $moduleTemplateFilePath
+                $functionInput['parameterFilePath'] = $moduleTestFilePath
             } else {
-              # CASE: MODULE USES NEW TEST FILES
-              # ================================
-              $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+                # CASE: MODULE USES NEW TEST FILES
+                # ================================
+                $functionInput['templateFilePath'] = $moduleTestFilePath
 
-              # Handle test template parameters
-              # -------------------------------
-              if((Split-Path $functionInput.templateFilePath -Extension) -eq '.bicep') {
-                $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
-                $testTemplatePossibleParameters = $testFileContent.parameters.Keys
-              } else {
-                $testTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable).parameters.keys
-              }
-
-              if($testTemplatePossibleParameters -contains 'namePrefix') {
-                $functionInput['additionalParameters'] += @{
-                  namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+                # Handle test template parameters
+                # -------------------------------
+                if (Split-Path $moduleTestFilePath -eq '.bicep') {
+                    $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                    $testTemplatePossibleParameters = $testFileContent.parameters.Keys
+                } else {
+                    $testTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
                 }
-              }
 
-              # Handle module template parameters
-              # ---------------------------------
-              if(Test-Path (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep')) {
-                $moduleTemplateContent = az bicep build --file (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep') --stdout --no-restore | ConvertFrom-Json -AsHashtable
-                $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
-              } else {
-                $moduleTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable).parameters.keys
-              }
+                if ($testTemplatePossibleParameters -contains 'namePrefix') {
+                    $functionInput['additionalParameters'] += @{
+                        namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+                    }
+                }
             }
 
             # Handle additional parameters
+            # ----------------------------
             if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
@@ -272,70 +279,77 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
+            # Prepare general parameters
+            # --------------------------
             $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
 
-            # ----------------- #
-            # INVOKE DEPLOYMENT #
-            # ----------------- #
+            $location = '${{ parameters.location }}'
+            $resourceGroupName = '${{ parameters.resourceGroupName }}'
+            $subscriptionId = '${{ parameters.subscriptionId }}'
+            $managementGroupId = '${{ parameters.managementGroupId }}'
+
+            $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+
+            if (Split-Path $moduleTemplateFilePath -eq '.bicep') {
+                $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+            } else {
+                $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+            }
+
+            # ----------- #
+            # INVOKE TEST #
+            # ----------- #
 
             # Building input object
             $functionInput = @{
-              location             = '${{ parameters.location }}'
-              resourceGroupName    = '${{ parameters.resourceGroupName }}'
-              subscriptionId       = '${{ parameters.subscriptionId }}'
-              managementGroupId    = '${{ parameters.managementGroupId }}'
-              doNotThrow           = $true
-              additionalParameters = @{}
+                location             = $location
+                resourceGroupName    = $resourceGroupName
+                subscriptionId       = $subscriptionId
+                managementGroupId    = $managementGroupId
+                additionalParameters = @{}
             }
 
-            # Handle template file
-            if((Split-Path '$(parameterFilePath)' -Leaf) -like '*parameters.*') {
-              # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
-              # ===============================================
-              $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
-              $moduleTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable).parameters.keys
+            if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
+
+                # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
+                # ===============================================
+
+                $functionInput['templateFilePath'] = $moduleTemplateFilePath
+                $functionInput['parameterFilePath'] = $moduleTestFilePath
             } else {
-              # CASE: MODULE USES NEW TEST FILES
-              # ================================
-              $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
 
-              # Handle test template parameters
-              # -------------------------------
-              if((Split-Path $functionInput.templateFilePath -Extension) -eq '.bicep') {
-                $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
-                $testTemplatePossibleParameters = $testFileContent.parameters.Keys
-              } else {
-                $testTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable).parameters.keys
-              }
+                # CASE: MODULE USES NEW TEST FILES
+                # ================================
 
-              if($testTemplatePossibleParameters -contains 'namePrefix') {
-                $functionInput['additionalParameters'] += @{
-                  namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+                $functionInput['templateFilePath'] = $moduleTestFilePath
+
+                # Handle test template parameters
+                # -------------------------------
+                if (Split-Path $moduleTestFilePath -eq '.bicep') {
+                    $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                    $testTemplatePossibleParameters = $testFileContent.parameters.Keys
+                } else {
+                    $testTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
                 }
-              }
 
-              # Handle module template parameters
-              # ---------------------------------
-              if(Test-Path (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep')) {
-                $moduleTemplateContent = az bicep build --file (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep') --stdout --no-restore | ConvertFrom-Json -AsHashtable
-                $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
-              } else {
-                $moduleTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable).parameters.keys
-              }
+                if ($testTemplatePossibleParameters -contains 'namePrefix') {
+                    $functionInput['additionalParameters'] += @{
+                        namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+                    }
+                }
             }
 
             # Handle additional parameters
+            # ----------------------------
             if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
                 }
             }
-
-            Write-Verbose "Invoke task with" -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Invoke deployment
             $res = New-TemplateDeployment @functionInput -Verbose
