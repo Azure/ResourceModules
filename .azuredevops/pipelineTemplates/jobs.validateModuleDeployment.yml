@@ -211,18 +211,18 @@ jobs:
 
             # Handle template file
             if((Split-Path '$(parameterFilePath)' -Leaf) -like '.parameters.') {
-              // CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
-              // ===============================================
+              # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
+              # ===============================================
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
               $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
               $moduleTemplatePossibleParameters = (Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashtable
             } else {
-              // CASE: MODULE USES NEW TEST FILES
-              // ================================
+              # CASE: MODULE USES NEW TEST FILES
+              # ================================
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
 
-              // Handle test template parameters
-              // -------------------------------
+              # Handle test template parameters
+              # -------------------------------
               if((Split-Path $functionInput.templateFilePath -Extension) -eq '.bicep') {
                 $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                 $testTemplatePossibleParameters = $testFileContent.parameters.Keys
@@ -236,8 +236,8 @@ jobs:
                 }
               }
 
-              // Handle module template parameters
-              // ---------------------------------
+              # Handle module template parameters
+              # ---------------------------------
               if(Test-Path (Join-Path '$(modulePath)' 'deploy.bicep')) {
                 $moduleTemplateContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
@@ -291,18 +291,18 @@ jobs:
 
             # Handle template file
             if((Split-Path '$(parameterFilePath)' -Leaf) -like '.parameters.') {
-              // CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
-              // ===============================================
+              # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
+              # ===============================================
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
               $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
               $moduleTemplatePossibleParameters = (Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashtable
             } else {
-              // CASE: MODULE USES NEW TEST FILES
-              // ================================
+              # CASE: MODULE USES NEW TEST FILES
+              # ================================
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
 
-              // Handle test template parameters
-              // -------------------------------
+              # Handle test template parameters
+              # -------------------------------
               if((Split-Path $functionInput.templateFilePath -Extension) -eq '.bicep') {
                 $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                 $testTemplatePossibleParameters = $testFileContent.parameters.Keys
@@ -316,8 +316,8 @@ jobs:
                 }
               }
 
-              // Handle module template parameters
-              // ---------------------------------
+              # Handle module template parameters
+              # ---------------------------------
               if(Test-Path (Join-Path '$(modulePath)' 'deploy.bicep')) {
                 $moduleTemplateContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
@@ -388,10 +388,10 @@ jobs:
             }
 
             if((Split-Path '$(parameterFilePath)' -Extension) -eq '.bicep') {
-              // MODULE USES NEW TEST FILES
+              # MODULE USES NEW TEST FILES
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             } else {
-              // MODULE USES ORIGINAL JSON PARAMETER FILES
+              # MODULE USES ORIGINAL JSON PARAMETER FILES
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             }
 
