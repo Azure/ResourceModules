@@ -211,7 +211,7 @@ jobs:
             }
 
             # Handle template file
-            if((Split-Path '$(parameterFilePath)' -Leaf) -like '.parameters.') {
+            if((Split-Path '$(parameterFilePath)' -Leaf) -like '*parameters.*') {
               # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
               # ===============================================
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
@@ -291,7 +291,7 @@ jobs:
             }
 
             # Handle template file
-            if((Split-Path '$(parameterFilePath)' -Leaf) -like '.parameters.') {
+            if((Split-Path '$(parameterFilePath)' -Leaf) -like '*parameters.*') {
               # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
               # ===============================================
               $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
