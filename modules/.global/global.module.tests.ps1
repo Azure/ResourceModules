@@ -121,7 +121,7 @@ Describe 'File/folder tests' -Tag Modules {
                 [string] $moduleFolderPath
             )
 
-            $moduleTestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test')).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+            $moduleTestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
             $moduleTestFilePaths.Count | Should -BeGreaterThan 0
         }
 
@@ -129,7 +129,7 @@ Describe 'File/folder tests' -Tag Modules {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             $parameterFolderPath = Join-Path $moduleFolderPath '.test'
             if (Test-Path $parameterFolderPath) {
-                foreach ($parameterFilePath in ((Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test')).FullName | Where-Object { $_ -match '.+\.[bicep|json]' })) {
+                foreach ($parameterFilePath in ((Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' })) {
                     $parameterFolderFilesTestCases += @{
                         moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                         parameterFilePath = $parameterFilePath
@@ -513,7 +513,7 @@ Describe 'Deployment template tests' -Tag Template {
             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
 
                 # Can be removed after full migration to bicep test files
-                $moduleTestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test')).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+                $moduleTestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
 
                 foreach ($moduleTestFilePath in $moduleTestFilePaths) {
                     if ((Split-Path $moduleTestFilePath -Extension) -eq '.json') {
