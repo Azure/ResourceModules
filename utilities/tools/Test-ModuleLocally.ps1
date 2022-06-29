@@ -115,7 +115,7 @@ function Test-ModuleLocally {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $parameterFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
+        [string] $testFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
 
         [Parameter(Mandatory = $false)]
         [Psobject] $ValidateOrDeployParameters = @{},
@@ -187,10 +187,10 @@ function Test-ModuleLocally {
 
             # Find Test Parameter Files
             # -------------------------
-            if ((Get-Item -Path $parameterFilePath) -is [System.IO.DirectoryInfo]) {
-                $ModuleParameterFiles = (Get-ChildItem -Path $parameterFilePath).FullName
+            if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
+                $ModuleParameterFiles = (Get-ChildItem -Path $testFilePath).FullName
             } else {
-                $ModuleParameterFiles = @($parameterFilePath)
+                $ModuleParameterFiles = @($testFilePath)
             }
 
             # Replace parameter file tokens

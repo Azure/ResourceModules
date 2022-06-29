@@ -354,8 +354,8 @@ function Set-DeploymentExamplesSection {
     $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.test') -Filter '*parameters.json' -Recurse
 
     $index = 1
-    foreach ($parameterFilePath in $parameterFiles.FullName) {
-        $contentInJSONFormat = Get-Content -Path $parameterFilePath -Encoding 'utf8' | Out-String
+    foreach ($testFilePath in $parameterFiles.FullName) {
+        $contentInJSONFormat = Get-Content -Path $testFilePath -Encoding 'utf8' | Out-String
 
         $SectionContent += @(
             "<h3>Example $index</h3>"
