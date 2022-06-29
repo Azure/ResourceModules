@@ -21,26 +21,28 @@
 ##
 ## NOTE: If you don't need to overwrite a shared value, you can IGNORE this section
 ##
-##   |=================================================================================================================================================================================================================================|
-##   | Parameter                       | Default Value                        | Description                                                                                               | Example                                    |
-##   |---------------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------|--------------------------------------------|
-##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                             | 'demo-internal'                            |
-##   | removeDeployment                | '$(removeDeployment)'                | Set to [true] to flag resource for removal. If not provided, defaults to false.                           | 'true'                                     |
-##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'Custom Deployment Pool'                   |
-##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                              |
-##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                        |
-##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                               |
-##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                      | 'c:/KeyVault'                              |
-##   | deploymentBlocks                |                                      | The parameter file(s) to deploy with. Must be provided                                                    | path: 'C:/parameters.json'                 |
-##   | location                        | '$(location)'                 | The location to deploy with                                                                               | 'EastUs2'                                  |
-##   | resourceGroupName               | '$(resourceGroupName)'        | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments                      | 'validation-rg'                            |
-##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to deploy into when using a Management group service connection                | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'     |
-##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to deploy into. Required only for Management-Group-Level deployments       | '6ycc9620-cb01-454f-9ebc-fc6b1df48d64'     |
-##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                                |
-##   | modulesRepository               | '$(modulesRepository)'               | The respository with the modules.                                                                         | 'Components'                               |
-##   | azurePowerShellVersion          | '$(azurePowerShellVersion)'          | Used for configuring the Azure PowerShellModules Version, one of the example values.                      | 'latestVersion' or 'OtherVersion'          |
-##   | preferredAzurePowerShellVersion | '$(preferredAzurePowerShellVersion)' | Used for configuring the Azure PowerShellModules Version, either an empty string or the specific version. | '4.4.0'                                    |
-##   |=================================================================================================================================================================================================================================|
+##   |============================================================================================================================================================================================================================================|
+##   | Parameter                       | Default Value                        | Description                                                                                               | Example                                               |
+##   |---------------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure.                                                            | 'demo-internal'                                       |
+##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on.                                       | 'Custom Deployment Pool'                              |
+##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on.                                       | 'ubuntu20.04'                                         |
+##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline.                                                                 | 120                                                   |
+##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source.     | 'Components'                                          |
+##   | removeDeployment                | 'true'                               | Set to [true] to flag resources for removal. If not provided, defaults to true.                           | 'true'                                                |
+##   | templateFilePath                | ''                                   | Path to the template file to deploy.                                                                      | 'arm/Microsoft.AnalysisServices/servers/deploy.bicep' |
+##   | customParameterFileTokens       | ''                                   |                                                                                                           |                                                       |
+##   | jobDisplayName                  | ''                                   | The display name of the job.                                                                              | 'Deploy module'                                       |
+##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                         |
+##   | location                        | '$(location)'                        | The location to deploy resources to.                                                                      | 'EastUs2'                                             |
+##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments.                     | 'validation-rg'                                       |
+##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to deploy into when using a Management group service connection.               | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'                |
+##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to deploy into. Required only for Management-Group-Level deployments.      | '6ycc9620-cb01-454f-9ebc-fc6b1df48d64'                |
+##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository.                          | 'Solutions'                                           |
+##   | modulesRepository               | '$(modulesRepository)'               | The respository with the modules.                                                                         | 'Components'                                          |
+##   | azurePowerShellVersion          | '$(azurePowerShellVersion)'          | Used for configuring the Azure PowerShellModules Version, one of the example values.                      | 'latestVersion' or 'OtherVersion'                     |
+##   | preferredAzurePowerShellVersion | '$(preferredAzurePowerShellVersion)' | Used for configuring the Azure PowerShellModules Version, either an empty string or the specific version. | '4.4.0'                                               |
+##   |============================================================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
 
@@ -51,11 +53,11 @@ parameters:
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
   checkoutRepositories: ''
-  dependsOn: []
   # Logic-related parameters
   removeDeployment: false
+  templateFilePath: ''
+  customParameterFileTokens: ''
   modulePath: '$(modulePath)'
-  deploymentBlocks: ''
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
@@ -69,108 +71,83 @@ parameters:
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
 ##---------------------------------------------##
-
 jobs:
-  - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
-      - job: ${{ deploymentBlock.jobName }}
+  - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
+  - job: deploy
+    displayName: 'Deploying '
+    timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
+    pool:
+      ${{ if ne(parameters.vmImage, '') }}:
+        vmImage: ${{ parameters.vmImage }}
+      ${{ if ne(parameters.poolName, '') }}:
+        name: ${{ parameters.poolName }}
+    dependsOn:
+      - getParameterFilePaths
+    strategy:
+      matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+    ##---------------------------------------------##
+    ## TEMPLATE LOGIC                              ##
+    ##---------------------------------------------##
+    steps:
+      # [Agent] Prepare environment
+      #----------------------------
+      - task: PowerShell@2
+        displayName: 'Setup agent for deployment'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-        ${{ if ne( deploymentBlock.displayName, '') }}:
-          displayName: ${{ deploymentBlock.displayName }}
-        ${{ if eq( deploymentBlock.displayName, '') }}:
-          displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
-        timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
-        ${{ if ne( parameters.dependsOn, '') }}:
-          dependsOn: ${{ parameters.dependsOn }}
-        pool:
-          ${{ if ne(parameters.vmImage, '') }}:
-            vmImage: ${{ parameters.vmImage }}
-          ${{ if ne(parameters.poolName, '') }}:
-            name: ${{ parameters.poolName }}
+            # Define PS modules to install on the runner
+            $Modules = @(
+                @{ Name = 'Az.Accounts' },
+                @{ Name = 'Az.Resources' }
+            )
 
-        steps:
-          # [Checkout Repositories] task(s)
-          #--------------------------------
-          - checkout: self
-          - ${{ if ne(parameters.checkoutRepositories, '') }}:
-              - ? ${{ each checkoutRepository in parameters.checkoutRepositories }}
-                : - checkout: ${{ checkoutRepository }}
-                    fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                    path: 's/${{ checkoutRepository }}'
+            # Additional PS modules need to be installed for the removal step in case it is enabled
+            if ('${{ parameters.removeDeployment}}' -eq 'true') {
+              $Modules += @(
+                @{ Name = 'Az.CognitiveServices' },
+                @{ Name = 'Az.Compute' },
+                @{ Name = 'Az.KeyVault' },
+                @{ Name = 'Az.Monitor' },
+                @{ Name = 'Az.OperationalInsights' },
+                @{ Name = 'Az.RecoveryServices' }
+              )
+            }
 
-          # [Agent] Prepare environment
-          #----------------------------
-          - task: PowerShell@2
-            displayName: 'Setup agent'
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+            # Set agent up
+            Set-EnvironmentOnAgent -PSModules $Modules
 
-                # Define PS modules to install on the runner
-                $Modules = @(
-                    @{ Name = 'Az.Accounts' },
-                    @{ Name = 'Az.Resources' }
-                )
-
-                # Additional PS modules need to be installed for the removal step in case it is enabled
-                if ('${{ parameters.removeDeployment}}' -eq 'true') {
-                  $Modules += @(
-                    @{ Name = 'Az.CognitiveServices' },
-                    @{ Name = 'Az.Compute' },
-                    @{ Name = 'Az.KeyVault' },
-                    @{ Name = 'Az.Monitor' },
-                    @{ Name = 'Az.OperationalInsights' },
-                    @{ Name = 'Az.RecoveryServices' }
-                  )
-                }
-
-                # Set agent up
-                Set-EnvironmentOnAgent -PSModules $Modules
-
-          # [Multi Repo] Support task
-          #--------------------------
-          - task: PowerShell@2
-            displayName: Handle Multi-Repo Invocation
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                # Handle multiple-repositories
-                if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
-                  Write-Verbose "Multi-Repo Checkout" -Verbose
-                  $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
-                  $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
-                } else {
-                  Write-Verbose "No Multi-Repo Checkout" -Verbose
-                  $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
-                  $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
-                }
-                Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-                Write-Output "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
-
-          # [Agent] Replace tokens
-          #-----------------------
+      # [Agent] Replace tokens
+      #-----------------------
+      - ${{ if not(contains( parameters.templateFilePath, '.dependencies')) }}:
           - task: AzurePowerShell@5
-            displayName: 'Replace Tokens [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
+            displayName: 'Replace Tokens [$(parameterFilePath)] via connection [${{ parameters.serviceConnection }}]'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
-              azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-              preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+              azurePowerShellVersion: 'latestVersion'
+              preferredAzurePowerShellVersion: ''
               ScriptType: InlineScript
               pwsh: true
               inline: |
                 # Load used functions
-                . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
                 # Load Settings File
-                $Settings = Get-Content -Path (Join-Path '$(moduleRepoRoot)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+
+                if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
+                  Write-Verbose 'Skipping token replacement as the deployment test file is no JSON-Parameter file' -Verbose
+                  return
+                }
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
                     Tokens      = @{}
-                    FilePath    = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
+                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
@@ -195,8 +172,8 @@ jobs:
                 }
 
                 # Add custom tokens (passed in via the pipeline)
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.customParameterFileTokens }}')) {
-                  $customTokens = '${{ deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+                if(-not [String]::IsNullOrEmpty('${{ parameters.customParameterFileTokens }}')) {
+                  $customTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
                   Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
                   $ConvertTokensInputs.Tokens += $customTokens
                 }
@@ -204,168 +181,188 @@ jobs:
                 # Invoke Token Replacement Functionality
                 $null = Convert-TokensInFile @ConvertTokensInputs
 
-          # [Validation] task(s)
-          #---------------------
-          - task: AzurePowerShell@5
-            displayName: 'Validate [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
-            inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
-              azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-              preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-              ScriptType: InlineScript
-              pwsh: true
-              inline: |
-                # Load used functions
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
+      # [Validation] task(s)
+      #---------------------
+      - task: AzurePowerShell@5
+        displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          azurePowerShellVersion: 'latestVersion'
+          preferredAzurePowerShellVersion: ''
+          ScriptType: InlineScript
+          pwsh: true
+          inline: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
 
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
-                  $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
-                } else {
-                  # Use default path
-                  $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+            # ----------- #
+            # INVOKE TEST #
+            # ----------- #
+
+            # Collecting information
+            if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+            } else {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
+            }
+
+            $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+            $parameters = $templateContent.parameters.Keys
+            $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+
+            # Building input object
+            $functionInput = @{
+              templateFilePath     = $templateFilePath
+              location             = '${{ parameters.location }}'
+              resourceGroupName    = '${{ parameters.resourceGroupName }}'
+              subscriptionId       = '${{ parameters.subscriptionId }}'
+              managementGroupId    = '${{ parameters.managementGroupId }}'
+              additionalParameters = @{}
+            }
+
+            if((Split-Path '$(parameterFilePath)' -Extension) -eq '.json') {
+              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+            }
+
+            # Pass required parameters
+            if($parameters -contains 'namePrefix') {
+              $functionInput['additionalParameters'] += @{
+                namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+              }
+            }
+
+            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+                $functionInput['additionalParameters'] += @{
+                    enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
                 }
+            }
 
-                # ----------- #
-                # INVOKE TEST #
-                # ----------- #
-                $functionInput = @{
-                  templateFilePath     = $templateFilePath
-                  location             = '${{ parameters.location }}'
-                  resourceGroupName    = '${{ parameters.resourceGroupName }}'
-                  subscriptionId       = '${{ parameters.subscriptionId }}'
-                  managementGroupId    = '${{ parameters.managementGroupId }}'
-                  additionalParameters = @{}
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Test-TemplateDeployment @functionInput -Verbose
+
+      # [Deployment] task(s)
+      #---------------------
+      - task: AzurePowerShell@5
+        name: deployModule
+        displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          azurePowerShellVersion: 'latestVersion'
+          preferredAzurePowerShellVersion: ''
+          pwsh: true
+          ScriptType: InlineScript
+          inline: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
+
+            # ----------------- #
+            # INVOKE DEPLOYMENT #
+            # ----------------- #
+
+            if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+            } else {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
+            }
+
+            # Collect information
+            $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+            $parameters = $templateContent.parameters.Keys
+            $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+
+            # Building input object
+            $functionInput = @{
+              templateFilePath     = $templateFilePath
+              location             = '${{ parameters.location }}'
+              resourceGroupName    = '${{ parameters.resourceGroupName }}'
+              subscriptionId       = '${{ parameters.subscriptionId }}'
+              managementGroupId    = '${{ parameters.managementGroupId }}'
+              doNotThrow           = $true
+              additionalParameters = @{}
+            }
+
+            if((Split-Path '$(parameterFilePath)' -Extension) -eq '.json') {
+              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+            }
+
+            # Pass required parameters
+            if($parameters -contains 'namePrefix') {
+              $functionInput['additionalParameters'] += @{
+                namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+              }
+            }
+
+            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+                $functionInput['additionalParameters'] += @{
+                    enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
                 }
+            }
 
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
-                  $functionInput['parameterFilePath'] = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
-                }
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-                $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-                if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
-                    $functionInput['additionalParameters'] += @{
-                        enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
-                    }
-                }
+            # Invoke deployment
+            $res = New-TemplateDeployment @functionInput -Verbose
 
-                Write-Verbose "Invoke task with" -Verbose
-                Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+            # Get deployment name
+            Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
+            $deploymentName=$res.deploymentName
+            Write-Verbose "Deployment name: $deploymentName" -Verbose
+            Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'deploymentName', $deploymentName)
 
-                Test-TemplateDeployment @functionInput -Verbose
+            # Populate further outputs
+            $deploymentOutputHash=@{}
 
-          # [Deployment] task(s)
-          #---------------------
-          - task: AzurePowerShell@5
-            displayName: 'Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
-            name: 'DeployModule'
-            inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
-              azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-              preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-              pwsh: true
-              ScriptType: InlineScript
-              inline: |
-                # Load used functions
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+            foreach ($outputKey in $res.deploymentOutput.Keys) {
+              Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+              $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
+            }
 
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
-                  $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
-                } else {
-                  # Use default path
-                  $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
-                }
+            $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+            Write-Verbose "Deployment output: $deploymentOutput" -Verbose
+            Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'deploymentOutput', $deploymentOutput)
 
-                # ----------------- #
-                # INVOKE DEPLOYMENT #
-                # ----------------- #
-                $functionInput = @{
-                  templateFilePath     = $templateFilePath
-                  location             = '${{ parameters.location }}'
-                  resourceGroupName    = '${{ parameters.resourceGroupName }}'
-                  subscriptionId       = '${{ parameters.subscriptionId }}'
-                  managementGroupId    = '${{ parameters.managementGroupId }}'
-                  doNotThrow           = $true
-                  additionalParameters = @{}
-                }
+            if ($res.ContainsKey('exception')) {
+              # Happens only if there is an exception
+              throw $res.exception
+            }
 
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
-                  $functionInput['parameterFilePath'] = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
-                }
+      # [Removal] task(s)
+      #------------------
+      - task: AzurePowerShell@5
+        displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
+        condition: and(succeededOrFailed(), eq('${{ parameters.removeDeployment }}', 'true'), not(eq( '$(deploymentName)', '' )))
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+          ScriptType: InlineScript
+          failOnStandardError: false
+          pwsh: true
+          inline: |
+            # Load used function
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
-                $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-                if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
-                    $functionInput['additionalParameters'] += @{
-                        enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
-                    }
-                }
+            if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+            } else {
+              $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ parameters.templateFilePath }}'
+            }
 
-                Write-Verbose "Invoke task with" -Verbose
-                Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+            $functionInput = @{
+              TemplateFilePath  = $templateFilePath
+              ResourceGroupName = '${{ parameters.resourceGroupName }}'
+              subscriptionId    = '${{ parameters.subscriptionId }}'
+              ManagementGroupId = '${{ parameters.managementGroupId }}'
+              deploymentName    = '$(deploymentName)'
+              Verbose           = $true
+            }
 
-                # Invoke deployment
-                $res = New-TemplateDeployment @functionInput -Verbose
+            Write-Verbose 'Invoke task with' -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-                # Get deployment name
-                Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
-
-                # Populate further outputs
-                $deploymentOutputHash=@{}
-
-                foreach ($outputKey in $res.deploymentOutput.Keys) {
-                  Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-                  $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
-                }
-
-                $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
-                Write-Verbose "Deployment output: $deploymentOutput" -Verbose
-                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'deploymentOutput', $deploymentOutput)
-
-                if ($res.ContainsKey('exception')) {
-                  # Happens only if there is an exception
-                  throw $res.exception
-                }
-
-          # [Removal] task(s)
-          #------------------
-          - task: AzurePowerShell@5
-            displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-            condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
-            inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
-              azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-              preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-              ScriptType: InlineScript
-              failOnStandardError: false
-              pwsh: true
-              inline: |
-                # Load used function
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
-
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
-                  $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
-                } else {
-                  # Use default path
-                  $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
-                }
-
-                if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
-                  $functionInput = @{
-                      DeploymentName    = '$(deploymentName)'
-                      TemplateFilePath  = $templateFilePath
-                      ResourceGroupName = '${{ parameters.resourceGroupName }}'
-                      subscriptionId    = '${{ parameters.subscriptionId }}'
-                      ManagementGroupId = '${{ parameters.managementGroupId }}'
-                      Verbose           = $true
-                  }
-
-                  Write-Verbose 'Invoke task with' -Verbose
-                  Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-                  Initialize-DeploymentRemoval @functionInput
-                }
+            Initialize-DeploymentRemoval @functionInput
