@@ -47,5 +47,9 @@ module testDeployment '../deploy.bicep' = {
   params: {
     name: '${namePrefix}-az-${serviceShort}-001'
     virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    ipAddress: '1.2.3.4'
   }
 }
