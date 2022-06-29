@@ -14,7 +14,7 @@ param resourceGroupName string = '${serviceShort}-ms.analysisservices-servers-rg
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
 
-@description('Optional. A short identifier for the kind of deployment. E.g. "aspar". Should be kept short to not run into resource-name length-constraints')
+@description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
 param serviceShort string = 'aspar'
 
 // =========== //
@@ -28,7 +28,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module managedIdentity 'nestedTemplates/default.nested.bicep' = {
+module resourceGroupResources 'nestedTemplates/default.nested.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -54,7 +54,7 @@ module diagnosticDependencies '../../../.global/dependencyConstructs/diagnostic.
 // Test Execution //
 // ============== //
 
-module servers '../deploy.bicep' = {
+module testDeployment '../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-servers-${serviceShort}'
   params: {
@@ -65,7 +65,7 @@ module servers '../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          managedIdentity.outputs.managedIdentityPrincipalId
+          resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
       }
     ]
