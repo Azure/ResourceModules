@@ -351,93 +351,159 @@ function Set-DeploymentExamplesSection {
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
-    $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.test') -Filter '*parameters.json' -Recurse
+    $resourceType = $resourceTypeIdentifier.Split('/')[1]
+    $parameterFiles = (Get-ChildItem (Join-Path -Path $moduleRoot -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
 
     $index = 1
-    foreach ($parameterFilePath in $parameterFiles.FullName) {
-        $contentInJSONFormat = Get-Content -Path $parameterFilePath -Encoding 'utf8' | Out-String
+    foreach ($parameterFilePath in $parameterFiles) {
+
+        $rawContentArray = Get-Content -Path $parameterFilePath
+        $rawContent = Get-Content -Path $parameterFilePath -Encoding 'utf8' | Out-String
 
         $SectionContent += @(
-            "<h3>Example $index</h3>"
+            '<h3>Example {0}: {1}</h3>' -f $index, ((Split-Path $parameterFilePath -Leaf) -split '\.')[0]
         )
 
-        if ($addJson) {
-            $SectionContent += @(
-                '',
-                '<details>',
-                '',
-                '<summary>via JSON Parameter file</summary>',
-                '',
-                '```json',
-                $contentInJSONFormat.TrimEnd(),
-                '```',
-                '',
-                '</details>'
-            )
-        }
+        if ((Split-Path $parameterFilePath -Extension) -eq '.bicep') {
+            # Bicep to JSON
+            # =============
+            $bicepTestStartIndex = $rawContentArray.IndexOf("module testDeployment '../deploy.bicep' = {")
 
-        if ($addBicep) {
-            $JSONParametersHashTable = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).parameters
 
-            # Handle KeyVaut references
-            $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }
+            $bicepTestEndIndex = $bicepTestStartIndex
+            do {
+                $bicepTestEndIndex++
+            } while ($rawContentArray[$bicepTestEndIndex] -ne '}')
 
-            if ($keyVaultReferences.Count -gt 0) {
-                $keyVaultReferenceData = @()
-                foreach ($reference in $keyVaultReferences) {
-                    $resourceIdElem = $JSONParametersHashTable[$reference].reference.keyVault.id -split '/'
-                    $keyVaultReferenceData += @{
-                        subscriptionId    = $resourceIdElem[2]
-                        resourceGroupName = $resourceIdElem[4]
-                        vaultName         = $resourceIdElem[-1]
-                        secretName        = $JSONParametersHashTable[$reference].reference.secretName
-                        parameterName     = $reference
+            $rawBicepExample = $rawContentArray[$bicepTestStartIndex..$bicepTestEndIndex]
+
+            if ($addBicep) {
+                $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep = {'"
+                $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' }
+
+
+                $SectionContent += @(
+                    '',
+                    '<details>'
+                    ''
+                    '<summary>via Bicep module</summary>'
+                    ''
+                    '```bicep',
+                    ($rawBicepExample | ForEach-Object { "  $_" }).TrimEnd(),
+                    '```',
+                    '',
+                    '</details>'
+                    '<p>'
+                )
+            }
+
+            if ($addJson) {
+                # TODO: Add JSON support
+
+                $jsonExample = @()
+
+                $SectionContent += @(
+                    '',
+                    '<details>'
+                    ''
+                    '<summary>via JSON Parameter file</summary>'
+                    ''
+                    '```json',
+                    '{',
+                    '  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",',
+                    '  "contentVersion": "1.0.0.0",',
+                    '  "parameters": {'
+                        ($jsonExample | ForEach-Object { "  $_" }).TrimEnd(),
+                    '  }',
+                    '}',
+                    '```',
+                    '',
+                    '</details>'
+                    '<p>'
+                )
+            }
+        } else {
+            # JSON to Bicep
+            # =============
+            # TODO: Support JSON test template files?
+
+            if ($addJson) {
+                $SectionContent += @(
+                    '',
+                    '<details>',
+                    '',
+                    '<summary>via JSON Parameter file</summary>',
+                    '',
+                    '```json',
+                    $rawContent.TrimEnd(),
+                    '```',
+                    '',
+                    '</details>'
+                )
+            }
+
+            if ($addBicep) {
+                $JSONParametersHashTable = (ConvertFrom-Json $rawContent -AsHashtable -Depth 99).parameters
+
+                # Handle KeyVaut references
+                $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }
+
+                if ($keyVaultReferences.Count -gt 0) {
+                    $keyVaultReferenceData = @()
+                    foreach ($reference in $keyVaultReferences) {
+                        $resourceIdElem = $JSONParametersHashTable[$reference].reference.keyVault.id -split '/'
+                        $keyVaultReferenceData += @{
+                            subscriptionId    = $resourceIdElem[2]
+                            resourceGroupName = $resourceIdElem[4]
+                            vaultName         = $resourceIdElem[-1]
+                            secretName        = $JSONParametersHashTable[$reference].reference.secretName
+                            parameterName     = $reference
+                        }
                     }
                 }
-            }
 
-            $extendedKeyVaultReferences = @()
-            $counter = 0
-            foreach ($reference in ($keyVaultReferenceData | Sort-Object -Property 'vaultName' -Unique)) {
-                $counter++
-                $extendedKeyVaultReferences += @(
-                    "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",
+                $extendedKeyVaultReferences = @()
+                $counter = 0
+                foreach ($reference in ($keyVaultReferenceData | Sort-Object -Property 'vaultName' -Unique)) {
+                    $counter++
+                    $extendedKeyVaultReferences += @(
+                        "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",
                     ("  name: '{0}'" -f $reference.vaultName),
                     ("  scope: resourceGroup('{0}','{1}')" -f $reference.subscriptionId, $reference.resourceGroupName),
-                    '}',
-                    ''
-                )
+                        '}',
+                        ''
+                    )
 
-                # Add attribute for later correct reference
-                $keyVaultReferenceData | Where-Object { $_.vaultName -eq $reference.vaultName } | ForEach-Object {
-                    $_['vaultResourceReference'] = "kv$counter"
+                    # Add attribute for later correct reference
+                    $keyVaultReferenceData | Where-Object { $_.vaultName -eq $reference.vaultName } | ForEach-Object {
+                        $_['vaultResourceReference'] = "kv$counter"
+                    }
+                }
+
+                # Handle VALUE references (i.e. remove them)
+                $JSONParameters = (ConvertFrom-Json $rawContent -Depth 99).PSObject.properties['parameters'].value
+                $JSONParametersWithoutValue = [ordered]@{}
+                foreach ($parameter in $JSONParameters.PSObject.Properties) {
+                    if ($parameter.value.PSObject.Properties.name -eq 'value') {
+                        $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties['value'].value
+                    } else {
+                        # replace key vault references
+                        $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameter.Name }
+                        $JSONParametersWithoutValue[$parameter.name] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
+                    }
+                }
+
+                $templateParameterObject = $JSONParametersWithoutValue | ConvertTo-Json -Depth 99
+                if ($templateParameterObject -ne '{}') {
+                    $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
+                    $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
+                    $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
+                    $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
+
+                    $bicepParamsArray = $contentInBicepFormat -split ('\n')
+                    $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
                 }
             }
-
-            # Handle VALUE references (i.e. remove them)
-            $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -Depth 99).PSObject.properties['parameters'].value
-            $JSONParametersWithoutValue = [ordered]@{}
-            foreach ($parameter in $JSONParameters.PSObject.Properties) {
-                if ($parameter.value.PSObject.Properties.name -eq 'value') {
-                    $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties['value'].value
-                } else {
-                    # replace key vault references
-                    $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameter.Name }
-                    $JSONParametersWithoutValue[$parameter.name] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
-                }
-            }
-
-            $templateParameterObject = $JSONParametersWithoutValue | ConvertTo-Json -Depth 99
-            if ($templateParameterObject -ne '{}') {
-                $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
-                $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
-                $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
-                $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
-
-                $bicepParamsArray = $contentInBicepFormat -split ('\n')
-                $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
-            }
-            $resourceType = $resourceTypeIdentifier.Split('/')[1]
 
             $SectionContent += @(
                 '',
