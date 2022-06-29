@@ -239,14 +239,10 @@ jobs:
 
               # Handle module template parameters
               # ---------------------------------
-              if(Test-Path (Join-Path '$(modulePath)' 'deploy.bicep')) {
-                Write-Output "1"
-                Write-Output (Join-Path '$(modulePath)' 'deploy.bicep')
-                $moduleTemplateContent = az bicep build --file (Join-Path '$(modulePath)' 'deploy.bicep') --stdout --no-restore | ConvertFrom-Json -AsHashtable
+              if(Test-Path (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep')) {
+                $moduleTemplateContent = az bicep build --file (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep') --stdout --no-restore | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
               } else {
-                Write-Output "2"
-                Write-Output (Join-Path '$(modulePath)' 'deploy.bicep')
                 $moduleTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable).parameters.keys
               }
             }
@@ -323,8 +319,8 @@ jobs:
 
               # Handle module template parameters
               # ---------------------------------
-              if(Test-Path (Join-Path '$(modulePath)' 'deploy.bicep')) {
-                $moduleTemplateContent = az bicep build --file (Join-Path '$(modulePath)' 'deploy.bicep') --stdout --no-restore | ConvertFrom-Json -AsHashtable
+              if(Test-Path (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep')) {
+                $moduleTemplateContent = az bicep build --file (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep') --stdout --no-restore | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
               } else {
                 $moduleTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashTable).parameters.keys
