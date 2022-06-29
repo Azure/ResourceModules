@@ -33,7 +33,7 @@ module resourceGroupResources 'nestedTemplates/min.parameters.nested.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualWANName: 'apd-${namePrefix}-az-vw-${serviceShort}-001'
+    virtualWANName: 'dep-${namePrefix}-az-vw-${serviceShort}-001'
   }
 }
 

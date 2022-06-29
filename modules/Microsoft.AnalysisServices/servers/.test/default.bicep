@@ -42,10 +42,10 @@ module diagnosticDependencies '../../../.global/dependencyConstructs/diagnostic.
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
-    storageAccountName: 'adp${namePrefix}azsa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'adp-${namePrefix}-law-${serviceShort}-01'
-    eventHubNamespaceEventHubName: 'adp-${namePrefix}-evh-${serviceShort}-01'
-    eventHubNamespaceName: 'adp-${namePrefix}-evhns-${serviceShort}-01'
+    storageAccountName: 'dep${namePrefix}azsa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}-01'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}-01'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}-01'
     location: location
   }
 }
