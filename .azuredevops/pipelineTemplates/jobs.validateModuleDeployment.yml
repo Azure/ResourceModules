@@ -193,7 +193,7 @@ jobs:
           pwsh: true
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
             # Prepare general parameters
             # --------------------------
@@ -284,7 +284,7 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
             # Prepare general parameters
             # --------------------------
