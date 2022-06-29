@@ -195,6 +195,8 @@ jobs:
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
+            # Prepare general parameters
+            # --------------------------
             $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
 
             # Fetching parameters
@@ -228,22 +230,25 @@ jobs:
 
             # Handle template file
             if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
+
                 # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
                 # ===============================================
+
                 $functionInput['templateFilePath'] = $moduleTemplateFilePath
                 $functionInput['parameterFilePath'] = $moduleTestFilePath
             } else {
+
                 # CASE: MODULE USES NEW TEST FILES
                 # ================================
+
                 $functionInput['templateFilePath'] = $moduleTestFilePath
 
                 # Handle test template parameters
                 # -------------------------------
                 if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-                    $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
-                    $testTemplatePossibleParameters = $testFileContent.parameters.Keys
+                    $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
                 } else {
-                    $testTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+                    $testTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
                 }
 
                 if ($testTemplatePossibleParameters -contains 'namePrefix') {
@@ -313,6 +318,7 @@ jobs:
                 additionalParameters = @{}
             }
 
+            # Handle template file
             if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
 
                 # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
@@ -320,6 +326,7 @@ jobs:
 
                 $functionInput['templateFilePath'] = $moduleTemplateFilePath
                 $functionInput['parameterFilePath'] = $moduleTestFilePath
+
             } else {
 
                 # CASE: MODULE USES NEW TEST FILES
@@ -330,10 +337,9 @@ jobs:
                 # Handle test template parameters
                 # -------------------------------
                 if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-                    $testFileContent = az bicep build --file $functionInput.templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
-                    $testTemplatePossibleParameters = $testFileContent.parameters.Keys
+                    $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
                 } else {
-                    $testTemplatePossibleParameters = ((Get-Content $functionInput.templateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+                    $testTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
                 }
 
                 if ($testTemplatePossibleParameters -contains 'namePrefix') {
@@ -350,6 +356,9 @@ jobs:
                     enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
                 }
             }
+
+            Write-Verbose 'Invoke task with' -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Invoke deployment
             $res = New-TemplateDeployment @functionInput -Verbose
