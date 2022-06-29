@@ -34,7 +34,7 @@ module resourceGroupResources 'nestedTemplates/default.parameters.nested.bicep' 
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-${namePrefix}-az-msi-${serviceShort}-01'
-    virtualWANName: 'apd-${namePrefix}-az-vw-${serviceShort}-001'
+    virtualWANName: 'dep-${namePrefix}-az-vw-${serviceShort}-001'
   }
 }
 
