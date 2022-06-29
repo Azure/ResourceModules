@@ -125,20 +125,20 @@ Describe 'File/folder tests' -Tag Modules {
             $moduleTestFilePaths.Count | Should -BeGreaterThan 0
         }
 
-        $parameterFolderFilesTestCases = [System.Collections.ArrayList] @()
+        $testFolderFilesTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $parameterFolderPath = Join-Path $moduleFolderPath '.test'
-            if (Test-Path $parameterFolderPath) {
+            $testFolderPath = Join-Path $moduleFolderPath '.test'
+            if (Test-Path $testFolderPath) {
                 foreach ($testFilePath in ((Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' })) {
-                    $parameterFolderFilesTestCases += @{
-                        moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                        parameterFilePath = $testFilePath
+                    $testFolderFilesTestCases += @{
+                        moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+                        testFilePath     = $testFilePath
                     }
                 }
             }
         }
 
-        It '[<moduleFolderName>] *parameters.json files in the .test folder should be valid json' -TestCases $parameterFolderFilesTestCases {
+        It '[<moduleFolderName>] *parameters.json files in the .test folder should be valid json' -TestCases $testFolderFilesTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -505,7 +505,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
 
             # Parameter file test cases
-            $parameterFileTestCases = @()
+            $testFileTestCases = @()
             $templateFile_Parameters = $templateContent.parameters
             $TemplateFile_AllParameterNames = $templateFile_Parameters.Keys | Sort-Object
             $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.Keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
@@ -522,10 +522,10 @@ Describe 'Deployment template tests' -Tag Template {
                         $deploymentFileContent = az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                         $deploymentTestFile_AllParameterNames = $deploymentFileContent.resources[-1].properties.parameters.keys | Sort-Object # The last resource should be the test
                     }
-                    $parameterFileTestCases += @{
-                        parameterFile_Path                   = $moduleTestFilePath
-                        parameterFile_Name                   = Split-Path $moduleTestFilePath -Leaf
-                        parameterFile_AllParameterNames      = $deploymentTestFile_AllParameterNames
+                    $testFileTestCases += @{
+                        testFile_Path                        = $moduleTestFilePath
+                        testFile_Name                        = Split-Path $moduleTestFilePath -Leaf
+                        testFile_AllParameterNames           = $deploymentTestFile_AllParameterNames
                         templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
                         templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
                         tokenSettings                        = $Settings.parameterFileTokens
@@ -535,10 +535,10 @@ Describe 'Deployment template tests' -Tag Template {
 
             # Test file setup
             $deploymentFolderTestCases += @{
-                moduleFolderName       = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                templateContent        = $templateContent
-                templateFilePath       = $templateFilePath
-                parameterFileTestCases = $parameterFileTestCases
+                moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+                templateContent   = $templateContent
+                templateFilePath  = $templateFilePath
+                testFileTestCases = $testFileTestCases
             }
         }
 
@@ -897,28 +897,28 @@ Describe 'Deployment template tests' -Tag Template {
         # PARAMETER Tests
         It '[<moduleFolderName>] All parameters in parameters files exist in template file (deploy.json)' -TestCases $deploymentFolderTestCases {
             param (
-                [hashtable[]] $parameterFileTestCases
+                [hashtable[]] $testFileTestCases
             )
 
-            foreach ($parameterFileTestCase in $parameterFileTestCases) {
-                $parameterFile_AllParameterNames = $parameterFileTestCase.parameterFile_AllParameterNames
+            foreach ($parameterFileTestCase in $testFileTestCases) {
+                $testFile_AllParameterNames = $parameterFileTestCase.testFile_AllParameterNames
                 $templateFile_AllParameterNames = $parameterFileTestCase.templateFile_AllParameterNames
 
-                $nonExistentParameters = $parameterFile_AllParameterNames | Where-Object { $templateFile_AllParameterNames -notcontains $_ }
+                $nonExistentParameters = $testFile_AllParameterNames | Where-Object { $templateFile_AllParameterNames -notcontains $_ }
                 $nonExistentParameters.Count | Should -Be 0 -Because ('no parameter in the parameter file should not exist in the template file. Found excess items: [{0}]' -f ($nonExistentParameters -join ', '))
             }
         }
 
         It '[<moduleFolderName>] All required parameters in template file (deploy.json) should exist in parameters files' -TestCases $deploymentFolderTestCases {
             param (
-                [hashtable[]] $parameterFileTestCases
+                [hashtable[]] $testFileTestCases
             )
 
-            foreach ($parameterFileTestCase in $parameterFileTestCases) {
+            foreach ($parameterFileTestCase in $testFileTestCases) {
                 $TemplateFile_RequiredParametersNames = $parameterFileTestCase.TemplateFile_RequiredParametersNames
-                $parameterFile_AllParameterNames = $parameterFileTestCase.parameterFile_AllParameterNames
+                $testFile_AllParameterNames = $parameterFileTestCase.testFile_AllParameterNames
 
-                $missingParameters = $templateFile_RequiredParametersNames | Where-Object { $parameterFile_AllParameterNames -notcontains $_ }
+                $missingParameters = $templateFile_RequiredParametersNames | Where-Object { $testFile_AllParameterNames -notcontains $_ }
                 $missingParameters.Count | Should -Be 0 -Because ('no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}]' -f ($missingParameters -join ', '))
             }
         }
