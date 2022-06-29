@@ -248,7 +248,7 @@ jobs:
 
             # Handle additional parameters
             $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry') {
+            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
                 }
@@ -328,7 +328,7 @@ jobs:
 
             # Handle additional parameters
             $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry') {
+            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
                 }
