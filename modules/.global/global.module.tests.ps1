@@ -145,7 +145,7 @@ Describe 'File/folder tests' -Tag Modules {
                 [string] $parameterFilePath
             )
             if ((Split-Path $parameterFilePath -Extension) -eq '.json') {
-                ((Get-Content $parameterFilePath) | ConvertFrom-Json) | Should -Not -Throw
+                { (Get-Content $parameterFilePath) | ConvertFrom-Json } | Should -Not -Throw
             } else {
                 Set-ItResult -Skipped -Because 'the module has no JSON parameter file.'
             }
