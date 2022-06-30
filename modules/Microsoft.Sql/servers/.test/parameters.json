@@ -27,6 +27,9 @@
         "location": {
             "value": "westeurope"
         },
+        "minimalTlsVersion": {
+            "value": "1.2"
+        },
         "roleAssignments": {
             "value": [
                 {
