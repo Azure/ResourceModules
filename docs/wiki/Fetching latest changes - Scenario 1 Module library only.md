@@ -43,12 +43,11 @@ In this scenario every time you'll fetch updates from the public CARML repositor
 This process can be automated, by script or CI, if customization tasks are repeatable.
 # 5. Test and publish modules
 
+If you have customized your library without pushing the contributes on the public CARML repository, public modules are not tested with your customization, so you'll need to manage the test of your updated and customized modules.
+
 To automate the import of new code and speed up the test process we recommend to adopt [module library with the CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment).
 
-Public CARML module are not tested with your customization, so you'll also need to manage the test of your updated and customized modules.
-
 If you are not using a local repository, you'll also need to publish the modules. Different procedures can apply, depending on where your version of the library is stored:
-
 ## Publish to Template Specs
 
 <details>
