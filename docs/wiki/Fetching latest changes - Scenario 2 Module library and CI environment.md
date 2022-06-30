@@ -20,10 +20,10 @@ The update process is the following:
 <details>
 <summary>GitHub public repository</summary>
 
-    You have a public fork of public CARML source repository in your target organization.
+You have a public fork of public CARML source repository in your target organization.
 
-    1. Keep your fork synced to the fork upstream repository, on the GitHub web UI or through the GitHub CLI or the command line, as explaind in [Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) documentation.
-    1. Sync your local copy of the fork taking care of eventual customizations you can have in place.
+1. Keep your fork synced to the fork upstream repository, on the GitHub web UI or through the GitHub CLI or the command line, as explaind in [Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) documentation.
+1. Sync your local copy of the fork taking care of eventual customizations you can have in place.
 
 </details>
 <p>
@@ -31,9 +31,9 @@ The update process is the following:
 <details>
 <summary>GitHub private repository</summary>
 
-    You have created your GitHub target repository and uploaded there the content of the CARML repository.
+You have created your GitHub target repository and uploaded there the content of the CARML repository.
 
-    Clone/download CARML repository to create a local copy of it, as explained in Azure DevOps Repository section in [Getting started - Scenario 2 Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#2-forkclone-the-repository-into-your-devops-environment)
+Clone/download CARML repository to create a local copy of it, as explained in Azure DevOps Repository section in [Getting started - Scenario 2 Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#2-forkclone-the-repository-into-your-devops-environment)
 
 </details>
 <p>
@@ -41,9 +41,9 @@ The update process is the following:
 <details>
 <summary>Azure DevOps private git</summary>
 
-    You have created your target repository and uploaded there the content of the CARML repository.
+You have created your target repository and uploaded there the content of the CARML repository.
 
-    Clone/download CARML repository to create a local copy of it, as explained in Azure DevOps Repository section in [Getting started - Scenario 2 Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#2-forkclone-the-repository-into-your-devops-environment)
+Clone/download CARML repository to create a local copy of it, as explained in Azure DevOps Repository section in [Getting started - Scenario 2 Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#2-forkclone-the-repository-into-your-devops-environment)
 
 </details>
 <p>
