@@ -13,7 +13,6 @@ The update process is the following:
 - [5. Update module parameter files](#5-update-module-parameter-files)
 - [6. (Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
 - [7. Push updated code](#7-push-updated-code)
-- [8. Test and publish modules](#8-test-and-publish-modules)
 
 # 1. Sync your copy of the library
 
@@ -83,6 +82,5 @@ Follow istructions in [(Optional) Convert library to ARM](./Fetching%20latest%20
 # 7. Push updated code
 
 Push the updated local code to your remote public fork (for GitHub public repository scenario) or on your remote target repository for GitHub private repository and Azure DevOps private git scenarios.
-# 8. Test and publish modules
 
-Follow [Test and publish modules](./Fetching%20latest%20changes%20-%20Scenario%201%20Module%20library%20only#5-test-and-publish-modules) section in [Fetching latest changes - Scenario 1 Module library only](./Fetching%20latest%20changes%20-%20Scenario%201%20Module%20library%20only) page.
+If actions/ pipelines are enabled test and publishing of modules starts automatically.
