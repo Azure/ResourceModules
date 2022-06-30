@@ -45,10 +45,10 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/image.parameters.json
-            - path: $(modulePath)/.parameters/import.parameters.json
+            - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/image.parameters.json
+            - path: $(modulePath)/.test/import.parameters.json
 
   - stage: Publishing
     displayName: Publishing
