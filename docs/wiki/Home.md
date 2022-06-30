@@ -18,7 +18,7 @@ If you're unfamiliar with Infrastructure as Code or wonder how you can use the c
   - [**Scenario 2:** Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment)
     - [Check namePrefix availability](./Getting%20started%20-%20Check%20NamePrefix%20availability)
   - [**Scenario 3:** Contribute](./Getting%20started%20-%20Scenario%203%20Contribute)
-- [Fetching latest changes](./Fetching%20latest%20updates.md)
+- [Fetching latest changes](./Fetching%20latest%20updates)
   - [**Scenario 1:** Module library only](./Fetching%20latest%20changes%20-%20Scenario%201%20Module%20library%20only)
   - [**Scenario 2:** Module library and CI environment](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20and%20CI%20environment)
 - [The library](./The%20library)
