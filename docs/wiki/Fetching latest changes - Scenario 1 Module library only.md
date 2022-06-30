@@ -76,12 +76,12 @@ To publish a module by running the script:
         Publish-ModuleToTemplateSpec -TemplateFilePath "D:\ResourcesModules\arm\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
         ```
     As the modules to be published are more than one a script that calls the `'Publish-ModuleToTemplateSpec'` function for each of the modules can be created.
-</details>
-<p>
 
-1. Update your master template in order to use the new version of the published modules.
+ 1. Update your master template in order to use the new version of the published modules.
 
    For the [Template Specs' example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
+</details>
+<p>
 
 ## Publish to Bicep Registry
 
@@ -110,11 +110,12 @@ To publish a module by running the script:
         Publish-ModuleToPrivateBicepRegistry -TemplateFilePath "D:\ResourcesModules\arm\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -BicepRegistryName 'adpsxxazacrx001'  -BicepRegistryRgName 'artifact-rg'
         ```
 As the modules to be published are more than one a script that calls the `'Publish-ModuleToPrivateBicepRegistry'` function for each of the modules can be created.
-</details>
-<p>
 
 1. Update your master template in order to use the new version of the published modules.
     For the [Private Bicep Registry's example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
+</details>
+<p>
+
 ## Publish to ADO Artifacts
 
 
