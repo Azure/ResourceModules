@@ -3,6 +3,9 @@ In this scenario you have onboarded only the module library as described in [Get
 Modules can be stored in an accessible location like local, Template Specs, Bicep Registry or ADO universal packages.
 
 The update process is the following:
+
+### _Navigation_
+
 - [1. Backup your local copy of the library](#1-backup-your-local-copy-of-the-library)
 - [2. Download the library](#2-download-the-library)
 - [3. (Optional) Convert library to ARM](#3-optional-convert-library-to-arm)
