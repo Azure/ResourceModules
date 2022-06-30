@@ -321,6 +321,9 @@ Optional. A switch to control whether or not to add a ARM-JSON-Parameter file ex
 .PARAMETER addBicep
 Optional. A switch to control whether or not to add a Bicep deployment example. Defaults to true.
 
+.PARAMETER ProjectSettings
+Optional. Projects settings to draw information from. For example the `namePrefix`.
+
 .EXAMPLE
 Set-DeploymentExamplesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 
@@ -341,6 +344,9 @@ function Set-DeploymentExamplesSection {
 
         [Parameter(Mandatory = $false)]
         [bool] $addBicep = $true,
+
+        [Parameter(Mandatory = $false)]
+        [hashtable] $ProjectSettings = @{},
 
         [Parameter(Mandatory = $false)]
         [string] $SectionStartIdentifier = '## Deployment examples'
@@ -377,10 +383,20 @@ function Set-DeploymentExamplesSection {
 
             $rawBicepExample = $rawContentArray[$bicepTestStartIndex..$bicepTestEndIndex]
 
+            # Replace placeholders
+            $namePrefix = ($ProjectSettings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }).value
+            $serviceShort = ([regex]::Match($rawContent, "(?m)^param serviceShort string = '(.+)'\s*$")).Captures.Groups[1].Value
+
+            $rawBicepExampleString = ($rawBicepExample | Out-String)
+            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{serviceShort\}', $serviceShort
+            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', $namePrefix
+
+            $rawBicepExample = $rawBicepExampleString -split '\n'
+
+            # Generate content
             if ($addBicep) {
                 $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep = {'"
                 $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' }
-
 
                 $SectionContent += @(
                     '',
@@ -707,6 +723,15 @@ function Set-ModuleReadMe {
 
     $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/modules/')[1]
 
+    $root = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+    $projectSettingsPath = Join-Path $root 'settings.json'
+    if (Test-Path $projectSettingsPath) {
+        $projectSettings = Get-Content $projectSettingsPath | ConvertFrom-Json -AsHashtable
+    } else {
+        Write-Warning "No settings file found in path [$projectSettingsPath]"
+        $projectSettings = @{}
+    }
+
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
         # Create new readme file
@@ -790,6 +815,7 @@ function Set-ModuleReadMe {
         $inputObject = @{
             ReadMeFileContent = $readMeFileContent
             TemplateFilePath  = $TemplateFilePath
+            ProjectSettings   = $projectSettings
         }
         $readMeFileContent = Set-DeploymentExamplesSection @inputObject
     }
