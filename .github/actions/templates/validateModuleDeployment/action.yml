@@ -247,7 +247,7 @@ runs:
 
             if ($testTemplatePossibleParameters -contains 'namePrefix') {
               $functionInput['additionalParameters'] += @{
-                namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+                namePrefix = ($projectSettings.parameterFileTokens.localTokens  | Where-Object { $_.name -eq 'namePrefix' }).value
               }
             }
           }
@@ -343,7 +343,7 @@ runs:
 
             if ($testTemplatePossibleParameters -contains 'namePrefix') {
               $functionInput['additionalParameters'] += @{
-                namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+                namePrefix = ($projectSettings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }).value
               }
             }
           }
