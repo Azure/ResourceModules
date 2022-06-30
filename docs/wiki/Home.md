@@ -40,6 +40,7 @@ If you're unfamiliar with Infrastructure as Code or wonder how you can use the c
   - [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme)
   - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
   - [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally)
+  - [Validate modules on scale](./Contribution%20guide%20-%20Validate%20module%20on%20scale)
 - [Solution creation](./Solution%20creation)
 - Upgrade guideline
   - [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0)

@@ -38,9 +38,9 @@ They can be deployed in different configurations just by changing the input para
 
 # General guidelines
 
-- All resource modules in the 'arm' folder should not allow deployment loops on the top-level resource but may optionally allow deployment loops on their child resources.
+- All resource modules in the 'modules' folder should not allow deployment loops on the top-level resource but may optionally allow deployment loops on their child resources.
   > **Example:** The storage account module allows the deployment of a single storage account with, optionally, multiple blob containers, multiple file shares, multiple queues and/or multiple tables.
-- The 'constructs' folder contains examples of deployment logic built on top of resource modules included in the 'arm' folder, allowing for example, deployment loops on top-level resources.
+- The 'constructs' folder contains examples of deployment logic built on top of resource modules included in the 'modules' folder, allowing for example, deployment loops on top-level resources.
   > **Example:** The VirtualNetworkPeering construct leverages the VirtualNetworkPeering module to deploy multiple virtual network peering connections at once.
 - Where the resource type in question supports it, the module should have support for:
   1. **Diagnostic logs** and **metrics** (you can have them sent to one ore more of the following destination types: storage account, log analytics and event hub).
@@ -60,10 +60,10 @@ They can be deployed in different configurations just by changing the input para
 A **CARML module** consists of
 
 - The Bicep template deployment file (`deploy.bicep`).
-- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.parameters` subfolder.
+- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.test` subfolder.
 - A `readme.md` file which describes the module itself.
 
-A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `arm` folder.
+A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `modules` folder.
 
 Also, each module should be implemented with all capabilities it and its children support. This includes
 - `Locks`
@@ -109,7 +109,7 @@ Use the following naming standard for module files and folders:
   └─ <service>
       ├─ .bicep
       |  ├─ nested_extensionResource1.bicep
-      ├─ .parameters
+      ├─ .test
       |  └─ parameters.json
       ├─ deploy.bicep
       └─ readme.md
@@ -121,7 +121,7 @@ Use the following naming standard for module files and folders:
   >└─ sites
   >    ├─ .bicep
   >    |  └─ nested_roleAssignments.bicep
-  >    ├─ .parameters
+  >    ├─ .test
   >    |  └─ parameters.json
   >    ├─ deploy.bicep
   >    └─ readme.md
@@ -185,7 +185,7 @@ The RBAC deployment has 2 elements. A module that contains the implementation, a
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-module <mainResource>_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module <mainResource>_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
@@ -442,7 +442,7 @@ Within a bicep file, use the following conventions:
       ```
 ## Modules
 
-  - Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g., `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_rbac`.
+  - Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g., `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_roleAssignments`.
   - Modules enable you to reuse code from a Bicep file in other Bicep files. As such, they're normally leveraged for deploying child resources (e.g., file services in a storage account), cross referenced resources (e.g., network interface in a virtual machine) or extension resources (e.g., role assignment in a resource group).
   - When a module requires to deploy a resource whose resource type is outside of the main module's provider namespace, the module of this additional resource is referenced locally. For example, when extending the Key Vault module with Private Endpoints, instead of including in the Key Vault module an ad hoc implementation of a Private Endpoint, the Key Vault directly references the Private Endpoint module (i.e., `module privateEndpoint 'https://github.com/Azure/ResourceModules/blob/main/Microsoft.Network/privateEndpoints/deploy.bicep'`). Major benefits of this implementation are less code duplication, more consistency throughout the module library and allowing the consumer to leverage the full interface provided by the referenced module.
   > **Note**: Cross-referencing modules from the local repository creates a dependency for the modules applying this technique on the referenced modules being part of the local repository. Reusing the example from above, the Key Vault module has a dependency on the referenced Private Endpoint module, meaning that the repository from which the Key Vault module is deployed also requires the Private Endpoint module to be present. For this reason, we provide a utility to check for any local module references in a given path. This can be useful to determine which module folders you'd need if you don't want to keep the entire library. For further information on how to use the tool, please refer to the tool-specific [documentation](./Getting%20started%20-%20Get%20module%20cross-references).
@@ -471,7 +471,7 @@ While exceptions might be needed, the following guidance should be followed as m
   ```
   > **Example**: for the `roleAssignment` deployment in the Key Vault `secrets` template
   > ```
-  >   module secret_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  >   module secret_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   >     name: '${deployment().name}-Rbac-${index}'
   > ```
 

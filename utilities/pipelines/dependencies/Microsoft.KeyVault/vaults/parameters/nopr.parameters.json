@@ -1,44 +1,44 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "adp-<<namePrefix>>-az-kv-nopr-002"  // keyvault with purge protection enabled, to be used for encryption
-    },
-    "accessPolicies": {
-      "value": [
-        {
-          "tenantId": "<<tenantId>>",
-          "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI. Replaced by the pipeline
-          "permissions": {
-            "keys": [
-              "Get",
-              "List",
-              "WrapKey",
-              "UnwrapKey"
-            ],
-            "secrets": [],
-            "certificates": []
-          }
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-kv-nopr-002" // keyvault with purge protection enabled, to be used for encryption
         },
-        {
-          "tenantId": "<<tenantId>>",
-          "objectId": "<<deploymentSpId>>", // dependency access
-          "permissions": {
-            "keys": [
-              "all"
-            ],
-            "secrets": [],
-            "certificates": []
-          }
+        "accessPolicies": {
+            "value": [
+                {
+                    "tenantId": "<<tenantId>>",
+                    "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI. Replaced by the pipeline
+                    "permissions": {
+                        "keys": [
+                            "Get",
+                            "List",
+                            "WrapKey",
+                            "UnwrapKey"
+                        ],
+                        "secrets": [],
+                        "certificates": []
+                    }
+                },
+                {
+                    "tenantId": "<<tenantId>>",
+                    "objectId": "<<deploymentSpId>>", // dependency access
+                    "permissions": {
+                        "keys": [
+                            "all"
+                        ],
+                        "secrets": [],
+                        "certificates": []
+                    }
+                }
+            ]
+        },
+        "enablePurgeProtection": {
+            "value": true
+        },
+        "softDeleteRetentionInDays": {
+            "value": 7
         }
-      ]
-    },
-    "enablePurgeProtection": {
-      "value": true
-    },
-    "softDeleteRetentionInDays" : {
-      "value": 7
     }
-  }
 }

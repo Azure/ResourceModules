@@ -350,12 +350,12 @@ function Set-DeploymentExamplesSection {
     $SectionContent = [System.Collections.ArrayList]@()
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $resourceTypeIdentifier = $moduleRoot.Split('arm')[1].Replace('\', '/').TrimStart('/')
-    $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.parameters') -Filter '*parameters.json' -Recurse
+    $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
+    $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.test') -Filter '*parameters.json' -Recurse
 
     $index = 1
-    foreach ($parameterFilePath in $parameterFiles.FullName) {
-        $contentInJSONFormat = Get-Content -Path $parameterFilePath -Raw
+    foreach ($testFilePath in $parameterFiles.FullName) {
+        $contentInJSONFormat = Get-Content -Path $testFilePath -Encoding 'utf8' | Out-String
 
         $SectionContent += @(
             "<h3>Example $index</h3>"
@@ -369,7 +369,7 @@ function Set-DeploymentExamplesSection {
                 '<summary>via JSON Parameter file</summary>',
                 '',
                 '```json',
-                $contentInJSONFormat,
+                $contentInJSONFormat.TrimEnd(),
                 '```',
                 '',
                 '</details>'
@@ -450,7 +450,7 @@ function Set-DeploymentExamplesSection {
                 "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
                 "  name: '`${uniqueString(deployment().name)}-$resourceType'"
                 '  params: {'
-                ($bicepParamsArray | ForEach-Object { "  $_" }),
+                ($bicepParamsArray | ForEach-Object { "  $_" }).TrimEnd(),
                 '  }'
                 '}'
                 '```',
@@ -639,7 +639,7 @@ function Set-ModuleReadMe {
         throw "Failed to compile [$TemplateFilePath]"
     }
 
-    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
+    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/modules/')[1]
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
@@ -674,7 +674,7 @@ function Set-ModuleReadMe {
     }
 
     # Update title
-    if ($TemplateFilePath.Replace('\', '/') -like '*/arm/*') {
+    if ($TemplateFilePath.Replace('\', '/') -like '*/modules/*') {
 
         if ($readMeFileContent[0] -notlike "*``[$fullResourcePath]``") {
             # Cut outdated

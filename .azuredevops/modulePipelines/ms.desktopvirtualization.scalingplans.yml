@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.desktopvirtualization.scalingplans.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.DesktopVirtualization/scalingplans/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.DesktopVirtualization/scalingplans/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.DesktopVirtualization/scalingplans'
+    value: '/modules/Microsoft.DesktopVirtualization/scalingplans'
 
 stages:
   - stage: Validation
@@ -45,7 +45,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
 
   - stage: Publishing
     displayName: Publishing

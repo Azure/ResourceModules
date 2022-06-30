@@ -1,23 +1,23 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "adp-<<namePrefix>>-az-vnet-x-peer02"
-    },
-    "addressPrefixes": {
-      "value": [
-        "10.3.0.0/16"
-      ]
-    },
-    "subnets": {
-      "value": [
-        {
-          "name": "<<namePrefix>>-az-subnet-x-001",
-          "addressPrefix": "10.3.0.0/24",
-          "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001"
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-vnet-x-peer02"
+        },
+        "addressPrefixes": {
+            "value": [
+                "10.3.0.0/16"
+            ]
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-subnet-x-001",
+                    "addressPrefix": "10.3.0.0/24",
+                    "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001"
+                }
+            ]
         }
-      ]
     }
-  }
 }

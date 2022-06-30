@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.documentdb.databaseaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.DocumentDB/databaseAccounts/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.DocumentDB/databaseAccounts/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.DocumentDB/databaseAccounts'
+    value: '/modules/Microsoft.DocumentDB/databaseAccounts'
 
 stages:
   - stage: Validation
@@ -45,9 +45,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/mongodb.parameters.json
-            - path: $(modulePath)/.parameters/plain.parameters.json
-            - path: $(modulePath)/.parameters/sqldb.parameters.json
+            - path: $(modulePath)/.test/mongodb.parameters.json
+            - path: $(modulePath)/.test/plain.parameters.json
+            - path: $(modulePath)/.test/sqldb.parameters.json
 
   - stage: Publishing
     displayName: Publishing
