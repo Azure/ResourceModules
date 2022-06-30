@@ -406,7 +406,7 @@ function Set-DeploymentExamplesSection {
             # Generate content
             if ($addBicep) {
                 $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep = {'"
-                $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' }
+                $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
                 $SectionContent += @(
                     '',
@@ -415,7 +415,7 @@ function Set-DeploymentExamplesSection {
                     '<summary>via Bicep module</summary>'
                     ''
                     '```bicep',
-                    ($rawBicepExample | ForEach-Object { "  $_" }).TrimEnd(),
+                    ($rawBicepExample | ForEach-Object { "$_" }).TrimEnd(),
                     '```',
                     '',
                     '</details>'
