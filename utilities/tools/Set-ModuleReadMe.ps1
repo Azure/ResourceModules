@@ -360,6 +360,9 @@ function Set-DeploymentExamplesSection {
     $resourceType = $resourceTypeIdentifier.Split('/')[1]
     $testFilePaths = (Get-ChildItem (Join-Path -Path $moduleRoot -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
 
+    ############################
+    ##   Process test files   ##
+    ############################
     $pathIndex = 1
     foreach ($testFilePath in $testFilePaths) {
 
@@ -373,9 +376,13 @@ function Set-DeploymentExamplesSection {
             '<h3>Example {0}: {1}</h3>' -f $pathIndex, $exampleTitle
         )
 
+        ## ----------------------------------- ##
+        ##   Handle by type (Bicep vs. JSON)   ##
+        ## ----------------------------------- ##
         if ((Split-Path $testFilePath -Extension) -eq '.bicep') {
-            # Bicep to JSON
-            # =============
+            # ----------------- #
+            #   Bicep to JSON   #
+            # ----------------- #
             $bicepTestStartIndex = $rawContentArray.IndexOf("module testDeployment '../deploy.bicep' = {")
 
 
@@ -504,8 +511,9 @@ function Set-DeploymentExamplesSection {
                 )
             }
         } else {
-            # JSON to Bicep
-            # =============
+            # ----------------- #
+            #   JSON to Bicep   #
+            # ----------------- #
             # TODO: Support JSON test template files?
 
             if ($addJson) {
@@ -614,7 +622,9 @@ function Set-DeploymentExamplesSection {
         $pathIndex++
     }
 
-    # Build result
+    ######################
+    ##   Built result   ##
+    ######################
     if ($SectionContent) {
         if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
             return Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier
