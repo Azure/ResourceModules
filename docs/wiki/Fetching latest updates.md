@@ -7,15 +7,15 @@ This section provides an overview on how to get your library updated.
 Updates can have different impacts on your version of the library:
 - impacts limited to the CI framework
 
-    a general **pipeline update** can be done by copying/replacing any code outside of the `arm` folder. Refer to [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0#general-pipeline-updates) as an example.
+    a general **pipeline update** can be done by copying/replacing any code outside of the `modules` folder. Refer to [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0#general-pipeline-updates) as an example.
 
 - impacts limited to specific modules
 
-    new created modules or changed ones can be updated by copying/replacing the content of the new `arm` folder on your own `arm` folder. Refer to [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0#general-import-of-new-modules) as an example.
+    new created modules or changed ones can be updated by copying/replacing the content of the new `modules` folder on your own `modules` folder. Refer to [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0#general-import-of-new-modules) as an example.
 - impacts on all the modules when design changes are implemented
 
     you can update your local code by a copy/replace, but comparing your local repository to the updated one, you'll probably find that changes are not limited
-    to the `arm` folder, but they impact the `utilities` folder and files contained in the root folder (e.g `settings.json`) in same cases.
+    to the `modules` folder, but they impact the `utilities` folder and files contained in the root folder (e.g `settings.json`) in same cases.
 
 Before to proceed with the updates it's always recommended to check the new release's highlights on the [releases](https://github.com/Azure/ResourceModules/releases) page, and the [closed pull requests](https://github.com/Azure/ResourceModules/pulls?q=is%3Apr+is%3Aclosed) to have an overview of what has been changed and the possible impact on your library.
 
