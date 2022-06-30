@@ -23,7 +23,7 @@ param sourceResourceId string = ''
 ])
 param enableAutoScaling bool = false
 
-@description('Optional. This is only supported on certain VM sizes and in certain Azure regions. For more information, see: /azure/aks/enable-host-encryption	.')
+@description('Optional. This is only supported on certain VM sizes and in certain Azure regions. For more information, see: /azure/aks/enable-host-encryption. For security reasons, this setting should be enabled.')
 @allowed([
   true
   false
