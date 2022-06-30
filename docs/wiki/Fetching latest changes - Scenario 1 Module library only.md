@@ -43,7 +43,7 @@ In this scenario every time you'll fetch updates from the public CARML repositor
 This process can be automated, by script or CI, if customization tasks are repeatable.
 # 5. Test and publish modules
 
-If you have customized your library without pushing the contributes on the public CARML repository, public modules are not tested with your customization, so you'll need to manage the test of your updated and customized modules.
+If you have customized your library without contributing on the public CARML repository, public modules are not tested with your customization, so you'll need to manage the test of your updated and customized modules.
 
 To automate the import of new code and speed up the test process we recommend to adopt [module library with the CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment).
 
@@ -78,7 +78,7 @@ To publish a module by running the script:
 
  1. Update your master template in order to use the new version of the published modules.
 
-   For the [Template Specs' example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
+    For the [Template Specs' example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
 </details>
 <p>
 
@@ -88,27 +88,28 @@ To publish a module by running the script:
 The preferred method to publish modules to Bicep Registry is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
 
 To publish a module by running the script:
-1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
-1. Navigate to `'D:\ResourcesModules\utilities\pipelines\resourcePublish'` location
-1. Load the script `'Publish-ModuleToPrivateBicepRegistry.ps1'` executing:
+ 1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
+ 1. Navigate to `'D:\ResourcesModules\utilities\pipelines\resourcePublish'` location
+ 1. Load the script `'Publish-ModuleToPrivateBicepRegistry.ps1'` executing:
 
         ```PowerShell
         . .\Publish-ModuleToPrivateBicepRegistry.ps1
         ```
-1. Run the script for the modules you need to publish, using the opportune parameters:
-   - TemplateFilePath = the absolute path of the module to be published.
-   - ModuleVersion = the version of the module.
-   - BicepRegistryName =  Name of the private bicep registry to publish to.
-   - BicepRegistryRgName = the resource group of the private bicep registry to publish to.
+ 1. Run the script for the modules you need to publish, using the opportune parameters:
+     - TemplateFilePath = the absolute path of the module to be published.
+     - ModuleVersion = the version of the module.
+     - BicepRegistryName =  Name of the private bicep registry to publish to.
+     - BicepRegistryRgName = the resource group of the private bicep registry to publish to.
 
-   To publish the Keyvault module with version 0.4.740 on a Bicep Registry called 'adpsxxazacrx001' that will be created in the resource group 'artifact-rg' you can execute the following command:
+    To publish the Keyvault module with version 0.4.740 on a Bicep Registry called 'adpsxxazacrx001' that will be created in the resource group 'artifact-rg' you can execute the following command:
 
          ```PowerShell
         Publish-ModuleToPrivateBicepRegistry -TemplateFilePath "D:\ResourcesModules\arm\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -BicepRegistryName 'adpsxxazacrx001'  -BicepRegistryRgName 'artifact-rg'
         ```
-As the modules to be published are more than one a script that calls the `'Publish-ModuleToPrivateBicepRegistry'` function for each of the modules can be created.
+    As the modules to be published are more than one a script that calls the `'Publish-ModuleToPrivateBicepRegistry'` function for each of the modules can be created.
 
-1. Update your master template in order to use the new version of the published modules.
+ 1. Update your master template in order to use the new version of the published modules.
+
     For the [Private Bicep Registry's example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
 </details>
 <p>
