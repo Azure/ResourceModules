@@ -8,6 +8,9 @@
         "lock": {
             "value": "CanNotDelete"
         },
+        "diskEncryptionSetID": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/diskEncryptionSets/adp-<<namePrefix>>-az-des-x-001"
+        },
         "primaryAgentPoolProfile": {
             "value": [
                 {
