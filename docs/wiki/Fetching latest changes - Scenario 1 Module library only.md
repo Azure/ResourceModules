@@ -48,7 +48,6 @@ If you have customized your library without pushing the contributes on the publi
 To automate the import of new code and speed up the test process we recommend to adopt [module library with the CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment).
 
 If you are not using a local repository, you'll also need to publish the modules. Different procedures can apply, depending on where your version of the library is stored:
-## Publish to Template Specs
 
 <details>
 <summary>Modules publishing in Template Spec</summary>
@@ -83,8 +82,6 @@ To publish a module by running the script:
 </details>
 <p>
 
-## Publish to Bicep Registry
-
 <details>
 <summary>Modules publishing in Bicep Registry</summary>
 
@@ -116,7 +113,7 @@ As the modules to be published are more than one a script that calls the `'Publi
 </details>
 <p>
 
-## Publish to ADO Artifacts
+
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------
