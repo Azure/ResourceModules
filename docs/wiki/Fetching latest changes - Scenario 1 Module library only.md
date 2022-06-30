@@ -4,7 +4,7 @@ Modules can be stored in an accessible location like local, Template Specs, Bice
 
 The update process is the following:
 
-## 1. Backup your local copy of the library
+# 1. Backup your local copy of the library
 
 <details>
 <summary>Rename your local repository</summary>
@@ -17,14 +17,14 @@ This can be done, for example, by the `'Compare selected'` [function](https://vs
 
 </details>
 
-## 2. Download the library
+# 2. Download the library
 
 To download the updated library follow the best option for your scenario, as explained in [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library#1-download-the-library)
 
-## 3. (Optional) Convert library to ARM
+# 3. (Optional) Convert library to ARM
 
 In case you aren't using Bicep you need to follow this procedure: [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library#2-optional-convert-library-to-arm)
-## 4. Customize modules
+# 4. Customize modules
 
 There are different options for library's customization:
 - [Option 1 - Library improvement](./Fetching%20latest%20updates#option-1---library-improvement)
@@ -37,7 +37,7 @@ In some cases, you might need to add to the library company/organization' specif
 In this scenario every time you'll fetch updates from the public CARML repository merge conflicts are expected. You'll have to compare the new public code with your customized one and re-apply your customizations to the updated code.
 
 This process can be automated, by script or CI, if customization tasks are repeatable.
-## 5. Test and publish modules
+# 5. Test and publish modules
 
 To automate the import of new code and speed up the test process we recommend to adopt [module library with the CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment).
 
@@ -45,7 +45,7 @@ Public CARML module are not tested with your customization, so you'll also need 
 
 If you are not using a local repository, you'll also need to publish the modules. Different procedures can apply, depending on where your version of the library is stored:
 
-### Publish to Template Specs
+## Publish to Template Specs
 
 <details>
 <summary>Modules publishing in Template Spec</summary>
@@ -80,7 +80,7 @@ To publish a module by running the script:
 
    For the [Template Specs' example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
 
-### Publish to Bicep Registry
+## Publish to Bicep Registry
 
 <details>
 <summary>Modules publishing in Bicep Registry</summary>
@@ -112,7 +112,7 @@ As the modules to be published are more than one a script that calls the `'Publi
 
 1. Update your master template in order to use the new version of the published modules.
     For the [Private Bicep Registry's example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
-### Publish to ADO Artifacts
+## Publish to ADO Artifacts
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------
