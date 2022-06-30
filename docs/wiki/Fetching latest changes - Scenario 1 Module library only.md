@@ -3,7 +3,11 @@ In this scenario you have onboarded only the module library as described in [Get
 Modules can be stored in an accessible location like local, Template Specs, Bicep Registry or ADO universal packages.
 
 The update process is the following:
-
+- [1. Backup your local copy of the library](#1-backup-your-local-copy-of-the-library)
+- [2. Download the library](#2-download-the-library)
+- [3. (Optional) Convert library to ARM](#3-optional-convert-library-to-arm)
+- [4. (Optional) Customize modules](#4-optional-customize-modules)
+- [5. Test and publish modules](#5-test-and-publish-modules)
 # 1. Backup your local copy of the library
 
 <details>
@@ -24,7 +28,7 @@ To download the updated library follow the best option for your scenario, as exp
 # 3. (Optional) Convert library to ARM
 
 In case you aren't using Bicep you need to follow this procedure: [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library#2-optional-convert-library-to-arm)
-# 4. Customize modules
+# 4. (Optional) Customize modules
 
 There are different options for library's customization:
 - [Option 1 - Library improvement](./Fetching%20latest%20updates#option-1---library-improvement)
