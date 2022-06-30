@@ -385,7 +385,6 @@ function Set-DeploymentExamplesSection {
             # ----------------- #
             $bicepTestStartIndex = $rawContentArray.IndexOf("module testDeployment '../deploy.bicep' = {")
 
-
             $bicepTestEndIndex = $bicepTestStartIndex
             do {
                 $bicepTestEndIndex++
@@ -439,6 +438,9 @@ function Set-DeploymentExamplesSection {
 
                 $paramBlock = $rawBicepExample[($paramStartIndex + 1)..($paramEndIndex - 1)]
 
+                $topLevelParamIndent = ([regex]::Match($rawBicepExample[$paramStartIndex + 1], '^(\s+).*')).Captures.Groups[1].Value.Length
+                $topLevelParamsInOrder = $rawBicepExample | Where-Object { $_ -match "^\s{$topLevelParamIndent}[0-9a-zA-Z]+:.*" } | ForEach-Object { ($_ -split ':')[0].Trim() }
+
                 $paramInJsonFormat = @(
                     '{',
                     $paramBlock
@@ -481,8 +483,8 @@ function Set-DeploymentExamplesSection {
 
                 # Add 'value' middle-layer for top-level parameters
                 $paramInJsonFormatObject = $paramInJSONFormatArray | Out-String | ConvertFrom-Json -AsHashtable -Depth 99
-                $paramInJsonFormatObjectWithValue = @{}
-                foreach ($paramKey in $paramInJsonFormatObject.Keys) {
+                $paramInJsonFormatObjectWithValue = [ordered]@{}
+                foreach ($paramKey in $topLevelParamsInOrder) {
                     $paramInJsonFormatObjectWithValue[$paramKey] = @{
                         value = $paramInJsonFormatObject[$paramKey]
                     }

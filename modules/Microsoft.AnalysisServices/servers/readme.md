@@ -157,7 +157,38 @@ roleAssignments: [
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Default</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
+  name: '${uniqueString(deployment().name)}-servers-aspar'
+  params: {
+    name: 'carmlazasaspar001'
+    lock: 'CanNotDelete'
+    skuName: 'S0'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -165,84 +196,61 @@ roleAssignments: [
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>azasweumax001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "skuName": {
-            "value": "S0"
-        },
-        "skuCapacity": {
-            "value": 1
-        },
-        "firewallSettings": {
-            "value": {
-                "firewallRules": [
-                    {
-                        "firewallRuleName": "AllowFromAll",
-                        "rangeStart": "0.0.0.0",
-                        "rangeEnd": "255.255.255.255"
-                    }
-                ],
-                "enablePowerBIService": true
-            }
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 365
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogCategoriesToEnable": {
-            "value": [
-                "Engine",
-                "Service"
-            ]
-        },
-        "diagnosticMetricsToEnable": {
-            "value": [
-                "AllMetrics"
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "carmlazasaspar001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "skuName": {
+      "value": "S0"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "managedIdentityPrincipalId"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Max</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-servers'
+module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
+  name: '${uniqueString(deployment().name)}-servers-asmax'
   params: {
-    name: '<<namePrefix>>azasweumax001'
+    name: 'carmlazasasmax001'
     lock: 'CanNotDelete'
     skuName: 'S0'
     skuCapacity: 1
@@ -256,19 +264,19 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
       ]
       enablePowerBIService: true
     }
-    diagnosticLogsRetentionInDays: 365
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          '<<deploymentSpId>>'
+          resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
       }
     ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diagnosticLogCategoriesToEnable: [
       'Engine'
       'Service'
@@ -283,35 +291,75 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>azasweumin001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "carmlazasasmax001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "skuName": {
+      "value": "S0"
+    },
+    "skuCapacity": {
+      "value": 1
+    },
+    "firewallSettings": {
+      "value": {
+        "firewallRules": [
+          {
+            "rangeEnd": "255.255.255.255",
+            "rangeStart": "0.0.0.0",
+            "firewallRuleName": "AllowFromAll"
+          }
+        ],
+        "enablePowerBIService": true
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "managedIdentityPrincipalId"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticLogCategoriesToEnable": {
+      "value": [
+        "Engine",
+        "Service"
+      ]
+    },
+    "diagnosticMetricsToEnable": {
+      "value": [
+        "AllMetrics"
+      ]
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-servers'
-  params: {
-    name: '<<namePrefix>>azasweumin001'
   }
 }
 ```
@@ -319,7 +367,23 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
+<h3>Example 3: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
+  name: '${uniqueString(deployment().name)}-servers-asmin'
+  params: {
+    name: 'carmlazasasmin001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -327,73 +391,12 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>azasweux001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "skuName": {
-            "value": "S0"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "carmlazasasmin001"
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-servers'
-  params: {
-    name: '<<namePrefix>>azasweux001'
-    lock: 'CanNotDelete'
-    skuName: 'S0'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 }
 ```
