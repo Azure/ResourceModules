@@ -112,3 +112,35 @@ To publish a module by running the script:
 
     For the [Private Bicep Registry's example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
 </details>
+<p>
+
+<details>
+<summary>Modules publishing to Azure DevOps artifact feed</summary>
+
+The preferred method to publish modules to Azure DevOps artifact feed is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToUniversalArtifactFeed.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToUniversalArtifactFeed.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
+
+To publish a module by running the script:
+ 1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
+ 1. Navigate to `'D:\ResourcesModules\utilities\pipelines\resourcePublish'` location
+ 1. Load the script `'Publish-ModuleToUniversalArtifactFeed.ps1'` executing:
+
+        ```PowerShell
+        . .\Publish-ModuleToUniversalArtifactFeed.ps1
+        ```
+ 1. Run the script for the modules you need to publish, using the opportune parameters:
+     - TemplateFilePath = the absolute path of the module to be published.
+     - ModuleVersion = the version of the module.
+     - VstsOrganizationUri =  name of Azure DevOps organization URL hosting the artifacts feed.
+     - VstsFeedProject = name of the project hosting the artifacts feed.
+     - VstsFeedName = name to the feed to publish to.
+
+    To publish the Keyvault module with version 0.4.740 on an artifact feed called 'Artifacts', in the project 'IaC' on organization 'fabrikam' you can execute the following command:
+
+         ```PowerShell
+        Publish-ModuleToUniversalArtifactFeed -TemplateFilePath "D:\ResourcesModules\arm\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts'
+        ```
+    As the modules to be published are more than one a script that calls the `'Publish-ModuleToUniversalArtifactFeed'` function for each of the modules can be created.
+
+ 1. Update your master template in order to use the new version of the published modules.
+
+</details>
