@@ -366,8 +366,11 @@ function Set-DeploymentExamplesSection {
         $rawContentArray = Get-Content -Path $testFilePath
         $rawContent = Get-Content -Path $testFilePath -Encoding 'utf8' | Out-String
 
+        $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
+        $TextInfo = (Get-Culture).TextInfo
+        $exampleTitle = $TextInfo.ToTitleCase($exampleTitle)
         $SectionContent += @(
-            '<h3>Example {0}: {1}</h3>' -f $pathIndex, ((Split-Path $testFilePath -Leaf) -split '\.')[0]
+            '<h3>Example {0}: {1}</h3>' -f $pathIndex, $exampleTitle
         )
 
         if ((Split-Path $testFilePath -Extension) -eq '.bicep') {
