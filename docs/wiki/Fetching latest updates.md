@@ -5,13 +5,14 @@ This section provides an overview on how to get your library updated.
 ## CARML updates' impact on your copy of the library
 
 Updates can have different impacts on your version of the library:
-- impacts limited to the CI framework
+- impacts limited to the CI environment
 
     a general **pipeline update** can be done by copying/replacing any code outside of the `modules` folder. Refer to [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0#general-pipeline-updates) as an example.
 
 - impacts limited to specific modules
 
     new created modules or changed ones can be updated by copying/replacing the content of the new `modules` folder on your own `modules` folder. Refer to [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0#general-import-of-new-modules) as an example.
+
 - impacts on all the modules when design changes are implemented
 
     you can update your local code by a copy/replace, but comparing your local repository to the updated one, you'll probably find that changes are not limited
