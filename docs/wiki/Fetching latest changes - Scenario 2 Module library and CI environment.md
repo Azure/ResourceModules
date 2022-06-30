@@ -6,14 +6,14 @@ The update process is the following:
 
 ### _Navigation_
 
-- [1. Sync your copy of the library]()
-- [2. Apply specific settings to files]()
-- [3. (Optional) Re-apply your customizations]()
-- [4. Run dependencies pipeline]()
-- [5. Update module parameter files]()
-- [6. (Optional) Convert library to ARM]()
-- [7. Push updated code]()
-- [8. Test and publish modules]()
+- [1. Sync your copy of the library](#1-sync-your-copy-of-the-library)
+- [2. Apply specific settings to files](#2-apply-specific-settings-to-files)
+- [3. (Optional) Re-apply your customizations](#3-optional-re-apply-your-customizations)
+- [4. Run dependencies pipeline](#4-run-dependencies-pipeline)
+- [5. Update module parameter files](#5-update-module-parameter-files)
+- [6. (Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
+- [7. Push updated code](#7-push-updated-code)
+- [8. Test and publish modules](#8-test-and-publish-modules)
 
 # 1. Sync your copy of the library
 
