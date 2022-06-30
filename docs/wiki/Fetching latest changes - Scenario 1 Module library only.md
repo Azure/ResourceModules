@@ -1,4 +1,4 @@
-When the CARML library is consumed with the [*Template Orchestration*](./Solution%20creation.md#template-orchestration) approach modules need to be stored in an available location, where the Azure Resource Manager (ARM) can access them. This can be achieved by storing the modules templates in an accessible location like local, Template Specs or the Bicep Registry.
+When the CARML library is consumed with the [*Template Orchestration*](./Solution%20creation#template-orchestration) approach modules need to be stored in an available location, where the Azure Resource Manager (ARM) can access them. This can be achieved by storing the modules templates in an accessible location like local, Template Specs or the Bicep Registry.
 
 ---
 ### _Navigation_
@@ -20,22 +20,22 @@ In case you consume the module library with a local repository, the update proce
     This can be done, for example, by the `'Compare selected'` [function](https://vscode.one/diff-vscode/) of Visual Studio Code
     </details>
 
-1. [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md#1-download-the-library)
-1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library.md#2-optional-convert-library-to-arm)
+1. [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library#1-download-the-library)
+1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library#2-optional-convert-library-to-arm)
 
 If you have customized modules, you'll need to apply customizations on the new updated modules.
 
 # Template Specs
 When the modules are stored in Template Specs a versioning feature with access to old versions is available, but a backup of the local folder can be useful if you have customized modules, as you'll need to apply the customization to the new downloaded version of the modules. The update steps are the following:
 1. Backup your local repository to maintain a backup copy: you can rename the local repository as showed in the above section.
-1. [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md#1-download-the-library)
-1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library.md#2-optional-convert-library-to-arm)
+1. [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library#1-download-the-library)
+1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library#2-optional-convert-library-to-arm)
 1. Apply customizations to the new version of modules if needed
 1. Publish modules to Template Spec
     <details>
     <summary>Modules publishing in Template Spec</summary>
 
-    The preferred method to publish modules to template-specs is to leverage CARML ready [CI environment](./The%20CI%20environment.md), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
+    The preferred method to publish modules to template-specs is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
 
     To publish a module by running the script:
     1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
@@ -60,19 +60,19 @@ When the modules are stored in Template Specs a versioning feature with access t
     </details>
     <p
 1. Update your master template in order to use the new version of the published modules.
-    For the [Template Specs' example in Solutions](./Solution%20creation.md#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
+    For the [Template Specs' example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
 
 # Bicep Registry
 As the Template Specs scenario, Bicep Registry offers a versioning feature with access to old versions of modules, but a backup of the local folder can be useful if you have customized modules, as you'll need to apply the customization to the new downloaded version of the modules. The update steps are the following:
 1. Backup your local repository to maintain a backup copy: you can rename the local repository as showed in the above section.
-1. [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md#1-download-the-library)
-1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library.md#2-optional-convert-library-to-arm)
+1. [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library#1-download-the-library)
+1. [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library#2-optional-convert-library-to-arm)
 1. Apply customizations to the new version of modules if needed
 1. Publish modules to Bicep Registry
     <details>
     <summary>Modules publishing in Bicep Registry</summary>
 
-    The preferred method to publish modules to Bicep Registry is to leverage CARML ready [CI environment](./The%20CI%20environment.md), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
+    The preferred method to publish modules to Bicep Registry is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
 
     To publish a module by running the script:
     1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
@@ -96,4 +96,4 @@ As the Template Specs scenario, Bicep Registry offers a versioning feature with 
     </details>
     <p
 1. Update your master template in order to use the new version of the published modules.
-    For the [Private Bicep Registry's example in Solutions](./Solution%20creation.md#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
+    For the [Private Bicep Registry's example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
