@@ -360,14 +360,14 @@ function Set-DeploymentExamplesSection {
     $resourceType = $resourceTypeIdentifier.Split('/')[1]
     $testFilePaths = (Get-ChildItem (Join-Path -Path $moduleRoot -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
 
-    $index = 1
+    $pathIndex = 1
     foreach ($testFilePath in $testFilePaths) {
 
         $rawContentArray = Get-Content -Path $testFilePath
         $rawContent = Get-Content -Path $testFilePath -Encoding 'utf8' | Out-String
 
         $SectionContent += @(
-            '<h3>Example {0}: {1}</h3>' -f $index, ((Split-Path $testFilePath -Leaf) -split '\.')[0]
+            '<h3>Example {0}: {1}</h3>' -f $pathIndex, ((Split-Path $testFilePath -Leaf) -split '\.')[0]
         )
 
         if ((Split-Path $testFilePath -Extension) -eq '.bicep') {
@@ -414,9 +414,77 @@ function Set-DeploymentExamplesSection {
             }
 
             if ($addJson) {
-                # TODO: Add JSON support
 
-                $jsonExample = @()
+                $paramStartIndex = 0
+                do {
+                    $paramStartIndex++
+                } while ($rawBicepExample[$paramStartIndex] -notmatch '\s+params: {')
+
+                $paramBlockIndent = ([regex]::Match($rawBicepExample[$paramStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
+
+                $paramEndIndex = 0
+                do {
+                    $paramEndIndex++
+                } while ($rawBicepExample[$paramEndIndex] -notmatch "^\s{$paramBlockIndent}\}\s*$")
+
+                $paramBlock = $rawBicepExample[($paramStartIndex + 1)..($paramEndIndex - 1)]
+
+                $paramInJsonFormat = @(
+                    '{',
+                    $paramBlock
+                    '}'
+                ) | Out-String
+
+                # Formatting
+                $paramInJsonFormat = $paramInJsonFormat -replace "'", '"'
+                $paramInJsonFormat = $paramInJsonFormat -replace '([0-9a-zA-Z]+):', '"$1":'
+
+                $paramInJSONFormatArray = $paramInJsonFormat -split '\n' | Where-Object { $_ }
+
+
+                # Replace resource IDs
+                for ($index = 0; $index -lt $paramInJSONFormatArray.Count; $index++) {
+                    if ($paramInJSONFormatArray[$index] -like '*:*' -and ($paramInJSONFormatArray[$index] -split ':')[1].Trim() -notmatch '".+"' -and $paramInJSONFormatArray[$index] -like '*.*') {
+                        # In case of a reference like : "virtualWanId": resourceGroupResources.outputs.virtualWWANResourceId
+                        $paramInJSONFormatArray[$index] = '{0}: "<{1}>"' -f ($paramInJSONFormatArray[$index] -split ':')[0], ([regex]::Match(($paramInJSONFormatArray[$index] -split ':')[0], '"(.+)"')).Captures.Groups[1].Value
+                    }
+                    if ($paramInJSONFormatArray[$index] -notlike '*:*' -and $paramInJSONFormatArray[$index] -notlike '*"*"*' -and $paramInJSONFormatArray[$index] -like '*.*') {
+                        # In case of a reference like : [ \n resourceGroupResources.outputs.managedIdentityPrincipalId \n ]
+                        $paramInJSONFormatArray[$index] = '"{0}"' -f $paramInJSONFormatArray[$index].Split('.')[-1].Trim()
+                    }
+                }
+
+                # Handle comma
+                for ($index = 0; $index -lt $paramInJSONFormatArray.Count; $index++) {
+                    if ($paramInJSONFormatArray[$index] -match '[\{|\[]') {
+                        # If we're just opening an object/array, skip
+                        continue
+                    } else {
+                        if ((($index -lt $paramInJSONFormatArray.Count - 1) -and $paramInJSONFormatArray[$index + 1] -match '[\]|\}]') -or ($index -eq $paramInJSONFormatArray.Count - 1)) {
+                            # -or ($index -eq $paramInJSONFormatArray.Count - 2 -and $paramInJSONFormatArray[$index + 1] -eq '')) {
+                            # If the next item closes an object/array, or is the last line, skip
+                            continue
+                        }
+                        $paramInJSONFormatArray[$index] = '{0},' -f $paramInJSONFormatArray[$index].Trim()
+                    }
+                }
+
+                # Add 'value' middle-layer for top-level parameters
+                $paramInJsonFormatObject = $paramInJSONFormatArray | Out-String | ConvertFrom-Json -AsHashtable -Depth 99
+                $paramInJsonFormatObjectWithValue = @{}
+                foreach ($paramKey in $paramInJsonFormatObject.Keys) {
+                    $paramInJsonFormatObjectWithValue[$paramKey] = @{
+                        value = $paramInJsonFormatObject[$paramKey]
+                    }
+                }
+
+                $jsonExample = [ordered]@{
+                    '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
+                    contentVersion = '1.0.0.0'
+                    parameters     = $paramInJsonFormatObjectWithValue
+                }
+
+                $jsonExample = ($jsonExample | ConvertTo-Json -Depth 99) -split '\n'
 
                 $SectionContent += @(
                     '',
@@ -425,13 +493,7 @@ function Set-DeploymentExamplesSection {
                     '<summary>via JSON Parameter file</summary>'
                     ''
                     '```json',
-                    '{',
-                    '  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",',
-                    '  "contentVersion": "1.0.0.0",',
-                    '  "parameters": {'
-                        ($jsonExample | ForEach-Object { "  $_" }).TrimEnd(),
-                    '  }',
-                    '}',
+                    $jsonExample
                     '```',
                     '',
                     '</details>'
@@ -546,7 +608,7 @@ function Set-DeploymentExamplesSection {
             ''
         )
 
-        $index++
+        $pathIndex++
     }
 
     # Build result
