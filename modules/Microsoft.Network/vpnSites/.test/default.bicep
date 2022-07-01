@@ -44,7 +44,7 @@ module resourceGroupResources 'nestedTemplates/default.parameters.nested.bicep' 
 
 module testDeployment '../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-vpnSites-${serviceShort}'
+  name: '${uniqueString(deployment().name)}-test-vpnSites-${serviceShort}'
   params: {
     name: '${namePrefix}-az-${serviceShort}-001'
     virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId

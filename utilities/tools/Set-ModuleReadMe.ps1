@@ -516,9 +516,36 @@ function Set-DeploymentExamplesSection {
             # ----------------- #
             #   JSON to Bicep   #
             # ----------------- #
-            # TODO: Support JSON test template files?
 
+            # Handle case of deployment test file (instead of ARM-JSON parameter file)
+            $rawContentHashtable = $rawContent | ConvertFrom-Json -Depth 99
+            $isParameterFile = $rawContentHashtable.'$schema' -like '*deploymentParameters*'
+            if (-not $isParameterFile) {
+                # Uses deployment test file (instead of parameter file). Need to extract parameters.
+                $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
+
+                $JSONResourceParameters = $testResource.properties.parameters
+
+                $formattedJSONParameters = [ordered]@{}
+                foreach ($parameter in $JSONResourceParameters.PSObject.Properties.Name) {
+                    $formattedJSONParameters[$parameter] = $JSONResourceParameters.$parameter
+                }
+
+                $jsonParameterContent = [ordered]@{
+                    '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
+                    contentVersion = '1.0.0.0'
+                    parameters     = $formattedJSONParameters
+                }
+
+                $jsonParameterContent = ($jsonParameterContent | ConvertTo-Json -Depth 99) -split '\n'
+            } else {
+                # Use plan ARM-JSON parameter file
+                $jsonParameterContent = $rawContent.TrimEnd()
+            }
+
+            # TODO: Add test to check for one resource with '-test-' in name (if not parameter file)
             if ($addJson) {
+
                 $SectionContent += @(
                     '',
                     '<details>',
@@ -526,7 +553,7 @@ function Set-DeploymentExamplesSection {
                     '<summary>via JSON Parameter file</summary>',
                     '',
                     '```json',
-                    $rawContent.TrimEnd(),
+                    $jsonParameterContent,
                     '```',
                     '',
                     '</details>'
@@ -534,7 +561,7 @@ function Set-DeploymentExamplesSection {
             }
 
             if ($addBicep) {
-                $JSONParametersHashTable = (ConvertFrom-Json $rawContent -AsHashtable -Depth 99).parameters
+                $JSONParametersHashTable = (ConvertFrom-Json $jsonParameterContent -AsHashtable -Depth 99).parameters
 
                 # Handle KeyVaut references
                 $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }

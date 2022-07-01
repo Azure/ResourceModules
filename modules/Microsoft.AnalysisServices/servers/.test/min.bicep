@@ -35,7 +35,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 module testDeployment '../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-servers-${serviceShort}'
+  name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
   params: {
     name: '${namePrefix}azas${serviceShort}001'
   }

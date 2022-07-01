@@ -56,7 +56,7 @@ module diagnosticDependencies '../../../.global/dependencyConstructs/diagnostic.
 
 module testDeployment '../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-servers-${serviceShort}'
+  name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
   params: {
     name: '${namePrefix}azas${serviceShort}001'
     lock: 'CanNotDelete'
