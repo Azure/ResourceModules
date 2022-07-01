@@ -207,7 +207,45 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','validation-rg')
+}
+
+module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-DomainServices'
+  params: {
+    domainName: '<<namePrefix>>.onmicrosoft.com'
+    sku: 'Standard'
+    lock: 'CanNotDelete'
+    replicaSets: [
+      {
+        location: 'WestEurope'
+        subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-aadds-001/subnets/AADDSSubnet'
+      }
+    ]
+    pfxCertificate: kv1.getSecret('pfxBase64Certificate')
+    pfxCertificatePassword: kv1.getSecret('pfxCertificatePassword')
+    additionalRecipients: [
+      '<<namePrefix>>@noreply.github.com'
+    ]
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -269,43 +307,6 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
             "value": "adp-<<namePrefix>>-az-evh-x-001"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
-module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DomainServices'
-  params: {
-    domainName: '<<namePrefix>>.onmicrosoft.com'
-    sku: 'Standard'
-    lock: 'CanNotDelete'
-    replicaSets: [
-      {
-        location: 'WestEurope'
-        subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-aadds-001/subnets/AADDSSubnet'
-      }
-    ]
-    pfxCertificate: kv1.getSecret('pfxBase64Certificate')
-    pfxCertificatePassword: kv1.getSecret('pfxCertificatePassword')
-    additionalRecipients: [
-      '<<namePrefix>>@noreply.github.com'
-    ]
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-  }
 }
 ```
 

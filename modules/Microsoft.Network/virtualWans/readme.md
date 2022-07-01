@@ -149,7 +149,23 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-virtualWans'
+  params: {
+    name: '<<namePrefix>>-az-vw-min-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -168,6 +184,9 @@ tags: {
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -177,15 +196,26 @@ tags: {
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualWans'
   params: {
-    name: '<<namePrefix>>-az-vw-min-001'
+    name: '<<namePrefix>>-az-vw-x-001'
+    lock: 'CanNotDelete'
+    type: 'Basic'
+    allowBranchToBranchTraffic: true
+    allowVnetToVnetTraffic: true
+    disableVpnEncryption: true
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -225,34 +255,6 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualWans'
-  params: {
-    name: '<<namePrefix>>-az-vw-x-001'
-    lock: 'CanNotDelete'
-    type: 'Basic'
-    allowBranchToBranchTraffic: true
-    allowVnetToVnetTraffic: true
-    disableVpnEncryption: true
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

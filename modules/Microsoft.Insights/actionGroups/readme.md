@@ -232,7 +232,51 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-actionGroups'
+  params: {
+    name: '<<namePrefix>>-az-ag-x-001'
+    groupShortName: 'azagweux001'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    emailReceivers: [
+      {
+        name: 'TestUser_-EmailAction-'
+        emailAddress: 'test.user@testcompany.com'
+        useCommonAlertSchema: true
+      }
+      {
+        name: 'TestUser2'
+        emailAddress: 'test.user2@testcompany.com'
+        useCommonAlertSchema: true
+      }
+    ]
+    smsReceivers: [
+      {
+        name: 'TestUser_-SMSAction-'
+        countryCode: '1'
+        phoneNumber: '2345678901'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -283,49 +327,6 @@ tags: {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-actionGroups'
-  params: {
-    name: '<<namePrefix>>-az-ag-x-001'
-    groupShortName: 'azagweux001'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    emailReceivers: [
-      {
-        name: 'TestUser_-EmailAction-'
-        emailAddress: 'test.user@testcompany.com'
-        useCommonAlertSchema: true
-      }
-      {
-        name: 'TestUser2'
-        emailAddress: 'test.user2@testcompany.com'
-        useCommonAlertSchema: true
-      }
-    ]
-    smsReceivers: [
-      {
-        name: 'TestUser_-SMSAction-'
-        countryCode: '1'
-        phoneNumber: '2345678901'
-      }
-    ]
-  }
 }
 ```
 

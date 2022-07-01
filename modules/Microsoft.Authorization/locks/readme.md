@@ -42,7 +42,25 @@ This module deploys Authorization Locks.
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Rg</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module locks './Microsoft.Authorization/locks/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-locks'
+  params: {
+    level: 'CanNotDelete'
+    resourceGroupName: 'adp-<<namePrefix>>-az-locks-rg-001'
+    subscriptionId: '<<subscriptionId>>'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -63,23 +81,6 @@ This module deploys Authorization Locks.
             "value": "<<subscriptionId>>"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module locks './Microsoft.Authorization/locks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-locks'
-  params: {
-    level: 'CanNotDelete'
-    resourceGroupName: 'adp-<<namePrefix>>-az-locks-rg-001'
-    subscriptionId: '<<subscriptionId>>'
-  }
 }
 ```
 

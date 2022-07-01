@@ -162,7 +162,28 @@ roleAssignments: [
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-privateEndpoints'
+  params: {
+    name: '<<namePrefix>>-az-pe-kvlt-min-001'
+    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+    serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
+    groupIds: [
+      'vault'
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -192,6 +213,9 @@ roleAssignments: [
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -201,11 +225,27 @@ roleAssignments: [
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateEndpoints'
   params: {
-    name: '<<namePrefix>>-az-pe-kvlt-min-001'
+    name: '<<namePrefix>>-az-pe-kvlt-001'
+    lock: 'CanNotDelete'
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
     serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
     groupIds: [
       'vault'
+    ]
+    privateDnsZoneGroups: [
+      {
+        privateDNSResourceIds: [
+          '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
+        ]
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
     ]
   }
 }
@@ -213,8 +253,6 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -262,42 +300,6 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-privateEndpoints'
-  params: {
-    name: '<<namePrefix>>-az-pe-kvlt-001'
-    lock: 'CanNotDelete'
-    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-    serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
-    groupIds: [
-      'vault'
-    ]
-    privateDnsZoneGroups: [
-      {
-        privateDNSResourceIds: [
-          '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
-        ]
-      }
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

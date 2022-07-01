@@ -318,7 +318,28 @@ roleAssignments: [
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-vpnSites'
+  params: {
+    name: '<<namePrefix>>-az-vSite-min-001'
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    ipAddress: '1.2.3.4'
+    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -348,6 +369,9 @@ roleAssignments: [
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -357,20 +381,67 @@ roleAssignments: [
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
-    name: '<<namePrefix>>-az-vSite-min-001'
-    addressPrefixes: [
-      '10.0.0.0/16'
-    ]
-    ipAddress: '1.2.3.4'
+    name: '<<namePrefix>>-az-vSite-x-001'
+    lock: 'CanNotDelete'
+    tags: {
+      tagA: 'valueA'
+      tagB: 'valueB'
+    }
+    deviceProperties: {
+      linkSpeedInMbps: 0
+    }
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
+    vpnSiteLinks: [
+      {
+        name: '<<namePrefix>>-az-vSite-x-001'
+        properties: {
+          bgpProperties: {
+            asn: 65010
+            bgpPeeringAddress: '1.1.1.1'
+          }
+          ipAddress: '1.2.3.4'
+          linkProperties: {
+            linkProviderName: 'contoso'
+            linkSpeedInMbps: 5
+          }
+        }
+      }
+      {
+        name: 'Link1'
+        properties: {
+          bgpProperties: {
+            asn: 65020
+            bgpPeeringAddress: '192.168.1.0'
+          }
+          ipAddress: '2.2.2.2'
+          linkProperties: {
+            linkProviderName: 'contoso'
+            linkSpeedInMbps: 5
+          }
+        }
+      }
+    ]
+    o365Policy: {
+      breakOutCategories: {
+        optimize: true
+        allow: true
+        default: true
+      }
+    }
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -453,75 +524,6 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnSites'
-  params: {
-    name: '<<namePrefix>>-az-vSite-x-001'
-    lock: 'CanNotDelete'
-    tags: {
-      tagA: 'valueA'
-      tagB: 'valueB'
-    }
-    deviceProperties: {
-      linkSpeedInMbps: 0
-    }
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
-    vpnSiteLinks: [
-      {
-        name: '<<namePrefix>>-az-vSite-x-001'
-        properties: {
-          bgpProperties: {
-            asn: 65010
-            bgpPeeringAddress: '1.1.1.1'
-          }
-          ipAddress: '1.2.3.4'
-          linkProperties: {
-            linkProviderName: 'contoso'
-            linkSpeedInMbps: 5
-          }
-        }
-      }
-      {
-        name: 'Link1'
-        properties: {
-          bgpProperties: {
-            asn: 65020
-            bgpPeeringAddress: '192.168.1.0'
-          }
-          ipAddress: '2.2.2.2'
-          linkProperties: {
-            linkProviderName: 'contoso'
-            linkSpeedInMbps: 5
-          }
-        }
-      }
-    ]
-    o365Policy: {
-      breakOutCategories: {
-        optimize: true
-        allow: true
-        default: true
-      }
-    }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

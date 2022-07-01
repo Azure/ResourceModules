@@ -159,7 +159,25 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-applicationgroups'
+  params: {
+    name: '<<namePrefix>>-az-avdag-min-001'
+    applicationGroupType: 'RemoteApp'
+    hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -184,6 +202,9 @@ tags: {
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -193,17 +214,50 @@ tags: {
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-applicationgroups'
   params: {
-    name: '<<namePrefix>>-az-avdag-min-001'
+    name: '<<namePrefix>>-az-avdag-x-001'
+    lock: 'CanNotDelete'
+    location: 'westeurope'
     applicationGroupType: 'RemoteApp'
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
+    friendlyName: 'Remote Applications 1'
+    description: 'This is my first Remote Applications bundle'
+    applications: [
+      {
+        name: 'notepad'
+        description: 'Notepad by ARM template'
+        friendlyName: 'Notepad'
+        filePath: 'C:\\Windows\\System32\\notepad.exe'
+        commandLineSetting: 'DoNotAllow'
+        commandLineArguments: ''
+        showInPortal: true
+        iconPath: 'C:\\Windows\\System32\\notepad.exe'
+        iconIndex: 0
+      }
+      {
+        name: 'wordpad'
+        filePath: 'C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe'
+        friendlyName: 'Wordpad'
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -281,58 +335,6 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
             "value": "adp-<<namePrefix>>-az-evh-x-001"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-applicationgroups'
-  params: {
-    name: '<<namePrefix>>-az-avdag-x-001'
-    lock: 'CanNotDelete'
-    location: 'westeurope'
-    applicationGroupType: 'RemoteApp'
-    hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
-    friendlyName: 'Remote Applications 1'
-    description: 'This is my first Remote Applications bundle'
-    applications: [
-      {
-        name: 'notepad'
-        description: 'Notepad by ARM template'
-        friendlyName: 'Notepad'
-        filePath: 'C:\\Windows\\System32\\notepad.exe'
-        commandLineSetting: 'DoNotAllow'
-        commandLineArguments: ''
-        showInPortal: true
-        iconPath: 'C:\\Windows\\System32\\notepad.exe'
-        iconIndex: 0
-      }
-      {
-        name: 'wordpad'
-        filePath: 'C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe'
-        friendlyName: 'Wordpad'
-      }
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-  }
 }
 ```
 

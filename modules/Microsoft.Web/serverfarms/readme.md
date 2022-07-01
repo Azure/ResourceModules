@@ -198,7 +198,44 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-serverfarms'
+  params: {
+    name: '<<namePrefix>>-az-asp-x-001'
+    lock: 'CanNotDelete'
+    sku: {
+      name: 'S1'
+      tier: 'Standard'
+      size: 'S1'
+      family: 'S'
+      capacity: '1'
+    }
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -250,42 +287,6 @@ tags: {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-serverfarms'
-  params: {
-    name: '<<namePrefix>>-az-asp-x-001'
-    lock: 'CanNotDelete'
-    sku: {
-      name: 'S1'
-      tier: 'Standard'
-      size: 'S1'
-      family: 'S'
-      capacity: '1'
-    }
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

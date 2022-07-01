@@ -167,7 +167,42 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-expressRouteCircuits'
+  params: {
+    name: '<<namePrefix>>-az-erc-x-001'
+    lock: 'CanNotDelete'
+    serviceProviderName: 'Equinix'
+    peeringLocation: 'Amsterdam'
+    bandwidthInMbps: 50
+    skuTier: 'Standard'
+    skuFamily: 'MeteredData'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -225,40 +260,6 @@ tags: {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-expressRouteCircuits'
-  params: {
-    name: '<<namePrefix>>-az-erc-x-001'
-    lock: 'CanNotDelete'
-    serviceProviderName: 'Equinix'
-    peeringLocation: 'Amsterdam'
-    bandwidthInMbps: 50
-    skuTier: 'Standard'
-    skuFamily: 'MeteredData'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-  }
 }
 ```
 

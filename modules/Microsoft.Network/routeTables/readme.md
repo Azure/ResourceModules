@@ -236,7 +236,42 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-routeTables'
+  params: {
+    name: '<<namePrefix>>-az-udr-x-001'
+    lock: 'CanNotDelete'
+    routes: [
+      {
+        name: 'default'
+        properties: {
+          addressPrefix: '0.0.0.0/0'
+          nextHopType: 'VirtualAppliance'
+          nextHopIpAddress: '172.16.0.20'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -276,40 +311,6 @@ tags: {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-routeTables'
-  params: {
-    name: '<<namePrefix>>-az-udr-x-001'
-    lock: 'CanNotDelete'
-    routes: [
-      {
-        name: 'default'
-        properties: {
-          addressPrefix: '0.0.0.0/0'
-          nextHopType: 'VirtualAppliance'
-          nextHopIpAddress: '172.16.0.20'
-        }
-      }
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

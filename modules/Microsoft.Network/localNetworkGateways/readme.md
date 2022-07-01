@@ -151,7 +151,38 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-localNetworkGateways'
+  params: {
+    name: '<<namePrefix>>-az-lng-x-001'
+    lock: 'CanNotDelete'
+    localAddressPrefixes: [
+      '192.168.1.0/24'
+    ]
+    localGatewayPublicIpAddress: '8.8.8.8'
+    localAsn: '65123'
+    localBgpPeeringAddress: '192.168.1.5'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -193,36 +224,6 @@ tags: {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-localNetworkGateways'
-  params: {
-    name: '<<namePrefix>>-az-lng-x-001'
-    lock: 'CanNotDelete'
-    localAddressPrefixes: [
-      '192.168.1.0/24'
-    ]
-    localGatewayPublicIpAddress: '8.8.8.8'
-    localAsn: '65123'
-    localBgpPeeringAddress: '192.168.1.5'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

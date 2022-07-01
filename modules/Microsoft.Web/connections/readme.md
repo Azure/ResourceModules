@@ -153,7 +153,36 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module connections './Microsoft.Web/connections/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-connections'
+  params: {
+    name: 'azuremonitor'
+    lock: 'CanNotDelete'
+    displayName: 'azuremonitorlogs'
+    connectionApi: {
+      id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
+    }
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -189,34 +218,6 @@ tags: {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module connections './Microsoft.Web/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-connections'
-  params: {
-    name: 'azuremonitor'
-    lock: 'CanNotDelete'
-    displayName: 'azuremonitorlogs'
-    connectionApi: {
-      id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
-    }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

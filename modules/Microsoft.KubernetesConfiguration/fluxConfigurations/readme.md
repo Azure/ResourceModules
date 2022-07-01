@@ -67,7 +67,36 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-fluxConfigurations'
+  params: {
+    name: 'flux2'
+    scope: 'cluster'
+    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    namespace: 'flux-system'
+    sourceKind: 'GitRepository'
+    gitRepository: {
+      url: 'https://github.com/mspnp/aks-baseline'
+      timeoutInSeconds: 180
+      syncIntervalInSeconds: 300
+      repositoryRef: {
+        branch: 'main'
+      }
+      sshKnownHosts: ''
+    }
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -109,6 +138,9 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -132,14 +164,22 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
       }
       sshKnownHosts: ''
     }
+    kustomizations: {
+      unified: {
+        path: './cluster-manifests'
+        dependsOn: []
+        timeoutInSeconds: 300
+        syncIntervalInSeconds: 300
+        prune: true
+        force: false
+      }
+    }
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -189,44 +229,6 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
             }
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-fluxConfigurations'
-  params: {
-    name: 'flux2'
-    scope: 'cluster'
-    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    namespace: 'flux-system'
-    sourceKind: 'GitRepository'
-    gitRepository: {
-      url: 'https://github.com/mspnp/aks-baseline'
-      timeoutInSeconds: 180
-      syncIntervalInSeconds: 300
-      repositoryRef: {
-        branch: 'main'
-      }
-      sshKnownHosts: ''
-    }
-    kustomizations: {
-      unified: {
-        path: './cluster-manifests'
-        dependsOn: []
-        timeoutInSeconds: 300
-        syncIntervalInSeconds: 300
-        prune: true
-        force: false
-      }
-    }
-  }
 }
 ```
 

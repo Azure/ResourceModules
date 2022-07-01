@@ -123,7 +123,25 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-managementGroups'
+  params: {
+    name: 'testMG'
+    displayName: 'Test MG'
+    parentId: '<<managementGroupId>>'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -144,23 +162,6 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
             "value": "<<managementGroupId>>"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managementGroups'
-  params: {
-    name: 'testMG'
-    displayName: 'Test MG'
-    parentId: '<<managementGroupId>>'
-  }
 }
 ```
 

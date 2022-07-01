@@ -48,7 +48,33 @@ This module deploys budgets for subscriptions.
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-budgets'
+  params: {
+    amount: 500
+    thresholds: [
+      50
+      75
+      90
+      100
+      110
+    ]
+    contactEmails: [
+      'dummy@contoso.com'
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -77,31 +103,6 @@ This module deploys budgets for subscriptions.
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-budgets'
-  params: {
-    amount: 500
-    thresholds: [
-      50
-      75
-      90
-      100
-      110
-    ]
-    contactEmails: [
-      'dummy@contoso.com'
-    ]
-  }
 }
 ```
 

@@ -351,30 +351,22 @@ function Set-DeploymentExamplesSection {
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
+    $resourceType = $resourceTypeIdentifier.Split('/')[1]
     $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.test') -Filter '*parameters.json' -Recurse
 
-    $index = 1
+    ############################
+    ##   Process test files   ##
+    ############################
+    $pathIndex = 1
     foreach ($testFilePath in $parameterFiles.FullName) {
         $contentInJSONFormat = Get-Content -Path $testFilePath -Encoding 'utf8' | Out-String
 
+        $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
+        $TextInfo = (Get-Culture).TextInfo
+        $exampleTitle = $TextInfo.ToTitleCase($exampleTitle)
         $SectionContent += @(
-            "<h3>Example $index</h3>"
+            '<h3>Example {0}: {1}</h3>' -f $pathIndex, $exampleTitle
         )
-
-        if ($addJson) {
-            $SectionContent += @(
-                '',
-                '<details>',
-                '',
-                '<summary>via JSON Parameter file</summary>',
-                '',
-                '```json',
-                $contentInJSONFormat.TrimEnd(),
-                '```',
-                '',
-                '</details>'
-            )
-        }
 
         if ($addBicep) {
             $JSONParametersHashTable = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).parameters
@@ -437,7 +429,6 @@ function Set-DeploymentExamplesSection {
                 $bicepParamsArray = $contentInBicepFormat -split ('\n')
                 $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
             }
-            $resourceType = $resourceTypeIdentifier.Split('/')[1]
 
             $SectionContent += @(
                 '',
@@ -460,11 +451,27 @@ function Set-DeploymentExamplesSection {
             )
         }
 
+        if ($addJson) {
+            $SectionContent += @(
+                '',
+                '<details>',
+                '',
+                '<summary>via JSON Parameter file</summary>',
+                '',
+                '```json',
+                $contentInJSONFormat.TrimEnd(),
+                '```',
+                '',
+                '</details>'
+                '<p>'
+            )
+        }
+
         $SectionContent += @(
             ''
         )
 
-        $index++
+        $pathIndex++
     }
 
     # Build result

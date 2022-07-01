@@ -146,7 +146,36 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-ipGroups'
+  params: {
+    name: 'iacsGroup-servers'
+    lock: 'CanNotDelete'
+    ipAddresses: [
+      '10.0.0.1'
+      '10.0.0.2'
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -180,34 +209,6 @@ tags: {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ipGroups'
-  params: {
-    name: 'iacsGroup-servers'
-    lock: 'CanNotDelete'
-    ipAddresses: [
-      '10.0.0.1'
-      '10.0.0.2'
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

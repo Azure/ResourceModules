@@ -132,7 +132,35 @@ module policysetdefinition 'yourpath/modules/Microsoft.Authorization.policySetDe
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Mg Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-policySetDefinitions'
+  params: {
+    name: '<<namePrefix>>-mg-min-policySet'
+    policyDefinitions: [
+      {
+        parameters: {
+          listOfAllowedLocations: {
+            value: [
+              'australiaeast'
+            ]
+          }
+        }
+        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -165,6 +193,9 @@ module policysetdefinition 'yourpath/modules/Microsoft.Authorization.policySetDe
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Mg</h3>
 
 <details>
 
@@ -174,9 +205,22 @@ module policysetdefinition 'yourpath/modules/Microsoft.Authorization.policySetDe
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
-    name: '<<namePrefix>>-mg-min-policySet'
+    name: '<<namePrefix>>-mg-policySet'
+    displayName: '[DisplayName] This policy set definition is deployed at management group scope'
+    description: '[Description] This policy set definition is deployed at management group scope'
+    policyDefinitionGroups: [
+      {
+        name: 'Network'
+      }
+      {
+        name: 'ARM'
+      }
+    ]
     policyDefinitions: [
       {
+        groupNames: [
+          'ARM'
+        ]
         parameters: {
           listOfAllowedLocations: {
             value: [
@@ -185,16 +229,34 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           }
         }
         policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
+        policyDefinitionReferenceId: 'Allowed locations_1'
+      }
+      {
+        groupNames: [
+          'ARM'
+        ]
+        parameters: {
+          listOfAllowedLocations: {
+            value: [
+              'australiaeast'
+            ]
+          }
+        }
+        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988'
+        policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
       }
     ]
+    metadata: {
+      category: 'Security'
+      version: '1'
+    }
+    managementGroupId: '<<managementGroupId>>'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -270,6 +332,9 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Sub Min</h3>
 
 <details>
 
@@ -279,9 +344,76 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
-    name: '<<namePrefix>>-mg-policySet'
-    displayName: '[DisplayName] This policy set definition is deployed at management group scope'
-    description: '[Description] This policy set definition is deployed at management group scope'
+    name: '<<namePrefix>>-sub-min-policySet'
+    policyDefinitions: [
+      {
+        parameters: {
+          listOfAllowedLocations: {
+            value: [
+              'australiaeast'
+            ]
+          }
+        }
+        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
+      }
+    ]
+    subscriptionId: '<<subscriptionId>>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-sub-min-policySet"
+        },
+        "policyDefinitions": {
+            "value": [
+                {
+                    "parameters": {
+                        "listOfAllowedLocations": {
+                            "value": [
+                                "australiaeast"
+                            ]
+                        }
+                    },
+                    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
+                }
+            ]
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        }
+    }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Sub</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-policySetDefinitions'
+  params: {
+    name: '<<namePrefix>>-sub-policySet'
+    displayName: '[DisplayName] This policy set definition is deployed at subscription scope'
+    description: '[Description] This policy set definition is deployed at subscription scope'
     policyDefinitionGroups: [
       {
         name: 'Network'
@@ -324,72 +456,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
       category: 'Security'
       version: '1'
     }
-    managementGroupId: '<<managementGroupId>>'
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-sub-min-policySet"
-        },
-        "policyDefinitions": {
-            "value": [
-                {
-                    "parameters": {
-                        "listOfAllowedLocations": {
-                            "value": [
-                                "australiaeast"
-                            ]
-                        }
-                    },
-                    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
-                }
-            ]
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policySetDefinitions'
-  params: {
-    name: '<<namePrefix>>-sub-min-policySet'
-    policyDefinitions: [
-      {
-        parameters: {
-          listOfAllowedLocations: {
-            value: [
-              'australiaeast'
-            ]
-          }
-        }
-        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
-      }
-    ]
     subscriptionId: '<<subscriptionId>>'
   }
 }
@@ -397,8 +463,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 </details>
 <p>
-
-<h3>Example 4</h3>
 
 <details>
 
@@ -470,66 +534,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
             "value": "<<subscriptionId>>"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policySetDefinitions'
-  params: {
-    name: '<<namePrefix>>-sub-policySet'
-    displayName: '[DisplayName] This policy set definition is deployed at subscription scope'
-    description: '[Description] This policy set definition is deployed at subscription scope'
-    policyDefinitionGroups: [
-      {
-        name: 'Network'
-      }
-      {
-        name: 'ARM'
-      }
-    ]
-    policyDefinitions: [
-      {
-        groupNames: [
-          'ARM'
-        ]
-        parameters: {
-          listOfAllowedLocations: {
-            value: [
-              'australiaeast'
-            ]
-          }
-        }
-        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
-        policyDefinitionReferenceId: 'Allowed locations_1'
-      }
-      {
-        groupNames: [
-          'ARM'
-        ]
-        parameters: {
-          listOfAllowedLocations: {
-            value: [
-              'australiaeast'
-            ]
-          }
-        }
-        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988'
-        policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
-      }
-    ]
-    metadata: {
-      category: 'Security'
-      version: '1'
-    }
-    subscriptionId: '<<subscriptionId>>'
-  }
 }
 ```
 

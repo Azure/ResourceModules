@@ -440,7 +440,23 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-workspaces'
+  params: {
+    name: '<<namePrefix>>-az-law-min-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -459,6 +475,9 @@ tags: {
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -468,15 +487,145 @@ tags: {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-law-min-001'
+    name: '<<namePrefix>>-az-law-x-001'
+    lock: 'CanNotDelete'
+    publicNetworkAccessForIngestion: 'Disabled'
+    publicNetworkAccessForQuery: 'Disabled'
+    dailyQuotaGb: 10
+    storageInsightsConfigs: [
+      {
+        storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
+        tables: [
+          'WADWindowsEventLogsTable'
+          'WADETWEventTable'
+          'WADServiceFabric*EventTable'
+          'LinuxsyslogVer2v0'
+        ]
+      }
+    ]
+    linkedServices: [
+      {
+        name: 'Automation'
+        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001'
+      }
+    ]
+    savedSearches: [
+      {
+        name: 'VMSSQueries'
+        displayName: 'VMSS Instance Count2'
+        category: 'VDC Saved Searches'
+        query: 'Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer'
+      }
+    ]
+    dataSources: [
+      {
+        name: 'applicationEvent'
+        kind: 'WindowsEvent'
+        eventLogName: 'Application'
+        eventTypes: [
+          {
+            eventType: 'Error'
+          }
+          {
+            eventType: 'Warning'
+          }
+          {
+            eventType: 'Information'
+          }
+        ]
+      }
+      {
+        name: 'windowsPerfCounter1'
+        kind: 'WindowsPerformanceCounter'
+        objectName: 'Processor'
+        instanceName: '*'
+        intervalSeconds: 60
+        counterName: '% Processor Time'
+      }
+      {
+        name: 'sampleIISLog1'
+        kind: 'IISLogs'
+        state: 'OnPremiseEnabled'
+      }
+      {
+        name: 'sampleSyslog1'
+        kind: 'LinuxSyslog'
+        syslogName: 'kern'
+        syslogSeverities: [
+          {
+            severity: 'emerg'
+          }
+          {
+            severity: 'alert'
+          }
+          {
+            severity: 'crit'
+          }
+          {
+            severity: 'err'
+          }
+          {
+            severity: 'warning'
+          }
+        ]
+      }
+      {
+        name: 'sampleSyslogCollection1'
+        kind: 'LinuxSyslogCollection'
+        state: 'Enabled'
+      }
+      {
+        name: 'sampleLinuxPerf1'
+        kind: 'LinuxPerformanceObject'
+        syslogSeverities: [
+          {
+            counterName: '% Used Inodes'
+          }
+          {
+            counterName: 'Free Megabytes'
+          }
+          {
+            counterName: '% Used Space'
+          }
+          {
+            counterName: 'Disk Transfers/sec'
+          }
+          {
+            counterName: 'Disk Reads/sec'
+          }
+          {
+            counterName: 'Disk Writes/sec'
+          }
+        ]
+        objectName: 'Logical Disk'
+        instanceName: '*'
+        intervalSeconds: 10
+      }
+      {
+        name: 'sampleLinuxPerfCollection1'
+        kind: 'LinuxPerformanceCollection'
+        state: 'Enabled'
+      }
+    ]
+    gallerySolutions: [
+      {
+        name: 'AzureAutomation'
+        product: 'OMSGallery'
+        publisher: 'Microsoft'
+      }
+    ]
+    useResourcePermissions: true
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -653,153 +802,6 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
-  params: {
-    name: '<<namePrefix>>-az-law-x-001'
-    lock: 'CanNotDelete'
-    publicNetworkAccessForIngestion: 'Disabled'
-    publicNetworkAccessForQuery: 'Disabled'
-    dailyQuotaGb: 10
-    storageInsightsConfigs: [
-      {
-        storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
-        tables: [
-          'WADWindowsEventLogsTable'
-          'WADETWEventTable'
-          'WADServiceFabric*EventTable'
-          'LinuxsyslogVer2v0'
-        ]
-      }
-    ]
-    linkedServices: [
-      {
-        name: 'Automation'
-        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001'
-      }
-    ]
-    savedSearches: [
-      {
-        name: 'VMSSQueries'
-        displayName: 'VMSS Instance Count2'
-        category: 'VDC Saved Searches'
-        query: 'Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer'
-      }
-    ]
-    dataSources: [
-      {
-        name: 'applicationEvent'
-        kind: 'WindowsEvent'
-        eventLogName: 'Application'
-        eventTypes: [
-          {
-            eventType: 'Error'
-          }
-          {
-            eventType: 'Warning'
-          }
-          {
-            eventType: 'Information'
-          }
-        ]
-      }
-      {
-        name: 'windowsPerfCounter1'
-        kind: 'WindowsPerformanceCounter'
-        objectName: 'Processor'
-        instanceName: '*'
-        intervalSeconds: 60
-        counterName: '% Processor Time'
-      }
-      {
-        name: 'sampleIISLog1'
-        kind: 'IISLogs'
-        state: 'OnPremiseEnabled'
-      }
-      {
-        name: 'sampleSyslog1'
-        kind: 'LinuxSyslog'
-        syslogName: 'kern'
-        syslogSeverities: [
-          {
-            severity: 'emerg'
-          }
-          {
-            severity: 'alert'
-          }
-          {
-            severity: 'crit'
-          }
-          {
-            severity: 'err'
-          }
-          {
-            severity: 'warning'
-          }
-        ]
-      }
-      {
-        name: 'sampleSyslogCollection1'
-        kind: 'LinuxSyslogCollection'
-        state: 'Enabled'
-      }
-      {
-        name: 'sampleLinuxPerf1'
-        kind: 'LinuxPerformanceObject'
-        syslogSeverities: [
-          {
-            counterName: '% Used Inodes'
-          }
-          {
-            counterName: 'Free Megabytes'
-          }
-          {
-            counterName: '% Used Space'
-          }
-          {
-            counterName: 'Disk Transfers/sec'
-          }
-          {
-            counterName: 'Disk Reads/sec'
-          }
-          {
-            counterName: 'Disk Writes/sec'
-          }
-        ]
-        objectName: 'Logical Disk'
-        instanceName: '*'
-        intervalSeconds: 10
-      }
-      {
-        name: 'sampleLinuxPerfCollection1'
-        kind: 'LinuxPerformanceCollection'
-        state: 'Enabled'
-      }
-    ]
-    gallerySolutions: [
-      {
-        name: 'AzureAutomation'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-      }
-    ]
-    useResourcePermissions: true
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-  }
 }
 ```
 

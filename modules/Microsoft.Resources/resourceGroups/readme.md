@@ -149,7 +149,35 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-resourceGroups'
+  params: {
+    name: '<<namePrefix>>-az-rg-x-001'
+    lock: 'CanNotDelete'
+    tags: {
+      Test: 'Yes'
+    }
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -182,33 +210,6 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-resourceGroups'
-  params: {
-    name: '<<namePrefix>>-az-rg-x-001'
-    lock: 'CanNotDelete'
-    tags: {
-      Test: 'Yes'
-    }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

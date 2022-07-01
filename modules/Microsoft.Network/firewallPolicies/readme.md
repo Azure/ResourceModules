@@ -136,7 +136,23 @@ userAssignedIdentities: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-firewallPolicies'
+  params: {
+    name: '<<namePrefix>>-az-fwpol-min-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -155,6 +171,9 @@ userAssignedIdentities: {
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -164,15 +183,51 @@ userAssignedIdentities: {
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-firewallPolicies'
   params: {
-    name: '<<namePrefix>>-az-fwpol-min-001'
+    name: '<<namePrefix>>-az-fwpol-x-002'
+    ruleCollectionGroups: [
+      {
+        name: '<<namePrefix>>-rule-001'
+        priority: 5000
+        ruleCollections: [
+          {
+            name: 'collection002'
+            priority: 5555
+            action: {
+              type: 'Allow'
+            }
+            rules: [
+              {
+                name: 'rule002'
+                ipProtocols: [
+                  'TCP'
+                  'UDP'
+                ]
+                destinationPorts: [
+                  '80'
+                ]
+                sourceAddresses: [
+                  '*'
+                ]
+                sourceIpGroups: []
+                ruleType: 'NetworkRule'
+                destinationIpGroups: []
+                destinationAddresses: [
+                  '*'
+                ]
+                destinationFqdns: []
+              }
+            ]
+            ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
+          }
+        ]
+      }
+    ]
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -227,59 +282,6 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-firewallPolicies'
-  params: {
-    name: '<<namePrefix>>-az-fwpol-x-002'
-    ruleCollectionGroups: [
-      {
-        name: '<<namePrefix>>-rule-001'
-        priority: 5000
-        ruleCollections: [
-          {
-            name: 'collection002'
-            priority: 5555
-            action: {
-              type: 'Allow'
-            }
-            rules: [
-              {
-                name: 'rule002'
-                ipProtocols: [
-                  'TCP'
-                  'UDP'
-                ]
-                destinationPorts: [
-                  '80'
-                ]
-                sourceAddresses: [
-                  '*'
-                ]
-                sourceIpGroups: []
-                ruleType: 'NetworkRule'
-                destinationIpGroups: []
-                destinationAddresses: [
-                  '*'
-                ]
-                destinationFqdns: []
-              }
-            ]
-            ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
-          }
-        ]
-      }
-    ]
-  }
 }
 ```
 

@@ -170,7 +170,40 @@ userAssignedIdentities: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-containerGroups'
+  params: {
+    name: '<<namePrefix>>-az-acg-x-001'
+    lock: 'CanNotDelete'
+    containerName: '<<namePrefix>>-az-aci-x-001'
+    image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+    ports: [
+      {
+        protocol: 'Tcp'
+        port: '80'
+      }
+      {
+        protocol: 'Tcp'
+        port: '443'
+      }
+    ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -214,38 +247,6 @@ userAssignedIdentities: {
             }
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-containerGroups'
-  params: {
-    name: '<<namePrefix>>-az-acg-x-001'
-    lock: 'CanNotDelete'
-    containerName: '<<namePrefix>>-az-aci-x-001'
-    image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
-    ports: [
-      {
-        protocol: 'Tcp'
-        port: '80'
-      }
-      {
-        protocol: 'Tcp'
-        port: '443'
-      }
-    ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-  }
 }
 ```
 

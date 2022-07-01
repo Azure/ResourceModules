@@ -257,7 +257,23 @@ roleAssignments: [
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-scalingplans'
+  params: {
+    name: '<<namePrefix>>-az-avdsp-x-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -272,21 +288,6 @@ roleAssignments: [
             "value": "<<namePrefix>>-az-avdsp-x-001"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-scalingplans'
-  params: {
-    name: '<<namePrefix>>-az-avdsp-x-001'
-  }
 }
 ```
 

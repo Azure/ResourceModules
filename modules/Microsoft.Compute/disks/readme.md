@@ -165,7 +165,34 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Image</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module disks './Microsoft.Compute/disks/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-disks'
+  params: {
+    name: '<<namePrefix>>-az-disk-image-001'
+    sku: 'Standard_LRS'
+    createOption: 'FromImage'
+    imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -203,6 +230,9 @@ tags: {
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Import</h3>
 
 <details>
 
@@ -212,10 +242,11 @@ tags: {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-    name: '<<namePrefix>>-az-disk-image-001'
+    name: '<<namePrefix>>-az-disk-import-001'
     sku: 'Standard_LRS'
-    createOption: 'FromImage'
-    imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
+    createOption: 'Import'
+    sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
+    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -230,8 +261,6 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -272,6 +301,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Min</h3>
 
 <details>
 
@@ -281,11 +313,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-    name: '<<namePrefix>>-az-disk-import-001'
+    name: '<<namePrefix>>-az-disk-min-001'
     sku: 'Standard_LRS'
-    createOption: 'Import'
-    sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
-    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diskSizeGB: 1
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -300,8 +330,6 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 </details>
 <p>
-
-<h3>Example 3</h3>
 
 <details>
 
@@ -336,6 +364,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 ```
 
 </details>
+<p>
+
+<h3>Example 4: Parameters</h3>
 
 <details>
 
@@ -345,9 +376,15 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-    name: '<<namePrefix>>-az-disk-min-001'
-    sku: 'Standard_LRS'
-    diskSizeGB: 1
+    name: '<<namePrefix>>-az-disk-x-001'
+    lock: 'CanNotDelete'
+    sku: 'UltraSSD_LRS'
+    diskSizeGB: 128
+    logicalSectorSize: 512
+    diskIOPSReadWrite: 500
+    diskMBpsReadWrite: 60
+    osType: 'Windows'
+    publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -362,8 +399,6 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 </details>
 <p>
-
-<h3>Example 4</h3>
 
 <details>
 
@@ -412,37 +447,6 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
-  params: {
-    name: '<<namePrefix>>-az-disk-x-001'
-    lock: 'CanNotDelete'
-    sku: 'UltraSSD_LRS'
-    diskSizeGB: 128
-    logicalSectorSize: 512
-    diskIOPSReadWrite: 500
-    diskMBpsReadWrite: 60
-    osType: 'Windows'
-    publicNetworkAccess: 'Enabled'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

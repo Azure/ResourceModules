@@ -145,7 +145,32 @@ roleAssignments: [
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-applicationSecurityGroups'
+  params: {
+    name: '<<namePrefix>>-az-asg-x-001'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -173,30 +198,6 @@ roleAssignments: [
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-applicationSecurityGroups'
-  params: {
-    name: '<<namePrefix>>-az-asg-x-001'
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

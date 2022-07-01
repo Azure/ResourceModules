@@ -148,7 +148,62 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Images</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-galleries'
+  params: {
+    name: '<<namePrefix>>azsigweuimages001'
+    images: [
+      {
+        name: '<<namePrefix>>-az-imgd-x-003'
+      }
+      {
+        name: '<<namePrefix>>-az-imgd-x-001'
+        osType: 'Windows'
+        osState: 'Generalized'
+        publisher: 'MicrosoftWindowsServer'
+        offer: 'WindowsServer'
+        sku: '2022-datacenter-azure-edition'
+        minRecommendedvCPUs: 2
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        maxRecommendedMemory: 16
+        hyperVGeneration: 'V1'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+      }
+      {
+        name: '<<namePrefix>>-az-imgd-x-002'
+        osType: 'Linux'
+        osState: 'Generalized'
+        publisher: 'canonical'
+        offer: '0001-com-ubuntu-server-focal'
+        sku: '20_04-lts-gen2'
+        minRecommendedvCPUs: 1
+        maxRecommendedvCPUs: 4
+        minRecommendedMemory: 4
+        maxRecommendedMemory: 32
+        hyperVGeneration: 'V2'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -208,6 +263,9 @@ tags: {
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -217,44 +275,14 @@ tags: {
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-galleries'
   params: {
-    name: '<<namePrefix>>azsigweuimages001'
-    images: [
+    name: '<<namePrefix>>azsigweux001'
+    lock: 'CanNotDelete'
+    roleAssignments: [
       {
-        name: '<<namePrefix>>-az-imgd-x-003'
-      }
-      {
-        name: '<<namePrefix>>-az-imgd-x-001'
-        osType: 'Windows'
-        osState: 'Generalized'
-        publisher: 'MicrosoftWindowsServer'
-        offer: 'WindowsServer'
-        sku: '2022-datacenter-azure-edition'
-        minRecommendedvCPUs: 2
-        maxRecommendedvCPUs: 8
-        minRecommendedMemory: 4
-        maxRecommendedMemory: 16
-        hyperVGeneration: 'V1'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              '<<deploymentSpId>>'
-            ]
-          }
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
         ]
-      }
-      {
-        name: '<<namePrefix>>-az-imgd-x-002'
-        osType: 'Linux'
-        osState: 'Generalized'
-        publisher: 'canonical'
-        offer: '0001-com-ubuntu-server-focal'
-        sku: '20_04-lts-gen2'
-        minRecommendedvCPUs: 1
-        maxRecommendedvCPUs: 4
-        minRecommendedMemory: 4
-        maxRecommendedMemory: 32
-        hyperVGeneration: 'V2'
       }
     ]
   }
@@ -263,8 +291,6 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -292,30 +318,6 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-galleries'
-  params: {
-    name: '<<namePrefix>>azsigweux001'
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

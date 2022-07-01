@@ -79,21 +79,7 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {}
-}
-```
-
-</details>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -111,7 +97,43 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {}
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Rg</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module tags './Microsoft.Resources/tags/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-tags'
+  params: {
+    onlyUpdate: false
+    tags: {
+      Test: 'Yes'
+      TestToo: 'No'
+    }
+    resourceGroupName: 'validation-rg'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -139,6 +161,9 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Sub</h3>
 
 <details>
 
@@ -148,20 +173,17 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-tags'
   params: {
-    onlyUpdate: false
+    onlyUpdate: true
     tags: {
       Test: 'Yes'
       TestToo: 'No'
     }
-    resourceGroupName: 'validation-rg'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 3</h3>
 
 <details>
 
@@ -182,25 +204,6 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
             }
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-tags'
-  params: {
-    onlyUpdate: true
-    tags: {
-      Test: 'Yes'
-      TestToo: 'No'
-    }
-  }
 }
 ```
 

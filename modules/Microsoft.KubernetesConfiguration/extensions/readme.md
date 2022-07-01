@@ -65,7 +65,27 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-extensions'
+  params: {
+    name: 'flux'
+    extensionType: 'microsoft.flux'
+    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    releaseTrain: 'Stable'
+    releaseNamespace: 'flux-system'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -96,6 +116,9 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -110,14 +133,20 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
     releaseTrain: 'Stable'
     releaseNamespace: 'flux-system'
+    version: '0.5.2'
+    configurationSettings: {
+      'source-controller.enabled': 'true'
+      'kustomize-controller.enabled': 'true'
+      'notification-controller.enabled': 'false'
+      'image-automation-controller.enabled': 'false'
+      'image-reflector-controller.enabled': 'false'
+    }
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -157,33 +186,6 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
             }
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-extensions'
-  params: {
-    name: 'flux'
-    extensionType: 'microsoft.flux'
-    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    releaseTrain: 'Stable'
-    releaseNamespace: 'flux-system'
-    version: '0.5.2'
-    configurationSettings: {
-      'source-controller.enabled': 'true'
-      'kustomize-controller.enabled': 'true'
-      'notification-controller.enabled': 'false'
-      'image-automation-controller.enabled': 'false'
-      'image-reflector-controller.enabled': 'false'
-    }
-  }
 }
 ```
 

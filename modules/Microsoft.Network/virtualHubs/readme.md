@@ -103,7 +103,25 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-virtualHubs'
+  params: {
+    name: '<<namePrefix>>-az-vhub-min-001'
+    addressPrefix: '10.0.0.0/16'
+    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -128,6 +146,9 @@ tags: {
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -137,17 +158,42 @@ tags: {
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
-    name: '<<namePrefix>>-az-vhub-min-001'
-    addressPrefix: '10.0.0.0/16'
+    name: '<<namePrefix>>-az-vhub-x-001'
+    lock: 'CanNotDelete'
+    addressPrefix: '10.1.0.0/16'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
+    hubRouteTables: [
+      {
+        name: 'routeTable1'
+      }
+    ]
+    hubVirtualNetworkConnections: [
+      {
+        name: 'connection1'
+        remoteVirtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub'
+        routingConfiguration: {
+          associatedRouteTable: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
+          }
+          propagatedRouteTables: {
+            ids: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
+              }
+            ]
+            labels: [
+              'none'
+            ]
+          }
+        }
+      }
+    ]
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -201,50 +247,6 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualHubs'
-  params: {
-    name: '<<namePrefix>>-az-vhub-x-001'
-    lock: 'CanNotDelete'
-    addressPrefix: '10.1.0.0/16'
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
-    hubRouteTables: [
-      {
-        name: 'routeTable1'
-      }
-    ]
-    hubVirtualNetworkConnections: [
-      {
-        name: 'connection1'
-        remoteVirtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub'
-        routingConfiguration: {
-          associatedRouteTable: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
-          }
-          propagatedRouteTables: {
-            ids: [
-              {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
-              }
-            ]
-            labels: [
-              'none'
-            ]
-          }
-        }
-      }
-    ]
-  }
 }
 ```
 

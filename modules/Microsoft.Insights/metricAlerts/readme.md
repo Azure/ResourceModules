@@ -375,7 +375,49 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-metricAlerts'
+  params: {
+    name: '<<namePrefix>>-az-ma-x-001'
+    windowSize: 'PT15M'
+    actions: [
+      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
+    ]
+    targetResourceType: 'microsoft.compute/virtualmachines'
+    targetResourceRegion: 'westeurope'
+    criterias: [
+      {
+        criterionType: 'StaticThresholdCriterion'
+        metricName: 'Percentage CPU'
+        metricNamespace: 'microsoft.compute/virtualmachines'
+        name: 'HighCPU'
+        operator: 'GreaterThan'
+        threshold: '90'
+        timeAggregation: 'Average'
+      }
+    ]
+    alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -430,47 +472,6 @@ tags: {
             ]
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-metricAlerts'
-  params: {
-    name: '<<namePrefix>>-az-ma-x-001'
-    windowSize: 'PT15M'
-    actions: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
-    ]
-    targetResourceType: 'microsoft.compute/virtualmachines'
-    targetResourceRegion: 'westeurope'
-    criterias: [
-      {
-        criterionType: 'StaticThresholdCriterion'
-        metricName: 'Percentage CPU'
-        metricNamespace: 'microsoft.compute/virtualmachines'
-        name: 'HighCPU'
-        operator: 'GreaterThan'
-        threshold: '90'
-        timeAggregation: 'Average'
-      }
-    ]
-    alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
 }
 ```
 

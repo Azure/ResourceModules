@@ -304,7 +304,39 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Vnet2vnet</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','validation-rg')
+}
+
+module connections './Microsoft.Network/connections/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-connections'
+  params: {
+    name: '<<namePrefix>>-az-vnetgwc-x-001'
+    lock: 'CanNotDelete'
+    virtualNetworkGateway1: {
+      id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
+    }
+    virtualNetworkGateway2: {
+      id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
+    }
+    vpnSharedKey: kv1.getSecret('vpnSharedKey')
+    virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
+    enableBgp: false
+    location: 'eastus'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -349,37 +381,6 @@ tags: {
             "value": "eastus"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
-module connections './Microsoft.Network/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-connections'
-  params: {
-    name: '<<namePrefix>>-az-vnetgwc-x-001'
-    lock: 'CanNotDelete'
-    virtualNetworkGateway1: {
-      id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
-    }
-    virtualNetworkGateway2: {
-      id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
-    }
-    vpnSharedKey: kv1.getSecret('vpnSharedKey')
-    virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
-    enableBgp: false
-    location: 'eastus'
-  }
 }
 ```
 

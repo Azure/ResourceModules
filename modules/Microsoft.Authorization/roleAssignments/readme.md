@@ -167,7 +167,24 @@ This module can be deployed at the management group, subscription or resource gr
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Mg Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-roleAssignments'
+  params: {
+    roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    principalId: '<<deploymentSpId>>'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -189,6 +206,9 @@ This module can be deployed at the management group, subscription or resource gr
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Mg</h3>
 
 <details>
 
@@ -198,16 +218,17 @@ This module can be deployed at the management group, subscription or resource gr
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
-    roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    roleDefinitionIdOrName: 'Backup Reader'
+    description: 'Role Assignment (management group scope)'
     principalId: '<<deploymentSpId>>'
+    principalType: 'ServicePrincipal'
+    managementGroupId: '<<managementGroupId>>'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -238,6 +259,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Rg Min</h3>
 
 <details>
 
@@ -247,19 +271,16 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
-    roleDefinitionIdOrName: 'Backup Reader'
-    description: 'Role Assignment (management group scope)'
+    roleDefinitionIdOrName: 'Storage Queue Data Reader'
     principalId: '<<deploymentSpId>>'
-    principalType: 'ServicePrincipal'
-    managementGroupId: '<<managementGroupId>>'
+    subscriptionId: '<<subscriptionId>>'
+    resourceGroupName: '<<resourceGroupName>>'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 3</h3>
 
 <details>
 
@@ -287,6 +308,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 ```
 
 </details>
+<p>
+
+<h3>Example 4: Rg</h3>
 
 <details>
 
@@ -296,8 +320,10 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
-    roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    roleDefinitionIdOrName: 'Backup Reader'
+    description: 'Role Assignment (resource group scope)'
     principalId: '<<deploymentSpId>>'
+    principalType: 'ServicePrincipal'
     subscriptionId: '<<subscriptionId>>'
     resourceGroupName: '<<resourceGroupName>>'
   }
@@ -306,8 +332,6 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 </details>
 <p>
-
-<h3>Example 4</h3>
 
 <details>
 
@@ -341,6 +365,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 ```
 
 </details>
+<p>
+
+<h3>Example 5: Sub Min</h3>
 
 <details>
 
@@ -350,20 +377,15 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
-    roleDefinitionIdOrName: 'Backup Reader'
-    description: 'Role Assignment (resource group scope)'
+    roleDefinitionIdOrName: 'Storage Queue Data Reader'
     principalId: '<<deploymentSpId>>'
-    principalType: 'ServicePrincipal'
     subscriptionId: '<<subscriptionId>>'
-    resourceGroupName: '<<resourceGroupName>>'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 5</h3>
 
 <details>
 
@@ -388,6 +410,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 ```
 
 </details>
+<p>
+
+<h3>Example 6: Sub</h3>
 
 <details>
 
@@ -397,8 +422,10 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
-    roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    roleDefinitionIdOrName: 'Backup Reader'
+    description: 'Role Assignment (subscription scope)'
     principalId: '<<deploymentSpId>>'
+    principalType: 'ServicePrincipal'
     subscriptionId: '<<subscriptionId>>'
   }
 }
@@ -406,8 +433,6 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 </details>
 <p>
-
-<h3>Example 6</h3>
 
 <details>
 
@@ -434,25 +459,6 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
             "value": "<<subscriptionId>>"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
-  params: {
-    roleDefinitionIdOrName: 'Backup Reader'
-    description: 'Role Assignment (subscription scope)'
-    principalId: '<<deploymentSpId>>'
-    principalType: 'ServicePrincipal'
-    subscriptionId: '<<subscriptionId>>'
-  }
 }
 ```
 

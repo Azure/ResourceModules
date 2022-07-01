@@ -126,7 +126,45 @@ module policydefinition 'yourpath/modules/Microsoft.Authorization.policyDefiniti
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Mg Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-policyDefinitions'
+  params: {
+    name: '<<namePrefix>>-mg-min-policyDef'
+    policyRule: {
+      if: {
+        allOf: [
+          {
+            equals: 'Microsoft.KeyVault/vaults'
+            field: 'type'
+          }
+        ]
+      }
+      then: {
+        effect: '[parameters('effect')]'
+      }
+    }
+    parameters: {
+      effect: {
+        allowedValues: [
+          'Audit'
+        ]
+        defaultValue: 'Audit'
+        type: 'String'
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -171,6 +209,9 @@ module policydefinition 'yourpath/modules/Microsoft.Authorization.policyDefiniti
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Mg</h3>
 
 <details>
 
@@ -180,37 +221,64 @@ module policydefinition 'yourpath/modules/Microsoft.Authorization.policyDefiniti
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
-    name: '<<namePrefix>>-mg-min-policyDef'
+    name: '<<namePrefix>>-mg-policyDef'
+    displayName: '[DisplayName] This policy definition is deployed at the management group scope'
+    description: '[Description] This policy definition is deployed at the management group scope'
     policyRule: {
       if: {
         allOf: [
           {
-            equals: 'Microsoft.KeyVault/vaults'
             field: 'type'
+            equals: 'Microsoft.Resources/subscriptions'
+          }
+          {
+            field: '[concat('tags[' parameters('tagName') ']')]'
+            exists: 'false'
           }
         ]
       }
       then: {
-        effect: '[parameters('effect')]'
+        effect: 'modify'
+        details: {
+          roleDefinitionIds: [
+            '/providers/microsoft.authorization/roleDefinitions/4a9ae827-6dc8-4573-8ac7-8239d42aa03f'
+          ]
+          operations: [
+            {
+              operation: 'add'
+              field: '[concat('tags[' parameters('tagName') ']')]'
+              value: '[parameters('tagValue')]'
+            }
+          ]
+        }
       }
     }
     parameters: {
-      effect: {
-        allowedValues: [
-          'Audit'
-        ]
-        defaultValue: 'Audit'
+      tagName: {
         type: 'String'
+        metadata: {
+          displayName: 'Tag Name'
+          description: 'Name of the tag such as 'environment''
+        }
+      }
+      tagValue: {
+        type: 'String'
+        metadata: {
+          displayName: 'Tag Value'
+          description: 'Value of the tag such as 'production''
+        }
       }
     }
+    metadata: {
+      category: 'Security'
+    }
+    managementGroupId: '<<managementGroupId>>'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -292,6 +360,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Sub Min</h3>
 
 <details>
 
@@ -301,9 +372,98 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
-    name: '<<namePrefix>>-mg-policyDef'
-    displayName: '[DisplayName] This policy definition is deployed at the management group scope'
-    description: '[Description] This policy definition is deployed at the management group scope'
+    name: '<<namePrefix>>-sub-min-policyDef'
+    policyRule: {
+      if: {
+        allOf: [
+          {
+            equals: 'Microsoft.KeyVault/vaults'
+            field: 'type'
+          }
+        ]
+      }
+      then: {
+        effect: '[parameters('effect')]'
+      }
+    }
+    parameters: {
+      effect: {
+        allowedValues: [
+          'Audit'
+        ]
+        defaultValue: 'Audit'
+        type: 'String'
+      }
+    }
+    subscriptionId: '<<subscriptionId>>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-sub-min-policyDef"
+        },
+        "policyRule": {
+            "value": {
+                "if": {
+                    "allOf": [
+                        {
+                            "equals": "Microsoft.KeyVault/vaults",
+                            "field": "type"
+                        }
+                    ]
+                },
+                "then": {
+                    "effect": "[parameters('effect')]"
+                }
+            }
+        },
+        "parameters": {
+            "value": {
+                "effect": {
+                    "allowedValues": [
+                        "Audit"
+                    ],
+                    "defaultValue": "Audit",
+                    "type": "String"
+                }
+            }
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        }
+    }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Sub</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-policyDefinitions'
+  params: {
+    name: '<<namePrefix>>-sub-policyDef'
+    displayName: '[DisplayName] This policy definition is deployed at subscription scope'
+    description: '[Description] This policy definition is deployed at subscription scope'
     policyRule: {
       if: {
         allOf: [
@@ -352,94 +512,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     metadata: {
       category: 'Security'
     }
-    managementGroupId: '<<managementGroupId>>'
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-sub-min-policyDef"
-        },
-        "policyRule": {
-            "value": {
-                "if": {
-                    "allOf": [
-                        {
-                            "equals": "Microsoft.KeyVault/vaults",
-                            "field": "type"
-                        }
-                    ]
-                },
-                "then": {
-                    "effect": "[parameters('effect')]"
-                }
-            }
-        },
-        "parameters": {
-            "value": {
-                "effect": {
-                    "allowedValues": [
-                        "Audit"
-                    ],
-                    "defaultValue": "Audit",
-                    "type": "String"
-                }
-            }
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyDefinitions'
-  params: {
-    name: '<<namePrefix>>-sub-min-policyDef'
-    policyRule: {
-      if: {
-        allOf: [
-          {
-            equals: 'Microsoft.KeyVault/vaults'
-            field: 'type'
-          }
-        ]
-      }
-      then: {
-        effect: '[parameters('effect')]'
-      }
-    }
-    parameters: {
-      effect: {
-        allowedValues: [
-          'Audit'
-        ]
-        defaultValue: 'Audit'
-        type: 'String'
-      }
-    }
     subscriptionId: '<<subscriptionId>>'
   }
 }
@@ -447,8 +519,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 
 </details>
 <p>
-
-<h3>Example 4</h3>
 
 <details>
 
@@ -526,72 +596,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
             "value": "<<subscriptionId>>"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyDefinitions'
-  params: {
-    name: '<<namePrefix>>-sub-policyDef'
-    displayName: '[DisplayName] This policy definition is deployed at subscription scope'
-    description: '[Description] This policy definition is deployed at subscription scope'
-    policyRule: {
-      if: {
-        allOf: [
-          {
-            field: 'type'
-            equals: 'Microsoft.Resources/subscriptions'
-          }
-          {
-            field: '[concat('tags[' parameters('tagName') ']')]'
-            exists: 'false'
-          }
-        ]
-      }
-      then: {
-        effect: 'modify'
-        details: {
-          roleDefinitionIds: [
-            '/providers/microsoft.authorization/roleDefinitions/4a9ae827-6dc8-4573-8ac7-8239d42aa03f'
-          ]
-          operations: [
-            {
-              operation: 'add'
-              field: '[concat('tags[' parameters('tagName') ']')]'
-              value: '[parameters('tagValue')]'
-            }
-          ]
-        }
-      }
-    }
-    parameters: {
-      tagName: {
-        type: 'String'
-        metadata: {
-          displayName: 'Tag Name'
-          description: 'Name of the tag such as 'environment''
-        }
-      }
-      tagValue: {
-        type: 'String'
-        metadata: {
-          displayName: 'Tag Value'
-          description: 'Value of the tag such as 'production''
-        }
-      }
-    }
-    metadata: {
-      category: 'Security'
-    }
-    subscriptionId: '<<subscriptionId>>'
-  }
 }
 ```
 

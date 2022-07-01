@@ -43,7 +43,24 @@ This module deploys OperationsManagement Solutions.
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-solutions'
+  params: {
+    name: 'Updates'
+    logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -65,6 +82,9 @@ This module deploys OperationsManagement Solutions.
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Ms</h3>
 
 <details>
 
@@ -74,16 +94,16 @@ This module deploys OperationsManagement Solutions.
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
-    name: 'Updates'
+    name: 'AzureAutomation'
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    product: 'OMSGallery'
+    publisher: 'Microsoft'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -111,6 +131,9 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Nonms</h3>
 
 <details>
 
@@ -120,18 +143,16 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
-    name: 'AzureAutomation'
+    name: 'nonmsTestSolution'
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
-    product: 'OMSGallery'
-    publisher: 'Microsoft'
+    product: 'nonmsTestSolutionProduct'
+    publisher: 'nonmsTestSolutionPublisher'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 3</h3>
 
 <details>
 
@@ -155,24 +176,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
             "value": "nonmsTestSolutionPublisher"
         }
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-solutions'
-  params: {
-    name: 'nonmsTestSolution'
-    logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
-    product: 'nonmsTestSolutionProduct'
-    publisher: 'nonmsTestSolutionPublisher'
-  }
 }
 ```
 
