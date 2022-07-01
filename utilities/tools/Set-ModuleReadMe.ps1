@@ -404,7 +404,7 @@ function Set-DeploymentExamplesSection {
 
             # Generate content
             if ($addBicep) {
-                $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep = {'"
+                $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep = {"
                 $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
                 $SectionContent += @(
@@ -543,7 +543,6 @@ function Set-DeploymentExamplesSection {
                 $jsonParameterContent = $rawContent.TrimEnd()
             }
 
-            # TODO: Add test to check for one resource with '-test-' in name (if not parameter file)
             if ($addJson) {
 
                 $SectionContent += @(
@@ -561,7 +560,7 @@ function Set-DeploymentExamplesSection {
             }
 
             if ($addBicep) {
-                $JSONParametersHashTable = (ConvertFrom-Json $jsonParameterContent -AsHashtable -Depth 99).parameters
+                $JSONParametersHashTable = (ConvertFrom-Json ($jsonParameterContent | Out-String) -AsHashtable -Depth 99).parameters
 
                 # Handle KeyVaut references
                 $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }
@@ -599,15 +598,24 @@ function Set-DeploymentExamplesSection {
                 }
 
                 # Handle VALUE references (i.e. remove them)
-                $JSONParameters = (ConvertFrom-Json $rawContent -Depth 99).PSObject.properties['parameters'].value
-                $JSONParametersWithoutValue = [ordered]@{}
-                foreach ($parameter in $JSONParameters.PSObject.Properties) {
-                    if ($parameter.value.PSObject.Properties.name -eq 'value') {
-                        $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties['value'].value
-                    } else {
-                        # replace key vault references
-                        $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameter.Name }
-                        $JSONParametersWithoutValue[$parameter.name] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
+                if ((ConvertFrom-Json $rawContent -Depth 99).'$schema' -like '*deploymentParameters*') {
+                    # If handling a classic parameter file
+                    $JSONParameters = (ConvertFrom-Json $rawContent -Depth 99).PSObject.properties['parameters'].value
+                    $JSONParametersWithoutValue = [ordered]@{}
+                    foreach ($parameter in $JSONParameters.PSObject.Properties) {
+                        if ($parameter.Value.PSObject.Properties.name -eq 'value') {
+                            $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties['value'].value
+                        } else {
+                            # replace key vault references
+                            $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameter.Name }
+                            $JSONParametersWithoutValue[$parameter.name] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
+                        }
+                    }
+                } else {
+                    # If handling a test deployment file
+                    $JSONParametersWithoutValue = [ordered]@{}
+                    foreach ($parameter in $formattedJSONParameters.Keys) {
+                        $JSONParametersWithoutValue[$parameter] = $formattedJSONParameters.$parameter.value
                     }
                 }
 
