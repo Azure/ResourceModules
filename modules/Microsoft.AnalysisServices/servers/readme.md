@@ -164,7 +164,7 @@ roleAssignments: [
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
+module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-aspar'
   params: {
     name: 'carmlazasaspar001'
@@ -211,10 +211,10 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "managedIdentityPrincipalId"
-          ],
-          "roleDefinitionIdOrName": "Reader"
+          ]
         }
       ]
     },
@@ -247,7 +247,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
+module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-asmax'
   params: {
     name: 'carmlazasasmax001'
@@ -314,23 +314,23 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
     },
     "firewallSettings": {
       "value": {
+        "enablePowerBIService": true,
         "firewallRules": [
           {
-            "rangeStart": "0.0.0.0",
             "firewallRuleName": "AllowFromAll",
-            "rangeEnd": "255.255.255.255"
+            "rangeEnd": "255.255.255.255",
+            "rangeStart": "0.0.0.0"
           }
-        ],
-        "enablePowerBIService": true
+        ]
       }
     },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "managedIdentityPrincipalId"
-          ],
-          "roleDefinitionIdOrName": "Reader"
+          ]
         }
       ]
     },
@@ -374,7 +374,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
+module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-asmin'
   params: {
     name: 'carmlazasasmin001'

@@ -329,7 +329,7 @@ roleAssignments: [
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {'
+module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-vpnSites-vsipar'
   params: {
     name: 'carml-az-vsipar-001'
@@ -428,13 +428,13 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {'
         {
           "properties": {
             "linkProperties": {
-              "linkSpeedInMbps": 5,
-              "linkProviderName": "contoso"
+              "linkProviderName": "contoso",
+              "linkSpeedInMbps": 5
             },
             "ipAddress": "1.2.3.4",
             "bgpProperties": {
-              "bgpPeeringAddress": "1.1.1.1",
-              "asn": 65010
+              "asn": 65010,
+              "bgpPeeringAddress": "1.1.1.1"
             }
           },
           "name": "carml-az-vSite-vsipar-001"
@@ -442,13 +442,13 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {'
         {
           "properties": {
             "linkProperties": {
-              "linkSpeedInMbps": 5,
-              "linkProviderName": "contoso"
+              "linkProviderName": "contoso",
+              "linkSpeedInMbps": 5
             },
             "ipAddress": "2.2.2.2",
             "bgpProperties": {
-              "bgpPeeringAddress": "192.168.1.0",
-              "asn": 65020
+              "asn": 65020,
+              "bgpPeeringAddress": "192.168.1.0"
             }
           },
           "name": "Link1"
@@ -459,18 +459,18 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {'
       "value": {
         "breakOutCategories": {
           "optimize": true,
-          "allow": true,
-          "default": true
+          "default": true,
+          "allow": true
         }
       }
     },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "managedIdentityPrincipalId"
-          ],
-          "roleDefinitionIdOrName": "Reader"
+          ]
         }
       ]
     }
@@ -488,7 +488,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {'
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {'
+module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-vpnSites-vsimin'
   params: {
     name: 'carml-az-vsimin-001'
