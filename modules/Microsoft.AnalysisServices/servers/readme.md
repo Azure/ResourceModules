@@ -165,7 +165,7 @@ roleAssignments: [
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
-  name: '${uniqueString(deployment().name)}-servers-aspar'
+  name: '${uniqueString(deployment().name)}-test-servers-aspar'
   params: {
     name: 'carmlazasaspar001'
     lock: 'CanNotDelete'
@@ -248,7 +248,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
-  name: '${uniqueString(deployment().name)}-servers-asmax'
+  name: '${uniqueString(deployment().name)}-test-servers-asmax'
   params: {
     name: 'carmlazasasmax001'
     lock: 'CanNotDelete'
@@ -316,9 +316,9 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
       "value": {
         "firewallRules": [
           {
-            "rangeEnd": "255.255.255.255",
             "rangeStart": "0.0.0.0",
-            "firewallRuleName": "AllowFromAll"
+            "firewallRuleName": "AllowFromAll",
+            "rangeEnd": "255.255.255.255"
           }
         ],
         "enablePowerBIService": true
@@ -375,7 +375,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {'
-  name: '${uniqueString(deployment().name)}-servers-asmin'
+  name: '${uniqueString(deployment().name)}-test-servers-asmin'
   params: {
     name: 'carmlazasasmin001'
   }
