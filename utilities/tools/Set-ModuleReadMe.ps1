@@ -417,7 +417,7 @@ function Set-DeploymentExamplesSection {
                     ($rawBicepExample | ForEach-Object { "$_" }).TrimEnd(),
                     '```',
                     '',
-                    '</details>'
+                    '</details>',
                     '<p>'
                 )
             }
@@ -508,7 +508,7 @@ function Set-DeploymentExamplesSection {
                     $jsonExample
                     '```',
                     '',
-                    '</details>'
+                    '</details>',
                     '<p>'
                 )
             }
@@ -541,22 +541,6 @@ function Set-DeploymentExamplesSection {
             } else {
                 # Use plan ARM-JSON parameter file
                 $jsonParameterContent = $rawContent.TrimEnd()
-            }
-
-            if ($addJson) {
-
-                $SectionContent += @(
-                    '',
-                    '<details>',
-                    '',
-                    '<summary>via JSON Parameter file</summary>',
-                    '',
-                    '```json',
-                    $jsonParameterContent,
-                    '```',
-                    '',
-                    '</details>'
-                )
             }
 
             if ($addBicep) {
@@ -629,27 +613,44 @@ function Set-DeploymentExamplesSection {
                     $bicepParamsArray = $contentInBicepFormat -split ('\n')
                     $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
                 }
+
+                $SectionContent += @(
+                    '',
+                    '<details>'
+                    ''
+                    '<summary>via Bicep module</summary>'
+                    ''
+                    '```bicep',
+                    $extendedKeyVaultReferences,
+                    "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
+                    "  name: '`${uniqueString(deployment().name)}-$resourceType'"
+                    '  params: {'
+                ($bicepParamsArray | ForEach-Object { "  $_" }).TrimEnd(),
+                    '  }'
+                    '}'
+                    '```',
+                    '',
+                    '</details>'
+                    '<p>'
+                )
             }
 
-            $SectionContent += @(
-                '',
-                '<details>'
-                ''
-                '<summary>via Bicep module</summary>'
-                ''
-                '```bicep',
-                $extendedKeyVaultReferences,
-                "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
-                "  name: '`${uniqueString(deployment().name)}-$resourceType'"
-                '  params: {'
-                ($bicepParamsArray | ForEach-Object { "  $_" }).TrimEnd(),
-                '  }'
-                '}'
-                '```',
-                '',
-                '</details>'
-                '<p>'
-            )
+            if ($addJson) {
+
+                $SectionContent += @(
+                    '',
+                    '<details>',
+                    '',
+                    '<summary>via JSON Parameter file</summary>',
+                    '',
+                    '```json',
+                    $jsonParameterContent,
+                    '```',
+                    '',
+                    '</details>',
+                    '<p>'
+                )
+            }
         }
 
         $SectionContent += @(
