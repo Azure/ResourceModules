@@ -536,26 +536,27 @@ function Set-DeploymentExamplesSection {
             # First we need to check if we're dealing with a classic JSON-Parameter file, or a deployment test file (which contains resource deployments & parameters)
             $isParameterFile = $rawContentHashtable.'$schema' -like '*deploymentParameters*'
             if (-not $isParameterFile) {
-                # Uses deployment test file (instead of parameter file). Need to extract parameters. The target is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
+                # Case 1: Uses deployment test file (instead of parameter file).
+                # [1/3]  Need to extract parameters. The target is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
                 $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
 
                 $JSONResourceParameters = $testResource.properties.parameters
 
-                # Restore the original order of parameters (which are lost by the 'ConvertFrom-JSON' method invocation)
+                # [2/3] Restore the original order of parameters (which are lost by the 'ConvertFrom-JSON' method invocation)
                 $formattedJSONParameters = [ordered]@{}
                 foreach ($parameter in $JSONResourceParameters.PSObject.Properties.Name) {
                     $formattedJSONParameters[$parameter] = $JSONResourceParameters.$parameter
                 }
 
+                # [3/3] Build the full ARM-JSON parameter file
                 $jsonParameterContent = [ordered]@{
                     '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
                     contentVersion = '1.0.0.0'
                     parameters     = $formattedJSONParameters
                 }
-
                 $jsonParameterContent = ($jsonParameterContent | ConvertTo-Json -Depth 99).TrimEnd()
             } else {
-                # Use plan ARM-JSON parameter file
+                # Case 2: Uses ARM-JSON parameter file
                 $jsonParameterContent = $rawContent.TrimEnd()
             }
 
@@ -563,9 +564,12 @@ function Set-DeploymentExamplesSection {
             #   Add Bicep example   #
             # --------------------- #
             if ($addBicep) {
+
+                # [1/] Get all parameters from the parameter object
                 $JSONParametersHashTable = (ConvertFrom-Json $jsonParameterContent -AsHashtable -Depth 99).parameters
 
-                # Handle KeyVaut references
+                # [2/] Handle the special case of Key Vault secret references (that have a 'reference' instead of a 'value' property)
+                # [2.1/] Find all references and split them into managable objects
                 $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }
 
                 if ($keyVaultReferences.Count -gt 0) {
@@ -582,6 +586,8 @@ function Set-DeploymentExamplesSection {
                     }
                 }
 
+                # [2.2/] Remove any duplicates from the referenced key vaults and build 'existing' Key Vault references in Bicep format from them.
+                #        Also, add a link to the corresponding Key Vault 'resource' to each identified Key Vault secret reference
                 $extendedKeyVaultReferences = @()
                 $counter = 0
                 foreach ($reference in ($keyVaultReferenceData | Sort-Object -Property 'vaultName' -Unique)) {
@@ -600,7 +606,8 @@ function Set-DeploymentExamplesSection {
                     }
                 }
 
-                # Handle VALUE references (i.e. remove them)
+                # [3/] Remove the 'value' property from each parameter
+                #      If we're handling a classic ARM-JSON parameter file that includes replacing all 'references' with the link to one of the 'existing' Key Vault resources
                 if ((ConvertFrom-Json $rawContent -Depth 99).'$schema' -like '*deploymentParameters*') {
                     # If handling a classic parameter file
                     $JSONParameters = (ConvertFrom-Json $rawContent -Depth 99).PSObject.properties['parameters'].value
@@ -622,6 +629,7 @@ function Set-DeploymentExamplesSection {
                     }
                 }
 
+                # [4/] Remove any JSON specific formatting
                 $templateParameterObject = $JSONParametersWithoutValue | ConvertTo-Json -Depth 99
                 if ($templateParameterObject -ne '{}') {
                     $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
@@ -633,6 +641,10 @@ function Set-DeploymentExamplesSection {
                     $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
                 }
 
+                # [5/] Create the final content block: That means
+                # - the 'existing' Key Vault resources
+                # - a 'module' header that mimics a module deployment
+                # - all parameters in Bicep format
                 $SectionContent += @(
                     '',
                     '<details>'
