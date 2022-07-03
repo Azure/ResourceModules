@@ -4,12 +4,6 @@ param name string
 @description('Optional. Tags of the Gremlin graph resource.')
 param tags object = {}
 
-@description('Optional. Represents maximum throughput, the resource can scale up to.')
-param maxThroughput int = 0
-
-@description('Optional. Request Units per second. For example, "throughput": 10000.')
-param throughput int = 0
-
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -45,19 +39,11 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-previ
   }
 }
 
-var graphOptions = contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? {} : {
-  autoscaleSettings: {
-    maxThroughput: maxThroughput == maxThroughput
-  }
-  throughput: throughput == throughput
-}
-
 resource gremlinGraph 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs@2022-02-15-preview' = {
   name: name
   tags: tags
   parent: databaseAccount::gremlinDatabase
   properties: {
-    options: graphOptions
     resource: {
       id: name
       indexingPolicy: {

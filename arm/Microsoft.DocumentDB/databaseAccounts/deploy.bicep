@@ -246,31 +246,27 @@ var backupPolicy = backupPolicyType == 'Continuous' ? {
   }
 }
 
-var databaseAccount_properties = !empty(sqlDatabases) ? {
-  consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
-  locations: databaseAccount_locations
-  databaseAccountOfferType: databaseAccountOfferType
-  enableAutomaticFailover: automaticFailover
-  capabilities: capabilities
-  backupPolicy: backupPolicy
-} : !empty(mongodbDatabases) ? {
-  consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
-  locations: databaseAccount_locations
-  databaseAccountOfferType: databaseAccountOfferType
-  apiProperties: {
-    serverVersion: serverVersion
-  }
-  capabilities: capabilities
-  backupPolicy: backupPolicy
-} : !empty(gremlinDatabases) ? {
-  consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
-  locations: databaseAccount_locations
-  databaseAccountOfferType: databaseAccountOfferType
-  capabilities: capabilities
-  backupPolicy: backupPolicy
-} : {
-  databaseAccountOfferType: databaseAccountOfferType
-}
+var databaseAccount_properties = union({
+    databaseAccountOfferType: databaseAccountOfferType
+  },
+  // Common properties
+  ((!empty(sqlDatabases) || !empty(mongodbDatabases) || !empty(gremlinDatabases)) ? {
+    consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
+    locations: databaseAccount_locations
+    capabilities: capabilities
+    backupPolicy: backupPolicy
+  } : {}),
+  // SQLDB properties
+  (!empty(sqlDatabases) ? {
+    enableAutomaticFailover: automaticFailover
+  } : {}),
+  // MongoDb properties
+  (!empty(mongodbDatabases) ? {
+    apiProperties: {
+      serverVersion: serverVersion
+    }
+  } : {})
+)
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'

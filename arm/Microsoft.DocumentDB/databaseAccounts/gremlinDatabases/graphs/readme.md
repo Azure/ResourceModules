@@ -33,10 +33,8 @@ This module deploys DocumentDB DatabaseAccounts GremlinDatabases Graphs.
 | `automaticIndexing` | bool | `True` |  | Indicates if the indexing policy is automatic. |
 | `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `kind` | string | `'Hash'` | `[Hash, MultiHash, Range]` | Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (up to three maximum) are supported for container create. |
-| `maxThroughput` | int | `0` |  | Represents maximum throughput, the resource can scale up to. |
 | `partitionKeyPaths` | array | `[]` |  | List of paths using which data within the container can be partitioned. |
 | `tags` | object | `{object}` |  | Tags of the Gremlin graph resource. |
-| `throughput` | int | `0` |  | Request Units per second. For example, "throughput": 10000. |
 
 
 ### Parameter Usage: `tags`
@@ -96,7 +94,7 @@ graphs: [
     partitionKeyPaths: [
       '/name'
     ],
-    
+
   }
   {
     name: 'graph02'

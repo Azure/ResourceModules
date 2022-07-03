@@ -16,9 +16,11 @@ param databaseAccountName string
 @description('Optional. Array of graphs to deploy in the Gremlin database.')
 param graphs array = []
 
+@minValue(400)
 @description('Optional. Represents maximum throughput, the resource can scale up to.')
 param maxThroughput int = 0
 
+@minValue(400)
 @description('Optional. Request Units per second. For example, "throughput": 10000.')
 param throughput int = 0
 
@@ -52,9 +54,9 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-previ
 
 var databaseOptions = contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? {} : {
   autoscaleSettings: {
-    maxThroughput: maxThroughput == maxThroughput
+    maxThroughput: maxThroughput
   }
-  throughput: throughput == throughput
+  throughput: throughput
 }
 
 resource gremlinDatabase 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases@2022-02-15-preview' = {
@@ -79,8 +81,6 @@ module gremlinGraphs 'graphs/deploy.bicep' = [for graph in graphs: {
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     automaticIndexing: contains(graph, 'automaticIndexing') ? graph.automaticIndexing : true
     partitionKeyPaths: !empty(graph.partitionKeyPaths) ? graph.partitionKeyPaths : []
-    maxThroughput: contains(graph, 'maxThroughput') ? graph.maxThroughput : null
-    throughput: contains(graph, 'throughput') ? graph.throughput : null
   }
 }]
 
