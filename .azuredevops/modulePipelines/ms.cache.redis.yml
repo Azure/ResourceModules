@@ -1,0 +1,55 @@
+name: 'Cache - Redis'
+
+parameters:
+  - name: removeDeployment
+    displayName: Remove deployed module
+    type: boolean
+    default: true
+  - name: prerelease
+    displayName: Publish prerelease module
+    type: boolean
+    default: false
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - '/.azuredevops/modulePipelines/ms.cache.redis.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/Microsoft.Cache/redis/*'
+      - '/arm/.global/global.module.tests.ps1'
+    exclude:
+      - '/**/*.md'
+
+variables:
+  - template: '../../global.variables.yml'
+  - group: 'PLATFORM_VARIABLES'
+  - name: modulePath
+    value: '/arm/Microsoft.Cache/redis'
+
+stages:
+  - stage: Validation
+    displayName: Static validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+
+  - stage: Deployment
+    displayName: Deployment validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks:
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/full.parameters.json
+
+  - stage: Publishing
+    displayName: Publishing
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml

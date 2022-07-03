@@ -81,7 +81,7 @@ param capacity int = 0
   'P'
 ])
 @description('Optional. The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).')
-param family string = 'C'
+param family string = 'P'
 
 @allowed([
   'Basic'
@@ -89,7 +89,7 @@ param family string = 'C'
   'Standard'
 ])
 @description('Optional. The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)')
-param skuName string = 'Basic'
+param skuName string = 'Premium'
 
 @description('Optional. Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default.')
 param staticIP string = ''
