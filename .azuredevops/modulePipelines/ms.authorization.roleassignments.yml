@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.authorization.roleassignments.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Authorization/roleAssignments/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Authorization/roleAssignments/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Authorization/roleAssignments'
+    value: '/modules/Microsoft.Authorization/roleAssignments'
 
 stages:
   - stage: Validation
@@ -45,17 +45,17 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/mg.min.parameters.json
+            - path: $(modulePath)/.test/mg.min.parameters.json
               templateFilePath: $(modulePath)/deploy.bicep
-            - path: $(modulePath)/.parameters/mg.parameters.json
+            - path: $(modulePath)/.test/mg.parameters.json
               templateFilePath: $(modulePath)/deploy.bicep
-            - path: $(modulePath)/.parameters/sub.min.parameters.json
+            - path: $(modulePath)/.test/sub.min.parameters.json
               templateFilePath: $(modulePath)/deploy.bicep
-            - path: $(modulePath)/.parameters/sub.parameters.json
+            - path: $(modulePath)/.test/sub.parameters.json
               templateFilePath: $(modulePath)/deploy.bicep
-            - path: $(modulePath)/.parameters/rg.min.parameters.json
+            - path: $(modulePath)/.test/rg.min.parameters.json
               templateFilePath: $(modulePath)/deploy.bicep
-            - path: $(modulePath)/.parameters/rg.parameters.json
+            - path: $(modulePath)/.test/rg.parameters.json
               templateFilePath: $(modulePath)/deploy.bicep
 
   - stage: Publishing

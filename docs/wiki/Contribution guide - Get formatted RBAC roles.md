@@ -1,28 +1,29 @@
-Use this script to format a given raw 'Roles' table from Azure to the format required by either Bicep or ARM/JSON Templates in any RBAC deployment.
+Use this script to format a given raw 'Roles' table from the Azure portal to the format required by either Bicep or ARM/JSON Templates in any RBAC deployment.
 
 ---
 
 ### _Navigation_
 
 - [Location](#location)
-- [How it works](#what-it-does)
+- [How it works](#how-it-works)
 - [How to use it](#how-to-use-it)
 
 ---
 # Location
 
-You can find the script under `/utilities/tools/Get-FormattedRBACRoles.ps1`
+You can find the script under [`/utilities/tools/Get-FormattedRBACRoles.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/Get-FormattedRBACRoleList.ps1)
 
 # How it works
 
-1. From the provided raw and plain roles list, create a list of only the contained role names
-1. Fetch all available roles from Azure
-1. Go through all provided role names, match them with those from Azure to get the matching RoleDefinitionId and format a string like `'<roleName>': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','<roleDefinitionId>')` for each match
-1. Print the result to the terminal
+This script
+1. Leverages a list of role names that the Azure portal provides for a given resource type
+1. Fetches all available roles from Azure
+1. Goes through all provided role names, matches them with those from the Azure portal to get the matching RoleDefinitionId and provides an output string, formatted like `'<roleName>': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','<roleDefinitionId>')` for each match
+1. Prints the result to the terminal
 
 # How to use it
 
-The script does not accept any custom parameter per se, but expects you to replace the placeholder in the `rawRoles` variable inside the script
+The script does not accept any custom parameters, but expects you to replace the placeholder in the `rawRoles` 'here-string' variable inside the script with the value fetched from the Azure portal, as detailed below.
 
 ```PowerShell
 $rawRoles = @'
@@ -31,15 +32,15 @@ $rawRoles = @'
 ```
 
 To get the list of roles in the expected format:
-1. Navigate to Azure
+1. Navigate to the Azure portal
 1. Deploy one instance of the service you want to fetch the roles for
 1. Navigate to the `Access Control (IAM)` blade in the resource
 1. Open the `Roles` tab
 1. Set the `Type` in the dropdown to `BuiltInRole`
 
-   <img src="./media/rbacRoles.png" alt="Complete deployment flow filtered" height="300">
+   <img src="./media/ContributionGuide/rbacRoles.png" alt="Complete deployment flow filtered" height="300">
 
-1. Select and copy the entire table as is to the PowerShell variable.
+1. Select and copy the entire table as is to the `$rawRoles` 'here-string' PowerShell variable.
 
    The result should look similar to
 
@@ -62,7 +63,7 @@ To get the list of roles in the expected format:
    View
    '@
    ```
-1. Execute the script. The output for the above example would be
+1. Run the script. The output for the above example would be
 
     ```yml
     VERBOSE: Bicep
@@ -77,7 +78,7 @@ To get the list of roles in the expected format:
      "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b24988ac-6180-42a0-ab88-20f7382dd24c')]",
      "Reader":      "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
     ```
-1. Copy the output into the RBAC file into the `buildInRoleNames` variable. Again, for the same example using bicep this would be:
+1. Copy the output into the RBAC file into the `builtInRoleNames` variable. For the same example, using Bicep this would be:
 
    ```bicep
    var builtInRoleNames = {
@@ -87,5 +88,5 @@ To get the list of roles in the expected format:
    }
    ```
 
-For further details on how to use the function please refer to the script's local documentation.
-> **Note:** The script must be loaded before the function can be invoked
+For further details on how to use the function, please refer to the script's local documentation.
+> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.

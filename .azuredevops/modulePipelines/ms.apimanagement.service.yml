@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.apimanagement.service.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.ApiManagement/service/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.ApiManagement/service/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.ApiManagement/service'
+    value: '/modules/Microsoft.ApiManagement/service'
 
 stages:
   - stage: Validation
@@ -45,9 +45,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/max.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.test/max.parameters.json
+            - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
 
   - stage: Publishing
     displayName: Publishing

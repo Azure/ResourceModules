@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.components.yml'
-      - 'arm/Microsoft.Insights/components/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - 'modules/Microsoft.Insights/components/**'
+      - 'modules/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Insights/components'
+  modulePath: 'modules/Microsoft.Insights/components'
   workflowPath: '.github/workflows/ms.insights.components.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

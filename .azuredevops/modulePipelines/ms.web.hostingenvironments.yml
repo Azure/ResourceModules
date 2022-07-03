@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.web.hostingenvironments.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Web/hostingEnvironments/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Web/hostingEnvironments/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Web/hostingEnvironments'
+    value: '/modules/Microsoft.Web/hostingEnvironments'
 
 stages:
   - stage: Validation
@@ -45,8 +45,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/asev2.parameters.json
-            - path: $(modulePath)/.parameters/asev3.parameters.json
+            - path: $(modulePath)/.test/asev2.parameters.json
+            - path: $(modulePath)/.test/asev3.parameters.json
           defaultJobTimeoutInMinutes: 180
 
   - stage: Publishing
