@@ -450,22 +450,22 @@ function Set-DeploymentExamplesSection {
                 $paramBlock = $rawBicepExample[($paramStartIndex + 1)..($paramEndIndex - 1)]
 
                 # [2/3] Add JSON-specific syntax to the Bicep param block to enable us to treat is as such
-                # [2.1/3] Syntax: Outer brackets
+                # [2.1] Syntax: Outer brackets
                 $paramInJsonFormat = @(
                     '{',
                     $paramBlock
                     '}'
                 ) | Out-String
 
-                # [2.2/3] Syntax: All single-quotes are double-quotes
+                # [2.2] Syntax: All single-quotes are double-quotes
                 $paramInJsonFormat = $paramInJsonFormat -replace "'", '"'
-                # [2.3/3] Syntax: Everything left of a ':' should be wrapped in quotes (as a parameter name is always a string)
+                # [2.3] Syntax: Everything left of a ':' should be wrapped in quotes (as a parameter name is always a string)
                 $paramInJsonFormat = $paramInJsonFormat -replace '([0-9a-zA-Z]+):', '"$1":'
 
-                # [2.4/3] Split the object to format line-by-line (& also remove any empty lines)
+                # [2.4] Split the object to format line-by-line (& also remove any empty lines)
                 $paramInJSONFormatArray = $paramInJsonFormat -split '\n' | Where-Object { $_ }
 
-                # [2.5/3] Syntax: Replace Bicep resource ID references
+                # [2.5] Syntax: Replace Bicep resource ID references
                 for ($index = 0; $index -lt $paramInJSONFormatArray.Count; $index++) {
                     if ($paramInJSONFormatArray[$index] -like '*:*' -and ($paramInJSONFormatArray[$index] -split ':')[1].Trim() -notmatch '".+"' -and $paramInJSONFormatArray[$index] -like '*.*') {
                         # In case of a reference like : "virtualWanId": resourceGroupResources.outputs.virtualWWANResourceId
@@ -477,7 +477,7 @@ function Set-DeploymentExamplesSection {
                     }
                 }
 
-                # [2.6/3] Syntax: Add comma everywhere unless:
+                # [2.6] Syntax: Add comma everywhere unless:
                 # - the current line has an opening 'object: {' or 'array: [' character
                 # - the line after the current line has a closing 'object: {' or 'array: [' character
                 # - it's the last closing bracket
@@ -488,14 +488,14 @@ function Set-DeploymentExamplesSection {
                     $paramInJSONFormatArray[$index] = '{0},' -f $paramInJSONFormatArray[$index].Trim()
                 }
 
-                # [2.7/3]  Syntax: Add 'value' object wrapper for all top-level parameters
+                # [2.7]  Syntax: Add 'value' object wrapper for all top-level parameters
                 $topLevelParamIndent = ([regex]::Match($rawBicepExample[$paramStartIndex + 1], '^(\s+).*')).Captures.Groups[1].Value.Length
                 $topLevelParamsInOrder = $rawBicepExample | Where-Object { $_ -match "^\s{$topLevelParamIndent}[0-9a-zA-Z]+:.*" } | ForEach-Object { ($_ -split ':')[0].Trim() }
 
-                # [2.8/3] Format the final JSON string to an object to enable processing
+                # [2.8] Format the final JSON string to an object to enable processing
                 $paramInJsonFormatObject = $paramInJSONFormatArray | Out-String | ConvertFrom-Json -AsHashtable -Depth 99
 
-                # [2.9/3] Restore the original order of parameters (which are lost by the 'ConvertFrom-JSON' method invocation)
+                # [2.9] Restore the original order of parameters (which are lost by the 'ConvertFrom-JSON' method invocation)
                 $paramInJsonFormatObjectWithValue = [ordered]@{}
                 foreach ($paramKey in $topLevelParamsInOrder) {
                     $paramInJsonFormatObjectWithValue[$paramKey] = @{
@@ -565,11 +565,11 @@ function Set-DeploymentExamplesSection {
             # --------------------- #
             if ($addBicep) {
 
-                # [1/] Get all parameters from the parameter object
+                # [1/5] Get all parameters from the parameter object
                 $JSONParametersHashTable = (ConvertFrom-Json $jsonParameterContent -AsHashtable -Depth 99).parameters
 
-                # [2/] Handle the special case of Key Vault secret references (that have a 'reference' instead of a 'value' property)
-                # [2.1/] Find all references and split them into managable objects
+                # [2/5] Handle the special case of Key Vault secret references (that have a 'reference' instead of a 'value' property)
+                # [2.1] Find all references and split them into managable objects
                 $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }
 
                 if ($keyVaultReferences.Count -gt 0) {
@@ -586,7 +586,7 @@ function Set-DeploymentExamplesSection {
                     }
                 }
 
-                # [2.2/] Remove any duplicates from the referenced key vaults and build 'existing' Key Vault references in Bicep format from them.
+                # [2.2] Remove any duplicates from the referenced key vaults and build 'existing' Key Vault references in Bicep format from them.
                 #        Also, add a link to the corresponding Key Vault 'resource' to each identified Key Vault secret reference
                 $extendedKeyVaultReferences = @()
                 $counter = 0
@@ -606,7 +606,7 @@ function Set-DeploymentExamplesSection {
                     }
                 }
 
-                # [3/] Remove the 'value' property from each parameter
+                # [3/5] Remove the 'value' property from each parameter
                 #      If we're handling a classic ARM-JSON parameter file that includes replacing all 'references' with the link to one of the 'existing' Key Vault resources
                 if ((ConvertFrom-Json $rawContent -Depth 99).'$schema' -like '*deploymentParameters*') {
                     # If handling a classic parameter file
@@ -629,7 +629,7 @@ function Set-DeploymentExamplesSection {
                     }
                 }
 
-                # [4/] Remove any JSON specific formatting
+                # [4/5] Remove any JSON specific formatting
                 $templateParameterObject = $JSONParametersWithoutValue | ConvertTo-Json -Depth 99
                 if ($templateParameterObject -ne '{}') {
                     $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
@@ -641,7 +641,7 @@ function Set-DeploymentExamplesSection {
                     $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
                 }
 
-                # [5/] Create the final content block: That means
+                # [5/5] Create the final content block: That means
                 # - the 'existing' Key Vault resources
                 # - a 'module' header that mimics a module deployment
                 # - all parameters in Bicep format
