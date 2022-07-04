@@ -20,7 +20,7 @@ Bulk remove all 'non-running' & 'non-failed' deployments from the Management Gro
 .EXAMPLE
 Clear-ManagementGroupDeployment -ManagementGroupId 'MyManagementGroupId' -DeploymentStatusToExclude @('running')
 
-Bulk remove all 'non-failed' deployments from the Management Group with ID 'MyManagementGroupId'
+Bulk remove all 'non-running' deployments from the Management Group with ID 'MyManagementGroupId'
 #>
 function Clear-ManagementGroupDeployment {
 
