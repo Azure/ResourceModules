@@ -7,6 +7,7 @@ This module deploys a Redis Cache service.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -38,7 +39,7 @@ This module deploys a Redis Cache service.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableNonSslPort` | bool | `False` |  | Specifies whether the non-ssl Redis server port (6379) is enabled. |
-| `family` | string | `'C'` | `[C, P]` | The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium). |
+| `family` | string | `'P'` | `[C, P]` | The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium). |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Redis cache service. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minimumTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | Specify the type of lock. |
@@ -49,7 +50,7 @@ This module deploys a Redis Cache service.
 | `replicasPerPrimary` | int | `1` |  | The number of replicas to be created per primary. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `shardCount` | int | `1` |  | The number of shards to be created on a Premium Cluster Cache. |
-| `skuName` | string | `'Basic'` | `[Basic, Premium, Standard]` | The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium) |
+| `skuName` | string | `'Premium'` | `[Basic, Premium, Standard]` | The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium) |
 | `staticIP` | string | `''` |  | Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default. |
 | `subnetId` | string | `''` |  | The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1 |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
@@ -229,8 +230,156 @@ userAssignedIdentities: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `hostName` | string | Redis host name. |
-| `name` | string | The name of the graph. |
-| `resourceGroupName` | string | The name of the resource group the graph was created in. |
-| `resourceId` | string | The resource ID of the graph. |
+| `name` | string | The resource name |
+| `resourceGroupName` | string | The name of the resource group the Redis cache was created in. |
+| `resourceId` | string | The resource id |
 | `sslPort` | int | Redis SSL port. |
 | `subnetId` | int | The full resource ID of a subnet in a virtual network where the Redis cache was deployed in. |
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-redis-full-001"
+    },
+    "capacity": {
+      "value": 2
+    },
+    "diagnosticLogCategoriesToEnable": {
+      "value": [
+        "ApplicationGatewayAccessLog",
+        "ApplicationGatewayFirewallLog"
+      ]
+    },
+    "diagnosticMetricsToEnable": {
+      "value": [
+        "AllMetrics"
+      ]
+    },
+    "enableNonSslPort": {
+      "value": true
+    },
+    "family": {
+      "value": "P"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "minimumTlsVersion": {
+      "value": "1.2"
+    },
+    "diagnosticSettingsName": {
+      "value": "redisdiagnostics"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "redisVersion": {
+      "value": "6"
+    },
+    "skuName": {
+      "value": "Premium"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "shardCount": {
+      "value": 1
+    },
+    "tags": {
+      "value": {
+        "resourceType": "Redis Cache"
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": false
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module redis './Microsoft.Cache/redis/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-redis'
+  params: {
+    name: '<<namePrefix>>-az-redis-full-001'
+    capacity: 2
+    diagnosticLogCategoriesToEnable: [
+      'ApplicationGatewayAccessLog'
+      'ApplicationGatewayFirewallLog'
+    ]
+    diagnosticMetricsToEnable: [
+      'AllMetrics'
+    ]
+    enableNonSslPort: true
+    family: 'P'
+    lock: 'CanNotDelete'
+    minimumTlsVersion: '1.2'
+    diagnosticSettingsName: 'redisdiagnostics'
+    publicNetworkAccess: 'Enabled'
+    redisVersion: '6'
+    skuName: 'Premium'
+    systemAssignedIdentity: true
+    shardCount: 1
+    tags: {
+      resourceType: 'Redis Cache'
+    }
+    enableDefaultTelemetry: false
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-redis-min-001"
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module redis './Microsoft.Cache/redis/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-redis'
+  params: {
+    name: '<<namePrefix>>-az-redis-min-001'
+  }
+}
+```
+
+</details>
+<p>
