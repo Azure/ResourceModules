@@ -10,7 +10,7 @@ Bulk delete all deployments on the given management group scope
 Mandatory. The Resource ID of the Management Group to remove the deployments for.
 
 .PARAMETER DeploymentStatusToExclude
-Optional. The status to exlude from removals. By default, we exclude any deployment that is in state 'running'.
+Optional. The status to exlude from removals. Can be multiple. By default, we exclude any deployment that is in state 'running'.
 
 .EXAMPLE
 Clear-ManagementGroupDeployment -ManagementGroupId 'MyManagementGroupId'
@@ -26,7 +26,7 @@ function Clear-ManagementGroupDeployment {
         [string] $ManagementGroupId,
 
         [Parameter(Mandatory = $false)]
-        [string] $DeploymentStatusToExclude = 'running'
+        [string[]] $DeploymentStatusToExclude = @('running')
     )
 
     # Load used functions
@@ -45,7 +45,7 @@ function Clear-ManagementGroupDeployment {
         throw ('Fetching deployments failed with error [{0}]' -f ($reponse | Out-String))
     }
 
-    $relevantDeployments = $response.value | Where-Object { $_.properties.provisioningState -ne $DeploymentStatusToExclude }
+    $relevantDeployments = $response.value | Where-Object { $_.properties.provisioningState -notin $DeploymentStatusToExclude }
 
     if (-not $relevantDeployments) {
         Write-Verbose 'No deployments found' -Verbose
@@ -62,7 +62,7 @@ function Clear-ManagementGroupDeployment {
 
         $requests = $deployments | ForEach-Object {
             @{ httpMethod            = 'DELETE'
-                name                 = (New-Guid).Guid # $_.properties.correlationId # "73c46fa8-dffe-4b9e-9360-cd0dc3c7b4d8",
+                name                 = (New-Guid).Guid
                 requestHeaderDetails = @{
                     commandName = 'HubsExtension.Microsoft.Resources/deployments.BulkDelete.execute'
                 }
