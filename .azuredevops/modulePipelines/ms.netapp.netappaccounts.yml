@@ -21,16 +21,18 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.netapp.netappaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.NetApp/netAppAccounts/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.NetApp/netAppAccounts/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.NetApp/netAppAccounts'
+    value: '/modules/Microsoft.NetApp/netAppAccounts'
 
 stages:
   - stage: Validation
@@ -45,9 +47,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/nfs3.parameters.json
-            - path: $(modulePath)/.parameters/nfs41.parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/nfs3.parameters.json
+            - path: $(modulePath)/.test/nfs41.parameters.json
 
   - stage: Publishing
     displayName: Publishing

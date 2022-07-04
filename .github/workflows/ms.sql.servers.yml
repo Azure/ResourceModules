@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.sql.servers.yml'
-      - 'arm/Microsoft.Sql/servers/**'
-      - 'arm/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.Sql/servers/**'
+      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Sql/servers'
+  modulePath: 'modules/Microsoft.Sql/servers'
   workflowPath: '.github/workflows/ms.sql.servers.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

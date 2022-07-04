@@ -1,4 +1,4 @@
-name: 'Network: VirtualHubs'
+name: 'Network - VirtualHubs'
 
 parameters:
   - name: removeDeployment
@@ -21,16 +21,18 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.virtualhubs.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Network/virtualHubs/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Network/virtualHubs/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/virtualHubs'
+    value: '/modules/Microsoft.Network/virtualHubs'
 
 stages:
   - stage: Validation
@@ -45,8 +47,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing

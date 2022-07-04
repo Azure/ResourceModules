@@ -21,16 +21,18 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.azurefirewalls.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Network/azureFirewalls/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Network/azureFirewalls/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/azureFirewalls'
+    value: '/modules/Microsoft.Network/azureFirewalls'
 
 stages:
   - stage: Validation
@@ -45,7 +47,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing

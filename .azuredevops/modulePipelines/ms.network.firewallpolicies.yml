@@ -21,31 +21,33 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.firewallpolicies.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Network/firewallpolicies/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Network/firewallPolicies/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/firewallpolicies'
+    value: '/modules/Microsoft.Network/firewallPolicies'
 
 stages:
   - stage: Validation
     displayName: Static validation
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
     displayName: Deployment validation
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing

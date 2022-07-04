@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-sfc-cert-001"
+        },
+        "managementEndpoint": {
+            "value": "https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080"
+        },
+        "reliabilityLevel": {
+            "value": "None"
+        },
+        "certificate": {
+            "value": {
+                "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130", // Mutual exclusive with the other cert specs
+                "x509StoreName": "My"
+            }
+        },
+        "nodeTypes": {
+            "value": [
+                {
+                    "applicationPorts": {
+                        "endPort": 30000,
+                        "startPort": 20000
+                    },
+                    "clientConnectionEndpointPort": 19000,
+                    "durabilityLevel": "Bronze",
+                    "ephemeralPorts": {
+                        "endPort": 65534,
+                        "startPort": 49152
+                    },
+                    "httpGatewayEndpointPort": 19080,
+                    "isPrimary": true,
+                    "name": "Node01"
+                }
+            ]
+        }
+    }
+}
