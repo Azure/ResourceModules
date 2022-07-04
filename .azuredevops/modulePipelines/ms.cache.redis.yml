@@ -22,7 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.cache.redis.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/Microsoft.Cache/redis/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Cache/redis'
+    value: '/modules/Microsoft.Cache/redis'
 
 stages:
   - stage: Validation
