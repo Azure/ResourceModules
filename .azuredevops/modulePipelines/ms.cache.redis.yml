@@ -21,9 +21,11 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.cache.redis.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/Microsoft.Cache/redis/*'
+      - '/modules/Microsoft.Cache/Redis/*'
       - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
