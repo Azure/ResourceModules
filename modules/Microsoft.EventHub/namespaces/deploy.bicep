@@ -40,7 +40,7 @@ param authorizationRules array = [
   }
 ]
 
-@description('Optional. Configuration Details for private endpoints.For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @description('Optional. Networks ACLs, this object contains IPs/Subnets to whitelist or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.')

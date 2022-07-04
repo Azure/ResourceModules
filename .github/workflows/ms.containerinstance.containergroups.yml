@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.containerinstance.containergroups.yml'
       - 'modules/Microsoft.ContainerInstance/containerGroups/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'

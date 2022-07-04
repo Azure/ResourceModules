@@ -54,7 +54,7 @@ param gallerySolutions array = []
 @description('Optional. List of softwareUpdateConfigurations to be created in the automation account.')
 param softwareUpdateConfigurations array = []
 
-@description('Optional. Configuration Details for private endpoints.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @minValue(0)
