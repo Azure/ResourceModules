@@ -10,7 +10,7 @@ subscription Id, principal Id, tenant ID and other parameters that need to be to
 .PARAMETER TemplateFilePath
 Mandatory. Path to the Bicep/ARM module that is being tested
 
-.PARAMETER ParameterFilePath
+.PARAMETER TestFilePath
 Optional. Path to the template file/folder that is to be tested with the template file. Defaults to the module's default '.parameter' folder. Will be used if the DeploymentTest/ValidationTest switches are set.
 
 .PARAMETER PesterTest
@@ -35,7 +35,7 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
-    ParameterFilePath          = 'C:\Microsoft.Network\routeTables\.test\parameters.json'
+    TestFilePath          = 'C:\Microsoft.Network\routeTables\.test\parameters.json'
     PesterTest                 = $false
     DeploymentTest             = $false
     ValidationTest             = $true
@@ -115,7 +115,7 @@ function Test-ModuleLocally {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $testFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
+        [string] $TestFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
 
         [Parameter(Mandatory = $false)]
         [Psobject] $ValidateOrDeployParameters = @{},
@@ -147,7 +147,7 @@ function Test-ModuleLocally {
         # TOKENS Replacement #
         ################
 
-        $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\global.variables.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
 
         # Construct Token Configuration Input
         $tokenConfiguration = @{
@@ -170,7 +170,7 @@ function Test-ModuleLocally {
             $tokenConfiguration.Tokens['tenantId'] = $AdditionalTokens['tenantId']
         }
 
-        ## Local Tokens from global.variables.yml
+        ## Local Tokens from settings.yml
         foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
             $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
         }

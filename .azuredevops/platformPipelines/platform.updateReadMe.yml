@@ -13,7 +13,7 @@ trigger:
       - 'modules/**/deploy.json'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '../../settings.yml'
   - name: pipelinePrincipalGitUserName
     value: 'CARMLPipelinePrincipal'
   - name: pipelinePrincipalGitUserEmail

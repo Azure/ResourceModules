@@ -146,7 +146,7 @@ jobs:
               Write-Verbose "- [($moduleFolderPath]" -Verbose
             }
 
-            $GlobalVariablesObject = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'global.variables.yml') | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
+            $GlobalVariablesObject = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.yml') | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
             # Construct Token Configuration Input
             $tokenConfiguration = @{
                 Tokens      = @{}
@@ -167,7 +167,7 @@ jobs:
                 $tokenConfiguration.Tokens['tenantId'] =  '$(ARM_TENANT_ID)'
             }
 
-            ## Local Tokens from global.variables.yml
+            ## Local Tokens from settings.yml
             foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
                 $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '','OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
             }

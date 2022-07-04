@@ -33,7 +33,7 @@ function Get-DependencyResourceNameList {
     }
 
     # Replace tokens in dependency parameter files
-    $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRootPath 'global.variables.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
+    $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRootPath 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
 
     # Construct Token Configuration Input
     $tokenConfiguration = @{
@@ -42,7 +42,7 @@ function Get-DependencyResourceNameList {
         TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
     }
 
-    ## Local Tokens from global.variables.yml
+    ## Local Tokens from settings.yml
     foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
         $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
     }

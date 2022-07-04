@@ -26,7 +26,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
-  variablesPath: 'global.variables.yml'
+  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Network/applicationSecurityGroups'
   workflowPath: '.github/workflows/ms.network.applicationsecuritygroups.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

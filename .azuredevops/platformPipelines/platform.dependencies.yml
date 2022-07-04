@@ -25,7 +25,7 @@ trigger: none
 #       - 'utilities/pipelines/dependencies/**'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: dependencyPath
     value: 'utilities/pipelines/dependencies'
