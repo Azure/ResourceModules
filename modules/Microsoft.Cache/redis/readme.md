@@ -235,7 +235,7 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The name of the resource group the Redis cache was created in. |
 | `resourceId` | string | The resource id. |
 | `sslPort` | int | Redis SSL port. |
-| `subnetId` | int | The full resource ID of a subnet in a virtual network where the Redis cache was deployed in. |
+| `subnetId` | string | The full resource ID of a subnet in a virtual network where the Redis cache was deployed in. |
 
 ## Deployment examples
 

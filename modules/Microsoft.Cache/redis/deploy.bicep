@@ -256,7 +256,7 @@ output hostName string = redisCache.properties.hostName
 output sslPort int = redisCache.properties.sslPort
 
 @description('The full resource ID of a subnet in a virtual network where the Redis cache was deployed in.')
-output subnetId int = redisCache.properties.subnetId
+output subnetId string = !empty(subnetId) ? redisCache.properties.subnetId : ''
 
 @description('The location the resource was deployed into.')
 output location string = redisCache.location
