@@ -12,11 +12,10 @@ param location string = resourceGroup().location
 
 @description('Optional. Whether or not public network access is allowed for this resource.')
 @allowed([
-  ''
   'Enabled'
   'Disabled'
 ])
-param publicNetworkAccess string = ''
+param publicNetworkAccess string = 'Disabled'
 
 @description('Optional. Boolean to define whether or not to configure git during template deployment.')
 param gitConfigureLater bool = true
