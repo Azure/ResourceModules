@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.servicebus.namespaces.yml'
       - 'modules/Microsoft.ServiceBus/namespaces/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'

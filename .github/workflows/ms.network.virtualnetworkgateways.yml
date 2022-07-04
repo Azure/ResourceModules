@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.network.virtualnetworkgateways.yml'
       - 'modules/Microsoft.Network/virtualNetworkGateways/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'

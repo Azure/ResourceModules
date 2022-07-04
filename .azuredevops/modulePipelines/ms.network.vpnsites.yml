@@ -23,7 +23,9 @@ trigger:
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Network/vpnSites/*'
       - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

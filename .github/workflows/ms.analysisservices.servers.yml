@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.analysisservices.servers.yml'
       - 'modules/Microsoft.AnalysisServices/servers/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'

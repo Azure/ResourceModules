@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.insights.metricalerts.yml'
       - 'modules/Microsoft.Insights/metricAlerts/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'

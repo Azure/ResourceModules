@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.eventhub.namespaces.yml'
       - 'modules/Microsoft.EventHub/namespaces/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'

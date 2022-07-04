@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.sql.servers.yml'
       - 'modules/Microsoft.Sql/servers/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
