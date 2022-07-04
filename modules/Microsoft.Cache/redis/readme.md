@@ -39,20 +39,20 @@ This module deploys a Redis Cache service.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableNonSslPort` | bool | `False` |  | Specifies whether the non-ssl Redis server port (6379) is enabled. |
-| `family` | string | `'P'` | `[C, P]` | The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium). |
+| `family` | string | `'P'` | `[C, P]` | The SKU family to use. (C = Basic/Standard, P = Premium). |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Redis cache service. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minimumTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | Specify the type of lock. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
 | `redisConfiguration` | object | `{object}` |  | All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc. |
-| `redisVersion` | string | `'6'` | `[4, 6]` | Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6) |
+| `redisVersion` | string | `'6'` | `[4, 6]` | Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6). |
 | `replicasPerMaster` | int | `1` |  | The number of replicas to be created per primary. |
 | `replicasPerPrimary` | int | `1` |  | The number of replicas to be created per primary. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `shardCount` | int | `1` |  | The number of shards to be created on a Premium Cluster Cache. |
-| `skuName` | string | `'Premium'` | `[Basic, Premium, Standard]` | The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium) |
+| `skuName` | string | `'Premium'` | `[Basic, Premium, Standard]` | The type of Redis cache to deploy. |
 | `staticIP` | string | `''` |  | Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default. |
-| `subnetId` | string | `''` |  | The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1 |
+| `subnetId` | string | `''` |  | The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `tenantSettings` | object | `{object}` |  | A dictionary of tenant settings. |
@@ -230,9 +230,10 @@ userAssignedIdentities: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `hostName` | string | Redis host name. |
-| `name` | string | The resource name |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The resource name. |
 | `resourceGroupName` | string | The name of the resource group the Redis cache was created in. |
-| `resourceId` | string | The resource id |
+| `resourceId` | string | The resource id. |
 | `sslPort` | int | Redis SSL port. |
 | `subnetId` | int | The full resource ID of a subnet in a virtual network where the Redis cache was deployed in. |
 

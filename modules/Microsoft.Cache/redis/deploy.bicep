@@ -49,7 +49,7 @@ param redisConfiguration object = {}
   '4'
   '6'
 ])
-@description('Optional. Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6)')
+@description('Optional. Redis version. Only major version will be used in PUT/PATCH request with current valid values: (4, 6).')
 param redisVersion string = '6'
 
 @minValue(1)
@@ -80,7 +80,7 @@ param capacity int = 0
   'C'
   'P'
 ])
-@description('Optional. The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).')
+@description('Optional. The SKU family to use. (C = Basic/Standard, P = Premium).')
 param family string = 'P'
 
 @allowed([
@@ -88,13 +88,13 @@ param family string = 'P'
   'Premium'
   'Standard'
 ])
-@description('Optional. The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)')
+@description('Optional. The type of Redis cache to deploy.')
 param skuName string = 'Premium'
 
 @description('Optional. Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default.')
 param staticIP string = ''
 
-@description('Optional. The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1')
+@description('Optional. The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.')
 param subnetId string = ''
 
 @description('Optional. A dictionary of tenant settings.')
@@ -240,10 +240,10 @@ module redisCache_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-@description('The resource name')
+@description('The resource name.')
 output name string = redisCache.name
 
-@description('The resource id')
+@description('The resource id.')
 output resourceId string = redisCache.id
 
 @description('The name of the resource group the Redis cache was created in.')
@@ -257,3 +257,6 @@ output sslPort int = redisCache.properties.sslPort
 
 @description('The full resource ID of a subnet in a virtual network where the Redis cache was deployed in.')
 output subnetId int = redisCache.properties.subnetId
+
+@description('The location the resource was deployed into.')
+output location string = redisCache.location
