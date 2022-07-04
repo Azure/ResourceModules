@@ -10,8 +10,13 @@ param integrationRuntime object = {}
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Enable or disable public network access.')
-param publicNetworkAccess bool = true
+@description('Optional. Whether or not public network access is allowed for this resource.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = ''
 
 @description('Optional. Boolean to define whether or not to configure git during template deployment.')
 param gitConfigureLater bool = true
@@ -184,7 +189,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
       }, (gitRepoType == 'FactoryVSTSConfiguration' ? {
         projectName: gitProjectName
       } : {}), {})
-    publicNetworkAccess: publicNetworkAccess && empty(privateEndpoints) ? 'Enabled' : 'Disabled'
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     encryption: !empty(cMKKeyName) ? {
       identity: {
         userAssignedIdentity: cMKUserAssignedIdentityResourceId

@@ -53,7 +53,7 @@
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedVirtualNetworkName` | string | `''` |  | The name of the Managed Virtual Network. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | bool | `True` |  | Enable or disable public network access. |
+| `publicNetworkAccess` | string | `''` | `[, Enabled, Disabled]` | Whether or not public network access is allowed for this resource. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -315,7 +315,7 @@ privateEndpoints:  [
             }
         },
         "publicNetworkAccess": {
-            "value": true
+            "value": "Disabled"
         },
         "gitConfigureLater": {
             "value": true
@@ -397,7 +397,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
         }
       }
     }
-    publicNetworkAccess: true
+    publicNetworkAccess: 'Disabled'
     gitConfigureLater: true
     roleAssignments: [
       {
