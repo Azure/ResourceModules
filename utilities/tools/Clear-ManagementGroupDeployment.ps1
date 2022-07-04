@@ -26,7 +26,7 @@ function Clear-ManagementGroupDeployment {
         [string] $ManagementGroupId,
 
         [Parameter(Mandatory = $false)]
-        [string[]] $DeploymentStatusToExclude = @('running')
+        [string[]] $DeploymentStatusToExclude = @('running', 'failed')
     )
 
     # Load used functions
