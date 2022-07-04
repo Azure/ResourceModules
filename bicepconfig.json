@@ -9,7 +9,7 @@
                     "level": "off" // Reason: Our modules default to e.g. the location of their parent resource group which is sufficient if deploying a self-contained solution
                 },
                 "prefer-unquoted-property-names": {
-                    "level": "off" // Reason: Our modules default to e.g. the location of their parent resource group which is sufficient if deploying a self-contained solution
+                    "level": "off" // Reason: This is complains primarily about RBAC roles which are all in quotes to be consistent within the list of roles with and without spaces in their name
                 }
             }
         }
