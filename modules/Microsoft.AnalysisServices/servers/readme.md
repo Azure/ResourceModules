@@ -211,10 +211,10 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
     "roleAssignments": {
       "value": [
         {
-          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "managedIdentityPrincipalId"
-          ]
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
@@ -314,23 +314,23 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
     },
     "firewallSettings": {
       "value": {
-        "enablePowerBIService": true,
         "firewallRules": [
           {
-            "firewallRuleName": "AllowFromAll",
             "rangeEnd": "255.255.255.255",
-            "rangeStart": "0.0.0.0"
+            "rangeStart": "0.0.0.0",
+            "firewallRuleName": "AllowFromAll"
           }
-        ]
+        ],
+        "enablePowerBIService": true
       }
     },
     "roleAssignments": {
       "value": [
         {
-          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "managedIdentityPrincipalId"
-          ]
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },

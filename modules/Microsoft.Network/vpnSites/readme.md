@@ -414,8 +414,8 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
     },
     "tags": {
       "value": {
-        "tagB": "valueB",
-        "tagA": "valueA"
+        "tagA": "valueA",
+        "tagB": "valueB"
       }
     },
     "deviceProperties": {
@@ -431,11 +431,11 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
               "linkProviderName": "contoso",
               "linkSpeedInMbps": 5
             },
-            "ipAddress": "1.2.3.4",
             "bgpProperties": {
-              "asn": 65010,
-              "bgpPeeringAddress": "1.1.1.1"
-            }
+              "bgpPeeringAddress": "1.1.1.1",
+              "asn": 65010
+            },
+            "ipAddress": "1.2.3.4"
           },
           "name": "carml-az-vSite-vsipar-001"
         },
@@ -445,11 +445,11 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
               "linkProviderName": "contoso",
               "linkSpeedInMbps": 5
             },
-            "ipAddress": "2.2.2.2",
             "bgpProperties": {
-              "asn": 65020,
-              "bgpPeeringAddress": "192.168.1.0"
-            }
+              "bgpPeeringAddress": "192.168.1.0",
+              "asn": 65020
+            },
+            "ipAddress": "2.2.2.2"
           },
           "name": "Link1"
         }
@@ -459,18 +459,18 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
       "value": {
         "breakOutCategories": {
           "optimize": true,
-          "default": true,
-          "allow": true
+          "allow": true,
+          "default": true
         }
       }
     },
     "roleAssignments": {
       "value": [
         {
-          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "managedIdentityPrincipalId"
-          ]
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
       ]
     }
