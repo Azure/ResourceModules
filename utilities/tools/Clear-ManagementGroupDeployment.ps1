@@ -10,12 +10,17 @@ Bulk delete all deployments on the given management group scope
 Mandatory. The Resource ID of the Management Group to remove the deployments for.
 
 .PARAMETER DeploymentStatusToExclude
-Optional. The status to exlude from removals. Can be multiple. By default, we exclude any deployment that is in state 'running'.
+Optional. The status to exlude from removals. Can be multiple. By default, we exclude any deployment that is in state 'running' or 'failed'.
 
 .EXAMPLE
 Clear-ManagementGroupDeployment -ManagementGroupId 'MyManagementGroupId'
 
-Bulk remove all 'non-running' deployments from the Management Group with ID 'MyManagementGroupId'
+Bulk remove all 'non-running' & 'non-failed' deployments from the Management Group with ID 'MyManagementGroupId'
+
+.EXAMPLE
+Clear-ManagementGroupDeployment -ManagementGroupId 'MyManagementGroupId' -DeploymentStatusToExclude @('running')
+
+Bulk remove all 'non-failed' deployments from the Management Group with ID 'MyManagementGroupId'
 #>
 function Clear-ManagementGroupDeployment {
 
