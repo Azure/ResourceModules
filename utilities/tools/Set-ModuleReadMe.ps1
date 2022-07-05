@@ -363,6 +363,8 @@ function Set-DeploymentExamplesSection {
     $resourceType = $resourceTypeIdentifier.Split('/')[1]
     $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.test') -Filter '*parameters.json' -Recurse
 
+    $requiredParameterNames = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' }
+
     ############################
     ##   Process test files   ##
     ############################
@@ -432,7 +434,6 @@ function Set-DeploymentExamplesSection {
             $JSONParametersWithoutValue = ConvertTo-OrderedHashtable -JSONInputObject ($JSONParametersWithoutValue | ConvertTo-Json -Depth 99)
 
             # Sort 'required' parameters to the front
-            $requiredParameterNames = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' }
             $orderedJSONParameters = [ordered]@{}
             $orderedTopLevelParameterNames = $JSONParametersWithoutValue.psbase.Keys # We must use PS-Base to handle conflicts of HashTable properties & keys (e.g. for a key 'keys').
             # Add required parameters first
@@ -452,7 +453,7 @@ function Set-DeploymentExamplesSection {
                 $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
                 $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
 
-                $bicepParamsArray = $contentInBicepFormat -split ('\n')
+                $bicepParamsArray = $contentInBicepFormat -split '\n'
                 $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
             }
 
@@ -478,6 +479,21 @@ function Set-DeploymentExamplesSection {
         }
 
         if ($addJson) {
+            $orderedContentInJSONFormat = ConvertTo-OrderedHashtable -JSONInputObject (($contentInJSONFormat | ConvertFrom-Json).parameters | ConvertTo-Json -Depth 99)
+
+            # Sort 'required' parameters to the front
+            $orderedJSONParameters = [ordered]@{}
+            $orderedTopLevelParameterNames = $orderedContentInJSONFormat.psbase.Keys # We must use PS-Base to handle conflicts of HashTable properties & keys (e.g. for a key 'keys').
+            # Add required parameters first
+            $orderedTopLevelParameterNames | Where-Object { $_ -in $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $orderedContentInJSONFormat[$_] }
+            # Add rest after
+            $orderedTopLevelParameterNames | Where-Object { $_ -notin $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $orderedContentInJSONFormat[$_] }
+
+            if ($orderedJSONParameters.count -eq 0) {
+                # Handle empty dictionaries (in case the parmaeter file was empty)
+                $orderedJSONParameters = ''
+            }
+
             $SectionContent += @(
                 '',
                 '<details>',
@@ -485,12 +501,35 @@ function Set-DeploymentExamplesSection {
                 '<summary>via JSON Parameter file</summary>',
                 '',
                 '```json',
-                $contentInJSONFormat.TrimEnd(),
+                ([ordered]@{
+                    '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
+                    contentVersion = '1.0.0.0'
+                    parameters     = (-not [String]::IsNullOrEmpty($orderedJSONParameters)) ? $orderedJSONParameters : @{}
+                } | ConvertTo-Json -Depth 99),
                 '```',
                 '',
                 '</details>'
                 '<p>'
             )
+            # $SectionContent += @(
+            #     '',
+            #     '<details>',
+            #     '',
+            #     '<summary>via JSON Parameter file</summary>',
+            #     '',
+            #     '```json',
+            #     '{',
+            #     '  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",',
+            #     '  "contentVersion": "1.0.0.0",'
+            #     '  "parameters": {'
+            #     (-not [String]::IsNullOrEmpty($orderedJSONParameters)) ? ((($orderedJSONParameters | ConvertTo-Json -Depth 99) -split '\n') | ForEach-Object { "    $_" }).TrimEnd() : '',
+            #     '  }',
+            #     '}',
+            #     '```',
+            #     '',
+            #     '</details>'
+            #     '<p>'
+            # )
         }
 
         $SectionContent += @(
