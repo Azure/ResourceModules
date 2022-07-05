@@ -35,8 +35,8 @@ $script:templateNotFoundException = 'No template file found in folder [{0}]' # -
 Import-Module (Join-Path $PSScriptRoot 'helper\helper.psm1') -Force
 # $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
 
-. (Join-Path $repoRoot 'utilities' 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
-. (Join-Path $repoRoot 'utilities' 'pipelines' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
+# . (Join-Path $repoRoot 'utilities' 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
+# . (Join-Path $repoRoot 'utilities' 'pipelines' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
 
 Describe 'File/folder tests' -Tag Modules {
 
