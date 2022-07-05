@@ -13,16 +13,11 @@ The update process is the following:
 - [5. Test and publish modules](#5-test-and-publish-modules)
 # 1. Backup your local copy of the library
 
-<details>
-<summary>Rename your local repository</summary>
-
-Assuming the local repository location is `'D:\ResourcesModules'` rename it in `'D:\ResourcesModules_Backup'`.
+Rename your local repository. Assuming the local repository location is `'D:\ResourcesModules'` rename it in `'D:\ResourcesModules_Backup'`.
 
 The backup folder can be used to compare customized modules with the ones coming from the latest version and implement the required changes.
 
-This can be done, for example, by the `'Compare selected'` [function](https://vscode.one/diff-vscode/) of Visual Studio Code
-
-</details>
+This can be done, for example, by the `'Compare selected'` [function](https://vscode.one/diff-vscode/) of Visual Studio Code.
 
 # 2. Download the library
 
