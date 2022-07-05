@@ -935,67 +935,67 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-scaleset-linux-min-001"
-        },
-        "osDisk": {
-            "value": {
-                "createOption": "fromImage",
-                "diskSizeGB": "128",
-                "managedDisk": {
-                    "storageAccountType": "Premium_LRS"
-                }
-            }
-        },
-        "osType": {
-            "value": "Linux"
-        },
-        "skuName": {
-            "value": "Standard_B2s"
-        },
-        "imageReference": {
-            "value": {
-                "publisher": "Canonical",
-                "offer": "UbuntuServer",
-                "sku": "18.04-LTS",
-                "version": "latest"
-            }
-        },
-        "adminUsername": {
-            "value": "scaleSetAdmin"
-        },
-        "disablePasswordAuthentication": {
-            "value": true
-        },
-        "publicKeys": {
-            "value": [
-                {
-                    "path": "/home/scaleSetAdmin/.ssh/authorized_keys",
-                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure"
-                }
-            ]
-        },
-        "nicConfigurations": {
-            "value": [
-                {
-                    "nicSuffix": "-nic01",
-                    "ipConfigurations": [
-                        {
-                            "name": "ipconfig1",
-                            "properties": {
-                                "subnet": {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "scaleSetAdmin"
+    },
+    "imageReference": {
+      "value": {
+        "offer": "UbuntuServer",
+        "publisher": "Canonical",
+        "sku": "18.04-LTS",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>-scaleset-linux-min-001"
+    },
+    "osDisk": {
+      "value": {
+        "createOption": "fromImage",
+        "diskSizeGB": "128",
+        "managedDisk": {
+          "storageAccountType": "Premium_LRS"
         }
+      }
+    },
+    "osType": {
+      "value": "Linux"
+    },
+    "skuName": {
+      "value": "Standard_B2s"
+    },
+    "disablePasswordAuthentication": {
+      "value": true
+    },
+    "nicConfigurations": {
+      "value": [
+        {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
+                }
+              }
+            }
+          ],
+          "nicSuffix": "-nic01"
+        }
+      ]
+    },
+    "publicKeys": {
+      "value": [
+        {
+          "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure",
+          "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
+        }
+      ]
     }
+  }
 }
 ```
 
@@ -1144,193 +1144,193 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-scaleset-linux-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "vmNamePrefix": {
-            "value": "vmsslinvm"
-        },
-        "skuName": {
-            "value": "Standard_B2s"
-        },
-        "skuCapacity": {
-            "value": 1
-        },
-        "upgradePolicyMode": {
-            "value": "Manual"
-        },
-        "vmPriority": {
-            "value": "Regular"
-        },
-        "osDisk": {
-            "value": {
-                "createOption": "fromImage",
-                "diskSizeGB": "128",
-                "managedDisk": {
-                    "storageAccountType": "Premium_LRS"
-                }
-            }
-        },
-        "availabilityZones": {
-            "value": [
-                "2"
-            ]
-        },
-        "scaleSetFaultDomain": {
-            "value": 1
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "bootDiagnosticStorageAccountName": {
-            "value": "adp<<namePrefix>>azsax001"
-        },
-        "osType": {
-            "value": "Linux"
-        },
-        "encryptionAtHost": {
-            "value": false
-        },
-        "imageReference": {
-            "value": {
-                "publisher": "Canonical",
-                "offer": "UbuntuServer",
-                "sku": "18.04-LTS",
-                "version": "latest"
-            }
-        },
-        "adminUsername": {
-            "value": "scaleSetAdmin"
-        },
-        "disablePasswordAuthentication": {
-            "value": true
-        },
-        "publicKeys": {
-            "value": [
-                {
-                    "path": "/home/scaleSetAdmin/.ssh/authorized_keys",
-                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure"
-                }
-            ]
-        },
-        "dataDisks": {
-            "value": [
-                {
-                    "caching": "ReadOnly",
-                    "createOption": "Empty",
-                    "diskSizeGB": "256",
-                    "managedDisk": {
-                        "storageAccountType": "Premium_LRS"
-                    }
-                },
-                {
-                    "caching": "ReadOnly",
-                    "createOption": "Empty",
-                    "diskSizeGB": "128",
-                    "managedDisk": {
-                        "storageAccountType": "Premium_LRS"
-                    }
-                }
-            ]
-        },
-        "nicConfigurations": {
-            "value": [
-                {
-                    "nicSuffix": "-nic01",
-                    "ipConfigurations": [
-                        {
-                            "name": "ipconfig1",
-                            "properties": {
-                                "subnet": {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "extensionMonitoringAgentConfig": {
-            "value": {
-                "enabled": true
-            }
-        },
-        "extensionDependencyAgentConfig": {
-            "value": {
-                "enabled": true
-            }
-        },
-        "extensionNetworkWatcherAgentConfig": {
-            "value": {
-                "enabled": true
-            }
-        },
-        "extensionDiskEncryptionConfig": {
-            "value": {
-                "enabled": true,
-                "settings": {
-                    "EncryptionOperation": "EnableEncryption",
-                    "KeyVaultURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/",
-                    "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
-                    "KeyEncryptionKeyURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5", // ID must be updated for new keys
-                    "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
-                    "KeyEncryptionAlgorithm": "RSA-OAEP",
-                    "VolumeType": "All",
-                    "ResizeOSDisk": "false"
-                }
-            }
-        },
-        "extensionCustomScriptConfig": {
-            "value": {
-                "enabled": true,
-                "fileData": [
-                    {
-                        "uri": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
-                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-                    }
-                ],
-                "protectedSettings": {
-                    "commandToExecute": "sudo apt-get update"
-                }
-            }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "scaleSetAdmin"
+    },
+    "imageReference": {
+      "value": {
+        "offer": "UbuntuServer",
+        "publisher": "Canonical",
+        "sku": "18.04-LTS",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>-scaleset-linux-001"
+    },
+    "osDisk": {
+      "value": {
+        "createOption": "fromImage",
+        "diskSizeGB": "128",
+        "managedDisk": {
+          "storageAccountType": "Premium_LRS"
         }
+      }
+    },
+    "osType": {
+      "value": "Linux"
+    },
+    "skuName": {
+      "value": "Standard_B2s"
+    },
+    "availabilityZones": {
+      "value": [
+        "2"
+      ]
+    },
+    "bootDiagnosticStorageAccountName": {
+      "value": "adp<<namePrefix>>azsax001"
+    },
+    "dataDisks": {
+      "value": [
+        {
+          "caching": "ReadOnly",
+          "createOption": "Empty",
+          "diskSizeGB": "256",
+          "managedDisk": {
+            "storageAccountType": "Premium_LRS"
+          }
+        },
+        {
+          "caching": "ReadOnly",
+          "createOption": "Empty",
+          "diskSizeGB": "128",
+          "managedDisk": {
+            "storageAccountType": "Premium_LRS"
+          }
+        }
+      ]
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "disablePasswordAuthentication": {
+      "value": true
+    },
+    "encryptionAtHost": {
+      "value": false
+    },
+    "extensionCustomScriptConfig": {
+      "value": {
+        "enabled": true,
+        "fileData": [
+          {
+            "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+            "uri": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1"
+          }
+        ],
+        "protectedSettings": {
+          "commandToExecute": "sudo apt-get update"
+        }
+      }
+    },
+    "extensionDependencyAgentConfig": {
+      "value": {
+        "enabled": true
+      }
+    },
+    "extensionDiskEncryptionConfig": {
+      "value": {
+        "enabled": true,
+        "settings": {
+          "EncryptionOperation": "EnableEncryption",
+          "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
+          "KeyEncryptionAlgorithm": "RSA-OAEP",
+          "KeyEncryptionKeyURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5",
+          "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
+          "KeyVaultURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/",
+          "ResizeOSDisk": "false",
+          "VolumeType": "All"
+        }
+      }
+    },
+    "extensionMonitoringAgentConfig": {
+      "value": {
+        "enabled": true
+      }
+    },
+    "extensionNetworkWatcherAgentConfig": {
+      "value": {
+        "enabled": true
+      }
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "nicConfigurations": {
+      "value": [
+        {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
+                }
+              }
+            }
+          ],
+          "nicSuffix": "-nic01"
+        }
+      ]
+    },
+    "publicKeys": {
+      "value": [
+        {
+          "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure",
+          "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scaleSetFaultDomain": {
+      "value": 1
+    },
+    "skuCapacity": {
+      "value": 1
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "upgradePolicyMode": {
+      "value": "Manual"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
+    },
+    "vmNamePrefix": {
+      "value": "vmsslinvm"
+    },
+    "vmPriority": {
+      "value": "Regular"
     }
+  }
 }
 ```
 
@@ -1398,69 +1398,69 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-scaleset-win-min-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
         },
-        "skuName": {
-            "value": "Standard_B2s"
-        },
-        "osDisk": {
-            "value": {
-                "createOption": "fromImage",
-                "diskSizeGB": "128",
-                "managedDisk": {
-                    "storageAccountType": "Premium_LRS"
-                }
-            }
-        },
-        "osType": {
-            "value": "Windows"
-        },
-        "imageReference": {
-            "value": {
-                "publisher": "MicrosoftWindowsServer",
-                "offer": "WindowsServer",
-                "sku": "2016-Datacenter",
-                "version": "latest"
-            }
-        },
-        "adminUsername": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "adminUsername"
-            }
-        },
-        "adminPassword": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "adminPassword"
-            }
-        },
-        "nicConfigurations": {
-            "value": [
-                {
-                    "nicSuffix": "-nic01",
-                    "ipConfigurations": [
-                        {
-                            "name": "ipconfig1",
-                            "properties": {
-                                "subnet": {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
+        "secretName": "adminUsername"
+      }
+    },
+    "imageReference": {
+      "value": {
+        "offer": "WindowsServer",
+        "publisher": "MicrosoftWindowsServer",
+        "sku": "2016-Datacenter",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>-scaleset-win-min-001"
+    },
+    "osDisk": {
+      "value": {
+        "createOption": "fromImage",
+        "diskSizeGB": "128",
+        "managedDisk": {
+          "storageAccountType": "Premium_LRS"
         }
+      }
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "skuName": {
+      "value": "Standard_B2s"
+    },
+    "adminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+        },
+        "secretName": "adminPassword"
+      }
+    },
+    "nicConfigurations": {
+      "value": [
+        {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
+                }
+              }
+            }
+          ],
+          "nicSuffix": "-nic01"
+        }
+      ]
     }
+  }
 }
 ```
 
@@ -1606,189 +1606,189 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-scaleset-win-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
         },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "vmNamePrefix": {
-            "value": "vmsswinvm"
-        },
-        "skuName": {
-            "value": "Standard_B2s"
-        },
-        "skuCapacity": {
-            "value": 1
-        },
-        "upgradePolicyMode": {
-            "value": "Manual"
-        },
-        "vmPriority": {
-            "value": "Regular"
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "osDisk": {
-            "value": {
-                "createOption": "fromImage",
-                "diskSizeGB": "128",
-                "managedDisk": {
-                    "storageAccountType": "Premium_LRS"
-                }
-            }
-        },
-        "osType": {
-            "value": "Windows"
-        },
-        "encryptionAtHost": {
-            "value": false
-        },
-        "imageReference": {
-            "value": {
-                "publisher": "MicrosoftWindowsServer",
-                "offer": "WindowsServer",
-                "sku": "2016-Datacenter",
-                "version": "latest"
-            }
-        },
-        "adminUsername": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "adminUsername"
-            }
-        },
-        "adminPassword": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "adminPassword"
-            }
-        },
-        "nicConfigurations": {
-            "value": [
-                {
-                    "nicSuffix": "-nic01",
-                    "ipConfigurations": [
-                        {
-                            "name": "ipconfig1",
-                            "properties": {
-                                "subnet": {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "extensionAntiMalwareConfig": {
-            "value": {
-                "enabled": true,
-                "settings": {
-                    "AntimalwareEnabled": true,
-                    "Exclusions": {
-                        "Extensions": ".log;.ldf",
-                        "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
-                        "Processes": "mssence.svc"
-                    },
-                    "RealtimeProtectionEnabled": true,
-                    "ScheduledScanSettings": {
-                        "isEnabled": "true",
-                        "scanType": "Quick",
-                        "day": "7",
-                        "time": "120"
-                    }
-                }
-            }
-        },
-        "extensionMonitoringAgentConfig": {
-            "value": {
-                "enabled": true
-            }
-        },
-        "extensionDependencyAgentConfig": {
-            "value": {
-                "enabled": true
-            }
-        },
-        "extensionNetworkWatcherAgentConfig": {
-            "value": {
-                "enabled": true
-            }
-        },
-        "extensionDiskEncryptionConfig": {
-            "value": {
-                "enabled": true,
-                "settings": {
-                    "EncryptionOperation": "EnableEncryption",
-                    "KeyVaultURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/",
-                    "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
-                    "KeyEncryptionKeyURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5", // ID must be updated for new keys
-                    "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
-                    "KeyEncryptionAlgorithm": "RSA-OAEP",
-                    "VolumeType": "All",
-                    "ResizeOSDisk": "false"
-                }
-            }
-        },
-        "extensionDSCConfig": {
-            "value": {
-                "enabled": true
-            }
-        },
-        "extensionCustomScriptConfig": {
-            "value": {
-                "enabled": true,
-                "fileData": [
-                    {
-                        "uri": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
-                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-                    }
-                ],
-                "protectedSettings": {
-                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
-                }
-            }
+        "secretName": "adminUsername"
+      }
+    },
+    "imageReference": {
+      "value": {
+        "offer": "WindowsServer",
+        "publisher": "MicrosoftWindowsServer",
+        "sku": "2016-Datacenter",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>-scaleset-win-001"
+    },
+    "osDisk": {
+      "value": {
+        "createOption": "fromImage",
+        "diskSizeGB": "128",
+        "managedDisk": {
+          "storageAccountType": "Premium_LRS"
         }
+      }
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "skuName": {
+      "value": "Standard_B2s"
+    },
+    "adminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+        },
+        "secretName": "adminPassword"
+      }
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "encryptionAtHost": {
+      "value": false
+    },
+    "extensionAntiMalwareConfig": {
+      "value": {
+        "enabled": true,
+        "settings": {
+          "AntimalwareEnabled": true,
+          "Exclusions": {
+            "Extensions": ".log;.ldf",
+            "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
+            "Processes": "mssence.svc"
+          },
+          "RealtimeProtectionEnabled": true,
+          "ScheduledScanSettings": {
+            "day": "7",
+            "isEnabled": "true",
+            "scanType": "Quick",
+            "time": "120"
+          }
+        }
+      }
+    },
+    "extensionCustomScriptConfig": {
+      "value": {
+        "enabled": true,
+        "fileData": [
+          {
+            "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+            "uri": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1"
+          }
+        ],
+        "protectedSettings": {
+          "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
+        }
+      }
+    },
+    "extensionDependencyAgentConfig": {
+      "value": {
+        "enabled": true
+      }
+    },
+    "extensionDiskEncryptionConfig": {
+      "value": {
+        "enabled": true,
+        "settings": {
+          "EncryptionOperation": "EnableEncryption",
+          "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
+          "KeyEncryptionAlgorithm": "RSA-OAEP",
+          "KeyEncryptionKeyURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5",
+          "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
+          "KeyVaultURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/",
+          "ResizeOSDisk": "false",
+          "VolumeType": "All"
+        }
+      }
+    },
+    "extensionDSCConfig": {
+      "value": {
+        "enabled": true
+      }
+    },
+    "extensionMonitoringAgentConfig": {
+      "value": {
+        "enabled": true
+      }
+    },
+    "extensionNetworkWatcherAgentConfig": {
+      "value": {
+        "enabled": true
+      }
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "nicConfigurations": {
+      "value": [
+        {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
+                }
+              }
+            }
+          ],
+          "nicSuffix": "-nic01"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuCapacity": {
+      "value": 1
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "upgradePolicyMode": {
+      "value": "Manual"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
+    },
+    "vmNamePrefix": {
+      "value": "vmsswinvm"
+    },
+    "vmPriority": {
+      "value": "Regular"
     }
+  }
 }
 ```
 

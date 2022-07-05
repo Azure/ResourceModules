@@ -190,34 +190,34 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "azuremonitor"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "displayName": {
-            "value": "azuremonitorlogs"
-        },
-        "connectionApi": {
-            "value": {
-                "id": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs"
-            }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "displayName": {
+      "value": "azuremonitorlogs"
+    },
+    "name": {
+      "value": "azuremonitor"
+    },
+    "connectionApi": {
+      "value": {
+        "id": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs"
+      }
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
     }
+  }
 }
 ```
 

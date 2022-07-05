@@ -160,13 +160,13 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-fwpol-min-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-fwpol-min-001"
     }
+  }
 }
 ```
 
@@ -235,53 +235,53 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-fwpol-x-002"
-        },
-        "ruleCollectionGroups": {
-            "value": [
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-fwpol-x-002"
+    },
+    "ruleCollectionGroups": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-rule-001",
+          "priority": 5000,
+          "ruleCollections": [
+            {
+              "action": {
+                "type": "Allow"
+              },
+              "name": "collection002",
+              "priority": 5555,
+              "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+              "rules": [
                 {
-                    "name": "<<namePrefix>>-rule-001",
-                    "priority": 5000,
-                    "ruleCollections": [
-                        {
-                            "name": "collection002",
-                            "priority": 5555,
-                            "action": {
-                                "type": "Allow"
-                            },
-                            "rules": [
-                                {
-                                    "name": "rule002",
-                                    "ipProtocols": [
-                                        "TCP",
-                                        "UDP"
-                                    ],
-                                    "destinationPorts": [
-                                        "80"
-                                    ],
-                                    "sourceAddresses": [
-                                        "*"
-                                    ],
-                                    "sourceIpGroups": [],
-                                    "ruleType": "NetworkRule",
-                                    "destinationIpGroups": [],
-                                    "destinationAddresses": [
-                                        "*"
-                                    ],
-                                    "destinationFqdns": []
-                                }
-                            ],
-                            "ruleCollectionType": "FirewallPolicyFilterRuleCollection"
-                        }
-                    ]
+                  "destinationAddresses": [
+                    "*"
+                  ],
+                  "destinationFqdns": [],
+                  "destinationIpGroups": [],
+                  "destinationPorts": [
+                    "80"
+                  ],
+                  "ipProtocols": [
+                    "TCP",
+                    "UDP"
+                  ],
+                  "name": "rule002",
+                  "ruleType": "NetworkRule",
+                  "sourceAddresses": [
+                    "*"
+                  ],
+                  "sourceIpGroups": []
                 }
-            ]
+              ]
+            }
+          ]
         }
+      ]
     }
+  }
 }
 ```
 

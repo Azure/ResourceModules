@@ -165,16 +165,16 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>azbaweumin001"
-        },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>azbaweumin001"
+    },
+    "storageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     }
+  }
 }
 ```
 
@@ -216,46 +216,46 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>azbaweux001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "poolAllocationMode": {
-            "value": "BatchService"
-        },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "storageAuthenticationMode": {
-            "value": "BatchAccountManagedIdentity"
-        },
-        "storageAccessIdentity": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>azbaweux001"
+    },
+    "storageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "poolAllocationMode": {
+      "value": "BatchService"
+    },
+    "storageAccessIdentity": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+    },
+    "storageAuthenticationMode": {
+      "value": "BatchAccountManagedIdentity"
+    },
+    "systemAssignedIdentity": {
+      "value": true
     }
+  }
 }
 ```
 

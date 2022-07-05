@@ -280,49 +280,49 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-egtn-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "privateEndpoints": {
-            "value": [
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "topic"
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-egtn-x-001"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "topic",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     }
+  }
 }
 ```
 

@@ -93,25 +93,25 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "flux"
-        },
-        "extensionType": {
-            "value": "microsoft.flux"
-        },
-        "clusterName": {
-            "value": "<<namePrefix>>-az-aks-kubenet-001"
-        },
-        "releaseTrain": {
-            "value": "Stable"
-        },
-        "releaseNamespace": {
-            "value": "flux-system"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "value": "<<namePrefix>>-az-aks-kubenet-001"
+    },
+    "extensionType": {
+      "value": "microsoft.flux"
+    },
+    "name": {
+      "value": "flux"
+    },
+    "releaseNamespace": {
+      "value": "flux-system"
+    },
+    "releaseTrain": {
+      "value": "Stable"
     }
+  }
 }
 ```
 
@@ -154,38 +154,37 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "flux"
-        },
-        "extensionType": {
-            "value": "microsoft.flux"
-        },
-        "clusterName": {
-            "value": "<<namePrefix>>-az-aks-kubenet-001"
-        },
-        "releaseTrain": {
-            "value": "Stable"
-        },
-        "releaseNamespace": {
-            "value": "flux-system"
-        },
-        "version": {
-            "value": "0.5.2"
-        },
-        "configurationSettings": {
-            "value": {
-                // "helm-controller.enabled": "false",
-                "source-controller.enabled": "true",
-                "kustomize-controller.enabled": "true",
-                "notification-controller.enabled": "false",
-                "image-automation-controller.enabled": "false",
-                "image-reflector-controller.enabled": "false"
-            }
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "value": "<<namePrefix>>-az-aks-kubenet-001"
+    },
+    "extensionType": {
+      "value": "microsoft.flux"
+    },
+    "name": {
+      "value": "flux"
+    },
+    "configurationSettings": {
+      "value": {
+        "image-automation-controller.enabled": "false",
+        "image-reflector-controller.enabled": "false",
+        "kustomize-controller.enabled": "true",
+        "notification-controller.enabled": "false",
+        "source-controller.enabled": "true"
+      }
+    },
+    "releaseNamespace": {
+      "value": "flux-system"
+    },
+    "releaseTrain": {
+      "value": "Stable"
+    },
+    "version": {
+      "value": "0.5.2"
     }
+  }
 }
 ```
 

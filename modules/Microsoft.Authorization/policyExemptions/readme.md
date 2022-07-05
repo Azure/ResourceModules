@@ -174,16 +174,16 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-min-mg-polexem"
-        },
-        "policyAssignmentId": {
-            "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-min-mg-polexem"
+    },
+    "policyAssignmentId": {
+      "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
     }
+  }
 }
 ```
 
@@ -222,33 +222,33 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-mg-polexem"
-        },
-        "displayName": {
-            "value": "[Display Name] policy exempt (management group scope)"
-        },
-        "policyAssignmentId": {
-            "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
-        },
-        "exemptionCategory": {
-            "value": "Waiver"
-        },
-        "metadata": {
-            "value": {
-                "category": "Security"
-            }
-        },
-        "expiresOn": {
-            "value": "2025-10-02T03:57:00.000Z"
-        },
-        "managementGroupId": {
-            "value": "<<managementGroupId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-mg-polexem"
+    },
+    "policyAssignmentId": {
+      "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
+    },
+    "displayName": {
+      "value": "[Display Name] policy exempt (management group scope)"
+    },
+    "exemptionCategory": {
+      "value": "Waiver"
+    },
+    "expiresOn": {
+      "value": "2025-10-02T03:57:00Z"
+    },
+    "managementGroupId": {
+      "value": "<<managementGroupId>>"
+    },
+    "metadata": {
+      "value": {
+        "category": "Security"
+      }
     }
+  }
 }
 ```
 
@@ -282,22 +282,22 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-min-rg-polexem"
-        },
-        "policyAssignmentId": {
-            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        },
-        "resourceGroupName": {
-            "value": "<<resourceGroupName>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-min-rg-polexem"
+    },
+    "policyAssignmentId": {
+      "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+    },
+    "resourceGroupName": {
+      "value": "<<resourceGroupName>>"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 
@@ -337,36 +337,36 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-rg-polexem"
-        },
-        "displayName": {
-            "value": "[Display Name] policy exempt (resource group scope)"
-        },
-        "policyAssignmentId": {
-            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
-        },
-        "exemptionCategory": {
-            "value": "Waiver"
-        },
-        "metadata": {
-            "value": {
-                "category": "Security"
-            }
-        },
-        "expiresOn": {
-            "value": "2025-10-02T03:57:00.000Z"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        },
-        "resourceGroupName": {
-            "value": "<<resourceGroupName>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-rg-polexem"
+    },
+    "policyAssignmentId": {
+      "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+    },
+    "displayName": {
+      "value": "[Display Name] policy exempt (resource group scope)"
+    },
+    "exemptionCategory": {
+      "value": "Waiver"
+    },
+    "expiresOn": {
+      "value": "2025-10-02T03:57:00Z"
+    },
+    "metadata": {
+      "value": {
+        "category": "Security"
+      }
+    },
+    "resourceGroupName": {
+      "value": "<<resourceGroupName>>"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 
@@ -399,19 +399,19 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-min-sub-polexem"
-        },
-        "policyAssignmentId": {
-            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-min-sub-polexem"
+    },
+    "policyAssignmentId": {
+      "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 
@@ -450,33 +450,33 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-sub-polexem"
-        },
-        "displayName": {
-            "value": "[Display Name] policy exempt (subscription scope)"
-        },
-        "policyAssignmentId": {
-            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
-        },
-        "exemptionCategory": {
-            "value": "Waiver"
-        },
-        "metadata": {
-            "value": {
-                "category": "Security"
-            }
-        },
-        "expiresOn": {
-            "value": "2025-10-02T03:57:00.000Z"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-sub-polexem"
+    },
+    "policyAssignmentId": {
+      "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+    },
+    "displayName": {
+      "value": "[Display Name] policy exempt (subscription scope)"
+    },
+    "exemptionCategory": {
+      "value": "Waiver"
+    },
+    "expiresOn": {
+      "value": "2025-10-02T03:57:00Z"
+    },
+    "metadata": {
+      "value": {
+        "category": "Security"
+      }
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 

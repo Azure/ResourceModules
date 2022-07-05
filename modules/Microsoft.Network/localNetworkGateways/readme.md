@@ -190,40 +190,40 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-lng-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "localAddressPrefixes": {
-            "value": [
-                "192.168.1.0/24"
-            ]
-        },
-        "localGatewayPublicIpAddress": {
-            "value": "8.8.8.8"
-        },
-        "localAsn": {
-            "value": "65123"
-        },
-        "localBgpPeeringAddress": {
-            "value": "192.168.1.5"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "localAddressPrefixes": {
+      "value": [
+        "192.168.1.0/24"
+      ]
+    },
+    "localGatewayPublicIpAddress": {
+      "value": "8.8.8.8"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-lng-x-001"
+    },
+    "localAsn": {
+      "value": "65123"
+    },
+    "localBgpPeeringAddress": {
+      "value": "192.168.1.5"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
     }
+  }
 }
 ```
 

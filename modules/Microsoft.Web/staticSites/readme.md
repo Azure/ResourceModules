@@ -295,13 +295,13 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-wss-min-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-wss-min-001"
     }
+  }
 }
 ```
 
@@ -355,54 +355,54 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-wss-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "sku": {
-            "value": "Standard"
-        },
-        "stagingEnvironmentPolicy": {
-            "value": "Enabled"
-        },
-        "allowConfigFileUpdates": {
-            "value": true
-        },
-        "enterpriseGradeCdnStatus": {
-            "value": "Disabled"
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "privateEndpoints": {
-            "value": [
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "staticSites"
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-wss-x-001"
+    },
+    "allowConfigFileUpdates": {
+      "value": true
+    },
+    "enterpriseGradeCdnStatus": {
+      "value": "Disabled"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "staticSites",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Standard"
+    },
+    "stagingEnvironmentPolicy": {
+      "value": "Enabled"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
     }
+  }
 }
 ```
 

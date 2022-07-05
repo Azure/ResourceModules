@@ -168,27 +168,27 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-mg-min-policySet"
-        },
-        "policyDefinitions": {
-            "value": [
-                {
-                    "parameters": {
-                        "listOfAllowedLocations": {
-                            "value": [
-                                "australiaeast"
-                            ]
-                        }
-                    },
-                    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-mg-min-policySet"
+    },
+    "policyDefinitions": {
+      "value": [
+        {
+          "parameters": {
+            "listOfAllowedLocations": {
+              "value": [
+                "australiaeast"
+              ]
+            }
+          },
+          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
         }
+      ]
     }
+  }
 }
 ```
 
@@ -264,70 +264,70 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-mg-policySet"
-        },
-        "displayName": {
-            "value": "[DisplayName] This policy set definition is deployed at management group scope"
-        },
-        "description": {
-            "value": "[Description] This policy set definition is deployed at management group scope"
-        },
-        "policyDefinitionGroups": {
-            "value": [
-                {
-                    "name": "Network"
-                },
-                {
-                    "name": "ARM"
-                }
-            ]
-        },
-        "policyDefinitions": {
-            "value": [
-                {
-                    "groupNames": [
-                        "ARM"
-                    ],
-                    "parameters": {
-                        "listOfAllowedLocations": {
-                            "value": [
-                                "australiaeast"
-                            ]
-                        }
-                    },
-                    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
-                    "policyDefinitionReferenceId": "Allowed locations_1"
-                },
-                {
-                    "groupNames": [
-                        "ARM"
-                    ],
-                    "parameters": {
-                        "listOfAllowedLocations": {
-                            "value": [
-                                "australiaeast"
-                            ]
-                        }
-                    },
-                    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988",
-                    "policyDefinitionReferenceId": "Allowed locations for resource groups_1"
-                }
-            ]
-        },
-        "metadata": {
-            "value": {
-                "category": "Security",
-                "version": "1"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-mg-policySet"
+    },
+    "policyDefinitions": {
+      "value": [
+        {
+          "groupNames": [
+            "ARM"
+          ],
+          "parameters": {
+            "listOfAllowedLocations": {
+              "value": [
+                "australiaeast"
+              ]
             }
+          },
+          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+          "policyDefinitionReferenceId": "Allowed locations_1"
         },
-        "managementGroupId": {
-            "value": "<<managementGroupId>>"
+        {
+          "groupNames": [
+            "ARM"
+          ],
+          "parameters": {
+            "listOfAllowedLocations": {
+              "value": [
+                "australiaeast"
+              ]
+            }
+          },
+          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988",
+          "policyDefinitionReferenceId": "Allowed locations for resource groups_1"
         }
+      ]
+    },
+    "description": {
+      "value": "[Description] This policy set definition is deployed at management group scope"
+    },
+    "displayName": {
+      "value": "[DisplayName] This policy set definition is deployed at management group scope"
+    },
+    "managementGroupId": {
+      "value": "<<managementGroupId>>"
+    },
+    "metadata": {
+      "value": {
+        "category": "Security",
+        "version": "1"
+      }
+    },
+    "policyDefinitionGroups": {
+      "value": [
+        {
+          "name": "Network"
+        },
+        {
+          "name": "ARM"
+        }
+      ]
     }
+  }
 }
 ```
 
@@ -371,30 +371,30 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-sub-min-policySet"
-        },
-        "policyDefinitions": {
-            "value": [
-                {
-                    "parameters": {
-                        "listOfAllowedLocations": {
-                            "value": [
-                                "australiaeast"
-                            ]
-                        }
-                    },
-                    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
-                }
-            ]
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-sub-min-policySet"
+    },
+    "policyDefinitions": {
+      "value": [
+        {
+          "parameters": {
+            "listOfAllowedLocations": {
+              "value": [
+                "australiaeast"
+              ]
+            }
+          },
+          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
         }
+      ]
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 
@@ -470,70 +470,70 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-sub-policySet"
-        },
-        "displayName": {
-            "value": "[DisplayName] This policy set definition is deployed at subscription scope"
-        },
-        "description": {
-            "value": "[Description] This policy set definition is deployed at subscription scope"
-        },
-        "policyDefinitionGroups": {
-            "value": [
-                {
-                    "name": "Network"
-                },
-                {
-                    "name": "ARM"
-                }
-            ]
-        },
-        "policyDefinitions": {
-            "value": [
-                {
-                    "groupNames": [
-                        "ARM"
-                    ],
-                    "parameters": {
-                        "listOfAllowedLocations": {
-                            "value": [
-                                "australiaeast"
-                            ]
-                        }
-                    },
-                    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
-                    "policyDefinitionReferenceId": "Allowed locations_1"
-                },
-                {
-                    "groupNames": [
-                        "ARM"
-                    ],
-                    "parameters": {
-                        "listOfAllowedLocations": {
-                            "value": [
-                                "australiaeast"
-                            ]
-                        }
-                    },
-                    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988",
-                    "policyDefinitionReferenceId": "Allowed locations for resource groups_1"
-                }
-            ]
-        },
-        "metadata": {
-            "value": {
-                "category": "Security",
-                "version": "1"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-sub-policySet"
+    },
+    "policyDefinitions": {
+      "value": [
+        {
+          "groupNames": [
+            "ARM"
+          ],
+          "parameters": {
+            "listOfAllowedLocations": {
+              "value": [
+                "australiaeast"
+              ]
             }
+          },
+          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+          "policyDefinitionReferenceId": "Allowed locations_1"
         },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
+        {
+          "groupNames": [
+            "ARM"
+          ],
+          "parameters": {
+            "listOfAllowedLocations": {
+              "value": [
+                "australiaeast"
+              ]
+            }
+          },
+          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988",
+          "policyDefinitionReferenceId": "Allowed locations for resource groups_1"
         }
+      ]
+    },
+    "description": {
+      "value": "[Description] This policy set definition is deployed at subscription scope"
+    },
+    "displayName": {
+      "value": "[DisplayName] This policy set definition is deployed at subscription scope"
+    },
+    "metadata": {
+      "value": {
+        "category": "Security",
+        "version": "1"
+      }
+    },
+    "policyDefinitionGroups": {
+      "value": [
+        {
+          "name": "Network"
+        },
+        {
+          "name": "ARM"
+        }
+      ]
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 

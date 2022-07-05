@@ -149,19 +149,19 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "testMG"
-        },
-        "displayName": {
-            "value": "Test MG"
-        },
-        "parentId": {
-            "value": "<<managementGroupId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "testMG"
+    },
+    "displayName": {
+      "value": "Test MG"
+    },
+    "parentId": {
+      "value": "<<managementGroupId>>"
     }
+  }
 }
 ```
 

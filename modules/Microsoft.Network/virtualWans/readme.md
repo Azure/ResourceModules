@@ -173,13 +173,13 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vw-min-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-vw-min-001"
     }
+  }
 }
 ```
 
@@ -223,38 +223,38 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vw-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "type": {
-            "value": "Basic"
-        },
-        "allowBranchToBranchTraffic": {
-            "value": true
-        },
-        "allowVnetToVnetTraffic": {
-            "value": true
-        },
-        "disableVpnEncryption": {
-            "value": true
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-vw-x-001"
+    },
+    "allowBranchToBranchTraffic": {
+      "value": true
+    },
+    "allowVnetToVnetTraffic": {
+      "value": true
+    },
+    "disableVpnEncryption": {
+      "value": true
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "type": {
+      "value": "Basic"
     }
+  }
 }
 ```
 

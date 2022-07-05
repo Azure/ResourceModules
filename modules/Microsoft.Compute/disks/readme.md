@@ -200,32 +200,32 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-image-001"
-        },
-        "sku": {
-            "value": "Standard_LRS"
-        },
-        "createOption": {
-            "value": "FromImage"
-        },
-        "imageReferenceId": {
-            "value": "/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-disk-image-001"
+    },
+    "sku": {
+      "value": "Standard_LRS"
+    },
+    "createOption": {
+      "value": "FromImage"
+    },
+    "imageReferenceId": {
+      "value": "/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
     }
+  }
 }
 ```
 
@@ -268,35 +268,35 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-import-001"
-        },
-        "sku": {
-            "value": "Standard_LRS"
-        },
-        "createOption": {
-            "value": "Import"
-        },
-        "sourceUri": {
-            "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
-        },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-disk-import-001"
+    },
+    "sku": {
+      "value": "Standard_LRS"
+    },
+    "createOption": {
+      "value": "Import"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "sourceUri": {
+      "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
+    },
+    "storageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     }
+  }
 }
 ```
 
@@ -337,29 +337,29 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-min-001"
-        },
-        "sku": {
-            "value": "Standard_LRS"
-        },
-        "diskSizeGB": {
-            "value": 1
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-disk-min-001"
+    },
+    "sku": {
+      "value": "Standard_LRS"
+    },
+    "diskSizeGB": {
+      "value": 1
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
     }
+  }
 }
 ```
 
@@ -406,47 +406,47 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "sku": {
-            "value": "UltraSSD_LRS"
-        },
-        "diskSizeGB": {
-            "value": 128
-        },
-        "logicalSectorSize": {
-            "value": 512
-        },
-        "diskIOPSReadWrite": {
-            "value": 500
-        },
-        "diskMBpsReadWrite": {
-            "value": 60
-        },
-        "osType": {
-            "value": "Windows"
-        },
-        "publicNetworkAccess": {
-            "value": "Enabled"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-disk-x-001"
+    },
+    "sku": {
+      "value": "UltraSSD_LRS"
+    },
+    "diskIOPSReadWrite": {
+      "value": 500
+    },
+    "diskMBpsReadWrite": {
+      "value": 60
+    },
+    "diskSizeGB": {
+      "value": 128
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "logicalSectorSize": {
+      "value": 512
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
     }
+  }
 }
 ```
 

@@ -279,38 +279,38 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-udr-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "routes": {
-            "value": [
-                {
-                    "name": "default",
-                    "properties": {
-                        "addressPrefix": "0.0.0.0/0",
-                        "nextHopType": "VirtualAppliance",
-                        "nextHopIpAddress": "172.16.0.20"
-                    }
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-udr-x-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "routes": {
+      "value": [
+        {
+          "name": "default",
+          "properties": {
+            "addressPrefix": "0.0.0.0/0",
+            "nextHopIpAddress": "172.16.0.20",
+            "nextHopType": "VirtualAppliance"
+          }
+        }
+      ]
     }
+  }
 }
 ```
 

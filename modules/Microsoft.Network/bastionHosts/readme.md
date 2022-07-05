@@ -314,24 +314,24 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-bas-add-001"
-        },
-        "vNetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-bas"
-        },
-        "additionalPublicIpConfigurations": {
-            "value": [
-                {
-                    "name": "ipConfig01",
-                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-bas"
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-bas-add-001"
+    },
+    "vNetId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-bas"
+    },
+    "additionalPublicIpConfigurations": {
+      "value": [
+        {
+          "name": "ipConfig01",
+          "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-bas"
         }
+      ]
     }
+  }
 }
 ```
 
@@ -386,41 +386,41 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-bas-custompip-001"
-        },
-        "vNetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas"
-        },
-        "publicIPAddressObject": {
-            "value": {
-                "name": "adp-<<namePrefix>>-az-pip-custom-x-bas",
-                "publicIPPrefixResourceId": "",
-                "publicIPAllocationMethod": "Static",
-                "skuName": "Standard",
-                "skuTier": "Regional",
-                "roleAssignments": [
-                    {
-                        "roleDefinitionIdOrName": "Reader",
-                        "principalIds": [
-                            "<<deploymentSpId>>"
-                        ]
-                    }
-                ],
-                "diagnosticMetricsToEnable": [
-                    "AllMetrics"
-                ],
-                "diagnosticLogCategoriesToEnable": [
-                    "DDoSProtectionNotifications",
-                    "DDoSMitigationFlowLogs",
-                    "DDoSMitigationReports"
-                ]
-            }
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-bas-custompip-001"
+    },
+    "vNetId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas"
+    },
+    "publicIPAddressObject": {
+      "value": {
+        "diagnosticLogCategoriesToEnable": [
+          "DDoSMitigationFlowLogs",
+          "DDoSMitigationReports",
+          "DDoSProtectionNotifications"
+        ],
+        "diagnosticMetricsToEnable": [
+          "AllMetrics"
+        ],
+        "name": "adp-<<namePrefix>>-az-pip-custom-x-bas",
+        "publicIPAllocationMethod": "Static",
+        "publicIPPrefixResourceId": "",
+        "roleAssignments": [
+          {
+            "principalIds": [
+              "<<deploymentSpId>>"
+            ],
+            "roleDefinitionIdOrName": "Reader"
+          }
+        ],
+        "skuName": "Standard",
+        "skuTier": "Regional"
+      }
     }
+  }
 }
 ```
 
@@ -452,16 +452,16 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-bas-min-001"
-        },
-        "vNetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-bas-min-001"
+    },
+    "vNetId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002"
     }
+  }
 }
 ```
 
@@ -510,53 +510,53 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-bas-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "vNetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
-        },
-        "azureBastionSubnetPublicIpId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas"
-        },
-        "skuType": {
-            "value": "Standard"
-        },
-        "scaleUnits": {
-            "value": 4
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-bas-x-001"
+    },
+    "vNetId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
+    },
+    "azureBastionSubnetPublicIpId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "scaleUnits": {
+      "value": 4
+    },
+    "skuType": {
+      "value": "Standard"
     }
+  }
 }
 ```
 

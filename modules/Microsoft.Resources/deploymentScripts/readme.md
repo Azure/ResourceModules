@@ -175,39 +175,39 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ds-cli-001"
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "kind": {
-            "value": "AzureCLI"
-        },
-        "azCliVersion": {
-            "value": "2.15.0"
-        },
-        "scriptContent": {
-            "value": "echo \"Hello from inside the script\""
-        },
-        "retentionInterval": {
-            "value": "P1D"
-        },
-        "runOnce": {
-            "value": false
-        },
-        "cleanupPreference": {
-            "value": "Always"
-        },
-        "timeout": {
-            "value": "PT30M"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-ds-cli-001"
+    },
+    "azCliVersion": {
+      "value": "2.15.0"
+    },
+    "cleanupPreference": {
+      "value": "Always"
+    },
+    "kind": {
+      "value": "AzureCLI"
+    },
+    "retentionInterval": {
+      "value": "P1D"
+    },
+    "runOnce": {
+      "value": false
+    },
+    "scriptContent": {
+      "value": "echo \"Hello from inside the script\""
+    },
+    "timeout": {
+      "value": "PT30M"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
     }
+  }
 }
 ```
 
@@ -249,42 +249,42 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ds-ps-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "kind": {
-            "value": "AzurePowerShell"
-        },
-        "azPowerShellVersion": {
-            "value": "3.0"
-        },
-        "scriptContent": {
-            "value": "Write-Host 'Running PowerShell from template'"
-        },
-        "retentionInterval": {
-            "value": "P1D"
-        },
-        "runOnce": {
-            "value": false
-        },
-        "cleanupPreference": {
-            "value": "Always"
-        },
-        "timeout": {
-            "value": "PT30M"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-ds-ps-001"
+    },
+    "azPowerShellVersion": {
+      "value": "3.0"
+    },
+    "cleanupPreference": {
+      "value": "Always"
+    },
+    "kind": {
+      "value": "AzurePowerShell"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "retentionInterval": {
+      "value": "P1D"
+    },
+    "runOnce": {
+      "value": false
+    },
+    "scriptContent": {
+      "value": "Write-Host 'Running PowerShell from template'"
+    },
+    "timeout": {
+      "value": "PT30M"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
     }
+  }
 }
 ```
 

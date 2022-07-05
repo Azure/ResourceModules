@@ -183,32 +183,32 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "iacsGroup-servers"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "ipAddresses": {
-            "value": [
-                "10.0.0.1",
-                "10.0.0.2"
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "iacsGroup-servers"
+    },
+    "ipAddresses": {
+      "value": [
+        "10.0.0.1",
+        "10.0.0.2"
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
     }
+  }
 }
 ```
 

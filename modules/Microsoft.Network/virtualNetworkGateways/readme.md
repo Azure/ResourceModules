@@ -292,65 +292,65 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-gw-er-001"
-        },
-        "gatewayPipName": {
-            "value": "<<namePrefix>>-az-gw-er-001-pip"
-        },
-        "domainNameLabel": {
-            "value": [
-                "<<namePrefix>>-az-gw-er-dm-001"
-            ]
-        },
-        "virtualNetworkGatewayType": {
-            "value": "ExpressRoute"
-        },
-        "virtualNetworkGatewaySku": {
-            "value": "ErGw1AZ"
-        },
-        "vNetResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
-        },
-        "tags": {
-            "value": {
-                "Environment": "Validation",
-                "Contact": "test.user@testcompany.com",
-                "PurchaseOrder": "",
-                "CostCenter": "",
-                "ServiceName": "DeploymentValidation",
-                "Role": "DeploymentValidation"
-            }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-gw-er-001"
+    },
+    "virtualNetworkGatewaySku": {
+      "value": "ErGw1AZ"
+    },
+    "virtualNetworkGatewayType": {
+      "value": "ExpressRoute"
+    },
+    "vNetResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "domainNameLabel": {
+      "value": [
+        "<<namePrefix>>-az-gw-er-dm-001"
+      ]
+    },
+    "gatewayPipName": {
+      "value": "<<namePrefix>>-az-gw-er-001-pip"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Contact": "test.user@testcompany.com",
+        "CostCenter": "",
+        "Environment": "Validation",
+        "PurchaseOrder": "",
+        "Role": "DeploymentValidation",
+        "ServiceName": "DeploymentValidation"
+      }
     }
+  }
 }
 ```
 
@@ -406,66 +406,66 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-gw-vpn-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "domainNameLabel": {
-            "value": [
-                "<<namePrefix>>-az-gw-vpn-dm-001"
-            ]
-        },
-        "virtualNetworkGatewayType": {
-            "value": "Vpn"
-        },
-        "virtualNetworkGatewaySku": {
-            "value": "VpnGw1AZ"
-        },
-        "publicIpZones": {
-            "value": [
-                "1"
-            ]
-        },
-        "vpnType": {
-            "value": "RouteBased"
-        },
-        "activeActive": {
-            "value": true
-        },
-        "vNetResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-gw-vpn-001"
+    },
+    "virtualNetworkGatewaySku": {
+      "value": "VpnGw1AZ"
+    },
+    "virtualNetworkGatewayType": {
+      "value": "Vpn"
+    },
+    "vNetResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
+    },
+    "activeActive": {
+      "value": true
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "domainNameLabel": {
+      "value": [
+        "<<namePrefix>>-az-gw-vpn-dm-001"
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "publicIpZones": {
+      "value": [
+        "1"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "vpnType": {
+      "value": "RouteBased"
     }
+  }
 }
 ```
 

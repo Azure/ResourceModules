@@ -425,53 +425,53 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ma-x-001"
-        },
-        "windowSize": {
-            "value": "PT15M"
-        },
-        "actions": {
-            "value": [
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
-            ]
-        },
-        "targetResourceType": {
-            "value": "microsoft.compute/virtualmachines"
-        },
-        "targetResourceRegion": {
-            "value": "westeurope"
-        },
-        "criterias": {
-            "value": [
-                {
-                    "criterionType": "StaticThresholdCriterion",
-                    "metricName": "Percentage CPU",
-                    "metricNamespace": "microsoft.compute/virtualmachines",
-                    "name": "HighCPU",
-                    "operator": "GreaterThan",
-                    "threshold": "90",
-                    "timeAggregation": "Average"
-                }
-            ]
-        },
-        "alertCriteriaType": {
-            "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "criterias": {
+      "value": [
+        {
+          "criterionType": "StaticThresholdCriterion",
+          "metricName": "Percentage CPU",
+          "metricNamespace": "microsoft.compute/virtualmachines",
+          "name": "HighCPU",
+          "operator": "GreaterThan",
+          "threshold": "90",
+          "timeAggregation": "Average"
         }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-ma-x-001"
+    },
+    "actions": {
+      "value": [
+        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
+      ]
+    },
+    "alertCriteriaType": {
+      "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "targetResourceRegion": {
+      "value": "westeurope"
+    },
+    "targetResourceType": {
+      "value": "microsoft.compute/virtualmachines"
+    },
+    "windowSize": {
+      "value": "PT15M"
     }
+  }
 }
 ```
 

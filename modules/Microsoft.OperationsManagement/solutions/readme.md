@@ -68,16 +68,16 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "Updates"
-        },
-        "logAnalyticsWorkspaceName": {
-            "value": "adp-<<namePrefix>>-az-law-sol-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logAnalyticsWorkspaceName": {
+      "value": "adp-<<namePrefix>>-az-law-sol-001"
+    },
+    "name": {
+      "value": "Updates"
     }
+  }
 }
 ```
 
@@ -111,22 +111,22 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "AzureAutomation"
-        },
-        "logAnalyticsWorkspaceName": {
-            "value": "adp-<<namePrefix>>-az-law-sol-001"
-        },
-        "product": {
-            "value": "OMSGallery"
-        },
-        "publisher": {
-            "value": "Microsoft"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logAnalyticsWorkspaceName": {
+      "value": "adp-<<namePrefix>>-az-law-sol-001"
+    },
+    "name": {
+      "value": "AzureAutomation"
+    },
+    "product": {
+      "value": "OMSGallery"
+    },
+    "publisher": {
+      "value": "Microsoft"
     }
+  }
 }
 ```
 
@@ -160,22 +160,22 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "nonmsTestSolution"
-        },
-        "logAnalyticsWorkspaceName": {
-            "value": "adp-<<namePrefix>>-az-law-sol-001"
-        },
-        "product": {
-            "value": "nonmsTestSolutionProduct"
-        },
-        "publisher": {
-            "value": "nonmsTestSolutionPublisher"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logAnalyticsWorkspaceName": {
+      "value": "adp-<<namePrefix>>-az-law-sol-001"
+    },
+    "name": {
+      "value": "nonmsTestSolution"
+    },
+    "product": {
+      "value": "nonmsTestSolutionProduct"
+    },
+    "publisher": {
+      "value": "nonmsTestSolutionPublisher"
     }
+  }
 }
 ```
 

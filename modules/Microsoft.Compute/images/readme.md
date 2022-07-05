@@ -187,41 +187,41 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-img-x-001"
-        },
-        "osAccountType": {
-            "value": "Premium_LRS"
-        },
-        "osType": {
-            "value": "Windows"
-        },
-        "osDiskBlobUri": {
-            "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
-        },
-        "osDiskCaching": {
-            "value": "ReadWrite"
-        },
-        "zoneResilient": {
-            "value": true
-        },
-        "hyperVGeneration": {
-            "value": "V1"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-img-x-001"
+    },
+    "osAccountType": {
+      "value": "Premium_LRS"
+    },
+    "osDiskBlobUri": {
+      "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
+    },
+    "osDiskCaching": {
+      "value": "ReadWrite"
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "hyperVGeneration": {
+      "value": "V1"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "zoneResilient": {
+      "value": true
     }
+  }
 }
 ```
 

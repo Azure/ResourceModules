@@ -104,36 +104,36 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "flux2"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "value": "<<namePrefix>>-az-aks-kubenet-001"
+    },
+    "name": {
+      "value": "flux2"
+    },
+    "namespace": {
+      "value": "flux-system"
+    },
+    "scope": {
+      "value": "cluster"
+    },
+    "sourceKind": {
+      "value": "GitRepository"
+    },
+    "gitRepository": {
+      "value": {
+        "repositoryRef": {
+          "branch": "main"
         },
-        "scope": {
-            "value": "cluster"
-        },
-        "clusterName": {
-            "value": "<<namePrefix>>-az-aks-kubenet-001"
-        },
-        "namespace": {
-            "value": "flux-system"
-        },
-        "sourceKind": {
-            "value": "GitRepository"
-        },
-        "gitRepository": {
-            "value": {
-                "url": "https://github.com/mspnp/aks-baseline",
-                "timeoutInSeconds": 180,
-                "syncIntervalInSeconds": 300,
-                "repositoryRef": {
-                    "branch": "main"
-                },
-                "sshKnownHosts": ""
-            }
-        }
+        "sshKnownHosts": "",
+        "syncIntervalInSeconds": 300,
+        "timeoutInSeconds": 180,
+        "url": "https://github.com/mspnp/aks-baseline"
+      }
     }
+  }
 }
 ```
 
@@ -187,48 +187,48 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "flux2"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "value": "<<namePrefix>>-az-aks-kubenet-001"
+    },
+    "name": {
+      "value": "flux2"
+    },
+    "namespace": {
+      "value": "flux-system"
+    },
+    "scope": {
+      "value": "cluster"
+    },
+    "sourceKind": {
+      "value": "GitRepository"
+    },
+    "gitRepository": {
+      "value": {
+        "repositoryRef": {
+          "branch": "main"
         },
-        "scope": {
-            "value": "cluster"
-        },
-        "clusterName": {
-            "value": "<<namePrefix>>-az-aks-kubenet-001"
-        },
-        "namespace": {
-            "value": "flux-system"
-        },
-        "sourceKind": {
-            "value": "GitRepository"
-        },
-        "gitRepository": {
-            "value": {
-                "url": "https://github.com/mspnp/aks-baseline",
-                "timeoutInSeconds": 180,
-                "syncIntervalInSeconds": 300,
-                "repositoryRef": {
-                    "branch": "main"
-                },
-                "sshKnownHosts": ""
-            }
-        },
-        "kustomizations": {
-            "value": {
-                "unified": {
-                    "path": "./cluster-manifests",
-                    "dependsOn": [],
-                    "timeoutInSeconds": 300,
-                    "syncIntervalInSeconds": 300,
-                    "prune": true,
-                    "force": false
-                }
-            }
+        "sshKnownHosts": "",
+        "syncIntervalInSeconds": 300,
+        "timeoutInSeconds": 180,
+        "url": "https://github.com/mspnp/aks-baseline"
+      }
+    },
+    "kustomizations": {
+      "value": {
+        "unified": {
+          "dependsOn": [],
+          "force": false,
+          "path": "./cluster-manifests",
+          "prune": true,
+          "syncIntervalInSeconds": 300,
+          "timeoutInSeconds": 300
         }
+      }
     }
+  }
 }
 ```
 

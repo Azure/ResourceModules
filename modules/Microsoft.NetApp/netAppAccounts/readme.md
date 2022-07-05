@@ -178,13 +178,13 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-anf-min-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-anf-min-001"
     }
+  }
 }
 ```
 
@@ -297,103 +297,103 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-anf-nfs3-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "capacityPools": {
-            "value": [
-                {
-                    "name": "<<namePrefix>>-az-anfcp-x-001",
-                    "serviceLevel": "Premium",
-                    "size": 4398046511104,
-                    "volumes": [
-                        {
-                            "name": "anf3-vol01-nfsv3",
-                            "usageThreshold": 107374182400,
-                            "protocolTypes": [
-                                "NFSv3"
-                            ],
-                            "exportPolicyRules": [
-                                {
-                                    "ruleIndex": 1,
-                                    "unixReadOnly": false,
-                                    "unixReadWrite": true,
-                                    "nfsv3": true,
-                                    "nfsv41": false,
-                                    "allowedClients": "0.0.0.0/0"
-                                }
-                            ],
-                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
-                            "roleAssignments": [
-                                {
-                                    "roleDefinitionIdOrName": "Reader",
-                                    "principalIds": [
-                                        "<<deploymentSpId>>"
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "anf3-vol02-nfsv3",
-                            "usageThreshold": 107374182400,
-                            "protocolTypes": [
-                                "NFSv3"
-                            ],
-                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004"
-                        }
-                    ],
-                    "roleAssignments": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "<<namePrefix>>-az-anfcp-x-002",
-                    "serviceLevel": "Premium",
-                    "size": 4398046511104,
-                    "volumes": [],
-                    "roleAssignments": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "tags": {
-            "value": {
-                "Environment": "Non-Prod",
-                "Contact": "test.user@testcompany.com",
-                "PurchaseOrder": "1234",
-                "CostCenter": "7890",
-                "ServiceName": "DeploymentValidation",
-                "Role": "DeploymentValidation"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-anf-nfs3-001"
+    },
+    "capacityPools": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-anfcp-x-001",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<<deploymentSpId>>"
+              ],
+              "roleDefinitionIdOrName": "Reader"
             }
+          ],
+          "serviceLevel": "Premium",
+          "size": 4398046511104,
+          "volumes": [
+            {
+              "exportPolicyRules": [
+                {
+                  "allowedClients": "0.0.0.0/0",
+                  "nfsv3": true,
+                  "nfsv41": false,
+                  "ruleIndex": 1,
+                  "unixReadOnly": false,
+                  "unixReadWrite": true
+                }
+              ],
+              "name": "anf3-vol01-nfsv3",
+              "protocolTypes": [
+                "NFSv3"
+              ],
+              "roleAssignments": [
+                {
+                  "principalIds": [
+                    "<<deploymentSpId>>"
+                  ],
+                  "roleDefinitionIdOrName": "Reader"
+                }
+              ],
+              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
+              "usageThreshold": 107374182400
+            },
+            {
+              "name": "anf3-vol02-nfsv3",
+              "protocolTypes": [
+                "NFSv3"
+              ],
+              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
+              "usageThreshold": 107374182400
+            }
+          ]
+        },
+        {
+          "name": "<<namePrefix>>-az-anfcp-x-002",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<<deploymentSpId>>"
+              ],
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "serviceLevel": "Premium",
+          "size": 4398046511104,
+          "volumes": []
         }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Contact": "test.user@testcompany.com",
+        "CostCenter": "7890",
+        "Environment": "Non-Prod",
+        "PurchaseOrder": "1234",
+        "Role": "DeploymentValidation",
+        "ServiceName": "DeploymentValidation"
+      }
     }
+  }
 }
 ```
 
@@ -515,110 +515,110 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-anf-nfs41-001"
-        },
-        "capacityPools": {
-            "value": [
-                {
-                    "name": "<<namePrefix>>-az-anfcp-x-001",
-                    "serviceLevel": "Premium",
-                    "size": 4398046511104,
-                    "volumes": [
-                        {
-                            "name": "anf4-vol01-nfsv41",
-                            "usageThreshold": 107374182400,
-                            "protocolTypes": [
-                                "NFSv4.1"
-                            ],
-                            "exportPolicyRules": [
-                                {
-                                    "ruleIndex": 1,
-                                    "unixReadOnly": false,
-                                    "unixReadWrite": true,
-                                    "nfsv3": false,
-                                    "nfsv41": true,
-                                    "allowedClients": "0.0.0.0/0"
-                                }
-                            ],
-                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
-                            "roleAssignments": [
-                                {
-                                    "roleDefinitionIdOrName": "Reader",
-                                    "principalIds": [
-                                        "<<deploymentSpId>>"
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "anf4-vol02-nfsv41",
-                            "usageThreshold": 107374182400,
-                            "protocolTypes": [
-                                "NFSv4.1"
-                            ],
-                            "exportPolicyRules": [
-                                {
-                                    "ruleIndex": 1,
-                                    "unixReadOnly": false,
-                                    "unixReadWrite": true,
-                                    "nfsv3": false,
-                                    "nfsv41": true,
-                                    "allowedClients": "0.0.0.0/0"
-                                }
-                            ],
-                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004"
-                        }
-                    ],
-                    "roleAssignments": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "<<namePrefix>>-az-anfcp-x-002",
-                    "serviceLevel": "Premium",
-                    "size": 4398046511104,
-                    "volumes": [],
-                    "roleAssignments": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "tags": {
-            "value": {
-                "Environment": "Non-Prod",
-                "Contact": "test.user@testcompany.com",
-                "PurchaseOrder": "1234",
-                "CostCenter": "7890",
-                "ServiceName": "DeploymentValidation",
-                "Role": "DeploymentValidation"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-anf-nfs41-001"
+    },
+    "capacityPools": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-anfcp-x-001",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<<deploymentSpId>>"
+              ],
+              "roleDefinitionIdOrName": "Reader"
             }
+          ],
+          "serviceLevel": "Premium",
+          "size": 4398046511104,
+          "volumes": [
+            {
+              "exportPolicyRules": [
+                {
+                  "allowedClients": "0.0.0.0/0",
+                  "nfsv3": false,
+                  "nfsv41": true,
+                  "ruleIndex": 1,
+                  "unixReadOnly": false,
+                  "unixReadWrite": true
+                }
+              ],
+              "name": "anf4-vol01-nfsv41",
+              "protocolTypes": [
+                "NFSv4.1"
+              ],
+              "roleAssignments": [
+                {
+                  "principalIds": [
+                    "<<deploymentSpId>>"
+                  ],
+                  "roleDefinitionIdOrName": "Reader"
+                }
+              ],
+              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
+              "usageThreshold": 107374182400
+            },
+            {
+              "exportPolicyRules": [
+                {
+                  "allowedClients": "0.0.0.0/0",
+                  "nfsv3": false,
+                  "nfsv41": true,
+                  "ruleIndex": 1,
+                  "unixReadOnly": false,
+                  "unixReadWrite": true
+                }
+              ],
+              "name": "anf4-vol02-nfsv41",
+              "protocolTypes": [
+                "NFSv4.1"
+              ],
+              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
+              "usageThreshold": 107374182400
+            }
+          ]
+        },
+        {
+          "name": "<<namePrefix>>-az-anfcp-x-002",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<<deploymentSpId>>"
+              ],
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "serviceLevel": "Premium",
+          "size": 4398046511104,
+          "volumes": []
         }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Contact": "test.user@testcompany.com",
+        "CostCenter": "7890",
+        "Environment": "Non-Prod",
+        "PurchaseOrder": "1234",
+        "Role": "DeploymentValidation",
+        "ServiceName": "DeploymentValidation"
+      }
     }
+  }
 }
 ```
 

@@ -185,10 +185,10 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
               httpPort: 80
               httpsPort: 443
               priority: 1
-              privateLinkAlias: {}
-              privateLinkApprovalMessage: {}
-              privateLinkLocation: {}
-              privateLinkResourceId: {}
+              privateLinkAlias: ''
+              privateLinkApprovalMessage: ''
+              privateLinkLocation: ''
+              privateLinkResourceId: ''
               weight: 50
             }
           ]
@@ -216,8 +216,8 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       {
         name: 'heathProbe'
         properties: {
-          enabledState: {}
-          healthProbeMethod: {}
+          enabledState: ''
+          healthProbeMethod: ''
           intervalInSeconds: 60
           path: '/'
           protocol: 'Https'
@@ -276,119 +276,119 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-fd-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "backendPools": {
-            "value": [
-                {
-                    "name": "backendPool",
-                    "properties": {
-                        "backends": [
-                            {
-                                "address": "biceptest.local",
-                                "backendHostHeader": "backendAddress",
-                                "httpPort": 80,
-                                "httpsPort": 443,
-                                "weight": 50,
-                                "priority": 1,
-                                "enabledState": "Enabled",
-                                "privateLinkAlias": "",
-                                "privateLinkApprovalMessage": "",
-                                "privateLinkLocation": "",
-                                "privateLinkResourceId": ""
-                            }
-                        ],
-                        "LoadBalancingSettings": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer"
-                        },
-                        "HealthProbeSettings": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe"
-                        }
-                    }
-                }
-            ]
-        },
-        "enforceCertificateNameCheck": {
-            "value": "Disabled"
-        },
-        "sendRecvTimeoutSeconds": {
-            "value": 10
-        },
-        "frontendEndpoints": {
-            "value": [
-                {
-                    "name": "frontEnd",
-                    "properties": {
-                        "hostName": "<<namePrefix>>-az-fd-x-001.azurefd.net",
-                        "sessionAffinityEnabledState": "Disabled",
-                        "sessionAffinityTtlSeconds": 60
-                    }
-                }
-            ]
-        },
-        "healthProbeSettings": {
-            "value": [
-                {
-                    "name": "heathProbe",
-                    "properties": {
-                        "enabledState": "",
-                        "healthProbeMethod": "",
-                        "intervalInSeconds": 60,
-                        "path": "/",
-                        "protocol": "Https"
-                    }
-                }
-            ]
-        },
-        "loadBalancingSettings": {
-            "value": [
-                {
-                    "name": "loadBalancer",
-                    "properties": {
-                        "additionalLatencyMilliseconds": 0,
-                        "sampleSize": 50,
-                        "successfulSamplesRequired": 1
-                    }
-                }
-            ]
-        },
-        "routingRules": {
-            "value": [
-                {
-                    "name": "routingRule",
-                    "properties": {
-                        "acceptedProtocols": [
-                            "Http",
-                            "Https"
-                        ],
-                        "enabledState": "Enabled",
-                        "frontendEndpoints": [
-                            {
-                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd"
-                            }
-                        ],
-                        "patternsToMatch": [
-                            "/*"
-                        ],
-                        "routeConfiguration": {
-                            "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
-                            "forwardingProtocol": "MatchRequest",
-                            "backendPool": {
-                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool"
-                            }
-                        }
-                    }
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-fd-x-001"
+    },
+    "backendPools": {
+      "value": [
+        {
+          "name": "backendPool",
+          "properties": {
+            "backends": [
+              {
+                "address": "biceptest.local",
+                "backendHostHeader": "backendAddress",
+                "enabledState": "Enabled",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "priority": 1,
+                "privateLinkAlias": "",
+                "privateLinkApprovalMessage": "",
+                "privateLinkLocation": "",
+                "privateLinkResourceId": "",
+                "weight": 50
+              }
+            ],
+            "HealthProbeSettings": {
+              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe"
+            },
+            "LoadBalancingSettings": {
+              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer"
+            }
+          }
         }
+      ]
+    },
+    "enforceCertificateNameCheck": {
+      "value": "Disabled"
+    },
+    "frontendEndpoints": {
+      "value": [
+        {
+          "name": "frontEnd",
+          "properties": {
+            "hostName": "<<namePrefix>>-az-fd-x-001.azurefd.net",
+            "sessionAffinityEnabledState": "Disabled",
+            "sessionAffinityTtlSeconds": 60
+          }
+        }
+      ]
+    },
+    "healthProbeSettings": {
+      "value": [
+        {
+          "name": "heathProbe",
+          "properties": {
+            "enabledState": "",
+            "healthProbeMethod": "",
+            "intervalInSeconds": 60,
+            "path": "/",
+            "protocol": "Https"
+          }
+        }
+      ]
+    },
+    "loadBalancingSettings": {
+      "value": [
+        {
+          "name": "loadBalancer",
+          "properties": {
+            "additionalLatencyMilliseconds": 0,
+            "sampleSize": 50,
+            "successfulSamplesRequired": 1
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "routingRules": {
+      "value": [
+        {
+          "name": "routingRule",
+          "properties": {
+            "acceptedProtocols": [
+              "Http",
+              "Https"
+            ],
+            "enabledState": "Enabled",
+            "frontendEndpoints": [
+              {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd"
+              }
+            ],
+            "patternsToMatch": [
+              "/*"
+            ],
+            "routeConfiguration": {
+              "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+              "backendPool": {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool"
+              },
+              "forwardingProtocol": "MatchRequest"
+            }
+          }
+        }
+      ]
+    },
+    "sendRecvTimeoutSeconds": {
+      "value": 10
     }
+  }
 }
 ```
 

@@ -208,38 +208,38 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "Component Validation - Subscription assignment"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "authorizations": {
+      "value": [
+        {
+          "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+          "principalIdDisplayName": "ResourceModules-Reader",
+          "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
         },
-        "registrationDescription": {
-            "value": "Managed by Lighthouse"
+        {
+          "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+          "principalIdDisplayName": "ResourceModules-Contributor",
+          "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
         },
-        "managedByTenantId": {
-            "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
-        },
-        "authorizations": {
-            "value": [
-                {
-                    "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
-                    "principalIdDisplayName": "ResourceModules-Reader",
-                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
-                },
-                {
-                    "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
-                    "principalIdDisplayName": "ResourceModules-Contributor",
-                    "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
-                },
-                {
-                    "principalId": "87813317-fb25-4c76-91fe-783af429d109",
-                    "principalIdDisplayName": "ResourceModules-LHManagement",
-                    "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
-                }
-            ]
+        {
+          "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+          "principalIdDisplayName": "ResourceModules-LHManagement",
+          "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
         }
+      ]
+    },
+    "managedByTenantId": {
+      "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
+    },
+    "name": {
+      "value": "Component Validation - Subscription assignment"
+    },
+    "registrationDescription": {
+      "value": "Managed by Lighthouse"
     }
+  }
 }
 ```
 
@@ -290,41 +290,41 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "Component Validation - Resource group assignment"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "authorizations": {
+      "value": [
+        {
+          "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+          "principalIdDisplayName": "ResourceModules-Reader",
+          "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
         },
-        "registrationDescription": {
-            "value": "Managed by Lighthouse"
+        {
+          "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+          "principalIdDisplayName": "ResourceModules-Contributor",
+          "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
         },
-        "managedByTenantId": {
-            "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
-        },
-        "resourceGroupName": {
-            "value": "validation-rg"
-        },
-        "authorizations": {
-            "value": [
-                {
-                    "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
-                    "principalIdDisplayName": "ResourceModules-Reader",
-                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
-                },
-                {
-                    "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
-                    "principalIdDisplayName": "ResourceModules-Contributor",
-                    "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
-                },
-                {
-                    "principalId": "87813317-fb25-4c76-91fe-783af429d109",
-                    "principalIdDisplayName": "ResourceModules-LHManagement",
-                    "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
-                }
-            ]
+        {
+          "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+          "principalIdDisplayName": "ResourceModules-LHManagement",
+          "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
         }
+      ]
+    },
+    "managedByTenantId": {
+      "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
+    },
+    "name": {
+      "value": "Component Validation - Resource group assignment"
+    },
+    "registrationDescription": {
+      "value": "Managed by Lighthouse"
+    },
+    "resourceGroupName": {
+      "value": "validation-rg"
     }
+  }
 }
 ```
 

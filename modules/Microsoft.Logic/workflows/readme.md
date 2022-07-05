@@ -384,82 +384,82 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-lga-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "tags": {
-            "value": {}
-        },
-        "workflowActions": {
-            "value": {
-                "HTTP": {
-                    "type": "Http",
-                    "inputs": {
-                        "method": "POST",
-                        "uri": "https://testStringForValidation.com",
-                        "body": {
-                            "HostPoolName": "[HostPoolName]",
-                            "LAWorkspaceName": "[LAWorkspaceName]",
-                            "LimitSecondsToForceLogOffUser": "[LimitSecondsToForceLogOffUser]",
-                            "EndPeakTime": "[EndPeakTime]",
-                            "BeginPeakTime": "[BeginPeakTime]",
-                            "UtcOffset": "[UtcOffset]",
-                            "LogOffMessageBody": "[LogOffMessageBody]",
-                            "LogOffMessageTitle": "[LogOffMessageTitle]",
-                            "MinimumNumberOfRDSH": 1,
-                            "SessionThresholdPerCPU": 1,
-                            "ResourceGroupName": "[ResourceGroupName]"
-                        }
-                    }
-                }
-            }
-        },
-        "workflowTriggers": {
-            "value": {
-                "Recurrence": {
-                    "recurrence": {
-                        "frequency": "Minute",
-                        "interval": 15
-                    },
-                    "type": "Recurrence"
-                }
-            }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "systemAssignedIdentity": {
-            "value": true
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-lga-x-001"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "tags": {
+      "value": {}
+    },
+    "workflowActions": {
+      "value": {
+        "HTTP": {
+          "inputs": {
+            "body": {
+              "BeginPeakTime": "[BeginPeakTime]",
+              "EndPeakTime": "[EndPeakTime]",
+              "HostPoolName": "[HostPoolName]",
+              "LAWorkspaceName": "[LAWorkspaceName]",
+              "LimitSecondsToForceLogOffUser": "[LimitSecondsToForceLogOffUser]",
+              "LogOffMessageBody": "[LogOffMessageBody]",
+              "LogOffMessageTitle": "[LogOffMessageTitle]",
+              "MinimumNumberOfRDSH": 1,
+              "ResourceGroupName": "[ResourceGroupName]",
+              "SessionThresholdPerCPU": 1,
+              "UtcOffset": "[UtcOffset]"
+            },
+            "method": "POST",
+            "uri": "https://testStringForValidation.com"
+          },
+          "type": "Http"
+        }
+      }
+    },
+    "workflowTriggers": {
+      "value": {
+        "Recurrence": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 15
+          },
+          "type": "Recurrence"
+        }
+      }
     }
+  }
 }
 ```
 

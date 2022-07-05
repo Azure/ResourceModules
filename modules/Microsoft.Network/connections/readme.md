@@ -344,43 +344,43 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vnetgwc-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-vnetgwc-x-001"
+    },
+    "virtualNetworkGateway1": {
+      "value": {
+        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
+      }
+    },
+    "enableBgp": {
+      "value": false
+    },
+    "location": {
+      "value": "eastus"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "virtualNetworkGateway2": {
+      "value": {
+        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002"
+      }
+    },
+    "virtualNetworkGatewayConnectionType": {
+      "value": "Vnet2Vnet"
+    },
+    "vpnSharedKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
         },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "virtualNetworkGateway1": {
-            "value": {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
-            }
-        },
-        "virtualNetworkGateway2": {
-            "value": {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002"
-            }
-        },
-        "vpnSharedKey": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "vpnSharedKey"
-            }
-        },
-        "virtualNetworkGatewayConnectionType": {
-            "value": "Vnet2Vnet"
-        },
-        "enableBgp": {
-            "value": false
-        },
-        "location": {
-            "value": "eastus"
-        }
+        "secretName": "vpnSharedKey"
+      }
     }
+  }
 }
 ```
 

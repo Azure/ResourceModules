@@ -377,33 +377,33 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-aut-encr-001"
-        },
-        "encryptionKeySource": {
-            "value": "Microsoft.Keyvault"
-        },
-        "encryptionUserAssignedIdentity": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001" // this identity needs to be one of the identities defined in userAssignedIdentities section
-        },
-        "keyName": {
-            "value": "keyEncryptionKey"
-        },
-        "keyvaultUri": {
-            "value": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/"
-        },
-        "keyVersion": {
-            "value": "9917c14be51d4d93b37218de7d326f60"
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-aut-encr-001"
+    },
+    "encryptionKeySource": {
+      "value": "Microsoft.Keyvault"
+    },
+    "encryptionUserAssignedIdentity": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+    },
+    "keyName": {
+      "value": "keyEncryptionKey"
+    },
+    "keyvaultUri": {
+      "value": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/"
+    },
+    "keyVersion": {
+      "value": "9917c14be51d4d93b37218de7d326f60"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
     }
+  }
 }
 ```
 
@@ -434,13 +434,13 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-aut-min-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-aut-min-001"
     }
+  }
 }
 ```
 
@@ -625,203 +625,203 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-aut-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "schedules": {
-            "value": [
-                {
-                    "name": "TestSchedule",
-                    "startTime": "",
-                    "expiryTime": "9999-12-31T13:00",
-                    "interval": 15,
-                    "frequency": "Minute",
-                    "timeZone": "Europe/Berlin",
-                    "advancedSchedule": {}
-                }
-            ]
-        },
-        "modules": {
-            "value": [
-                {
-                    "name": "PSWindowsUpdate",
-                    "version": "latest",
-                    "uri": "https://www.powershellgallery.com/api/v2/package"
-                }
-            ]
-        },
-        "runbooks": {
-            "value": [
-                {
-                    "name": "TestRunbook",
-                    "runbookType": "PowerShell",
-                    "description": "Test runbook",
-                    "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
-                    "version": "1.0.0.0"
-                }
-            ]
-        },
-        "jobSchedules": {
-            "value": [
-                {
-                    "scheduleName": "TestSchedule",
-                    "runbookName": "TestRunbook"
-                }
-            ]
-        },
-        "variables": {
-            "value": [
-                {
-                    "name": "TestString",
-                    "value": "\"TestString\"",
-                    "description": "TestStringDescription"
-                },
-                {
-                    "name": "TestInteger",
-                    "value": "500",
-                    "description": "TestIntegerDescription"
-                },
-                {
-                    "name": "TestBoolean",
-                    "value": "false",
-                    "description": "TestBooleanDescription"
-                },
-                {
-                    "name": "TestDateTime",
-                    "value": "\"\\/Date(1637934042656)\\/\"",
-                    "description": "TestDateTimeDescription",
-                    "isEncrypted": false
-                },
-                {
-                    "name": "TestEncryptedVariable",
-                    "value": "\"TestEncryptedValue\"",
-                    "description": "TestEncryptedDescription"
-                }
-            ]
-        },
-        "linkedWorkspaceResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001"
-        },
-        "gallerySolutions": {
-            "value": [
-                {
-                    "name": "Updates",
-                    "product": "OMSGallery",
-                    "publisher": "Microsoft"
-                }
-            ]
-        },
-        "softwareUpdateConfigurations": {
-            "value": [
-                {
-                    "name": "Windows_ZeroDay",
-                    "frequency": "Month",
-                    "operatingSystem": "Windows",
-                    "rebootSetting": "IfRequired",
-                    "scopeByTags": {
-                        "Update": [
-                            "Automatic-Wave1"
-                        ]
-                    },
-                    "maintenanceWindow": "PT4H",
-                    "updateClassifications": [
-                        "Critical",
-                        "Security",
-                        "UpdateRollup",
-                        "FeaturePack",
-                        "ServicePack",
-                        "Definition",
-                        "Tools",
-                        "Updates"
-                    ],
-                    "includeUpdates": [
-                        "654321"
-                    ],
-                    "excludeUpdates": [
-                        "123456"
-                    ],
-                    "interval": 1,
-                    "monthlyOccurrences": [
-                        {
-                            "occurrence": 3,
-                            "day": "Friday"
-                        }
-                    ],
-                    "startTime": "22:00"
-                },
-                {
-                    "name": "Linux_ZeroDay",
-                    "frequency": "OneTime",
-                    "operatingSystem": "Linux",
-                    "rebootSetting": "IfRequired",
-                    "maintenanceWindow": "PT4H",
-                    "updateClassifications": [
-                        "Critical",
-                        "Security",
-                        "Other"
-                    ],
-                    "includeUpdates": [
-                        "kernel"
-                    ],
-                    "excludeUpdates": [
-                        "icacls"
-                    ],
-                    "startTime": "22:00"
-                }
-            ]
-        },
-        "privateEndpoints": {
-            "value": [
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "Webhook"
-                },
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "DSCAndHybridWorker"
-                }
-            ]
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-aut-x-001"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "gallerySolutions": {
+      "value": [
+        {
+          "name": "Updates",
+          "product": "OMSGallery",
+          "publisher": "Microsoft"
         }
+      ]
+    },
+    "jobSchedules": {
+      "value": [
+        {
+          "runbookName": "TestRunbook",
+          "scheduleName": "TestSchedule"
+        }
+      ]
+    },
+    "linkedWorkspaceResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "modules": {
+      "value": [
+        {
+          "name": "PSWindowsUpdate",
+          "uri": "https://www.powershellgallery.com/api/v2/package",
+          "version": "latest"
+        }
+      ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "Webhook",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        },
+        {
+          "service": "DSCAndHybridWorker",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "runbooks": {
+      "value": [
+        {
+          "description": "Test runbook",
+          "name": "TestRunbook",
+          "runbookType": "PowerShell",
+          "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
+          "version": "1.0.0.0"
+        }
+      ]
+    },
+    "schedules": {
+      "value": [
+        {
+          "advancedSchedule": {},
+          "expiryTime": "9999-12-31T13:00",
+          "frequency": "Minute",
+          "interval": 15,
+          "name": "TestSchedule",
+          "startTime": "",
+          "timeZone": "Europe/Berlin"
+        }
+      ]
+    },
+    "softwareUpdateConfigurations": {
+      "value": [
+        {
+          "excludeUpdates": [
+            "123456"
+          ],
+          "frequency": "Month",
+          "includeUpdates": [
+            "654321"
+          ],
+          "interval": 1,
+          "maintenanceWindow": "PT4H",
+          "monthlyOccurrences": [
+            {
+              "day": "Friday",
+              "occurrence": 3
+            }
+          ],
+          "name": "Windows_ZeroDay",
+          "operatingSystem": "Windows",
+          "rebootSetting": "IfRequired",
+          "scopeByTags": {
+            "Update": [
+              "Automatic-Wave1"
+            ]
+          },
+          "startTime": "22:00",
+          "updateClassifications": [
+            "Critical",
+            "Definition",
+            "FeaturePack",
+            "Security",
+            "ServicePack",
+            "Tools",
+            "UpdateRollup",
+            "Updates"
+          ]
+        },
+        {
+          "excludeUpdates": [
+            "icacls"
+          ],
+          "frequency": "OneTime",
+          "includeUpdates": [
+            "kernel"
+          ],
+          "maintenanceWindow": "PT4H",
+          "name": "Linux_ZeroDay",
+          "operatingSystem": "Linux",
+          "rebootSetting": "IfRequired",
+          "startTime": "22:00",
+          "updateClassifications": [
+            "Critical",
+            "Other",
+            "Security"
+          ]
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
+    },
+    "variables": {
+      "value": [
+        {
+          "description": "TestStringDescription",
+          "name": "TestString",
+          "value": "\"TestString\""
+        },
+        {
+          "description": "TestIntegerDescription",
+          "name": "TestInteger",
+          "value": "500"
+        },
+        {
+          "description": "TestBooleanDescription",
+          "name": "TestBoolean",
+          "value": "false"
+        },
+        {
+          "description": "TestDateTimeDescription",
+          "isEncrypted": false,
+          "name": "TestDateTime",
+          "value": "\"\\/Date(1637934042656)\\/\""
+        },
+        {
+          "description": "TestEncryptedDescription",
+          "name": "TestEncryptedVariable",
+          "value": "\"TestEncryptedValue\""
+        }
+      ]
     }
+  }
 }
 ```
 

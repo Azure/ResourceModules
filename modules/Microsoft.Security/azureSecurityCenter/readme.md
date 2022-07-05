@@ -127,24 +127,24 @@ module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bice
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "scope": {
-            "value": "/subscriptions/<<subscriptionId>>"
-        },
-        "securityContactProperties": {
-            "value": {
-                "email": "foo@contoso.com",
-                "phone": "+12345678",
-                "alertNotifications": "Off",
-                "alertsToAdmins": "Off"
-            }
-        },
-        "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "scope": {
+      "value": "/subscriptions/<<subscriptionId>>"
+    },
+    "workspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "securityContactProperties": {
+      "value": {
+        "alertNotifications": "Off",
+        "alertsToAdmins": "Off",
+        "email": "foo@contoso.com",
+        "phone": "+12345678"
+      }
     }
+  }
 }
 ```
 

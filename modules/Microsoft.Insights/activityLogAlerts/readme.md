@@ -448,51 +448,51 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ala-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "conditions": {
+      "value": [
+        {
+          "equals": "Administrative",
+          "field": "category"
         },
-        "scopes": {
-            "value": [
-                "/subscriptions/<<subscriptionId>>"
-            ]
+        {
+          "equals": "microsoft.compute/virtualmachines",
+          "field": "resourceType"
         },
-        "conditions": {
-            "value": [
-                {
-                    "field": "category",
-                    "equals": "Administrative"
-                },
-                {
-                    "field": "resourceType",
-                    "equals": "microsoft.compute/virtualmachines"
-                },
-                {
-                    "field": "operationName",
-                    "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action"
-                }
-            ]
-        },
-        "actions": {
-            "value": [
-                {
-                    "actionGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+        {
+          "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action",
+          "field": "operationName"
         }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-ala-x-001"
+    },
+    "actions": {
+      "value": [
+        {
+          "actionGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scopes": {
+      "value": [
+        "/subscriptions/<<subscriptionId>>"
+      ]
     }
+  }
 }
 ```
 

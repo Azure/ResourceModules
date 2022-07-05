@@ -356,13 +356,13 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-bv-min-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-bv-min-001"
     }
+  }
 }
 ```
 
@@ -456,80 +456,80 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-bv-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "backupPolicies": {
-            "value": [
-                {
-                    "name": "DefaultPolicy",
-                    "properties": {
-                        "policyRules": [
-                            {
-                                "backupParameters": {
-                                    "backupType": "Incremental",
-                                    "objectType": "AzureBackupParams"
-                                },
-                                "trigger": {
-                                    "schedule": {
-                                        "repeatingTimeIntervals": [
-                                            "R/2022-05-31T23:30:00+01:00/P1D"
-                                        ],
-                                        "timeZone": "W. Europe Standard Time"
-                                    },
-                                    "taggingCriteria": [
-                                        {
-                                            "tagInfo": {
-                                                "tagName": "Default",
-                                                "id": "Default_"
-                                            },
-                                            "taggingPriority": 99,
-                                            "isDefault": true
-                                        }
-                                    ],
-                                    "objectType": "ScheduleBasedTriggerContext"
-                                },
-                                "dataStore": {
-                                    "dataStoreType": "OperationalStore",
-                                    "objectType": "DataStoreInfoBase"
-                                },
-                                "name": "BackupDaily",
-                                "objectType": "AzureBackupRule"
-                            },
-                            {
-                                "lifecycles": [
-                                    {
-                                        "deleteAfter": {
-                                            "objectType": "AbsoluteDeleteOption",
-                                            "duration": "P7D"
-                                        },
-                                        "targetDataStoreCopySettings": [],
-                                        "sourceDataStore": {
-                                            "dataStoreType": "OperationalStore",
-                                            "objectType": "DataStoreInfoBase"
-                                        }
-                                    }
-                                ],
-                                "isDefault": true,
-                                "name": "Default",
-                                "objectType": "AzureRetentionRule"
-                            }
-                        ],
-                        "datasourceTypes": [
-                            "Microsoft.Compute/disks"
-                        ],
-                        "objectType": "BackupPolicy"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-bv-x-001"
+    },
+    "backupPolicies": {
+      "value": [
+        {
+          "name": "DefaultPolicy",
+          "properties": {
+            "datasourceTypes": [
+              "Microsoft.Compute/disks"
+            ],
+            "objectType": "BackupPolicy",
+            "policyRules": [
+              {
+                "backupParameters": {
+                  "backupType": "Incremental",
+                  "objectType": "AzureBackupParams"
+                },
+                "dataStore": {
+                  "dataStoreType": "OperationalStore",
+                  "objectType": "DataStoreInfoBase"
+                },
+                "name": "BackupDaily",
+                "objectType": "AzureBackupRule",
+                "trigger": {
+                  "objectType": "ScheduleBasedTriggerContext",
+                  "schedule": {
+                    "repeatingTimeIntervals": [
+                      "R/2022-05-31T23:30:00+01:00/P1D"
+                    ],
+                    "timeZone": "W. Europe Standard Time"
+                  },
+                  "taggingCriteria": [
+                    {
+                      "isDefault": true,
+                      "taggingPriority": 99,
+                      "tagInfo": {
+                        "id": "Default_",
+                        "tagName": "Default"
+                      }
                     }
+                  ]
                 }
+              },
+              {
+                "isDefault": true,
+                "lifecycles": [
+                  {
+                    "deleteAfter": {
+                      "duration": "P7D",
+                      "objectType": "AbsoluteDeleteOption"
+                    },
+                    "sourceDataStore": {
+                      "dataStoreType": "OperationalStore",
+                      "objectType": "DataStoreInfoBase"
+                    },
+                    "targetDataStoreCopySettings": []
+                  }
+                ],
+                "name": "Default",
+                "objectType": "AzureRetentionRule"
+              }
             ]
+          }
         }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
     }
+  }
 }
 ```
 

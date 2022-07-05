@@ -349,22 +349,22 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-sqlsrv-admin-001"
-        },
-        "administrators": {
-            "value": {
-                "azureADOnlyAuthentication": true,
-                "login": "myspn",
-                "sid": "<<deploymentSpId>>",
-                "principalType": "Application",
-                "tenantId": "<<tenantId>>"
-            }
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-sqlsrv-admin-001"
+    },
+    "administrators": {
+      "value": {
+        "azureADOnlyAuthentication": true,
+        "login": "myspn",
+        "principalType": "Application",
+        "sid": "<<deploymentSpId>>",
+        "tenantId": "<<tenantId>>"
+      }
     }
+  }
 }
 ```
 
@@ -464,113 +464,113 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-sqlsrv-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-sqlsrv-x-001"
+    },
+    "administratorLogin": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
         },
-        "lock": {
-            "value": "CanNotDelete"
+        "secretName": "administratorLogin"
+      }
+    },
+    "administratorLoginPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
         },
-        "administratorLogin": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "administratorLogin"
-            }
-        },
-        "administratorLoginPassword": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "administratorLoginPassword"
-            }
-        },
-        "location": {
-            "value": "westeurope"
-        },
-        "minimalTlsVersion": {
-            "value": "1.2"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "vulnerabilityAssessmentsObj": {
-            "value": {
-                "name": "default",
-                "emailSubscriptionAdmins": true,
-                "recurringScansIsEnabled": true,
-                "recurringScansEmails": [
-                    "test1@contoso.com",
-                    "test2@contoso.com"
-                ],
-                "vulnerabilityAssessmentsStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-            }
-        },
-        "databases": {
-            "value": [
-                {
-                    "name": "<<namePrefix>>-az-sqldb-x-001",
-                    "collation": "SQL_Latin1_General_CP1_CI_AS",
-                    "skuTier": "BusinessCritical",
-                    "skuName": "BC_Gen5",
-                    "skuCapacity": 12,
-                    "skuFamily": "Gen5",
-                    "maxSizeBytes": 34359738368,
-                    "licenseType": "LicenseIncluded",
-                    "diagnosticLogsRetentionInDays": 7,
-                    "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
-                    "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
-                    "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-                    "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001"
-                }
-            ]
-        },
-        "firewallRules": {
-            "value": [
-                {
-                    "name": "AllowAllWindowsAzureIps",
-                    "endIpAddress": "0.0.0.0",
-                    "startIpAddress": "0.0.0.0"
-                }
-            ]
-        },
-        "securityAlertPolicies": {
-            "value": [
-                {
-                    "name": "Default",
-                    "state": "Enabled",
-                    "emailAccountAdmins": true
-                }
-            ]
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "privateEndpoints": {
-            "value": [
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "sqlServer"
-                }
-            ]
+        "secretName": "administratorLoginPassword"
+      }
+    },
+    "databases": {
+      "value": [
+        {
+          "collation": "SQL_Latin1_General_CP1_CI_AS",
+          "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
+          "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001",
+          "diagnosticLogsRetentionInDays": 7,
+          "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+          "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+          "licenseType": "LicenseIncluded",
+          "maxSizeBytes": 34359738368,
+          "name": "<<namePrefix>>-az-sqldb-x-001",
+          "skuCapacity": 12,
+          "skuFamily": "Gen5",
+          "skuName": "BC_Gen5",
+          "skuTier": "BusinessCritical"
         }
+      ]
+    },
+    "firewallRules": {
+      "value": [
+        {
+          "endIpAddress": "0.0.0.0",
+          "name": "AllowAllWindowsAzureIps",
+          "startIpAddress": "0.0.0.0"
+        }
+      ]
+    },
+    "location": {
+      "value": "westeurope"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "minimalTlsVersion": {
+      "value": "1.2"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "sqlServer",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "securityAlertPolicies": {
+      "value": [
+        {
+          "emailAccountAdmins": true,
+          "name": "Default",
+          "state": "Enabled"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
+    },
+    "vulnerabilityAssessmentsObj": {
+      "value": {
+        "emailSubscriptionAdmins": true,
+        "name": "default",
+        "recurringScansEmails": [
+          "test1@contoso.com",
+          "test2@contoso.com"
+        ],
+        "recurringScansIsEnabled": true,
+        "vulnerabilityAssessmentsStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      }
     }
+  }
 }
 ```
 

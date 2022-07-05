@@ -129,19 +129,19 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vhub-min-001"
-        },
-        "addressPrefix": {
-            "value": "10.0.0.0/16"
-        },
-        "virtualWanId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "addressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-vhub-min-001"
+    },
+    "virtualWanId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
     }
+  }
 }
 ```
 
@@ -201,52 +201,52 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vhub-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "addressPrefix": {
-            "value": "10.1.0.0/16"
-        },
-        "virtualWanId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
-        },
-        "hubRouteTables": {
-            "value": [
-                {
-                    "name": "routeTable1"
-                }
-            ]
-        },
-        "hubVirtualNetworkConnections": {
-            "value": [
-                {
-                    "name": "connection1",
-                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub",
-                    "routingConfiguration": {
-                        "associatedRouteTable": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1"
-                        },
-                        "propagatedRouteTables": {
-                            "ids": [
-                                {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1"
-                                }
-                            ],
-                            "labels": [
-                                "none"
-                            ]
-                        }
-                    }
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "addressPrefix": {
+      "value": "10.1.0.0/16"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-vhub-x-001"
+    },
+    "virtualWanId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
+    },
+    "hubRouteTables": {
+      "value": [
+        {
+          "name": "routeTable1"
         }
+      ]
+    },
+    "hubVirtualNetworkConnections": {
+      "value": [
+        {
+          "name": "connection1",
+          "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub",
+          "routingConfiguration": {
+            "associatedRouteTable": {
+              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1"
+            },
+            "propagatedRouteTables": {
+              "ids": [
+                {
+                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1"
+                }
+              ],
+              "labels": [
+                "none"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
     }
+  }
 }
 ```
 

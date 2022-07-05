@@ -185,19 +185,19 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-avdag-min-001"
-        },
-        "applicationGroupType": {
-            "value": "RemoteApp"
-        },
-        "hostpoolName": {
-            "value": "adp-<<namePrefix>>-az-avdhp-x-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "applicationGroupType": {
+      "value": "RemoteApp"
+    },
+    "hostpoolName": {
+      "value": "adp-<<namePrefix>>-az-avdhp-x-001"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-avdag-min-001"
     }
+  }
 }
 ```
 
@@ -265,76 +265,76 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-avdag-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "applicationGroupType": {
+      "value": "RemoteApp"
+    },
+    "hostpoolName": {
+      "value": "adp-<<namePrefix>>-az-avdhp-x-001"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-avdag-x-001"
+    },
+    "applications": {
+      "value": [
+        {
+          "commandLineArguments": "",
+          "commandLineSetting": "DoNotAllow",
+          "description": "Notepad by ARM template",
+          "filePath": "C:\\Windows\\System32\\notepad.exe",
+          "friendlyName": "Notepad",
+          "iconIndex": 0,
+          "iconPath": "C:\\Windows\\System32\\notepad.exe",
+          "name": "notepad",
+          "showInPortal": true
         },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "location": {
-            "value": "westeurope"
-        },
-        "applicationGroupType": {
-            "value": "RemoteApp"
-        },
-        "hostpoolName": {
-            "value": "adp-<<namePrefix>>-az-avdhp-x-001"
-        },
-        "friendlyName": {
-            "value": "Remote Applications 1"
-        },
-        "description": {
-            "value": "This is my first Remote Applications bundle"
-        },
-        "applications": {
-            "value": [
-                {
-                    "name": "notepad",
-                    "description": "Notepad by ARM template",
-                    "friendlyName": "Notepad",
-                    "filePath": "C:\\Windows\\System32\\notepad.exe",
-                    "commandLineSetting": "DoNotAllow",
-                    "commandLineArguments": "",
-                    "showInPortal": true,
-                    "iconPath": "C:\\Windows\\System32\\notepad.exe",
-                    "iconIndex": 0
-                },
-                {
-                    "name": "wordpad",
-                    "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
-                    "friendlyName": "Wordpad"
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        {
+          "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
+          "friendlyName": "Wordpad",
+          "name": "wordpad"
         }
+      ]
+    },
+    "description": {
+      "value": "This is my first Remote Applications bundle"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "friendlyName": {
+      "value": "Remote Applications 1"
+    },
+    "location": {
+      "value": "westeurope"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     }
+  }
 }
 ```
 

@@ -284,49 +284,49 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ag-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "groupShortName": {
+      "value": "azagweux001"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-ag-x-001"
+    },
+    "emailReceivers": {
+      "value": [
+        {
+          "emailAddress": "test.user@testcompany.com",
+          "name": "TestUser_-EmailAction-",
+          "useCommonAlertSchema": true
         },
-        "groupShortName": {
-            "value": "azagweux001"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "emailReceivers": {
-            "value": [
-                {
-                    "name": "TestUser_-EmailAction-",
-                    "emailAddress": "test.user@testcompany.com",
-                    "useCommonAlertSchema": true
-                },
-                {
-                    "name": "TestUser2",
-                    "emailAddress": "test.user2@testcompany.com",
-                    "useCommonAlertSchema": true
-                }
-            ]
-        },
-        "smsReceivers": {
-            "value": [
-                {
-                    "name": "TestUser_-SMSAction-",
-                    "countryCode": "1",
-                    "phoneNumber": "2345678901"
-                }
-            ]
+        {
+          "emailAddress": "test.user2@testcompany.com",
+          "name": "TestUser2",
+          "useCommonAlertSchema": true
         }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "smsReceivers": {
+      "value": [
+        {
+          "countryCode": "1",
+          "name": "TestUser_-SMSAction-",
+          "phoneNumber": "2345678901"
+        }
+      ]
     }
+  }
 }
 ```
 

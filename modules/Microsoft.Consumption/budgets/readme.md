@@ -82,27 +82,27 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "amount": {
-            "value": 500
-        },
-        "thresholds": {
-            "value": [
-                50,
-                75,
-                90,
-                100,
-                110
-            ]
-        },
-        "contactEmails": {
-            "value": [
-                "dummy@contoso.com"
-            ]
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "amount": {
+      "value": 500
+    },
+    "contactEmails": {
+      "value": [
+        "dummy@contoso.com"
+      ]
+    },
+    "thresholds": {
+      "value": [
+        50,
+        75,
+        90,
+        100,
+        110
+      ]
     }
+  }
 }
 ```
 

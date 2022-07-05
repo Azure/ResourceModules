@@ -192,16 +192,16 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Storage Queue Data Reader"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Storage Queue Data Reader"
     }
+  }
 }
 ```
 
@@ -236,25 +236,25 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Backup Reader"
-        },
-        "description": {
-            "value": "Role Assignment (management group scope)"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        },
-        "principalType": {
-            "value": "ServicePrincipal"
-        },
-        "managementGroupId": {
-            "value": "<<managementGroupId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Backup Reader"
+    },
+    "description": {
+      "value": "Role Assignment (management group scope)"
+    },
+    "managementGroupId": {
+      "value": "<<managementGroupId>>"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
     }
+  }
 }
 ```
 
@@ -288,22 +288,22 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Storage Queue Data Reader"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        },
-        "resourceGroupName": {
-            "value": "<<resourceGroupName>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Storage Queue Data Reader"
+    },
+    "resourceGroupName": {
+      "value": "<<resourceGroupName>>"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 
@@ -339,28 +339,28 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Backup Reader"
-        },
-        "description": {
-            "value": "Role Assignment (resource group scope)"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        },
-        "principalType": {
-            "value": "ServicePrincipal"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        },
-        "resourceGroupName": {
-            "value": "<<resourceGroupName>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Backup Reader"
+    },
+    "description": {
+      "value": "Role Assignment (resource group scope)"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
+    },
+    "resourceGroupName": {
+      "value": "<<resourceGroupName>>"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 
@@ -393,19 +393,19 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Storage Queue Data Reader"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Storage Queue Data Reader"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 
@@ -440,25 +440,25 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Backup Reader"
-        },
-        "description": {
-            "value": "Role Assignment (subscription scope)"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        },
-        "principalType": {
-            "value": "ServicePrincipal"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Backup Reader"
+    },
+    "description": {
+      "value": "Role Assignment (subscription scope)"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 

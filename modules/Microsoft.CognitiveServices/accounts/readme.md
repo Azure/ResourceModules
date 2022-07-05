@@ -443,38 +443,38 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-cgs-encr-001"
-        },
-        "kind": {
-            "value": "SpeechServices"
-        },
-        "sku": {
-            "value": "S0"
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "publicNetworkAccess": {
-            "value": "Enabled"
-        },
-        "encryption": {
-            "value": {
-                "keySource": "Microsoft.KeyVault",
-                "keyVaultProperties": {
-                    "identityClientId": "c907a696-36f4-49fe-b926-39e3aabba814", // ID must be updated for new identity
-                    "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
-                    "keyName": "keyEncryptionKey",
-                    "keyversion": "4570a207ec394a0bbbe4fc9adc663a51" // Version must be updated for new keys
-                }
-            }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "kind": {
+      "value": "SpeechServices"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-cgs-encr-001"
+    },
+    "encryption": {
+      "value": {
+        "keySource": "Microsoft.KeyVault",
+        "keyVaultProperties": {
+          "identityClientId": "c907a696-36f4-49fe-b926-39e3aabba814",
+          "keyName": "keyEncryptionKey",
+          "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
+          "keyversion": "4570a207ec394a0bbbe4fc9adc663a51"
         }
+      }
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "sku": {
+      "value": "S0"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
     }
+  }
 }
 ```
 
@@ -506,16 +506,16 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-cgs-min-001"
-        },
-        "kind": {
-            "value": "SpeechServices"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "kind": {
+      "value": "SpeechServices"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-cgs-min-001"
     }
+  }
 }
 ```
 
@@ -576,69 +576,69 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-cgs-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "kind": {
-            "value": "Face"
-        },
-        "sku": {
-            "value": "S0"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "networkAcls": {
-            "value": {
-                "defaultAction": "deny",
-                "virtualNetworkRules": [
-                    {
-                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
-                        "action": "Allow"
-                    }
-                ]
-            }
-        },
-        "customSubDomainName": {
-            "value": "<<namePrefix>>xdomain"
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "kind": {
+      "value": "Face"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-cgs-x-001"
+    },
+    "customSubDomainName": {
+      "value": "<<namePrefix>>xdomain"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "networkAcls": {
+      "value": {
+        "defaultAction": "deny",
+        "virtualNetworkRules": [
+          {
+            "action": "Allow",
+            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+          }
+        ]
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "sku": {
+      "value": "S0"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
     }
+  }
 }
 ```
 
@@ -682,38 +682,38 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-cgs-speech-001"
-        },
-        "kind": {
-            "value": "SpeechServices"
-        },
-        "sku": {
-            "value": "S0"
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "customSubDomainName": {
-            "value": "<<namePrefix>>speechdomain"
-        },
-        "privateEndpoints": {
-            "value": [
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "account"
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "kind": {
+      "value": "SpeechServices"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-cgs-speech-001"
+    },
+    "customSubDomainName": {
+      "value": "<<namePrefix>>speechdomain"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "account",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
+      ]
+    },
+    "sku": {
+      "value": "S0"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
     }
+  }
 }
 ```
 

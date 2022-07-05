@@ -211,54 +211,54 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>azsigweuimages001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>azsigweuimages001"
+    },
+    "images": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-imgd-x-003"
         },
-        "images": {
-            "value": [
-                {
-                    "name": "<<namePrefix>>-az-imgd-x-003"
-                },
-                {
-                    "name": "<<namePrefix>>-az-imgd-x-001",
-                    "osType": "Windows",
-                    "osState": "Generalized",
-                    "publisher": "MicrosoftWindowsServer",
-                    "offer": "WindowsServer",
-                    "sku": "2022-datacenter-azure-edition",
-                    "minRecommendedvCPUs": 2,
-                    "maxRecommendedvCPUs": 8,
-                    "minRecommendedMemory": 4,
-                    "maxRecommendedMemory": 16,
-                    "hyperVGeneration": "V1",
-                    "roleAssignments": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "<<namePrefix>>-az-imgd-x-002",
-                    "osType": "Linux",
-                    "osState": "Generalized",
-                    "publisher": "canonical",
-                    "offer": "0001-com-ubuntu-server-focal",
-                    "sku": "20_04-lts-gen2",
-                    "minRecommendedvCPUs": 1,
-                    "maxRecommendedvCPUs": 4,
-                    "minRecommendedMemory": 4,
-                    "maxRecommendedMemory": 32,
-                    "hyperVGeneration": "V2"
-                }
-            ]
+        {
+          "hyperVGeneration": "V1",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 8,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "<<namePrefix>>-az-imgd-x-001",
+          "offer": "WindowsServer",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsServer",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<<deploymentSpId>>"
+              ],
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "sku": "2022-datacenter-azure-edition"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "maxRecommendedMemory": 32,
+          "maxRecommendedvCPUs": 4,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 1,
+          "name": "<<namePrefix>>-az-imgd-x-002",
+          "offer": "0001-com-ubuntu-server-focal",
+          "osState": "Generalized",
+          "osType": "Linux",
+          "publisher": "canonical",
+          "sku": "20_04-lts-gen2"
         }
+      ]
     }
+  }
 }
 ```
 
@@ -298,26 +298,26 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>azsigweux001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>azsigweux001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
     }
+  }
 }
 ```
 

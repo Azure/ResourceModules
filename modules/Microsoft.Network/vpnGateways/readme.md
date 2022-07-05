@@ -195,16 +195,16 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vpngw-min-001"
-        },
-        "virtualHubResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-vpngw-min-001"
+    },
+    "virtualHubResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001"
     }
+  }
 }
 ```
 
@@ -284,72 +284,72 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vpngw-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "virtualHubResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001"
-        },
-        "bgpSettings": {
-            "value": {
-                "asn": 65515,
-                "peerWeight": 0
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-vpngw-x-001"
+    },
+    "virtualHubResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001"
+    },
+    "bgpSettings": {
+      "value": {
+        "asn": 65515,
+        "peerWeight": 0
+      }
+    },
+    "connections": {
+      "value": [
+        {
+          "connectionBandwidth": 10,
+          "enableBgp": true,
+          "name": "Connection-<<namePrefix>>-az-vsite-x-001",
+          "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001",
+          "routingConfiguration": {
+            "associatedRouteTable": {
+              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable"
+            },
+            "propagatedRouteTables": {
+              "ids": [
+                {
+                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable"
+                }
+              ],
+              "labels": [
+                "default"
+              ]
+            },
+            "vnetRoutes": {
+              "staticRoutes": []
             }
-        },
-        "connections": {
-            "value": [
-                {
-                    "name": "Connection-<<namePrefix>>-az-vsite-x-001",
-                    "connectionBandwidth": 10,
-                    "enableBgp": true,
-                    "routingConfiguration": {
-                        "associatedRouteTable": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable"
-                        },
-                        "propagatedRouteTables": {
-                            "labels": [
-                                "default"
-                            ],
-                            "ids": [
-                                {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable"
-                                }
-                            ]
-                        },
-                        "vnetRoutes": {
-                            "staticRoutes": []
-                        }
-                    },
-                    "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001"
-                }
-            ]
-        },
-        "natRules": {
-            "value": [
-                {
-                    "name": "natRule1",
-                    "internalMappings": [
-                        {
-                            "addressSpace": "10.4.0.0/24"
-                        }
-                    ],
-                    "externalMappings": [
-                        {
-                            "addressSpace": "192.168.21.0/24"
-                        }
-                    ],
-                    "type": "Static",
-                    "mode": "EgressSnat"
-                }
-            ]
+          }
         }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "natRules": {
+      "value": [
+        {
+          "externalMappings": [
+            {
+              "addressSpace": "192.168.21.0/24"
+            }
+          ],
+          "internalMappings": [
+            {
+              "addressSpace": "10.4.0.0/24"
+            }
+          ],
+          "mode": "EgressSnat",
+          "name": "natRule1",
+          "type": "Static"
+        }
+      ]
     }
+  }
 }
 ```
 

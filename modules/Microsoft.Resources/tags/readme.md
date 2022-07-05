@@ -103,9 +103,9 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {}
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {}
 }
 ```
 
@@ -141,22 +141,22 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "onlyUpdate": {
-            "value": false
-        },
-        "tags": {
-            "value": {
-                "Test": "Yes",
-                "TestToo": "No"
-            }
-        },
-        "resourceGroupName": {
-            "value": "validation-rg"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "onlyUpdate": {
+      "value": false
+    },
+    "resourceGroupName": {
+      "value": "validation-rg"
+    },
+    "tags": {
+      "value": {
+        "Test": "Yes",
+        "TestToo": "No"
+      }
     }
+  }
 }
 ```
 
@@ -191,19 +191,19 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "onlyUpdate": {
-            "value": true
-        },
-        "tags": {
-            "value": {
-                "Test": "Yes",
-                "TestToo": "No"
-            }
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "onlyUpdate": {
+      "value": true
+    },
+    "tags": {
+      "value": {
+        "Test": "Yes",
+        "TestToo": "No"
+      }
     }
+  }
 }
 ```
 

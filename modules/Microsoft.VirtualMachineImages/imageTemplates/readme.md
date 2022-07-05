@@ -316,73 +316,73 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-imgt-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "userMsiName": {
-            "value": "adp-<<namePrefix>>-az-msi-x-001"
-        },
-        "userMsiResourceGroup": {
-            "value": "validation-rg"
-        },
-        "buildTimeoutInMinutes": {
-            "value": 0
-        },
-        "vmSize": {
-            "value": "Standard_D2s_v3"
-        },
-        "osDiskSizeGB": {
-            "value": 127
-        },
-        "subnetId": {
-            "value": ""
-        },
-        "imageSource": {
-            "value": {
-                "type": "PlatformImage",
-                "publisher": "MicrosoftWindowsDesktop",
-                "offer": "Windows-10",
-                "sku": "19h2-evd",
-                "version": "latest"
-            }
-        },
-        "customizationSteps": {
-            "value": [
-                {
-                    "type": "WindowsRestart",
-                    "restartTimeout": "30m"
-                }
-            ]
-        },
-        "managedImageName": {
-            "value": "<<namePrefix>>-az-mi-x-001"
-        },
-        "unManagedImageName": {
-            "value": "<<namePrefix>>-az-umi-x-001"
-        },
-        "sigImageDefinitionId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001"
-        },
-        "imageReplicationRegions": {
-            "value": []
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "customizationSteps": {
+      "value": [
+        {
+          "restartTimeout": "30m",
+          "type": "WindowsRestart"
         }
+      ]
+    },
+    "imageSource": {
+      "value": {
+        "offer": "Windows-10",
+        "publisher": "MicrosoftWindowsDesktop",
+        "sku": "19h2-evd",
+        "type": "PlatformImage",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-imgt-x-001"
+    },
+    "userMsiName": {
+      "value": "adp-<<namePrefix>>-az-msi-x-001"
+    },
+    "buildTimeoutInMinutes": {
+      "value": 0
+    },
+    "imageReplicationRegions": {
+      "value": []
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "managedImageName": {
+      "value": "<<namePrefix>>-az-mi-x-001"
+    },
+    "osDiskSizeGB": {
+      "value": 127
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sigImageDefinitionId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001"
+    },
+    "subnetId": {
+      "value": ""
+    },
+    "unManagedImageName": {
+      "value": "<<namePrefix>>-az-umi-x-001"
+    },
+    "userMsiResourceGroup": {
+      "value": "validation-rg"
+    },
+    "vmSize": {
+      "value": "Standard_D2s_v3"
     }
+  }
 }
 ```
 
