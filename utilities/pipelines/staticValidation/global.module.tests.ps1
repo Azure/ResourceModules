@@ -5,14 +5,17 @@ param (
     [array] $moduleFolderPaths = ((Get-ChildItem (Split-Path $PSScriptRoot -Parent) -Recurse -Directory -Force).FullName | Where-Object {
         (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }),
+    [Parameter(Mandatory = $false)]
+    [string] $settingsFilePath = 'settings.json',
 
     # Tokens to test for (i.e. their value should not be used in the parameter files, but their placeholder)
     [Parameter(Mandatory = $false)]
     [hashtable] $enforcedTokenList = @{}
 )
 
-$script:RepoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-$script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json -AsHashtable
+$script:RepoRoot = Split-Path (Split-Path $PSScriptRoot (Split-Path $PSScriptRoot -Parent) -Parent) -Parent
+# $script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\..\settings.json') | ConvertFrom-Json -AsHashtable
+$script:Settings = Get-Content -Path (Join-Path $repoRoot $settingsFilePath) | ConvertFrom-Json -AsHashtable
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
