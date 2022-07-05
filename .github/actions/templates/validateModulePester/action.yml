@@ -11,11 +11,12 @@
 ## ACTION PARAMETERS                         ##
 ##-------------------------------------------##
 ##
-##   |===============================================================================================================|
-##   | Parameter  | Required | Default | Description                     | Example                                   |
-##   |------------|----------|---------|---------------------------------|-------------------------------------------|
-##   | modulePath | true     | ''      | The path to the module's folder | 'modules/Microsoft.ApiManagement/service' |
-##   |===============================================================================================================|
+##   |======================================================================================================================================|
+##   | Parameter    | Required | Default | Description                     | Example                                                        |
+##   |--------------|----------|---------|---------------------------------|----------------------------------------------------------------|
+##   | modulePath   | true     | ''      | The path to the module's folder | 'modules/Microsoft.ApiManagement/service'                      |
+##   | testFilePath | true     | ''      | The path to the test file       | 'utilities/pipelines/staticValidation/global.module.tests.ps1' |
+##   |======================================================================================================================================|
 ##
 ##---------------------------------------------##
 
@@ -27,6 +28,10 @@ inputs:
     description: "The path to the module's folder"
     required: true
     default: ''
+  testFilePath:
+    description: "The path to the test file"
+    required: true
+    default: 'utilities/pipelines/staticValidation/global.module.tests.ps1'
 
 runs:
   using: 'composite'
@@ -95,7 +100,7 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            Container = New-PesterContainer -Path 'modules/.global/global.module.tests.ps1' -Data @{
+            Container = New-PesterContainer -Path '${{ inputs.testFilePath }}' -Data @{
               moduleFolderPaths = $moduleFolderPaths
               enforcedTokenList = $enforcedTokenList
             }
