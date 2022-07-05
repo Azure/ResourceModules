@@ -434,10 +434,11 @@ function Set-DeploymentExamplesSection {
             # Sort 'required' parameters to the front
             $requiredParameterNames = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' }
             $orderedJSONParameters = [ordered]@{}
-            # Add required
-            $JSONParameters.Keys | Where-Object { $_ -in $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $JSONParametersWithoutValue[$_] }
-            # Add rest
-            $JSONParameters.Keys | Where-Object { $_ -notin $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $JSONParametersWithoutValue[$_] }
+            $orderedTopLevelParameterNames = $JSONParametersWithoutValue.psbase.Keys # We must use PS-Base to handle conflicts of HashTable properties & keys (e.g. for a key 'keys').
+            # Add required parameters first
+            $orderedTopLevelParameterNames | Where-Object { $_ -in $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $JSONParametersWithoutValue[$_] }
+            # Add rest after
+            $orderedTopLevelParameterNames | Where-Object { $_ -notin $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $JSONParametersWithoutValue[$_] }
 
             if ($orderedJSONParameters.count -eq 0) {
                 # Handle empty dictionaries (in case the parmaeter file was empty)
