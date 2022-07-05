@@ -13,7 +13,7 @@ param (
     [hashtable] $enforcedTokenList = @{}
 )
 
-$script:RepoRoot = Split-Path (Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent) -Parent
+$script:RepoRoot = Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent
 # $script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\..\settings.json') | ConvertFrom-Json -AsHashtable
 $script:Settings = Get-Content -Path (Join-Path $repoRoot $settingsFilePath) | ConvertFrom-Json -AsHashtable
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
