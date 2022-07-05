@@ -435,9 +435,14 @@ function Set-DeploymentExamplesSection {
             $requiredParameterNames = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' }
             $orderedJSONParameters = [ordered]@{}
             # Add required
-            $JSONParametersWithoutValue.Keys | Where-Object { $_ -in $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $JSONParametersWithoutValue[$_] }
+            $JSONParameters.Keys | Where-Object { $_ -in $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $JSONParametersWithoutValue[$_] }
             # Add rest
-            $JSONParametersWithoutValue.Keys | Where-Object { $_ -notin $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $JSONParametersWithoutValue[$_] }
+            $JSONParameters.Keys | Where-Object { $_ -notin $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $JSONParametersWithoutValue[$_] }
+
+            if ($orderedJSONParameters.count -eq 0) {
+                # Handle empty dictionaries (in case the parmaeter file was empty)
+                $orderedJSONParameters = @{}
+            }
 
             $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
             if ($templateParameterObject -ne '{}') {

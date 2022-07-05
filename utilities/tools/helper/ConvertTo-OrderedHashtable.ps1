@@ -64,7 +64,7 @@ function ConvertTo-OrderedHashtable {
     foreach ($currentLevelKey in ($JSONObject.Keys | Sort-Object)) {
 
         if ($null -eq $JSONObject[$currentLevelKey]) {
-            # Handling case in which the value is 'null' and hence has no type
+            # Handle case in which the value is 'null' and hence has no type
             $orderedLevel[$currentLevelKey] = $null
             continue
         }
