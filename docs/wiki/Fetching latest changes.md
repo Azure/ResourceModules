@@ -41,15 +41,7 @@ The update procedure depends on which scenario you adopted when onboarding CARML
 CARML updates can have different impacts on your version of the library:
 
 - Impacts limited to the CI environment
-
-  A general **pipeline update** can be done by copying/replacing any code outside of the `modules` folder. Refer to [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0#general-pipeline-updates) as an example.
-
 - Impacts limited to specific modules
-
-  New created modules or changed ones can be updated by copying/replacing the content of the new `modules` folder on your own `modules` folder. Refer to [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0#general-import-of-new-modules) as an example.
-
 - Impacts on all the modules when design changes are implemented
-
-  You can update your local code by a copy/replace, but comparing your local repository to the updated one, you'll probably find that changes are not limited to the `modules` folder, but they impact the `utilities` folder and files contained in the root folder (e.g `settings.json`) in same cases.
 
 Before to proceed with the updates it's always recommended to check the new release's highlights on the [releases](https://github.com/Azure/ResourceModules/releases) page, and the [closed pull requests](https://github.com/Azure/ResourceModules/pulls?q=is%3Apr+is%3Aclosed) to have an overview of what has been changed and the possible impact on your library.
