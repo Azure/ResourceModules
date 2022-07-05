@@ -306,6 +306,9 @@ Generate 'Deployment examples' for the ReadMe out of the parameter files current
 .DESCRIPTION
 Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
 
+.PARAMETER TemplateFilePath
+Mandatory. The path to the template file
+
 .PARAMETER TemplateFileContent
 Mandatory. The template file content object to crawl data from
 
@@ -322,7 +325,7 @@ Optional. A switch to control whether or not to add a ARM-JSON-Parameter file ex
 Optional. A switch to control whether or not to add a Bicep deployment example. Defaults to true.
 
 .EXAMPLE
-Set-DeploymentExamplesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-DeploymentExamplesSection -TemplateFilePath 'C:/deploy.bicep' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 
 Update the given readme file's 'Deployment Examples' section based on the given template file content
 #>
@@ -332,6 +335,9 @@ function Set-DeploymentExamplesSection {
     param (
         [Parameter(Mandatory = $true)]
         [string] $TemplateFilePath,
+
+        [Parameter(Mandatory)]
+        [hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory = $true)]
         [object[]] $ReadMeFileContent,
@@ -345,6 +351,9 @@ function Set-DeploymentExamplesSection {
         [Parameter(Mandatory = $false)]
         [string] $SectionStartIdentifier = '## Deployment examples'
     )
+
+    # Load used function(s)
+    . (Join-Path $PSScriptRoot 'helper' 'ConvertTo-OrderedHashtable.ps1')
 
     # Process content
     $SectionContent = [System.Collections.ArrayList]@()
@@ -407,19 +416,30 @@ function Set-DeploymentExamplesSection {
             }
 
             # Handle VALUE references (i.e. remove them)
-            $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -Depth 99).PSObject.properties['parameters'].value
-            $JSONParametersWithoutValue = [ordered]@{}
-            foreach ($parameter in $JSONParameters.PSObject.Properties) {
-                if ($parameter.value.PSObject.Properties.name -eq 'value') {
-                    $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties['value'].value
+            $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -Depth 99 -AsHashtable).parameters
+            $JSONParametersWithoutValue = @{}
+            foreach ($parameterName in $JSONParameters.Keys) {
+                if ($JSONParameters[$parameterName].Keys -eq 'value') {
+                    $JSONParametersWithoutValue[$parameterName] = $JSONParameters[$parameterName]['value']
                 } else {
                     # replace key vault references
-                    $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameter.Name }
+                    $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameterName }
                     $JSONParametersWithoutValue[$parameter.name] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
                 }
             }
 
-            $templateParameterObject = $JSONParametersWithoutValue | ConvertTo-Json -Depth 99
+            # Order parameters recursively
+            $JSONParametersWithoutValue = ConvertTo-OrderedHashtable -JSONInputObject ($JSONParametersWithoutValue | ConvertTo-Json -Depth 99)
+
+            # Sort 'required' parameters to the front
+            $requiredParameterNames = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' }
+            $orderedJSONParameters = [ordered]@{}
+            # Add required
+            $JSONParametersWithoutValue.Keys | Where-Object { $_ -in $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $JSONParametersWithoutValue[$_] }
+            # Add rest
+            $JSONParametersWithoutValue.Keys | Where-Object { $_ -notin $requiredParameterNames } | ForEach-Object { $orderedJSONParameters[$_] = $JSONParametersWithoutValue[$_] }
+
+            $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
             if ($templateParameterObject -ne '{}') {
                 $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
                 $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
@@ -730,8 +750,9 @@ function Set-ModuleReadMe {
         # Handle [Deployment examples] section
         # ===================================
         $inputObject = @{
-            ReadMeFileContent = $readMeFileContent
-            TemplateFilePath  = $TemplateFilePath
+            ReadMeFileContent   = $readMeFileContent
+            TemplateFilePath    = $TemplateFilePath
+            TemplateFileContent = $templateFileContent
         }
         $readMeFileContent = Set-DeploymentExamplesSection @inputObject
     }
