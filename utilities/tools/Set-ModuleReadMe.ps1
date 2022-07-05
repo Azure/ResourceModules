@@ -424,7 +424,7 @@ function Set-DeploymentExamplesSection {
                 } else {
                     # replace key vault references
                     $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameterName }
-                    $JSONParametersWithoutValue[$parameter.name] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
+                    $JSONParametersWithoutValue[$parameterName] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
                 }
             }
 
