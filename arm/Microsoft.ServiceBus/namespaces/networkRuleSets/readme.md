@@ -19,8 +19,10 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 **Required parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `defaultAction` | string |  | Configure default action in virtual network rule set. |
 | `name` | string | `'default'` | The default is the only valid ruleset. |
-| `networkRuleSet` | object | `{object}` | Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules. |
+| `publicNetworkAccess` | string |  | Configure Publice Network Access restrictions in virtual network rule set. |
+| `trustedServiceAccessEnabled` | bool |  | Configure Trusted Services in virtual network rule set. |
 
 **Conditional parameters**
 | Parameter Name | Type | Description |
@@ -31,13 +33,13 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-
-
+| `ipRules` | array | `[]` | Configure IpFilter rules in virtual network rule set. |
+| `virtualNetworkRules` | array | `[]` | Configure Virtual Network Rules in virtual network rule set. |
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Network ACL Deployment. |
-| `resourceGroupName` | string | The name of the Resource Group the virtual network rule was created in. |
-| `resourceId` | string | The Resource ID of the virtual network rule. |
+| `name` | string | The name of the virtual network rule set deployment. |
+| `resourceGroupName` | string | The name of the Resource Group the virtual network rule set was created in. |
+| `resourceId` | string | The Resource ID of the virtual network rule set. |

@@ -9,8 +9,20 @@ param name string = 'default'
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Required. Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules.')
-param networkRuleSet object = {}
+@description('Required. Configure default action in virtual network rule set.')
+param defaultAction string
+
+@description('Required. Configure Publice Network Access restrictions in virtual network rule set.')
+param publicNetworkAccess string
+
+@description('Required. Configure Trusted Services in virtual network rule set.')
+param trustedServiceAccessEnabled bool
+
+@description('Optional. Configure IpFilter rules in virtual network rule set.')
+param ipRules array = []
+
+@description('Optional. Configure Virtual Network Rules in virtual network rule set.')
+param virtualNetworkRules array = []
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -32,19 +44,19 @@ resource serviceBusNamespace_networkRuleSet 'Microsoft.ServiceBus/namespaces/net
   name: name
   parent: namespace
   properties: {
-    defaultAction: networkRuleSet.defaultAction
-    publicNetworkAccess: networkRuleSet.publicNetworkAccess
-    trustedServiceAccessEnabled: networkRuleSet.trustedServiceAccessEnabled
-    ipRules: networkRuleSet.ipRules
-    virtualNetworkRules: networkRuleSet.virtualNetworkRules
+    defaultAction: defaultAction
+    publicNetworkAccess: publicNetworkAccess
+    trustedServiceAccessEnabled: trustedServiceAccessEnabled
+    ipRules: ipRules
+    virtualNetworkRules: virtualNetworkRules
   }
 }
 
-@description('The name of the Network ACL Deployment.')
-output name string = networkRuleSet.name
+@description('The name of the virtual network rule set deployment.')
+output name string = serviceBusNamespace_networkRuleSet.name
 
-@description('The Resource ID of the virtual network rule.')
-output resourceId string = networkRuleSet.id
+@description('The Resource ID of the virtual network rule set.')
+output resourceId string = serviceBusNamespace_networkRuleSet.id
 
-@description('The name of the Resource Group the virtual network rule was created in.')
+@description('The name of the Resource Group the virtual network rule set was created in.')
 output resourceGroupName string = resourceGroup().name

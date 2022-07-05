@@ -72,6 +72,7 @@ This module deploys a service bus namespace resource.
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a SAS token to access the modules. |
 
+
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
@@ -355,7 +356,7 @@ userAssignedIdentities: {
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
-
+  
   }
 ```
 

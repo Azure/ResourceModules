@@ -144,14 +144,6 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var networkRuleSets_var = !empty(networkRuleSets) ? networkRuleSets : {
-  defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
-  publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) ? 'Disabled' : null)
-  trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
-  virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.virtualNetworkRules : [] : null
-  ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
-}
-
 var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -215,7 +207,11 @@ module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (s
   name: '${uniqueString(deployment().name, location)}-networkRuleSet'
   params: {
     namespaceName: serviceBusNamespace.name
-    networkRuleSet: networkRuleSets_var
+    defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
+    publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) ? 'Disabled' : null)
+    trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
+    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.virtualNetworkRules : [] : null
+    ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
   }
 }
 
