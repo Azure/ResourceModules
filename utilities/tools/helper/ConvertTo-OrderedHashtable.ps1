@@ -63,6 +63,12 @@ function ConvertTo-OrderedHashtable {
 
     foreach ($currentLevelKey in ($JSONObject.Keys | Sort-Object)) {
 
+        if ($null -eq $JSONObject[$currentLevelKey]) {
+            # Handling case in which the value is 'null' and hence has no type
+            $orderedLevel[$currentLevelKey] = $null
+            continue
+        }
+
         switch ($JSONObject[$currentLevelKey].GetType().BaseType.Name) {
             'Object' {
                 $orderedLevel[$currentLevelKey] = ConvertTo-OrderedHashtable -JSONInputObject ($JSONObject[$currentLevelKey] | ConvertTo-Json -Depth 99)
