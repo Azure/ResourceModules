@@ -251,34 +251,34 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
   params: {
     name: '<<namePrefix>>-az-gw-er-001'
-    gatewayPipName: '<<namePrefix>>-az-gw-er-001-pip'
-    domainNameLabel: [
-      '<<namePrefix>>-az-gw-er-dm-001'
-    ]
-    virtualNetworkGatewayType: 'ExpressRoute'
     virtualNetworkGatewaySku: 'ErGw1AZ'
+    virtualNetworkGatewayType: 'ExpressRoute'
     vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
-    tags: {
-      Environment: 'Validation'
-      Contact: 'test.user@testcompany.com'
-      PurchaseOrder: ''
-      CostCenter: ''
-      ServiceName: 'DeploymentValidation'
-      Role: 'DeploymentValidation'
-    }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    domainNameLabel: [
+      '<<namePrefix>>-az-gw-er-dm-001'
+    ]
+    gatewayPipName: '<<namePrefix>>-az-gw-er-001-pip'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Contact: 'test.user@testcompany.com'
+      CostCenter: ''
+      Environment: 'Validation'
+      PurchaseOrder: ''
+      Role: 'DeploymentValidation'
+      ServiceName: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -368,31 +368,31 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
   params: {
     name: '<<namePrefix>>-az-gw-vpn-001'
-    lock: 'CanNotDelete'
-    domainNameLabel: [
-      '<<namePrefix>>-az-gw-vpn-dm-001'
-    ]
-    virtualNetworkGatewayType: 'Vpn'
     virtualNetworkGatewaySku: 'VpnGw1AZ'
-    publicIpZones: [
-      '1'
-    ]
-    vpnType: 'RouteBased'
-    activeActive: true
+    virtualNetworkGatewayType: 'Vpn'
     vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+    activeActive: true
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    domainNameLabel: [
+      '<<namePrefix>>-az-gw-vpn-dm-001'
+    ]
+    lock: 'CanNotDelete'
+    publicIpZones: [
+      '1'
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    vpnType: 'RouteBased'
   }
 }
 ```

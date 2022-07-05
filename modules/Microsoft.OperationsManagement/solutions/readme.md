@@ -53,8 +53,8 @@ This module deploys OperationsManagement Solutions.
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
-    name: 'Updates'
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    name: 'Updates'
   }
 }
 ```
@@ -94,8 +94,8 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
-    name: 'AzureAutomation'
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    name: 'AzureAutomation'
     product: 'OMSGallery'
     publisher: 'Microsoft'
   }
@@ -143,8 +143,8 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
-    name: 'nonmsTestSolution'
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    name: 'nonmsTestSolution'
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
   }

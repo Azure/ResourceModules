@@ -190,34 +190,34 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
         priority: 5000
         ruleCollections: [
           {
-            name: 'collection002'
-            priority: 5555
             action: {
               type: 'Allow'
             }
+            name: 'collection002'
+            priority: 5555
+            ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
             rules: [
               {
-                name: 'rule002'
-                ipProtocols: [
-                  'TCP'
-                  'UDP'
-                ]
-                destinationPorts: [
-                  '80'
-                ]
-                sourceAddresses: [
-                  '*'
-                ]
-                sourceIpGroups: []
-                ruleType: 'NetworkRule'
-                destinationIpGroups: []
                 destinationAddresses: [
                   '*'
                 ]
                 destinationFqdns: []
+                destinationIpGroups: []
+                destinationPorts: [
+                  '80'
+                ]
+                ipProtocols: [
+                  'TCP'
+                  'UDP'
+                ]
+                name: 'rule002'
+                ruleType: 'NetworkRule'
+                sourceAddresses: [
+                  '*'
+                ]
+                sourceIpGroups: []
               }
             ]
-            ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
           }
         ]
       }

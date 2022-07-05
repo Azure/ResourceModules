@@ -123,11 +123,11 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-tags'
   params: {
     onlyUpdate: false
+    resourceGroupName: 'validation-rg'
     tags: {
       Test: 'Yes'
       TestToo: 'No'
     }
-    resourceGroupName: 'validation-rg'
   }
 }
 ```

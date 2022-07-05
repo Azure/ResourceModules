@@ -233,21 +233,6 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
   name: '${uniqueString(deployment().name)}-applicationGateways'
   params: {
     name: '<<namePrefix>>-az-apgw-x-001'
-    lock: 'CanNotDelete'
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-    webApplicationFirewallConfiguration: {
-      enabled: true
-      firewallMode: 'Detection'
-      ruleSetType: 'OWASP'
-      ruleSetVersion: '3.0'
-      disabledRuleGroups: []
-      requestBodyCheck: true
-      maxRequestBodySizeInKb: 128
-      fileUploadLimitInMb: 100
-    }
-    enableHttp2: true
     backendAddressPools: [
       {
         name: 'appServiceBackendPool'
@@ -274,27 +259,33 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
       {
         name: 'appServiceBackendHttpsSetting'
         properties: {
-          port: 443
-          protocol: 'Https'
           cookieBasedAffinity: 'Disabled'
           pickHostNameFromBackendAddress: true
+          port: 443
+          protocol: 'Https'
           requestTimeout: 30
         }
       }
       {
         name: 'privateVmHttpSetting'
         properties: {
-          port: 80
-          protocol: 'Http'
           cookieBasedAffinity: 'Disabled'
           pickHostNameFromBackendAddress: false
-          requestTimeout: 30
+          port: 80
           probe: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/probes/privateVmHttpSettingProbe'
           }
+          protocol: 'Http'
+          requestTimeout: 30
         }
       }
     ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    enableHttp2: true
     frontendIPConfigurations: [
       {
         name: 'private'
@@ -342,6 +333,16 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         }
       }
     ]
+    gatewayIPConfigurations: [
+      {
+        name: 'apw-ip-configuration'
+        properties: {
+          subnet: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-007'
+          }
+        }
+      }
+    ]
     httpListeners: [
       {
         name: 'public443'
@@ -352,12 +353,12 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           frontendPort: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendPorts/port443'
           }
+          hostNames: []
+          protocol: 'https'
+          requireServerNameIndication: false
           sslCertificate: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate'
           }
-          protocol: 'https'
-          hostNames: []
-          requireServerNameIndication: false
         }
       }
       {
@@ -369,12 +370,12 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           frontendPort: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendPorts/port4433'
           }
+          hostNames: []
+          protocol: 'https'
+          requireServerNameIndication: false
           sslCertificate: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate'
           }
-          protocol: 'https'
-          hostNames: []
-          requireServerNameIndication: false
         }
       }
       {
@@ -386,8 +387,8 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           frontendPort: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendPorts/port80'
           }
-          protocol: 'Http'
           hostNames: []
+          protocol: 'Http'
           requireServerNameIndication: false
         }
       }
@@ -400,40 +401,31 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           frontendPort: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendPorts/port8080'
           }
-          protocol: 'Http'
           hostNames: []
+          protocol: 'Http'
           requireServerNameIndication: false
         }
       }
     ]
-    gatewayIPConfigurations: [
-      {
-        name: 'apw-ip-configuration'
-        properties: {
-          subnet: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-007'
-          }
-        }
-      }
-    ]
+    lock: 'CanNotDelete'
     probes: [
       {
         name: 'privateVmHttpSettingProbe'
         properties: {
-          protocol: 'Http'
           host: '10.0.0.4'
-          path: '/'
           interval: 60
-          timeout: 15
-          unhealthyThreshold: 5
-          pickHostNameFromBackendHttpSettings: false
-          minServers: 3
           match: {
             statusCodes: [
               '200'
               '401'
             ]
           }
+          minServers: 3
+          path: '/'
+          pickHostNameFromBackendHttpSettings: false
+          protocol: 'Http'
+          timeout: 15
+          unhealthyThreshold: 5
         }
       }
     ]
@@ -441,33 +433,33 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
       {
         name: 'httpRedirect80'
         properties: {
-          redirectType: 'Permanent'
-          targetListener: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/public443'
-          }
           includePath: true
           includeQueryString: true
+          redirectType: 'Permanent'
           requestRoutingRules: [
             {
               id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/requestRoutingRules/httpRedirect80-public443'
             }
           ]
+          targetListener: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/public443'
+          }
         }
       }
       {
         name: 'httpRedirect8080'
         properties: {
-          redirectType: 'Permanent'
-          targetListener: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/private4433'
-          }
           includePath: true
           includeQueryString: true
+          redirectType: 'Permanent'
           requestRoutingRules: [
             {
               id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/requestRoutingRules/httpRedirect8080-private4433'
             }
           ]
+          targetListener: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/private4433'
+          }
         }
       }
     ]
@@ -475,56 +467,64 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
       {
         name: 'public443-appServiceBackendHttpsSetting-appServiceBackendHttpsSetting'
         properties: {
-          ruleType: 'Basic'
-          httpListener: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/public443'
-          }
           backendAddressPool: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/backendAddressPools/appServiceBackendPool'
           }
           backendHttpSettings: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/backendHttpSettingsCollection/appServiceBackendHttpsSetting'
           }
+          httpListener: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/public443'
+          }
+          ruleType: 'Basic'
         }
       }
       {
         name: 'private4433-privateVmHttpSetting-privateVmHttpSetting'
         properties: {
-          ruleType: 'Basic'
-          httpListener: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/private4433'
-          }
           backendAddressPool: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/backendAddressPools/privateVmBackendPool'
           }
           backendHttpSettings: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/backendHttpSettingsCollection/privateVmHttpSetting'
           }
+          httpListener: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/private4433'
+          }
+          ruleType: 'Basic'
         }
       }
       {
         name: 'httpRedirect80-public443'
         properties: {
-          ruleType: 'Basic'
           httpListener: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/httpRedirect80'
           }
           redirectConfiguration: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/redirectConfigurations/httpRedirect80'
           }
+          ruleType: 'Basic'
         }
       }
       {
         name: 'httpRedirect8080-private4433'
         properties: {
-          ruleType: 'Basic'
           httpListener: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/httpRedirect8080'
           }
           redirectConfiguration: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/redirectConfigurations/httpRedirect8080'
           }
+          ruleType: 'Basic'
         }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
     sku: 'WAF_v2'
@@ -536,19 +536,19 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         }
       }
     ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    webApplicationFirewallConfiguration: {
+      disabledRuleGroups: []
+      enabled: true
+      fileUploadLimitInMb: 100
+      firewallMode: 'Detection'
+      maxRequestBodySizeInKb: 128
+      requestBodyCheck: true
+      ruleSetType: 'OWASP'
+      ruleSetVersion: '3.0'
+    }
   }
 }
 ```

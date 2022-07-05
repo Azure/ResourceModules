@@ -172,12 +172,12 @@ roleAssignments: [
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateEndpoints'
   params: {
-    name: '<<namePrefix>>-az-pe-kvlt-min-001'
-    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-    serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
     groupIds: [
       'vault'
     ]
+    name: '<<namePrefix>>-az-pe-kvlt-min-001'
+    serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
+    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
   }
 }
 ```
@@ -225,13 +225,13 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateEndpoints'
   params: {
-    name: '<<namePrefix>>-az-pe-kvlt-001'
-    lock: 'CanNotDelete'
-    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-    serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
     groupIds: [
       'vault'
     ]
+    name: '<<namePrefix>>-az-pe-kvlt-001'
+    serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
+    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+    lock: 'CanNotDelete'
     privateDnsZoneGroups: [
       {
         privateDNSResourceIds: [
@@ -241,10 +241,10 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }

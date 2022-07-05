@@ -161,20 +161,20 @@ tags: {
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-localNetworkGateways'
   params: {
-    name: '<<namePrefix>>-az-lng-x-001'
-    lock: 'CanNotDelete'
     localAddressPrefixes: [
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
+    name: '<<namePrefix>>-az-lng-x-001'
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }

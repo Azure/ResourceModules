@@ -324,28 +324,42 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workflows'
   params: {
     name: '<<namePrefix>>-az-lga-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    systemAssignedIdentity: true
     tags: {}
     workflowActions: {
       HTTP: {
-        type: 'Http'
         inputs: {
-          method: 'POST'
-          uri: 'https://testStringForValidation.com'
           body: {
+            BeginPeakTime: '[BeginPeakTime]'
+            EndPeakTime: '[EndPeakTime]'
             HostPoolName: '[HostPoolName]'
             LAWorkspaceName: '[LAWorkspaceName]'
             LimitSecondsToForceLogOffUser: '[LimitSecondsToForceLogOffUser]'
-            EndPeakTime: '[EndPeakTime]'
-            BeginPeakTime: '[BeginPeakTime]'
-            UtcOffset: '[UtcOffset]'
             LogOffMessageBody: '[LogOffMessageBody]'
             LogOffMessageTitle: '[LogOffMessageTitle]'
             MinimumNumberOfRDSH: 1
-            SessionThresholdPerCPU: 1
             ResourceGroupName: '[ResourceGroupName]'
+            SessionThresholdPerCPU: 1
+            UtcOffset: '[UtcOffset]'
           }
+          method: 'POST'
+          uri: 'https://testStringForValidation.com'
         }
+        type: 'Http'
       }
     }
     workflowTriggers: {
@@ -357,20 +371,6 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
         type: 'Recurrence'
       }
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    systemAssignedIdentity: true
   }
 }
 ```

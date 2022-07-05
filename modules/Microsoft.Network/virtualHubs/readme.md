@@ -113,8 +113,8 @@ tags: {
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
-    name: '<<namePrefix>>-az-vhub-min-001'
     addressPrefix: '10.0.0.0/16'
+    name: '<<namePrefix>>-az-vhub-min-001'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
   }
 }
@@ -158,9 +158,8 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
-    name: '<<namePrefix>>-az-vhub-x-001'
-    lock: 'CanNotDelete'
     addressPrefix: '10.1.0.0/16'
+    name: '<<namePrefix>>-az-vhub-x-001'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
     hubRouteTables: [
       {
@@ -188,6 +187,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
         }
       }
     ]
+    lock: 'CanNotDelete'
   }
 }
 ```

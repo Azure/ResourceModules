@@ -319,29 +319,29 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-staticSites'
   params: {
     name: '<<namePrefix>>-az-wss-x-001'
-    lock: 'CanNotDelete'
-    sku: 'Standard'
-    stagingEnvironmentPolicy: 'Enabled'
     allowConfigFileUpdates: true
     enterpriseGradeCdnStatus: 'Disabled'
+    lock: 'CanNotDelete'
+    privateEndpoints: [
+      {
+        service: 'staticSites'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sku: 'Standard'
+    stagingEnvironmentPolicy: 'Enabled'
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    privateEndpoints: [
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'staticSites'
-      }
-    ]
   }
 }
 ```

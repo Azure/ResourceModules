@@ -367,27 +367,27 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     name: '<<namePrefix>>-az-fw-custompip-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
     publicIPAddressObject: {
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
-      publicIPPrefixResourceId: ''
-      publicIPAllocationMethod: 'Static'
-      skuName: 'Standard'
-      skuTier: 'Regional'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
+      diagnosticLogCategoriesToEnable: [
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+        'DDoSProtectionNotifications'
       ]
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      diagnosticLogCategoriesToEnable: [
-        'DDoSProtectionNotifications'
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
+      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
+      publicIPAllocationMethod: 'Static'
+      publicIPPrefixResourceId: ''
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
       ]
+      skuName: 'Standard'
+      skuTier: 'Regional'
     }
   }
 }
@@ -495,57 +495,50 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
     name: '<<namePrefix>>-az-fw-x-001'
-    lock: 'CanNotDelete'
-    zones: [
-      '1'
-      '2'
-      '3'
-    ]
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw'
-    azureFirewallSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
     applicationRuleCollections: [
       {
         name: 'allow-app-rules'
         properties: {
-          priority: 100
           action: {
             type: 'allow'
           }
+          priority: 100
           rules: [
             {
-              name: 'allow-ase-tags'
-              sourceAddresses: [
-                '*'
-              ]
-              protocols: [
-                {
-                  protocolType: 'HTTP'
-                  port: '80'
-                }
-                {
-                  protocolType: 'HTTPS'
-                  port: '443'
-                }
-              ]
               fqdnTags: [
                 'AppServiceEnvironment'
                 'WindowsUpdate'
               ]
-            }
-            {
-              name: 'allow-ase-management'
+              name: 'allow-ase-tags'
+              protocols: [
+                {
+                  port: '80'
+                  protocolType: 'HTTP'
+                }
+                {
+                  port: '443'
+                  protocolType: 'HTTPS'
+                }
+              ]
               sourceAddresses: [
                 '*'
               ]
+            }
+            {
+              name: 'allow-ase-management'
               protocols: [
                 {
-                  protocolType: 'HTTP'
                   port: '80'
+                  protocolType: 'HTTP'
                 }
                 {
-                  protocolType: 'HTTPS'
                   port: '443'
+                  protocolType: 'HTTPS'
                 }
+              ]
+              sourceAddresses: [
+                '*'
               ]
               targetFqdns: [
                 'management.azure.com'
@@ -555,29 +548,36 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
       }
     ]
+    azureFirewallSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    lock: 'CanNotDelete'
     networkRuleCollections: [
       {
         name: 'allow-network-rules'
         properties: {
-          priority: 100
           action: {
             type: 'allow'
           }
+          priority: 100
           rules: [
             {
-              name: 'allow-ntp'
-              sourceAddresses: [
-                '*'
-              ]
               destinationAddresses: [
                 '*'
               ]
               destinationPorts: [
-                '123'
                 '12000'
+                '123'
               ]
+              name: 'allow-ntp'
               protocols: [
                 'Any'
+              ]
+              sourceAddresses: [
+                '*'
               ]
             }
           ]
@@ -586,17 +586,17 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    zones: [
+      '1'
+      '2'
+      '3'
+    ]
   }
 }
 ```

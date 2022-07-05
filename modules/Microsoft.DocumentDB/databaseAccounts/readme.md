@@ -466,34 +466,29 @@ userAssignedIdentities: {
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-databaseAccounts'
   params: {
-    name: '<<namePrefix>>-az-cdb-mongodb-001'
-    location: 'West Europe'
     locations: [
       {
-        locationName: 'West Europe'
         failoverPriority: 0
         isZoneRedundant: false
+        locationName: 'West Europe'
       }
       {
-        locationName: 'North Europe'
         failoverPriority: 1
         isZoneRedundant: false
+        locationName: 'North Europe'
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+    name: '<<namePrefix>>-az-cdb-mongodb-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    location: 'West Europe'
     mongodbDatabases: [
       {
-        name: '<<namePrefix>>-az-mdb-x-001'
         collections: [
           {
-            name: 'car_collection'
             indexes: [
               {
                 key: {
@@ -531,12 +526,12 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
                 }
               }
             ]
+            name: 'car_collection'
             shardKey: {
               car_id: 'Hash'
             }
           }
           {
-            name: 'truck_collection'
             indexes: [
               {
                 key: {
@@ -574,17 +569,17 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
                 }
               }
             ]
+            name: 'truck_collection'
             shardKey: {
               truck_id: 'Hash'
             }
           }
         ]
+        name: '<<namePrefix>>-az-mdb-x-001'
       }
       {
-        name: '<<namePrefix>>-az-mdb-x-002'
         collections: [
           {
-            name: 'bike_collection'
             indexes: [
               {
                 key: {
@@ -622,12 +617,12 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
                 }
               }
             ]
+            name: 'bike_collection'
             shardKey: {
               bike_id: 'Hash'
             }
           }
           {
-            name: 'bicycle_collection'
             indexes: [
               {
                 key: {
@@ -665,18 +660,23 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
                 }
               }
             ]
+            name: 'bicycle_collection'
             shardKey: {
               bicycle_id: 'Hash'
             }
           }
         ]
+        name: '<<namePrefix>>-az-mdb-x-002'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     systemAssignedIdentity: true
   }
 }
@@ -945,33 +945,33 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-databaseAccounts'
   params: {
-    name: '<<namePrefix>>-az-cdb-plain-001'
-    lock: 'CanNotDelete'
     locations: [
       {
-        locationName: 'West Europe'
         failoverPriority: 0
         isZoneRedundant: false
+        locationName: 'West Europe'
       }
       {
-        locationName: 'North Europe'
         failoverPriority: 1
         isZoneRedundant: false
+        locationName: 'North Europe'
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+    name: '<<namePrefix>>-az-cdb-plain-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
   }
 }
 ```
@@ -1050,51 +1050,51 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-databaseAccounts'
   params: {
-    name: '<<namePrefix>>-az-cdb-sqldb-001'
-    location: 'West Europe'
     locations: [
       {
-        locationName: 'West Europe'
         failoverPriority: 0
         isZoneRedundant: false
+        locationName: 'West Europe'
       }
       {
-        locationName: 'North Europe'
         failoverPriority: 1
         isZoneRedundant: false
+        locationName: 'North Europe'
       }
     ]
+    name: '<<namePrefix>>-az-cdb-sqldb-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    location: 'West Europe'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
     sqlDatabases: [
       {
-        name: '<<namePrefix>>-az-sql-x-001'
         containers: [
           {
+            kind: 'Hash'
             name: 'container-001'
             paths: [
               '/myPartitionKey'
             ]
-            kind: 'Hash'
           }
         ]
+        name: '<<namePrefix>>-az-sql-x-001'
       }
       {
-        name: '<<namePrefix>>-az-sql-x-002'
         containers: []
+        name: '<<namePrefix>>-az-sql-x-002'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }

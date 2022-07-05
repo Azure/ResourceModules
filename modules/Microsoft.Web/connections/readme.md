@@ -163,18 +163,18 @@ tags: {
 module connections './Microsoft.Web/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
-    name: 'azuremonitor'
-    lock: 'CanNotDelete'
     displayName: 'azuremonitorlogs'
+    name: 'azuremonitor'
     connectionApi: {
       id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
     }
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }

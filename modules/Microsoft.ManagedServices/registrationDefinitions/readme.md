@@ -175,9 +175,6 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registrationDefinitions'
   params: {
-    name: 'Component Validation - Subscription assignment'
-    registrationDescription: 'Managed by Lighthouse'
-    managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
     authorizations: [
       {
         principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
@@ -195,6 +192,9 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
         roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
       }
     ]
+    managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
+    name: 'Component Validation - Subscription assignment'
+    registrationDescription: 'Managed by Lighthouse'
   }
 }
 ```
@@ -256,10 +256,6 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registrationDefinitions'
   params: {
-    name: 'Component Validation - Resource group assignment'
-    registrationDescription: 'Managed by Lighthouse'
-    managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    resourceGroupName: 'validation-rg'
     authorizations: [
       {
         principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
@@ -277,6 +273,10 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
         roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
       }
     ]
+    managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
+    name: 'Component Validation - Resource group assignment'
+    registrationDescription: 'Managed by Lighthouse'
+    resourceGroupName: 'validation-rg'
   }
 }
 ```

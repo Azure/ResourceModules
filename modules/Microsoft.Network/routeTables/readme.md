@@ -248,22 +248,22 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-udr-x-001'
     lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     routes: [
       {
         name: 'default'
         properties: {
           addressPrefix: '0.0.0.0/0'
-          nextHopType: 'VirtualAppliance'
           nextHopIpAddress: '172.16.0.20'
+          nextHopType: 'VirtualAppliance'
         }
-      }
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
       }
     ]
   }

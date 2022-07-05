@@ -270,39 +270,39 @@ roleAssignments: [
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-imageTemplates'
   params: {
-    name: '<<namePrefix>>-az-imgt-x-001'
-    lock: 'CanNotDelete'
-    userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
-    userMsiResourceGroup: 'validation-rg'
-    buildTimeoutInMinutes: 0
-    vmSize: 'Standard_D2s_v3'
-    osDiskSizeGB: 127
-    subnetId: ''
-    imageSource: {
-      type: 'PlatformImage'
-      publisher: 'MicrosoftWindowsDesktop'
-      offer: 'Windows-10'
-      sku: '19h2-evd'
-      version: 'latest'
-    }
     customizationSteps: [
       {
-        type: 'WindowsRestart'
         restartTimeout: '30m'
+        type: 'WindowsRestart'
       }
     ]
-    managedImageName: '<<namePrefix>>-az-mi-x-001'
-    unManagedImageName: '<<namePrefix>>-az-umi-x-001'
-    sigImageDefinitionId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001'
+    imageSource: {
+      offer: 'Windows-10'
+      publisher: 'MicrosoftWindowsDesktop'
+      sku: '19h2-evd'
+      type: 'PlatformImage'
+      version: 'latest'
+    }
+    name: '<<namePrefix>>-az-imgt-x-001'
+    userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
+    buildTimeoutInMinutes: 0
     imageReplicationRegions: []
+    lock: 'CanNotDelete'
+    managedImageName: '<<namePrefix>>-az-mi-x-001'
+    osDiskSizeGB: 127
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    sigImageDefinitionId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001'
+    subnetId: ''
+    unManagedImageName: '<<namePrefix>>-az-umi-x-001'
+    userMsiResourceGroup: 'validation-rg'
+    vmSize: 'Standard_D2s_v3'
   }
 }
 ```

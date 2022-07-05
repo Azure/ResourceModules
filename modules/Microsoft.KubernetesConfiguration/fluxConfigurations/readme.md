@@ -77,19 +77,19 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
-    name: 'flux2'
-    scope: 'cluster'
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    name: 'flux2'
     namespace: 'flux-system'
+    scope: 'cluster'
     sourceKind: 'GitRepository'
     gitRepository: {
-      url: 'https://github.com/mspnp/aks-baseline'
-      timeoutInSeconds: 180
-      syncIntervalInSeconds: 300
       repositoryRef: {
         branch: 'main'
       }
       sshKnownHosts: ''
+      syncIntervalInSeconds: 300
+      timeoutInSeconds: 180
+      url: 'https://github.com/mspnp/aks-baseline'
     }
   }
 }
@@ -150,28 +150,28 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
-    name: 'flux2'
-    scope: 'cluster'
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    name: 'flux2'
     namespace: 'flux-system'
+    scope: 'cluster'
     sourceKind: 'GitRepository'
     gitRepository: {
-      url: 'https://github.com/mspnp/aks-baseline'
-      timeoutInSeconds: 180
-      syncIntervalInSeconds: 300
       repositoryRef: {
         branch: 'main'
       }
       sshKnownHosts: ''
+      syncIntervalInSeconds: 300
+      timeoutInSeconds: 180
+      url: 'https://github.com/mspnp/aks-baseline'
     }
     kustomizations: {
       unified: {
-        path: './cluster-manifests'
         dependsOn: []
-        timeoutInSeconds: 300
-        syncIntervalInSeconds: 300
-        prune: true
         force: false
+        path: './cluster-manifests'
+        prune: true
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 300
       }
     }
   }

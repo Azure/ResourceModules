@@ -320,17 +320,17 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
     name: '<<namePrefix>>-az-vnetgwc-x-001'
-    lock: 'CanNotDelete'
     virtualNetworkGateway1: {
       id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
     }
+    enableBgp: false
+    location: 'eastus'
+    lock: 'CanNotDelete'
     virtualNetworkGateway2: {
       id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
     }
-    vpnSharedKey: kv1.getSecret('vpnSharedKey')
     virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
-    enableBgp: false
-    location: 'eastus'
+    vpnSharedKey: kv1.getSecret('vpnSharedKey')
   }
 }
 ```

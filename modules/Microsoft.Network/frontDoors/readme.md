@@ -173,7 +173,6 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-frontDoors'
   params: {
     name: '<<namePrefix>>-az-fd-x-001'
-    lock: 'CanNotDelete'
     backendPools: [
       {
         name: 'backendPool'
@@ -182,28 +181,27 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             {
               address: 'biceptest.local'
               backendHostHeader: 'backendAddress'
+              enabledState: 'Enabled'
               httpPort: 80
               httpsPort: 443
-              weight: 50
               priority: 1
-              enabledState: 'Enabled'
-              privateLinkAlias: ''
-              privateLinkApprovalMessage: ''
-              privateLinkLocation: ''
-              privateLinkResourceId: ''
+              privateLinkAlias: {}
+              privateLinkApprovalMessage: {}
+              privateLinkLocation: {}
+              privateLinkResourceId: {}
+              weight: 50
             }
           ]
-          LoadBalancingSettings: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer'
-          }
           HealthProbeSettings: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe'
+          }
+          LoadBalancingSettings: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer'
           }
         }
       }
     ]
     enforceCertificateNameCheck: 'Disabled'
-    sendRecvTimeoutSeconds: 10
     frontendEndpoints: [
       {
         name: 'frontEnd'
@@ -218,8 +216,8 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       {
         name: 'heathProbe'
         properties: {
-          enabledState: ''
-          healthProbeMethod: ''
+          enabledState: {}
+          healthProbeMethod: {}
           intervalInSeconds: 60
           path: '/'
           protocol: 'Https'
@@ -236,6 +234,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
         }
       }
     ]
+    lock: 'CanNotDelete'
     routingRules: [
       {
         name: 'routingRule'
@@ -255,14 +254,15 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           ]
           routeConfiguration: {
             '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
-            forwardingProtocol: 'MatchRequest'
             backendPool: {
               id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool'
             }
+            forwardingProtocol: 'MatchRequest'
           }
         }
       }
     ]
+    sendRecvTimeoutSeconds: 10
   }
 }
 ```

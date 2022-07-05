@@ -329,11 +329,11 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
     name: '<<namePrefix>>-az-vSite-min-001'
+    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
     addressPrefixes: [
       '10.0.0.0/16'
     ]
     ipAddress: '1.2.3.4'
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
   }
 }
 ```
@@ -382,15 +382,30 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
     name: '<<namePrefix>>-az-vSite-x-001'
+    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
+    deviceProperties: {
+      linkSpeedInMbps: 0
+    }
     lock: 'CanNotDelete'
+    o365Policy: {
+      breakOutCategories: {
+        allow: true
+        default: true
+        optimize: true
+      }
+    }
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     tags: {
       tagA: 'valueA'
       tagB: 'valueB'
     }
-    deviceProperties: {
-      linkSpeedInMbps: 0
-    }
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
     vpnSiteLinks: [
       {
         name: '<<namePrefix>>-az-vSite-x-001'
@@ -419,21 +434,6 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
             linkSpeedInMbps: 5
           }
         }
-      }
-    ]
-    o365Policy: {
-      breakOutCategories: {
-        optimize: true
-        allow: true
-        default: true
-      }
-    }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
       }
     ]
   }

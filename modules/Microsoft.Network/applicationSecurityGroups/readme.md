@@ -159,10 +159,10 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
     lock: 'CanNotDelete'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }

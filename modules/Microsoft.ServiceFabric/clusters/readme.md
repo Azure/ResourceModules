@@ -238,13 +238,13 @@ tags: {
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
-    name: '<<namePrefix>>-az-sfc-cert-001'
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080'
     reliabilityLevel: 'None'
     certificate: {
       thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
       x509StoreName: 'My'
     }
+    name: '<<namePrefix>>-az-sfc-cert-001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -329,19 +329,19 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
-    name: '<<namePrefix>>-az-sfc-full-001'
-    lock: 'CanNotDelete'
-    tags: {
-      resourceType: 'Service Fabric'
-      clusterName: '<<namePrefix>>-az-sfc-full-001'
-    }
+    managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
+    reliabilityLevel: 'Silver'
     addOnFeatures: [
-      'RepairManager'
-      'DnsService'
       'BackupRestoreService'
+      'DnsService'
+      'RepairManager'
       'ResourceMonitorService'
     ]
-    maxUnusedVersionsToKeep: 2
+    applicationTypes: [
+      {
+        name: 'WordCount'
+      }
+    ]
     azureActiveDirectory: {
       clientApplication: '<<deploymentSpId>>'
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
@@ -405,7 +405,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         ]
       }
     ]
-    managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
+    lock: 'CanNotDelete'
+    maxUnusedVersionsToKeep: 2
+    name: '<<namePrefix>>-az-sfc-full-001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -460,39 +462,37 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         ]
       }
     ]
-    upgradeDescription: {
-      forceRestart: false
-      upgradeReplicaSetCheckTimeout: '1.00:00:00'
-      healthCheckWaitDuration: '00:00:30'
-      healthCheckStableDuration: '00:01:00'
-      healthCheckRetryTimeout: '00:45:00'
-      upgradeTimeout: '02:00:00'
-      upgradeDomainTimeout: '02:00:00'
-      healthPolicy: {
-        maxPercentUnhealthyNodes: 0
-        maxPercentUnhealthyApplications: 0
-      }
-      deltaHealthPolicy: {
-        maxPercentDeltaUnhealthyNodes: 0
-        maxPercentUpgradeDomainDeltaUnhealthyNodes: 0
-        maxPercentDeltaUnhealthyApplications: 0
-      }
-    }
-    reliabilityLevel: 'Silver'
-    vmImage: 'Linux'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    applicationTypes: [
-      {
-        name: 'WordCount'
+    tags: {
+      clusterName: '<<namePrefix>>-az-sfc-full-001'
+      resourceType: 'Service Fabric'
+    }
+    upgradeDescription: {
+      deltaHealthPolicy: {
+        maxPercentDeltaUnhealthyApplications: 0
+        maxPercentDeltaUnhealthyNodes: 0
+        maxPercentUpgradeDomainDeltaUnhealthyNodes: 0
       }
-    ]
+      forceRestart: false
+      healthCheckRetryTimeout: '00:45:00'
+      healthCheckStableDuration: '00:01:00'
+      healthCheckWaitDuration: '00:00:30'
+      healthPolicy: {
+        maxPercentUnhealthyApplications: 0
+        maxPercentUnhealthyNodes: 0
+      }
+      upgradeDomainTimeout: '02:00:00'
+      upgradeReplicaSetCheckTimeout: '1.00:00:00'
+      upgradeTimeout: '02:00:00'
+    }
+    vmImage: 'Linux'
   }
 }
 ```
@@ -728,9 +728,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
-    name: '<<namePrefix>>-az-sfc-min-001'
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080'
     reliabilityLevel: 'None'
+    name: '<<namePrefix>>-az-sfc-min-001'
     nodeTypes: [
       {
         applicationPorts: {

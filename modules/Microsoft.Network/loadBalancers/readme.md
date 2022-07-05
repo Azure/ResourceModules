@@ -469,75 +469,75 @@ tags: {
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-loadBalancers'
   params: {
-    name: '<<namePrefix>>-az-lb-internal-001'
-    loadBalancerSku: 'Standard'
     frontendIPConfigurations: [
       {
         name: 'privateIPConfig1'
         subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
       }
     ]
+    name: '<<namePrefix>>-az-lb-internal-001'
     backendAddressPools: [
       {
         name: 'servers'
       }
     ]
-    probes: [
-      {
-        name: 'probe1'
-        protocol: 'Tcp'
-        port: '62000'
-        intervalInSeconds: 5
-        numberOfProbes: 2
-      }
-    ]
-    loadBalancingRules: [
-      {
-        name: 'privateIPLBRule1'
-        frontendIPConfigurationName: 'privateIPConfig1'
-        frontendPort: 0
-        backendPort: 0
-        enableFloatingIP: true
-        idleTimeoutInMinutes: 4
-        protocol: 'All'
-        loadDistribution: 'Default'
-        probeName: 'probe1'
-        disableOutboundSnat: true
-        enableTcpReset: false
-        backendAddressPoolName: 'servers'
-      }
-    ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     inboundNatRules: [
       {
-        name: 'inboundNatRule1'
-        frontendIPConfigurationName: 'privateIPConfig1'
-        frontendPort: 443
         backendPort: 443
         enableFloatingIP: false
-        idleTimeoutInMinutes: 4
-        protocol: 'Tcp'
         enableTcpReset: false
+        frontendIPConfigurationName: 'privateIPConfig1'
+        frontendPort: 443
+        idleTimeoutInMinutes: 4
+        name: 'inboundNatRule1'
+        protocol: 'Tcp'
       }
       {
-        name: 'inboundNatRule2'
+        backendPort: 3389
         frontendIPConfigurationName: 'privateIPConfig1'
         frontendPort: 3389
-        backendPort: 3389
+        name: 'inboundNatRule2'
+      }
+    ]
+    loadBalancerSku: 'Standard'
+    loadBalancingRules: [
+      {
+        backendAddressPoolName: 'servers'
+        backendPort: 0
+        disableOutboundSnat: true
+        enableFloatingIP: true
+        enableTcpReset: false
+        frontendIPConfigurationName: 'privateIPConfig1'
+        frontendPort: 0
+        idleTimeoutInMinutes: 4
+        loadDistribution: 'Default'
+        name: 'privateIPLBRule1'
+        probeName: 'probe1'
+        protocol: 'All'
+      }
+    ]
+    probes: [
+      {
+        intervalInSeconds: 5
+        name: 'probe1'
+        numberOfProbes: 2
+        port: '62000'
+        protocol: 'Tcp'
       }
     ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 }
 ```
@@ -666,13 +666,13 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-loadBalancers'
   params: {
-    name: '<<namePrefix>>-az-lb-min-001'
     frontendIPConfigurations: [
       {
         name: 'publicIPConfig1'
         publicIPAddressId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-min-lb'
       }
     ]
+    name: '<<namePrefix>>-az-lb-min-001'
   }
 }
 ```
@@ -717,14 +717,13 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-loadBalancers'
   params: {
-    name: '<<namePrefix>>-az-lb-x-001'
-    lock: 'CanNotDelete'
     frontendIPConfigurations: [
       {
         name: 'publicIPConfig1'
         publicIPAddressId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-lb'
       }
     ]
+    name: '<<namePrefix>>-az-lb-x-001'
     backendAddressPools: [
       {
         name: 'backendAddressPool1'
@@ -733,85 +732,86 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
         name: 'backendAddressPool2'
       }
     ]
-    loadBalancingRules: [
-      {
-        name: 'publicIPLBRule1'
-        frontendIPConfigurationName: 'publicIPConfig1'
-        frontendPort: 80
-        backendPort: 80
-        enableFloatingIP: false
-        idleTimeoutInMinutes: 5
-        protocol: 'Tcp'
-        enableTcpReset: false
-        loadDistribution: 'Default'
-        disableOutboundSnat: true
-        probeName: 'probe1'
-        backendAddressPoolName: 'backendAddressPool1'
-      }
-      {
-        name: 'publicIPLBRule2'
-        frontendIPConfigurationName: 'publicIPConfig1'
-        frontendPort: 8080
-        backendPort: 8080
-        loadDistribution: 'Default'
-        probeName: 'probe2'
-        backendAddressPoolName: 'backendAddressPool2'
-      }
-    ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     inboundNatRules: [
       {
-        name: 'inboundNatRule1'
-        frontendIPConfigurationName: 'publicIPConfig1'
-        frontendPort: 443
         backendPort: 443
         enableFloatingIP: false
-        idleTimeoutInMinutes: 4
-        protocol: 'Tcp'
         enableTcpReset: false
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 443
+        idleTimeoutInMinutes: 4
+        name: 'inboundNatRule1'
+        protocol: 'Tcp'
       }
       {
-        name: 'inboundNatRule2'
+        backendPort: 3389
         frontendIPConfigurationName: 'publicIPConfig1'
         frontendPort: 3389
-        backendPort: 3389
+        name: 'inboundNatRule2'
       }
     ]
+    loadBalancingRules: [
+      {
+        backendAddressPoolName: 'backendAddressPool1'
+        backendPort: 80
+        disableOutboundSnat: true
+        enableFloatingIP: false
+        enableTcpReset: false
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 80
+        idleTimeoutInMinutes: 5
+        loadDistribution: 'Default'
+        name: 'publicIPLBRule1'
+        probeName: 'probe1'
+        protocol: 'Tcp'
+      }
+      {
+        backendAddressPoolName: 'backendAddressPool2'
+        backendPort: 8080
+        frontendIPConfigurationName: 'publicIPConfig1'
+        frontendPort: 8080
+        loadDistribution: 'Default'
+        name: 'publicIPLBRule2'
+        probeName: 'probe2'
+      }
+    ]
+    lock: 'CanNotDelete'
     outboundRules: [
       {
-        name: 'outboundRule1'
-        frontendIPConfigurationName: 'publicIPConfig1'
-        backendAddressPoolName: 'backendAddressPool1'
         allocatedOutboundPorts: 63984
+        backendAddressPoolName: 'backendAddressPool1'
+        frontendIPConfigurationName: 'publicIPConfig1'
+        name: 'outboundRule1'
       }
     ]
     probes: [
       {
-        name: 'probe1'
-        protocol: 'Tcp'
-        port: 80
         intervalInSeconds: 10
+        name: 'probe1'
         numberOfProbes: 5
+        port: 80
+        protocol: 'Tcp'
       }
       {
         name: 'probe2'
-        protocol: 'Https'
         port: 443
+        protocol: 'Https'
         requestPath: '/'
       }
     ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 }
 ```

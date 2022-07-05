@@ -203,84 +203,84 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   name: '${uniqueString(deployment().name)}-networkSecurityGroups'
   params: {
     name: '<<namePrefix>>-az-nsg-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     securityRules: [
       {
         name: 'Specific'
         properties: {
-          description: 'Tests specific IPs and ports'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '8080'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: '*'
           access: 'Allow'
-          priority: 100
+          description: 'Tests specific IPs and ports'
+          destinationAddressPrefix: '*'
+          destinationPortRange: '8080'
           direction: 'Inbound'
+          priority: 100
+          protocol: '*'
+          sourceAddressPrefix: '*'
+          sourcePortRange: '*'
         }
       }
       {
         name: 'Ranges'
         properties: {
-          description: 'Tests Ranges'
-          protocol: '*'
           access: 'Allow'
-          priority: 101
-          direction: 'Inbound'
-          sourcePortRanges: [
-            '80'
-            '81'
+          description: 'Tests Ranges'
+          destinationAddressPrefixes: [
+            '10.2.0.0/16'
+            '10.3.0.0/16'
           ]
           destinationPortRanges: [
             '90'
             '91'
           ]
+          direction: 'Inbound'
+          priority: 101
+          protocol: '*'
           sourceAddressPrefixes: [
             '10.0.0.0/16'
             '10.1.0.0/16'
           ]
-          destinationAddressPrefixes: [
-            '10.2.0.0/16'
-            '10.3.0.0/16'
+          sourcePortRanges: [
+            '80'
+            '81'
           ]
         }
       }
       {
         name: 'Port_8082'
         properties: {
-          description: 'Allow inbound access on TCP 8082'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '8082'
           access: 'Allow'
-          priority: 102
-          direction: 'Inbound'
-          sourceApplicationSecurityGroups: [
-            {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
-            }
-          ]
+          description: 'Allow inbound access on TCP 8082'
           destinationApplicationSecurityGroups: [
             {
               id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
             }
           ]
+          destinationPortRange: '8082'
+          direction: 'Inbound'
+          priority: 102
+          protocol: '*'
+          sourceApplicationSecurityGroups: [
+            {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+            }
+          ]
+          sourcePortRange: '*'
         }
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 }
 ```

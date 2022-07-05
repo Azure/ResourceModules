@@ -404,24 +404,21 @@ tags: {
 module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-activityLogAlerts'
   params: {
-    name: '<<namePrefix>>-az-ala-x-001'
-    scopes: [
-      '/subscriptions/<<subscriptionId>>'
-    ]
     conditions: [
       {
-        field: 'category'
         equals: 'Administrative'
+        field: 'category'
       }
       {
-        field: 'resourceType'
         equals: 'microsoft.compute/virtualmachines'
+        field: 'resourceType'
       }
       {
-        field: 'operationName'
         equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
+        field: 'operationName'
       }
     ]
+    name: '<<namePrefix>>-az-ala-x-001'
     actions: [
       {
         actionGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
@@ -429,11 +426,14 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
     ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
+    ]
+    scopes: [
+      '/subscriptions/<<subscriptionId>>'
     ]
   }
 }

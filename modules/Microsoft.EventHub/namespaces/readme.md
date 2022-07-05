@@ -324,8 +324,6 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
-    name: '<<namePrefix>>-az-evnsp-x-001'
-    lock: 'CanNotDelete'
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'
@@ -343,20 +341,16 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         ]
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     eventHubs: [
       {
         name: '<<namePrefix>>-az-evh-x-001'
       }
       {
-        name: '<<namePrefix>>-az-evh-x-002'
         authorizationRules: [
           {
             name: 'RootManageSharedAccessKey'
@@ -374,25 +368,14 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
             ]
           }
         ]
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              '<<deploymentSpId>>'
-            ]
-          }
-        ]
-        messageRetentionInDays: 1
-        partitionCount: 2
-        status: 'Active'
+        captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
+        captureDescriptionDestinationBlobContainer: 'eventhub'
+        captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
+        captureDescriptionDestinationStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
         captureDescriptionEnabled: true
         captureDescriptionEncoding: 'Avro'
         captureDescriptionIntervalInSeconds: 300
         captureDescriptionSizeLimitInBytes: 314572800
-        captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
-        captureDescriptionDestinationStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-        captureDescriptionDestinationBlobContainer: 'eventhub'
-        captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
         captureDescriptionSkipEmptyArchives: true
         consumerGroups: [
           {
@@ -400,20 +383,22 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
             userMetadata: 'customMetadata'
           }
         ]
+        messageRetentionInDays: 1
+        name: '<<namePrefix>>-az-evh-x-002'
+        partitionCount: 2
+        roleAssignments: [
+          {
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        status: 'Active'
       }
     ]
-    privateEndpoints: [
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'namespace'
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    systemAssignedIdentity: true
+    lock: 'CanNotDelete'
+    name: '<<namePrefix>>-az-evnsp-x-001'
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -422,16 +407,31 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
           ipMask: '10.10.10.10'
         }
       ]
+      trustedServiceAccessEnabled: false
       virtualNetworkRules: [
         {
+          ignoreMissingVnetServiceEndpoint: true
           subnet: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
-          ignoreMissingVnetServiceEndpoint: true
         }
       ]
-      trustedServiceAccessEnabled: false
     }
+    privateEndpoints: [
+      {
+        service: 'namespace'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }

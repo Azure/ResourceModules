@@ -197,19 +197,19 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualWans'
   params: {
     name: '<<namePrefix>>-az-vw-x-001'
-    lock: 'CanNotDelete'
-    type: 'Basic'
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
     disableVpnEncryption: true
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    type: 'Basic'
   }
 }
 ```

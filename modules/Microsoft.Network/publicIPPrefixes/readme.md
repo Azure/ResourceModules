@@ -157,14 +157,14 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-publicIPPrefixes'
   params: {
     name: '<<namePrefix>>-az-pippfx-x-001'
-    lock: 'CanNotDelete'
     prefixLength: 28
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }

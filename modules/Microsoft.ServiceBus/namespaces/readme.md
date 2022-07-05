@@ -336,35 +336,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
-    name: '<<namePrefix>>-az-sbn-x-002'
-    lock: 'CanNotDelete'
-    skuName: 'Premium'
-    tags: {}
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    disasterRecoveryConfigs: {}
-    migrationConfigurations: {}
-    virtualNetworkRules: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003'
-    ]
-    ipFilterRules: [
-      {
-        filterName: 'ipFilter1'
-        ipMask: '10.0.1.0/32'
-        action: 'Accept'
-      }
-      {
-        filterName: 'ipFilter2'
-        ipMask: '10.0.2.0/32'
-        action: 'Accept'
-      }
-    ]
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'
@@ -382,80 +353,109 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         ]
       }
     ]
-    queues: [
-      {
-        name: '<<namePrefix>>-az-sbq-x-002'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              '<<deploymentSpId>>'
-            ]
-          }
-        ]
-        authorizationRules: [
-          {
-            name: 'RootManageSharedAccessKey'
-            rights: [
-              'Listen'
-              'Manage'
-              'Send'
-            ]
-          }
-          {
-            name: 'AnotherKey'
-            rights: [
-              'Listen'
-              'Send'
-            ]
-          }
-        ]
-      }
-    ]
-    topics: [
-      {
-        name: '<<namePrefix>>-az-sbt-x-001'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              '<<deploymentSpId>>'
-            ]
-          }
-        ]
-        authorizationRules: [
-          {
-            name: 'RootManageSharedAccessKey'
-            rights: [
-              'Listen'
-              'Manage'
-              'Send'
-            ]
-          }
-          {
-            name: 'AnotherKey'
-            rights: [
-              'Listen'
-              'Send'
-            ]
-          }
-        ]
-      }
-    ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    disasterRecoveryConfigs: {}
+    ipFilterRules: [
+      {
+        action: 'Accept'
+        filterName: 'ipFilter1'
+        ipMask: '10.0.1.0/32'
+      }
+      {
+        action: 'Accept'
+        filterName: 'ipFilter2'
+        ipMask: '10.0.2.0/32'
+      }
+    ]
+    lock: 'CanNotDelete'
+    migrationConfigurations: {}
+    name: '<<namePrefix>>-az-sbn-x-002'
+    privateEndpoints: [
+      {
+        service: 'namespace'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    queues: [
+      {
+        authorizationRules: [
+          {
+            name: 'RootManageSharedAccessKey'
+            rights: [
+              'Listen'
+              'Manage'
+              'Send'
+            ]
+          }
+          {
+            name: 'AnotherKey'
+            rights: [
+              'Listen'
+              'Send'
+            ]
+          }
+        ]
+        name: '<<namePrefix>>-az-sbq-x-002'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuName: 'Premium'
     systemAssignedIdentity: true
+    tags: {}
+    topics: [
+      {
+        authorizationRules: [
+          {
+            name: 'RootManageSharedAccessKey'
+            rights: [
+              'Listen'
+              'Manage'
+              'Send'
+            ]
+          }
+          {
+            name: 'AnotherKey'
+            rights: [
+              'Listen'
+              'Send'
+            ]
+          }
+        ]
+        name: '<<namePrefix>>-az-sbt-x-001'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+      }
+    ]
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
-    privateEndpoints: [
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'namespace'
-      }
+    virtualNetworkRules: [
+      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003'
     ]
   }
 }

@@ -160,10 +160,10 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
     lock: 'CanNotDelete'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }

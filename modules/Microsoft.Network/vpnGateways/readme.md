@@ -222,7 +222,6 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnGateways'
   params: {
     name: '<<namePrefix>>-az-vpngw-x-001'
-    lock: 'CanNotDelete'
     virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
     bgpSettings: {
       asn: 65515
@@ -230,45 +229,46 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
     }
     connections: [
       {
-        name: 'Connection-<<namePrefix>>-az-vsite-x-001'
         connectionBandwidth: 10
         enableBgp: true
+        name: 'Connection-<<namePrefix>>-az-vsite-x-001'
+        remoteVpnSiteResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001'
         routingConfiguration: {
           associatedRouteTable: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable'
           }
           propagatedRouteTables: {
-            labels: [
-              'default'
-            ]
             ids: [
               {
                 id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable'
               }
+            ]
+            labels: [
+              'default'
             ]
           }
           vnetRoutes: {
             staticRoutes: []
           }
         }
-        remoteVpnSiteResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001'
       }
     ]
+    lock: 'CanNotDelete'
     natRules: [
       {
-        name: 'natRule1'
-        internalMappings: [
-          {
-            addressSpace: '10.4.0.0/24'
-          }
-        ]
         externalMappings: [
           {
             addressSpace: '192.168.21.0/24'
           }
         ]
-        type: 'Static'
+        internalMappings: [
+          {
+            addressSpace: '10.4.0.0/24'
+          }
+        ]
         mode: 'EgressSnat'
+        name: 'natRule1'
+        type: 'Static'
       }
     ]
   }

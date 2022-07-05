@@ -152,14 +152,14 @@ tags: {
 module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-userAssignedIdentities'
   params: {
-    name: '<<namePrefix>>-az-msi-x-001'
     lock: 'CanNotDelete'
+    name: '<<namePrefix>>-az-msi-x-001'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }

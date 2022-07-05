@@ -161,17 +161,17 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-rg-x-001'
     lock: 'CanNotDelete'
-    tags: {
-      Test: 'Yes'
-    }
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Test: 'Yes'
+    }
   }
 }
 ```

@@ -169,20 +169,10 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
   params: {
     name: 'myAlert01'
     alertDescription: 'My sample Alert'
-    scopes: [
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    ]
-    evaluationFrequency: 'PT5M'
-    windowSize: 'PT5M'
-    suppressForMinutes: 'PT5M'
-    queryTimeRange: 'PT5M'
     autoMitigate: false
     criterias: {
       allOf: [
         {
-          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
-          timeAggregation: 'Average'
-          metricMeasureColumn: 'AggregatedValue'
           dimensions: [
             {
               name: 'Computer'
@@ -199,19 +189,29 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
               ]
             }
           ]
+          metricMeasureColumn: 'AggregatedValue'
           operator: 'GreaterThan'
+          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
           threshold: 0
+          timeAggregation: 'Average'
         }
       ]
     }
+    evaluationFrequency: 'PT5M'
+    queryTimeRange: 'PT5M'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    scopes: [
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    ]
+    suppressForMinutes: 'PT5M'
+    windowSize: 'PT5M'
   }
 }
 ```

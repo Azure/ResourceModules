@@ -351,27 +351,27 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     name: '<<namePrefix>>-az-bas-custompip-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas'
     publicIPAddressObject: {
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-bas'
-      publicIPPrefixResourceId: ''
-      publicIPAllocationMethod: 'Static'
-      skuName: 'Standard'
-      skuTier: 'Regional'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
+      diagnosticLogCategoriesToEnable: [
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+        'DDoSProtectionNotifications'
       ]
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      diagnosticLogCategoriesToEnable: [
-        'DDoSProtectionNotifications'
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
+      name: 'adp-<<namePrefix>>-az-pip-custom-x-bas'
+      publicIPAllocationMethod: 'Static'
+      publicIPPrefixResourceId: ''
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
       ]
+      skuName: 'Standard'
+      skuTier: 'Regional'
     }
   }
 }
@@ -479,24 +479,24 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-bastionHosts'
   params: {
     name: '<<namePrefix>>-az-bas-x-001'
-    lock: 'CanNotDelete'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
     azureBastionSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas'
-    skuType: 'Standard'
-    scaleUnits: 4
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    scaleUnits: 4
+    skuType: 'Standard'
   }
 }
 ```

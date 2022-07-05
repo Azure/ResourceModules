@@ -385,13 +385,6 @@ tags: {
 module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-metricAlerts'
   params: {
-    name: '<<namePrefix>>-az-ma-x-001'
-    windowSize: 'PT15M'
-    actions: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
-    ]
-    targetResourceType: 'microsoft.compute/virtualmachines'
-    targetResourceRegion: 'westeurope'
     criterias: [
       {
         criterionType: 'StaticThresholdCriterion'
@@ -403,15 +396,22 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
         timeAggregation: 'Average'
       }
     ]
+    name: '<<namePrefix>>-az-ma-x-001'
+    actions: [
+      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
+    ]
     alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    targetResourceRegion: 'westeurope'
+    targetResourceType: 'microsoft.compute/virtualmachines'
+    windowSize: 'PT15M'
   }
 }
 ```
