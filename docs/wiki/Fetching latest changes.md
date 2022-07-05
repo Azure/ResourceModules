@@ -1,4 +1,4 @@
-CARML library is continuously improved and updated.
+The CARML library is continuously improved and updated.
 
 This section provides an overview on how to get your library updated.
 
