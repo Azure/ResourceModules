@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.datafactory.factories.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.DataFactory/factories/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'
