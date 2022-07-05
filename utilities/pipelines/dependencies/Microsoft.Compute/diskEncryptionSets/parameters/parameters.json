@@ -5,7 +5,7 @@
         "name": {
             "value": "adp-<<namePrefix>>-az-des-x-001"
         },
-        "keyVaultId": {
+        "keyVaultResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
         },
         "keyUrl": {
