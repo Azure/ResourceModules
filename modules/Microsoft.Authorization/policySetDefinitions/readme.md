@@ -206,16 +206,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
     name: '<<namePrefix>>-mg-policySet'
-    displayName: '[DisplayName] This policy set definition is deployed at management group scope'
-    description: '[Description] This policy set definition is deployed at management group scope'
-    policyDefinitionGroups: [
-      {
-        name: 'Network'
-      }
-      {
-        name: 'ARM'
-      }
-    ]
     policyDefinitions: [
       {
         groupNames: [
@@ -246,11 +236,21 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
       }
     ]
+    description: '[Description] This policy set definition is deployed at management group scope'
+    displayName: '[DisplayName] This policy set definition is deployed at management group scope'
+    managementGroupId: '<<managementGroupId>>'
     metadata: {
       category: 'Security'
       version: '1'
     }
-    managementGroupId: '<<managementGroupId>>'
+    policyDefinitionGroups: [
+      {
+        name: 'Network'
+      }
+      {
+        name: 'ARM'
+      }
+    ]
   }
 }
 ```
@@ -412,16 +412,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
     name: '<<namePrefix>>-sub-policySet'
-    displayName: '[DisplayName] This policy set definition is deployed at subscription scope'
-    description: '[Description] This policy set definition is deployed at subscription scope'
-    policyDefinitionGroups: [
-      {
-        name: 'Network'
-      }
-      {
-        name: 'ARM'
-      }
-    ]
     policyDefinitions: [
       {
         groupNames: [
@@ -452,10 +442,20 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
       }
     ]
+    description: '[Description] This policy set definition is deployed at subscription scope'
+    displayName: '[DisplayName] This policy set definition is deployed at subscription scope'
     metadata: {
       category: 'Security'
       version: '1'
     }
+    policyDefinitionGroups: [
+      {
+        name: 'Network'
+      }
+      {
+        name: 'ARM'
+      }
+    ]
     subscriptionId: '<<subscriptionId>>'
   }
 }

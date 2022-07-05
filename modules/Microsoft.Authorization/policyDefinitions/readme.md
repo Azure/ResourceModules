@@ -222,57 +222,57 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
     name: '<<namePrefix>>-mg-policyDef'
-    displayName: '[DisplayName] This policy definition is deployed at the management group scope'
-    description: '[Description] This policy definition is deployed at the management group scope'
     policyRule: {
       if: {
         allOf: [
           {
-            field: 'type'
             equals: 'Microsoft.Resources/subscriptions'
+            field: 'type'
           }
           {
-            field: '[concat('tags[' parameters('tagName') ']')]'
             exists: 'false'
+            field: '[concat('tags[' parameters('tagName') ']')]'
           }
         ]
       }
       then: {
-        effect: 'modify'
         details: {
-          roleDefinitionIds: [
-            '/providers/microsoft.authorization/roleDefinitions/4a9ae827-6dc8-4573-8ac7-8239d42aa03f'
-          ]
           operations: [
             {
-              operation: 'add'
               field: '[concat('tags[' parameters('tagName') ']')]'
+              operation: 'add'
               value: '[parameters('tagValue')]'
             }
           ]
+          roleDefinitionIds: [
+            '/providers/microsoft.authorization/roleDefinitions/4a9ae827-6dc8-4573-8ac7-8239d42aa03f'
+          ]
         }
+        effect: 'modify'
       }
     }
-    parameters: {
-      tagName: {
-        type: 'String'
-        metadata: {
-          displayName: 'Tag Name'
-          description: 'Name of the tag such as 'environment''
-        }
-      }
-      tagValue: {
-        type: 'String'
-        metadata: {
-          displayName: 'Tag Value'
-          description: 'Value of the tag such as 'production''
-        }
-      }
-    }
+    description: '[Description] This policy definition is deployed at the management group scope'
+    displayName: '[DisplayName] This policy definition is deployed at the management group scope'
+    managementGroupId: '<<managementGroupId>>'
     metadata: {
       category: 'Security'
     }
-    managementGroupId: '<<managementGroupId>>'
+    parameters: {
+      tagName: {
+        metadata: {
+          description: 'Name of the tag such as 'environment''
+          displayName: 'Tag Name'
+        }
+        type: 'String'
+      }
+      tagValue: {
+        metadata: {
+          description: 'Value of the tag such as 'production''
+          displayName: 'Tag Value'
+        }
+        type: 'String'
+      }
+    }
   }
 }
 ```
@@ -462,55 +462,55 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
     name: '<<namePrefix>>-sub-policyDef'
-    displayName: '[DisplayName] This policy definition is deployed at subscription scope'
-    description: '[Description] This policy definition is deployed at subscription scope'
     policyRule: {
       if: {
         allOf: [
           {
-            field: 'type'
             equals: 'Microsoft.Resources/subscriptions'
+            field: 'type'
           }
           {
-            field: '[concat('tags[' parameters('tagName') ']')]'
             exists: 'false'
+            field: '[concat('tags[' parameters('tagName') ']')]'
           }
         ]
       }
       then: {
-        effect: 'modify'
         details: {
-          roleDefinitionIds: [
-            '/providers/microsoft.authorization/roleDefinitions/4a9ae827-6dc8-4573-8ac7-8239d42aa03f'
-          ]
           operations: [
             {
-              operation: 'add'
               field: '[concat('tags[' parameters('tagName') ']')]'
+              operation: 'add'
               value: '[parameters('tagValue')]'
             }
           ]
+          roleDefinitionIds: [
+            '/providers/microsoft.authorization/roleDefinitions/4a9ae827-6dc8-4573-8ac7-8239d42aa03f'
+          ]
         }
+        effect: 'modify'
       }
+    }
+    description: '[Description] This policy definition is deployed at subscription scope'
+    displayName: '[DisplayName] This policy definition is deployed at subscription scope'
+    metadata: {
+      category: 'Security'
     }
     parameters: {
       tagName: {
-        type: 'String'
         metadata: {
-          displayName: 'Tag Name'
           description: 'Name of the tag such as 'environment''
+          displayName: 'Tag Name'
         }
+        type: 'String'
       }
       tagValue: {
-        type: 'String'
         metadata: {
-          displayName: 'Tag Value'
           description: 'Value of the tag such as 'production''
+          displayName: 'Tag Value'
         }
+        type: 'String'
       }
-    }
-    metadata: {
-      category: 'Security'
     }
     subscriptionId: '<<subscriptionId>>'
   }

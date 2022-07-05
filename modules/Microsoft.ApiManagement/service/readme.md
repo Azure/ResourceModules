@@ -279,15 +279,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-service'
   params: {
     name: '<<namePrefix>>-az-apim-max-001'
-    lock: 'CanNotDelete'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     apis: [
       {
-        name: 'echo-api'
-        displayName: 'Echo API'
-        path: 'echo'
-        serviceUrl: 'http://echoapi.cloudapp.net/api'
         apiVersionSet: {
           name: 'echo-version-set'
           properties: {
@@ -296,55 +291,65 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
             versioningScheme: 'Segment'
           }
         }
+        displayName: 'Echo API'
+        name: 'echo-api'
+        path: 'echo'
+        serviceUrl: 'http://echoapi.cloudapp.net/api'
       }
     ]
     authorizationServers: [
       {
-        name: 'AuthServer1'
         authorizationEndpoint: 'https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize'
+        clientCredentialsKeyVaultId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+        clientIdSecretName: 'apimclientid'
+        clientRegistrationEndpoint: 'http://localhost'
+        clientSecretSecretName: 'apimclientsecret'
         grantTypes: [
           'authorizationCode'
         ]
-        clientCredentialsKeyVaultId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-        clientIdSecretName: 'apimclientid'
-        clientSecretSecretName: 'apimclientsecret'
-        clientRegistrationEndpoint: 'http://localhost'
+        name: 'AuthServer1'
         tokenEndpoint: 'https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token'
       }
     ]
     backends: [
       {
         name: 'backend'
-        url: 'http://echoapi.cloudapp.net/api'
         tls: {
           validateCertificateChain: false
           validateCertificateName: false
         }
+        url: 'http://echoapi.cloudapp.net/api'
       }
     ]
     caches: [
       {
-        name: 'westeurope'
         connectionString: 'connectionstringtest'
+        name: 'westeurope'
         useFromLocation: 'westeurope'
       }
     ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     identityProviders: [
       {
         name: 'aadProvider'
       }
     ]
+    lock: 'CanNotDelete'
     namedValues: [
       {
-        name: 'apimkey'
         displayName: 'apimkey'
+        name: 'apimkey'
         secret: true
       }
     ]
     policies: [
       {
-        value: '<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
         format: 'xml'
+        value: '<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
       }
     ]
     portalSettings: [
@@ -359,52 +364,47 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         properties: {
           enabled: false
           termsOfService: {
-            enabled: false
             consentRequired: false
+            enabled: false
           }
         }
       }
     ]
     products: [
       {
-        name: 'Starter'
-        subscriptionRequired: false
-        approvalRequired: false
         apis: [
           {
             name: 'echo-api'
           }
         ]
+        approvalRequired: false
         groups: [
           {
             name: 'developers'
           }
         ]
+        name: 'Starter'
+        subscriptionRequired: false
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
     subscriptions: [
       {
-        scope: '/apis'
         name: 'testArmSubscriptionAllApis'
+        scope: '/apis'
       }
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 }
 ```
@@ -655,9 +655,15 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-service'
   params: {
     name: '<<namePrefix>>-az-apim-x-001'
-    lock: 'CanNotDelete'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
+    lock: 'CanNotDelete'
+    policies: [
+      {
+        format: 'xml'
+        value: '<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
+      }
+    ]
     portalSettings: [
       {
         name: 'signin'
@@ -670,24 +676,18 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         properties: {
           enabled: false
           termsOfService: {
-            enabled: false
             consentRequired: false
+            enabled: false
           }
         }
       }
     ]
-    policies: [
-      {
-        value: '<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
-        format: 'xml'
-      }
-    ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }

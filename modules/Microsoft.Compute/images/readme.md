@@ -161,19 +161,19 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-img-x-001'
     osAccountType: 'Premium_LRS'
-    osType: 'Windows'
     osDiskBlobUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
     osDiskCaching: 'ReadWrite'
-    zoneResilient: true
+    osType: 'Windows'
     hyperVGeneration: 'V1'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    zoneResilient: true
   }
 }
 ```

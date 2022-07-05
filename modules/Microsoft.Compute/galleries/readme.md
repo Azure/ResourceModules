@@ -164,38 +164,38 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         name: '<<namePrefix>>-az-imgd-x-003'
       }
       {
-        name: '<<namePrefix>>-az-imgd-x-001'
-        osType: 'Windows'
-        osState: 'Generalized'
-        publisher: 'MicrosoftWindowsServer'
-        offer: 'WindowsServer'
-        sku: '2022-datacenter-azure-edition'
-        minRecommendedvCPUs: 2
+        hyperVGeneration: 'V1'
+        maxRecommendedMemory: 16
         maxRecommendedvCPUs: 8
         minRecommendedMemory: 4
-        maxRecommendedMemory: 16
-        hyperVGeneration: 'V1'
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-x-001'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
         roleAssignments: [
           {
-            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               '<<deploymentSpId>>'
             ]
+            roleDefinitionIdOrName: 'Reader'
           }
         ]
+        sku: '2022-datacenter-azure-edition'
       }
       {
-        name: '<<namePrefix>>-az-imgd-x-002'
-        osType: 'Linux'
-        osState: 'Generalized'
-        publisher: 'canonical'
-        offer: '0001-com-ubuntu-server-focal'
-        sku: '20_04-lts-gen2'
-        minRecommendedvCPUs: 1
+        hyperVGeneration: 'V2'
+        maxRecommendedMemory: 32
         maxRecommendedvCPUs: 4
         minRecommendedMemory: 4
-        maxRecommendedMemory: 32
-        hyperVGeneration: 'V2'
+        minRecommendedvCPUs: 1
+        name: '<<namePrefix>>-az-imgd-x-002'
+        offer: '0001-com-ubuntu-server-focal'
+        osState: 'Generalized'
+        osType: 'Linux'
+        publisher: 'canonical'
+        sku: '20_04-lts-gen2'
       }
     ]
   }
@@ -279,10 +279,10 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     lock: 'CanNotDelete'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }

@@ -1010,44 +1010,44 @@ For further details on automanage please refer to [Automanage virtual machines](
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
-    name: '<<namePrefix>>-vm-linux-autmg-01'
-    osType: 'Linux'
+    adminUsername: 'localAdminUser'
     imageReference: {
-      publisher: 'Canonical'
       offer: 'UbuntuServer'
+      publisher: 'Canonical'
       sku: '18.04-LTS'
       version: 'latest'
     }
+    nicConfigurations: [
+      {
+        ipConfigurations: [
+          {
+            name: 'ipconfig01'
+            pipConfiguration: {
+              publicIpNameSuffix: '-pip-01'
+            }
+            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          }
+        ]
+        nicSuffix: '-nic-01'
+      }
+    ]
     osDisk: {
       diskSizeGB: '128'
       managedDisk: {
         storageAccountType: 'Premium_LRS'
       }
     }
+    osType: 'Linux'
     vmSize: 'Standard_B12ms'
-    adminUsername: 'localAdminUser'
+    configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
+    name: '<<namePrefix>>-vm-linux-autmg-01'
     publicKeys: [
       {
-        path: '/home/localAdminUser/.ssh/authorized_keys'
         keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
+        path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
-    nicConfigurations: [
-      {
-        nicSuffix: '-nic-01'
-        ipConfigurations: [
-          {
-            name: 'ipconfig01'
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-            pipConfiguration: {
-              publicIpNameSuffix: '-pip-01'
-            }
-          }
-        ]
-      }
-    ]
-    configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
   }
 }
 ```
@@ -1139,41 +1139,41 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
-    name: '<<namePrefix>>-vm-linux-min-01'
-    osType: 'Linux'
+    adminUsername: 'localAdminUser'
     imageReference: {
-      publisher: 'Canonical'
       offer: 'UbuntuServer'
+      publisher: 'Canonical'
       sku: '18.04-LTS'
       version: 'latest'
     }
+    nicConfigurations: [
+      {
+        ipConfigurations: [
+          {
+            name: 'ipconfig01'
+            pipConfiguration: {
+              publicIpNameSuffix: '-pip-01'
+            }
+            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          }
+        ]
+        nicSuffix: '-nic-01'
+      }
+    ]
     osDisk: {
       diskSizeGB: '128'
       managedDisk: {
         storageAccountType: 'Premium_LRS'
       }
     }
+    osType: 'Linux'
     vmSize: 'Standard_B12ms'
-    adminUsername: 'localAdminUser'
     disablePasswordAuthentication: true
+    name: '<<namePrefix>>-vm-linux-min-01'
     publicKeys: [
       {
-        path: '/home/localAdminUser/.ssh/authorized_keys'
         keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
-      }
-    ]
-    nicConfigurations: [
-      {
-        nicSuffix: '-nic-01'
-        ipConfigurations: [
-          {
-            name: 'ipconfig01'
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-            pipConfiguration: {
-              publicIpNameSuffix: '-pip-01'
-            }
-          }
-        ]
+        path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
   }
@@ -1264,153 +1264,153 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
-    name: '<<namePrefix>>-vm-linux-01'
-    lock: 'CanNotDelete'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-    osType: 'Linux'
-    encryptionAtHost: false
-    availabilityZone: 1
-    vmSize: 'Standard_B12ms'
+    adminUsername: 'localAdminUser'
     imageReference: {
-      publisher: 'Canonical'
       offer: 'UbuntuServer'
+      publisher: 'Canonical'
       sku: '18.04-LTS'
       version: 'latest'
     }
-    osDisk: {
-      createOption: 'fromImage'
-      deleteOption: 'Delete'
-      caching: 'ReadOnly'
-      diskSizeGB: '128'
-      managedDisk: {
-        storageAccountType: 'Premium_LRS'
-      }
-    }
-    dataDisks: [
-      {
-        createOption: 'Empty'
-        deleteOption: 'Delete'
-        caching: 'ReadWrite'
-        diskSizeGB: '128'
-        managedDisk: {
-          storageAccountType: 'Premium_LRS'
-        }
-      }
-      {
-        createOption: 'Empty'
-        deleteOption: 'Delete'
-        caching: 'ReadWrite'
-        diskSizeGB: '128'
-        managedDisk: {
-          storageAccountType: 'Premium_LRS'
-        }
-      }
-    ]
-    adminUsername: 'localAdminUser'
-    disablePasswordAuthentication: true
-    publicKeys: [
-      {
-        path: '/home/localAdminUser/.ssh/authorized_keys'
-        keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
-      }
-    ]
     nicConfigurations: [
       {
-        nicSuffix: '-nic-01'
         deleteOption: 'Delete'
         ipConfigurations: [
           {
-            name: 'ipconfig01'
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-            pipConfiguration: {
-              publicIpNameSuffix: '-pip-01'
-              roleAssignments: [
-                {
-                  roleDefinitionIdOrName: 'Reader'
-                  principalIds: [
-                    '<<deploymentSpId>>'
-                  ]
-                }
-              ]
-            }
-            loadBalancerBackendAddressPools: [
-              {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers'
-              }
-            ]
             applicationSecurityGroups: [
               {
                 id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
               }
             ]
+            loadBalancerBackendAddressPools: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers'
+              }
+            ]
+            name: 'ipconfig01'
+            pipConfiguration: {
+              publicIpNameSuffix: '-pip-01'
+              roleAssignments: [
+                {
+                  principalIds: [
+                    '<<deploymentSpId>>'
+                  ]
+                  roleDefinitionIdOrName: 'Reader'
+                }
+              ]
+            }
+            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
         ]
+        nicSuffix: '-nic-01'
         roleAssignments: [
           {
-            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               '<<deploymentSpId>>'
             ]
+            roleDefinitionIdOrName: 'Reader'
           }
         ]
       }
     ]
+    osDisk: {
+      caching: 'ReadOnly'
+      createOption: 'fromImage'
+      deleteOption: 'Delete'
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Linux'
+    vmSize: 'Standard_B12ms'
+    availabilityZone: 1
+    backupPolicyName: 'VMpolicy'
     backupVaultName: 'adp-<<namePrefix>>-az-rsv-x-001'
     backupVaultResourceGroup: 'validation-rg'
-    backupPolicyName: 'VMpolicy'
-    roleAssignments: [
+    dataDisks: [
       {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
+        caching: 'ReadWrite'
+        createOption: 'Empty'
+        deleteOption: 'Delete'
+        diskSizeGB: '128'
+        managedDisk: {
+          storageAccountType: 'Premium_LRS'
+        }
+      }
+      {
+        caching: 'ReadWrite'
+        createOption: 'Empty'
+        deleteOption: 'Delete'
+        diskSizeGB: '128'
+        managedDisk: {
+          storageAccountType: 'Premium_LRS'
+        }
       }
     ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    extensionMonitoringAgentConfig: {
+    disablePasswordAuthentication: true
+    encryptionAtHost: false
+    extensionCustomScriptConfig: {
       enabled: true
+      fileData: [
+        {
+          storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+          uri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1'
+        }
+      ]
     }
-    monitoringWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    extensionCustomScriptProtectedSetting: {
+      commandToExecute: 'sudo apt-get update'
+    }
     extensionDependencyAgentConfig: {
-      enabled: true
-    }
-    extensionNetworkWatcherAgentConfig: {
       enabled: true
     }
     extensionDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
-        KeyVaultURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/'
-        KeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-        KeyEncryptionKeyURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5'
         KekVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
         KeyEncryptionAlgorithm: 'RSA-OAEP'
-        VolumeType: 'All'
+        KeyEncryptionKeyURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5'
+        KeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+        KeyVaultURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/'
         ResizeOSDisk: 'false'
+        VolumeType: 'All'
       }
     }
     extensionDSCConfig: {
       enabled: false
     }
-    extensionCustomScriptConfig: {
+    extensionMonitoringAgentConfig: {
       enabled: true
-      fileData: [
-        {
-          uri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1'
-          storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-        }
-      ]
     }
-    extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'sudo apt-get update'
+    extensionNetworkWatcherAgentConfig: {
+      enabled: true
+    }
+    lock: 'CanNotDelete'
+    monitoringWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    name: '<<namePrefix>>-vm-linux-01'
+    publicKeys: [
+      {
+        keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
+        path: '/home/localAdminUser/.ssh/authorized_keys'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
 }
@@ -1662,35 +1662,35 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
-    name: '<<namePrefix>>-vm-win-03'
+    adminUsername: 'localAdminUser'
     imageReference: {
-      publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
+      publisher: 'MicrosoftWindowsServer'
       sku: '2019-Datacenter'
       version: 'latest'
     }
-    osType: 'Windows'
-    vmSize: 'Standard_B12ms'
-    osDisk: {
-      diskSizeGB: '128'
-      managedDisk: {
-        storageAccountType: 'Premium_LRS'
-      }
-    }
-    adminUsername: 'localAdminUser'
-    adminPassword: kv1.getSecret('adminPassword')
     nicConfigurations: [
       {
-        nicSuffix: '-nic-01'
         ipConfigurations: [
           {
             name: 'ipconfig01'
             subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
         ]
+        nicSuffix: '-nic-01'
       }
     ]
+    osDisk: {
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Windows'
+    vmSize: 'Standard_B12ms'
+    adminPassword: kv1.getSecret('adminPassword')
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+    name: '<<namePrefix>>-vm-win-03'
   }
 }
 ```
@@ -1781,34 +1781,34 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
-    name: '<<namePrefix>>-vm-win-02'
+    adminUsername: 'localAdminUser'
     imageReference: {
-      publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
+      publisher: 'MicrosoftWindowsServer'
       sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
-    osType: 'Windows'
-    vmSize: 'Standard_B12ms'
-    osDisk: {
-      diskSizeGB: '128'
-      managedDisk: {
-        storageAccountType: 'Premium_LRS'
-      }
-    }
-    adminUsername: 'localAdminUser'
-    adminPassword: kv1.getSecret('adminPassword')
     nicConfigurations: [
       {
-        nicSuffix: '-nic-01'
         ipConfigurations: [
           {
             name: 'ipconfig01'
             subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
         ]
+        nicSuffix: '-nic-01'
       }
     ]
+    osDisk: {
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Windows'
+    vmSize: 'Standard_B12ms'
+    adminPassword: kv1.getSecret('adminPassword')
+    name: '<<namePrefix>>-vm-win-02'
   }
 }
 ```
@@ -1896,110 +1896,96 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
-    name: '<<namePrefix>>-vm-win-01'
-    lock: 'CanNotDelete'
-    encryptionAtHost: false
+    adminUsername: 'localAdminUser'
     imageReference: {
-      publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
+      publisher: 'MicrosoftWindowsServer'
       sku: '2019-Datacenter'
       version: 'latest'
     }
-    osType: 'Windows'
-    vmSize: 'Standard_B12ms'
-    osDisk: {
-      createOption: 'fromImage'
-      deleteOption: 'Delete'
-      caching: 'None'
-      diskSizeGB: '128'
-      managedDisk: {
-        storageAccountType: 'Premium_LRS'
-      }
-    }
-    dataDisks: [
-      {
-        createOption: 'Empty'
-        deleteOption: 'Delete'
-        caching: 'None'
-        diskSizeGB: '128'
-        managedDisk: {
-          storageAccountType: 'Premium_LRS'
-        }
-      }
-      {
-        createOption: 'Empty'
-        deleteOption: 'Delete'
-        caching: 'None'
-        diskSizeGB: '128'
-        managedDisk: {
-          storageAccountType: 'Premium_LRS'
-        }
-      }
-    ]
-    availabilityZone: 2
-    adminUsername: 'localAdminUser'
-    adminPassword: kv1.getSecret('adminPassword')
     nicConfigurations: [
       {
-        nicSuffix: '-nic-01'
         deleteOption: 'Delete'
         ipConfigurations: [
           {
-            name: 'ipconfig01'
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-            pipConfiguration: {
-              publicIpNameSuffix: '-pip-01'
-              roleAssignments: [
-                {
-                  roleDefinitionIdOrName: 'Reader'
-                  principalIds: [
-                    '<<deploymentSpId>>'
-                  ]
-                }
-              ]
-            }
-            loadBalancerBackendAddressPools: [
-              {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers'
-              }
-            ]
             applicationSecurityGroups: [
               {
                 id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
               }
             ]
+            loadBalancerBackendAddressPools: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers'
+              }
+            ]
+            name: 'ipconfig01'
+            pipConfiguration: {
+              publicIpNameSuffix: '-pip-01'
+              roleAssignments: [
+                {
+                  principalIds: [
+                    '<<deploymentSpId>>'
+                  ]
+                  roleDefinitionIdOrName: 'Reader'
+                }
+              ]
+            }
+            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
         ]
+        nicSuffix: '-nic-01'
         roleAssignments: [
           {
-            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               '<<deploymentSpId>>'
             ]
+            roleDefinitionIdOrName: 'Reader'
           }
         ]
       }
     ]
+    osDisk: {
+      caching: 'None'
+      createOption: 'fromImage'
+      deleteOption: 'Delete'
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Windows'
+    vmSize: 'Standard_B12ms'
+    adminPassword: kv1.getSecret('adminPassword')
+    availabilityZone: 2
+    backupPolicyName: 'VMpolicy'
     backupVaultName: 'adp-<<namePrefix>>-az-rsv-x-001'
     backupVaultResourceGroup: 'validation-rg'
-    backupPolicyName: 'VMpolicy'
-    roleAssignments: [
+    dataDisks: [
       {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
+        caching: 'None'
+        createOption: 'Empty'
+        deleteOption: 'Delete'
+        diskSizeGB: '128'
+        managedDisk: {
+          storageAccountType: 'Premium_LRS'
+        }
+      }
+      {
+        caching: 'None'
+        createOption: 'Empty'
+        deleteOption: 'Delete'
+        diskSizeGB: '128'
+        managedDisk: {
+          storageAccountType: 'Premium_LRS'
+        }
       }
     ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
+    encryptionAtHost: false
     extensionAntiMalwareConfig: {
       enabled: true
       settings: {
@@ -2011,50 +1997,64 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         }
         RealtimeProtectionEnabled: 'true'
         ScheduledScanSettings: {
+          day: '7'
           isEnabled: 'true'
           scanType: 'Quick'
-          day: '7'
           time: '120'
         }
       }
     }
-    extensionMonitoringAgentConfig: {
+    extensionCustomScriptConfig: {
       enabled: true
+      fileData: [
+        {
+          storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+          uri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1'
+        }
+      ]
     }
-    monitoringWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    extensionCustomScriptProtectedSetting: {
+      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command \'& .\\scriptExtensionMasterInstaller.ps1\''
+    }
     extensionDependencyAgentConfig: {
-      enabled: true
-    }
-    extensionNetworkWatcherAgentConfig: {
       enabled: true
     }
     extensionDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
-        KeyVaultURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/'
-        KeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-        KeyEncryptionKeyURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5'
         KekVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
         KeyEncryptionAlgorithm: 'RSA-OAEP'
-        VolumeType: 'All'
+        KeyEncryptionKeyURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5'
+        KeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+        KeyVaultURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/'
         ResizeOSDisk: 'false'
+        VolumeType: 'All'
       }
     }
     extensionDSCConfig: {
       enabled: true
     }
-    extensionCustomScriptConfig: {
+    extensionMonitoringAgentConfig: {
       enabled: true
-      fileData: [
-        {
-          uri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1'
-          storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-        }
-      ]
     }
-    extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command \'& .\\scriptExtensionMasterInstaller.ps1\''
+    extensionNetworkWatcherAgentConfig: {
+      enabled: true
+    }
+    lock: 'CanNotDelete'
+    monitoringWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    name: '<<namePrefix>>-vm-win-01'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
 }

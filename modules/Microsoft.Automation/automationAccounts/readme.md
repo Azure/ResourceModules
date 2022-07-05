@@ -458,69 +458,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
     name: '<<namePrefix>>-az-aut-x-001'
-    lock: 'CanNotDelete'
-    schedules: [
-      {
-        name: 'TestSchedule'
-        startTime: ''
-        expiryTime: '9999-12-31T13:00'
-        interval: 15
-        frequency: 'Minute'
-        timeZone: 'Europe/Berlin'
-        advancedSchedule: {}
-      }
-    ]
-    modules: [
-      {
-        name: 'PSWindowsUpdate'
-        version: 'latest'
-        uri: 'https://www.powershellgallery.com/api/v2/package'
-      }
-    ]
-    runbooks: [
-      {
-        name: 'TestRunbook'
-        runbookType: 'PowerShell'
-        description: 'Test runbook'
-        uri: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1'
-        version: '1.0.0.0'
-      }
-    ]
-    jobSchedules: [
-      {
-        scheduleName: 'TestSchedule'
-        runbookName: 'TestRunbook'
-      }
-    ]
-    variables: [
-      {
-        name: 'TestString'
-        value: '\'TestString\''
-        description: 'TestStringDescription'
-      }
-      {
-        name: 'TestInteger'
-        value: '500'
-        description: 'TestIntegerDescription'
-      }
-      {
-        name: 'TestBoolean'
-        value: 'false'
-        description: 'TestBooleanDescription'
-      }
-      {
-        name: 'TestDateTime'
-        value: '\'\\/Date(1637934042656)\\/\''
-        description: 'TestDateTimeDescription'
-        isEncrypted: false
-      }
-      {
-        name: 'TestEncryptedVariable'
-        value: '\'TestEncryptedValue\''
-        description: 'TestEncryptedDescription'
-      }
-    ]
-    linkedWorkspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     gallerySolutions: [
       {
         name: 'Updates'
@@ -528,10 +470,77 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         publisher: 'Microsoft'
       }
     ]
+    jobSchedules: [
+      {
+        runbookName: 'TestRunbook'
+        scheduleName: 'TestSchedule'
+      }
+    ]
+    linkedWorkspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001'
+    lock: 'CanNotDelete'
+    modules: [
+      {
+        name: 'PSWindowsUpdate'
+        uri: 'https://www.powershellgallery.com/api/v2/package'
+        version: 'latest'
+      }
+    ]
+    privateEndpoints: [
+      {
+        service: 'Webhook'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+      {
+        service: 'DSCAndHybridWorker'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    runbooks: [
+      {
+        description: 'Test runbook'
+        name: 'TestRunbook'
+        runbookType: 'PowerShell'
+        uri: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1'
+        version: '1.0.0.0'
+      }
+    ]
+    schedules: [
+      {
+        advancedSchedule: {}
+        expiryTime: '9999-12-31T13:00'
+        frequency: 'Minute'
+        interval: 15
+        name: 'TestSchedule'
+        startTime: ''
+        timeZone: 'Europe/Berlin'
+      }
+    ]
     softwareUpdateConfigurations: [
       {
-        name: 'Windows_ZeroDay'
+        excludeUpdates: [
+          '123456'
+        ]
         frequency: 'Month'
+        includeUpdates: [
+          '654321'
+        ]
+        interval: 1
+        maintenanceWindow: 'PT4H'
+        monthlyOccurrences: [
+          {
+            day: 'Friday'
+            occurrence: 3
+          }
+        ]
+        name: 'Windows_ZeroDay'
         operatingSystem: 'Windows'
         rebootSetting: 'IfRequired'
         scopeByTags: {
@@ -539,79 +548,70 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
             'Automatic-Wave1'
           ]
         }
-        maintenanceWindow: 'PT4H'
+        startTime: '22:00'
         updateClassifications: [
           'Critical'
-          'Security'
-          'UpdateRollup'
-          'FeaturePack'
-          'ServicePack'
           'Definition'
+          'FeaturePack'
+          'Security'
+          'ServicePack'
           'Tools'
+          'UpdateRollup'
           'Updates'
         ]
-        includeUpdates: [
-          '654321'
-        ]
-        excludeUpdates: [
-          '123456'
-        ]
-        interval: 1
-        monthlyOccurrences: [
-          {
-            occurrence: 3
-            day: 'Friday'
-          }
-        ]
-        startTime: '22:00'
       }
       {
-        name: 'Linux_ZeroDay'
-        frequency: 'OneTime'
-        operatingSystem: 'Linux'
-        rebootSetting: 'IfRequired'
-        maintenanceWindow: 'PT4H'
-        updateClassifications: [
-          'Critical'
-          'Security'
-          'Other'
-        ]
-        includeUpdates: [
-          'kernel'
-        ]
         excludeUpdates: [
           'icacls'
         ]
+        frequency: 'OneTime'
+        includeUpdates: [
+          'kernel'
+        ]
+        maintenanceWindow: 'PT4H'
+        name: 'Linux_ZeroDay'
+        operatingSystem: 'Linux'
+        rebootSetting: 'IfRequired'
         startTime: '22:00'
-      }
-    ]
-    privateEndpoints: [
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'Webhook'
-      }
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'DSCAndHybridWorker'
+        updateClassifications: [
+          'Critical'
+          'Other'
+          'Security'
+        ]
       }
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
-    roleAssignments: [
+    variables: [
       {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
+        description: 'TestStringDescription'
+        name: 'TestString'
+        value: '\'TestString\''
+      }
+      {
+        description: 'TestIntegerDescription'
+        name: 'TestInteger'
+        value: '500'
+      }
+      {
+        description: 'TestBooleanDescription'
+        name: 'TestBoolean'
+        value: 'false'
+      }
+      {
+        description: 'TestDateTimeDescription'
+        isEncrypted: false
+        name: 'TestDateTime'
+        value: '\'\\/Date(1637934042656)\\/\''
+      }
+      {
+        description: 'TestEncryptedDescription'
+        name: 'TestEncryptedVariable'
+        value: '\'TestEncryptedValue\''
       }
     ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 }
 ```

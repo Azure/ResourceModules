@@ -223,23 +223,23 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-DomainServices'
   params: {
     domainName: '<<namePrefix>>.onmicrosoft.com'
-    sku: 'Standard'
+    additionalRecipients: [
+      '<<namePrefix>>@noreply.github.com'
+    ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     lock: 'CanNotDelete'
+    pfxCertificate: kv1.getSecret('pfxBase64Certificate')
+    pfxCertificatePassword: kv1.getSecret('pfxCertificatePassword')
     replicaSets: [
       {
         location: 'WestEurope'
         subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-aadds-001/subnets/AADDSSubnet'
       }
     ]
-    pfxCertificate: kv1.getSecret('pfxBase64Certificate')
-    pfxCertificatePassword: kv1.getSecret('pfxCertificatePassword')
-    additionalRecipients: [
-      '<<namePrefix>>@noreply.github.com'
-    ]
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    sku: 'Standard'
   }
 }
 ```

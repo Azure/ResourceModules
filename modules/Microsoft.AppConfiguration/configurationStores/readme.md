@@ -328,47 +328,47 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   name: '${uniqueString(deployment().name)}-configurationStores'
   params: {
     name: '<<namePrefix>>-az-appcs-x-001'
-    lock: 'CanNotDelete'
+    createMode: 'Default'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    systemAssignedIdentity: true
+    disableLocalAuth: false
+    enablePurgeProtection: false
     keyValues: [
       {
-        name: 'keyName'
-        value: 'valueName'
         contentType: 'contentType'
+        name: 'keyName'
         roleAssignments: [
           {
-            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               '<<deploymentSpId>>'
             ]
+            roleDefinitionIdOrName: 'Reader'
           }
         ]
+        value: 'valueName'
       }
     ]
+    lock: 'CanNotDelete'
+    privateEndpoints: [
+      {
+        service: 'configurationStores'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    createMode: 'Default'
-    disableLocalAuth: false
-    enablePurgeProtection: false
-    publicNetworkAccess: 'Enabled'
     softDeleteRetentionInDays: 1
-    privateEndpoints: [
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'configurationStores'
-      }
-    ]
+    systemAssignedIdentity: true
   }
 }
 ```

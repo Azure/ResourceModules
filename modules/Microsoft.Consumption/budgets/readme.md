@@ -59,15 +59,15 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-budgets'
   params: {
     amount: 500
+    contactEmails: [
+      'dummy@contoso.com'
+    ]
     thresholds: [
       50
       75
       90
       100
       110
-    ]
-    contactEmails: [
-      'dummy@contoso.com'
     ]
   }
 }

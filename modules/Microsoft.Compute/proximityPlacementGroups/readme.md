@@ -156,14 +156,14 @@ tags: {
 module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-proximityPlacementGroups'
   params: {
-    name: '<<namePrefix>>-az-ppg-x-001'
     lock: 'CanNotDelete'
+    name: '<<namePrefix>>-az-ppg-x-001'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }

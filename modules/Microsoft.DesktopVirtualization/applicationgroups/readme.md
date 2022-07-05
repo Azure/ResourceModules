@@ -169,9 +169,9 @@ tags: {
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-applicationgroups'
   params: {
-    name: '<<namePrefix>>-az-avdag-min-001'
     applicationGroupType: 'RemoteApp'
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
+    name: '<<namePrefix>>-az-avdag-min-001'
   }
 }
 ```
@@ -214,44 +214,44 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-applicationgroups'
   params: {
-    name: '<<namePrefix>>-az-avdag-x-001'
-    lock: 'CanNotDelete'
-    location: 'westeurope'
     applicationGroupType: 'RemoteApp'
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
-    friendlyName: 'Remote Applications 1'
-    description: 'This is my first Remote Applications bundle'
+    name: '<<namePrefix>>-az-avdag-x-001'
     applications: [
       {
-        name: 'notepad'
-        description: 'Notepad by ARM template'
-        friendlyName: 'Notepad'
-        filePath: 'C:\\Windows\\System32\\notepad.exe'
-        commandLineSetting: 'DoNotAllow'
         commandLineArguments: ''
-        showInPortal: true
-        iconPath: 'C:\\Windows\\System32\\notepad.exe'
+        commandLineSetting: 'DoNotAllow'
+        description: 'Notepad by ARM template'
+        filePath: 'C:\\Windows\\System32\\notepad.exe'
+        friendlyName: 'Notepad'
         iconIndex: 0
+        iconPath: 'C:\\Windows\\System32\\notepad.exe'
+        name: 'notepad'
+        showInPortal: true
       }
       {
-        name: 'wordpad'
         filePath: 'C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe'
         friendlyName: 'Wordpad'
+        name: 'wordpad'
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+    description: 'This is my first Remote Applications bundle'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    friendlyName: 'Remote Applications 1'
+    location: 'westeurope'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
   }
 }
 ```
