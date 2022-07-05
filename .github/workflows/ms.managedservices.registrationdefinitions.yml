@@ -20,7 +20,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.managedservices.registrationdefinitions.yml'
       - 'modules/Microsoft.ManagedServices/registrationDefinitions/**'
-      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'

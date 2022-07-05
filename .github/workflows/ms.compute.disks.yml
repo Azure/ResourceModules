@@ -20,7 +20,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.disks.yml'
       - 'modules/Microsoft.Compute/disks/**'
-      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'

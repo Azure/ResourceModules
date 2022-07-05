@@ -20,7 +20,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.publicipaddresses.yml'
       - 'modules/Microsoft.Network/publicIPAddresses/**'
-      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'

@@ -20,7 +20,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.web.sites.yml'
       - 'modules/Microsoft.Web/sites/**'
-      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'

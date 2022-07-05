@@ -21,7 +21,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.automation.automationaccounts.yml'
       - 'modules/Microsoft.Automation/automationAccounts/**'
-      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'

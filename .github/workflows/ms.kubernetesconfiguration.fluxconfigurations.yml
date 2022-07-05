@@ -20,7 +20,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.kubernetesconfiguration.fluxconfigurations.yml'
       - 'modules/Microsoft.KubernetesConfiguration/fluxConfigurations/**'
-      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
