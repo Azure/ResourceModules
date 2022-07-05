@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.insights.diagnosticsettings.yml'
       - 'modules/Microsoft.Insights/diagnosticsettings/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'

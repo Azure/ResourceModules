@@ -49,7 +49,7 @@ This module deploys an event hub namespace.
 | `maximumThroughputUnits` | int | `1` |  | Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
 | `name` | string | `''` |  | The name of the event hub namespace. If no name is provided, then unique name will be created. |
 | `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Networks ACLs, this object contains IPs/Subnets to whitelist or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
-| `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints.For security reasons, it is recommended to use private endpoints whenever possible. |
+| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `skuCapacity` | int | `1` |  | Event Hub plan scale-out capacity of the resource. |
 | `skuName` | string | `'Standard'` | `[Basic, Standard]` | event hub plan SKU name. |

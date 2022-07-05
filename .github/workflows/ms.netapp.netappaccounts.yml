@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.netapp.netappaccounts.yml'
       - 'modules/Microsoft.NetApp/netAppAccounts/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'

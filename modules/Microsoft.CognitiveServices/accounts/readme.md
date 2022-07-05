@@ -55,7 +55,7 @@ This module deploys different kinds of cognitive services resources
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationToken` | string | `''` |  | Resource migration token. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information. |
-| `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
+| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `[, Enabled, Disabled]` | Whether or not public endpoint access is allowed for this account. |
 | `restore` | bool | `False` |  | Restore a soft-deleted cognitive service at deployment time. Will fail if no such soft-deleted resource exists. |
 | `restrictOutboundNetworkAccess` | bool | `True` |  | Restrict outbound network access. |

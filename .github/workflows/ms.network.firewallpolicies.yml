@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.network.firewallpolicies.yml'
       - 'modules/Microsoft.Network/firewallPolicies/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
