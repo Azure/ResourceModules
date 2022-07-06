@@ -98,14 +98,8 @@ runs:
         }
 
         # Set and print test output path
-        # $testFileFullPath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.testFilePath }}"
-        # Write-Verbose "testFileFullPath: $testFileFullPath" -Verbose
-        # $testFileParentFolder = (Get-Item $testFileFullPath).Directory.FullName
-        # $testFileParentFolder = (Get-Item "${{ inputs.testFilePath }}").Directory.FullName
-        $testFilePath = "${{ inputs.testFilePath }}"
-        Write-Verbose "testFilePath: $testFilePath" -Verbose
+        $testFilePath = '${{ inputs.testFilePath }}'
         $testFileDirectory = $testFilePath.Substring(0, $testFilePath.LastIndexOf("/"))
-        Write-Verbose "testFileDirectory: $testFileDirectory" -Verbose
         $outputPath = Join-Path $testFileDirectory 'global-testResults.xml'
         Write-Verbose "Pester tests output: $outputPath" -Verbose
         Write-Output ('::set-output name={0}::{1}' -f 'outputPath', $outputPath)
@@ -136,5 +130,4 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        # files: '${{ steps.pester_run_step.outputs.outputPath }}'
-        files: 'utilities/pipelines/staticValidation/global-testResults.xml'
+        files: '${{ steps.pester_run_step.outputs.outputPath }}'

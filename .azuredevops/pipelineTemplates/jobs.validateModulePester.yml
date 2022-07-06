@@ -163,21 +163,20 @@ jobs:
             }
 
             # Set and print test output path
-            $testFilePath = ${{ parameters.testFilePath }}
+            $testFilePath = '${{ parameters.testFilePath }}'
             $testFileDirectory = $testFilePath.Substring(0, $testFilePath.LastIndexOf("/"))
             $testFileParentFolder = ${{ parameters.testFilePath }}.Substring(0,${{ parameters.testFilePath }}.LastIndexOf("/"))
             Write-Verbose "Pester tests output search folder: $testFileDirectory" -Verbose
             Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'testFileDirectory', $testFileDirectory)
             $outputPath = Join-Path $testFileDirectory 'global-testResults.xml'
             Write-Verbose "Pester tests output: $outputPath" -Verbose
-            # Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPath', $outputPath)
 
             # --------------------- #
             # Invoke Pester test(s) #
             # --------------------- #
             Invoke-Pester -Configuration @{
               Run        = @{
-                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' '${{ parameters.testFilePath }}') -Data @{
+                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' $testFilePath) -Data @{
                 # Container = New-PesterContainer -Path '${{ parameters.testFilePath }}' -Data @{
                   moduleFolderPaths = $moduleFolderPaths
                   enforcedTokenList = $enforcedTokenList
@@ -202,7 +201,6 @@ jobs:
           testResultsFormat: NUnit
           testResultsFiles: global-testResults.xml
           failTaskOnFailedTests: true
-          # searchFolder: 'utilities/pipelines/staticValidation'
           searchFolder: variables['testFileDirectory']
         continueOnError: false
         condition: succeededOrFailed()
