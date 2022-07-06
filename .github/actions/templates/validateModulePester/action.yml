@@ -98,10 +98,11 @@ runs:
         }
 
         # Set and print test output path
-        $testFileFullPath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.testFilePath }}"
-        Write-Verbose "testFileFullPath: $testFileFullPath" -Verbose
+        # $testFileFullPath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.testFilePath }}"
+        # Write-Verbose "testFileFullPath: $testFileFullPath" -Verbose
         # $testFileParentFolder = (Get-Item $testFileFullPath).Directory.FullName
-        $testFileParentFolder = (Get-Item "${{ inputs.testFilePath }}").Directory.FullName
+        # $testFileParentFolder = (Get-Item "${{ inputs.testFilePath }}").Directory.FullName
+        $testFileParentFolder = ${{ inputs.testFilePath }}.Substring(0,${{ inputs.testFilePath }}.LastIndexOf("/"))
         Write-Verbose "testFileParentFolder: $testFileParentFolder" -Verbose
         $outputPath = Join-Path $testFileParentFolder 'global-testResults.xml'
         Write-Verbose "Pester tests output: $outputPath" -Verbose
