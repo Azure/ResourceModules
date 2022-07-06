@@ -100,8 +100,8 @@ runs:
         # --------------------- #
         $testFileParentFolder = (Get-Item '${{ inputs.testFilePath }}').Parent.FullName
         Write-Verbose "- [$testFileParentFolder]" -Verbose
-        # $outputPath = Join-Path $testFileParentFolder 'global-testResults.xml'
-        # Write-Verbose "- [$outputPath]" -Verbose
+        $outputPath = Join-Path '$testFileParentFolder' 'global-testResults.xml'
+        Write-Verbose "- [$outputPath]" -Verbose
 
         Invoke-Pester -Configuration @{
           Run        = @{
