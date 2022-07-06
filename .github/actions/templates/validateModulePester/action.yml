@@ -103,6 +103,7 @@ runs:
         # $testFileParentFolder = (Get-Item $testFileFullPath).Directory.FullName
         # $testFileParentFolder = (Get-Item "${{ inputs.testFilePath }}").Directory.FullName
         $testFilePath = "${{ inputs.testFilePath }}"
+        Write-Verbose "testFilePath: $testFilePath" -Verbose
         $testFileDirectory = $testFilePath.Substring(0, $testFilePath.LastIndexOf("/"))
         Write-Verbose "testFileDirectory: $testFileDirectory" -Verbose
         $outputPath = Join-Path $testFileDirectory 'global-testResults.xml'
