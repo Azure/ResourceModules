@@ -200,7 +200,7 @@ jobs:
         inputs:
           testRunTitle: 'Global Module Tests'
           testResultsFormat: NUnit
-          testResultsFiles: variables['outputPathFile']
+          testResultsFiles: "variables['outputPathFile']"
           failTaskOnFailedTests: true
           searchFolder: variables['outputPathDirectory']
         continueOnError: false
