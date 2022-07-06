@@ -40,7 +40,7 @@ resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing
   name: namespaceName
 }
 
-resource serviceBusNamespace_networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11-01' = {
+resource networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11-01' = {
   name: name
   parent: namespace
   properties: {
@@ -53,10 +53,10 @@ resource serviceBusNamespace_networkRuleSet 'Microsoft.ServiceBus/namespaces/net
 }
 
 @description('The name of the virtual network rule set deployment.')
-output name string = serviceBusNamespace_networkRuleSet.name
+output name string = networkRuleSet.name
 
 @description('The Resource ID of the virtual network rule set.')
-output resourceId string = serviceBusNamespace_networkRuleSet.id
+output resourceId string = networkRuleSet.id
 
 @description('The name of the Resource Group the virtual network rule set was created in.')
 output resourceGroupName string = resourceGroup().name
