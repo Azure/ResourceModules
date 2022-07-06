@@ -7,13 +7,13 @@ Get a list of objects that outline of all modules features for each module conta
 
 NOTE: Currently only supports modules using the Bicep DSL
 
-.PARAMETER moduleFolderPath
+.PARAMETER ModuleFolderPath
 Optional. The path to the modules.
 
-.PARAMETER returnMarkdown
+.PARAMETER ReturnMarkdown
 Optional. Instead of returning the list of objects, instead format them into a markdown table and return it as a string.
 
-.PARAMETER onlyTopLevel
+.PARAMETER OnlyTopLevel
 Optional. Only consider top-level modules (that is, no child-modules).
 
 .EXAMPLE
@@ -22,7 +22,7 @@ Get-ModulesFeatureOutline
 Get an outline of all modules in the default module path.
 
 .EXAMPLE
-Get-ModulesFeatureOutline -returnMarkdown -onlyTopLevel
+Get-ModulesFeatureOutline -ReturnMarkdown -OnlyTopLevel
 
 Get an outline of top-level modules in the default module path, formatted in a markdown table.
 
@@ -35,25 +35,35 @@ function Get-ModulesFeatureOutline {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $moduleFolderPath = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules'),
+        [string] $ModuleFolderPath = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules'),
 
         [Parameter(Mandatory = $false)]
-        [switch] $returnMarkdown,
+        [switch] $ReturnMarkdown,
 
         [Parameter(Mandatory = $false)]
-        [switch] $onlyTopLevel
+        [switch] $OnlyTopLevel
     )
 
-    if ($onlyTopLevel) {
-        $moduleTemplatePaths = (Get-ChildItem $moduleFolderPath -Recurse -Filter 'deploy.bicep' -Depth 2).FullName
+    if ($OnlyTopLevel) {
+        $moduleTemplatePaths = (Get-ChildItem $ModuleFolderPath -Recurse -Filter 'deploy.bicep' -Depth 2).FullName
     } else {
-        $moduleTemplatePaths = (Get-ChildItem $moduleFolderPath -Recurse -Filter 'deploy.bicep').FullName
+        $moduleTemplatePaths = (Get-ChildItem $ModuleFolderPath -Recurse -Filter 'deploy.bicep').FullName
     }
 
     ####################
     #   Collect data   #
     ####################
     $moduleData = [System.Collections.ArrayList]@()
+    $summaryData = [ordered]@{
+        supportsRBAC          = 0
+        supportsLocks         = 0
+        supportsTags          = 0
+        supportsDiagnostics   = 0
+        supportsEndpoints     = 0
+        supportsPipDeployment = 0
+        numberOfChildren      = 0
+        numberOfLines         = 0
+    }
     foreach ($moduleTemplatePath in $moduleTemplatePaths) {
 
         $fullResourcePath = (Split-Path $moduleTemplatePath -Parent).Replace('\', '/').split('/modules/')[1]
@@ -61,22 +71,34 @@ function Get-ModulesFeatureOutline {
         $moduleContentString = Get-Content -Path $moduleTemplatePath -Raw
 
         # Supports RBAC
-        $supportsRBAC = [regex]::Match($moduleContentString, '(?m)^\s*param roleAssignments array\s*=.+').Success
+        if ($supportsRBAC = [regex]::Match($moduleContentString, '(?m)^\s*param roleAssignments array\s*=.+').Success) {
+            $summaryData.supportsRBAC++
+        }
 
         # Supports Locks
-        $supportsLocks = [regex]::Match($moduleContentString, '(?m)^\s*param lock string\s*=.+').Success
+        if ( $supportsLocks = [regex]::Match($moduleContentString, '(?m)^\s*param lock string\s*=.+').Success) {
+            $summaryData.supportsLocks++
+        }
 
         # Supports Tags
-        $supportsTags = [regex]::Match($moduleContentString, '(?m)^\s*param tags object\s*=.+').Success
+        if ( $supportsTags = [regex]::Match($moduleContentString, '(?m)^\s*param tags object\s*=.+').Success) {
+            $summaryData.supportsTags++
+        }
 
         # Supports Diagnostics
-        $supportsDiagnostics = [regex]::Match($moduleContentString, '(?m)^\s*param diagnosticWorkspaceId string\s*=.+').Success
+        if ($supportsDiagnostics = [regex]::Match($moduleContentString, '(?m)^\s*param diagnosticWorkspaceId string\s*=.+').Success) {
+            $summaryData.supportsDiagnostics++
+        }
 
         # Supports Private Endpoints
-        $supportsEndpoints = [regex]::Match($moduleContentString, '(?m)^\s*param privateEndpoints array\s*=.+').Success
+        if ( $supportsEndpoints = [regex]::Match($moduleContentString, '(?m)^\s*param privateEndpoints array\s*=.+').Success) {
+            $summaryData.supportsEndpoints++
+        }
 
         # Supports PIPs
-        $supportsPipDeployment = [regex]::Match($moduleContentString, '(?m)^\s*param publicIPAddressObject object\s*=.+').Success
+        if ( $supportsPipDeployment = [regex]::Match($moduleContentString, '(?m)^\s*param publicIPAddressObject object\s*=.+').Success) {
+            $summaryData.supportsPipDeployment++
+        }
 
         # Number of children
         $childFolderPaths = (Get-ChildItem -Path (Split-Path $moduleTemplatePath -Parent) -Recurse -Directory).FullName | Where-Object { $_ -and (Split-Path $_ -Leaf) -match '^\w+' }
@@ -87,55 +109,60 @@ function Get-ModulesFeatureOutline {
         }
         $groupedNesting = $levelsOfNesting | Group-Object | Sort-Object -Property 'Name'
         $numberOfChildrenFormatted = '[{0}]' -f (($groupedNesting | ForEach-Object { 'L{0}:{1}' -f $_.Name, $_.Count }) -join ', ')
+        $groupedNesting | ForEach-Object { $summaryData.numberOfChildren += $_.Count }
 
         # Number of lines
         $numberOfLines = ($moduleContentArray | Where-Object { -not [String]::IsNullOrEmpty($_) }).Count + 1
+        $summaryData.numberOfLines += $numberOfLines
 
         $moduleData += [ordered]@{
-            Module               = $fullResourcePath -replace 'Microsoft.', 'MS.'
-            'Has RBAC'           = $supportsRBAC
-            'Has locks'          = $supportsLocks
-            'Has tags'           = $supportsTags
-            'Has diagnostics'    = $supportsDiagnostics
-            'Has endpoints'      = $supportsEndpoints
-            'Has Pip-Deployment' = $supportsPipDeployment
-            '# children'         = $numberOfChildrenFormatted
-            '# lines'            = $numberOfLines
+            Module       = $fullResourcePath -replace 'Microsoft.', 'MS.'
+            'RBAC'       = $supportsRBAC
+            'Locks'      = $supportsLocks
+            'Tags'       = $supportsTags
+            'Diag'       = $supportsDiagnostics
+            'EP'         = $supportsEndpoints
+            'Pip-Depl.'  = $supportsPipDeployment
+            '# children' = $numberOfChildrenFormatted
+            '# lines'    = $numberOfLines
         }
     }
-
 
     #######################
     #   Generate output   #
     #######################
-    if ($returnMarkdown) {
+    if ($ReturnMarkdown) {
         $markdownTable = [System.Collections.ArrayList]@(
-            '| {0} |' -f ($moduleData[0].Keys -join ' | ')
-            '| {0} |' -f (($moduleData[0].Keys | ForEach-Object { '-' }) -join ' | ' )
+            '| # | {0} |' -f ($moduleData[0].Keys -join ' | ')
+            '| - | {0} |' -f (($moduleData[0].Keys | ForEach-Object { '-' }) -join ' | ' )
         )
 
+        $counter = 1
         foreach ($module in $moduleData) {
-            $line = '| {0} |' -f (($moduleData[0].Keys | ForEach-Object { $module[$_] }) -join ' | ')
+            $line = '| {0} | {1} |' -f $counter, (($moduleData[0].Keys | ForEach-Object { $module[$_] }) -join ' | ')
             $line = $line -replace 'True', ':white_check_mark:'
             $line = $line -replace 'False', ''
             $line = $line -replace '\[\]', ''
             $markdownTable += $line
+            $counter++
         }
+
+        $markdownTable += '| = | | {0} |' -f (($summaryData.Keys | ForEach-Object { $summaryData[$_] }) -join ' | ')
 
         return $markdownTable | Out-String
 
     } else {
         return $moduleData | ForEach-Object {
             [PSCustomObject] @{
-                Module               = $_.Module
-                'Has RBAC'           = $_.'Has RBAC'
-                'Has locks'          = $_.'Has locks'
-                'Has tags'           = $_.'Has tags'
-                'Has diagnostics'    = $_.'Has diagnostics'
-                'Has endpoints'      = $_.'Has endpoints'
-                'Has Pip-Deployment' = $_.'Has Pip-Deployment'
-                '# children'         = $_.'# children'
-                '# lines'            = $_.'# lines'
+                Module       = $_.Module
+                'RBAC'       = $_.'RBAC'
+                'Locks'      = $_.'Locks'
+                'Tags'       = $_.'Tags'
+                'Diag'       = $_.'Diag'
+                'EP'         = $_.'EP'
+                'Pip-Depl.'  = $_.'Pip-Depl.'
+                '# children' = $_.'# children'
+                '# lines'    = $_.'# lines'
             }
         }
     }
