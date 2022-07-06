@@ -112,7 +112,8 @@ runs:
           }
           TestResult = @{
             TestSuiteName = 'Global Module Tests'
-            OutputPath    = 'modules/.global/global-testResults.xml'
+            # OutputPath    = 'modules/.global/global-testResults.xml'
+            OutputPath    = $outputPath
             OutputFormat  = 'JUnitXml'
             Enabled       = $true
           }
