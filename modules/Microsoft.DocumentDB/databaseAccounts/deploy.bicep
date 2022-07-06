@@ -311,7 +311,7 @@ resource databaseAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
   scope: databaseAccount
 }
 
-module databaseAccount_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module databaseAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -322,7 +322,7 @@ module databaseAccount_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAs
   }
 }]
 
-module sqlDatabases_resource 'sqlDatabases/deploy.bicep' = [for sqlDatabase in sqlDatabases: {
+module databaseAccount_sqlDatabases 'sqlDatabases/deploy.bicep' = [for sqlDatabase in sqlDatabases: {
   name: '${uniqueString(deployment().name, location)}-sqldb-${sqlDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
@@ -332,7 +332,7 @@ module sqlDatabases_resource 'sqlDatabases/deploy.bicep' = [for sqlDatabase in s
   }
 }]
 
-module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbDatabase in mongodbDatabases: {
+module databaseAccount_mongodbDatabases 'mongodbDatabases/deploy.bicep' = [for mongodbDatabase in mongodbDatabases: {
   name: '${uniqueString(deployment().name, location)}-mongodb-${mongodbDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
@@ -342,7 +342,7 @@ module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbD
   }
 }]
 
-module gremlinDatabases_resource 'gremlinDatabases/deploy.bicep' = [for gremlinDatabase in gremlinDatabases: {
+module databaseAccount_gremlinDatabases 'gremlinDatabases/deploy.bicep' = [for gremlinDatabase in gremlinDatabases: {
   name: '${uniqueString(deployment().name, location)}-gremlin-${gremlinDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
