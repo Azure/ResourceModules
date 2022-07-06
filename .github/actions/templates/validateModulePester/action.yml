@@ -98,6 +98,9 @@ runs:
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
+        $outputPath = Join-Path (Get-Item '${{ inputs.testFilePath }}').Parent.FullName 'global-testResults.xml'
+        Write-Verbose "- [$outputPath]" -Verbose
+
         Invoke-Pester -Configuration @{
           Run        = @{
             Container = New-PesterContainer -Path '${{ inputs.testFilePath }}' -Data @{
@@ -120,4 +123,4 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: 'modules/.global/*-testResults.xml'
+        files: 'modules/.global/global-testResults.xml'
