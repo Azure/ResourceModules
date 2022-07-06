@@ -137,4 +137,4 @@ runs:
       if: always()
       with:
         # files: '${{ steps.pester_run_step.outputs.outputPath }}'
-        files: 'utilities/pipelines/staticValidation/global.module.tests.ps1'
+        files: 'utilities/pipelines/staticValidation/global-testResults.xml'
