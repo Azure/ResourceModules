@@ -212,6 +212,7 @@ module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!
     trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
     virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.virtualNetworkRules : [] : null
     ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
