@@ -51,7 +51,7 @@ parameters:
   checkoutRepositories: ''
   # Logic-related parameters
   modulePath: '$(modulePath)'
-  testFilePath: 'utilities/pipelines/staticValidation/global.module.tests.ps1'
+  testFilePath: '$(globalModuleTestFilePath)'
   parametersRepository: '$(Build.Repository.Name)'
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'

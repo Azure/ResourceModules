@@ -31,7 +31,7 @@ inputs:
   testFilePath:
     description: "The path to the test file"
     required: true
-    default: 'utilities/pipelines/staticValidation/global.module.tests.ps1'
+    default: ''
 
 runs:
   using: 'composite'

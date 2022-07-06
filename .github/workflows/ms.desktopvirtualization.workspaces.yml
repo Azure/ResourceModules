@@ -75,6 +75,7 @@ jobs:
         uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
+          testFilePath: '${{ env.globalModuleTestFilePath }}'
 
   #############################
   #   Deployment validation   #

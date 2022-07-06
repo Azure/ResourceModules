@@ -4,6 +4,12 @@ variables:
   ###########################################################################################################################
 
   ######################################
+  # Common folders and file paths
+  ######################################
+
+  globalModuleTestFilePath: 'utilities/pipelines/staticValidation/global.module.tests.ps1'
+
+  ######################################
   # Validation deployment settings
   ######################################
 
