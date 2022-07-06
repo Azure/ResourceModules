@@ -163,7 +163,7 @@ jobs:
             # ------------------------- #
             # Get and print output path #
             # ------------------------- #
-            $testFileParentFolder = (Get-Item '${{ parameters.testFilePath }}').Parent.FullName
+            $testFileParentFolder = (Get-Item '${{ parameters.testFilePath }}').Directory.FullName
             Write-Verbose "Pester tests output search folder: $testFileParentFolder" -Verbose
             Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'testFileParentFolder', $testFileParentFolder)
             $outputPath = Join-Path '$testFileParentFolder' 'global-testResults.xml'
