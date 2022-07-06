@@ -23,7 +23,9 @@ trigger:
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Batch/batchAccounts/*'
       - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
@@ -45,6 +47,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
+            - path: $(modulePath)/.test/encr.parameters.json
             - path: $(modulePath)/.test/min.parameters.json
             - path: $(modulePath)/.test/parameters.json
 

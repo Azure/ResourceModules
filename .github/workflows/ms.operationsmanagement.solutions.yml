@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.operationsmanagement.solutions.yml'
       - 'modules/Microsoft.OperationsManagement/solutions/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
