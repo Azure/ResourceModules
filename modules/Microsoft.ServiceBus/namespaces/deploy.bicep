@@ -203,7 +203,7 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
   }
 }]
 
-module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (skuName == 'Premium' || !empty(networkRuleSets)) {
+module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets)) {
   name: '${uniqueString(deployment().name, location)}-networkRuleSet'
   params: {
     namespaceName: serviceBusNamespace.name
