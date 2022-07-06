@@ -99,8 +99,9 @@ runs:
         # Invoke Pester test(s) #
         # --------------------- #
         $testFileParentFolder = (Get-Item '${{ inputs.testFilePath }}').Parent.FullName
-        $outputPath = Join-Path $testFileParentFolder 'global-testResults.xml'
-        Write-Verbose "- [$outputPath]" -Verbose
+        Write-Verbose "- [$testFileParentFolder]" -Verbose
+        # $outputPath = Join-Path $testFileParentFolder 'global-testResults.xml'
+        # Write-Verbose "- [$outputPath]" -Verbose
 
         Invoke-Pester -Configuration @{
           Run        = @{
