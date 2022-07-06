@@ -137,6 +137,7 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
+            # Set test input module path
             $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
             $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
               (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
@@ -146,6 +147,7 @@ jobs:
               Write-Verbose "- [($moduleFolderPath]" -Verbose
             }
 
+            # Set enforced token list
             $enforcedTokenList = @{}
             if (-not [String]::IsNullOrEmpty('${{ parameters.subscriptionId }}')) {
                 $enforcedTokenList['subscriptionId'] = '${{ parameters.subscriptionId }}'
@@ -161,11 +163,12 @@ jobs:
             }
 
             # Set and print test output path
-            # $testFileParentFolder = (Get-Item '${{ parameters.testFilePath }}').Directory.FullName
+            $testFilePath = ${{ parameters.testFilePath }}
+            $testFileDirectory = $testFilePath.Substring(0, $testFilePath.LastIndexOf("/"))
             $testFileParentFolder = ${{ parameters.testFilePath }}.Substring(0,${{ parameters.testFilePath }}.LastIndexOf("/"))
-            Write-Verbose "Pester tests output search folder: $testFileParentFolder" -Verbose
-            Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'testFileParentFolder', $testFileParentFolder)
-            $outputPath = Join-Path $testFileParentFolder 'global-testResults.xml'
+            Write-Verbose "Pester tests output search folder: $testFileDirectory" -Verbose
+            Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'testFileDirectory', $testFileDirectory)
+            $outputPath = Join-Path $testFileDirectory 'global-testResults.xml'
             Write-Verbose "Pester tests output: $outputPath" -Verbose
             # Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPath', $outputPath)
 
@@ -200,6 +203,6 @@ jobs:
           testResultsFiles: global-testResults.xml
           failTaskOnFailedTests: true
           # searchFolder: 'utilities/pipelines/staticValidation'
-          searchFolder: variables['testFileParentFolder']
+          searchFolder: variables['testFileDirectory']
         continueOnError: false
         condition: succeededOrFailed()

@@ -102,7 +102,7 @@ runs:
         # Write-Verbose "testFileFullPath: $testFileFullPath" -Verbose
         # $testFileParentFolder = (Get-Item $testFileFullPath).Directory.FullName
         # $testFileParentFolder = (Get-Item "${{ inputs.testFilePath }}").Directory.FullName
-        $testFilePath = ${{ inputs.testFilePath }}
+        $testFilePath = "${{ inputs.testFilePath }}"
         $testFileDirectory = $testFilePath.Substring(0, $testFilePath.LastIndexOf("/"))
         Write-Verbose "testFileDirectory: $testFileDirectory" -Verbose
         $outputPath = Join-Path $testFileDirectory 'global-testResults.xml'
@@ -114,7 +114,8 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            Container = New-PesterContainer -Path '${{ inputs.testFilePath }}' -Data @{
+            # Container = New-PesterContainer -Path '${{ inputs.testFilePath }}' -Data @{
+            Container = New-PesterContainer -Path (Join-Path $env:GITHUB_WORKSPACE $testFilePath) -Data @{
               moduleFolderPaths = $moduleFolderPaths
               enforcedTokenList = $enforcedTokenList
             }
