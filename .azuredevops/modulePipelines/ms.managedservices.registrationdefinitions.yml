@@ -20,17 +20,19 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.managedservices.registrationdefinitions.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.ManagedServices/registrationDefinitions/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.ManagedServices/registrationDefinitions/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.ManagedServices/registrationDefinitions'
+    value: '/modules/Microsoft.ManagedServices/registrationDefinitions'
 
 stages:
   - stage: Validation
@@ -45,8 +47,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/rg.parameters.json
+            - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/rg.parameters.json
 
   - stage: Publishing
     displayName: Publishing

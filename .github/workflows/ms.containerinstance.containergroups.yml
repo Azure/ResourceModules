@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.containerinstance.containergroups.yml'
-      - 'arm/Microsoft.ContainerInstance/containerGroups/**'
-      - 'arm/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.ContainerInstance/containerGroups/**'
+      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.ContainerInstance/containerGroups'
+  modulePath: 'modules/Microsoft.ContainerInstance/containerGroups'
   workflowPath: '.github/workflows/ms.containerinstance.containergroups.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

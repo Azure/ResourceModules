@@ -1,38 +1,38 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "adp<<namePrefix>>azsax001"
-    },
-    "storageAccountKind": {
-      "value": "StorageV2"
-    },
-    "storageAccountSku": {
-      "value": "Standard_LRS"
-    },
-    "storageAccountAccessTier": {
-      "value": "Hot"
-    },
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "requireInfrastructureEncryption": {
-      "value": false
-    },
-    "blobServices": {
-      "value": {
-        "containers": [
-          {
-            "name": "scripts",
-            "publicAccess": "None"
-          },
-          {
-            "name": "vhds",
-            "publicAccess": "None"
-          }
-        ]
-      }
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp<<namePrefix>>azsax001"
+        },
+        "storageAccountKind": {
+            "value": "StorageV2"
+        },
+        "storageAccountSku": {
+            "value": "Standard_LRS"
+        },
+        "storageAccountAccessTier": {
+            "value": "Hot"
+        },
+        "allowBlobPublicAccess": {
+            "value": false
+        },
+        "requireInfrastructureEncryption": {
+            "value": false
+        },
+        "blobServices": {
+            "value": {
+                "containers": [
+                    {
+                        "name": "scripts",
+                        "publicAccess": "None"
+                    },
+                    {
+                        "name": "vhds",
+                        "publicAccess": "None"
+                    }
+                ]
+            }
+        }
     }
-  }
 }

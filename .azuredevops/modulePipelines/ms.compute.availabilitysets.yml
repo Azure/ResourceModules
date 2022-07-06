@@ -20,17 +20,19 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.availabilitysets.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Compute/availabilitySets/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Compute/availabilitySets/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Compute/availabilitySets'
+    value: '/modules/Microsoft.Compute/availabilitySets'
 
 stages:
   - stage: Validation
@@ -45,7 +47,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing

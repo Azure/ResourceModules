@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.eventgrid.topics.yml'
-      - 'arm/Microsoft.EventGrid/topics/**'
-      - 'arm/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.EventGrid/topics/**'
+      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.EventGrid/topics'
+  modulePath: 'modules/Microsoft.EventGrid/topics'
   workflowPath: '.github/workflows/ms.eventgrid.topics.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
