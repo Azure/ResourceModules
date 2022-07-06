@@ -28,13 +28,12 @@ This module deploys DocumentDB DatabaseAccounts GremlinDatabases Graphs.
 | `gremlinDatabaseName` | string | The name of the parent Gremlin Database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `automaticIndexing` | bool | `True` |  | Indicates if the indexing policy is automatic. |
-| `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `kind` | string | `'Hash'` | `[Hash, MultiHash, Range]` | Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (up to three maximum) are supported for container create. |
-| `partitionKeyPaths` | array | `[]` |  | List of paths using which data within the container can be partitioned. |
-| `tags` | object | `{object}` |  | Tags of the Gremlin graph resource. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `automaticIndexing` | bool | `True` | Indicates if the indexing policy is automatic. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `partitionKeyPaths` | array | `[]` | List of paths using which data within the container can be partitioned. |
+| `tags` | object | `{object}` | Tags of the Gremlin graph resource. |
 
 
 ### Parameter Usage: `tags`

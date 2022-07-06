@@ -540,6 +540,196 @@ userAssignedIdentities: {
 
 ```json
 {
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-cdb-gremlindb-001"
+    },
+    "location": {
+      "value": "West Europe"
+    },
+    "locations": {
+      "value": [
+        {
+          "locationName": "West Europe",
+          "failoverPriority": 0,
+          "isZoneRedundant": false
+        },
+        {
+          "locationName": "North Europe",
+          "failoverPriority": 1,
+          "isZoneRedundant": false
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ]
+        }
+      ]
+    },
+    "gremlinDatabases": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-gdb-x-001",
+          "graphs": [
+            {
+              "name": "car_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/car_id"
+              ]
+            },
+            {
+              "name": "truck_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/truck_id"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "<<namePrefix>>-az-gdb-x-002",
+          "collections": [
+            {
+              "name": "bike_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/bike_id"
+              ]
+            },
+            {
+              "name": "bicycle_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/bicycle_id"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-databaseAccounts'
+  params: {
+    name: '<<namePrefix>>-az-cdb-gremlindb-001'
+    location: 'West Europe'
+    locations: [
+      {
+        locationName: 'West Europe'
+        failoverPriority: 0
+        isZoneRedundant: false
+      }
+      {
+        locationName: 'North Europe'
+        failoverPriority: 1
+        isZoneRedundant: false
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    gremlinDatabases: [
+      {
+        name: '<<namePrefix>>-az-gdb-x-001'
+        graphs: [
+          {
+            name: 'car_collection'
+            automaticIndexing: true
+            partitionKeyPaths: [
+              '/car_id'
+            ]
+          }
+          {
+            name: 'truck_collection'
+            automaticIndexing: true
+            partitionKeyPaths: [
+              '/truck_id'
+            ]
+          }
+        ]
+      }
+      {
+        name: '<<namePrefix>>-az-gdb-x-002'
+        collections: [
+          {
+            name: 'bike_collection'
+            automaticIndexing: true
+            partitionKeyPaths: [
+              '/bike_id'
+            ]
+          }
+          {
+            name: 'bicycle_collection'
+            automaticIndexing: true
+            partitionKeyPaths: [
+              '/bicycle_id'
+            ]
+          }
+        ]
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    systemAssignedIdentity: true
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
@@ -779,7 +969,6 @@ userAssignedIdentities: {
         }
     }
 }
-
 ```
 
 </details>
@@ -1011,7 +1200,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 </details>
 <p>
 
-<h3>Example 2</h3>
+<h3>Example 3</h3>
 
 <details>
 
@@ -1069,7 +1258,6 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
     }
 }
-
 ```
 
 </details>
@@ -1116,7 +1304,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 </details>
 <p>
 
-<h3>Example 3</h3>
+<h3>Example 4</h3>
 
 <details>
 
@@ -1199,7 +1387,6 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
     }
 }
-
 ```
 
 </details>
