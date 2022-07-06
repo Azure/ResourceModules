@@ -72,7 +72,7 @@ resource gremlinDatabase 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases
   }
 }
 
-module gremlinGraphs 'graphs/deploy.bicep' = [for graph in graphs: {
+module gremlinDatabase_gremlinGraphs 'graphs/deploy.bicep' = [for graph in graphs: {
   name: '${uniqueString(deployment().name, gremlinDatabase.name)}-gremlindb-${graph.name}'
   params: {
     name: graph.name
