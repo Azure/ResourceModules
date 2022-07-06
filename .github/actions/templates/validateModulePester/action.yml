@@ -136,4 +136,5 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: '${{ steps.pester_run_step.outputs.outputPath }}'
+        # files: '${{ steps.pester_run_step.outputs.outputPath }}'
+        files: 'utilities/pipelines/staticValidation/global.module.tests.ps1'
