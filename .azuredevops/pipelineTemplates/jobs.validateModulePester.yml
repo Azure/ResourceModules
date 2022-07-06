@@ -51,6 +51,7 @@ parameters:
   checkoutRepositories: ''
   # Logic-related parameters
   modulePath: '$(modulePath)'
+  testFilePath: 'utilities/pipelines/staticValidation/global.module.tests.ps1'
   parametersRepository: '$(Build.Repository.Name)'
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
@@ -159,19 +160,30 @@ jobs:
                 $enforcedTokenList['tenantId'] =  '$(ARM_TENANT_ID)'
             }
 
+            # ------------------------- #
+            # Get and print output path #
+            # ------------------------- #
+            $testFileParentFolder = (Get-Item '${{ parameters.testFilePath }}').Parent.FullName
+            Write-Verbose "Pester tests output search folder: $testFileParentFolder" -Verbose
+            Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'testFileParentFolder', $testFileParentFolder)
+            $outputPath = Join-Path '$testFileParentFolder' 'global-testResults.xml'
+            Write-Verbose "Pester tests output: $outputPath" -Verbose
+            # Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPath', $outputPath)
+
             # --------------------- #
             # Invoke Pester test(s) #
             # --------------------- #
             Invoke-Pester -Configuration @{
               Run        = @{
-                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'modules' '.global' 'global.module.tests.ps1') -Data @{
+                # Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'modules' '.global' 'global.module.tests.ps1') -Data @{
+                Container = New-PesterContainer -Path '${{ parameters.testFilePath }}' -Data @{
                   moduleFolderPaths = $moduleFolderPaths
                   enforcedTokenList = $enforcedTokenList
                 }
               }
               TestResult = @{
                 TestSuiteName = 'Global Module Tests'
-                OutputPath    = 'modules/.global/global-testResults.xml'
+                OutputPath    = $outputPath
                 OutputFormat  = 'NUnitXml'
                 Enabled       = $true
               }
@@ -188,6 +200,7 @@ jobs:
           testResultsFormat: NUnit
           testResultsFiles: global-testResults.xml
           failTaskOnFailedTests: true
-          searchFolder: 'modules/.global'
+          searchFolder: 'utilities/pipelines/staticValidation'
+          # searchFolder: variables['testFileParentFolder']
         continueOnError: false
         condition: succeededOrFailed()
