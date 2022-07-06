@@ -2,7 +2,6 @@
 #   Load general functions   #
 ##############################
 $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
-# $repoRootPath = Split-Path (Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent) -Parent
 
 . (Join-Path $repoRootPath 'utilities' 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
 . (Join-Path $repoRootPath 'utilities' 'pipelines' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')

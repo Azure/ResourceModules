@@ -115,7 +115,6 @@ runs:
           }
           TestResult = @{
             TestSuiteName = 'Global Module Tests'
-            # OutputPath    = 'modules/.global/global-testResults.xml'
             OutputPath    = $outputPath
             OutputFormat  = 'JUnitXml'
             Enabled       = $true
@@ -129,5 +128,4 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        # files: 'modules/.global/global-testResults.xml'
         files: '${{ steps.pester_run_step.outputs.outputPath }}'
