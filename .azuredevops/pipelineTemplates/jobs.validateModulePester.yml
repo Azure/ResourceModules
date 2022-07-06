@@ -161,7 +161,8 @@ jobs:
             }
 
             # Set and print test output path
-            $testFileParentFolder = (Get-Item '${{ parameters.testFilePath }}').Directory.FullName
+            # $testFileParentFolder = (Get-Item '${{ parameters.testFilePath }}').Directory.FullName
+            $testFileParentFolder = ${{ parameters.testFilePath }}.Substring(0,${{ parameters.testFilePath }}.LastIndexOf("/"))
             Write-Verbose "Pester tests output search folder: $testFileParentFolder" -Verbose
             Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'testFileParentFolder', $testFileParentFolder)
             $outputPath = Join-Path $testFileParentFolder 'global-testResults.xml'
@@ -198,7 +199,7 @@ jobs:
           testResultsFormat: NUnit
           testResultsFiles: global-testResults.xml
           failTaskOnFailedTests: true
-          searchFolder: 'utilities/pipelines/staticValidation'
-          # searchFolder: variables['testFileParentFolder']
+          # searchFolder: 'utilities/pipelines/staticValidation'
+          searchFolder: variables['testFileParentFolder']
         continueOnError: false
         condition: succeededOrFailed()
