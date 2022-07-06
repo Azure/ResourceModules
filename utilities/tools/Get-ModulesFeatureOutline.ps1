@@ -25,6 +25,10 @@ Get an outline of all modules in the default module path.
 Get-ModulesFeatureOutline -returnMarkdown -onlyTopLevel
 
 Get an outline of top-level modules in the default module path, formatted in a markdown table.
+
+.NOTES
+Children (if any) are displayed in format `[L1:5, L2:4, L3:1]`. Each item (separated via ',') shows the level of nesting in the front (e.g. L1) and the number of children in this level (separated by a colon ':').
+In the above example, the module has 5 direct children, 4 of them have direct children themselves and 1 of them has 1 more child.
 #>
 function Get-ModulesFeatureOutline {
 
