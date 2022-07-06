@@ -21,16 +21,18 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.operationsmanagement.solutions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.OperationsManagement/solutions/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.OperationsManagement/solutions/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.OperationsManagement/solutions'
+    value: '/modules/Microsoft.OperationsManagement/solutions'
 
 stages:
   - stage: Validation
@@ -45,9 +47,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/nonms.parameters.json
-            - path: $(modulePath)/.parameters/ms.parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/nonms.parameters.json
+            - path: $(modulePath)/.test/ms.parameters.json
 
   - stage: Publishing
     displayName: Publishing

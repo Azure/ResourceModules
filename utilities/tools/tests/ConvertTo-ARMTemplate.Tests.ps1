@@ -7,14 +7,14 @@ param ()
 BeforeAll {
     # Define paths
     $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
-    $armFolderPath = Join-Path $rootPath 'arm'
+    $modulesFolderPath = Join-Path $rootPath 'modules'
     $toolsPath = Join-Path $rootPath 'utilities' 'tools'
 
     # Collect original files
-    $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like '*.bicep' }).Count
-    $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
-    $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
-    $deployParentBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+    $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -like '*.bicep' }).Count
+    $nestedBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
+    $deployBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+    $deployParentBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
 
     # GitHub Workflows
     $moduleWorkflowFiles = Get-ChildItem -Path (Join-Path $rootPath '.github' 'workflows') -Filter 'ms.*.yml' -File
@@ -48,17 +48,17 @@ Describe 'Test default behavior' -Tag 'Default' {
     }
 
     It 'All top-level deploy.bicep files are converted to deploy.json' {
-        $deployJsonFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
+        $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $deployParentBicepFilesCount
     }
 
     It 'All bicep files are removed' {
-        $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
+        $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
         $bicepFilesCount | Should -Be 0
     }
 
     It 'All json files have metadata removed' {
-        $deployJsonFiles = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
+        $deployJsonFiles = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
         $metadataFound = $false
 
         foreach ($deployJsonFile in $deployJsonFiles) {
@@ -109,17 +109,17 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
     }
 
     It 'All deploy.bicep files are converted to deploy.json' {
-        $deployJsonFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
+        $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $deployBicepFilesCount
     }
 
     It 'All bicep files are removed' {
-        $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
+        $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
         $bicepFilesCount | Should -Be 0
     }
 
     It 'All json files have metadata removed' {
-        $deployJsonFiles = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
+        $deployJsonFiles = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
         $metadataFound = $false
 
         foreach ($deployJsonFile in $deployJsonFiles) {
@@ -170,17 +170,17 @@ Describe 'Test flags that skip logic' -Tag 'Skip' {
     }
 
     It 'All deploy.bicep files are converted to deploy.json' {
-        $deployJsonFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
+        $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $deployParentBicepFilesCount
     }
 
     It 'All bicep files are still there' {
-        $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
+        $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
         $bicepFilesCount | Should -Be $bicepFilesCount
     }
 
     It 'All json files still have metadata' {
-        $deployJsonFiles = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
+        $deployJsonFiles = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
         $metadataFound = $false
 
         foreach ($deployJsonFile in $deployJsonFiles) {
