@@ -95,14 +95,17 @@ runs:
             $enforcedTokenList['tenantId'] = '${{ env.ARM_TENANT_ID }}'
         }
 
+        # ------------------------- #
+        # Get and print output path #
+        # ------------------------- #
+        $testFileParentFolder = (Get-Item '${{ inputs.testFilePath }}').Parent.FullName
+        $outputPath = Join-Path '$testFileParentFolder' 'global-testResults.xml'
+        Write-Verbose "Pester tests output: $outputPath" -Verbose
+        Write-Output ('::set-output name={0}::{1}' -f 'outputPath', $outputPath)
+
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
-        $testFileParentFolder = (Get-Item '${{ inputs.testFilePath }}').Parent.FullName
-        Write-Verbose "- [$testFileParentFolder]" -Verbose
-        $outputPath = Join-Path '$testFileParentFolder' 'global-testResults.xml'
-        Write-Verbose "- [$outputPath]" -Verbose
-
         Invoke-Pester -Configuration @{
           Run        = @{
             Container = New-PesterContainer -Path '${{ inputs.testFilePath }}' -Data @{
@@ -126,4 +129,5 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: 'modules/.global/global-testResults.xml'
+        # files: 'modules/.global/global-testResults.xml'
+        files: '${{ steps.pester_run_step.outputs.outputPath }}'
