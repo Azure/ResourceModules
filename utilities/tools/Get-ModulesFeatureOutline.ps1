@@ -13,6 +13,9 @@ Optional. The path to the modules.
 .PARAMETER ReturnMarkdown
 Optional. Instead of returning the list of objects, instead format them into a markdown table and return it as a string.
 
+.PARAMETER BreakMarkdownModuleNameAt
+Optional. When `ReturnMarkdown` is set to true you can use this number to control if & where you'd want to line break the ModuleName column. Defaults to 1 (i.e., right after the provider namepsace).
+
 .PARAMETER OnlyTopLevel
 Optional. Only consider top-level modules (that is, no child-modules).
 
@@ -39,6 +42,9 @@ function Get-ModulesFeatureOutline {
 
         [Parameter(Mandatory = $false)]
         [switch] $ReturnMarkdown,
+
+        [Parameter(Mandatory = $false)]
+        [int] $BreakMarkdownModuleNameAt = 1,
 
         [Parameter(Mandatory = $false)]
         [switch] $OnlyTopLevel
@@ -137,6 +143,16 @@ function Get-ModulesFeatureOutline {
             '| - | {0} |' -f (($moduleData[0].Keys | ForEach-Object { '-' }) -join ' | ' )
         )
 
+        # Format module identifier
+        foreach ($module in $moduleData) {
+            $identifierParts = $module.Module.Replace('\', '/').split('/')
+            if ($identifierParts.Count -gt $BreakMarkdownModuleNameAt) {
+                $topLevelIdentifier = $identifierParts[0..($BreakMarkdownModuleNameAt - 1)] -join '/'
+                $module.Module = '{0}<p>{1}' -f $topLevelIdentifier, ($module.Module -replace "$topLevelIdentifier/", '')
+            }
+        }
+
+        # Add table data
         $counter = 1
         foreach ($module in $moduleData) {
             $line = '| {0} | {1} |' -f $counter, (($moduleData[0].Keys | ForEach-Object { $module[$_] }) -join ' | ')
