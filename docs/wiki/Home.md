@@ -1,6 +1,8 @@
 # Common Azure Resource Modules Library
+CARML resource library provides [bicep](https://github.com/Azure/bicep) modules which can be re-use in your infrastructure as code project to accelerate deployments. You can re-use code library as whole or in part. The primary aim is to provide you with re-usable infrastructure pattern so that you can focus what matter the most.
+CARML should accelerate your deployment, it should also save time on testing, it should help you easily integrate and overall it should provide you with commonality across your infrastructure deployments. You could integrate CARML into your CI/CD pipelines and that will accelerate your devops adoption with ease.
 
-The objective of this repository is to provide a template library that can accelerate deployments in Infrastructure as Code scenarios, such as Azure landing zones, landing zone accelerators and aspiring landing zone accelerators (workloads/applications/multi-module solutions) or individual service deployments.
+CARML will make it easy to deploy complex deployment, such as Azure landing zone, landing zone accelerator or individual service deployments.
 
 This wiki describes the content of this repository, its modules, pipelines, and possible options on how to use them and how to contribute to this project.
 
@@ -47,19 +49,21 @@ If you're unfamiliar with Infrastructure as Code or wonder how you can use the c
 
 # Scope
 
-Following, you can find an abstract overview of everything in- and out-of-scope of this repository.
+In next section, you can find an overview of what is in scope and what is out of scope for CARML.
 
 ## In Scope
 
-- **Module library:** A collection of comprehensive, reusable, Bicep-based building blocks to deploy Azure resources, that can be combined to create & orchestrate more complex, multi-module Azure solutions.
-- **CI environment:** Pipelines to validate modules & publish the successfully validated ones to a target location, using semantic versioning. Available with both GitHub Workflows and Azure DevOps pipelines.
-- **Documentation:** Including design principles and usage of [The library](./The%20library) and [The CI environment](./The%20CI%20environment) as well as step-by-step guidelines on how to start leveraging them - see in the [Getting started](./Getting%20started) section.
+- **Module library ** is a  collection of comprehensive, reusable, Bicep-based building blocks to deploy Azure resources. It can also be be combined to create & orchestrate more complex, multi-module Azure solutions.
+- **CI environment** Is devops pipelines. It can be use to validate modules and to publish module which are  successfully validated to a target location. It uses semantic versioning  and it can be use with both GitHub Workflows and Azure DevOps pipelines.
+- **Documentation** Including design principles,  usage of [The library](./The%20library) and [The CI environment](./The%20CI%20environment). It also includes  step-by-step guidelines on how to start utilizing CARML Library. For more detail please refer to  [Getting started](./Getting%20started) section.
 
 ## Out of Scope
 
-- **Orchestration:** Orchestrated, multi-module solutions such as workloads or applications intended for production environments.
-- **Real-time Updates:** Modules are updated on a best effort basis by a group of committed contributors.
+- **Orchestration:** Orchestrated, multi-module solutions such as workloads or applications intended. As mention earlier, you can use modules to assemble such application /workload deploy workload.
 - **Languages:** Other domain-specific languages (DSL), like _Terraform_.
+
+## Module update frequency
+Modules are updated by a group of committed contributors.
 
 # Reporting Issues
 
