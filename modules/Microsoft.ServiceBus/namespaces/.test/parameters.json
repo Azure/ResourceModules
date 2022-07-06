@@ -162,15 +162,7 @@
                     "service": "namespace"
                 }
             ]
-        },
-        "networkRuleSets": {
-            "value": {
-                "defaultAction": "Deny",
-                "publicNetworkAccess": "Disabled",
-                "trustedServiceAccessEnabled": true,
-                "virtualNetworkRules": [],
-                "ipRules": []
-            }
+        }
         }
     }
 }
