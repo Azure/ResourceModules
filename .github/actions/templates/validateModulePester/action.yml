@@ -3,7 +3,6 @@
 #########################################################
 ##
 ## This composite action contains the logic to validate a module using a set of Pester tests
-## The tests are implemented in file 'modules/.global/global.module.tests.ps1'
 ##
 #########################################################
 ##
@@ -11,12 +10,12 @@
 ## ACTION PARAMETERS                         ##
 ##-------------------------------------------##
 ##
-##   |======================================================================================================================================|
-##   | Parameter    | Required | Default | Description                     | Example                                                        |
-##   |--------------|----------|---------|---------------------------------|----------------------------------------------------------------|
-##   | modulePath   | true     | ''      | The path to the module's folder | 'modules/Microsoft.ApiManagement/service'                      |
-##   | testFilePath | true     | ''      | The path to the test file       | 'utilities/pipelines/staticValidation/global.module.tests.ps1' |
-##   |======================================================================================================================================|
+##   |==================================================================================================================================================|
+##   | Parameter                | Required | Default | Description                     | Example                                                        |
+##   |--------------------------|----------|---------|---------------------------------|----------------------------------------------------------------|
+##   | modulePath               | true     | ''      | The path to the module's folder | 'modules/Microsoft.ApiManagement/service'                      |
+##   | globalModuleTestFilePath | true     | ''      | The path to the test file       | 'utilities/pipelines/staticValidation/global.module.tests.ps1' |
+##   |==================================================================================================================================================|
 ##
 ##---------------------------------------------##
 
@@ -28,7 +27,7 @@ inputs:
     description: "The path to the module's folder"
     required: true
     default: ''
-  testFilePath:
+  globalModuleTestFilePath:
     description: "The path to the test file"
     required: true
     default: ''
@@ -98,9 +97,10 @@ runs:
         }
 
         # Set and print test output path
-        $testFilePath = '${{ inputs.testFilePath }}'
-        $testFileDirectory = $testFilePath.Substring(0, $testFilePath.LastIndexOf("/"))
-        $outputPath = Join-Path $testFileDirectory 'global-testResults.xml'
+        $globalModuleTestFilePath = '${{ inputs.globalModuleTestFilePath }}'
+        $outputPathDirectory = $globalModuleTestFilePath.Substring(0, $globalModuleTestFilePath.LastIndexOf("/"))
+        $outputPathFile = 'global-testResults.xml'
+        $outputPath = Join-Path $outputPathDirectory $outputPathFile
         Write-Verbose "Pester tests output: $outputPath" -Verbose
         Write-Output ('::set-output name={0}::{1}' -f 'outputPath', $outputPath)
 
@@ -109,8 +109,8 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            # Container = New-PesterContainer -Path '${{ inputs.testFilePath }}' -Data @{
-            Container = New-PesterContainer -Path (Join-Path $env:GITHUB_WORKSPACE $testFilePath) -Data @{
+            # Container = New-PesterContainer -Path '${{ inputs.globalModuleTestFilePath }}' -Data @{
+            Container = New-PesterContainer -Path (Join-Path $env:GITHUB_WORKSPACE $globalModuleTestFilePath) -Data @{
               moduleFolderPaths = $moduleFolderPaths
               enforcedTokenList = $enforcedTokenList
             }
