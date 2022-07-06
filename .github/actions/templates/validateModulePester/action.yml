@@ -99,8 +99,8 @@ runs:
         # Set and print test output path
         $globalModuleTestFilePath = '${{ inputs.globalModuleTestFilePath }}'
         $outputPathDirectory = $globalModuleTestFilePath.Substring(0, $globalModuleTestFilePath.LastIndexOf("/"))
-        $outputPathFile = 'global-testResults.xml'
-        $outputPath = Join-Path $outputPathDirectory $outputPathFile
+        # $outputPathFile = 'global-testResults.xml'
+        $outputPath = Join-Path $outputPathDirectory 'global-testResults.xml'
         Write-Verbose "Pester tests output: $outputPath" -Verbose
         Write-Output ('::set-output name={0}::{1}' -f 'outputPath', $outputPath)
 
