@@ -22,6 +22,11 @@
         }
       ]
     },
+    "capabilitiesToAdd": {
+      "value": [
+        "EnableGremlin"
+      ]
+    },
     "roleAssignments": {
       "value": [
         {

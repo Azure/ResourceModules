@@ -16,11 +16,11 @@ param databaseAccountName string
 @description('Optional. Array of graphs to deploy in the Gremlin database.')
 param graphs array = []
 
-@description('Optional. Represents maximum throughput, the resource can scale up to.')
-param maxThroughput int = 0
+@description('Optional. Represents maximum throughput, the resource can scale up to. Cannot be set together with `throughput`. If `throughput` is set to something else than -1, this autoscale setting is ignored.')
+param maxThroughput int = 4000
 
-@description('Optional. Request Units per second. For example, "throughput": 10000.')
-param throughput int = 0
+@description('Optional. Request Units per second (for example 10000). Cannot be set together with `maxThroughput`.')
+param throughput int = -1
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -51,10 +51,10 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-previ
 }
 
 var databaseOptions = contains(databaseAccount.properties.capabilities, 'EnableServerless') ? {} : {
-  autoscaleSettings: {
+  autoscaleSettings: throughput == -1 ? {
     maxThroughput: maxThroughput
-  }
-  throughput: throughput
+  } : null
+  throughput: throughput != -1 ? throughput : null
 }
 
 resource gremlinDatabase 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases@2022-02-15-preview' = {

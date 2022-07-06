@@ -563,6 +563,11 @@ userAssignedIdentities: {
         }
       ]
     },
+    "capabilitiesToAdd": {
+      "value": [
+        "EnableGremlin"
+      ]
+    },
     "roleAssignments": {
       "value": [
         {
@@ -660,6 +665,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         failoverPriority: 1
         isZoneRedundant: false
       }
+    ]
+    capabilitiesToAdd: [
+      'EnableGremlin'
     ]
     roleAssignments: [
       {
