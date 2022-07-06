@@ -100,7 +100,8 @@ runs:
         # ------------------------- #
         $testFileFullPath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.testFilePath }}"
         $testFileParentFolder = (Get-Item $testFileFullPath).Parent.FullName
-        $outputPath = Join-Path '$testFileParentFolder' 'global-testResults.xml'
+        Write-Verbose "testFileParentFolder: $testFileParentFolder" -Verbose
+        $outputPath = Join-Path $testFileParentFolder 'global-testResults.xml'
         Write-Verbose "Pester tests output: $outputPath" -Verbose
         Write-Output ('::set-output name={0}::{1}' -f 'outputPath', $outputPath)
 
