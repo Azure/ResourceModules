@@ -175,8 +175,8 @@ jobs:
             # --------------------- #
             Invoke-Pester -Configuration @{
               Run        = @{
-                # Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'modules' '.global' 'global.module.tests.ps1') -Data @{
-                Container = New-PesterContainer -Path '${{ parameters.testFilePath }}' -Data @{
+                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' '${{ parameters.testFilePath }}') -Data @{
+                # Container = New-PesterContainer -Path '${{ parameters.testFilePath }}' -Data @{
                   moduleFolderPaths = $moduleFolderPaths
                   enforcedTokenList = $enforcedTokenList
                 }
