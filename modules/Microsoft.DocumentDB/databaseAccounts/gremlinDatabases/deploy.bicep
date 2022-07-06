@@ -16,11 +16,9 @@ param databaseAccountName string
 @description('Optional. Array of graphs to deploy in the Gremlin database.')
 param graphs array = []
 
-@minValue(400)
 @description('Optional. Represents maximum throughput, the resource can scale up to.')
 param maxThroughput int = 0
 
-@minValue(400)
 @description('Optional. Request Units per second. For example, "throughput": 10000.')
 param throughput int = 0
 
@@ -52,7 +50,7 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-previ
   name: databaseAccountName
 }
 
-var databaseOptions = contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? {} : {
+var databaseOptions = contains(databaseAccount.properties.capabilities, 'EnableServerless') ? {} : {
   autoscaleSettings: {
     maxThroughput: maxThroughput
   }

@@ -248,25 +248,21 @@ var backupPolicy = backupPolicyType == 'Continuous' ? {
 
 var databaseAccount_properties = union({
     databaseAccountOfferType: databaseAccountOfferType
-  },
-  // Common properties
-  ((!empty(sqlDatabases) || !empty(mongodbDatabases) || !empty(gremlinDatabases)) ? {
+  }, ((!empty(sqlDatabases) || !empty(mongodbDatabases) || !empty(gremlinDatabases)) ? {
+    // Common properties
     consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
     locations: databaseAccount_locations
     capabilities: capabilities
     backupPolicy: backupPolicy
-  } : {}),
-  // SQLDB properties
-  (!empty(sqlDatabases) ? {
+  } : {}), (!empty(sqlDatabases) ? {
+    // SQLDB properties
     enableAutomaticFailover: automaticFailover
-  } : {}),
-  // MongoDb properties
-  (!empty(mongodbDatabases) ? {
+  } : {}), (!empty(mongodbDatabases) ? {
+    // MongoDb properties
     apiProperties: {
       serverVersion: serverVersion
     }
-  } : {})
-)
+  } : {}))
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
