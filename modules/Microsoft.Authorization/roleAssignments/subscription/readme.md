@@ -40,5 +40,5 @@ With this module you can perform role assignments on a subscription level
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Assignment. |
-| `resourceId` | string | The scope this Role Assignment applies to. |
-| `scope` | string | The resource ID of the Role Assignment. |
+| `resourceId` | string | The resource ID of the Role Assignment. |
+| `scope` | string | The scope this Role Assignment applies to. |

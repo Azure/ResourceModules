@@ -1,0 +1,101 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-cdb-gremlindb-001"
+    },
+    "location": {
+      "value": "West Europe"
+    },
+    "locations": {
+      "value": [
+        {
+          "locationName": "West Europe",
+          "failoverPriority": 0,
+          "isZoneRedundant": false
+        },
+        {
+          "locationName": "North Europe",
+          "failoverPriority": 1,
+          "isZoneRedundant": false
+        }
+      ]
+    },
+    "capabilitiesToAdd": {
+      "value": [
+        "EnableGremlin"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ]
+        }
+      ]
+    },
+    "gremlinDatabases": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-gdb-x-001",
+          "graphs": [
+            {
+              "name": "car_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/car_id"
+              ]
+            },
+            {
+              "name": "truck_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/truck_id"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "<<namePrefix>>-az-gdb-x-002",
+          "collections": [
+            {
+              "name": "bike_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/bike_id"
+              ]
+            },
+            {
+              "name": "bicycle_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/bicycle_id"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    }
+  }
+}

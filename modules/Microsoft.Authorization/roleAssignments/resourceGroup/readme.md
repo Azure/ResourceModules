@@ -41,5 +41,5 @@ With this module you can perform role assignments on a resource group level
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Assignment. |
 | `resourceGroupName` | string | The name of the resource group the role assignment was applied at. |
-| `resourceId` | string | The scope this Role Assignment applies to. |
-| `scope` | string | The resource ID of the Role Assignment. |
+| `resourceId` | string | The resource ID of the Role Assignment. |
+| `scope` | string | The scope this Role Assignment applies to. |

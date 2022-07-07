@@ -107,4 +107,4 @@ output name string = empty(subscriptionId) && empty(resourceGroupName) ? roleDef
 output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.resourceId : roleDefinition_rg.outputs.resourceId)
 
 @sys.description('The scope this Role Definition applies to.')
-output roleDefinitionScope string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.scope : roleDefinition_rg.outputs.scope)
+output scope string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.scope : roleDefinition_rg.outputs.scope)
