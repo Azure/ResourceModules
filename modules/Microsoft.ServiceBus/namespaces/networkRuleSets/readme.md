@@ -36,6 +36,7 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | `ipRules` | array | `[]` | Configure IpFilter rules in virtual network rule set. |
 | `virtualNetworkRules` | array | `[]` | Configure Virtual Network Rules in virtual network rule set. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
