@@ -62,6 +62,7 @@ In next section, you can find an overview of what is in scope and what is out of
 - **Orchestration:** Orchestrated, multi-module solutions such as workloads or applications intended. As mention earlier, you can use modules to assemble such application /workload deploy workload.
 - **Languages:** Other domain-specific languages (DSL), like _Terraform_.
 
+
 ## Module update frequency
 Modules are updated by a group of committed contributors.
 
