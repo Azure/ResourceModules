@@ -168,23 +168,26 @@ function Get-ModulesFeatureOutline {
             $counter++
         }
 
-        $markdownTable += '| = | | {0} |' -f (($summaryData.Keys | ForEach-Object { $summaryData[$_] }) -join ' | ')
+        $markdownTable += '| Sum | | {0} |' -f (($summaryData.Keys | ForEach-Object { $summaryData[$_] }) -join ' | ')
 
         return $markdownTable | Out-String
 
     } else {
-        return $moduleData | ForEach-Object {
-            [PSCustomObject] @{
-                Module       = $_.Module
-                'RBAC'       = $_.'RBAC'
-                'Locks'      = $_.'Locks'
-                'Tags'       = $_.'Tags'
-                'Diag'       = $_.'Diag'
-                'EP'         = $_.'EP'
-                'Pip-Depl.'  = $_.'Pip-Depl.'
-                '# children' = $_.'# children'
-                '# lines'    = $_.'# lines'
+        return @{
+            data = $moduleData | ForEach-Object {
+                [PSCustomObject] @{
+                    Module       = $_.Module
+                    'RBAC'       = $_.'RBAC'
+                    'Locks'      = $_.'Locks'
+                    'Tags'       = $_.'Tags'
+                    'Diag'       = $_.'Diag'
+                    'EP'         = $_.'EP'
+                    'Pip-Depl.'  = $_.'Pip-Depl.'
+                    '# children' = $_.'# children'
+                    '# lines'    = $_.'# lines'
+                }
             }
+            sum  = $summaryData
         }
     }
 }
