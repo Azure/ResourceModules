@@ -167,9 +167,9 @@ jobs:
             $globalModuleTestFilePath = '${{ parameters.globalModuleTestFilePath }}'
             $outputPathDirectory = $globalModuleTestFilePath.Substring(0, $globalModuleTestFilePath.LastIndexOf("/"))
             Write-Host ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathDirectory', $outputPathDirectory)
-            # $outputPathFile = 'global-testResults.xml'
-            # Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathFile', $outputPathFile)
-            $outputPath = Join-Path $outputPathDirectory 'global-testResults.xml'
+            $outputPathFile = 'global-testResults.xml'
+            Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathFile', $outputPathFile)
+            $outputPath = Join-Path $outputPathDirectory $outputPathFile
             Write-Verbose "Pester tests output: $outputPath" -Verbose
 
             # --------------------- #
@@ -200,9 +200,8 @@ jobs:
         inputs:
           testRunTitle: 'Global Module Tests'
           testResultsFormat: NUnit
-          testResultsFiles: global-testResults.xml
+          testResultsFiles: $(outputPathFile)
           failTaskOnFailedTests: true
           searchFolder: $(outputPathDirectory)
-          # searchFolder: 'utilities/pipelines/staticValidation'
         continueOnError: false
         condition: succeededOrFailed()
