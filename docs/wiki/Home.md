@@ -1,5 +1,6 @@
 # Common Azure Resource Modules Library
-CARML resource library provides [bicep](https://github.com/Azure/bicep) modules which can be re-use in your infrastructure as code project to accelerate deployments. You can re-use code library as whole or in part. The primary aim is to provide you with re-usable infrastructure pattern so that you can focus what matter the most.
+
+CARML resource library provides [bicep](https://github.com/Azure/bicep) modules which can be re-used in your infrastructure as code project to accelerate deployments. You can re-use code library as whole or in part. The primary aim is to provide you with re-usable infrastructure pattern so that you can focus what matter the most.
 CARML should accelerate your deployment, it should also save time on testing, it should help you easily integrate and overall it should provide you with commonality across your infrastructure deployments. You could integrate CARML into your CI/CD pipelines and that will accelerate your DevOps adoption with ease.
 
 CARML will make it easy to deploy complex deployment, such as Azure landing zone, landing zone accelerator or individual service deployments.
