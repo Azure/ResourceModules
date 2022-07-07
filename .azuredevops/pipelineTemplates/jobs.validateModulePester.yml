@@ -202,7 +202,7 @@ jobs:
           testResultsFormat: NUnit
           testResultsFiles: global-testResults.xml
           failTaskOnFailedTests: true
-          searchFolder: variables['outputPathDirectory']
+          searchFolder: $(outputPathDirectory)
           # searchFolder: 'utilities/pipelines/staticValidation'
         continueOnError: false
         condition: succeededOrFailed()
