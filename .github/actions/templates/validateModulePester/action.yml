@@ -109,8 +109,9 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            # Container = New-PesterContainer -Path '${{ inputs.globalModuleTestFilePath }}' -Data @{
-            Container = New-PesterContainer -Path (Join-Path $env:GITHUB_WORKSPACE $globalModuleTestFilePath) -Data @{
+            Container = New-PesterContainer -Path $globalModuleTestFilePath -Data @{
+            # Container = New-PesterContainer -Path (Join-Path $env:GITHUB_WORKSPACE $globalModuleTestFilePath) -Data @{
+              repoRootPath = $env:GITHUB_WORKSPACE
               moduleFolderPaths = $moduleFolderPaths
               enforcedTokenList = $enforcedTokenList
             }
