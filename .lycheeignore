@@ -8,3 +8,14 @@ http://validurltoconfiglocation/
 https://mycustomdependencylocation/
 http://tools.ietf.org/html/rfc6749#section-3.2
 @parameters.json
+https://adp/
+dummy@contoso.com
+'@odata.type
+test2@contoso.com
+test1@contoso.com
+https://adp-/
+https://www.contoso.com/webhook
+test@contoso.com
+foo@contoso.com
+https://teststringforvalidation.com/
+http://localhost/
