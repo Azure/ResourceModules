@@ -56,6 +56,7 @@ This module deploys a service bus namespace resource.
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/readme.md)_ object | `{object}` |  | The migration configuration. |
 | `name` | string | `''` |  | Name of the Service Bus Namespace. If no name is provided, then unique name will be created. |
+| `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | The queues to create in the service bus namespace. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -234,7 +235,7 @@ Configure networing options on premium SKU only.
 
 ```bicep
 networkingAclConfig: {
-    publicNetworkAccess: "Enabled"
+    publicNetworkAccess: "Disabled"
     allowTrustedServices: true
 }
 
@@ -532,15 +533,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
                     "service": "namespace"
                 }
             ]
-        },
-        "networkRuleSets": {
-            "value": {
-                "defaultAction": "Deny",
-                "publicNetworkAccess": "Disabled",
-                "trustedServiceAccessEnabled": true,
-                "virtualNetworkRules": [],
-                "ipRules": []
-            }
         }
     }
 }
@@ -677,13 +669,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         service: 'namespace'
       }
     ]
-    networkRuleSets: {
-      defaultAction: 'Deny'
-      publicNetworkAccess: 'Disabled'
-      trustedServiceAccessEnabled: true
-      virtualNetworkRules: []
-      ipRules: []
-    }
   }
 }
 ```
