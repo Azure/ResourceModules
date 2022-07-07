@@ -118,6 +118,9 @@ function Test-ModuleLocally {
         [string] $testFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
 
         [Parameter(Mandatory = $false)]
+        [string] $globalModuleTestFilePath = 'utilities/pipelines/staticValidation/global.module.tests.ps1',
+
+        [Parameter(Mandatory = $false)]
         [Psobject] $ValidateOrDeployParameters = @{},
 
         [Parameter(Mandatory = $false)]
@@ -134,6 +137,7 @@ function Test-ModuleLocally {
     )
 
     begin {
+        $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
         $ModuleName = Split-Path (Split-Path $TemplateFilePath -Parent) -Leaf
         Write-Verbose "Running Local Tests for $($ModuleName)"
         # Load Tokens Converter Scripts
@@ -166,7 +170,8 @@ function Test-ModuleLocally {
 
                 Invoke-Pester -Configuration @{
                     Run    = @{
-                        Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'modules/.global/global.module.tests.ps1') -Data @{
+                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $globalModuleTestFilePath) -Data @{
+                            repoRootPath = $repoRootPath
                             moduleFolderPaths = Split-Path $TemplateFilePath -Parent
                             enforcedTokenList = $enforcedTokenList
                         }
