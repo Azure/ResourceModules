@@ -112,7 +112,6 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            # Container = New-PesterContainer -Path $globalModuleTestFilePath -Data @{
             Container = New-PesterContainer -Path (Join-Path $repoRootPath $globalModuleTestFilePath) -Data @{
               repoRootPath = $repoRootPath
               moduleFolderPaths = $moduleFolderPaths
