@@ -14,7 +14,6 @@ param (
     [hashtable] $enforcedTokenList = @{}
 )
 
-# $script:repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
 $script:Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json -AsHashtable
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
