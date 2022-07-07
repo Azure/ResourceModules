@@ -77,6 +77,9 @@ param roleAssignments array = []
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
+@description('Optional. Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules.')
+param networkRuleSets object = {}
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -199,6 +202,19 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
+
+module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets)) {
+  name: '${uniqueString(deployment().name, location)}-networkRuleSet'
+  params: {
+    namespaceName: serviceBusNamespace.name
+    defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
+    publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) ? 'Disabled' : null)
+    trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
+    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.virtualNetworkRules : [] : null
+    ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
 
 module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
   name: '${uniqueString(deployment().name, location)}-AuthorizationRules-${index}'
