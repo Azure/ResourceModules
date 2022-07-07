@@ -12,8 +12,11 @@
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Batch/batchAccounts` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Batch/2022-01-01/batchAccounts) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -129,6 +132,83 @@ userAssignedIdentities: {
 </details>
 <p>
 
+### Parameter Usage: `privateEndpoints`
+
+To use Private Endpoint the following dependencies must be deployed:
+
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"privateEndpoints": {
+    "value": [
+        // Example showing all available fields
+        {
+            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "<<serviceName>>", // e.g. vault, registry, file, blob, queue, table etc.
+            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+            ],
+            "customDnsConfigs": [ // Optional
+                {
+                    "fqdn": "customname.test.local",
+                    "ipAddresses": [
+                        "10.10.10.10"
+                    ]
+                }
+            ]
+        },
+        // Example showing only mandatory fields
+        {
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "<<serviceName>>" // e.g. vault, registry, file, blob, queue, table etc.
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+privateEndpoints:  [
+    // Example showing all available fields
+    {
+        name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
+        privateDnsZoneResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
+        ]
+        // Optional
+        customDnsConfigs: [
+            {
+                fqdn: 'customname.test.local'
+                ipAddresses: [
+                    '10.10.10.10'
+                ]
+            }
+        ]
+    }
+    // Example showing only mandatory fields
+    {
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -148,36 +228,44 @@ userAssignedIdentities: {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>azbaweuencr001"
-        },
-        "poolAllocationMode": {
-            "value": "BatchService"
-        },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "storageAuthenticationMode": {
-            "value": "BatchAccountManagedIdentity"
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "storageAccessIdentity": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
-        },
-        "cMKKeyName": {
-            "value": "keyEncryptionKey"
-        },
-        "cMKKeyVaultResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>azbaweuencr001"
+    },
+    "poolAllocationMode": {
+      "value": "BatchService"
+    },
+    "storageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "storageAuthenticationMode": {
+      "value": "BatchAccountManagedIdentity"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
+    },
+    "storageAccessIdentity": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+    },
+    "cMKKeyName": {
+      "value": "keyEncryptionKey"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+          "service": "batch"
         }
+      ]
     }
+  }
 }
 ```
 
@@ -201,6 +289,12 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     storageAccessIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    privateEndpoints: [
+      {
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        service: 'batch'
+      }
+    ]
   }
 }
 ```
@@ -256,46 +350,54 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>azbaweux001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "poolAllocationMode": {
-            "value": "BatchService"
-        },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "storageAuthenticationMode": {
-            "value": "BatchAccountManagedIdentity"
-        },
-        "storageAccessIdentity": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>azbaweux001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+          "service": "batchAccount"
         }
+      ]
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "poolAllocationMode": {
+      "value": "BatchService"
+    },
+    "storageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "storageAuthenticationMode": {
+      "value": "BatchAccountManagedIdentity"
+    },
+    "storageAccessIdentity": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
     }
+  }
 }
 ```
 
@@ -311,6 +413,12 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>azbaweux001'
     lock: 'CanNotDelete'
+    privateEndpoints: [
+      {
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        service: 'batchAccount'
+      }
+    ]
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
