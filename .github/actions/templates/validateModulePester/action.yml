@@ -111,7 +111,7 @@ runs:
           Run        = @{
             Container = New-PesterContainer -Path $globalModuleTestFilePath -Data @{
             # Container = New-PesterContainer -Path (Join-Path $env:GITHUB_WORKSPACE $globalModuleTestFilePath) -Data @{
-              repoRootPath = $env:GITHUB_WORKSPACE
+              # repoRootPath = $env:GITHUB_WORKSPACE
               moduleFolderPaths = $moduleFolderPaths
               enforcedTokenList = $enforcedTokenList
             }

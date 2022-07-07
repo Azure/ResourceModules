@@ -7,7 +7,7 @@ param (
         }),
 
     [Parameter(Mandatory = $false)]
-    [string] $repoRootPath = '',
+    [string] $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName,
 
     # Tokens to test for (i.e. their value should not be used in the parameter files, but their placeholder)
     [Parameter(Mandatory = $false)]
