@@ -71,8 +71,11 @@ runs:
         # Grouping task logs
         Write-Output "::group::Run global tests via Pester"
 
+        # Set repo root path
+        $repoRootPath = $env:GITHUB_WORKSPACE
+
         # Set test input module path
-        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        $moduleFolderPaths = @(Join-Path $repoRootPath "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }
@@ -99,8 +102,8 @@ runs:
         # Set and print test output path
         $globalModuleTestFilePath = '${{ inputs.globalModuleTestFilePath }}'
         $outputPathDirectory = $globalModuleTestFilePath.Substring(0, $globalModuleTestFilePath.LastIndexOf("/"))
-        # $outputPathFile = 'global-testResults.xml'
-        $outputPath = Join-Path $outputPathDirectory 'global-testResults.xml'
+        $outputPathFile = 'global-testResults.xml'
+        $outputPath = Join-Path $outputPathDirectory $outputPathFile
         Write-Verbose "Pester tests output: $outputPath" -Verbose
         Write-Output ('::set-output name={0}::{1}' -f 'outputPath', $outputPath)
 
@@ -109,9 +112,9 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            Container = New-PesterContainer -Path $globalModuleTestFilePath -Data @{
-            # Container = New-PesterContainer -Path (Join-Path $env:GITHUB_WORKSPACE $globalModuleTestFilePath) -Data @{
-              # repoRootPath = $env:GITHUB_WORKSPACE
+            # Container = New-PesterContainer -Path $globalModuleTestFilePath -Data @{
+            Container = New-PesterContainer -Path (Join-Path $repoRootPath $globalModuleTestFilePath) -Data @{
+              repoRootPath = $repoRootPath
               moduleFolderPaths = $moduleFolderPaths
               enforcedTokenList = $enforcedTokenList
             }
