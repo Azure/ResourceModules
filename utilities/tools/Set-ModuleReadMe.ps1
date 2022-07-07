@@ -446,6 +446,8 @@ function Set-DeploymentExamplesSection {
                 $orderedJSONParameters = @{}
             }
 
+            ## TODO: Add comment 'Required parameters' vs 'Non-required parameters'
+
             $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
             if ($templateParameterObject -ne '{}') {
                 $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
@@ -494,6 +496,30 @@ function Set-DeploymentExamplesSection {
                 $orderedJSONParameters = ''
             }
 
+            $jsonExample = ([ordered]@{
+                    '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
+                    contentVersion = '1.0.0.0'
+                    parameters     = (-not [String]::IsNullOrEmpty($orderedJSONParameters)) ? $orderedJSONParameters : @{}
+                } | ConvertTo-Json -Depth 99)
+
+            ## TODO: Add comment 'Required parameters' vs 'Non-required parameters'
+            if ($requiredParameterNames -is [string]) {
+                $requiredParameterNames = @($requiredParameterNames)
+            }
+            if ($requiredParameterNames.Count -ge 1 && $orderedJSONParameters.Count -ge 2) {
+                # If we have at least one required and one other parameter we want to add a comment
+                $parameterToSplitAt = $requiredParameterNames[-1]
+
+
+                $jsonExampleArray = $jsonExample -split '\n'
+                $parameterStartIndex = $jsonExampleArray | Select-String '.*"parameters": \{.*' | ForEach-Object { $_.LineNumber - 1 }
+                $requiredParameterStartIndex = $jsonExampleArray | Select-String ".*`"$parameterToSplitAt`": \{.*" | ForEach-Object { $_.LineNumber - 1 }
+                $requiredParameterEndIndex = 0 # TODO: Search
+
+                $jsonExampleArray = $jsonExampleArray[0..$parameterStartIndex] + '    // Required parameters' + $jsonExampleArray[(($parameterStartIndex + 1) .. ($jsonExampleArray.Count))]
+                $jsonExampleArray = $jsonExampleArray[0..$requiredParameterEndIndex] + '    // Non-required parameters' + $jsonExampleArray[(($requiredParameterEndIndex + 1) .. ($jsonExampleArray.Count))]
+            }
+
             $SectionContent += @(
                 '',
                 '<details>',
@@ -501,11 +527,7 @@ function Set-DeploymentExamplesSection {
                 '<summary>via JSON Parameter file</summary>',
                 '',
                 '```json',
-                ([ordered]@{
-                    '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
-                    contentVersion = '1.0.0.0'
-                    parameters     = (-not [String]::IsNullOrEmpty($orderedJSONParameters)) ? $orderedJSONParameters : @{}
-                } | ConvertTo-Json -Depth 99),
+                $jsonExample,
                 '```',
                 '',
                 '</details>'
