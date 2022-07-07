@@ -36,7 +36,7 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-ReadMeModuleTable.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'platform' 'Set-ReadMeModuleTable.ps1')
 
             $functionInput = @{
               ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
@@ -60,7 +60,7 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-ReadMeModuleTable.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'platform' 'Set-ReadMeModuleTable.ps1')
 
             $functionInput = @{
               ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
@@ -76,6 +76,23 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             Set-ReadMeModuleTable @functionInput -Verbose
+
+      - name: 'Update module outline'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'platform' 'Set-ModuleOverviewTable.ps1')
+
+          $functionInput = @{
+            MarkdownFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'docs' 'wiki' 'The library - Module overview.md'
+            ModuleFolderPath = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Set-ModuleOverviewTable @functionInput -Verbose
+
       - task: PowerShell@2
         displayName: 'Push changes'
         inputs:

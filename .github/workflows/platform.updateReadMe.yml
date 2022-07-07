@@ -31,7 +31,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . "$env:GITHUB_WORKSPACE/utilities/tools/platform/Set-ReadMeModuleTable.ps1"
+          . (Join-Path "$env:GITHUB_WORKSPACE 'utilities' 'tools' 'platform' 'Set-ReadMeModuleTable.ps1')
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
@@ -52,7 +52,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . "$env:GITHUB_WORKSPACE/utilities/tools/platform/Set-ReadMeModuleTable.ps1"
+          . (Join-Path "$env:GITHUB_WORKSPACE 'utilities' 'tools' 'platform' 'Set-ReadMeModuleTable.ps1')
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
@@ -72,7 +72,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . "$env:GITHUB_WORKSPACE/utilities/tools/platform/Set-ModuleOverviewTable.ps1"
+          . (Join-Path "$env:GITHUB_WORKSPACE 'utilities' 'tools' 'platform' 'Set-ModuleOverviewTable.ps1')
 
           $functionInput = @{
             MarkdownFilePath = Join-Path $env:GITHUB_WORKSPACE 'docs' 'wiki' 'The library - Module overview.md'
