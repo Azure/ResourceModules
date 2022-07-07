@@ -166,7 +166,7 @@ jobs:
             # Set and print test output path
             $globalModuleTestFilePath = '${{ parameters.globalModuleTestFilePath }}'
             $outputPathDirectory = $globalModuleTestFilePath.Substring(0, $globalModuleTestFilePath.LastIndexOf("/"))
-            Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathDirectory', $outputPathDirectory)
+            Write-Host ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathDirectory', $outputPathDirectory)
             # $outputPathFile = 'global-testResults.xml'
             # Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathFile', $outputPathFile)
             $outputPath = Join-Path $outputPathDirectory 'global-testResults.xml'
@@ -202,7 +202,7 @@ jobs:
           testResultsFormat: NUnit
           testResultsFiles: global-testResults.xml
           failTaskOnFailedTests: true
-          # searchFolder: variables['outputPathDirectory']
-          searchFolder: 'utilities/pipelines/staticValidation'
+          searchFolder: variables['outputPathDirectory']
+          # searchFolder: 'utilities/pipelines/staticValidation'
         continueOnError: false
         condition: succeededOrFailed()
