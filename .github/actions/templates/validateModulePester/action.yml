@@ -101,7 +101,7 @@ runs:
 
         # Set and print test output path
         $globalModuleTestFilePath = '${{ inputs.globalModuleTestFilePath }}'
-        $outputPathDirectory = $globalModuleTestFilePath.Substring(0, $globalModuleTestFilePath.LastIndexOf("/"))
+        $outputPathDirectory = Split-Path $globalModuleTestFilePath -Parent
         $outputPathFile = 'global-testResults.xml'
         $outputPath = Join-Path $outputPathDirectory $outputPathFile
         Write-Verbose "Pester tests output: $outputPath" -Verbose
