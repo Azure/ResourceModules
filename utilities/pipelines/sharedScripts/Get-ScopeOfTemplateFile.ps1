@@ -47,7 +47,7 @@ function Get-ScopeOfTemplateFile {
             Default { throw "[$armSchema] is a non-supported ARM template schema" }
         }
     }
-    Write-Verbose "Determined deployment scope [$deploymentScope]" -Verbose
+    Write-Verbose "Determined deployment scope [$deploymentScope]"
 
     return $deploymentScope
 }

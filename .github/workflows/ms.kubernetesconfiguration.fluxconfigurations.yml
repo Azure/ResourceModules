@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.kubernetesconfiguration.fluxconfigurations.yml'
-      - 'arm/Microsoft.KubernetesConfiguration/fluxConfigurations/**'
-      - 'arm/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.KubernetesConfiguration/fluxConfigurations/**'
+      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.KubernetesConfiguration/fluxConfigurations'
+  modulePath: 'modules/Microsoft.KubernetesConfiguration/fluxConfigurations'
   workflowPath: '.github/workflows/ms.kubernetesconfiguration.fluxconfigurations.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

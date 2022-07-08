@@ -176,7 +176,7 @@ jobs:
 
             # Publish the modified child resources
             foreach ($ModuleToPublish in $ModulesToPublish) {
-              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
 
               $functionInput = @{
@@ -235,7 +235,7 @@ jobs:
 
             # Publish the modified child resources
             foreach ($ModuleToPublish in $ModulesToPublish) {
-              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
 
               $functionInput = @{
@@ -268,6 +268,7 @@ jobs:
           scriptLocation: inlineScript
           inlineScript: |
             # Log into Az-PowerShell context
+            . $profile # Load PS-Profile configuration
             $SecuredPassword = ConvertTo-SecureString -AsPlainText -String $env:servicePrincipalKey
             $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:servicePrincipalId, $SecuredPassword
             Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
@@ -294,7 +295,7 @@ jobs:
 
             # Publish the modified child resources
             foreach ($ModuleToPublish in $ModulesToPublish) {
-              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
 
               $functionInput = @{

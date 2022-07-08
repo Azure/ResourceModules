@@ -1,0 +1,145 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-evnsp-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "authorizationRules": {
+            "value": [
+                {
+                    "name": "RootManageSharedAccessKey",
+                    "rights": [
+                        "Listen",
+                        "Manage",
+                        "Send"
+                    ]
+                },
+                {
+                    "name": "SendListenAccess",
+                    "rights": [
+                        "Listen",
+                        "Send"
+                    ]
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "eventHubs": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-evh-x-001"
+                },
+                {
+                    "name": "<<namePrefix>>-az-evh-x-002",
+                    "authorizationRules": [
+                        {
+                            "name": "RootManageSharedAccessKey",
+                            "rights": [
+                                "Listen",
+                                "Manage",
+                                "Send"
+                            ]
+                        },
+                        {
+                            "name": "SendListenAccess",
+                            "rights": [
+                                "Listen",
+                                "Send"
+                            ]
+                        }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ],
+                    "messageRetentionInDays": 1,
+                    "partitionCount": 2,
+                    "status": "Active",
+                    "captureDescriptionEnabled": true,
+                    "captureDescriptionEncoding": "Avro",
+                    "captureDescriptionIntervalInSeconds": 300,
+                    "captureDescriptionSizeLimitInBytes": 314572800,
+                    "captureDescriptionDestinationName": "EventHubArchive.AzureBlockBlob",
+                    "captureDescriptionDestinationStorageAccountResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+                    "captureDescriptionDestinationBlobContainer": "eventhub",
+                    "captureDescriptionDestinationArchiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}",
+                    "captureDescriptionSkipEmptyArchives": true,
+                    "consumerGroups": [
+                        {
+                            "name": "custom",
+                            "userMetadata": "customMetadata"
+                        }
+                    ]
+                }
+            ]
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "namespace"
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "networkRuleSets": {
+            "value": {
+                "defaultAction": "Deny",
+                "ipRules": [
+                    {
+                        "action": "Allow",
+                        "ipMask": "10.10.10.10"
+                    }
+                ],
+                "virtualNetworkRules": [
+                    {
+                        "subnet": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                        },
+                        "ignoreMissingVnetServiceEndpoint": true
+                    }
+                ],
+                "trustedServiceAccessEnabled": false
+            }
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        }
+    }
+}

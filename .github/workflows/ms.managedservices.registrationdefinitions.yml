@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: false # Needs a custom removal script
+        default: true
       prerelease:
         type: boolean
         description: 'Publish prerelease module'
@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.managedservices.registrationdefinitions.yml'
-      - 'arm/Microsoft.ManagedServices/registrationDefinitions/**'
-      - 'arm/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.ManagedServices/registrationDefinitions/**'
+      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.ManagedServices/registrationDefinitions'
+  modulePath: 'modules/Microsoft.ManagedServices/registrationDefinitions'
   workflowPath: '.github/workflows/ms.managedservices.registrationdefinitions.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

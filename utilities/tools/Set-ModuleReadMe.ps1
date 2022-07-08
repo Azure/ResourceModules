@@ -1,47 +1,5 @@
 ﻿#requires -version 6.0
 
-#region Helper functions
-<#
-.SYNOPSIS
-Get a list of all resources (provider + service) in the given template content
-
-.DESCRIPTION
-Get a list of all resources (provider + service) in the given template content. Crawls through any children & nested deployment templates.
-
-.PARAMETER TemplateFileContent
-Mandatory. The template file content object to crawl data from
-
-.EXAMPLE
-Get-NestedResourceList -TemplateFileContent @{ resource = @{}; ... }
-
-Returns a list of all resources in the given template object
-#>
-function Get-NestedResourceList {
-
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory)]
-        [Alias('Path')]
-        [hashtable] $TemplateFileContent
-    )
-
-    $res = @()
-    $currLevelResources = @()
-    if ($TemplateFileContent.resources) {
-        $currLevelResources += $TemplateFileContent.resources
-    }
-    foreach ($resource in $currLevelResources) {
-        $res += $resource
-
-        if ($resource.type -eq 'Microsoft.Resources/deployments') {
-            $res += Get-NestedResourceList -TemplateFileContent $resource.properties.template
-        } else {
-            $res += Get-NestedResourceList -TemplateFileContent $resource
-        }
-    }
-    return $res
-}
-
 <#
 .SYNOPSIS
 Update the 'Resource Types' section of the given readme file
@@ -95,7 +53,6 @@ function Set-ResourceTypesSection {
         $_.type -notin $ResourceTypesToExclude -and $_
     } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture en-US
 
-    $TextInfo = (Get-Culture).TextInfo
     foreach ($resourceTypeObject in $RelevantResourceTypeObjects) {
         $ProviderNamespace, $ResourceType = $resourceTypeObject.Type -split '/', 2
         # Validate if Reference URL Is working
@@ -344,6 +301,184 @@ function Set-OutputsSection {
 
 <#
 .SYNOPSIS
+Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
+
+.DESCRIPTION
+Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.PARAMETER ReadMeFileContent
+Mandatory. The readme file content array to update
+
+.PARAMETER SectionStartIdentifier
+Optional. The identifier of the 'outputs' section. Defaults to '## Deployment examples'
+
+.PARAMETER addJson
+Optional. A switch to control whether or not to add a ARM-JSON-Parameter file example. Defaults to true.
+
+.PARAMETER addBicep
+Optional. A switch to control whether or not to add a Bicep deployment example. Defaults to true.
+
+.EXAMPLE
+Set-DeploymentExamplesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+
+Update the given readme file's 'Deployment Examples' section based on the given template file content
+#>
+function Set-DeploymentExamplesSection {
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $TemplateFilePath,
+
+        [Parameter(Mandatory = $true)]
+        [object[]] $ReadMeFileContent,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $addJson = $true,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $addBicep = $true,
+
+        [Parameter(Mandatory = $false)]
+        [string] $SectionStartIdentifier = '## Deployment examples'
+    )
+
+    # Process content
+    $SectionContent = [System.Collections.ArrayList]@()
+
+    $moduleRoot = Split-Path $TemplateFilePath -Parent
+    $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
+    $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.test') -Filter '*parameters.json' -Recurse
+
+    $index = 1
+    foreach ($testFilePath in $parameterFiles.FullName) {
+        $contentInJSONFormat = Get-Content -Path $testFilePath -Encoding 'utf8' | Out-String
+
+        $SectionContent += @(
+            "<h3>Example $index</h3>"
+        )
+
+        if ($addJson) {
+            $SectionContent += @(
+                '',
+                '<details>',
+                '',
+                '<summary>via JSON Parameter file</summary>',
+                '',
+                '```json',
+                $contentInJSONFormat.TrimEnd(),
+                '```',
+                '',
+                '</details>'
+            )
+        }
+
+        if ($addBicep) {
+            $JSONParametersHashTable = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).parameters
+
+            # Handle KeyVaut references
+            $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }
+
+            if ($keyVaultReferences.Count -gt 0) {
+                $keyVaultReferenceData = @()
+                foreach ($reference in $keyVaultReferences) {
+                    $resourceIdElem = $JSONParametersHashTable[$reference].reference.keyVault.id -split '/'
+                    $keyVaultReferenceData += @{
+                        subscriptionId    = $resourceIdElem[2]
+                        resourceGroupName = $resourceIdElem[4]
+                        vaultName         = $resourceIdElem[-1]
+                        secretName        = $JSONParametersHashTable[$reference].reference.secretName
+                        parameterName     = $reference
+                    }
+                }
+            }
+
+            $extendedKeyVaultReferences = @()
+            $counter = 0
+            foreach ($reference in ($keyVaultReferenceData | Sort-Object -Property 'vaultName' -Unique)) {
+                $counter++
+                $extendedKeyVaultReferences += @(
+                    "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",
+                    ("  name: '{0}'" -f $reference.vaultName),
+                    ("  scope: resourceGroup('{0}','{1}')" -f $reference.subscriptionId, $reference.resourceGroupName),
+                    '}',
+                    ''
+                )
+
+                # Add attribute for later correct reference
+                $keyVaultReferenceData | Where-Object { $_.vaultName -eq $reference.vaultName } | ForEach-Object {
+                    $_['vaultResourceReference'] = "kv$counter"
+                }
+            }
+
+            # Handle VALUE references (i.e. remove them)
+            $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -Depth 99).PSObject.properties['parameters'].value
+            $JSONParametersWithoutValue = [ordered]@{}
+            foreach ($parameter in $JSONParameters.PSObject.Properties) {
+                if ($parameter.value.PSObject.Properties.name -eq 'value') {
+                    $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties['value'].value
+                } else {
+                    # replace key vault references
+                    $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameter.Name }
+                    $JSONParametersWithoutValue[$parameter.name] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
+                }
+            }
+
+            $templateParameterObject = $JSONParametersWithoutValue | ConvertTo-Json -Depth 99
+            if ($templateParameterObject -ne '{}') {
+                $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
+                $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
+                $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
+                $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
+
+                $bicepParamsArray = $contentInBicepFormat -split ('\n')
+                $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
+            }
+            $resourceType = $resourceTypeIdentifier.Split('/')[1]
+
+            $SectionContent += @(
+                '',
+                '<details>'
+                ''
+                '<summary>via Bicep module</summary>'
+                ''
+                '```bicep',
+                $extendedKeyVaultReferences,
+                "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
+                "  name: '`${uniqueString(deployment().name)}-$resourceType'"
+                '  params: {'
+                ($bicepParamsArray | ForEach-Object { "  $_" }).TrimEnd(),
+                '  }'
+                '}'
+                '```',
+                '',
+                '</details>'
+                '<p>'
+            )
+        }
+
+        $SectionContent += @(
+            ''
+        )
+
+        $index++
+    }
+
+    # Build result
+    if ($SectionContent) {
+        if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
+            return Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier
+        }
+    } else {
+        return $ReadMeFileContent
+    }
+}
+
+<#
+.SYNOPSIS
 Generate a table of content section for the given readme file
 
 .DESCRIPTION
@@ -357,7 +492,6 @@ Optional. The identifier of the 'navigation' section. Defaults to '## Navigation
 
 .EXAMPLE
 Set-TableOfContent -ReadMeFileContent @('# Title', '', '## Section 1', ...)
-
 
 Update the given readme's '## Navigation' section to reflect the latest file structure
 #>
@@ -472,32 +606,40 @@ function Set-ModuleReadMe {
             'Resource Types',
             'Parameters',
             'Outputs',
-            'Template references'
+            'Template references',
+            'Navigation',
+            'Deployment examples'
         )]
         [string[]] $SectionsToRefresh = @(
             'Resource Types',
             'Parameters',
             'Outputs',
             'Template references',
-            'Navigation'
+            'Navigation',
+            'Deployment examples'
         )
     )
 
     # Load external functions
     . (Join-Path $PSScriptRoot 'helper/Merge-FileWithNewContent.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
 
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
 
     if (-not $TemplateFileContent) {
         if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
-            $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $templateFileContent = az bicep build --file $TemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
         } else {
             $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
         }
     }
 
-    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
+    if (-not $templateFileContent) {
+        throw "Failed to compile [$TemplateFilePath]"
+    }
+
+    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/modules/')[1]
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
@@ -523,9 +665,7 @@ function Set-ModuleReadMe {
             ''
             '// TODO: Fill in Parameter usage'
             '',
-            '## Outputs',
-            '',
-            '## Template references'
+            '## Outputs'
         )
         # New-Item $path $ReadMeFilePath -ItemType 'File' -Force -Value $initialContent
         $readMeFileContent = $initialContent
@@ -534,7 +674,7 @@ function Set-ModuleReadMe {
     }
 
     # Update title
-    if ($TemplateFilePath.Replace('\', '/') -like '*/arm/*') {
+    if ($TemplateFilePath.Replace('\', '/') -like '*/modules/*') {
 
         if ($readMeFileContent[0] -notlike "*``[$fullResourcePath]``") {
             # Cut outdated
@@ -576,6 +716,16 @@ function Set-ModuleReadMe {
             TemplateFileContent = $templateFileContent
         }
         $readMeFileContent = Set-OutputsSection @inputObject
+    }
+
+    if ($SectionsToRefresh -contains 'Deployment examples') {
+        # Handle [Deployment examples] section
+        # ===================================
+        $inputObject = @{
+            ReadMeFileContent = $readMeFileContent
+            TemplateFilePath  = $TemplateFilePath
+        }
+        $readMeFileContent = Set-DeploymentExamplesSection @inputObject
     }
 
     if ($SectionsToRefresh -contains 'Navigation') {

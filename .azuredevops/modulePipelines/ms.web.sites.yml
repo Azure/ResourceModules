@@ -20,17 +20,19 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.web.sites.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Web/sites/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Web/sites/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Web/sites'
+    value: '/modules/Microsoft.Web/sites'
 
 stages:
   - stage: Validation
@@ -45,10 +47,10 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/fa.min.parameters.json
-            - path: $(modulePath)/.parameters/fa.parameters.json
-            - path: $(modulePath)/.parameters/wa.min.parameters.json
-            - path: $(modulePath)/.parameters/wa.parameters.json
+            - path: $(modulePath)/.test/fa.min.parameters.json
+            - path: $(modulePath)/.test/fa.parameters.json
+            - path: $(modulePath)/.test/wa.min.parameters.json
+            - path: $(modulePath)/.test/wa.parameters.json
 
   - stage: Publishing
     displayName: Publishing

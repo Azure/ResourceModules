@@ -1,39 +1,39 @@
 name: "AAD: DomainServices"
 
 on:
-    workflow_dispatch:
-        inputs:
-            removeDeployment:
-                type: boolean
-                description: "Remove deployed module"
-                required: false
-                default: true
-            prerelease:
-                type: boolean
-                description: "Publish prerelease module"
-                required: false
-                default: false
-    push:
-        branches:
-            - main
-        paths:
-            - ".github/actions/templates/**"
-            - ".github/workflows/ms.aad.domainservices.yml"
-            - "arm/Microsoft.AAD/DomainServices/**"
-            - "arm/.global/global.module.tests.ps1"
-            - "!*/**/readme.md"
-            - "utilities/pipelines/**"
-            - "!utilities/pipelines/dependencies/**"
+  workflow_dispatch:
+    inputs:
+      removeDeployment:
+        type: boolean
+        description: 'Remove deployed module'
+        required: false
+        default: true
+      prerelease:
+        type: boolean
+        description: 'Publish prerelease module'
+        required: false
+        default: false
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/actions/templates/**'
+      - '.github/workflows/ms.aad.domainservices.yml'
+      - 'modules/Microsoft.AAD/DomainServices/**'
+      - 'modules/.global/global.module.tests.ps1'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
-    variablesPath: "global.variables.yml"
-    modulePath: "arm/Microsoft.AAD/DomainServices"
-    workflowPath: ".github/workflows/ms.aad.domainservices.yml"
-    AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-    ARM_SUBSCRIPTION_ID: "${{ secrets.ARM_SUBSCRIPTION_ID }}"
-    ARM_MGMTGROUP_ID: "${{ secrets.ARM_MGMTGROUP_ID }}"
-    ARM_TENANT_ID: "${{ secrets.ARM_TENANT_ID }}"
-    DEPLOYMENT_SP_ID: "${{ secrets.DEPLOYMENT_SP_ID }}"
+  variablesPath: 'global.variables.yml'
+  modulePath: 'modules/Microsoft.AAD/DomainServices'
+  workflowPath: '.github/workflows/ms.aad.domainservices.yml'
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
     ###########################

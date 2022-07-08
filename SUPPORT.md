@@ -6,9 +6,9 @@ If issues are encountered when deploying these Bicep modules users will be able 
 
 Following list of issues are within the scope of Microsoft support:
 
-- Underlying Resource or Resource Provider issues when deploying modules (e.g. Management Groups, Policies, Log Analytics Workspace, Virtual WAN, Virtual Network) for any deployment failure
-- Module specific issues (e.g. template errors, internal server errors, etc.)
-- Template specific issues (e.g. template publishing, resource removal, etc.)
+- Underlying Resource or Resource Provider issues when deploying modules (e.g., Management Groups, Policies, Log Analytics Workspace, Virtual WAN, Virtual Network) for any deployment failure
+- Module specific issues (e.g., template errors, internal server errors, etc.)
+- Template specific issues (e.g., template publishing, resource removal, etc.)
 
 Any issues that are deemed outside of the above list by Microsoft support and/or requires bugfix in the module or code in the repo, Microsoft support will redirect user to file the issue on GitHub.
 

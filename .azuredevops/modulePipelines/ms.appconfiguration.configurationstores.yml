@@ -1,0 +1,57 @@
+name: 'AppConfiguration - ConfigurationStores'
+
+parameters:
+  - name: removeDeployment
+    displayName: Remove deployed module
+    type: boolean
+    default: true
+  - name: prerelease
+    displayName: Publish prerelease module
+    type: boolean
+    default: false
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - '/.azuredevops/modulePipelines/ms.appconfiguration.configurationstores.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.AppConfiguration/configurationStores/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
+    exclude:
+      - '/utilities/pipelines/dependencies/*'
+      - '/**/*.md'
+
+variables:
+  - template: '../../global.variables.yml'
+  - group: 'PLATFORM_VARIABLES'
+  - name: modulePath
+    value: '/modules/Microsoft.AppConfiguration/configurationStores'
+
+stages:
+  - stage: Validation
+    displayName: Static validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+
+  - stage: Deployment
+    displayName: Deployment validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks:
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/parameters.json
+
+  - stage: Publishing
+    displayName: Publishing
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml

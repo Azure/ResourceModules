@@ -20,17 +20,19 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.security.azuresecuritycenter.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Security/azureSecurityCenter/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Security/azureSecurityCenter/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Security/azureSecurityCenter'
+    value: '/modules/Microsoft.Security/azureSecurityCenter'
 
 stages:
   - stage: Validation
@@ -45,7 +47,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing
