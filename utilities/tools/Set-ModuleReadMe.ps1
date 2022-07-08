@@ -477,10 +477,12 @@ function Set-DeploymentExamplesSection {
                 # Check where the 'last' required parameter is located in the example (and what its indent is)
                 $parameterToSplitAt = $requiredParameterNames[-1]
                 $requiredParameterIndent = ([regex]::Match($bicepExampleArray[0], '^(\s+).*')).Captures.Groups[1].Value.Length
-                $requiredParameterStartIndex = ($bicepExampleArray | Select-String ('^[\s]{0}{1}:.+' -f "{$requiredParameterIndent}", $parameterToSplitAt) | ForEach-Object { $_.LineNumber - 1 })[0]
 
                 # Add a comment where the required parameters start
                 $bicepExampleArray = @('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(0 .. ($bicepExampleArray.Count))]
+
+                # Find the location if the last required parameter
+                $requiredParameterStartIndex = ($bicepExampleArray | Select-String ('^[\s]{0}{1}:.+' -f "{$requiredParameterIndent}", $parameterToSplitAt) | ForEach-Object { $_.LineNumber - 1 })[0]
 
                 # If we have more than only required parameters, let's add a corresponding comment
                 if ($orderedJSONParameters.Keys.Count -gt $requiredParameterNames.Count) {
@@ -558,10 +560,12 @@ function Set-DeploymentExamplesSection {
                 $parameterToSplitAt = $requiredParameterNames[-1]
                 $parameterStartIndex = ($jsonExampleArray | Select-String '.*"parameters": \{.*' | ForEach-Object { $_.LineNumber - 1 })[0]
                 $requiredParameterIndent = ([regex]::Match($jsonExampleArray[($parameterStartIndex + 1)], '^(\s+).*')).Captures.Groups[1].Value.Length
-                $requiredParameterStartIndex = ($jsonExampleArray | Select-String "^[\s]{$requiredParameterIndent}`"$parameterToSplitAt`": \{.*" | ForEach-Object { $_.LineNumber - 1 })[0]
 
                 # Add a comment where the required parameters start
                 $jsonExampleArray = $jsonExampleArray[0..$parameterStartIndex] + ('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($parameterStartIndex + 1) .. ($jsonExampleArray.Count))]
+
+                # Find the location if the last required parameter
+                $requiredParameterStartIndex = ($jsonExampleArray | Select-String "^[\s]{$requiredParameterIndent}`"$parameterToSplitAt`": \{.*" | ForEach-Object { $_.LineNumber - 1 })[0]
 
                 # If we have more than only required parameters, let's add a corresponding comment
                 if ($orderedJSONParameters.Keys.Count -gt $requiredParameterNames.Count ) {
