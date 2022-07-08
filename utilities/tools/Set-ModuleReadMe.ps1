@@ -473,10 +473,12 @@ function Set-DeploymentExamplesSection {
 
                 $bicepExampleArray = $bicepExample -split '\n'
 
-                $requiredParameterIndent = ([regex]::Match($bicepExampleArray[0], '^(\s+).*')).Captures.Groups[1].Value.Length
+                $requiredParameterStartIndex = ($bicepExampleArray | Select-String ('.*{0}:.+' -f $parameterToSplitAt) | ForEach-Object { $_.LineNumber - 1 })[0]
 
-                # Search in rest of array for the next closing bracket with the same indent - and then add the initial index count back in (+1 for the first added comment)
-                $requiredParameterEndIndex = ($bicepExampleArray[0..($bicepExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}" | ForEach-Object { $_.LineNumber - 1 })[0] + 1
+                $requiredParameterIndent = ([regex]::Match($bicepExampleArray[$requiredParameterStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
+
+                # Search in rest of array for the next closing bracket with the same indent - and then add the search index (1), initial index (1) count back in add another empty index (1() for the 'required' comment
+                $requiredParameterEndIndex = ($bicepExampleArray[($requiredParameterStartIndex + 1)..($bicepExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\S+" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex + 1
 
                 $bicepExampleArray = @('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(0 .. ($bicepExampleArray.Count))]
                 $bicepExampleArray = $bicepExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(($requiredParameterEndIndex + 1) .. ($bicepExampleArray.Count))]
@@ -541,8 +543,8 @@ function Set-DeploymentExamplesSection {
 
                 $requiredParameterIndent = ([regex]::Match($jsonExampleArray[$requiredParameterStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
 
-                # Search in rest of array for the next closing bracket with the same indent - and then add the initial index count back in (+1 for the first added comment)
-                $requiredParameterEndIndex = ($jsonExampleArray[$requiredParameterStartIndex..($jsonExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + $requiredParameterStartIndex + 1
+                # Search in rest of array for the next closing bracket with the same indent - and then add the search index (1), initial index (1) count back in add another empty index (1() for the 'required' comment
+                $requiredParameterEndIndex = ($jsonExampleArray[($requiredParameterStartIndex + 1)..($jsonExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex + 1
 
                 $jsonExampleArray = $jsonExampleArray[0..$parameterStartIndex] + ('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($parameterStartIndex + 1) .. ($jsonExampleArray.Count))]
                 $jsonExampleArray = $jsonExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($requiredParameterEndIndex + 1) .. ($jsonExampleArray.Count))]
