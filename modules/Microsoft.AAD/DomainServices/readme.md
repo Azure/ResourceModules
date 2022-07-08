@@ -224,7 +224,9 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-DomainServices'
   params: {
+    // Required parameters
     domainName: '<<namePrefix>>.onmicrosoft.com'
+    // Non-required parameters
     additionalRecipients: [
       '<<namePrefix>>@noreply.github.com'
     ]
@@ -258,9 +260,11 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "domainName": {
       "value": "<<namePrefix>>.onmicrosoft.com"
     },
+    // Non-required parameters
     "additionalRecipients": {
       "value": [
         "<<namePrefix>>@noreply.github.com"

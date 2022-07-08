@@ -138,7 +138,9 @@ Below is a collection of examples of how this module can be used. These examples
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-mg-min-policyDef'
+    // Non-required parameters
     policyRule: {
       if: {
         allOf: [
@@ -196,6 +198,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     },
     "parameters": {
+    // Non-required parameters
       "value": {
         "effect": {
           "allowedValues": [
@@ -223,7 +226,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-mg-policyDef'
+    // Non-required parameters
     policyRule: {
       if: {
         allOf: [
@@ -326,6 +331,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     },
     "description": {
+    // Non-required parameters
       "value": "[Description] This policy definition is deployed at the management group scope"
     },
     "displayName": {
@@ -374,7 +380,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-sub-min-policyDef'
+    // Non-required parameters
     policyRule: {
       if: {
         allOf: [
@@ -433,6 +441,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     },
     "parameters": {
+    // Non-required parameters
       "value": {
         "effect": {
           "allowedValues": [
@@ -463,7 +472,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-sub-policyDef'
+    // Non-required parameters
     policyRule: {
       if: {
         allOf: [
@@ -566,6 +577,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     },
     "description": {
+    // Non-required parameters
       "value": "[Description] This policy definition is deployed at subscription scope"
     },
     "displayName": {

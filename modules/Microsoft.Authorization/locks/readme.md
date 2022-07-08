@@ -54,7 +54,9 @@ Below is a collection of examples of how this module can be used. These examples
 module locks './Microsoft.Authorization/locks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-locks'
   params: {
+    // Required parameters
     level: 'CanNotDelete'
+    // Non-required parameters
     resourceGroupName: 'adp-<<namePrefix>>-az-locks-rg-001'
     subscriptionId: '<<subscriptionId>>'
   }
@@ -73,9 +75,11 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "level": {
       "value": "CanNotDelete"
     },
+    // Non-required parameters
     "resourceGroupName": {
       "value": "adp-<<namePrefix>>-az-locks-rg-001"
     },

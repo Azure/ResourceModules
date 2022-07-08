@@ -280,7 +280,9 @@ Below is a collection of examples of how this module can be used. These examples
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-service'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-apim-max-001'
+    // Non-required parameters
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     apis: [
@@ -423,9 +425,11 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-apim-max-001"
     },
+    // Non-required parameters
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
@@ -611,7 +615,9 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-service'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-apim-min-001'
+    // Non-required parameters
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
   }
@@ -630,9 +636,11 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-apim-min-001"
     },
+    // Non-required parameters
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
@@ -656,7 +664,9 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-service'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-apim-x-001'
+    // Non-required parameters
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     lock: 'CanNotDelete'
@@ -708,9 +718,11 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-apim-x-001"
     },
+    // Non-required parameters
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },

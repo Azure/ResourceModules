@@ -329,7 +329,9 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-configurationStores'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-appcs-x-001'
+    // Non-required parameters
     createMode: 'Default'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
@@ -387,9 +389,11 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-appcs-x-001"
     },
+    // Non-required parameters
     "createMode": {
       "value": "Default"
     },
