@@ -492,7 +492,7 @@ function Set-DeploymentExamplesSection {
                         $requiredParameterEndIndex = ($bicepExampleArray[($requiredParameterStartIndex + 1)..($bicepExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\S+" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex
                     } else {
                         # Case Param is single line bool/string/int: Add an index (1) for the 'required' comment
-                        $requiredParameterEndIndex = $requiredParameterStartIndex + 1
+                        $requiredParameterEndIndex = $requiredParameterStartIndex
                     }
 
                     # Add a comment where the non-required parameters start
