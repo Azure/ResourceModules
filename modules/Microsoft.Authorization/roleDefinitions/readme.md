@@ -159,7 +159,7 @@ module roledefinition 'yourpath/modules/Microsoft.Authorization.roleDefinitions/
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Definition. |
 | `resourceId` | string | The resource ID of the Role Definition. |
-| `roleDefinitionScope` | string | The scope this Role Definition applies to. |
+| `scope` | string | The scope this Role Definition applies to. |
 
 ## Considerations
 

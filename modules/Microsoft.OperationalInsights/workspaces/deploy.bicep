@@ -19,6 +19,9 @@ param storageInsightsConfigs array = []
 @description('Optional. List of services to be linked.')
 param linkedServices array = []
 
+@description('Conditional. List of Storage Accounts to be linked. Required if \'forceCmkForQuery\' is set to \'true\' and \'savedSearches\' is not empty.')
+param linkedStorageAccounts array = []
+
 @description('Optional. Kusto Query Language searches to save.')
 param savedSearches array = []
 
@@ -70,6 +73,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
+
+@description('Optional. Indicates whether customer managed storage is mandatory for query management.')
+param forceCmkForQuery bool = true
 
 @allowed([
   ''
@@ -160,6 +166,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08
     }
     publicNetworkAccessForIngestion: publicNetworkAccessForIngestion
     publicNetworkAccessForQuery: publicNetworkAccessForQuery
+    forceCmkForQuery: forceCmkForQuery
   }
 }
 
@@ -198,6 +205,16 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for
   }
 }]
 
+module logAnalyticsWorkspace_linkedStorageAccounts 'linkedStorageAccounts/deploy.bicep' = [for (linkedStorageAccount, index) in linkedStorageAccounts: {
+  name: '${uniqueString(deployment().name, location)}-LAW-LinkedStorageAccount-${index}'
+  params: {
+    logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
+    name: linkedStorageAccount.name
+    resourceId: linkedStorageAccount.resourceId
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (savedSearch, index) in savedSearches: {
   name: '${uniqueString(deployment().name, location)}-LAW-SavedSearch-${index}'
   params: {
@@ -212,6 +229,9 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
     version: contains(savedSearch, 'version') ? savedSearch.version : 2
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    logAnalyticsWorkspace_linkedStorageAccounts
+  ]
 }]
 
 module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (dataSource, index) in dataSources: {

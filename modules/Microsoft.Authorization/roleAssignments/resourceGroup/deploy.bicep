@@ -356,10 +356,10 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
 output name string = roleAssignment.name
 
 @sys.description('The resource ID of the Role Assignment.')
-output scope string = resourceGroup().id
-
-@sys.description('The scope this Role Assignment applies to.')
 output resourceId string = az.resourceId(resourceGroupName, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
 
 @sys.description('The name of the resource group the role assignment was applied at.')
 output resourceGroupName string = resourceGroup().name
+
+@sys.description('The scope this Role Assignment applies to.')
+output scope string = resourceGroup().id
