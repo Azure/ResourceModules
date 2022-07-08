@@ -143,9 +143,9 @@ function Test-ModuleLocally {
         . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-TemplateDeployment.ps1')
     }
     process {
-        ################
+        ######################
         # TOKENS Replacement #
-        ################
+        ######################
 
         $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
 
@@ -168,11 +168,6 @@ function Test-ModuleLocally {
         }
         if ($AdditionalTokens.ContainsKey('tenantId')) {
             $tokenConfiguration.Tokens['tenantId'] = $AdditionalTokens['tenantId']
-        }
-
-        ## Local Tokens from settings.yml
-        foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
-            $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
         }
 
         #Add Other Parameter File Tokens (For Testing)

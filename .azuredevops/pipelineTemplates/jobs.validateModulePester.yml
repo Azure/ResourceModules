@@ -167,11 +167,6 @@ jobs:
                 $tokenConfiguration.Tokens['tenantId'] =  '$(ARM_TENANT_ID)'
             }
 
-            ## Local Tokens from settings.yml
-            foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
-                $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '','OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
-            }
-
             # --------------------- #
             # Invoke Pester test(s) #
             # --------------------- #
