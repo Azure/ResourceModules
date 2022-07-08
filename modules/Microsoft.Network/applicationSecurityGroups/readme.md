@@ -145,7 +145,9 @@ roleAssignments: [
 
 ## Deployment examples
 
-Below is a collection of examples of how this module can be used. These examples are taken from the same files that the CI environment uses to validate this module. The name of each example is based on the name of the file from which it is taken. Also, each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Parameters</h3>
 
