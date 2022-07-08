@@ -107,7 +107,7 @@ param cMKUserAssignedIdentityResourceId string = ''
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
-@description('Optional. Enable Infrastructure Encryption (Double Encryption).')
+@description('Optional. Enable infrastructure encryption (double encryption).')
 param requireInfrastructureEncryption bool = true
 
 @description('Optional. The name of logs that will be streamed.')
