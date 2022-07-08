@@ -57,8 +57,8 @@ Once you start building a solution using this library, you may wonder how best t
 
 - Use the [VS-Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) for Bicep to enable DSL-native features such as auto-complete. Metadata implemented in the modules are automatically loaded through the extension.
 - Use the readme
-  - If you don't know how to use an object/array parameter, you can check if the module's ReadMe file specifies any 'Parameter Usage' block for the given parameter ([example](https://github.com/Azure/ResourceModules/blob/main/arm/Microsoft.AnalysisServices/servers/readme.md#parameter-usage-tags)) - or - check the module's `Deployment Examples` ([example](https://github.com/Azure/ResourceModules/blob/main/arm/Microsoft.AnalysisServices/servers/readme.md#deployment-examples)).
-  - In general, take note of the `Deployment Examples` specified in each module's ReadMe file, as they provide you with rich & tested examples of how a given module can be deployed ([example](https://github.com/Azure/ResourceModules/blob/main/arm/Microsoft.AnalysisServices/servers/readme.md#deployment-examples)). An easy way to get started is to copy one of the examples and then adjust it to your needs.
+  - If you don't know how to use an object/array parameter, you can check if the module's ReadMe file specifies any 'Parameter Usage' block for the given parameter ([example](https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/readme.md#parameter-usage-tags)) - or - check the module's `Deployment Examples` ([example](https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/readme.md#deployment-examples)).
+  - In general, take note of the `Deployment Examples` specified in each module's ReadMe file, as they provide you with rich & tested examples of how a given module can be deployed ([example](https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/readme.md#deployment-examples)). An easy way to get started is to copy one of the examples and then adjust it to your needs.
 - Note the outputs that are returned by each module.
   - If an output you need isn't available, you have 2 choices:
     1. Add the missing output to the module
@@ -117,7 +117,7 @@ param subnets array = [
 // =========== //
 
 // Resource Group
-module rg '../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module rg '../modules/Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -126,7 +126,7 @@ module rg '../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
 }
 
 // Network Security Group
-module nsg '../arm/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
+module nsg '../modules/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -138,7 +138,7 @@ module nsg '../arm/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
 }
 
 // Virtual Network
-module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
+module vnet '../modules/Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -390,7 +390,7 @@ The modules provided in this repo can be orchestrated to create more complex inf
 
 ### Repo structure
 
-   <img src="../media/MultiRepoTestFolderStructure.png" alt="Repo Structure">
+   <img src="./media/MultiRepoTestFolderStructure.png" alt="Repository Structure" height="300">
 
 ### YAML pipeline
 
@@ -436,7 +436,7 @@ jobs:
       - name: 'Deploy resource group'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './arm/Microsoft.Resources/resourceGroups/deploy.bicep'
+          templateFilePath: './modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/ResourceGroup/parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -447,7 +447,7 @@ jobs:
       - name: 'Deploy network security group'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './arm/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          templateFilePath: './modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/NetworkSecurityGroups/parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -458,7 +458,7 @@ jobs:
       - name: 'Deploy virtual network A'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './arm/Microsoft.Network/virtualNetworks/deploy.bicep'
+          templateFilePath: './modules/Microsoft.Network/virtualNetworks/deploy.bicep'
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetwork/vnet-A.parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'

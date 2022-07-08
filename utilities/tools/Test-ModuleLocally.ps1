@@ -35,7 +35,7 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
-    ParameterFilePath          = 'C:\Microsoft.Network\routeTables\.parameters\parameters.json'
+    ParameterFilePath          = 'C:\Microsoft.Network\routeTables\.test\parameters.json'
     PesterTest                 = $false
     DeploymentTest             = $false
     ValidationTest             = $true
@@ -115,7 +115,7 @@ function Test-ModuleLocally {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $parameterFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.parameters'),
+        [string] $testFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
 
         [Parameter(Mandatory = $false)]
         [Psobject] $ValidateOrDeployParameters = @{},
@@ -166,7 +166,7 @@ function Test-ModuleLocally {
 
                 Invoke-Pester -Configuration @{
                     Run    = @{
-                        Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'arm/.global/global.module.tests.ps1') -Data @{
+                        Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'modules/.global/global.module.tests.ps1') -Data @{
                             moduleFolderPaths = Split-Path $TemplateFilePath -Parent
                             enforcedTokenList = $enforcedTokenList
                         }
@@ -187,10 +187,10 @@ function Test-ModuleLocally {
 
             # Find Test Parameter Files
             # -------------------------
-            if ((Get-Item -Path $parameterFilePath) -is [System.IO.DirectoryInfo]) {
-                $ModuleParameterFiles = (Get-ChildItem -Path $parameterFilePath).FullName
+            if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
+                $ModuleParameterFiles = (Get-ChildItem -Path $testFilePath).FullName
             } else {
-                $ModuleParameterFiles = @($parameterFilePath)
+                $ModuleParameterFiles = @($testFilePath)
             }
 
             # Replace parameter file tokens

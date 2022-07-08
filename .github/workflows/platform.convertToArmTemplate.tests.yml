@@ -1,6 +1,7 @@
 name: '.Platform: Test - ConvertTo-ARMTemplate.ps1'
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main

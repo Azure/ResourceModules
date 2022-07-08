@@ -21,16 +21,18 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.containerservice.managedclusters.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.ContainerService/managedClusters/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.ContainerService/managedClusters/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.ContainerService/managedClusters'
+    value: '/modules/Microsoft.ContainerService/managedClusters'
 
 stages:
   - stage: Validation
@@ -45,8 +47,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/azure.parameters.json
-            - path: $(modulePath)/.parameters/kubenet.parameters.json
+            - path: $(modulePath)/.test/azure.parameters.json
+            - path: $(modulePath)/.test/kubenet.parameters.json
 
   - stage: Publishing
     displayName: Publishing

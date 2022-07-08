@@ -214,8 +214,8 @@ Check for the existens of any nested module levels
 
 .DESCRIPTION
 Check for the existens of any nested module levels.
-A module is identified by folders that do not contain module-specific folders such as '.parameters'.
-In other words, a module would contain a folder with e.g. a '.parameters' folder and would hence not count towards the hierarchy of parent folders.
+A module is identified by folders that do not contain module-specific folders such as '.test'.
+In other words, a module would contain a folder with e.g. a '.test' folder and would hence not count towards the hierarchy of parent folders.
 
 .PARAMETER path
 Mandatory. The path to search in.
@@ -234,10 +234,10 @@ function Measure-FolderHasNestedModule {
         [string] $Path
     )
 
-    # Get all folder paths that exist in the given path as long as they are not '.bicep' or '.parameters' folders
+    # Get all folder paths that exist in the given path as long as they are not '.bicep' or '.test' folders
     # This works as long as the folder structure is consistent (e.g. no empty folders are created etc.)
-    $rawFoundFolders = Get-ChildItem $Path -Directory -Recurse -Exclude @('.bicep', '.parameters') -Force
-    $foundFolders = $rawFoundFolders | Where-Object { (Get-ChildItem $_.FullName -Directory -Depth 0 -Include '.parameters' -Force).count -gt 0 }
+    $rawFoundFolders = Get-ChildItem $Path -Directory -Recurse -Exclude @('.bicep', '.test') -Force
+    $foundFolders = $rawFoundFolders | Where-Object { (Get-ChildItem $_.FullName -Directory -Depth 0 -Include '.test' -Force).count -gt 0 }
     if ($foundFolders) {
         return $true
     } else {
@@ -323,9 +323,9 @@ function Get-ResolvedSubServiceRow {
         [string]$ProjectName = ''
     )
 
-    $rawSubFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', '.parameters') -Force
+    $rawSubFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', '.test') -Force
     # Only consider those folders that have their own parameters, i.e. are top-level modules and not child-resource modules
-    $subFolders = $rawSubFolders | Where-Object { (Get-ChildItem $_.FullName -Directory -Depth 0 -Include '.parameters' -Force).count -gt 0 }
+    $subFolders = $rawSubFolders | Where-Object { (Get-ChildItem $_.FullName -Directory -Depth 0 -Include '.test' -Force).count -gt 0 }
 
     foreach ($subfolder in $subFolders.FullName) {
 
@@ -340,10 +340,10 @@ function Get-ResolvedSubServiceRow {
                 'Name' {
                     switch ($Environment) {
                         'ADO' {
-                            $row['Name'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/arm/{4})' -f (Get-ResourceModuleName -path $subfolder), $Organization, $ProjectName, $RepositoryName, $relativePath.Replace('\', '/'))
+                            $row['Name'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $subfolder), $Organization, $ProjectName, $RepositoryName, $relativePath.Replace('\', '/'))
                         }
                         'GitHub' {
-                            $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $subfolder), $Organization, $RepositoryName, $relativePath.Replace('\', '/'))
+                            $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f (Get-ResourceModuleName -path $subfolder), $Organization, $RepositoryName, $relativePath.Replace('\', '/'))
                         }
                     }
 
@@ -365,10 +365,10 @@ function Get-ResolvedSubServiceRow {
                 'ResourceType' {
                     switch ($Environment) {
                         'ADO' {
-                            $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/arm/{4})' -f $subName, $Organization, $ProjectName, $RepositoryName, $relativePath.Replace('\', '/'))
+                            $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f $subName, $Organization, $ProjectName, $RepositoryName, $relativePath.Replace('\', '/'))
                         }
                         'GitHub' {
-                            $row['ResourceType'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f $subName, $Organization, $RepositoryName, $relativePath.Replace('\', '/'))
+                            $row['ResourceType'] = ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f $subName, $Organization, $RepositoryName, $relativePath.Replace('\', '/'))
                         }
                     }
 
@@ -451,7 +451,7 @@ Get-ModulesAsMarkdownTable -path 'C:\dev\Modules' -ColumnsInOrder @('Resource Ty
 Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns, , sorted by 'Name'
 
 .EXAMPLE
-Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-Modules\ResourceModules\arm' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','TemplateType','Status','Deploy')
+Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-Modules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','TemplateType','Status','Deploy')
 
 Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Name','TemplateType','Status' &'Deploy' columns, sorted by 'Name'
 #>
@@ -517,7 +517,7 @@ function Get-ModulesAsMarkdownTable {
     foreach ($topLevelFolder in $topLevelFolders) {
         $provider = Split-Path $topLevelFolder -Leaf
 
-        $containedFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.parameters') -Depth 0 -Force
+        $containedFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.test') -Depth 0 -Force
 
         foreach ($containedFolder in $containedFolders.FullName) {
             $containedFolderName = (Split-Path $containedFolder -Leaf)
@@ -544,10 +544,10 @@ function Get-ModulesAsMarkdownTable {
                         'Name' {
                             switch ($Environment) {
                                 'ADO' {
-                                    $row['Name'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/arm/{4})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['Name'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                                 'GitHub' {
-                                    $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                             }
                         }
@@ -568,10 +568,10 @@ function Get-ModulesAsMarkdownTable {
                         'ResourceType' {
                             switch ($Environment) {
                                 'ADO' {
-                                    $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/arm/{4})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                                 'GitHub' {
-                                    $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f $containedFolderName, $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f $containedFolderName, $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                             }
 

@@ -21,16 +21,18 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.authorization.locks.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Authorization/locks/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Authorization/locks/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Authorization/locks'
+    value: '/modules/Microsoft.Authorization/locks'
 
 stages:
   - stage: Validation
@@ -45,7 +47,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/rg.parameters.json
+            - path: $(modulePath)/.test/rg.parameters.json
               templateFilePath: $(modulePath)/deploy.bicep
 
   - stage: Publishing

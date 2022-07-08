@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.networkinterfaces.yml'
-      - 'arm/Microsoft.Network/networkInterfaces/**'
-      - 'arm/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.Network/networkInterfaces/**'
+      - 'modules/.global/global.module.tests.ps1'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Network/networkInterfaces'
+  modulePath: 'modules/Microsoft.Network/networkInterfaces'
   workflowPath: '.github/workflows/ms.network.networkinterfaces.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

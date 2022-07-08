@@ -43,7 +43,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['validation.parameters.json', 'locks.parameters.json']
+        parameterFilePaths:
+          ['validation.parameters.json', 'locks.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -52,7 +53,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -80,7 +81,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -111,7 +112,7 @@ jobs:
         id: deploy_msi
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -150,7 +151,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -178,7 +179,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -206,7 +207,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -234,7 +235,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -253,7 +254,12 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['appi.parameters.json', 'aut.parameters.json', 'sol.parameters.json', 'parameters.json']
+          [
+            'appi.parameters.json',
+            'aut.parameters.json',
+            'sol.parameters.json',
+            'parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -263,7 +269,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -292,7 +298,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -400,7 +406,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -434,7 +440,7 @@ jobs:
         id: deploy_imgt
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -597,7 +603,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -625,7 +631,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -653,7 +659,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -682,7 +688,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -719,7 +725,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -750,7 +756,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -778,7 +784,7 @@ jobs:
             'lb.parameters.json',
             'lb.min.parameters.json',
             'fw.parameters.json',
-            'fw.additional.parameters.json'
+            'fw.additional.parameters.json',
           ]
     steps:
       - name: 'Checkout'
@@ -789,7 +795,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -819,7 +825,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -849,7 +855,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -879,7 +885,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -910,7 +916,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -943,7 +949,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -1123,7 +1129,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -1225,6 +1231,34 @@ jobs:
             }
           azPSVersion: 'latest'
 
+  job_deploy_des:
+    runs-on: ubuntu-20.04
+    name: 'Deploy Disk Encryption Set'
+    env:
+      namespace: 'Microsoft.Compute/diskEncryptionSets'
+    needs:
+      - job_deploy_kv_secrets
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
   job_deploy_avdag:
     runs-on: ubuntu-20.04
     name: 'Deploy AVD application group'
@@ -1245,7 +1279,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -1273,7 +1307,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/subscription/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/subscription/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -1306,7 +1340,7 @@ jobs:
             '11.azfw.parameters.json',
             '12.bastion.parameters.json',
             '13.bastion.parameters.json',
-            'parameters.json'
+            'parameters.json',
           ]
     steps:
       - name: 'Checkout'
@@ -1317,7 +1351,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -1347,7 +1381,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -1375,7 +1409,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -1405,7 +1439,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -1433,7 +1467,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'

@@ -21,16 +21,18 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.automation.automationaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Automation/automationAccounts/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Automation/automationAccounts/*'
+      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Automation/automationAccounts'
+    value: '/modules/Microsoft.Automation/automationAccounts'
 
 stages:
   - stage: Validation
@@ -45,9 +47,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/encr.parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/encr.parameters.json
 
   - stage: Publishing
     displayName: Publishing
