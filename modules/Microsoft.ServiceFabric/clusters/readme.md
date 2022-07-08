@@ -242,8 +242,8 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080'
-    // Non-required parameters
     reliabilityLevel: 'None'
+    // Non-required parameters
     certificate: {
       thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
       x509StoreName: 'My'
@@ -337,8 +337,8 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
-    // Non-required parameters
     reliabilityLevel: 'Silver'
+    // Non-required parameters
     addOnFeatures: [
       'BackupRestoreService'
       'DnsService'
@@ -740,8 +740,8 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080'
-    // Non-required parameters
     reliabilityLevel: 'None'
+    // Non-required parameters
     name: '<<namePrefix>>-az-sfc-min-001'
     nodeTypes: [
       {

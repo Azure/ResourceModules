@@ -165,11 +165,11 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
   params: {
     // Required parameters
     localAddressPrefixes: [
-    // Non-required parameters
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
     name: '<<namePrefix>>-az-lng-x-001'
+    // Non-required parameters
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
     lock: 'CanNotDelete'

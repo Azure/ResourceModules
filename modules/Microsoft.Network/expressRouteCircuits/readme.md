@@ -181,10 +181,10 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
   params: {
     // Required parameters
     bandwidthInMbps: 50
-    // Non-required parameters
     name: '<<namePrefix>>-az-erc-x-001'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7

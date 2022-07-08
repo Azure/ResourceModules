@@ -323,8 +323,8 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vnetgwc-x-001'
-    // Non-required parameters
     virtualNetworkGateway1: {
+    // Non-required parameters
       id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
     }
     enableBgp: false

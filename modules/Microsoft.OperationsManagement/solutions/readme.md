@@ -57,7 +57,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
-    // Non-required parameters
     name: 'Updates'
   }
 }
@@ -82,7 +81,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     "name": {
       "value": "Updates"
     }
-    // Non-required parameters
   }
 }
 ```
@@ -102,8 +100,8 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
-    // Non-required parameters
     name: 'AzureAutomation'
+    // Non-required parameters
     product: 'OMSGallery'
     publisher: 'Microsoft'
   }
@@ -155,8 +153,8 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
-    // Non-required parameters
     name: 'nonmsTestSolution'
+    // Non-required parameters
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
   }

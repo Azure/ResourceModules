@@ -254,10 +254,10 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-gw-er-001'
-    // Non-required parameters
     virtualNetworkGatewaySku: 'ErGw1AZ'
     virtualNetworkGatewayType: 'ExpressRoute'
     vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -375,10 +375,10 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-gw-vpn-001'
-    // Non-required parameters
     virtualNetworkGatewaySku: 'VpnGw1AZ'
     virtualNetworkGatewayType: 'Vpn'
     vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+    // Non-required parameters
     activeActive: true
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'

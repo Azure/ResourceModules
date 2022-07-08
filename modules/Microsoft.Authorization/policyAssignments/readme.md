@@ -182,7 +182,6 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-mg-polAss'
-    // Non-required parameters
     policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
   }
 }
@@ -204,7 +203,6 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     "name": {
       "value": "<<namePrefix>>-min-mg-polAss"
     },
-    // Non-required parameters
     "policyDefinitionID": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
     }
@@ -227,8 +225,8 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-polAss'
-    // Non-required parameters
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
+    // Non-required parameters
     description: '[Description] Policy Assignment at the management group scope'
     displayName: '[Display Name] Policy Assignment at the management group scope'
     enforcementMode: 'DoNotEnforce'
@@ -274,10 +272,10 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     "name": {
       "value": "<<namePrefix>>-mg-polAss"
     },
-    // Non-required parameters
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
     },
+    // Non-required parameters
     "description": {
       "value": "[Description] Policy Assignment at the management group scope"
     },
@@ -344,8 +342,8 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-rg-polAss'
-    // Non-required parameters
     policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
+    // Non-required parameters
     resourceGroupName: 'validation-rg'
     subscriptionId: '<<subscriptionId>>'
   }
@@ -368,10 +366,10 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     "name": {
       "value": "<<namePrefix>>-min-rg-polAss"
     },
-    // Non-required parameters
     "policyDefinitionID": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
     },
+    // Non-required parameters
     "resourceGroupName": {
       "value": "validation-rg"
     },
@@ -397,8 +395,8 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>-rg-polAss'
-    // Non-required parameters
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
+    // Non-required parameters
     description: '[Description] Policy Assignment at the resource group scope'
     displayName: '[Display Name] Policy Assignment at the resource group scope'
     enforcementMode: 'DoNotEnforce'
@@ -446,10 +444,10 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     "name": {
       "value": "<<namePrefix>>-rg-polAss"
     },
-    // Non-required parameters
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
     },
+    // Non-required parameters
     "description": {
       "value": "[Description] Policy Assignment at the resource group scope"
     },
@@ -522,8 +520,8 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-sub-polAss'
-    // Non-required parameters
     policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
+    // Non-required parameters
     subscriptionId: '<<subscriptionId>>'
   }
 }
@@ -545,10 +543,10 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     "name": {
       "value": "<<namePrefix>>-min-sub-polAss"
     },
-    // Non-required parameters
     "policyDefinitionID": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
     },
+    // Non-required parameters
     "subscriptionId": {
       "value": "<<subscriptionId>>"
     }
@@ -571,8 +569,8 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-polAss'
-    // Non-required parameters
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
+    // Non-required parameters
     description: '[Description] Policy Assignment at the subscription scope'
     displayName: '[Display Name] Policy Assignment at the subscription scope'
     enforcementMode: 'DoNotEnforce'
@@ -619,10 +617,10 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     "name": {
       "value": "<<namePrefix>>-sub-polAss"
     },
-    // Non-required parameters
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
     },
+    // Non-required parameters
     "description": {
       "value": "[Description] Policy Assignment at the subscription scope"
     },

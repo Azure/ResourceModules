@@ -373,8 +373,8 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-aks-azure-001'
-    // Non-required parameters
     primaryAgentPoolProfile: [
+    // Non-required parameters
       {
         availabilityZones: [
           '1'
@@ -484,7 +484,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "name": {
       "value": "<<namePrefix>>-az-aks-azure-001"
     },
-    // Non-required parameters
     "primaryAgentPoolProfile": {
       "value": [
         {
@@ -508,6 +507,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         }
       ]
     },
+    // Non-required parameters
     "agentPools": {
       "value": [
         {
@@ -618,8 +618,8 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-aks-kubenet-001'
-    // Non-required parameters
     primaryAgentPoolProfile: [
+    // Non-required parameters
       {
         availabilityZones: [
           '1'
@@ -726,7 +726,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "name": {
       "value": "<<namePrefix>>-az-aks-kubenet-001"
     },
-    // Non-required parameters
     "primaryAgentPoolProfile": {
       "value": [
         {
@@ -749,6 +748,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         }
       ]
     },
+    // Non-required parameters
     "agentPools": {
       "value": [
         {

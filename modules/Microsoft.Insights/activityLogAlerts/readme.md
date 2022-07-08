@@ -408,7 +408,6 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
   params: {
     // Required parameters
     conditions: [
-    // Non-required parameters
       {
         equals: 'Administrative'
         field: 'category'
@@ -423,6 +422,7 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
       }
     ]
     name: '<<namePrefix>>-az-ala-x-001'
+    // Non-required parameters
     actions: [
       {
         actionGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
@@ -472,10 +472,10 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
         }
       ]
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-ala-x-001"
     },
+    // Non-required parameters
     "actions": {
       "value": [
         {

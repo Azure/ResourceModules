@@ -79,9 +79,9 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    // Non-required parameters
     extensionType: 'microsoft.flux'
     name: 'flux'
+    // Non-required parameters
     releaseNamespace: 'flux-system'
     releaseTrain: 'Stable'
   }
@@ -136,9 +136,9 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    // Non-required parameters
     extensionType: 'microsoft.flux'
     name: 'flux'
+    // Non-required parameters
     configurationSettings: {
       'image-automation-controller.enabled': 'false'
       'image-reflector-controller.enabled': 'false'

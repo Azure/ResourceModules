@@ -274,7 +274,6 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
   params: {
     // Required parameters
     customizationSteps: [
-    // Non-required parameters
       {
         restartTimeout: '30m'
         type: 'WindowsRestart'
@@ -289,6 +288,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     }
     name: '<<namePrefix>>-az-imgt-x-001'
     userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
+    // Non-required parameters
     buildTimeoutInMinutes: 0
     imageReplicationRegions: []
     lock: 'CanNotDelete'
@@ -344,10 +344,10 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     "name": {
       "value": "<<namePrefix>>-az-imgt-x-001"
     },
-    // Non-required parameters
     "userMsiName": {
       "value": "adp-<<namePrefix>>-az-msi-x-001"
     },
+    // Non-required parameters
     "buildTimeoutInMinutes": {
       "value": 0
     },

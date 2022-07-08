@@ -179,8 +179,8 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-image-001'
-    // Non-required parameters
     sku: 'Standard_LRS'
+    // Non-required parameters
     createOption: 'FromImage'
     imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
     roleAssignments: [
@@ -250,8 +250,8 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-import-001'
-    // Non-required parameters
     sku: 'Standard_LRS'
+    // Non-required parameters
     createOption: 'Import'
     roleAssignments: [
       {
@@ -325,8 +325,8 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-min-001'
-    // Non-required parameters
     sku: 'Standard_LRS'
+    // Non-required parameters
     diskSizeGB: 1
     roleAssignments: [
       {
@@ -392,8 +392,8 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-x-001'
-    // Non-required parameters
     sku: 'UltraSSD_LRS'
+    // Non-required parameters
     diskIOPSReadWrite: 500
     diskMBpsReadWrite: 60
     diskSizeGB: 128

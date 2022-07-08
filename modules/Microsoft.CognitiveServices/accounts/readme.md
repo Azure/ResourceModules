@@ -418,8 +418,8 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   params: {
     // Required parameters
     kind: 'SpeechServices'
-    // Non-required parameters
     name: '<<namePrefix>>-az-cgs-encr-001'
+    // Non-required parameters
     encryption: {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: {
@@ -454,10 +454,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "kind": {
       "value": "SpeechServices"
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cgs-encr-001"
     },
+    // Non-required parameters
     "encryption": {
       "value": {
         "keySource": "Microsoft.KeyVault",
@@ -499,7 +499,6 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   params: {
     // Required parameters
     kind: 'SpeechServices'
-    // Non-required parameters
     name: '<<namePrefix>>-az-cgs-min-001'
   }
 }
@@ -521,7 +520,6 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "kind": {
       "value": "SpeechServices"
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cgs-min-001"
     }
@@ -544,8 +542,8 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   params: {
     // Required parameters
     kind: 'Face'
-    // Non-required parameters
     name: '<<namePrefix>>-az-cgs-x-001'
+    // Non-required parameters
     customSubDomainName: '<<namePrefix>>xdomain'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
@@ -595,10 +593,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "kind": {
       "value": "Face"
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cgs-x-001"
     },
+    // Non-required parameters
     "customSubDomainName": {
       "value": "<<namePrefix>>xdomain"
     },
@@ -671,8 +669,8 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   params: {
     // Required parameters
     kind: 'SpeechServices'
-    // Non-required parameters
     name: '<<namePrefix>>-az-cgs-speech-001'
+    // Non-required parameters
     customSubDomainName: '<<namePrefix>>speechdomain'
     privateEndpoints: [
       {
@@ -705,10 +703,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "kind": {
       "value": "SpeechServices"
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cgs-speech-001"
     },
+    // Non-required parameters
     "customSubDomainName": {
       "value": "<<namePrefix>>speechdomain"
     },

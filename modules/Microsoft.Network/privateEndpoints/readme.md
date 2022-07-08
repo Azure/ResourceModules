@@ -176,7 +176,6 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   params: {
     // Required parameters
     groupIds: [
-    // Non-required parameters
       'vault'
     ]
     name: '<<namePrefix>>-az-pe-kvlt-min-001'
@@ -213,7 +212,6 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     "subnetResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
     }
-    // Non-required parameters
   }
 }
 ```
@@ -233,12 +231,12 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   params: {
     // Required parameters
     groupIds: [
-    // Non-required parameters
       'vault'
     ]
     name: '<<namePrefix>>-az-pe-kvlt-001'
     serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+    // Non-required parameters
     lock: 'CanNotDelete'
     privateDnsZoneGroups: [
       {

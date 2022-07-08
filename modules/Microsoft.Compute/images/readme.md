@@ -163,11 +163,11 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-img-x-001'
-    // Non-required parameters
     osAccountType: 'Premium_LRS'
     osDiskBlobUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
     osDiskCaching: 'ReadWrite'
     osType: 'Windows'
+    // Non-required parameters
     hyperVGeneration: 'V1'
     roleAssignments: [
       {

@@ -313,8 +313,8 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-fw-add-001'
-    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw'
+    // Non-required parameters
     additionalPublicIpConfigurations: [
       {
         name: 'ipConfig01'
@@ -372,8 +372,8 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-fw-custompip-001'
-    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
+    // Non-required parameters
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
         'DDoSMitigationFlowLogs'
@@ -465,7 +465,6 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-fw-min-001'
-    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw'
   }
 }
@@ -490,7 +489,6 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw"
     }
-    // Non-required parameters
   }
 }
 ```
@@ -510,8 +508,8 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-fw-x-001'
-    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw'
+    // Non-required parameters
     applicationRuleCollections: [
       {
         name: 'allow-app-rules'

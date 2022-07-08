@@ -110,8 +110,8 @@ module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bice
   params: {
     // Required parameters
     scope: '/subscriptions/<<subscriptionId>>'
-    // Non-required parameters
     workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    // Non-required parameters
     securityContactProperties: {
       alertNotifications: 'Off'
       alertsToAdmins: 'Off'
@@ -138,10 +138,10 @@ module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bice
     "scope": {
       "value": "/subscriptions/<<subscriptionId>>"
     },
-    // Non-required parameters
     "workspaceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
     },
+    // Non-required parameters
     "securityContactProperties": {
       "value": {
         "alertNotifications": "Off",

@@ -283,7 +283,6 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-egstn-x-002'
-    // Non-required parameters
     source: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     topicType: 'Microsoft.Storage.StorageAccounts'
   }
@@ -306,7 +305,6 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-egstn-x-002"
     },
-    // Non-required parameters
     "source": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     },
@@ -332,9 +330,9 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-egstn-x-001'
-    // Non-required parameters
     source: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     topicType: 'Microsoft.Storage.StorageAccounts'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -369,13 +367,13 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-egstn-x-001"
     },
-    // Non-required parameters
     "source": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     },
     "topicType": {
       "value": "Microsoft.Storage.StorageAccounts"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

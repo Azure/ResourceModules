@@ -184,7 +184,6 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vpngw-min-001'
-    // Non-required parameters
     virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001'
   }
 }
@@ -209,7 +208,6 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
     "virtualHubResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001"
     }
-    // Non-required parameters
   }
 }
 ```
@@ -229,8 +227,8 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vpngw-x-001'
-    // Non-required parameters
     virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
+    // Non-required parameters
     bgpSettings: {
       asn: 65515
       peerWeight: 0

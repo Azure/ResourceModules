@@ -173,7 +173,6 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
-    // Non-required parameters
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
     name: '<<namePrefix>>-az-avdag-min-001'
   }
@@ -202,7 +201,6 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     "name": {
       "value": "<<namePrefix>>-az-avdag-min-001"
     }
-    // Non-required parameters
   }
 }
 ```
@@ -222,9 +220,9 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
-    // Non-required parameters
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
     name: '<<namePrefix>>-az-avdag-x-001'
+    // Non-required parameters
     applications: [
       {
         commandLineArguments: ''

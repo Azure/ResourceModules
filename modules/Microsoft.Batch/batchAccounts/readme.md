@@ -154,8 +154,8 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>azbaweuencr001'
-    // Non-required parameters
     storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    // Non-required parameters
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     poolAllocationMode: 'BatchService'
@@ -184,10 +184,10 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>azbaweuencr001"
     },
-    // Non-required parameters
     "storageAccountId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     },
+    // Non-required parameters
     "cMKKeyName": {
       "value": "keyEncryptionKey"
     },
@@ -227,7 +227,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>azbaweumin001'
-    // Non-required parameters
     storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 }
@@ -249,7 +248,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>azbaweumin001"
     },
-    // Non-required parameters
     "storageAccountId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     }
@@ -272,8 +270,8 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>azbaweux001'
-    // Non-required parameters
     storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -304,10 +302,10 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>azbaweux001"
     },
-    // Non-required parameters
     "storageAccountId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

@@ -184,9 +184,9 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
   params: {
     // Required parameters
     containerName: '<<namePrefix>>-az-aci-x-001'
-    // Non-required parameters
     image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
     name: '<<namePrefix>>-az-acg-x-001'
+    // Non-required parameters
     lock: 'CanNotDelete'
     ports: [
       {
@@ -222,13 +222,13 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     "containerName": {
       "value": "<<namePrefix>>-az-aci-x-001"
     },
-    // Non-required parameters
     "image": {
       "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
     },
     "name": {
       "value": "<<namePrefix>>-az-acg-x-001"
     },
+    // Non-required parameters
     "lock": {
       "value": "CanNotDelete"
     },

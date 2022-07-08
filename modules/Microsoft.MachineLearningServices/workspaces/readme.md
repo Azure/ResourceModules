@@ -412,11 +412,11 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
   params: {
     // Required parameters
     associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
-    // Non-required parameters
     associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
     associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     name: '<<namePrefix>>-az-mls-encr-001'
     sku: 'Basic'
+    // Non-required parameters
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
@@ -511,11 +511,11 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
   params: {
     // Required parameters
     associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
-    // Non-required parameters
     associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
     associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     name: '<<namePrefix>>-az-mls-min-001'
     sku: 'Basic'
+    // Non-required parameters
     systemAssignedIdentity: true
   }
 }
@@ -572,11 +572,11 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
   params: {
     // Required parameters
     associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
-    // Non-required parameters
     associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
     associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     name: '<<namePrefix>>-az-mls-x-001'
     sku: 'Basic'
+    // Non-required parameters
     computes: [
       {
         computeLocation: 'westeurope'

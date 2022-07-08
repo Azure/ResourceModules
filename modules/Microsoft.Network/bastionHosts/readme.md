@@ -297,8 +297,8 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-bas-add-001'
-    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-bas'
+    // Non-required parameters
     additionalPublicIpConfigurations: [
       {
         name: 'ipConfig01'
@@ -325,10 +325,10 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-bas-add-001"
     },
-    // Non-required parameters
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-bas"
     },
+    // Non-required parameters
     "additionalPublicIpConfigurations": {
       "value": [
         {
@@ -356,8 +356,8 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-bas-custompip-001'
-    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas'
+    // Non-required parameters
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
         'DDoSMitigationFlowLogs'
@@ -401,10 +401,10 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-bas-custompip-001"
     },
-    // Non-required parameters
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas"
     },
+    // Non-required parameters
     "publicIPAddressObject": {
       "value": {
         "diagnosticLogCategoriesToEnable": [
@@ -449,7 +449,6 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-bas-min-001'
-    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002'
   }
 }
@@ -471,7 +470,6 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-bas-min-001"
     },
-    // Non-required parameters
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002"
     }
@@ -494,8 +492,8 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-bas-x-001'
-    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+    // Non-required parameters
     azureBastionSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
@@ -533,10 +531,10 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-bas-x-001"
     },
-    // Non-required parameters
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
     },
+    // Non-required parameters
     "azureBastionSubnetPublicIpId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas"
     },

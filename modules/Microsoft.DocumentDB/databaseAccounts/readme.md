@@ -546,7 +546,6 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
   params: {
     // Required parameters
     locations: [
-    // Non-required parameters
       {
         failoverPriority: 0
         isZoneRedundant: false
@@ -559,6 +558,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       }
     ]
     name: '<<namePrefix>>-az-cdb-gremlindb-001'
+    // Non-required parameters
     capabilitiesToAdd: [
       'EnableGremlin'
     ]
@@ -648,10 +648,10 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
       ]
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cdb-gremlindb-001"
     },
+    // Non-required parameters
     "capabilitiesToAdd": {
       "value": [
         "EnableGremlin"
@@ -749,7 +749,6 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
   params: {
     // Required parameters
     locations: [
-    // Non-required parameters
       {
         failoverPriority: 0
         isZoneRedundant: false
@@ -762,6 +761,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       }
     ]
     name: '<<namePrefix>>-az-cdb-mongodb-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -992,10 +992,10 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
       ]
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cdb-mongodb-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },
@@ -1232,7 +1232,6 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
   params: {
     // Required parameters
     locations: [
-    // Non-required parameters
       {
         failoverPriority: 0
         isZoneRedundant: false
@@ -1245,6 +1244,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       }
     ]
     name: '<<namePrefix>>-az-cdb-plain-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -1290,10 +1290,10 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
       ]
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cdb-plain-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },
@@ -1341,7 +1341,6 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
   params: {
     // Required parameters
     locations: [
-    // Non-required parameters
       {
         failoverPriority: 0
         isZoneRedundant: false
@@ -1354,6 +1353,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       }
     ]
     name: '<<namePrefix>>-az-cdb-sqldb-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -1420,10 +1420,10 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
       ]
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cdb-sqldb-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

@@ -146,7 +146,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-min-policySet'
-    // Non-required parameters
     policyDefinitions: [
       {
         parameters: {
@@ -179,7 +178,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     "name": {
       "value": "<<namePrefix>>-mg-min-policySet"
     },
-    // Non-required parameters
     "policyDefinitions": {
       "value": [
         {
@@ -213,8 +211,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-policySet'
-    // Non-required parameters
     policyDefinitions: [
+    // Non-required parameters
       {
         groupNames: [
           'ARM'
@@ -279,7 +277,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     "name": {
       "value": "<<namePrefix>>-mg-policySet"
     },
-    // Non-required parameters
     "policyDefinitions": {
       "value": [
         {
@@ -312,6 +309,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         }
       ]
     },
+    // Non-required parameters
     "description": {
       "value": "[Description] This policy set definition is deployed at management group scope"
     },
@@ -356,8 +354,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-min-policySet'
-    // Non-required parameters
     policyDefinitions: [
+    // Non-required parameters
       {
         parameters: {
           listOfAllowedLocations: {
@@ -390,7 +388,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     "name": {
       "value": "<<namePrefix>>-sub-min-policySet"
     },
-    // Non-required parameters
     "policyDefinitions": {
       "value": [
         {
@@ -405,6 +402,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         }
       ]
     },
+    // Non-required parameters
     "subscriptionId": {
       "value": "<<subscriptionId>>"
     }
@@ -427,8 +425,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-policySet'
-    // Non-required parameters
     policyDefinitions: [
+    // Non-required parameters
       {
         groupNames: [
           'ARM'
@@ -493,7 +491,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     "name": {
       "value": "<<namePrefix>>-sub-policySet"
     },
-    // Non-required parameters
     "policyDefinitions": {
       "value": [
         {
@@ -526,6 +523,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         }
       ]
     },
+    // Non-required parameters
     "description": {
       "value": "[Description] This policy set definition is deployed at subscription scope"
     },

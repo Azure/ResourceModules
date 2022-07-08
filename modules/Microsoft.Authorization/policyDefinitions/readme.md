@@ -140,8 +140,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-min-policyDef'
-    // Non-required parameters
     policyRule: {
+    // Non-required parameters
       if: {
         allOf: [
           {
@@ -229,8 +229,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-policyDef'
-    // Non-required parameters
     policyRule: {
+    // Non-required parameters
       if: {
         allOf: [
           {
@@ -384,8 +384,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-min-policyDef'
-    // Non-required parameters
     policyRule: {
+    // Non-required parameters
       if: {
         allOf: [
           {
@@ -477,8 +477,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-policyDef'
-    // Non-required parameters
     policyRule: {
+    // Non-required parameters
       if: {
         allOf: [
           {

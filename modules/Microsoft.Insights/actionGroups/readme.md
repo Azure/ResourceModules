@@ -246,8 +246,8 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   params: {
     // Required parameters
     groupShortName: 'azagweux001'
-    // Non-required parameters
     name: '<<namePrefix>>-az-ag-x-001'
+    // Non-required parameters
     emailReceivers: [
       {
         emailAddress: 'test.user@testcompany.com'
@@ -295,10 +295,10 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
     "groupShortName": {
       "value": "azagweux001"
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-ag-x-001"
     },
+    // Non-required parameters
     "emailReceivers": {
       "value": [
         {

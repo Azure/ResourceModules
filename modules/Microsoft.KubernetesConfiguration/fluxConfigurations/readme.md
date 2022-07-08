@@ -81,11 +81,11 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    // Non-required parameters
     name: 'flux2'
     namespace: 'flux-system'
     scope: 'cluster'
     sourceKind: 'GitRepository'
+    // Non-required parameters
     gitRepository: {
       repositoryRef: {
         branch: 'main'
@@ -121,13 +121,13 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
     "namespace": {
       "value": "flux-system"
     },
-    // Non-required parameters
     "scope": {
       "value": "cluster"
     },
     "sourceKind": {
       "value": "GitRepository"
     },
+    // Non-required parameters
     "gitRepository": {
       "value": {
         "repositoryRef": {
@@ -158,11 +158,11 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    // Non-required parameters
     name: 'flux2'
     namespace: 'flux-system'
     scope: 'cluster'
     sourceKind: 'GitRepository'
+    // Non-required parameters
     gitRepository: {
       repositoryRef: {
         branch: 'main'
@@ -208,13 +208,13 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
     "namespace": {
       "value": "flux-system"
     },
-    // Non-required parameters
     "scope": {
       "value": "cluster"
     },
     "sourceKind": {
       "value": "GitRepository"
     },
+    // Non-required parameters
     "gitRepository": {
       "value": {
         "repositoryRef": {

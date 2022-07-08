@@ -389,7 +389,6 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
   params: {
     // Required parameters
     criterias: [
-    // Non-required parameters
       {
         criterionType: 'StaticThresholdCriterion'
         metricName: 'Percentage CPU'
@@ -401,6 +400,7 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
       }
     ]
     name: '<<namePrefix>>-az-ma-x-001'
+    // Non-required parameters
     actions: [
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
     ]

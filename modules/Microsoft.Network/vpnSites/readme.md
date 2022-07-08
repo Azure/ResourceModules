@@ -332,8 +332,8 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vSite-min-001'
-    // Non-required parameters
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
+    // Non-required parameters
     addressPrefixes: [
       '10.0.0.0/16'
     ]
@@ -358,10 +358,10 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-vSite-min-001"
     },
-    // Non-required parameters
     "virtualWanId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
     },
+    // Non-required parameters
     "addressPrefixes": {
       "value": [
         "10.0.0.0/16"
@@ -389,8 +389,8 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vSite-x-001'
-    // Non-required parameters
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
+    // Non-required parameters
     deviceProperties: {
       linkSpeedInMbps: 0
     }
@@ -464,10 +464,10 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-vSite-x-001"
     },
-    // Non-required parameters
     "virtualWanId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
     },
+    // Non-required parameters
     "deviceProperties": {
       "value": {
         "linkSpeedInMbps": 0

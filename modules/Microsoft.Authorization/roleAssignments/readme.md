@@ -181,7 +181,6 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
-    // Non-required parameters
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
   }
 }
@@ -203,7 +202,6 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
-    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Storage Queue Data Reader"
     }
@@ -226,8 +224,8 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
-    // Non-required parameters
     roleDefinitionIdOrName: 'Backup Reader'
+    // Non-required parameters
     description: 'Role Assignment (management group scope)'
     managementGroupId: '<<managementGroupId>>'
     principalType: 'ServicePrincipal'
@@ -251,10 +249,10 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
-    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Backup Reader"
     },
+    // Non-required parameters
     "description": {
       "value": "Role Assignment (management group scope)"
     },
@@ -283,8 +281,8 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
-    // Non-required parameters
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    // Non-required parameters
     resourceGroupName: '<<resourceGroupName>>'
     subscriptionId: '<<subscriptionId>>'
   }
@@ -307,10 +305,10 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
-    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Storage Queue Data Reader"
     },
+    // Non-required parameters
     "resourceGroupName": {
       "value": "<<resourceGroupName>>"
     },
@@ -336,8 +334,8 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
-    // Non-required parameters
     roleDefinitionIdOrName: 'Backup Reader'
+    // Non-required parameters
     description: 'Role Assignment (resource group scope)'
     principalType: 'ServicePrincipal'
     resourceGroupName: '<<resourceGroupName>>'
@@ -362,10 +360,10 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
-    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Backup Reader"
     },
+    // Non-required parameters
     "description": {
       "value": "Role Assignment (resource group scope)"
     },
@@ -397,8 +395,8 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
-    // Non-required parameters
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    // Non-required parameters
     subscriptionId: '<<subscriptionId>>'
   }
 }
@@ -420,10 +418,10 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
-    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Storage Queue Data Reader"
     },
+    // Non-required parameters
     "subscriptionId": {
       "value": "<<subscriptionId>>"
     }
@@ -446,8 +444,8 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
-    // Non-required parameters
     roleDefinitionIdOrName: 'Backup Reader'
+    // Non-required parameters
     description: 'Role Assignment (subscription scope)'
     principalType: 'ServicePrincipal'
     subscriptionId: '<<subscriptionId>>'
@@ -471,10 +469,10 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
-    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Backup Reader"
     },
+    // Non-required parameters
     "description": {
       "value": "Role Assignment (subscription scope)"
     },

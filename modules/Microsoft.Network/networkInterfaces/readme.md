@@ -193,7 +193,6 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
   params: {
     // Required parameters
     ipConfigurations: [
-    // Non-required parameters
       {
         name: 'ipconfig01'
         subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
@@ -228,7 +227,6 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
     "name": {
       "value": "<<namePrefix>>-az-nic-min-001"
     }
-    // Non-required parameters
   }
 }
 ```
@@ -248,7 +246,6 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
   params: {
     // Required parameters
     ipConfigurations: [
-    // Non-required parameters
       {
         applicationSecurityGroups: [
           {
@@ -265,6 +262,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
       }
     ]
     name: '<<namePrefix>>-az-nic-x-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7

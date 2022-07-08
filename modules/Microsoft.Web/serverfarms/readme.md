@@ -212,8 +212,8 @@ module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-asp-x-001'
-    // Non-required parameters
     sku: {
+    // Non-required parameters
       capacity: '1'
       family: 'S'
       name: 'S1'

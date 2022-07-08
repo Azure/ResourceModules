@@ -1014,7 +1014,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
-    // Non-required parameters
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
@@ -1043,6 +1042,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     }
     osType: 'Linux'
     vmSize: 'Standard_B12ms'
+    // Non-required parameters
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
     name: '<<namePrefix>>-vm-linux-autmg-01'
@@ -1080,7 +1080,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
-    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -1111,6 +1110,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "vmSize": {
       "value": "Standard_B12ms"
     },
+    // Non-required parameters
     "configurationProfile": {
       "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
     },
@@ -1147,7 +1147,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
-    // Non-required parameters
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
@@ -1176,6 +1175,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     }
     osType: 'Linux'
     vmSize: 'Standard_B12ms'
+    // Non-required parameters
     disablePasswordAuthentication: true
     name: '<<namePrefix>>-vm-linux-min-01'
     publicKeys: [
@@ -1212,7 +1212,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
-    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -1243,6 +1242,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "vmSize": {
       "value": "Standard_B12ms"
     },
+    // Non-required parameters
     "disablePasswordAuthentication": {
       "value": true
     },
@@ -1276,7 +1276,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
-    // Non-required parameters
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
@@ -1335,6 +1334,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     }
     osType: 'Linux'
     vmSize: 'Standard_B12ms'
+    // Non-required parameters
     availabilityZone: 1
     backupPolicyName: 'VMpolicy'
     backupVaultName: 'adp-<<namePrefix>>-az-rsv-x-001'
@@ -1452,7 +1452,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
-    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -1513,6 +1512,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "vmSize": {
       "value": "Standard_B12ms"
     },
+    // Non-required parameters
     "availabilityZone": {
       "value": 1
     },
@@ -1678,7 +1678,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
-    // Non-required parameters
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -1704,6 +1703,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     }
     osType: 'Windows'
     vmSize: 'Standard_B12ms'
+    // Non-required parameters
     adminPassword: kv1.getSecret('adminPassword')
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     name: '<<namePrefix>>-vm-win-03'
@@ -1735,7 +1735,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
-    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -1763,6 +1762,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "vmSize": {
       "value": "Standard_B12ms"
     },
+    // Non-required parameters
     "adminPassword": {
       "reference": {
         "keyVault": {
@@ -1801,7 +1801,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
-    // Non-required parameters
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -1827,6 +1826,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     }
     osType: 'Windows'
     vmSize: 'Standard_B12ms'
+    // Non-required parameters
     adminPassword: kv1.getSecret('adminPassword')
     name: '<<namePrefix>>-vm-win-02'
   }
@@ -1857,7 +1857,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
-    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -1885,6 +1884,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "vmSize": {
       "value": "Standard_B12ms"
     },
+    // Non-required parameters
     "adminPassword": {
       "reference": {
         "keyVault": {
@@ -1920,7 +1920,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
-    // Non-required parameters
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -1979,6 +1978,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     }
     osType: 'Windows'
     vmSize: 'Standard_B12ms'
+    // Non-required parameters
     adminPassword: kv1.getSecret('adminPassword')
     availabilityZone: 2
     backupPolicyName: 'VMpolicy'
@@ -2108,7 +2108,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
-    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -2169,6 +2168,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "vmSize": {
       "value": "Standard_B12ms"
     },
+    // Non-required parameters
     "adminPassword": {
       "reference": {
         "keyVault": {

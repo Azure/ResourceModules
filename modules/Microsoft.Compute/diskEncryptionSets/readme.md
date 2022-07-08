@@ -165,9 +165,9 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
   params: {
     // Required parameters
     keyName: 'keyEncryptionKey'
-    // Non-required parameters
     keyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
     name: '<<namePrefix>>-az-des-x-001'
+    // Non-required parameters
     roleAssignments: [
       {
         principalIds: [

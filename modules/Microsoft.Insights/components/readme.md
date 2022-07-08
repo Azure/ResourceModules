@@ -164,8 +164,8 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appi-x-001'
-    // Non-required parameters
     workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-appi-001'
+    // Non-required parameters
     roleAssignments: [
       {
         principalIds: [
@@ -194,10 +194,10 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-appi-x-001"
     },
-    // Non-required parameters
     "workspaceResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-appi-001"
     },
+    // Non-required parameters
     "roleAssignments": {
       "value": [
         {

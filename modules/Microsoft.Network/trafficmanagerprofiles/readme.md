@@ -264,8 +264,8 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
   params: {
     // Required parameters
     name: 'tm-000001'
-    // Non-required parameters
     relativeName: 'tm-000001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7

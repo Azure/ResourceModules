@@ -362,7 +362,6 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   params: {
     // Required parameters
     addressPrefixes: [
-    // Non-required parameters
       '10.0.0.0/16'
     ]
     name: '<<namePrefix>>-az-vnet-min-001'
@@ -391,7 +390,6 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-vnet-min-001"
     }
-    // Non-required parameters
   }
 }
 ```
@@ -411,10 +409,10 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   params: {
     // Required parameters
     addressPrefixes: [
-    // Non-required parameters
       '10.0.0.0/16'
     ]
     name: '<<namePrefix>>-az-vnet-x-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -606,10 +604,10 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   params: {
     // Required parameters
     addressPrefixes: [
-    // Non-required parameters
       '10.0.0.0/24'
     ]
     name: '<<namePrefix>>-az-vnet-peer-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7

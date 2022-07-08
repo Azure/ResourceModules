@@ -179,7 +179,6 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
   params: {
     // Required parameters
     authorizations: [
-    // Non-required parameters
       {
         principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
         principalIdDisplayName: 'ResourceModules-Reader'
@@ -244,7 +243,6 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     "registrationDescription": {
       "value": "Managed by Lighthouse"
     }
-    // Non-required parameters
   }
 }
 ```
@@ -264,7 +262,6 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
   params: {
     // Required parameters
     authorizations: [
-    // Non-required parameters
       {
         principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
         principalIdDisplayName: 'ResourceModules-Reader'
@@ -284,6 +281,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
     name: 'Component Validation - Resource group assignment'
     registrationDescription: 'Managed by Lighthouse'
+    // Non-required parameters
     resourceGroupName: 'validation-rg'
   }
 }

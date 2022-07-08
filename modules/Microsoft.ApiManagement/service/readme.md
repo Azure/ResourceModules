@@ -282,9 +282,9 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-apim-max-001'
-    // Non-required parameters
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
+    // Non-required parameters
     apis: [
       {
         apiVersionSet: {
@@ -429,13 +429,13 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-apim-max-001"
     },
-    // Non-required parameters
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
     "publisherName": {
       "value": "<<namePrefix>>-az-amorg-x-001"
     },
+    // Non-required parameters
     "apis": {
       "value": [
         {
@@ -617,7 +617,6 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-apim-min-001'
-    // Non-required parameters
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
   }
@@ -640,7 +639,6 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-apim-min-001"
     },
-    // Non-required parameters
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
@@ -666,9 +664,9 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-apim-x-001'
-    // Non-required parameters
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
+    // Non-required parameters
     lock: 'CanNotDelete'
     policies: [
       {
@@ -722,13 +720,13 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-apim-x-001"
     },
-    // Non-required parameters
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
     "publisherName": {
       "value": "<<namePrefix>>-az-amorg-x-001"
     },
+    // Non-required parameters
     "lock": {
       "value": "CanNotDelete"
     },

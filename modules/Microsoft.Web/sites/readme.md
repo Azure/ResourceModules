@@ -406,8 +406,8 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   params: {
     // Required parameters
     kind: 'functionapp'
-    // Non-required parameters
     name: '<<namePrefix>>-az-fa-min-001'
+    // Non-required parameters
     serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
     siteConfig: {
       alwaysOn: true
@@ -432,10 +432,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "kind": {
       "value": "functionapp"
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-fa-min-001"
     },
+    // Non-required parameters
     "serverFarmResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
     },
@@ -463,8 +463,8 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   params: {
     // Required parameters
     kind: 'functionapp'
-    // Non-required parameters
     name: '<<namePrefix>>-az-fa-x-001'
+    // Non-required parameters
     appInsightId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
@@ -585,10 +585,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "kind": {
       "value": "functionapp"
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-fa-x-001"
     },
+    // Non-required parameters
     "appInsightId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
     },
@@ -742,8 +742,8 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   params: {
     // Required parameters
     kind: 'app'
-    // Non-required parameters
     name: '<<namePrefix>>-az-wa-min-001'
+    // Non-required parameters
     serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
   }
 }
@@ -765,10 +765,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "kind": {
       "value": "app"
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-wa-min-001"
     },
+    // Non-required parameters
     "serverFarmResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
     }
@@ -791,8 +791,8 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   params: {
     // Required parameters
     kind: 'app'
-    // Non-required parameters
     name: '<<namePrefix>>-az-wa-x-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -847,10 +847,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "kind": {
       "value": "app"
     },
-    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-wa-x-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

@@ -213,8 +213,8 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appse-asev2-001'
-    // Non-required parameters
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-008'
+    // Non-required parameters
     clusterSettings: [
       {
         name: 'DisableTls1.0'
@@ -322,8 +322,8 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appse-asev3-001'
-    // Non-required parameters
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-006'
+    // Non-required parameters
     clusterSettings: [
       {
         name: 'DisableTls1.0'

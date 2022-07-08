@@ -167,8 +167,8 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
   params: {
     // Required parameters
     displayName: 'azuremonitorlogs'
-    // Non-required parameters
     name: 'azuremonitor'
+    // Non-required parameters
     connectionApi: {
       id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
     }

@@ -160,8 +160,8 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-pippfx-x-001'
-    // Non-required parameters
     prefixLength: 28
+    // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
