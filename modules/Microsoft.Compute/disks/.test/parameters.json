@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-disk-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "sku": {
+            "value": "UltraSSD_LRS"
+        },
+        "diskSizeGB": {
+            "value": 128
+        },
+        "logicalSectorSize": {
+            "value": 512
+        },
+        "diskIOPSReadWrite": {
+            "value": 500
+        },
+        "diskMBpsReadWrite": {
+            "value": 60
+        },
+        "osType": {
+            "value": "Windows"
+        },
+        "publicNetworkAccess": {
+            "value": "Enabled"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}

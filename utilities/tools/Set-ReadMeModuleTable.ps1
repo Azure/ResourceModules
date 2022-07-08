@@ -25,7 +25,7 @@ Mandatory. The set of columns to add to the table in the order you expect them i
 Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
 
 .EXAMPLE
-Set-ReadMeModuleTable -FilePath 'C:\readme.md' -ModulesPath 'C:\arm' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','Status')
+Set-ReadMeModuleTable -FilePath 'C:\readme.md' -ModulesPath 'C:\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','Status')
 
 Update the defined table section in the 'readme.md' file with a table that has the columns 'Name' & 'Status'
 #>
@@ -67,6 +67,9 @@ function Set-ReadMeModuleTable {
     # Logic
     $contentArray = Get-Content -Path $FilePath
 
+    # Handle space in the projectname
+    $urlEncodedProjectName = [uri]::EscapeDataString($ProjectName)
+
     $tableStringInputObject = @{
         Path           = $ModulesPath
         RepositoryName = $RepositoryName
@@ -74,7 +77,7 @@ function Set-ReadMeModuleTable {
         ColumnsInOrder = $ColumnsInOrder
         SortByColumn   = $SortByColumn
         Environment    = $Environment
-        ProjectName    = $ProjectName
+        ProjectName    = $urlEncodedProjectName
     }
     Write-Verbose ($tableStringInputObject | ConvertTo-Json | Out-String) -Verbose
     $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject -Verbose

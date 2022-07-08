@@ -1,0 +1,199 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-aut-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "schedules": {
+            "value": [
+                {
+                    "name": "TestSchedule",
+                    "startTime": "",
+                    "expiryTime": "9999-12-31T13:00",
+                    "interval": 15,
+                    "frequency": "Minute",
+                    "timeZone": "Europe/Berlin",
+                    "advancedSchedule": {}
+                }
+            ]
+        },
+        "modules": {
+            "value": [
+                {
+                    "name": "PSWindowsUpdate",
+                    "version": "latest",
+                    "uri": "https://www.powershellgallery.com/api/v2/package"
+                }
+            ]
+        },
+        "runbooks": {
+            "value": [
+                {
+                    "name": "TestRunbook",
+                    "runbookType": "PowerShell",
+                    "description": "Test runbook",
+                    "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
+                    "version": "1.0.0.0"
+                }
+            ]
+        },
+        "jobSchedules": {
+            "value": [
+                {
+                    "scheduleName": "TestSchedule",
+                    "runbookName": "TestRunbook"
+                }
+            ]
+        },
+        "variables": {
+            "value": [
+                {
+                    "name": "TestString",
+                    "value": "\"TestString\"",
+                    "description": "TestStringDescription"
+                },
+                {
+                    "name": "TestInteger",
+                    "value": "500",
+                    "description": "TestIntegerDescription"
+                },
+                {
+                    "name": "TestBoolean",
+                    "value": "false",
+                    "description": "TestBooleanDescription"
+                },
+                {
+                    "name": "TestDateTime",
+                    "value": "\"\\/Date(1637934042656)\\/\"",
+                    "description": "TestDateTimeDescription",
+                    "isEncrypted": false
+                },
+                {
+                    "name": "TestEncryptedVariable",
+                    "value": "\"TestEncryptedValue\"",
+                    "description": "TestEncryptedDescription"
+                }
+            ]
+        },
+        "linkedWorkspaceResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001"
+        },
+        "gallerySolutions": {
+            "value": [
+                {
+                    "name": "Updates",
+                    "product": "OMSGallery",
+                    "publisher": "Microsoft"
+                }
+            ]
+        },
+        "softwareUpdateConfigurations": {
+            "value": [
+                {
+                    "name": "Windows_ZeroDay",
+                    "frequency": "Month",
+                    "operatingSystem": "Windows",
+                    "rebootSetting": "IfRequired",
+                    "scopeByTags": {
+                        "Update": [
+                            "Automatic-Wave1"
+                        ]
+                    },
+                    "maintenanceWindow": "PT4H",
+                    "updateClassifications": [
+                        "Critical",
+                        "Security",
+                        "UpdateRollup",
+                        "FeaturePack",
+                        "ServicePack",
+                        "Definition",
+                        "Tools",
+                        "Updates"
+                    ],
+                    "includeUpdates": [
+                        "654321"
+                    ],
+                    "excludeUpdates": [
+                        "123456"
+                    ],
+                    "interval": 1,
+                    "monthlyOccurrences": [
+                        {
+                            "occurrence": 3,
+                            "day": "Friday"
+                        }
+                    ],
+                    "startTime": "22:00"
+                },
+                {
+                    "name": "Linux_ZeroDay",
+                    "frequency": "OneTime",
+                    "operatingSystem": "Linux",
+                    "rebootSetting": "IfRequired",
+                    "maintenanceWindow": "PT4H",
+                    "updateClassifications": [
+                        "Critical",
+                        "Security",
+                        "Other"
+                    ],
+                    "includeUpdates": [
+                        "kernel"
+                    ],
+                    "excludeUpdates": [
+                        "icacls"
+                    ],
+                    "startTime": "22:00"
+                }
+            ]
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "Webhook"
+                },
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "DSCAndHybridWorker"
+                }
+            ]
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        }
+    }
+}
