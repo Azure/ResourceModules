@@ -464,31 +464,38 @@ function Set-DeploymentExamplesSection {
             $bicepExample = $bicepParamsArray | ForEach-Object { "  $_" }
 
             # Optional: Add comment where required & optional parameters start
+            # ----------------------------------------------------------------
             if ($requiredParameterNames -is [string]) {
                 $requiredParameterNames = @($requiredParameterNames)
             }
+
+            # If we have at least one required and one other parameter we want to add a comment
             if ($requiredParameterNames.Count -ge 1 -and $orderedJSONParameters.Keys.Count -ge 2) {
-                # If we have at least one required and one other parameter we want to add a comment
-                $parameterToSplitAt = $requiredParameterNames[-1]
 
                 $bicepExampleArray = $bicepExample -split '\n'
 
+                # Check where the 'last' required parameter is located in the example (and what its indent is)
+                $parameterToSplitAt = $requiredParameterNames[-1]
                 $requiredParameterStartIndex = ($bicepExampleArray | Select-String ('.*{0}:.+' -f $parameterToSplitAt) | ForEach-Object { $_.LineNumber - 1 })[0]
-
                 $requiredParameterIndent = ([regex]::Match($bicepExampleArray[$requiredParameterStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
 
-
-                $nextLineIndent = ([regex]::Match($bicepExampleArray[$requiredParameterStartIndex + 1], '^(\s+).*')).Captures.Groups[1].Value.Length
-                if ($nextLineIndent -gt $requiredParameterIndent) {
-                    # Case Param is object/array: Search in rest of array for the next closing bracket with the same indent - and then add the search index (1), initial index (1) count back in add another index (1) for the 'required' comment
-                    $requiredParameterEndIndex = ($bicepExampleArray[($requiredParameterStartIndex + 1)..($bicepExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\S+" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex + 1
-                } else {
-                    # Case Param is single line bool/string/int: Add an index (1) for the 'required' comment
-                    $requiredParameterEndIndex = $requiredParameterStartIndex + 1
-                }
-
+                # Add a comment where the required parameters start
                 $bicepExampleArray = @('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(0 .. ($bicepExampleArray.Count))]
-                $bicepExampleArray = $bicepExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(($requiredParameterEndIndex + 1) .. ($bicepExampleArray.Count))]
+
+                # If we have more than only required parameters, let's add a corresponding comment
+                if ($orderedJSONParameters.Keys.Count -gt $requiredParameterNames.Count ) {
+                    $nextLineIndent = ([regex]::Match($bicepExampleArray[$requiredParameterStartIndex + 1], '^(\s+).*')).Captures.Groups[1].Value.Length
+                    if ($nextLineIndent -gt $requiredParameterIndent) {
+                        # Case Param is object/array: Search in rest of array for the next closing bracket with the same indent - and then add the search index (1) & initial index (1) count back in
+                        $requiredParameterEndIndex = ($bicepExampleArray[($requiredParameterStartIndex + 1)..($bicepExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\S+" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex
+                    } else {
+                        # Case Param is single line bool/string/int: Add an index (1) for the 'required' comment
+                        $requiredParameterEndIndex = $requiredParameterStartIndex
+                    }
+
+                    # Add a comment where the non-required parameters start
+                    $bicepExampleArray = $bicepExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(($requiredParameterEndIndex + 1) .. ($bicepExampleArray.Count))]
+                }
 
                 $bicepExample = $bicepExampleArray | Out-String
             }
@@ -537,24 +544,33 @@ function Set-DeploymentExamplesSection {
                 } | ConvertTo-Json -Depth 99)
 
             # Optional: Add comment where required & optional parameters start
+            # ----------------------------------------------------------------
             if ($requiredParameterNames -is [string]) {
                 $requiredParameterNames = @($requiredParameterNames)
             }
+
+            # If we have at least one required and one other parameter we want to add a comment
             if ($requiredParameterNames.Count -ge 1 -and $orderedJSONParameters.Keys.Count -ge 2) {
-                # If we have at least one required and one other parameter we want to add a comment
-                $parameterToSplitAt = $requiredParameterNames[-1]
 
                 $jsonExampleArray = $jsonExample -split '\n'
+
+                # Check where the 'last' required parameter is located in the example (and what its indent is)
+                $parameterToSplitAt = $requiredParameterNames[-1]
                 $parameterStartIndex = ($jsonExampleArray | Select-String '.*"parameters": \{.*' | ForEach-Object { $_.LineNumber - 1 })[0]
                 $requiredParameterStartIndex = ($jsonExampleArray | Select-String ".*`"$parameterToSplitAt`": \{.*" | ForEach-Object { $_.LineNumber - 1 })[0]
-
                 $requiredParameterIndent = ([regex]::Match($jsonExampleArray[$requiredParameterStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
 
-                # Search in rest of array for the next closing bracket with the same indent - and then add the search index (1), initial index (1) count back in add another index (1) for the 'required' comment
-                $requiredParameterEndIndex = ($jsonExampleArray[($requiredParameterStartIndex + 1)..($jsonExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex + 1
-
+                # Add a comment where the required parameters start
                 $jsonExampleArray = $jsonExampleArray[0..$parameterStartIndex] + ('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($parameterStartIndex + 1) .. ($jsonExampleArray.Count))]
-                $jsonExampleArray = $jsonExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($requiredParameterEndIndex + 1) .. ($jsonExampleArray.Count))]
+
+                # If we have more than only required parameters, let's add a corresponding comment
+                if ($orderedJSONParameters.Keys.Count -gt $requiredParameterNames.Count ) {
+                    # Search in rest of array for the next closing bracket with the same indent - and then add the search index (1) & initial index (1) count back in
+                    $requiredParameterEndIndex = ($jsonExampleArray[($requiredParameterStartIndex + 1)..($jsonExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex
+
+                    # Add a comment where the non-required parameters start
+                    $jsonExampleArray = $jsonExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($requiredParameterEndIndex + 1) .. ($jsonExampleArray.Count))]
+                }
 
                 $jsonExample = $jsonExampleArray | Out-String
             }
