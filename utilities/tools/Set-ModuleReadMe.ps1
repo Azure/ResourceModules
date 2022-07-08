@@ -356,7 +356,10 @@ function Set-DeploymentExamplesSection {
     . (Join-Path $PSScriptRoot 'helper' 'ConvertTo-OrderedHashtable.ps1')
 
     # Process content
-    $SectionContent = [System.Collections.ArrayList]@()
+    $SectionContent = [System.Collections.ArrayList]@(
+        'Below is a collection of examples of how this module can be used. These examples are taken from the same files that the CI environment uses to validate this module. The name of each example is based on the name of the file from which it is taken. Also, each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
+        ''
+    )
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
@@ -446,8 +449,6 @@ function Set-DeploymentExamplesSection {
                 $orderedJSONParameters = @{}
             }
 
-            ## TODO: Add comment 'Required parameters' vs 'Non-required parameters'
-
             $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
             if ($templateParameterObject -ne '{}') {
                 $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
@@ -457,6 +458,30 @@ function Set-DeploymentExamplesSection {
 
                 $bicepParamsArray = $contentInBicepFormat -split '\n'
                 $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
+            }
+
+            # Format params with indent
+            $bicepExample = $bicepParamsArray | ForEach-Object { "  $_" }
+
+            # Optional: Add comment where required & optional parameters start
+            if ($requiredParameterNames -is [string]) {
+                $requiredParameterNames = @($requiredParameterNames)
+            }
+            if ($requiredParameterNames.Count -ge 1 -and $orderedJSONParameters.Keys.Count -ge 2) {
+                # If we have at least one required and one other parameter we want to add a comment
+                $parameterToSplitAt = $requiredParameterNames[-1]
+
+                $bicepExampleArray = $bicepExample -split '\n'
+
+                $requiredParameterIndent = ([regex]::Match($bicepExampleArray[0], '^(\s+).*')).Captures.Groups[1].Value.Length
+
+                # Search in rest of array for the next closing bracket with the same indent - and then add the initial index count back in (+1 for the first added comment)
+                $requiredParameterEndIndex = ($bicepExampleArray[0..($bicepExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}" | ForEach-Object { $_.LineNumber - 1 })[0] + 1
+
+                $bicepExampleArray = @('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(0 .. ($bicepExampleArray.Count))]
+                $bicepExampleArray = $bicepExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(($requiredParameterEndIndex + 1) .. ($bicepExampleArray.Count))]
+
+                $bicepExample = $bicepExampleArray | Out-String
             }
 
             $SectionContent += @(
@@ -470,7 +495,7 @@ function Set-DeploymentExamplesSection {
                 "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
                 "  name: '`${uniqueString(deployment().name)}-$resourceType'"
                 '  params: {'
-                ($bicepParamsArray | ForEach-Object { "  $_" }).TrimEnd(),
+                $bicepExample.TrimEnd(),
                 '  }'
                 '}'
                 '```',
@@ -502,22 +527,27 @@ function Set-DeploymentExamplesSection {
                     parameters     = (-not [String]::IsNullOrEmpty($orderedJSONParameters)) ? $orderedJSONParameters : @{}
                 } | ConvertTo-Json -Depth 99)
 
-            ## TODO: Add comment 'Required parameters' vs 'Non-required parameters'
+            # Optional: Add comment where required & optional parameters start
             if ($requiredParameterNames -is [string]) {
                 $requiredParameterNames = @($requiredParameterNames)
             }
-            if ($requiredParameterNames.Count -ge 1 && $orderedJSONParameters.Count -ge 2) {
+            if ($requiredParameterNames.Count -ge 1 -and $orderedJSONParameters.Keys.Count -ge 2) {
                 # If we have at least one required and one other parameter we want to add a comment
                 $parameterToSplitAt = $requiredParameterNames[-1]
-
 
                 $jsonExampleArray = $jsonExample -split '\n'
                 $parameterStartIndex = $jsonExampleArray | Select-String '.*"parameters": \{.*' | ForEach-Object { $_.LineNumber - 1 }
                 $requiredParameterStartIndex = $jsonExampleArray | Select-String ".*`"$parameterToSplitAt`": \{.*" | ForEach-Object { $_.LineNumber - 1 }
-                $requiredParameterEndIndex = 0 # TODO: Search
 
-                $jsonExampleArray = $jsonExampleArray[0..$parameterStartIndex] + '    // Required parameters' + $jsonExampleArray[(($parameterStartIndex + 1) .. ($jsonExampleArray.Count))]
-                $jsonExampleArray = $jsonExampleArray[0..$requiredParameterEndIndex] + '    // Non-required parameters' + $jsonExampleArray[(($requiredParameterEndIndex + 1) .. ($jsonExampleArray.Count))]
+                $requiredParameterIndent = ([regex]::Match($jsonExampleArray[$requiredParameterStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
+
+                # Search in rest of array for the next closing bracket with the same indent - and then add the initial index count back in (+1 for the first added comment)
+                $requiredParameterEndIndex = ($jsonExampleArray[$requiredParameterStartIndex..($jsonExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + $requiredParameterStartIndex + 1
+
+                $jsonExampleArray = $jsonExampleArray[0..$parameterStartIndex] + ('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($parameterStartIndex + 1) .. ($jsonExampleArray.Count))]
+                $jsonExampleArray = $jsonExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($requiredParameterEndIndex + 1) .. ($jsonExampleArray.Count))]
+
+                $jsonExample = $jsonExampleArray | Out-String
             }
 
             $SectionContent += @(
@@ -527,31 +557,12 @@ function Set-DeploymentExamplesSection {
                 '<summary>via JSON Parameter file</summary>',
                 '',
                 '```json',
-                $jsonExample,
+                $jsonExample.TrimEnd(),
                 '```',
                 '',
                 '</details>'
                 '<p>'
             )
-            # $SectionContent += @(
-            #     '',
-            #     '<details>',
-            #     '',
-            #     '<summary>via JSON Parameter file</summary>',
-            #     '',
-            #     '```json',
-            #     '{',
-            #     '  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",',
-            #     '  "contentVersion": "1.0.0.0",'
-            #     '  "parameters": {'
-            #     (-not [String]::IsNullOrEmpty($orderedJSONParameters)) ? ((($orderedJSONParameters | ConvertTo-Json -Depth 99) -split '\n') | ForEach-Object { "    $_" }).TrimEnd() : '',
-            #     '  }',
-            #     '}',
-            #     '```',
-            #     '',
-            #     '</details>'
-            #     '<p>'
-            # )
         }
 
         $SectionContent += @(
