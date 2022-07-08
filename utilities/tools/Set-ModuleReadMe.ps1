@@ -309,6 +309,9 @@ Generate 'Deployment examples' for the ReadMe out of the parameter files current
 .PARAMETER TemplateFileContent
 Mandatory. The template file content object to crawl data from
 
+.PARAMETER TemplateFilePath
+Mandatory. The path to the template file
+
 .PARAMETER ReadMeFileContent
 Mandatory. The readme file content array to update
 
@@ -325,7 +328,7 @@ Optional. A switch to control whether or not to add a Bicep deployment example. 
 Optional. Projects settings to draw information from. For example the `namePrefix`.
 
 .EXAMPLE
-Set-DeploymentExamplesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-DeploymentExamplesSection -TemplateFileContent @{ resource = @{}; ... } -TemplateFilePath 'C:/deploy.bicep' -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 
 Update the given readme file's 'Deployment Examples' section based on the given template file content
 #>
@@ -335,6 +338,9 @@ function Set-DeploymentExamplesSection {
     param (
         [Parameter(Mandatory = $true)]
         [string] $TemplateFilePath,
+
+        [Parameter(Mandatory)]
+        [hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory = $true)]
         [object[]] $ReadMeFileContent,
@@ -352,13 +358,23 @@ function Set-DeploymentExamplesSection {
         [string] $SectionStartIdentifier = '## Deployment examples'
     )
 
+    # Load used function(s)
+    . (Join-Path $PSScriptRoot 'helper' 'ConvertTo-OrderedHashtable.ps1')
+
     # Process content
-    $SectionContent = [System.Collections.ArrayList]@()
+    $SectionContent = [System.Collections.ArrayList]@(
+        'The following module usage examples are retrieved from the content of the files hosted in the module''s `.test` folder.',
+        '   >**Note**: The name of each example is based on the name of the file from which it is taken.',
+        '   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
+        ''
+    )
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
     $resourceType = $resourceTypeIdentifier.Split('/')[1]
     $testFilePaths = (Get-ChildItem (Join-Path -Path $moduleRoot -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+
+    $requiredParameterNames = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' } | Sort-Object
 
     ############################
     ##   Process test files   ##
