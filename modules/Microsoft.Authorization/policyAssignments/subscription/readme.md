@@ -34,7 +34,7 @@ With this module you can perform policy assignments on a subscription level.
 | `identity` | string | `'SystemAssigned'` | `[SystemAssigned, UserAssigned, None]` | The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
 | `location` | string | `[deployment().location]` |  | Location for all resources. |
 | `metadata` | object | `{object}` |  | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `nonComplianceMessage` | string | `''` |  | The messages that describe why a resource is non-compliant with the policy. |
+| `nonComplianceMessages` | array | `[]` |  | The messages that describe why a resource is non-compliant with the policy. |
 | `notScopes` | array | `[]` |  | The policy excluded scopes. |
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. If not provided, will use the current scope for deployment. |

@@ -35,7 +35,7 @@ param roleDefinitionIds array = []
 param metadata object = {}
 
 @sys.description('Optional. The messages that describe why a resource is non-compliant with the policy.')
-param nonComplianceMessage string = ''
+param nonComplianceMessages array = []
 
 @sys.description('Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce.')
 @allowed([
@@ -49,10 +49,6 @@ param notScopes array = []
 
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
-
-var nonComplianceMessage_var = {
-  message: !empty(nonComplianceMessage) ? nonComplianceMessage : null
-}
 
 @sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. If not provided, will use the current scope for deployment.')
 param subscriptionId string = subscription().subscriptionId
@@ -91,7 +87,7 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
     description: !empty(description) ? description : null
     policyDefinitionId: policyDefinitionId
     parameters: parameters
-    nonComplianceMessages: !empty(nonComplianceMessage) ? array(nonComplianceMessage_var) : []
+    nonComplianceMessages: !empty(nonComplianceMessages) ? nonComplianceMessages : []
     enforcementMode: enforcementMode
     notScopes: !empty(notScopes) ? notScopes : []
   }
