@@ -14,7 +14,7 @@ This section provides an overview of the principles the static validation is bui
 
 All module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) to ensure that the modules are configured correctly, documentation is up to date, and modules don't turn stale.
 
-The following activities are performed by the [`utilities/pipelines/staticValidation/global.module.tests.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/staticValidation/global.module.tests.ps1) script.
+The following activities are performed by the [`utilities/pipelines/staticValidation/module.tests.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/staticValidation/module.tests.ps1) script.
 
 - **File & folder tests** validate that the module folder structure is set up in the intended way, e.g.:
   - readme.md file exists
@@ -50,7 +50,7 @@ In this phase, Pester analyzes the API version of each resource type deployed by
 
 In particular, each resource's API version is compared with those currently available on Azure. This test has a certain level of tolerance (does not enforce the latest version): the API version in use should be one of the 5 latest versions available (including preview versions) or one of the the 5 latest non-preview versions.
 
-This test also leverages the [`utilities/pipelines/staticValidation/global.module.tests.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/staticValidation/global.module.tests.ps1) script.
+This test also leverages the [`utilities/pipelines/staticValidation/module.tests.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/staticValidation/module.tests.ps1) script.
 
 # Verify the static validation of your module locally
 

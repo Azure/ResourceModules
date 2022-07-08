@@ -14,7 +14,7 @@
 ##   | Parameter                | Required | Default | Description                     | Example                                                        |
 ##   |--------------------------|----------|---------|---------------------------------|----------------------------------------------------------------|
 ##   | modulePath               | true     | ''      | The path to the module's folder | 'modules/Microsoft.ApiManagement/service'                      |
-##   | globalModuleTestFilePath | true     | ''      | The path to the test file       | 'utilities/pipelines/staticValidation/global.module.tests.ps1' |
+##   | globalModuleTestFilePath | true     | ''      | The path to the test file       | 'utilities/pipelines/staticValidation/module.tests.ps1' |
 ##   |==================================================================================================================================================|
 ##
 ##---------------------------------------------##
