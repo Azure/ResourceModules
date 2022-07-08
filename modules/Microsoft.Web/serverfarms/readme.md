@@ -213,13 +213,13 @@ module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>-az-asp-x-001'
     sku: {
-    // Non-required parameters
       capacity: '1'
       family: 'S'
       name: 'S1'
       size: 'S1'
       tier: 'Standard'
     }
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7

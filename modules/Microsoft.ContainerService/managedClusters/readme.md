@@ -374,7 +374,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     // Required parameters
     name: '<<namePrefix>>-az-aks-azure-001'
     primaryAgentPoolProfile: [
-    // Non-required parameters
       {
         availabilityZones: [
           '1'
@@ -395,6 +394,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         vnetSubnetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Primary'
       }
     ]
+    // Non-required parameters
     agentPools: [
       {
         availabilityZones: [
@@ -619,7 +619,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     // Required parameters
     name: '<<namePrefix>>-az-aks-kubenet-001'
     primaryAgentPoolProfile: [
-    // Non-required parameters
       {
         availabilityZones: [
           '1'
@@ -639,6 +638,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         vmSize: 'Standard_DS2_v2'
       }
     ]
+    // Non-required parameters
     agentPools: [
       {
         availabilityZones: [

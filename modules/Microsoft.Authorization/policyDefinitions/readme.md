@@ -141,7 +141,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Required parameters
     name: '<<namePrefix>>-mg-min-policyDef'
     policyRule: {
-    // Non-required parameters
       if: {
         allOf: [
           {
@@ -154,6 +153,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         effect: '[parameters('effect')]'
       }
     }
+    // Non-required parameters
     parameters: {
       effect: {
         allowedValues: [
@@ -230,7 +230,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Required parameters
     name: '<<namePrefix>>-mg-policyDef'
     policyRule: {
-    // Non-required parameters
       if: {
         allOf: [
           {
@@ -259,6 +258,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         effect: 'modify'
       }
     }
+    // Non-required parameters
     description: '[Description] This policy definition is deployed at the management group scope'
     displayName: '[DisplayName] This policy definition is deployed at the management group scope'
     managementGroupId: '<<managementGroupId>>'
@@ -385,7 +385,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Required parameters
     name: '<<namePrefix>>-sub-min-policyDef'
     policyRule: {
-    // Non-required parameters
       if: {
         allOf: [
           {
@@ -398,6 +397,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         effect: '[parameters('effect')]'
       }
     }
+    // Non-required parameters
     parameters: {
       effect: {
         allowedValues: [
@@ -478,7 +478,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Required parameters
     name: '<<namePrefix>>-sub-policyDef'
     policyRule: {
-    // Non-required parameters
       if: {
         allOf: [
           {
@@ -507,6 +506,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         effect: 'modify'
       }
     }
+    // Non-required parameters
     description: '[Description] This policy definition is deployed at subscription scope'
     displayName: '[DisplayName] This policy definition is deployed at subscription scope'
     metadata: {

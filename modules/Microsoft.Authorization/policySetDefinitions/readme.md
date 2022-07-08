@@ -212,7 +212,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Required parameters
     name: '<<namePrefix>>-mg-policySet'
     policyDefinitions: [
-    // Non-required parameters
       {
         groupNames: [
           'ARM'
@@ -242,6 +241,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
       }
     ]
+    // Non-required parameters
     description: '[Description] This policy set definition is deployed at management group scope'
     displayName: '[DisplayName] This policy set definition is deployed at management group scope'
     managementGroupId: '<<managementGroupId>>'
@@ -355,7 +355,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Required parameters
     name: '<<namePrefix>>-sub-min-policySet'
     policyDefinitions: [
-    // Non-required parameters
       {
         parameters: {
           listOfAllowedLocations: {
@@ -367,6 +366,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
       }
     ]
+    // Non-required parameters
     subscriptionId: '<<subscriptionId>>'
   }
 }
@@ -426,7 +426,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Required parameters
     name: '<<namePrefix>>-sub-policySet'
     policyDefinitions: [
-    // Non-required parameters
       {
         groupNames: [
           'ARM'
@@ -456,6 +455,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
       }
     ]
+    // Non-required parameters
     description: '[Description] This policy set definition is deployed at subscription scope'
     displayName: '[DisplayName] This policy set definition is deployed at subscription scope'
     metadata: {

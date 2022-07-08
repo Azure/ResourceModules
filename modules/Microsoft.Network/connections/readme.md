@@ -324,9 +324,9 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>-az-vnetgwc-x-001'
     virtualNetworkGateway1: {
-    // Non-required parameters
       id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
     }
+    // Non-required parameters
     enableBgp: false
     location: 'eastus'
     lock: 'CanNotDelete'
