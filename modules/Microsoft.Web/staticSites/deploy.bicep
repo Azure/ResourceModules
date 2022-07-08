@@ -65,7 +65,7 @@ param userAssignedIdentities object = {}
 @description('Optional. Specify the type of lock.')
 param lock string = ''
 
-@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for private endpoints.')
 param privateEndpoints array = []
 
 @description('Optional. Tags of the resource.')
@@ -76,6 +76,25 @@ param enableDefaultTelemetry bool = true
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
+
+@description('Optional. Object with parameters for the userDefinedFunctionApp property. WARNING: currently the userDefinedFunctionApp endpoint is no idempotent, meaning this can only be used for initial registration.')
+param userDefinedFunctionApp object = {}
+
+@description('Optional. ')
+param appSettings object = {}
+
+@description('Optional. ')
+param functionAppSettings object = {}
+
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('Optional. State indicating whether public traffic are allowed or not for a static web app. Allowed Values: "Enabled", "Disabled" or an empty string.')
+param publicNetworkAccess string = 'Enabled'
+
+@description('Optional. The custom domains associated with this static site.')
+param customDomains array = []
 
 var enableReferencedModulesTelemetry = false
 
@@ -98,7 +117,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
+resource staticSite 'Microsoft.Web/staticSites@2022-03-01' = {
   name: name
   location: location
   tags: tags
@@ -117,10 +136,46 @@ resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
     repositoryToken: !empty(repositoryToken) ? repositoryToken : null
     repositoryUrl: !empty(repositoryUrl) ? repositoryUrl : null
     templateProperties: !empty(templateProperties) ? templateProperties : null
+    publicNetworkAccess: publicNetworkAccess
   }
 }
 
-resource staticSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+module staticSite_userDefinedFunctionApp 'userProvidedFunctionApps/deploy.bicep' = if (!empty(userDefinedFunctionApp)) {
+  name: '${uniqueString(deployment().name, location)}-StaticSite-UserDefinedFunction'
+  params: {
+    staticSiteName: staticSite.name
+    functionAppRegion: userDefinedFunctionApp.functionAppRegion
+    functionAppResourceId: userDefinedFunctionApp.functionAppResourceId
+  }
+}
+
+module staticSite_appSettings 'config/deploy.bicep' = if (!empty(appSettings)) {
+  name: '${uniqueString(deployment().name, location)}-StaticSite-appSettings'
+  params: {
+    kind: 'appsettings'
+    staticSiteName: staticSite.name
+    properties: appSettings
+  }
+}
+
+module staticSite_functionAppSettings 'config/deploy.bicep' = if (!empty(functionAppSettings)) {
+  name: '${uniqueString(deployment().name, location)}-StaticSite-functionAppSettings'
+  params: {
+    kind: 'functionappsettings'
+    staticSiteName: staticSite.name
+    properties: functionAppSettings
+  }
+}
+
+module staticSite_customDomains 'customDomains/deploy.bicep' = [for (customDomain, index) in customDomains: {
+  name: '${uniqueString(deployment().name, location)}-StaticSite-customDomains-${index}'
+  params: {
+    name: customDomain
+    staticSiteName: staticSite.name
+  }
+}]
+
+resource staticSite_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${staticSite.name}-${lock}-lock'
   properties: {
     level: any(lock)
