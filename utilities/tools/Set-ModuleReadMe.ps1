@@ -366,7 +366,7 @@ function Set-DeploymentExamplesSection {
     $resourceType = $resourceTypeIdentifier.Split('/')[1]
     $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.test') -Filter '*parameters.json' -Recurse
 
-    $requiredParameterNames = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' }
+    $requiredParameterNames = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' } | Sort-Object
 
     ############################
     ##   Process test files   ##
@@ -477,8 +477,15 @@ function Set-DeploymentExamplesSection {
 
                 $requiredParameterIndent = ([regex]::Match($bicepExampleArray[$requiredParameterStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
 
-                # Search in rest of array for the next closing bracket with the same indent - and then add the search index (1), initial index (1) count back in add another empty index (1() for the 'required' comment
-                $requiredParameterEndIndex = ($bicepExampleArray[($requiredParameterStartIndex + 1)..($bicepExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\S+" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex + 1
+
+                $nextLineIndent = ([regex]::Match($bicepExampleArray[$requiredParameterStartIndex + 1], '^(\s+).*')).Captures.Groups[1].Value.Length
+                if ($nextLineIndent -gt $requiredParameterIndent) {
+                    # Case Param is object/array: Search in rest of array for the next closing bracket with the same indent - and then add the search index (1), initial index (1) count back in add another index (1) for the 'required' comment
+                    $requiredParameterEndIndex = ($bicepExampleArray[($requiredParameterStartIndex + 1)..($bicepExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\S+" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex + 1
+                } else {
+                    # Case Param is single line bool/string/int: Add an index (1) for the 'required' comment
+                    $requiredParameterEndIndex = $requiredParameterStartIndex + 1
+                }
 
                 $bicepExampleArray = @('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(0 .. ($bicepExampleArray.Count))]
                 $bicepExampleArray = $bicepExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(($requiredParameterEndIndex + 1) .. ($bicepExampleArray.Count))]
@@ -543,7 +550,7 @@ function Set-DeploymentExamplesSection {
 
                 $requiredParameterIndent = ([regex]::Match($jsonExampleArray[$requiredParameterStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
 
-                # Search in rest of array for the next closing bracket with the same indent - and then add the search index (1), initial index (1) count back in add another empty index (1() for the 'required' comment
+                # Search in rest of array for the next closing bracket with the same indent - and then add the search index (1), initial index (1) count back in add another index (1) for the 'required' comment
                 $requiredParameterEndIndex = ($jsonExampleArray[($requiredParameterStartIndex + 1)..($jsonExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex + 1
 
                 $jsonExampleArray = $jsonExampleArray[0..$parameterStartIndex] + ('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($parameterStartIndex + 1) .. ($jsonExampleArray.Count))]
