@@ -179,7 +179,9 @@ Below is a collection of examples of how this module can be used. These examples
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
+    // Required parameters
     principalId: '<<deploymentSpId>>'
+    // Non-required parameters
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
   }
 }
@@ -197,9 +199,11 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
+    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Storage Queue Data Reader"
     }
@@ -220,7 +224,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
+    // Required parameters
     principalId: '<<deploymentSpId>>'
+    // Non-required parameters
     roleDefinitionIdOrName: 'Backup Reader'
     description: 'Role Assignment (management group scope)'
     managementGroupId: '<<managementGroupId>>'
@@ -241,9 +247,11 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
+    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Backup Reader"
     },
@@ -273,7 +281,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
+    // Required parameters
     principalId: '<<deploymentSpId>>'
+    // Non-required parameters
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
     resourceGroupName: '<<resourceGroupName>>'
     subscriptionId: '<<subscriptionId>>'
@@ -293,9 +303,11 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
+    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Storage Queue Data Reader"
     },
@@ -322,7 +334,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
+    // Required parameters
     principalId: '<<deploymentSpId>>'
+    // Non-required parameters
     roleDefinitionIdOrName: 'Backup Reader'
     description: 'Role Assignment (resource group scope)'
     principalType: 'ServicePrincipal'
@@ -344,9 +358,11 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
+    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Backup Reader"
     },
@@ -379,7 +395,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
+    // Required parameters
     principalId: '<<deploymentSpId>>'
+    // Non-required parameters
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
     subscriptionId: '<<subscriptionId>>'
   }
@@ -398,9 +416,11 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
+    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Storage Queue Data Reader"
     },
@@ -424,7 +444,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
+    // Required parameters
     principalId: '<<deploymentSpId>>'
+    // Non-required parameters
     roleDefinitionIdOrName: 'Backup Reader'
     description: 'Role Assignment (subscription scope)'
     principalType: 'ServicePrincipal'
@@ -445,9 +467,11 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "principalId": {
       "value": "<<deploymentSpId>>"
     },
+    // Non-required parameters
     "roleDefinitionIdOrName": {
       "value": "Backup Reader"
     },

@@ -536,8 +536,8 @@ function Set-DeploymentExamplesSection {
                 $parameterToSplitAt = $requiredParameterNames[-1]
 
                 $jsonExampleArray = $jsonExample -split '\n'
-                $parameterStartIndex = $jsonExampleArray | Select-String '.*"parameters": \{.*' | ForEach-Object { $_.LineNumber - 1 }
-                $requiredParameterStartIndex = $jsonExampleArray | Select-String ".*`"$parameterToSplitAt`": \{.*" | ForEach-Object { $_.LineNumber - 1 }
+                $parameterStartIndex = ($jsonExampleArray | Select-String '.*"parameters": \{.*' | ForEach-Object { $_.LineNumber - 1 })[0]
+                $requiredParameterStartIndex = ($jsonExampleArray | Select-String ".*`"$parameterToSplitAt`": \{.*" | ForEach-Object { $_.LineNumber - 1 })[0]
 
                 $requiredParameterIndent = ([regex]::Match($jsonExampleArray[$requiredParameterStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
 
