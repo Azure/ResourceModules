@@ -189,7 +189,6 @@ roleAssignments: [
 </details>
 <p>
 
-=======
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
@@ -267,7 +266,6 @@ privateEndpoints:  [
 </details>
 <p>
 
->>>>>>> 3c13c7e234f0efcae26a25417453c58843d2002d
 ## Outputs
 
 | Output Name | Type | Description |
