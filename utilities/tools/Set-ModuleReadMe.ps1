@@ -476,21 +476,21 @@ function Set-DeploymentExamplesSection {
 
                 # Check where the 'last' required parameter is located in the example (and what its indent is)
                 $parameterToSplitAt = $requiredParameterNames[-1]
-                $requiredParameterStartIndex = ($bicepExampleArray | Select-String ('.*{0}:.+' -f $parameterToSplitAt) | ForEach-Object { $_.LineNumber - 1 })[0]
+                $requiredParameterStartIndex = ($bicepExampleArray | Select-String ('^\s*{0}:.+' -f $parameterToSplitAt) | ForEach-Object { $_.LineNumber - 1 })[0]
                 $requiredParameterIndent = ([regex]::Match($bicepExampleArray[$requiredParameterStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
 
                 # Add a comment where the required parameters start
                 $bicepExampleArray = @('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(0 .. ($bicepExampleArray.Count))]
 
                 # If we have more than only required parameters, let's add a corresponding comment
-                if ($orderedJSONParameters.Keys.Count -gt $requiredParameterNames.Count ) {
+                if ($orderedJSONParameters.Keys.Count -gt $requiredParameterNames.Count) {
                     $nextLineIndent = ([regex]::Match($bicepExampleArray[$requiredParameterStartIndex + 1], '^(\s+).*')).Captures.Groups[1].Value.Length
                     if ($nextLineIndent -gt $requiredParameterIndent) {
                         # Case Param is object/array: Search in rest of array for the next closing bracket with the same indent - and then add the search index (1) & initial index (1) count back in
                         $requiredParameterEndIndex = ($bicepExampleArray[($requiredParameterStartIndex + 1)..($bicepExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\S+" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex
                     } else {
                         # Case Param is single line bool/string/int: Add an index (1) for the 'required' comment
-                        $requiredParameterEndIndex = $requiredParameterStartIndex
+                        $requiredParameterEndIndex = $requiredParameterStartIndex + 1
                     }
 
                     # Add a comment where the non-required parameters start
@@ -557,7 +557,7 @@ function Set-DeploymentExamplesSection {
                 # Check where the 'last' required parameter is located in the example (and what its indent is)
                 $parameterToSplitAt = $requiredParameterNames[-1]
                 $parameterStartIndex = ($jsonExampleArray | Select-String '.*"parameters": \{.*' | ForEach-Object { $_.LineNumber - 1 })[0]
-                $requiredParameterStartIndex = ($jsonExampleArray | Select-String ".*`"$parameterToSplitAt`": \{.*" | ForEach-Object { $_.LineNumber - 1 })[0]
+                $requiredParameterStartIndex = ($jsonExampleArray | Select-String "\s*`"$parameterToSplitAt`": \{.*" | ForEach-Object { $_.LineNumber - 1 })[0]
                 $requiredParameterIndent = ([regex]::Match($jsonExampleArray[$requiredParameterStartIndex], '^(\s+).*')).Captures.Groups[1].Value.Length
 
                 # Add a comment where the required parameters start
