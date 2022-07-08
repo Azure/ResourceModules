@@ -12,6 +12,7 @@ on:
     paths:
       - 'modules/**/deploy.bicep'
       - 'modules/**/deploy.json'
+      - 'utilities/tools/platform/**'
 
 env:
   pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'

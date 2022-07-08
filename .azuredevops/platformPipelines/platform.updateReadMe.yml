@@ -11,6 +11,7 @@ trigger:
     include:
       - 'modules/**/deploy.bicep'
       - 'modules/**/deploy.json'
+      - 'utilities/tools/platform/**'
 
 variables:
   - template: '../../global.variables.yml'
