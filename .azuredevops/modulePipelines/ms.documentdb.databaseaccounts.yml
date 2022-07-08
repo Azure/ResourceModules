@@ -48,6 +48,7 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.test/mongodb.parameters.json
+            - path: $(modulePath)/.test/gremlindb.parameters.json
             - path: $(modulePath)/.test/plain.parameters.json
             - path: $(modulePath)/.test/sqldb.parameters.json
 
