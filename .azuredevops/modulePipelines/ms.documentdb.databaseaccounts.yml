@@ -23,7 +23,9 @@ trigger:
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.DocumentDB/databaseAccounts/*'
       - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
@@ -46,6 +48,7 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.test/mongodb.parameters.json
+            - path: $(modulePath)/.test/gremlindb.parameters.json
             - path: $(modulePath)/.test/plain.parameters.json
             - path: $(modulePath)/.test/sqldb.parameters.json
 

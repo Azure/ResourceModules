@@ -21,9 +21,9 @@ on:
       - '.github/workflows/ms.eventgrid.systemtopics.yml'
       - 'modules/Microsoft.EventGrid/systemTopics/**'
       - 'modules/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'

@@ -357,7 +357,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
 output name string = roleAssignment.name
 
 @sys.description('The resource ID of the Role Assignment.')
-output scope string = subscription().id
+output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
 
 @sys.description('The scope this Role Assignment applies to.')
-output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
+output scope string = subscription().id

@@ -23,7 +23,9 @@ trigger:
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.MachineLearningServices/workspaces/*'
       - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
@@ -47,6 +49,7 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.test/min.parameters.json
             - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/encr.parameters.json
 
   - stage: Publishing
     displayName: Publishing

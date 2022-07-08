@@ -30,9 +30,6 @@ Defaults to 'Azure/ResourceModules'
 Optional. The type of source repository. Either 'GitHub' or 'tfsgit' (for Azure DevOps).
 Defaults to 'GitHub'.
 
-.PARAMETER GitHubPAT
-Optional. A personal access token for the GitHub repository with the source code.
-
 .PARAMETER GitHubServiceConnectionName
 Optional. The pre-created service connection to the GitHub source repository if the pipeline files are in GitHub.
 It is recommended to create the service connection using oAuth.
@@ -42,7 +39,9 @@ Required. The access token with appropriate permissions to create Azure Pipeline
 Usually the System.AccessToken from an Azure Pipeline instance run has sufficient permissions as well.
 Reference: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/access-tokens?view=azure-devops&tabs=yaml#how-do-i-determine-the-job-authorization-scope-of-my-yaml-pipeline
 Needs at least the permissions:
-- Release: Read, write, execute & manage
+- Agent Pool:           Read
+- Build:                Read & execute
+- Service Connections:  Read & query
 
 .PARAMETER BranchName
 Optional. Branch name for which the pipelines will be configured.
@@ -58,18 +57,6 @@ Defaults to '.azuredevops/modulePipelines'.
 
 .PARAMETER CreateBuildValidation
 Optional. Create an additional pull request build validation rule for the pipelines.
-
-.EXAMPLE
-$inputObject = @{
-    OrganizationName      = 'Contoso'
-    ProjectName           = 'CICD'
-    SourceRepository      = 'Azure/ResourceModules'
-    GitHubPAT             = '<Placeholder>'
-    AzureDevOpsPAT        = '<Placeholder>'
-}
-Register-AzureDevOpsPipeline @inputObject
-
-Registers all pipelines in the default path in the DevOps project [Contoso/CICD] by leveraging the given AzureDevOpsPAT and creating a service connection to GitHub using the provided GitHubPAT
 
 .EXAMPLE
 $inputObject = @{
@@ -125,9 +112,6 @@ function Register-AzureDevOpsPipeline {
         [Parameter(Mandatory = $false)]
         [ValidateSet('gitHub', 'tfsgit')]
         [string] $SourceRepositoryType = 'gitHub',
-
-        [Parameter(Mandatory = $false)]
-        [string] $GitHubPAT,
 
         [Parameter(Mandatory = $false)]
         [string] $GitHubServiceConnectionName = $SourceRepository,
