@@ -210,7 +210,9 @@ Below is a collection of examples of how this module can be used. These examples
 module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-serverfarms'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-asp-x-001'
+    // Non-required parameters
     sku: {
       capacity: '1'
       family: 'S'
@@ -248,6 +250,7 @@ module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-asp-x-001"
     },
@@ -260,6 +263,7 @@ module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
         "tier": "Standard"
       }
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

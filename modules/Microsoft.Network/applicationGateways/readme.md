@@ -234,7 +234,9 @@ Below is a collection of examples of how this module can be used. These examples
 module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-applicationGateways'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-apgw-x-001'
+    // Non-required parameters
     backendAddressPools: [
       {
         name: 'appServiceBackendPool'
@@ -567,9 +569,11 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-apgw-x-001"
     },
+    // Non-required parameters
     "backendAddressPools": {
       "value": [
         {

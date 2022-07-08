@@ -161,7 +161,9 @@ Below is a collection of examples of how this module can be used. These examples
 module images './Microsoft.Compute/images/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-images'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-img-x-001'
+    // Non-required parameters
     osAccountType: 'Premium_LRS'
     osDiskBlobUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
     osDiskCaching: 'ReadWrite'
@@ -192,6 +194,7 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-img-x-001"
     },
@@ -207,6 +210,7 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
     "osType": {
       "value": "Windows"
     },
+    // Non-required parameters
     "hyperVGeneration": {
       "value": "V1"
     },

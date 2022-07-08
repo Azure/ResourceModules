@@ -212,7 +212,9 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateDnsZones'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-privdns-x-002.com'
+    // Non-required parameters
     A: [
       {
         aRecords: [
@@ -396,9 +398,11 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-privdns-x-002.com"
     },
+    // Non-required parameters
     "A": {
       "value": [
         {

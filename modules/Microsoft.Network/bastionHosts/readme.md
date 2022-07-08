@@ -295,7 +295,9 @@ Below is a collection of examples of how this module can be used. These examples
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-bastionHosts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-bas-add-001'
+    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-bas'
     additionalPublicIpConfigurations: [
       {
@@ -319,9 +321,11 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-bas-add-001"
     },
+    // Non-required parameters
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-bas"
     },
@@ -350,7 +354,9 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-bastionHosts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-bas-custompip-001'
+    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas'
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
@@ -391,9 +397,11 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-bas-custompip-001"
     },
+    // Non-required parameters
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas"
     },
@@ -439,7 +447,9 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-bastionHosts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-bas-min-001'
+    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002'
   }
 }
@@ -457,9 +467,11 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-bas-min-001"
     },
+    // Non-required parameters
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002"
     }
@@ -480,7 +492,9 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-bastionHosts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-bas-x-001'
+    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
     azureBastionSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
@@ -515,9 +529,11 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-bas-x-001"
     },
+    // Non-required parameters
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
     },

@@ -44,7 +44,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `domainConfigurationType` | string | `'FullySynced'` | `[FullySynced, ResourceTrusting]` | The value is to provide domain configuration type. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `externalAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable the Secure LDAP for external services of Azure ADDS Services. |
-| `filteredSync` | string | `'Enabled'` |  | The value is to synchronise scoped users and groups. |
+| `filteredSync` | string | `'Enabled'` |  | The value is to synchronize scoped users and groups. |
 | `kerberosArmoring` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable to provide a protected channel between the Kerberos client and the KDC. |
 | `kerberosRc4Encryption` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable Kerberos requests that use RC4 encryption. |
 | `ldaps` | string | `'Enabled'` | `[Enabled, Disabled]` | A flag to determine whether or not Secure LDAP is enabled or disabled. |

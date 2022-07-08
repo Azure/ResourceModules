@@ -416,7 +416,9 @@ Below is a collection of examples of how this module can be used. These examples
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-accounts'
   params: {
+    // Required parameters
     kind: 'SpeechServices'
+    // Non-required parameters
     name: '<<namePrefix>>-az-cgs-encr-001'
     encryption: {
       keySource: 'Microsoft.KeyVault'
@@ -448,9 +450,11 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "kind": {
       "value": "SpeechServices"
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cgs-encr-001"
     },
@@ -493,7 +497,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-accounts'
   params: {
+    // Required parameters
     kind: 'SpeechServices'
+    // Non-required parameters
     name: '<<namePrefix>>-az-cgs-min-001'
   }
 }
@@ -511,9 +517,11 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "kind": {
       "value": "SpeechServices"
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cgs-min-001"
     }
@@ -534,7 +542,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-accounts'
   params: {
+    // Required parameters
     kind: 'Face'
+    // Non-required parameters
     name: '<<namePrefix>>-az-cgs-x-001'
     customSubDomainName: '<<namePrefix>>xdomain'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
@@ -581,9 +591,11 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "kind": {
       "value": "Face"
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cgs-x-001"
     },
@@ -657,7 +669,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-accounts'
   params: {
+    // Required parameters
     kind: 'SpeechServices'
+    // Non-required parameters
     name: '<<namePrefix>>-az-cgs-speech-001'
     customSubDomainName: '<<namePrefix>>speechdomain'
     privateEndpoints: [
@@ -687,9 +701,11 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "kind": {
       "value": "SpeechServices"
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cgs-speech-001"
     },

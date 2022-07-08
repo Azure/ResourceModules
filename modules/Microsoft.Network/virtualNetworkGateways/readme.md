@@ -252,7 +252,9 @@ Below is a collection of examples of how this module can be used. These examples
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-gw-er-001'
+    // Non-required parameters
     virtualNetworkGatewaySku: 'ErGw1AZ'
     virtualNetworkGatewayType: 'ExpressRoute'
     vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
@@ -297,6 +299,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-gw-er-001"
     },
@@ -309,6 +312,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     "vNetResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },
@@ -369,7 +373,9 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-gw-vpn-001'
+    // Non-required parameters
     virtualNetworkGatewaySku: 'VpnGw1AZ'
     virtualNetworkGatewayType: 'Vpn'
     vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
@@ -411,6 +417,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-gw-vpn-001"
     },
@@ -423,6 +430,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     "vNetResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
     },
+    // Non-required parameters
     "activeActive": {
       "value": true
     },

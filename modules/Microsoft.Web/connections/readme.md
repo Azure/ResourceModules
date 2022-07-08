@@ -165,7 +165,9 @@ Below is a collection of examples of how this module can be used. These examples
 module connections './Microsoft.Web/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
+    // Required parameters
     displayName: 'azuremonitorlogs'
+    // Non-required parameters
     name: 'azuremonitor'
     connectionApi: {
       id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
@@ -195,12 +197,14 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "displayName": {
       "value": "azuremonitorlogs"
     },
     "name": {
       "value": "azuremonitor"
     },
+    // Non-required parameters
     "connectionApi": {
       "value": {
         "id": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs"

@@ -320,7 +320,9 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-staticSites'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-wss-x-001'
+    // Non-required parameters
     allowConfigFileUpdates: true
     enterpriseGradeCdnStatus: 'Disabled'
     lock: 'CanNotDelete'
@@ -360,9 +362,11 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-wss-x-001"
     },
+    // Non-required parameters
     "allowConfigFileUpdates": {
       "value": true
     },

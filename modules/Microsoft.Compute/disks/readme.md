@@ -177,7 +177,9 @@ Below is a collection of examples of how this module can be used. These examples
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-disk-image-001'
+    // Non-required parameters
     sku: 'Standard_LRS'
     createOption: 'FromImage'
     imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
@@ -205,12 +207,14 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-disk-image-001"
     },
     "sku": {
       "value": "Standard_LRS"
     },
+    // Non-required parameters
     "createOption": {
       "value": "FromImage"
     },
@@ -244,7 +248,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-disk-import-001'
+    // Non-required parameters
     sku: 'Standard_LRS'
     createOption: 'Import'
     roleAssignments: [
@@ -273,12 +279,14 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-disk-import-001"
     },
     "sku": {
       "value": "Standard_LRS"
     },
+    // Non-required parameters
     "createOption": {
       "value": "Import"
     },
@@ -315,7 +323,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-disk-min-001'
+    // Non-required parameters
     sku: 'Standard_LRS'
     diskSizeGB: 1
     roleAssignments: [
@@ -342,12 +352,14 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-disk-min-001"
     },
     "sku": {
       "value": "Standard_LRS"
     },
+    // Non-required parameters
     "diskSizeGB": {
       "value": 1
     },
@@ -378,7 +390,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-disk-x-001'
+    // Non-required parameters
     sku: 'UltraSSD_LRS'
     diskIOPSReadWrite: 500
     diskMBpsReadWrite: 60
@@ -411,12 +425,14 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-disk-x-001"
     },
     "sku": {
       "value": "UltraSSD_LRS"
     },
+    // Non-required parameters
     "diskIOPSReadWrite": {
       "value": 500
     },

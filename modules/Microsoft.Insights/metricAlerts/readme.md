@@ -387,7 +387,9 @@ Below is a collection of examples of how this module can be used. These examples
 module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-metricAlerts'
   params: {
+    // Required parameters
     criterias: [
+    // Non-required parameters
       {
         criterionType: 'StaticThresholdCriterion'
         metricName: 'Percentage CPU'
@@ -430,6 +432,7 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "criterias": {
       "value": [
         {
@@ -446,6 +449,7 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-ma-x-001"
     },
+    // Non-required parameters
     "actions": {
       "value": [
         "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"

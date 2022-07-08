@@ -321,7 +321,9 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module connections './Microsoft.Network/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-vnetgwc-x-001'
+    // Non-required parameters
     virtualNetworkGateway1: {
       id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
     }
@@ -349,6 +351,7 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-vnetgwc-x-001"
     },
@@ -357,6 +360,7 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
         "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
       }
     },
+    // Non-required parameters
     "enableBgp": {
       "value": false
     },

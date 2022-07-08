@@ -77,7 +77,9 @@ Below is a collection of examples of how this module can be used. These examples
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-extensions'
   params: {
+    // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    // Non-required parameters
     extensionType: 'microsoft.flux'
     name: 'flux'
     releaseNamespace: 'flux-system'
@@ -98,6 +100,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "clusterName": {
       "value": "<<namePrefix>>-az-aks-kubenet-001"
     },
@@ -107,6 +110,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
     "name": {
       "value": "flux"
     },
+    // Non-required parameters
     "releaseNamespace": {
       "value": "flux-system"
     },
@@ -130,7 +134,9 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-extensions'
   params: {
+    // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    // Non-required parameters
     extensionType: 'microsoft.flux'
     name: 'flux'
     configurationSettings: {
@@ -159,6 +165,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "clusterName": {
       "value": "<<namePrefix>>-az-aks-kubenet-001"
     },
@@ -168,6 +175,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
     "name": {
       "value": "flux"
     },
+    // Non-required parameters
     "configurationSettings": {
       "value": {
         "image-automation-controller.enabled": "false",

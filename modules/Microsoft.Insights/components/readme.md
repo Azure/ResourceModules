@@ -162,7 +162,9 @@ Below is a collection of examples of how this module can be used. These examples
 module components './Microsoft.Insights/components/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-components'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-appi-x-001'
+    // Non-required parameters
     workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-appi-001'
     roleAssignments: [
       {
@@ -188,9 +190,11 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-appi-x-001"
     },
+    // Non-required parameters
     "workspaceResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-appi-001"
     },

@@ -15,7 +15,7 @@ This module deploys a VPN Site.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/vpnSites` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnSites) |
+| `Microsoft.Network/vpnSites` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/vpnSites) |
 
 ## Parameters
 
@@ -330,7 +330,9 @@ Below is a collection of examples of how this module can be used. These examples
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-vSite-min-001'
+    // Non-required parameters
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
     addressPrefixes: [
       '10.0.0.0/16'
@@ -352,9 +354,11 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-vSite-min-001"
     },
+    // Non-required parameters
     "virtualWanId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
     },
@@ -383,7 +387,9 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-vSite-x-001'
+    // Non-required parameters
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
     deviceProperties: {
       linkSpeedInMbps: 0
@@ -454,9 +460,11 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-vSite-x-001"
     },
+    // Non-required parameters
     "virtualWanId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
     },

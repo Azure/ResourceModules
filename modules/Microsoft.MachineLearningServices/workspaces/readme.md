@@ -410,7 +410,9 @@ Below is a collection of examples of how this module can be used. These examples
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
+    // Required parameters
     associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
+    // Non-required parameters
     associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
     associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     name: '<<namePrefix>>-az-mls-encr-001'
@@ -445,6 +447,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "associatedApplicationInsightsResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
     },
@@ -460,6 +463,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     "sku": {
       "value": "Basic"
     },
+    // Non-required parameters
     "cMKKeyName": {
       "value": "keyEncryptionKey"
     },
@@ -505,7 +509,9 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
+    // Required parameters
     associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
+    // Non-required parameters
     associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
     associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     name: '<<namePrefix>>-az-mls-min-001'
@@ -527,6 +533,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "associatedApplicationInsightsResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
     },
@@ -542,6 +549,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     "sku": {
       "value": "Basic"
     },
+    // Non-required parameters
     "systemAssignedIdentity": {
       "value": true
     }
@@ -562,7 +570,9 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
+    // Required parameters
     associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
+    // Non-required parameters
     associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
     associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     name: '<<namePrefix>>-az-mls-x-001'
@@ -640,6 +650,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "associatedApplicationInsightsResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
     },
@@ -655,6 +666,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     "sku": {
       "value": "Basic"
     },
+    // Non-required parameters
     "computes": {
       "value": [
         {

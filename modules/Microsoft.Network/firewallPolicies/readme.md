@@ -185,7 +185,9 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-firewallPolicies'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-fwpol-x-002'
+    // Non-required parameters
     ruleCollectionGroups: [
       {
         name: '<<namePrefix>>-rule-001'
@@ -240,9 +242,11 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-fwpol-x-002"
     },
+    // Non-required parameters
     "ruleCollectionGroups": {
       "value": [
         {

@@ -183,7 +183,9 @@ Below is a collection of examples of how this module can be used. These examples
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleDefinitions'
   params: {
+    // Required parameters
     roleName: '<<namePrefix>>-az-testRole-mg-min'
+    // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
@@ -204,9 +206,11 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "roleName": {
       "value": "<<namePrefix>>-az-testRole-mg-min"
     },
+    // Non-required parameters
     "actions": {
       "value": [
         "Microsoft.Compute/galleries/images/read",
@@ -230,7 +234,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleDefinitions'
   params: {
+    // Required parameters
     roleName: '<<namePrefix>>-az-testRole-mg'
+    // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
@@ -267,9 +273,11 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "roleName": {
       "value": "<<namePrefix>>-az-testRole-mg"
     },
+    // Non-required parameters
     "actions": {
       "value": [
         "Microsoft.Compute/galleries/*",
@@ -321,7 +329,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleDefinitions'
   params: {
+    // Required parameters
     roleName: '<<namePrefix>>-az-testRole-rg-min'
+    // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
@@ -344,9 +354,11 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "roleName": {
       "value": "<<namePrefix>>-az-testRole-rg-min"
     },
+    // Non-required parameters
     "actions": {
       "value": [
         "Microsoft.Compute/galleries/images/read",
@@ -376,7 +388,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleDefinitions'
   params: {
+    // Required parameters
     roleName: '<<namePrefix>>-az-testRole-rg'
+    // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
@@ -414,9 +428,11 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "roleName": {
       "value": "<<namePrefix>>-az-testRole-rg"
     },
+    // Non-required parameters
     "actions": {
       "value": [
         "Microsoft.Compute/galleries/*",
@@ -471,7 +487,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleDefinitions'
   params: {
+    // Required parameters
     roleName: '<<namePrefix>>-az-testRole-sub-min'
+    // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
@@ -493,9 +511,11 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "roleName": {
       "value": "<<namePrefix>>-az-testRole-sub-min"
     },
+    // Non-required parameters
     "actions": {
       "value": [
         "Microsoft.Compute/galleries/images/read",
@@ -522,7 +542,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleDefinitions'
   params: {
+    // Required parameters
     roleName: '<<namePrefix>>-az-testRole-sub'
+    // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
@@ -559,9 +581,11 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "roleName": {
       "value": "<<namePrefix>>-az-testRole-sub"
     },
+    // Non-required parameters
     "actions": {
       "value": [
         "Microsoft.Compute/galleries/*",

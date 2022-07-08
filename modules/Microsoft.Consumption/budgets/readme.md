@@ -60,7 +60,9 @@ Below is a collection of examples of how this module can be used. These examples
 module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-budgets'
   params: {
+    // Required parameters
     amount: 500
+    // Non-required parameters
     contactEmails: [
       'dummy@contoso.com'
     ]
@@ -87,9 +89,11 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "amount": {
       "value": 500
     },
+    // Non-required parameters
     "contactEmails": {
       "value": [
         "dummy@contoso.com"

@@ -267,7 +267,9 @@ Below is a collection of examples of how this module can be used. These examples
 module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-hostpools'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-avdhp-x-001'
+    // Non-required parameters
     customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
@@ -323,9 +325,11 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-avdhp-x-001"
     },
+    // Non-required parameters
     "customRdpProperty": {
       "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;"
     },

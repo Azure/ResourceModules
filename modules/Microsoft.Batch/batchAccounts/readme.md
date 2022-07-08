@@ -152,7 +152,9 @@ Below is a collection of examples of how this module can be used. These examples
 module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-batchAccounts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>azbaweuencr001'
+    // Non-required parameters
     storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
@@ -178,9 +180,11 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>azbaweuencr001"
     },
+    // Non-required parameters
     "storageAccountId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     },
@@ -221,7 +225,9 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-batchAccounts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>azbaweumin001'
+    // Non-required parameters
     storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 }
@@ -239,9 +245,11 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>azbaweumin001"
     },
+    // Non-required parameters
     "storageAccountId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     }
@@ -262,7 +270,9 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-batchAccounts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>azbaweux001'
+    // Non-required parameters
     storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
@@ -290,9 +300,11 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>azbaweux001"
     },
+    // Non-required parameters
     "storageAccountId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     },

@@ -204,7 +204,9 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-networkSecurityGroups'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-nsg-x-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -299,9 +301,11 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-nsg-x-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

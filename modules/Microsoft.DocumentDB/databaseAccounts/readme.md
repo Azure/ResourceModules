@@ -544,7 +544,9 @@ Below is a collection of examples of how this module can be used. These examples
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-databaseAccounts'
   params: {
+    // Required parameters
     locations: [
+    // Non-required parameters
       {
         failoverPriority: 0
         isZoneRedundant: false
@@ -631,6 +633,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "locations": {
       "value": [
         {
@@ -645,6 +648,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
       ]
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cdb-gremlindb-001"
     },
@@ -743,7 +747,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-databaseAccounts'
   params: {
+    // Required parameters
     locations: [
+    // Non-required parameters
       {
         failoverPriority: 0
         isZoneRedundant: false
@@ -971,6 +977,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "locations": {
       "value": [
         {
@@ -985,6 +992,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
       ]
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cdb-mongodb-001"
     },
@@ -1222,7 +1230,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-databaseAccounts'
   params: {
+    // Required parameters
     locations: [
+    // Non-required parameters
       {
         failoverPriority: 0
         isZoneRedundant: false
@@ -1265,6 +1275,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "locations": {
       "value": [
         {
@@ -1279,6 +1290,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
       ]
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cdb-plain-001"
     },
@@ -1327,7 +1339,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-databaseAccounts'
   params: {
+    // Required parameters
     locations: [
+    // Non-required parameters
       {
         failoverPriority: 0
         isZoneRedundant: false
@@ -1391,6 +1405,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "locations": {
       "value": [
         {
@@ -1405,6 +1420,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         }
       ]
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-cdb-sqldb-001"
     },

@@ -108,7 +108,9 @@ Below is a collection of examples of how this module can be used. These examples
 module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureSecurityCenter'
   params: {
+    // Required parameters
     scope: '/subscriptions/<<subscriptionId>>'
+    // Non-required parameters
     workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     securityContactProperties: {
       alertNotifications: 'Off'
@@ -132,9 +134,11 @@ module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bice
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "scope": {
       "value": "/subscriptions/<<subscriptionId>>"
     },
+    // Non-required parameters
     "workspaceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
     },

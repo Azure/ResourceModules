@@ -14,7 +14,7 @@ This module deploys a load balancer.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/loadBalancers` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers) |
 | `Microsoft.Network/loadBalancers/backendAddressPools` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/backendAddressPools) |
@@ -471,7 +471,9 @@ Below is a collection of examples of how this module can be used. These examples
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-loadBalancers'
   params: {
+    // Required parameters
     frontendIPConfigurations: [
+    // Non-required parameters
       {
         name: 'privateIPConfig1'
         subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
@@ -556,6 +558,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "frontendIPConfigurations": {
       "value": [
         {
@@ -567,6 +570,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-lb-internal-001"
     },
+    // Non-required parameters
     "backendAddressPools": {
       "value": [
         {
@@ -668,7 +672,9 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-loadBalancers'
   params: {
+    // Required parameters
     frontendIPConfigurations: [
+    // Non-required parameters
       {
         name: 'publicIPConfig1'
         publicIPAddressId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-min-lb'
@@ -691,6 +697,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "frontendIPConfigurations": {
       "value": [
         {
@@ -702,6 +709,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-lb-min-001"
     }
+    // Non-required parameters
   }
 }
 ```
@@ -719,7 +727,9 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-loadBalancers'
   params: {
+    // Required parameters
     frontendIPConfigurations: [
+    // Non-required parameters
       {
         name: 'publicIPConfig1'
         publicIPAddressId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-lb'
@@ -830,6 +840,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "frontendIPConfigurations": {
       "value": [
         {
@@ -841,6 +852,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-lb-x-001"
     },
+    // Non-required parameters
     "backendAddressPools": {
       "value": [
         {

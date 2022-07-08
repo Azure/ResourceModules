@@ -311,7 +311,9 @@ Below is a collection of examples of how this module can be used. These examples
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-fw-add-001'
+    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw'
     additionalPublicIpConfigurations: [
       {
@@ -335,12 +337,14 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-fw-add-001"
     },
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw"
     },
+    // Non-required parameters
     "additionalPublicIpConfigurations": {
       "value": [
         {
@@ -366,7 +370,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-fw-custompip-001'
+    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
@@ -407,12 +413,14 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-fw-custompip-001"
     },
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw"
     },
+    // Non-required parameters
     "publicIPAddressObject": {
       "value": {
         "diagnosticLogCategoriesToEnable": [
@@ -455,7 +463,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-fw-min-001'
+    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw'
   }
 }
@@ -473,12 +483,14 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-fw-min-001"
     },
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw"
     }
+    // Non-required parameters
   }
 }
 ```
@@ -496,7 +508,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-fw-x-001'
+    // Non-required parameters
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw'
     applicationRuleCollections: [
       {
@@ -615,12 +629,14 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-fw-x-001"
     },
     "vNetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw"
     },
+    // Non-required parameters
     "applicationRuleCollections": {
       "value": [
         {

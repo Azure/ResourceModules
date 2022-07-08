@@ -175,7 +175,9 @@ Below is a collection of examples of how this module can be used. These examples
 module natGateways './Microsoft.Network/natGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-natGateways'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-ngw-x-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -207,9 +209,11 @@ module natGateways './Microsoft.Network/natGateways/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-ngw-x-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

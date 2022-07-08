@@ -343,7 +343,9 @@ Below is a collection of examples of how this module can be used. These examples
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registries'
   params: {
+    // Required parameters
     name: '<<namePrefix>>azacrencr001'
+    // Non-required parameters
     acrSku: 'Premium'
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
@@ -368,9 +370,11 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>azacrencr001"
     },
+    // Non-required parameters
     "acrSku": {
       "value": "Premium"
     },
@@ -445,7 +449,9 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registries'
   params: {
+    // Required parameters
     name: '<<namePrefix>>azacrx001'
+    // Non-required parameters
     acrAdminUserEnabled: false
     acrSku: 'Premium'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
@@ -504,9 +510,11 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>azacrx001"
     },
+    // Non-required parameters
     "acrAdminUserEnabled": {
       "value": false
     },

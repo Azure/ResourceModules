@@ -905,7 +905,9 @@ Below is a collection of examples of how this module can be used. These examples
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-rsv-dr-001'
+    // Non-required parameters
     replicationFabrics: [
       {
         location: 'NorthEurope'
@@ -977,9 +979,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-rsv-dr-001"
     },
+    // Non-required parameters
     "replicationFabrics": {
       "value": [
         {
@@ -1093,7 +1097,9 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-rsv-x-001'
+    // Non-required parameters
     backupConfig: {
       enhancedSecurityState: 'Disabled'
       softDeleteFeatureState: 'Disabled'
@@ -1372,9 +1378,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-rsv-x-001"
     },
+    // Non-required parameters
     "backupConfig": {
       "value": {
         "enhancedSecurityState": "Disabled",

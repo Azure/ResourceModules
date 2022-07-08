@@ -163,7 +163,9 @@ Below is a collection of examples of how this module can be used. These examples
 module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-diskEncryptionSets'
   params: {
+    // Required parameters
     keyName: 'keyEncryptionKey'
+    // Non-required parameters
     keyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
     name: '<<namePrefix>>-az-des-x-001'
     roleAssignments: [
@@ -190,6 +192,7 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "keyName": {
       "value": "keyEncryptionKey"
     },
@@ -199,6 +202,7 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
     "name": {
       "value": "<<namePrefix>>-az-des-x-001"
     },
+    // Non-required parameters
     "roleAssignments": {
       "value": [
         {

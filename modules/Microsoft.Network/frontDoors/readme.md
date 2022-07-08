@@ -174,7 +174,9 @@ Below is a collection of examples of how this module can be used. These examples
 module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-frontDoors'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-fd-x-001'
+    // Non-required parameters
     backendPools: [
       {
         name: 'backendPool'
@@ -281,9 +283,11 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-fd-x-001"
     },
+    // Non-required parameters
     "backendPools": {
       "value": [
         {

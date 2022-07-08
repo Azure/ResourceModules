@@ -179,6 +179,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-mg-min-policyDef"
     },
@@ -197,8 +198,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         }
       }
     },
-    "parameters": {
     // Non-required parameters
+    "parameters": {
       "value": {
         "effect": {
           "allowedValues": [
@@ -296,6 +297,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-mg-policyDef"
     },
@@ -330,8 +332,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         }
       }
     },
-    "description": {
     // Non-required parameters
+    "description": {
       "value": "[Description] This policy definition is deployed at the management group scope"
     },
     "displayName": {
@@ -422,6 +424,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-sub-min-policyDef"
     },
@@ -440,8 +443,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         }
       }
     },
-    "parameters": {
     // Non-required parameters
+    "parameters": {
       "value": {
         "effect": {
           "allowedValues": [
@@ -542,6 +545,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-sub-policyDef"
     },
@@ -576,8 +580,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         }
       }
     },
-    "description": {
     // Non-required parameters
+    "description": {
       "value": "[Description] This policy definition is deployed at subscription scope"
     },
     "displayName": {

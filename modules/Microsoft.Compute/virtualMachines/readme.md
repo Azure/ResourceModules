@@ -1012,7 +1012,9 @@ Below is a collection of examples of how this module can be used. These examples
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
+    // Required parameters
     adminUsername: 'localAdminUser'
+    // Non-required parameters
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
@@ -1066,6 +1068,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "adminUsername": {
       "value": "localAdminUser"
     },
@@ -1077,6 +1080,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
+    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -1141,7 +1145,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
+    // Required parameters
     adminUsername: 'localAdminUser'
+    // Non-required parameters
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
@@ -1194,6 +1200,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "adminUsername": {
       "value": "localAdminUser"
     },
@@ -1205,6 +1212,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
+    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -1266,7 +1274,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
+    // Required parameters
     adminUsername: 'localAdminUser'
+    // Non-required parameters
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
@@ -1430,6 +1440,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "adminUsername": {
       "value": "localAdminUser"
     },
@@ -1441,6 +1452,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
+    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -1664,7 +1676,9 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
+    // Required parameters
     adminUsername: 'localAdminUser'
+    // Non-required parameters
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -1709,6 +1723,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "adminUsername": {
       "value": "localAdminUser"
     },
@@ -1720,6 +1735,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
+    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -1783,7 +1799,9 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
+    // Required parameters
     adminUsername: 'localAdminUser'
+    // Non-required parameters
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -1827,6 +1845,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "adminUsername": {
       "value": "localAdminUser"
     },
@@ -1838,6 +1857,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
+    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {
@@ -1898,7 +1918,9 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
+    // Required parameters
     adminUsername: 'localAdminUser'
+    // Non-required parameters
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -2074,6 +2096,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "adminUsername": {
       "value": "localAdminUser"
     },
@@ -2085,6 +2108,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "version": "latest"
       }
     },
+    // Non-required parameters
     "nicConfigurations": {
       "value": [
         {

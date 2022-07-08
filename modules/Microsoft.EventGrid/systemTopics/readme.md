@@ -281,7 +281,9 @@ Below is a collection of examples of how this module can be used. These examples
 module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-systemTopics'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-egstn-x-002'
+    // Non-required parameters
     source: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     topicType: 'Microsoft.Storage.StorageAccounts'
   }
@@ -300,9 +302,11 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-egstn-x-002"
     },
+    // Non-required parameters
     "source": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     },
@@ -326,7 +330,9 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
 module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-systemTopics'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-egstn-x-001'
+    // Non-required parameters
     source: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     topicType: 'Microsoft.Storage.StorageAccounts'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
@@ -359,9 +365,11 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-egstn-x-001"
     },
+    // Non-required parameters
     "source": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     },

@@ -79,7 +79,9 @@ Below is a collection of examples of how this module can be used. These examples
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
+    // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    // Non-required parameters
     name: 'flux2'
     namespace: 'flux-system'
     scope: 'cluster'
@@ -109,6 +111,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "clusterName": {
       "value": "<<namePrefix>>-az-aks-kubenet-001"
     },
@@ -118,6 +121,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
     "namespace": {
       "value": "flux-system"
     },
+    // Non-required parameters
     "scope": {
       "value": "cluster"
     },
@@ -152,7 +156,9 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
+    // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    // Non-required parameters
     name: 'flux2'
     namespace: 'flux-system'
     scope: 'cluster'
@@ -192,6 +198,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "clusterName": {
       "value": "<<namePrefix>>-az-aks-kubenet-001"
     },
@@ -201,6 +208,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
     "namespace": {
       "value": "flux-system"
     },
+    // Non-required parameters
     "scope": {
       "value": "cluster"
     },

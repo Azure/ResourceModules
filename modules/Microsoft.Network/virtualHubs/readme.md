@@ -115,7 +115,9 @@ Below is a collection of examples of how this module can be used. These examples
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
+    // Required parameters
     addressPrefix: '10.0.0.0/16'
+    // Non-required parameters
     name: '<<namePrefix>>-az-vhub-min-001'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
   }
@@ -134,6 +136,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "addressPrefix": {
       "value": "10.0.0.0/16"
     },
@@ -143,6 +146,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     "virtualWanId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
     }
+    // Non-required parameters
   }
 }
 ```
@@ -160,7 +164,9 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
+    // Required parameters
     addressPrefix: '10.1.0.0/16'
+    // Non-required parameters
     name: '<<namePrefix>>-az-vhub-x-001'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
     hubRouteTables: [
@@ -206,6 +212,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "addressPrefix": {
       "value": "10.1.0.0/16"
     },
@@ -215,6 +222,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     "virtualWanId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
     },
+    // Non-required parameters
     "hubRouteTables": {
       "value": [
         {

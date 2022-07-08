@@ -18,7 +18,7 @@ This module deploys a web or function app.
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.Web/sites` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/sites) |
+| `Microsoft.Web/sites` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/config` | [2020-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 
 ## Parameters
@@ -404,7 +404,9 @@ Below is a collection of examples of how this module can be used. These examples
 module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-sites'
   params: {
+    // Required parameters
     kind: 'functionapp'
+    // Non-required parameters
     name: '<<namePrefix>>-az-fa-min-001'
     serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
     siteConfig: {
@@ -426,9 +428,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "kind": {
       "value": "functionapp"
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-fa-min-001"
     },
@@ -457,7 +461,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-sites'
   params: {
+    // Required parameters
     kind: 'functionapp'
+    // Non-required parameters
     name: '<<namePrefix>>-az-fa-x-001'
     appInsightId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
     appSettingsKeyValuePairs: {
@@ -575,9 +581,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "kind": {
       "value": "functionapp"
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-fa-x-001"
     },
@@ -732,7 +740,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-sites'
   params: {
+    // Required parameters
     kind: 'app'
+    // Non-required parameters
     name: '<<namePrefix>>-az-wa-min-001'
     serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
   }
@@ -751,9 +761,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "kind": {
       "value": "app"
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-wa-min-001"
     },
@@ -777,7 +789,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-sites'
   params: {
+    // Required parameters
     kind: 'app'
+    // Non-required parameters
     name: '<<namePrefix>>-az-wa-x-001'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
@@ -829,9 +843,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "kind": {
       "value": "app"
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-wa-x-001"
     },

@@ -885,7 +885,9 @@ Below is a collection of examples of how this module can be used. These examples
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
   params: {
+    // Required parameters
     adminUsername: 'scaleSetAdmin'
+    // Non-required parameters
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
@@ -940,6 +942,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "adminUsername": {
       "value": "scaleSetAdmin"
     },
@@ -966,6 +969,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "osType": {
       "value": "Linux"
     },
+    // Non-required parameters
     "skuName": {
       "value": "Standard_B2s"
     },
@@ -1014,7 +1018,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
   params: {
+    // Required parameters
     adminUsername: 'scaleSetAdmin'
+    // Non-required parameters
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
@@ -1149,6 +1155,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "adminUsername": {
       "value": "scaleSetAdmin"
     },
@@ -1175,6 +1182,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "osType": {
       "value": "Linux"
     },
+    // Non-required parameters
     "skuName": {
       "value": "Standard_B2s"
     },
@@ -1354,7 +1362,9 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
   params: {
+    // Required parameters
     adminUsername: kv1.getSecret('adminUsername')
+    // Non-required parameters
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -1403,6 +1413,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "adminUsername": {
       "reference": {
         "keyVault": {
@@ -1434,6 +1445,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "osType": {
       "value": "Windows"
     },
+    // Non-required parameters
     "skuName": {
       "value": "Standard_B2s"
     },
@@ -1484,7 +1496,9 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
   params: {
+    // Required parameters
     adminUsername: kv1.getSecret('adminUsername')
+    // Non-required parameters
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -1611,6 +1625,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "adminUsername": {
       "reference": {
         "keyVault": {
@@ -1642,6 +1657,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "osType": {
       "value": "Windows"
     },
+    // Non-required parameters
     "skuName": {
       "value": "Standard_B2s"
     },

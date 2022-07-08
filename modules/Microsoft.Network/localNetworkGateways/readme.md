@@ -163,7 +163,9 @@ Below is a collection of examples of how this module can be used. These examples
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-localNetworkGateways'
   params: {
+    // Required parameters
     localAddressPrefixes: [
+    // Non-required parameters
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
@@ -195,6 +197,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "localAddressPrefixes": {
       "value": [
         "192.168.1.0/24"
@@ -206,6 +209,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
     "name": {
       "value": "<<namePrefix>>-az-lng-x-001"
     },
+    // Non-required parameters
     "localAsn": {
       "value": "65123"
     },

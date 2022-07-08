@@ -198,7 +198,9 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualWans'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-vw-x-001'
+    // Non-required parameters
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
     disableVpnEncryption: true
@@ -228,9 +230,11 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-vw-x-001"
     },
+    // Non-required parameters
     "allowBranchToBranchTraffic": {
       "value": true
     },

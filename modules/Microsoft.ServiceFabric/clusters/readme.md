@@ -240,7 +240,9 @@ Below is a collection of examples of how this module can be used. These examples
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
+    // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080'
+    // Non-required parameters
     reliabilityLevel: 'None'
     certificate: {
       thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
@@ -280,12 +282,14 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "managementEndpoint": {
       "value": "https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080"
     },
     "reliabilityLevel": {
       "value": "None"
     },
+    // Non-required parameters
     "certificate": {
       "value": {
         "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
@@ -331,7 +335,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
+    // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
+    // Non-required parameters
     reliabilityLevel: 'Silver'
     addOnFeatures: [
       'BackupRestoreService'
@@ -511,12 +517,14 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "managementEndpoint": {
       "value": "https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080"
     },
     "reliabilityLevel": {
       "value": "Silver"
     },
+    // Non-required parameters
     "addOnFeatures": {
       "value": [
         "BackupRestoreService",
@@ -730,7 +738,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
+    // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080'
+    // Non-required parameters
     reliabilityLevel: 'None'
     name: '<<namePrefix>>-az-sfc-min-001'
     nodeTypes: [
@@ -766,12 +776,14 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "managementEndpoint": {
       "value": "https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080"
     },
     "reliabilityLevel": {
       "value": "None"
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-sfc-min-001"
     },

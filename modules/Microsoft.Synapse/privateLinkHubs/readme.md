@@ -274,7 +274,9 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
 module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateLinkHubs'
   params: {
+    // Required parameters
     name: 'synplhstandard001'
+    // Non-required parameters
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
@@ -312,9 +314,11 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "synplhstandard001"
     },
+    // Non-required parameters
     "lock": {
       "value": "CanNotDelete"
     },

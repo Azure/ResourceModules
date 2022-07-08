@@ -381,7 +381,9 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-backupVaults'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-bv-x-001'
+    // Non-required parameters
     backupPolicies: [
       {
         name: 'DefaultPolicy'
@@ -461,9 +463,11 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-bv-x-001"
     },
+    // Non-required parameters
     "backupPolicies": {
       "value": [
         {

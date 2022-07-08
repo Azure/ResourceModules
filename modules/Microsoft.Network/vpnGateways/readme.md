@@ -182,7 +182,9 @@ Below is a collection of examples of how this module can be used. These examples
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnGateways'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-vpngw-min-001'
+    // Non-required parameters
     virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001'
   }
 }
@@ -200,12 +202,14 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-vpngw-min-001"
     },
     "virtualHubResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001"
     }
+    // Non-required parameters
   }
 }
 ```
@@ -223,7 +227,9 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnGateways'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-vpngw-x-001'
+    // Non-required parameters
     virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
     bgpSettings: {
       asn: 65515
@@ -289,12 +295,14 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-vpngw-x-001"
     },
     "virtualHubResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001"
     },
+    // Non-required parameters
     "bgpSettings": {
       "value": {
         "asn": 65515,

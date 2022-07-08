@@ -55,7 +55,9 @@ Below is a collection of examples of how this module can be used. These examples
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
+    // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    // Non-required parameters
     name: 'Updates'
   }
 }
@@ -73,12 +75,14 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "logAnalyticsWorkspaceName": {
       "value": "adp-<<namePrefix>>-az-law-sol-001"
     },
     "name": {
       "value": "Updates"
     }
+    // Non-required parameters
   }
 }
 ```
@@ -96,7 +100,9 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
+    // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    // Non-required parameters
     name: 'AzureAutomation'
     product: 'OMSGallery'
     publisher: 'Microsoft'
@@ -116,12 +122,14 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "logAnalyticsWorkspaceName": {
       "value": "adp-<<namePrefix>>-az-law-sol-001"
     },
     "name": {
       "value": "AzureAutomation"
     },
+    // Non-required parameters
     "product": {
       "value": "OMSGallery"
     },
@@ -145,7 +153,9 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
+    // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    // Non-required parameters
     name: 'nonmsTestSolution'
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
@@ -165,12 +175,14 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "logAnalyticsWorkspaceName": {
       "value": "adp-<<namePrefix>>-az-law-sol-001"
     },
     "name": {
       "value": "nonmsTestSolution"
     },
+    // Non-required parameters
     "product": {
       "value": "nonmsTestSolutionProduct"
     },

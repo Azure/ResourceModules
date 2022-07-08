@@ -135,7 +135,9 @@ Below is a collection of examples of how this module can be used. These examples
 module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managementGroups'
   params: {
+    // Required parameters
     name: 'testMG'
+    // Non-required parameters
     displayName: 'Test MG'
     parentId: '<<managementGroupId>>'
   }
@@ -154,9 +156,11 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "testMG"
     },
+    // Non-required parameters
     "displayName": {
       "value": "Test MG"
     },

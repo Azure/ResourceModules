@@ -198,7 +198,9 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-availabilitySets'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-avs-x-001'
+    // Non-required parameters
     lock: 'CanNotDelete'
     proximityPlacementGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-x-001'
     roleAssignments: [
@@ -225,9 +227,11 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-avs-x-001"
     },
+    // Non-required parameters
     "lock": {
       "value": "CanNotDelete"
     },

@@ -177,7 +177,9 @@ Below is a collection of examples of how this module can be used. These examples
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registrationDefinitions'
   params: {
+    // Required parameters
     authorizations: [
+    // Non-required parameters
       {
         principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
         principalIdDisplayName: 'ResourceModules-Reader'
@@ -213,6 +215,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "authorizations": {
       "value": [
         {
@@ -241,6 +244,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     "registrationDescription": {
       "value": "Managed by Lighthouse"
     }
+    // Non-required parameters
   }
 }
 ```
@@ -258,7 +262,9 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registrationDefinitions'
   params: {
+    // Required parameters
     authorizations: [
+    // Non-required parameters
       {
         principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
         principalIdDisplayName: 'ResourceModules-Reader'
@@ -295,6 +301,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "authorizations": {
       "value": [
         {
@@ -323,6 +330,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     "registrationDescription": {
       "value": "Managed by Lighthouse"
     },
+    // Non-required parameters
     "resourceGroupName": {
       "value": "validation-rg"
     }

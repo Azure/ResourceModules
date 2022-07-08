@@ -406,7 +406,9 @@ Below is a collection of examples of how this module can be used. These examples
 module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-activityLogAlerts'
   params: {
+    // Required parameters
     conditions: [
+    // Non-required parameters
       {
         equals: 'Administrative'
         field: 'category'
@@ -453,6 +455,7 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "conditions": {
       "value": [
         {
@@ -469,6 +472,7 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
         }
       ]
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-ala-x-001"
     },

@@ -179,7 +179,9 @@ Below is a collection of examples of how this module can be used. These examples
 module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-expressRouteCircuits'
   params: {
+    // Required parameters
     bandwidthInMbps: 50
+    // Non-required parameters
     name: '<<namePrefix>>-az-erc-x-001'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
@@ -215,6 +217,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "bandwidthInMbps": {
       "value": 50
     },
@@ -227,6 +230,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     "serviceProviderName": {
       "value": "Equinix"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

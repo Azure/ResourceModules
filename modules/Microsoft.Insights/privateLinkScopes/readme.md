@@ -239,7 +239,9 @@ Below is a collection of examples of how this module can be used. These examples
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateLinkScopes'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-pls-x-001'
+    // Non-required parameters
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
@@ -277,9 +279,11 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-pls-x-001"
     },
+    // Non-required parameters
     "lock": {
       "value": "CanNotDelete"
     },

@@ -158,7 +158,9 @@ Below is a collection of examples of how this module can be used. These examples
 module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-publicIPPrefixes'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-pippfx-x-001'
+    // Non-required parameters
     prefixLength: 28
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -185,12 +187,14 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-pippfx-x-001"
     },
     "prefixLength": {
       "value": 28
     },
+    // Non-required parameters
     "lock": {
       "value": "CanNotDelete"
     },

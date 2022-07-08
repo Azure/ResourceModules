@@ -161,7 +161,9 @@ Below is a collection of examples of how this module can be used. These examples
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-min-mg-polexem'
+    // Non-required parameters
     policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
   }
 }
@@ -179,9 +181,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-min-mg-polexem"
     },
+    // Non-required parameters
     "policyAssignmentId": {
       "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
     }
@@ -202,7 +206,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-mg-polexem'
+    // Non-required parameters
     policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
     displayName: '[Display Name] policy exempt (management group scope)'
     exemptionCategory: 'Waiver'
@@ -227,9 +233,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-mg-polexem"
     },
+    // Non-required parameters
     "policyAssignmentId": {
       "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
     },
@@ -267,7 +275,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-min-rg-polexem'
+    // Non-required parameters
     policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
     resourceGroupName: '<<resourceGroupName>>'
     subscriptionId: '<<subscriptionId>>'
@@ -287,9 +297,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-min-rg-polexem"
     },
+    // Non-required parameters
     "policyAssignmentId": {
       "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
     },
@@ -316,7 +328,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-rg-polexem'
+    // Non-required parameters
     policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
     displayName: '[Display Name] policy exempt (resource group scope)'
     exemptionCategory: 'Waiver'
@@ -342,9 +356,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-rg-polexem"
     },
+    // Non-required parameters
     "policyAssignmentId": {
       "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
     },
@@ -385,7 +401,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-min-sub-polexem'
+    // Non-required parameters
     policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
     subscriptionId: '<<subscriptionId>>'
   }
@@ -404,9 +422,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-min-sub-polexem"
     },
+    // Non-required parameters
     "policyAssignmentId": {
       "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
     },
@@ -430,7 +450,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-sub-polexem'
+    // Non-required parameters
     policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
     displayName: '[Display Name] policy exempt (subscription scope)'
     exemptionCategory: 'Waiver'
@@ -455,9 +477,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-sub-polexem"
     },
+    // Non-required parameters
     "policyAssignmentId": {
       "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
     },

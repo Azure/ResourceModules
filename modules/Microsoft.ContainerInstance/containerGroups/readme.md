@@ -182,7 +182,9 @@ Below is a collection of examples of how this module can be used. These examples
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-containerGroups'
   params: {
+    // Required parameters
     containerName: '<<namePrefix>>-az-aci-x-001'
+    // Non-required parameters
     image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
     name: '<<namePrefix>>-az-acg-x-001'
     lock: 'CanNotDelete'
@@ -216,9 +218,11 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "containerName": {
       "value": "<<namePrefix>>-az-aci-x-001"
     },
+    // Non-required parameters
     "image": {
       "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
     },

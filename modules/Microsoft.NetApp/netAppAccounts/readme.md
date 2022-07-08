@@ -203,7 +203,9 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-netAppAccounts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-anf-nfs3-001'
+    // Non-required parameters
     capacityPools: [
       {
         name: '<<namePrefix>>-az-anfcp-x-001'
@@ -302,9 +304,11 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-anf-nfs3-001"
     },
+    // Non-required parameters
     "capacityPools": {
       "value": [
         {
@@ -412,7 +416,9 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-netAppAccounts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-anf-nfs41-001'
+    // Non-required parameters
     capacityPools: [
       {
         name: '<<namePrefix>>-az-anfcp-x-001'
@@ -520,9 +526,11 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-anf-nfs41-001"
     },
+    // Non-required parameters
     "capacityPools": {
       "value": [
         {

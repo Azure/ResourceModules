@@ -371,7 +371,9 @@ Below is a collection of examples of how this module can be used. These examples
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managedClusters'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-aks-azure-001'
+    // Non-required parameters
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -478,9 +480,11 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-aks-azure-001"
     },
+    // Non-required parameters
     "primaryAgentPoolProfile": {
       "value": [
         {
@@ -612,7 +616,9 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managedClusters'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-aks-kubenet-001'
+    // Non-required parameters
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -716,9 +722,11 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-aks-kubenet-001"
     },
+    // Non-required parameters
     "primaryAgentPoolProfile": {
       "value": [
         {

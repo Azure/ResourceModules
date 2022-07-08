@@ -262,7 +262,9 @@ Below is a collection of examples of how this module can be used. These examples
 module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-trafficmanagerprofiles'
   params: {
+    // Required parameters
     name: 'tm-000001'
+    // Non-required parameters
     relativeName: 'tm-000001'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
@@ -294,12 +296,14 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "tm-000001"
     },
     "relativeName": {
       "value": "tm-000001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

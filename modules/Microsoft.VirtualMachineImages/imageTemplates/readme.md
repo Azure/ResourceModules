@@ -272,7 +272,9 @@ Below is a collection of examples of how this module can be used. These examples
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-imageTemplates'
   params: {
+    // Required parameters
     customizationSteps: [
+    // Non-required parameters
       {
         restartTimeout: '30m'
         type: 'WindowsRestart'
@@ -321,6 +323,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "customizationSteps": {
       "value": [
         {
@@ -341,6 +344,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     "name": {
       "value": "<<namePrefix>>-az-imgt-x-001"
     },
+    // Non-required parameters
     "userMsiName": {
       "value": "adp-<<namePrefix>>-az-msi-x-001"
     },

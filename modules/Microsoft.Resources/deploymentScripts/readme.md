@@ -153,7 +153,9 @@ Below is a collection of examples of how this module can be used. These examples
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-ds-cli-001'
+    // Non-required parameters
     azCliVersion: '2.15.0'
     cleanupPreference: 'Always'
     kind: 'AzureCLI'
@@ -180,9 +182,11 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-ds-cli-001"
     },
+    // Non-required parameters
     "azCliVersion": {
       "value": "2.15.0"
     },
@@ -226,7 +230,9 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-ds-ps-001'
+    // Non-required parameters
     azPowerShellVersion: '3.0'
     cleanupPreference: 'Always'
     kind: 'AzurePowerShell'
@@ -254,9 +260,11 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-ds-ps-001"
     },
+    // Non-required parameters
     "azPowerShellVersion": {
       "value": "3.0"
     },

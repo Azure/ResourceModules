@@ -244,7 +244,9 @@ Below is a collection of examples of how this module can be used. These examples
 module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-actionGroups'
   params: {
+    // Required parameters
     groupShortName: 'azagweux001'
+    // Non-required parameters
     name: '<<namePrefix>>-az-ag-x-001'
     emailReceivers: [
       {
@@ -289,9 +291,11 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "groupShortName": {
       "value": "azagweux001"
     },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>-az-ag-x-001"
     },

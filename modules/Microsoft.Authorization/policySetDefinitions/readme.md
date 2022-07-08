@@ -144,7 +144,9 @@ Below is a collection of examples of how this module can be used. These examples
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-mg-min-policySet'
+    // Non-required parameters
     policyDefinitions: [
       {
         parameters: {
@@ -173,9 +175,11 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-mg-min-policySet"
     },
+    // Non-required parameters
     "policyDefinitions": {
       "value": [
         {
@@ -207,7 +211,9 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-mg-policySet'
+    // Non-required parameters
     policyDefinitions: [
       {
         groupNames: [
@@ -269,9 +275,11 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-mg-policySet"
     },
+    // Non-required parameters
     "policyDefinitions": {
       "value": [
         {
@@ -346,7 +354,9 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-sub-min-policySet'
+    // Non-required parameters
     policyDefinitions: [
       {
         parameters: {
@@ -376,9 +386,11 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-sub-min-policySet"
     },
+    // Non-required parameters
     "policyDefinitions": {
       "value": [
         {
@@ -413,7 +425,9 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-sub-policySet'
+    // Non-required parameters
     policyDefinitions: [
       {
         groupNames: [
@@ -475,9 +489,11 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-sub-policySet"
     },
+    // Non-required parameters
     "policyDefinitions": {
       "value": [
         {

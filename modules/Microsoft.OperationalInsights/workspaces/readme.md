@@ -489,7 +489,9 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-law-x-001'
+    // Non-required parameters
     dailyQuotaGb: 10
     dataSources: [
       {
@@ -638,9 +640,11 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-law-x-001"
     },
+    // Non-required parameters
     "dailyQuotaGb": {
       "value": 10
     },

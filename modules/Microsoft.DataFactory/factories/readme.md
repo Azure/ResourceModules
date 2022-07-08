@@ -294,7 +294,9 @@ Below is a collection of examples of how this module can be used. These examples
 module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-factories'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-adf-001'
+    // Non-required parameters
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
@@ -351,9 +353,11 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-adf-001"
     },
+    // Non-required parameters
     "cMKKeyName": {
       "value": "keyEncryptionKey"
     },

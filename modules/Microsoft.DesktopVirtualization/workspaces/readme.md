@@ -168,7 +168,9 @@ Below is a collection of examples of how this module can be used. These examples
 module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-avdws-x-001'
+    // Non-required parameters
     appGroupResourceIds: [
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.DesktopVirtualization/applicationgroups/adp-<<namePrefix>>-az-avdag-x-001'
     ]
@@ -205,9 +207,11 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-avdws-x-001"
     },
+    // Non-required parameters
     "appGroupResourceIds": {
       "value": [
         "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.DesktopVirtualization/applicationgroups/adp-<<namePrefix>>-az-avdag-x-001"

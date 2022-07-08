@@ -356,7 +356,9 @@ Below is a collection of examples of how this module can be used. These examples
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-aut-encr-001'
+    // Non-required parameters
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
@@ -379,9 +381,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-aut-encr-001"
     },
+    // Non-required parameters
     "cMKKeyName": {
       "value": "keyEncryptionKey"
     },
@@ -450,7 +454,9 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-aut-x-001'
+    // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -621,9 +627,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-aut-x-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

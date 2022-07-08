@@ -174,7 +174,9 @@ Below is a collection of examples of how this module can be used. These examples
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateEndpoints'
   params: {
+    // Required parameters
     groupIds: [
+    // Non-required parameters
       'vault'
     ]
     name: '<<namePrefix>>-az-pe-kvlt-min-001'
@@ -196,6 +198,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "groupIds": {
       "value": [
         "vault"
@@ -210,6 +213,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     "subnetResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
     }
+    // Non-required parameters
   }
 }
 ```
@@ -227,7 +231,9 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateEndpoints'
   params: {
+    // Required parameters
     groupIds: [
+    // Non-required parameters
       'vault'
     ]
     name: '<<namePrefix>>-az-pe-kvlt-001'
@@ -265,6 +271,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "groupIds": {
       "value": [
         "vault"
@@ -279,6 +286,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     "subnetResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
     },
+    // Non-required parameters
     "lock": {
       "value": "CanNotDelete"
     },

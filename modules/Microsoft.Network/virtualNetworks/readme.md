@@ -360,7 +360,9 @@ Below is a collection of examples of how this module can be used. These examples
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworks'
   params: {
+    // Required parameters
     addressPrefixes: [
+    // Non-required parameters
       '10.0.0.0/16'
     ]
     name: '<<namePrefix>>-az-vnet-min-001'
@@ -380,6 +382,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "addressPrefixes": {
       "value": [
         "10.0.0.0/16"
@@ -388,6 +391,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-vnet-min-001"
     }
+    // Non-required parameters
   }
 }
 ```
@@ -405,7 +409,9 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworks'
   params: {
+    // Required parameters
     addressPrefixes: [
+    // Non-required parameters
       '10.0.0.0/16'
     ]
     name: '<<namePrefix>>-az-vnet-x-001'
@@ -489,6 +495,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "addressPrefixes": {
       "value": [
         "10.0.0.0/16"
@@ -497,6 +504,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-vnet-x-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },
@@ -596,7 +604,9 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworks'
   params: {
+    // Required parameters
     addressPrefixes: [
+    // Non-required parameters
       '10.0.0.0/24'
     ]
     name: '<<namePrefix>>-az-vnet-peer-001'
@@ -640,6 +650,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "addressPrefixes": {
       "value": [
         "10.0.0.0/24"
@@ -648,6 +659,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-vnet-peer-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

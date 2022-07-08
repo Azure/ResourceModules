@@ -191,7 +191,9 @@ Below is a collection of examples of how this module can be used. These examples
 module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-networkInterfaces'
   params: {
+    // Required parameters
     ipConfigurations: [
+    // Non-required parameters
       {
         name: 'ipconfig01'
         subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
@@ -214,6 +216,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "ipConfigurations": {
       "value": [
         {
@@ -225,6 +228,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
     "name": {
       "value": "<<namePrefix>>-az-nic-min-001"
     }
+    // Non-required parameters
   }
 }
 ```
@@ -242,7 +246,9 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
 module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-networkInterfaces'
   params: {
+    // Required parameters
     ipConfigurations: [
+    // Non-required parameters
       {
         applicationSecurityGroups: [
           {
@@ -289,6 +295,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "ipConfigurations": {
       "value": [
         {
@@ -310,6 +317,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
     "name": {
       "value": "<<namePrefix>>-az-nic-x-001"
     },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },

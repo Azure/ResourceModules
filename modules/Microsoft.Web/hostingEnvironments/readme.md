@@ -211,7 +211,9 @@ Below is a collection of examples of how this module can be used. These examples
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-hostingEnvironments'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-appse-asev2-001'
+    // Non-required parameters
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-008'
     clusterSettings: [
       {
@@ -251,12 +253,14 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-appse-asev2-001"
     },
     "subnetResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-008"
     },
+    // Non-required parameters
     "clusterSettings": {
       "value": [
         {
@@ -316,7 +320,9 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-hostingEnvironments'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-appse-asev3-001'
+    // Non-required parameters
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-006'
     clusterSettings: [
       {
@@ -354,12 +360,14 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-appse-asev3-001"
     },
     "subnetResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-006"
     },
+    // Non-required parameters
     "clusterSettings": {
       "value": [
         {

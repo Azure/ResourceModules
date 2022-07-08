@@ -171,7 +171,9 @@ Below is a collection of examples of how this module can be used. These examples
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-applicationgroups'
   params: {
+    // Required parameters
     applicationGroupType: 'RemoteApp'
+    // Non-required parameters
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
     name: '<<namePrefix>>-az-avdag-min-001'
   }
@@ -190,6 +192,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "applicationGroupType": {
       "value": "RemoteApp"
     },
@@ -199,6 +202,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     "name": {
       "value": "<<namePrefix>>-az-avdag-min-001"
     }
+    // Non-required parameters
   }
 }
 ```
@@ -216,7 +220,9 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-applicationgroups'
   params: {
+    // Required parameters
     applicationGroupType: 'RemoteApp'
+    // Non-required parameters
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
     name: '<<namePrefix>>-az-avdag-x-001'
     applications: [
@@ -270,6 +276,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "applicationGroupType": {
       "value": "RemoteApp"
     },
@@ -279,6 +286,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     "name": {
       "value": "<<namePrefix>>-az-avdag-x-001"
     },
+    // Non-required parameters
     "applications": {
       "value": [
         {

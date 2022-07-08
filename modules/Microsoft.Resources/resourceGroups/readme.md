@@ -161,7 +161,9 @@ Below is a collection of examples of how this module can be used. These examples
 module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-resourceGroups'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-rg-x-001'
+    // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -190,9 +192,11 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-rg-x-001"
     },
+    // Non-required parameters
     "lock": {
       "value": "CanNotDelete"
     },

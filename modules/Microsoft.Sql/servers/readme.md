@@ -330,7 +330,9 @@ Below is a collection of examples of how this module can be used. These examples
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-sqlsrv-admin-001'
+    // Non-required parameters
     administrators: {
       azureADOnlyAuthentication: true
       login: 'myspn'
@@ -354,9 +356,11 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-sqlsrv-admin-001"
     },
+    // Non-required parameters
     "administrators": {
       "value": {
         "azureADOnlyAuthentication": true,
@@ -388,7 +392,9 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-sqlsrv-x-001'
+    // Non-required parameters
     administratorLogin: kv1.getSecret('administratorLogin')
     administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
     databases: [
@@ -469,9 +475,11 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-sqlsrv-x-001"
     },
+    // Non-required parameters
     "administratorLogin": {
       "reference": {
         "keyVault": {

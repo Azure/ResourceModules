@@ -158,7 +158,9 @@ Below is a collection of examples of how this module can be used. These examples
 module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-ipGroups'
   params: {
+    // Required parameters
     name: 'iacsGroup-servers'
+    // Non-required parameters
     ipAddresses: [
       '10.0.0.1'
       '10.0.0.2'
@@ -188,9 +190,11 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "iacsGroup-servers"
     },
+    // Non-required parameters
     "ipAddresses": {
       "value": [
         "10.0.0.1",
