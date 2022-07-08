@@ -107,7 +107,7 @@ param cMKKeyVersion string = ''
 @description('Optional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Optional. Enable infrastructure encryption (double encryption).')
+@description('Optional. Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters.')
 param requireInfrastructureEncryption bool = true
 
 @description('Optional. The name of logs that will be streamed.')
