@@ -14,7 +14,7 @@
 ##   | Parameter                | Required | Default | Description                     | Example                                                        |
 ##   |--------------------------|----------|---------|---------------------------------|----------------------------------------------------------------|
 ##   | modulePath               | true     | ''      | The path to the module's folder | 'modules/Microsoft.ApiManagement/service'                      |
-##   | globalModuleTestFilePath | true     | ''      | The path to the test file       | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
+##   | moduleTestFilePath | true     | ''      | The path to the test file       | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
 ##   |==================================================================================================================================================|
 ##
 ##---------------------------------------------##
@@ -27,7 +27,7 @@ inputs:
     description: "The path to the module's folder"
     required: true
     default: ''
-  globalModuleTestFilePath:
+  moduleTestFilePath:
     description: "The path to the test file"
     required: true
     default: ''
@@ -100,8 +100,8 @@ runs:
         }
 
         # Set and print test output path
-        $globalModuleTestFilePath = '${{ inputs.globalModuleTestFilePath }}'
-        $outputPathDirectory = Split-Path $globalModuleTestFilePath -Parent
+        $moduleTestFilePath = '${{ inputs.moduleTestFilePath }}'
+        $outputPathDirectory = Split-Path $moduleTestFilePath -Parent
         $outputPathFile = 'global-testResults.xml'
         $outputPath = Join-Path $outputPathDirectory $outputPathFile
         Write-Verbose "Pester tests output: $outputPath" -Verbose
@@ -112,7 +112,7 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            Container = New-PesterContainer -Path (Join-Path $repoRootPath $globalModuleTestFilePath) -Data @{
+            Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
               repoRootPath = $repoRootPath
               moduleFolderPaths = $moduleFolderPaths
               enforcedTokenList = $enforcedTokenList

@@ -30,7 +30,7 @@
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                                            |
 ##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                                                   |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                                  |
-##   | globalModuleTestFilePath        | '$(globalModuleTestFilePath)'        | The path to the global module Pester tests.                                                               | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
+##   | moduleTestFilePath        | '$(moduleTestFilePath)'        | The path to the global module Pester tests.                                                               | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
 ##   | location                        | '$(location)'                        | The location to validate with                                                                             | 'France Central'                                               |
 ##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                                                |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'                         |
@@ -52,7 +52,7 @@ parameters:
   checkoutRepositories: ''
   # Logic-related parameters
   modulePath: '$(modulePath)'
-  globalModuleTestFilePath: '$(globalModuleTestFilePath)'
+  moduleTestFilePath: '$(moduleTestFilePath)'
   parametersRepository: '$(Build.Repository.Name)'
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
@@ -167,8 +167,8 @@ jobs:
             }
 
             # Set and print test output path
-            $globalModuleTestFilePath = '${{ parameters.globalModuleTestFilePath }}'
-            $outputPathDirectory = Split-Path $globalModuleTestFilePath -Parent
+            $moduleTestFilePath = '${{ parameters.moduleTestFilePath }}'
+            $outputPathDirectory = Split-Path $moduleTestFilePath -Parent
             Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathDirectory', $outputPathDirectory)
             $outputPathFile = 'global-testResults.xml'
             Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathFile', $outputPathFile)
@@ -180,7 +180,7 @@ jobs:
             # --------------------- #
             Invoke-Pester -Configuration @{
               Run        = @{
-                Container = New-PesterContainer -Path (Join-Path $repoRootPath $globalModuleTestFilePath) -Data @{
+                Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
                   repoRootPath = $repoRootPath
                   moduleFolderPaths = $moduleFolderPaths
                   enforcedTokenList = $enforcedTokenList

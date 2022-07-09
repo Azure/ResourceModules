@@ -118,7 +118,7 @@ function Test-ModuleLocally {
         [string] $testFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
 
         [Parameter(Mandatory = $false)]
-        [string] $globalModuleTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
+        [string] $moduleTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
 
         [Parameter(Mandatory = $false)]
         [Psobject] $ValidateOrDeployParameters = @{},
@@ -170,7 +170,7 @@ function Test-ModuleLocally {
 
                 Invoke-Pester -Configuration @{
                     Run    = @{
-                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $globalModuleTestFilePath) -Data @{
+                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
                             repoRootPath = $repoRootPath
                             moduleFolderPaths = Split-Path $TemplateFilePath -Parent
                             enforcedTokenList = $enforcedTokenList

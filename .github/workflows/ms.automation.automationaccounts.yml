@@ -80,7 +80,7 @@ jobs:
         uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
-          globalModuleTestFilePath: '${{ env.globalModuleTestFilePath }}'
+          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   #############################
   #   Deployment validation   #
