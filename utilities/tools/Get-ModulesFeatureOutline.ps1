@@ -133,7 +133,7 @@ function Get-ModulesFeatureOutline {
             'Tags'       = $supportsTags
             'Diag'       = $supportsDiagnostics
             'EP'         = $supportsEndpoints
-            'Pip-Depl.'  = $supportsPipDeployment
+            'PIP'  = $supportsPipDeployment
             '# children' = $numberOfChildrenFormatted
             '# lines'    = $numberOfLines
         }
