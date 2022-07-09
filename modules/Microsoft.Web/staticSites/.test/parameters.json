@@ -25,9 +25,9 @@
     },
     "customDomains": {
       "value": [
-        "testdomain1.domain",
-        "testdomain2.domain",
-        "testdomain3.domain"
+        "<<namePrefix>>domain1.domain",
+        "<<namePrefix>>domain2.domain.domain",
+        "<<namePrefix>>domain3.domain.domain.domain"
       ]
     },
     "appSettings": {
@@ -64,6 +64,11 @@
           "service": "staticSites"
         }
       ]
+    },
+    "linkedBackend": {
+      "value": {
+        "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/<<namePrefix>>-az-fa-x-001"
+      }
     }
   }
 }

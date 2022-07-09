@@ -10,7 +10,7 @@ param name string
 @description('Optional. Type of static site to deploy.')
 param sku string = 'Free'
 
-@description('Optional. If config file is locked for this static web app.')
+@description('Optional. False if config file is locked for this static web app; otherwise, true.')
 param allowConfigFileUpdates bool = true
 
 @description('Optional. Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2.')
@@ -77,23 +77,16 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Object with parameters for the userDefinedFunctionApp property. WARNING: currently the userDefinedFunctionApp endpoint is no idempotent, meaning this can only be used for initial registration.')
-param userDefinedFunctionApp object = {}
+@description('Optional. Object with "resourceId" and "location" of the a user defined function app.')
+param linkedBackend object = {}
 
-@description('Optional. ')
+@description('Optional. Static site app settings.')
 param appSettings object = {}
 
-@description('Optional. ')
+@description('Optional. Function app settings.')
 param functionAppSettings object = {}
 
-@allowed([
-  'Enabled'
-  'Disabled'
-])
-@description('Optional. State indicating whether public traffic are allowed or not for a static web app. Allowed Values: "Enabled", "Disabled" or an empty string.')
-param publicNetworkAccess string = 'Enabled'
-
-@description('Optional. The custom domains associated with this static site.')
+@description('Optional. The custom domains associated with this static site. The deployment will fail as long as the validation records are not present.')
 param customDomains array = []
 
 var enableReferencedModulesTelemetry = false
@@ -117,7 +110,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource staticSite 'Microsoft.Web/staticSites@2022-03-01' = {
+resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
   name: name
   location: location
   tags: tags
@@ -136,16 +129,15 @@ resource staticSite 'Microsoft.Web/staticSites@2022-03-01' = {
     repositoryToken: !empty(repositoryToken) ? repositoryToken : null
     repositoryUrl: !empty(repositoryUrl) ? repositoryUrl : null
     templateProperties: !empty(templateProperties) ? templateProperties : null
-    publicNetworkAccess: publicNetworkAccess
   }
 }
 
-module staticSite_userDefinedFunctionApp 'userProvidedFunctionApps/deploy.bicep' = if (!empty(userDefinedFunctionApp)) {
+module staticSite_linkedBackend 'linkedBackends/deploy.bicep' = if (!empty(linkedBackend)) {
   name: '${uniqueString(deployment().name, location)}-StaticSite-UserDefinedFunction'
   params: {
     staticSiteName: staticSite.name
-    functionAppRegion: userDefinedFunctionApp.functionAppRegion
-    functionAppResourceId: userDefinedFunctionApp.functionAppResourceId
+    backendResourceId: linkedBackend.resourceId
+    region: contains(linkedBackend, 'location') ? linkedBackend.location : location
   }
 }
 
@@ -172,10 +164,11 @@ module staticSite_customDomains 'customDomains/deploy.bicep' = [for (customDomai
   params: {
     name: customDomain
     staticSiteName: staticSite.name
+    validationMethod: indexOf(customDomain, '.') == lastIndexOf(customDomain, '.') ? 'dns-txt-token' : 'cname-delegation'
   }
 }]
 
-resource staticSite_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+resource staticSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${staticSite.name}-${lock}-lock'
   properties: {
     level: any(lock)
