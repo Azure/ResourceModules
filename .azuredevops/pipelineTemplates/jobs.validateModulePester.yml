@@ -1,8 +1,8 @@
 #########################################################
-## VALIDATION PIPELINE                                 ##
+## 'Validate module with Pester' Pipeline Template     ##
 #########################################################
 ##
-## This pipeline template contains the logic to validate a given module using the provided parameter file(s)
+## This pipeline template contains the logic to validate a module using a set of Pester tests
 ##
 ## Enabled levels of validation
 ## - Resource-Group-Level
@@ -30,7 +30,7 @@
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                                            |
 ##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                                                   |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                                  |
-##   | moduleTestFilePath        | '$(moduleTestFilePath)'        | The path to the global module Pester tests.                                                               | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
+##   | moduleTestFilePath              | '$(moduleTestFilePath)'              | The path to the module Pester tests.                                                                      | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
 ##   | location                        | '$(location)'                        | The location to validate with                                                                             | 'France Central'                                               |
 ##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                                                |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'                         |
@@ -187,7 +187,7 @@ jobs:
                 }
               }
               TestResult = @{
-                TestSuiteName = 'Global Module Tests'
+                TestSuiteName = 'Module Tests'
                 OutputPath    = $outputPath
                 OutputFormat  = 'NUnitXml'
                 Enabled       = $true
@@ -201,7 +201,7 @@ jobs:
       - task: PublishTestResults@2
         displayName: Publish Test Results
         inputs:
-          testRunTitle: 'Global Module Tests'
+          testRunTitle: 'Module Tests'
           testResultsFormat: NUnit
           testResultsFiles: $(outputPathFile)
           failTaskOnFailedTests: true

@@ -11,10 +11,10 @@
 ##-------------------------------------------##
 ##
 ##   |==================================================================================================================================================|
-##   | Parameter                | Required | Default | Description                     | Example                                                        |
-##   |--------------------------|----------|---------|---------------------------------|----------------------------------------------------------------|
-##   | modulePath               | true     | ''      | The path to the module's folder | 'modules/Microsoft.ApiManagement/service'                      |
-##   | moduleTestFilePath | true     | ''      | The path to the test file       | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
+##   | Parameter                | Required | Default | Description                          | Example                                                   |
+##   |--------------------------|----------|---------|--------------------------------------|-----------------------------------------------------------|
+##   | modulePath               | true     | ''      | The path to the module's folder      | 'modules/Microsoft.ApiManagement/service'                 |
+##   | moduleTestFilePath       | true     | ''      | The path to the module Pester tests. | 'utilities/pipelines/staticValidation/module.tests.ps1'   |
 ##   |==================================================================================================================================================|
 ##
 ##---------------------------------------------##
@@ -119,7 +119,7 @@ runs:
             }
           }
           TestResult = @{
-            TestSuiteName = 'Global Module Tests'
+            TestSuiteName = 'Module Tests'
             OutputPath    = $outputPath
             OutputFormat  = 'JUnitXml'
             Enabled       = $true
