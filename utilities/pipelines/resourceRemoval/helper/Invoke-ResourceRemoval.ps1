@@ -57,6 +57,22 @@ function Invoke-ResourceRemoval {
             Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
             break
         }
+        'Microsoft.ServiceBus/namespaces/ipfilterrules' {
+            Write-Verbose ('Skip resource removal for type [{0}]. Reason: Service Bus IP Filter Rules are not a resource that can be removed.' -f $type) -Verbose
+            break
+        }
+        'Microsoft.ServiceBus/namespaces/virtualnetworkrules' {
+            Write-Verbose ('Skip resource removal for type [{0}]. Reason: Service Bus Virtual Network Rules are not a resource that can be removed.' -f $type) -Verbose
+            break
+        }
+        'Microsoft.ServiceBus/namespaces/AuthorizationRules' {
+            if ((Split-Path $ResourceId '/')[-1] -eq 'RootManageSharedAccessKey') {
+                Write-Verbose ('Skip resource removal for type [{0}]. Reason: The Service Bus''s default authorization key [RootManageSharedAccessKey] cannot be removed.' -f $type) -Verbose
+            } else {
+                $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
+            }
+            break
+        }
         'Microsoft.Compute/diskEncryptionSets' {
             # Pre-Removal
             # -----------
