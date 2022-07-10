@@ -512,8 +512,18 @@ function ConvertTo-FormattedBicep {
         [string[]] $RequiredParametersList
     )
 
+    # Remove 'value' parameter property, if any (e.g. when dealing with a classic parameter file)
+    $JSONParametersWithoutValue = @{}
+    foreach ($parameter in $JSONParameters.Keys) {
+        if ($JSONParameters[$parameter].Keys -eq 'value') {
+            $JSONParametersWithoutValue[$parameter] = $JSONParameters.$parameter.value
+        } else {
+            $JSONParametersWithoutValue[$parameter] = $JSONParameters.$parameter
+        }
+    }
+
     # [1/4] Order parameters recursively
-    $orderedJSONParameters = Get-OrderedParametersJSON -ParametersJSON ($JSONParameters | ConvertTo-Json -Depth 99) -RequiredParametersList $RequiredParametersList
+    $orderedJSONParameters = Get-OrderedParametersJSON -ParametersJSON ($JSONParametersWithoutValue | ConvertTo-Json -Depth 99) -RequiredParametersList $RequiredParametersList
 
     # [2/4] Remove any JSON specific formatting
     $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
@@ -534,7 +544,7 @@ function ConvertTo-FormattedBicep {
     $splitInputObject = @{
         BicepExample           = $bicepExample
         RequiredParametersList = $RequiredParametersList
-        AllParametersList      = $JSONParameters.Keys
+        AllParametersList      = $JSONParametersWithoutValue.Keys
     }
     $bicepExample = Add-BicepParameterTypeComment @splitInputObject
 
