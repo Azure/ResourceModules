@@ -1,12 +1,12 @@
 @description('Conditional. The name of the parent event hub namespace. Required if the template is used in a standalone deployment.')
 param namespaceName string
 
-@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled.')
 @allowed([
   'Enabled'
   'Disabled'
 ])
-param publicNetworkAccess string
+@description('Optional. This determines if traffic is allowed over public network. Default it is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only.')
+param publicNetworkAccess string = 'Enabled'
 
 @allowed([
   'Allow'
@@ -51,7 +51,7 @@ resource networkRuleSet 'Microsoft.EventHub/namespaces/networkRuleSets@2021-11-0
   name: 'default'
   parent: namespace
   properties: {
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(ipRules) || !empty(virtualNetworkRules) ? null : publicNetworkAccess
     defaultAction: !empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : defaultAction
     trustedServiceAccessEnabled: trustedServiceAccessEnabled
     ipRules: publicNetworkAccess == 'Disabled' ? null : ipRules
