@@ -574,8 +574,8 @@ function Set-DeploymentExamplesSection {
                     # Search in rest of array for the next closing bracket with the same indent - and then add the search index (1) & initial index (1) count back in
                     $requiredParameterEndIndex = ($jsonExampleArray[($requiredParameterStartIndex + 1)..($jsonExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex
 
-                    # Add a comment where the non-required parameters start
-                    $jsonExampleArray = $jsonExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($requiredParameterEndIndex + 1) .. ($jsonExampleArray.Count))]
+                    # Add a comment where the additional parameters start
+                    $jsonExampleArray = $jsonExampleArray[0..$requiredParameterEndIndex] + ('{0}// Additional parameters' -f (' ' * $requiredParameterIndent)) + $jsonExampleArray[(($requiredParameterEndIndex + 1) .. ($jsonExampleArray.Count))]
                 }
 
                 $jsonExample = $jsonExampleArray | Out-String
