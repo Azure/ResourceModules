@@ -245,7 +245,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
       } : null
     }
     dataEndpointEnabled: dataEndpointEnabled
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     networkRuleBypassOptions: networkRuleBypassOptions
     networkRuleSet: !empty(networkRuleSetIpRules) ? {
       defaultAction: networkRuleSetDefaultAction

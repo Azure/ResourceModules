@@ -52,7 +52,7 @@ resource networkRuleSet 'Microsoft.EventHub/namespaces/networkRuleSets@2021-11-0
   name: 'default'
   parent: namespace
   properties: {
-    publicNetworkAccess: !empty(ipRules) || !empty(virtualNetworkRules) ? null : publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     defaultAction: !empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : defaultAction
     trustedServiceAccessEnabled: trustedServiceAccessEnabled
     ipRules: publicNetworkAccess == 'Disabled' ? null : ipRules

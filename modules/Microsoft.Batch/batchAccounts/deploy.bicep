@@ -190,7 +190,7 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
       url: keyVaultReferenceKeyVault.properties.vaultUri
     } : null
     poolAllocationMode: poolAllocationMode
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
   }
 }
 

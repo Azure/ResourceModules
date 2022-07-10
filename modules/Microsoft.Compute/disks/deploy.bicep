@@ -161,7 +161,7 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' = {
     maxShares: maxShares
     networkAccessPolicy: networkAccessPolicy
     osType: empty(osType) ? any(null) : osType
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     supportedCapabilities: empty(osType) ? {} : {
       acceleratedNetwork: acceleratedNetwork
     }

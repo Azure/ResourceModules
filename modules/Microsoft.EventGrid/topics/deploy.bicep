@@ -111,7 +111,7 @@ resource topic 'Microsoft.EventGrid/topics@2020-06-01' = {
   location: location
   tags: tags
   properties: {
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     inboundIpRules: (empty(inboundIpRules) ? null : inboundIpRules)
   }
 }
