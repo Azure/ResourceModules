@@ -29,10 +29,6 @@ This module deploys Web StaticSites CustomDomains.
 | `validationMethod` | string | `'cname-delegation'` | Validation method for adding a custom domain. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |

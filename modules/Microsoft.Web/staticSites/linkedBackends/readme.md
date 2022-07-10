@@ -34,10 +34,6 @@ This module deploys Web StaticSites LinkedBackends.
 | `backendResourceId` | string | The resource id of the backend linked to the static site. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |

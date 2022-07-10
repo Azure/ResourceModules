@@ -29,10 +29,6 @@ This module deploys Web StaticSites Config.
 | `staticSiteName` | string | The name of the parent Static Web App. Required if the template is used in a standalone deployment. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
