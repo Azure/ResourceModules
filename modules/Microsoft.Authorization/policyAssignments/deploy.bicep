@@ -34,7 +34,7 @@ param roleDefinitionIds array = []
 param metadata object = {}
 
 @sys.description('Optional. The messages that describe why a resource is non-compliant with the policy.')
-param nonComplianceMessage string = ''
+param nonComplianceMessages array = []
 
 @sys.description('Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce.')
 @allowed([
@@ -89,7 +89,7 @@ module policyAssignment_mg 'managementGroup/deploy.bicep' = if (empty(subscripti
     userAssignedIdentityId: userAssignedIdentityId
     roleDefinitionIds: !empty(roleDefinitionIds) ? roleDefinitionIds : []
     metadata: !empty(metadata) ? metadata : {}
-    nonComplianceMessage: !empty(nonComplianceMessage) ? nonComplianceMessage : ''
+    nonComplianceMessages: !empty(nonComplianceMessages) ? nonComplianceMessages : []
     enforcementMode: enforcementMode
     notScopes: !empty(notScopes) ? notScopes : []
     managementGroupId: managementGroupId
@@ -111,7 +111,7 @@ module policyAssignment_sub 'subscription/deploy.bicep' = if (!empty(subscriptio
     userAssignedIdentityId: userAssignedIdentityId
     roleDefinitionIds: !empty(roleDefinitionIds) ? roleDefinitionIds : []
     metadata: !empty(metadata) ? metadata : {}
-    nonComplianceMessage: !empty(nonComplianceMessage) ? nonComplianceMessage : ''
+    nonComplianceMessages: !empty(nonComplianceMessages) ? nonComplianceMessages : []
     enforcementMode: enforcementMode
     notScopes: !empty(notScopes) ? notScopes : []
     subscriptionId: subscriptionId
@@ -133,7 +133,7 @@ module policyAssignment_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGro
     userAssignedIdentityId: userAssignedIdentityId
     roleDefinitionIds: !empty(roleDefinitionIds) ? roleDefinitionIds : []
     metadata: !empty(metadata) ? metadata : {}
-    nonComplianceMessage: !empty(nonComplianceMessage) ? nonComplianceMessage : ''
+    nonComplianceMessages: !empty(nonComplianceMessages) ? nonComplianceMessages : []
     enforcementMode: enforcementMode
     notScopes: !empty(notScopes) ? notScopes : []
     subscriptionId: subscriptionId

@@ -36,7 +36,7 @@ With this module you can perform policy assignments across the management group,
 | `location` | string | `[deployment().location]` |  | Location for all resources. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` |  | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `nonComplianceMessage` | string | `''` |  | The messages that describe why a resource is non-compliant with the policy. |
+| `nonComplianceMessages` | array | `[]` |  | The messages that describe why a resource is non-compliant with the policy. |
 | `notScopes` | array | `[]` |  | The policy excluded scopes. |
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
 | `resourceGroupName` | string | `''` |  | The Target Scope for the Policy. The name of the resource group for the policy assignment. |
@@ -239,7 +239,11 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       category: 'Security'
       version: '1.0'
     }
-    nonComplianceMessage: 'Violated Policy Assignment - This is a Non Compliance Message'
+    nonComplianceMessages: [
+      {
+        message: 'Violated Policy Assignment - This is a Non Compliance Message'
+      }
+    ]
     notScopes: [
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
     ]
@@ -302,8 +306,12 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         "version": "1.0"
       }
     },
-    "nonComplianceMessage": {
-      "value": "Violated Policy Assignment - This is a Non Compliance Message"
+    "nonComplianceMessages": {
+      "value": [
+        {
+          "message": "Violated Policy Assignment - This is a Non Compliance Message"
+        }
+      ]
     },
     "notScopes": {
       "value": [
@@ -408,7 +416,11 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       category: 'Security'
       version: '1.0'
     }
-    nonComplianceMessage: 'Violated Policy Assignment - This is a Non Compliance Message'
+    nonComplianceMessages: [
+      {
+        message: 'Violated Policy Assignment - This is a Non Compliance Message'
+      }
+    ]
     notScopes: [
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
     ]
@@ -471,8 +483,12 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         "version": "1.0"
       }
     },
-    "nonComplianceMessage": {
-      "value": "Violated Policy Assignment - This is a Non Compliance Message"
+    "nonComplianceMessages": {
+      "value": [
+        {
+          "message": "Violated Policy Assignment - This is a Non Compliance Message"
+        }
+      ]
     },
     "notScopes": {
       "value": [
@@ -582,7 +598,11 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       category: 'Security'
       version: '1.0'
     }
-    nonComplianceMessage: 'Violated Policy Assignment - This is a Non Compliance Message'
+    nonComplianceMessages: [
+      {
+        message: 'Violated Policy Assignment - This is a Non Compliance Message'
+      }
+    ]
     notScopes: [
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
     ]
@@ -644,8 +664,12 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         "version": "1.0"
       }
     },
-    "nonComplianceMessage": {
-      "value": "Violated Policy Assignment - This is a Non Compliance Message"
+    "nonComplianceMessages": {
+      "value": [
+        {
+          "message": "Violated Policy Assignment - This is a Non Compliance Message"
+        }
+      ]
     },
     "notScopes": {
       "value": [

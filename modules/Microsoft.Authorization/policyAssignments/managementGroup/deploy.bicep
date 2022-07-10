@@ -35,7 +35,7 @@ param roleDefinitionIds array = []
 param metadata object = {}
 
 @sys.description('Optional. The messages that describe why a resource is non-compliant with the policy.')
-param nonComplianceMessage string = ''
+param nonComplianceMessages array = []
 
 @sys.description('Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce.')
 @allowed([
@@ -52,10 +52,6 @@ param notScopes array = []
 
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
-
-var nonComplianceMessage_var = {
-  message: !empty(nonComplianceMessage) ? nonComplianceMessage : null
-}
 
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -91,7 +87,7 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
     description: !empty(description) ? description : null
     policyDefinitionId: policyDefinitionId
     parameters: parameters
-    nonComplianceMessages: !empty(nonComplianceMessage) ? array(nonComplianceMessage_var) : []
+    nonComplianceMessages: !empty(nonComplianceMessages) ? nonComplianceMessages : []
     enforcementMode: enforcementMode
     notScopes: !empty(notScopes) ? notScopes : []
   }

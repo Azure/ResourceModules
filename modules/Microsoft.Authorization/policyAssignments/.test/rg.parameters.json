@@ -24,8 +24,12 @@
                 }
             }
         },
-        "nonComplianceMessage": {
-            "value": "Violated Policy Assignment - This is a Non Compliance Message"
+        "nonComplianceMessages": {
+            "value": [
+                {
+                    "message": "Violated Policy Assignment - This is a Non Compliance Message"
+                }
+            ]
         },
         "enforcementMode": {
             "value": "DoNotEnforce"
