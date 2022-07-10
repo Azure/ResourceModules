@@ -471,7 +471,7 @@ function ConvertTo-FormattedJSONParameterObject {
         }
         if ($paramInJSONFormatArray[$index] -notlike '*:*' -and $paramInJSONFormatArray[$index] -notlike '*"*"*' -and $paramInJSONFormatArray[$index] -like '*.*') {
             # In case of a reference like : [ \n resourceGroupResources.outputs.managedIdentityPrincipalId \n ]
-            $paramInJSONFormatArray[$index] = '"{0}"' -f $paramInJSONFormatArray[$index].Split('.')[-1].Trim()
+            $paramInJSONFormatArray[$index] = '"<{0}>"' -f $paramInJSONFormatArray[$index].Split('.')[-1].Trim()
         }
     }
 
@@ -755,16 +755,25 @@ function Set-DeploymentExamplesSection {
             $isParameterFile = $rawContentHashtable.'$schema' -like '*deploymentParameters*'
             if (-not $isParameterFile) {
                 # Case 1: Uses deployment test file (instead of parameter file).
-                # [1/2]  Need to extract parameters. The taarget is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
+                # [1/3]  Need to extract parameters. The taarget is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
                 $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
 
-                # [2/2] Build the full ARM-JSON parameter file
+                # [2/3] Build the full ARM-JSON parameter file
                 $jsonParameterContent = [ordered]@{
                     '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
                     contentVersion = '1.0.0.0'
-                    parameters     = $testResource.parameters
+                    parameters     = $testResource.properties.parameters
                 }
                 $jsonParameterContent = ($jsonParameterContent | ConvertTo-Json -Depth 99).TrimEnd()
+
+                # [3/3]  Remove 'externalResourceReferences' that are generated for Bicep's 'existing' resource references. Removing them will make the file more readable
+                $jsonParameterContentArray = $jsonParameterContent -split '\n'
+                foreach ($row in ($jsonParameterContentArray | Where-Object { $_ -like '*reference(extensionResourceId*' })) {
+                    $expectedValue = ([regex]::Match($row, '.+\[reference\(extensionResourceId.+\.(.+)\.value\]"')).Captures.Groups[1].Value
+                    $toReplaceValue = ([regex]::Match($row, '"(\[reference\(extensionResourceId.+)"')).Captures.Groups[1].Value
+
+                    $jsonParameterContent = $jsonParameterContent.Replace($toReplaceValue, ('<{0}>' -f $expectedValue))
+                }
             } else {
                 # Case 2: Uses ARM-JSON parameter file
                 $jsonParameterContent = $rawContent.TrimEnd()
@@ -834,8 +843,8 @@ function Set-DeploymentExamplesSection {
                 } else {
                     # If handling a test deployment file
                     $JSONParametersWithoutValue = @{}
-                    foreach ($parameter in $formattedJSONParameters.Keys) {
-                        $JSONParametersWithoutValue[$parameter] = $formattedJSONParameters.$parameter.value
+                    foreach ($parameter in $JSONParametersHashTable.Keys) {
+                        $JSONParametersWithoutValue[$parameter] = $JSONParametersHashTable.$parameter.value
                     }
                 }
 
