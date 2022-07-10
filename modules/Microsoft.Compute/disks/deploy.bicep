@@ -92,12 +92,13 @@ param networkAccessPolicy string = 'DenyAll'
 @description('Optional. Sources of a disk creation.')
 param osType string = ''
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
-  'Disabled'
+  ''
   'Enabled'
+  'Disabled'
 ])
-@description('Optional. Policy for controlling export on the disk.')
-param publicNetworkAccess string = 'Disabled'
+param publicNetworkAccess string = ''
 
 @description('Optional. True if the image from which the OS disk is created supports accelerated networking.')
 param acceleratedNetwork bool = false

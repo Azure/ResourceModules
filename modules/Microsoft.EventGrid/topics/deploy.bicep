@@ -4,8 +4,13 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Determines if traffic is allowed over public network.')
-param publicNetworkAccess string = 'Enabled'
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = ''
 
 @description('Optional. Array of IPs to whitelist.')
 param inboundIpRules array = []

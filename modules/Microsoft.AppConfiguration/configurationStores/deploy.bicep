@@ -30,12 +30,13 @@ param disableLocalAuth bool = false
 @description('Optional. Property specifying whether protection against purge is enabled for this configuration store.')
 param enablePurgeProtection bool = false
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
-  'Disabled'
+  ''
   'Enabled'
+  'Disabled'
 ])
-@description('Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled.')
-param publicNetworkAccess string = 'Enabled'
+param publicNetworkAccess string = ''
 
 @description('Optional. The amount of time in days that the configuration store will be retained when it is soft deleted.')
 @minValue(1)

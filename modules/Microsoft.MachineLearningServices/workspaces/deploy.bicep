@@ -131,12 +131,13 @@ param imageBuildCompute string = ''
 @sys.description('Conditional. The user assigned identity resource id that represents the workspace identity. Required if \'userAssignedIdentities\' is not empty and may not be used if \'systemAssignedIdentity\' is enabled.')
 param primaryUserAssignedIdentity string = ''
 
-@sys.description('Optional. Whether requests from Public Network are allowed.')
+@sys.description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
+  ''
   'Enabled'
   'Disabled'
 ])
-param publicNetworkAccess string = 'Disabled'
+param publicNetworkAccess string = ''
 
 // ================//
 // Variables       //

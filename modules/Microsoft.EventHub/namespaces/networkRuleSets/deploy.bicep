@@ -1,12 +1,13 @@
 @description('Conditional. The name of the parent event hub namespace. Required if the template is used in a standalone deployment.')
 param namespaceName string
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
+  ''
   'Enabled'
   'Disabled'
 ])
-@description('Optional. This determines if traffic is allowed over public network. Default it is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only.')
-param publicNetworkAccess string = 'Enabled'
+param publicNetworkAccess string = ''
 
 @allowed([
   'Allow'
