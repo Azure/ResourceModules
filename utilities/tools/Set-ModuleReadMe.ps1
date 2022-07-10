@@ -299,12 +299,42 @@ function Set-OutputsSection {
     return $updatedFileContent
 }
 
+<#
+.SYNOPSIS
+Add comments to indicate required & non-required parameters to the given Bicep example
+
+.DESCRIPTION
+Add comments to indicate required & non-required parameters to the given Bicep example.
+'Required' is only added if the example has at least one required parameter
+'Non-Required' is only added if the example has at least one required parameter and at least one non-required parameter
+
+.PARAMETER BicepParams
+Mandatory. The Bicep parameter block to add the comments to (i.e., should contain everything in between the brackets of a 'params: {...} block)
+
+.PARAMETER AllParametersList
+Mandatory. A list of all top-level (i.e. non-nested) parameter names
+
+.PARAMETER RequiredParametersList
+Mandatory. A list of all required top-level (i.e. non-nested) parameter names
+
+.EXAMPLE
+Add-BicepParameterTypeComment -AllParametersList @('name', 'lock') -RequiredParametersList @('name') -BicepParams "name: 'carml'\nlock: 'CanNotDelete'"
+
+Add type comments to given bicep params string, using one required parameter 'name'. Would return:
+
+'
+    // Required parameters
+    name: 'carml'
+    // Non-required parameters
+    lock: 'CanNotDelete'
+'
+#>
 function Add-BicepParameterTypeComment {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $BicepExample,
+        [string] $BicepParams,
 
         [Parameter(Mandatory = $true)]
         [string[]] $AllParametersList,
@@ -315,39 +345,63 @@ function Add-BicepParameterTypeComment {
 
     if ($RequiredParametersList.Count -ge 1 -and $AllParametersList.Count -ge 2) {
 
-        $bicepExampleArray = $BicepExample -split '\n'
+        $BicepParamsArray = $BicepParams -split '\n'
 
         # [1/4] Check where the 'last' required parameter is located in the example (and what its indent is)
         $parameterToSplitAt = $RequiredParametersList[-1]
-        $requiredParameterIndent = ([regex]::Match($bicepExampleArray[0], '^(\s+).*')).Captures.Groups[1].Value.Length
+        $requiredParameterIndent = ([regex]::Match($BicepParamsArray[0], '^(\s+).*')).Captures.Groups[1].Value.Length
 
         # [1/4] Add a comment where the required parameters start
-        $bicepExampleArray = @('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(0 .. ($bicepExampleArray.Count))]
+        $BicepParamsArray = @('{0}// Required parameters' -f (' ' * $requiredParameterIndent)) + $BicepParamsArray[(0 .. ($BicepParamsArray.Count))]
 
         # [1/4] Find the location if the last required parameter
-        $requiredParameterStartIndex = ($bicepExampleArray | Select-String ('^[\s]{0}{1}:.+' -f "{$requiredParameterIndent}", $parameterToSplitAt) | ForEach-Object { $_.LineNumber - 1 })[0]
+        $requiredParameterStartIndex = ($BicepParamsArray | Select-String ('^[\s]{0}{1}:.+' -f "{$requiredParameterIndent}", $parameterToSplitAt) | ForEach-Object { $_.LineNumber - 1 })[0]
 
         # [1/4] If we have more than only required parameters, let's add a corresponding comment
         if ($AllParametersList.Count -gt $RequiredParametersList.Count) {
-            $nextLineIndent = ([regex]::Match($bicepExampleArray[$requiredParameterStartIndex + 1], '^(\s+).*')).Captures.Groups[1].Value.Length
+            $nextLineIndent = ([regex]::Match($BicepParamsArray[$requiredParameterStartIndex + 1], '^(\s+).*')).Captures.Groups[1].Value.Length
             if ($nextLineIndent -gt $requiredParameterIndent) {
                 # Case Param is object/array: Search in rest of array for the next closing bracket with the same indent - and then add the search index (1) & initial index (1) count back in
-                $requiredParameterEndIndex = ($bicepExampleArray[($requiredParameterStartIndex + 1)..($bicepExampleArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\S+" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex
+                $requiredParameterEndIndex = ($BicepParamsArray[($requiredParameterStartIndex + 1)..($BicepParamsArray.Count)] | Select-String "^[\s]{$requiredParameterIndent}\S+" | ForEach-Object { $_.LineNumber - 1 })[0] + 1 + $requiredParameterStartIndex
             } else {
                 # Case Param is single line bool/string/int: Add an index (1) for the 'required' comment
                 $requiredParameterEndIndex = $requiredParameterStartIndex
             }
 
             # Add a comment where the non-required parameters start
-            $bicepExampleArray = $bicepExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(($requiredParameterEndIndex + 1) .. ($bicepExampleArray.Count))]
+            $BicepParamsArray = $BicepParamsArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $BicepParamsArray[(($requiredParameterEndIndex + 1) .. ($BicepParamsArray.Count))]
         }
 
-        $BicepExample = ($bicepExampleArray | Out-String).TrimEnd()
+        return ($BicepParamsArray | Out-String).TrimEnd()
     }
 
-    return $BicepExample
+    return $BicepParams
 }
 
+<#
+.SYNOPSIS
+Sort the given JSON paramters into required & non-required parameters, each sorted alphabetically
+
+.DESCRIPTION
+Sort the given JSON paramters into required & non-required parameters, each sorted alphabetically
+
+.PARAMETER ParametersJSON
+Mandatory. The JSON parameters block to process (ideally already without 'value' property)
+
+.PARAMETER RequiredParametersList
+Mandatory. A list of all required top-level (i.e. non-nested) parameter names
+
+.EXAMPLE
+Get-OrderedParametersJSON -RequiredParametersList @('name') -ParametersJSON '{ "diagnosticLogsRetentionInDays": 7,"lock": "CanNotDelete","name": "carml" }'
+
+Order the given JSON object alphabetically. Would result into:
+
+@{
+    name: 'carml'
+    diagnosticLogsRetentionInDays: 7
+    lock: 'CanNotDelete'
+}
+#>
 function Get-OrderedParametersJSON {
 
     [CmdletBinding()]
@@ -381,6 +435,43 @@ function Get-OrderedParametersJSON {
     return $orderedJSONParameters
 }
 
+<#
+.SYNOPSIS
+Sort the given JSON parameters into a new JSON parameter object, all parameter sorted into required & non-required parameters, each sorted alphabetically
+
+.DESCRIPTION
+Sort the given JSON parameters into a new JSON parameter object, all parameter sorted into required & non-required parameters, each sorted alphabetically.
+The location where required & non-required parameters start is highlighted with by a corresponding comment
+
+.PARAMETER ParametersJSON
+Mandatory. The parameter JSON object to process
+
+.PARAMETER RequiredParametersList
+Mandatory. A list of all required top-level (i.e. non-nested) parameter names
+
+.EXAMPLE
+Build-OrderedJSONObject -RequiredParametersList @('name') -ParametersJSON '{ "lock": { "value": "CanNotDelete" }, "name": { "value": "carml" }, "diagnosticLogsRetentionInDays": { "value": 7 } }'
+
+Build a formatted Parameter-JSON object with one required parameter. Would result into:
+
+'{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        // Required parameters
+        "name": {
+            "value": "carml"
+        },
+        // Non-required parameters
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        }
+    }
+}'
+#>
 function Build-OrderedJSONObject {
 
     [CmdletBinding()]
@@ -428,12 +519,36 @@ function Build-OrderedJSONObject {
         }
 
         # [8/8] Convert the processed array back into a string
-        $jsonExample = $jsonExampleArray | Out-String
+        return $jsonExampleArray | Out-String
     }
 
     return $jsonExample
 }
 
+<#
+.SYNOPSIS
+Convert the given Bicep parameter block to JSON parameter block
+
+.DESCRIPTION
+Convert the given Bicep parameter block to JSON parameter block
+
+.PARAMETER BicepParamBlock
+Mandatory. The Bicep parameter block to process
+
+.EXAMPLE
+ConvertTo-FormattedJSONParameterObject -BicepParamBlock "name: 'carml'\nlock: 'CanNotDelete'"
+
+Convert the Bicep string "name: 'carml'\nlock: 'CanNotDelete'" into a parameter JSON object. Would result into:
+
+@{
+    lock = @{
+        value = 'carml'
+    }
+    lock = @{
+        value = 'CanNotDelete'
+    }
+}
+#>
 function ConvertTo-FormattedJSONParameterObject {
 
     [CmdletBinding()]
@@ -501,6 +616,32 @@ function ConvertTo-FormattedJSONParameterObject {
     return $paramInJsonFormatObjectWithValue
 }
 
+<#
+.SYNOPSIS
+Convert the given parameter JSON object into a formatted Bicep object (i.e., sorted & with required/non-required comments)
+
+.DESCRIPTION
+Convert the given parameter JSON object into a formatted Bicep object (i.e., sorted & with required/non-required comments)
+
+.PARAMETER JSONParameters
+Mandatory. The parameter JSON object to process.
+
+.PARAMETER RequiredParametersList
+Mandatory. A list of all required top-level (i.e. non-nested) parameter names
+
+.EXAMPLE
+ConvertTo-FormattedBicep -RequiredParametersList @('name') -JSONParameters @{ lock = @{ value = 'carml' }; lock = @{ value = 'CanNotDelete' } }
+
+Convert the given JSONParameters object with one required parameter to a formatted Bicep object. Would result into:
+
+'
+    // Required parameters
+    name: 'carml'
+    // Non-required parameters
+    diagnosticLogsRetentionInDays: 7
+    lock: 'CanNotDelete'
+'
+#>
 function ConvertTo-FormattedBicep {
 
     [CmdletBinding()]
@@ -538,17 +679,17 @@ function ConvertTo-FormattedBicep {
     }
 
     # [3/4] Format params with indent
-    $bicepExample = ($bicepParamsArray | ForEach-Object { "  $_" } | Out-String).TrimEnd()
+    $BicepParams = ($bicepParamsArray | ForEach-Object { "  $_" } | Out-String).TrimEnd()
 
     # [4/4]  Add comment where required & optional parameters start
     $splitInputObject = @{
-        BicepExample           = $bicepExample
+        BicepParams            = $BicepParams
         RequiredParametersList = $RequiredParametersList
         AllParametersList      = $JSONParametersWithoutValue.Keys
     }
-    $bicepExample = Add-BicepParameterTypeComment @splitInputObject
+    $commentedBicepParams = Add-BicepParameterTypeComment @splitInputObject
 
-    return $bicepExample
+    return $commentedBicepParams
 }
 
 <#
