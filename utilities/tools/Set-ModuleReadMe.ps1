@@ -299,31 +299,6 @@ function Set-OutputsSection {
     return $updatedFileContent
 }
 
-function  Get-OrderedBicepParameterList {
-
-    param(
-        [Parameter(Mandatory = $true)]
-        [Object[]] $BicepExample,
-
-        [Parameter(Mandatory = $true)]
-        [string[]] $RequiredParametersList
-    )
-
-    $orderedBicepParameters = [ordered]@{}
-    $orderedTopLevelParameterNames = $BicepExample.psbase.Keys # We must use PS-Base to handle conflicts of HashTable properties & keys (e.g. for a key 'keys').
-    # [2.1] Add required parameters first
-    $orderedTopLevelParameterNames | Where-Object { $_ -in $RequiredParametersList } | ForEach-Object { $orderedBicepParameters[$_] = $BicepExample[$_] }
-    # [2.2] Add rest after
-    $orderedTopLevelParameterNames | Where-Object { $_ -notin $RequiredParametersList } | ForEach-Object { $orderedBicepParameters[$_] = $BicepExample[$_] }
-
-    # [3/3] Handle empty dictionaries (in case the parmaeter file was empty)
-    if ($orderedBicepParameters.count -eq 0) {
-        $orderedBicepParameters = ''
-    }
-
-    return $orderedBicepParameters
-}
-
 function Add-BicepParameterTypeComment {
 
     [CmdletBinding()]
@@ -459,6 +434,113 @@ function Build-OrderedJSONObject {
     return $jsonExample
 }
 
+function ConvertTo-FormattedJSONParameterObject {
+
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [string] $BicepParamBlock
+    )
+
+    # [1/4] Detect top level params for later processing
+    $bicepParamBlockArray = $BicepParamBlock -split '\n'
+    $topLevelParamIndent = ([regex]::Match($bicepParamBlockArray[0], '^(\s+).*')).Captures.Groups[1].Value.Length
+    $topLevelParams = $bicepParamBlockArray | Where-Object { $_ -match "^\s{$topLevelParamIndent}[0-9a-zA-Z]+:.*" } | ForEach-Object { ($_ -split ':')[0].Trim() }
+
+    # [2/4] Add JSON-specific syntax to the Bicep param block to enable us to treat is as such
+    # [1.1] Syntax: Outer brackets
+    $paramInJsonFormat = @(
+        '{',
+        $BicepParamBlock
+        '}'
+    ) | Out-String
+
+    # [1.2] Syntax: All single-quotes are double-quotes
+    $paramInJsonFormat = $paramInJsonFormat -replace "'", '"'
+    # [1.3] Syntax: Everything left of a ':' should be wrapped in quotes (as a parameter name is always a string)
+    $paramInJsonFormat = $paramInJsonFormat -replace '([0-9a-zA-Z]+):', '"$1":'
+
+    # [1.4] Split the object to format line-by-line (& also remove any empty lines)
+    $paramInJSONFormatArray = $paramInJsonFormat -split '\n' | Where-Object { $_ }
+
+    # [1.5] Syntax: Replace Bicep resource ID references
+    for ($index = 0; $index -lt $paramInJSONFormatArray.Count; $index++) {
+        if ($paramInJSONFormatArray[$index] -like '*:*' -and ($paramInJSONFormatArray[$index] -split ':')[1].Trim() -notmatch '".+"' -and $paramInJSONFormatArray[$index] -like '*.*') {
+            # In case of a reference like : "virtualWanId": resourceGroupResources.outputs.virtualWWANResourceId
+            $paramInJSONFormatArray[$index] = '{0}: "<{1}>"' -f ($paramInJSONFormatArray[$index] -split ':')[0], ([regex]::Match(($paramInJSONFormatArray[$index] -split ':')[0], '"(.+)"')).Captures.Groups[1].Value
+        }
+        if ($paramInJSONFormatArray[$index] -notlike '*:*' -and $paramInJSONFormatArray[$index] -notlike '*"*"*' -and $paramInJSONFormatArray[$index] -like '*.*') {
+            # In case of a reference like : [ \n resourceGroupResources.outputs.managedIdentityPrincipalId \n ]
+            $paramInJSONFormatArray[$index] = '"{0}"' -f $paramInJSONFormatArray[$index].Split('.')[-1].Trim()
+        }
+    }
+
+    # [1.6] Syntax: Add comma everywhere unless:
+    # - the current line has an opening 'object: {' or 'array: [' character
+    # - the line after the current line has a closing 'object: {' or 'array: [' character
+    # - it's the last closing bracket
+    for ($index = 0; $index -lt $paramInJSONFormatArray.Count; $index++) {
+        if (($paramInJSONFormatArray[$index] -match '[\{|\[]') -or (($index -lt $paramInJSONFormatArray.Count - 1) -and $paramInJSONFormatArray[$index + 1] -match '[\]|\}]') -or ($index -eq $paramInJSONFormatArray.Count - 1)) {
+            continue
+        }
+        $paramInJSONFormatArray[$index] = '{0},' -f $paramInJSONFormatArray[$index].Trim()
+    }
+
+    # [1.7] Format the final JSON string to an object to enable processing
+    $paramInJsonFormatObject = $paramInJSONFormatArray | Out-String | ConvertFrom-Json -AsHashtable -Depth 99
+
+    # [3/4] Inject top-level 'value`' properties
+    $paramInJsonFormatObjectWithValue = @{}
+    foreach ($paramKey in $topLevelParams) {
+        $paramInJsonFormatObjectWithValue[$paramKey] = @{
+            value = $paramInJsonFormatObject[$paramKey]
+        }
+    }
+
+    # [4/4] Return result
+    return $paramInJsonFormatObjectWithValue
+}
+
+function ConvertTo-FormattedBicep {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [hashtable] $JSONParameters,
+
+        [Parameter(Mandatory = $true)]
+        [string[]] $RequiredParametersList
+    )
+
+    # [1/4] Order parameters recursively
+    $orderedJSONParameters = Get-OrderedParametersJSON -ParametersJSON ($JSONParameters | ConvertTo-Json -Depth 99) -RequiredParametersList $RequiredParametersList
+
+    # [2/4] Remove any JSON specific formatting
+    $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
+    if ($templateParameterObject -ne '{}') {
+        $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
+        $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
+        $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
+        $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
+
+        $bicepParamsArray = $contentInBicepFormat -split '\n'
+        $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
+    }
+
+    # [3/4] Format params with indent
+    $bicepExample = ($bicepParamsArray | ForEach-Object { "  $_" } | Out-String).TrimEnd()
+
+    # [4/4]  Add comment where required & optional parameters start
+    $splitInputObject = @{
+        BicepExample           = $bicepExample
+        RequiredParametersList = $RequiredParametersList
+        AllParametersList      = $JSONParameters.Keys
+    }
+    $bicepExample = Add-BicepParameterTypeComment @splitInputObject
+
+    return $bicepExample
+}
+
 <#
 .SYNOPSIS
 Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
@@ -560,7 +642,7 @@ function Set-DeploymentExamplesSection {
             #   Prepare Bicep to JSON   #
             # ------------------------- #
 
-            # [1/3] Search for the relevant parameter start & end index
+            # [1/6] Search for the relevant parameter start & end index
             $bicepTestStartIndex = $rawContentArray.IndexOf("module testDeployment '../deploy.bicep' = {")
 
             $bicepTestEndIndex = $bicepTestStartIndex
@@ -570,7 +652,7 @@ function Set-DeploymentExamplesSection {
 
             $rawBicepExample = $rawContentArray[$bicepTestStartIndex..$bicepTestEndIndex]
 
-            # [2/3] Replace placeholders
+            # [2/6] Replace placeholders
             $namePrefix = ($ProjectSettings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }).value
             $serviceShort = ([regex]::Match($rawContent, "(?m)^param serviceShort string = '(.+)'\s*$")).Captures.Groups[1].Value
 
@@ -578,41 +660,38 @@ function Set-DeploymentExamplesSection {
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{serviceShort\}', $serviceShort
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', $namePrefix
 
-            # [3/4] Format header, remove scope property & any empty line
+            # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
             $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
-            # Sort param block
+            # [4/6] Extract param block
             $rawBicepExampleArray = $rawBicepExample -split '\n'
             $moduleDeploymentPropertyIndent = ([regex]::Match($rawBicepExampleArray[1], '^(\s+).*')).Captures.Groups[1].Value.Length
             $paramsStartIndex = ($rawBicepExampleArray | Select-String ("^[\s]{$moduleDeploymentPropertyIndent}params:[\s]*\{") | ForEach-Object { $_.LineNumber - 1 })[0] + 1
             $paramsEndIndex = ($rawBicepExampleArray[($paramsStartIndex + 1)..($rawBicepExampleArray.Count)] | Select-String "^[\s]{$moduleDeploymentPropertyIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + $paramsStartIndex
             $paramBlock = ($rawBicepExampleArray[$paramsStartIndex..$paramsEndIndex] | Out-String).TrimEnd()
 
-            $topLevelParamIndent = ([regex]::Match($paramBlock[0], '^(\s+).*')).Captures.Groups[1].Value.Length
-            $topLevelParams = $paramBlock | Where-Object { $_ -match "^\s{$topLevelParamIndent}[0-9a-zA-Z]+:.*" } | ForEach-Object { ($_ -split ':')[0].Trim() }
+            # [5/6] Convert Bicep parameter block to JSON parameter block to enable processing
+            $conversionInputObject = @{
+                BicepParamBlock = $paramBlock
+            }
+            $paramsInJSONFormat = ConvertTo-FormattedJSONParameterObject @conversionInputObject
 
-            # TODO: Order parameters - via JSON?
-            $orderBicepInputObject = @{
-                BicepExample           = $paramBlock
+            # [6/6] Convert JSON parameters back to Bicep and order & format them
+            $conversionInputObject = @{
+                JSONParameters         = $paramsInJSONFormat
                 RequiredParametersList = $RequiredParametersList
             }
-            $formattedBicepParams = Get-OrderedBicepParameterList @orderBicepInputObject
-
-            $splitInputObject = @{
-                BicepExample           = $paramBlock
-                RequiredParametersList = $RequiredParametersList
-                AllParametersList      = $topLevelParams
-            }
-            $formattedBicepParams = Add-BicepParameterTypeComment @splitInputObject
-
-            $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + ($formattedBicepParams -split '\n') + $rawBicepExample[($paramsEndIndex + 1)..($rawBicepExample.Count)]
+            $bicepExample = ConvertTo-FormattedBicep @conversionInputObject
 
             # --------------------- #
             #   Add Bicep example   #
             # --------------------- #
             if ($addBicep) {
+
+                $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + ($bicepExample -split '\n') + $rawBicepExample[($paramsEndIndex + 1)..($rawBicepExample.Count)]
+
                 $SectionContent += @(
                     '',
                     '<details>'
@@ -633,59 +712,9 @@ function Set-DeploymentExamplesSection {
             # -------------------- #
             if ($addJson) {
 
-                # [1/3] Add JSON-specific syntax to the Bicep param block to enable us to treat is as such
-                # [1.1] Syntax: Outer brackets
-                $paramInJsonFormat = @(
-                    '{',
-                    $paramBlock
-                    '}'
-                ) | Out-String
-
-                # [1.2] Syntax: All single-quotes are double-quotes
-                $paramInJsonFormat = $paramInJsonFormat -replace "'", '"'
-                # [1.3] Syntax: Everything left of a ':' should be wrapped in quotes (as a parameter name is always a string)
-                $paramInJsonFormat = $paramInJsonFormat -replace '([0-9a-zA-Z]+):', '"$1":'
-
-                # [1.4] Split the object to format line-by-line (& also remove any empty lines)
-                $paramInJSONFormatArray = $paramInJsonFormat -split '\n' | Where-Object { $_ }
-
-                # [1.5] Syntax: Replace Bicep resource ID references
-                for ($index = 0; $index -lt $paramInJSONFormatArray.Count; $index++) {
-                    if ($paramInJSONFormatArray[$index] -like '*:*' -and ($paramInJSONFormatArray[$index] -split ':')[1].Trim() -notmatch '".+"' -and $paramInJSONFormatArray[$index] -like '*.*') {
-                        # In case of a reference like : "virtualWanId": resourceGroupResources.outputs.virtualWWANResourceId
-                        $paramInJSONFormatArray[$index] = '{0}: "<{1}>"' -f ($paramInJSONFormatArray[$index] -split ':')[0], ([regex]::Match(($paramInJSONFormatArray[$index] -split ':')[0], '"(.+)"')).Captures.Groups[1].Value
-                    }
-                    if ($paramInJSONFormatArray[$index] -notlike '*:*' -and $paramInJSONFormatArray[$index] -notlike '*"*"*' -and $paramInJSONFormatArray[$index] -like '*.*') {
-                        # In case of a reference like : [ \n resourceGroupResources.outputs.managedIdentityPrincipalId \n ]
-                        $paramInJSONFormatArray[$index] = '"{0}"' -f $paramInJSONFormatArray[$index].Split('.')[-1].Trim()
-                    }
-                }
-
-                # [1.6] Syntax: Add comma everywhere unless:
-                # - the current line has an opening 'object: {' or 'array: [' character
-                # - the line after the current line has a closing 'object: {' or 'array: [' character
-                # - it's the last closing bracket
-                for ($index = 0; $index -lt $paramInJSONFormatArray.Count; $index++) {
-                    if (($paramInJSONFormatArray[$index] -match '[\{|\[]') -or (($index -lt $paramInJSONFormatArray.Count - 1) -and $paramInJSONFormatArray[$index + 1] -match '[\]|\}]') -or ($index -eq $paramInJSONFormatArray.Count - 1)) {
-                        continue
-                    }
-                    $paramInJSONFormatArray[$index] = '{0},' -f $paramInJSONFormatArray[$index].Trim()
-                }
-
-                # [1.7] Format the final JSON string to an object to enable processing
-                $paramInJsonFormatObject = $paramInJSONFormatArray | Out-String | ConvertFrom-Json -AsHashtable -Depth 99
-
-                # [1.8] Restore the original order of parameters (which are lost by the 'ConvertFrom-JSON' method invocation)
-                $paramInJsonFormatObjectWithValue = @{}
-                foreach ($paramKey in $topLevelParams) {
-                    $paramInJsonFormatObjectWithValue[$paramKey] = @{
-                        value = $paramInJsonFormatObject[$paramKey]
-                    }
-                }
-
                 # [2/3] Get all parameters from the parameter object and order them recursively
                 $orderingInputObject = @{
-                    ParametersJSON         = $paramInJsonFormatObjectWithValue | ConvertTo-Json -Depth 99
+                    ParametersJSON         = $paramsInJSONFormat | ConvertTo-Json -Depth 99
                     RequiredParametersList = $RequiredParametersList
                 }
                 $orderedJSONExample = Build-OrderedJSONObject @orderingInputObject
@@ -710,28 +739,20 @@ function Set-DeploymentExamplesSection {
             #   Prepare JSON to Bicep   #
             # ------------------------- #
 
-            $rawContentHashtable = $rawContent | ConvertFrom-Json -Depth 99
+            $rawContentHashtable = $rawContent | ConvertFrom-Json -Depth 99 -AsHashtable -NoEnumerate
 
             # First we need to check if we're dealing with classic JSON-Parameter file, or a deployment test file (which contains resource deployments & parameters)
             $isParameterFile = $rawContentHashtable.'$schema' -like '*deploymentParameters*'
             if (-not $isParameterFile) {
                 # Case 1: Uses deployment test file (instead of parameter file).
-                # [1/3]  Need to extract parameters. The taarget is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
+                # [1/2]  Need to extract parameters. The taarget is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
                 $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
 
-                $JSONResourceParameters = $testResource.properties.parameters
-
-                # [2/3] Restore the original order of parameters (which are lost by the 'ConvertFrom-JSON' method invocation)
-                $formattedJSONParameters = [ordered]@{}
-                foreach ($parameter in $JSONResourceParameters.PSObject.Properties.Name) {
-                    $formattedJSONParameters[$parameter] = $JSONResourceParameters.$parameter
-                }
-
-                # [3/3] Build the full ARM-JSON parameter file
+                # [2/2] Build the full ARM-JSON parameter file
                 $jsonParameterContent = [ordered]@{
                     '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
                     contentVersion = '1.0.0.0'
-                    parameters     = $formattedJSONParameters
+                    parameters     = $testResource.parameters
                 }
                 $jsonParameterContent = ($jsonParameterContent | ConvertTo-Json -Depth 99).TrimEnd()
             } else {
@@ -744,10 +765,10 @@ function Set-DeploymentExamplesSection {
             # --------------------- #
             if ($addBicep) {
 
-                # [1/8] Get all parameters from the parameter object
+                # [1/4] Get all parameters from the parameter object
                 $JSONParametersHashTable = (ConvertFrom-Json $jsonParameterContent -AsHashtable -Depth 99).parameters
 
-                # [2/8] Handle the special case of Key Vault secret references (that have a 'reference' instead of a 'value' property)
+                # [2/4] Handle the special case of Key Vault secret references (that have a 'reference' instead of a 'value' property)
                 # [2.1] Find all references and split them into managable objects
                 $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }
 
@@ -785,7 +806,7 @@ function Set-DeploymentExamplesSection {
                     }
                 }
 
-                # [3/8] Remove the 'value' property from each parameter
+                # [3/5] Remove the 'value' property from each parameter
                 #      If we're handling a classic ARM-JSON parameter file that includes replacing all 'references' with the link to one of the 'existing' Key Vault resources
                 if ((ConvertFrom-Json $rawContent -Depth 99).'$schema' -like '*deploymentParameters*') {
                     # If handling a classic parameter file
@@ -808,33 +829,14 @@ function Set-DeploymentExamplesSection {
                     }
                 }
 
-                # [4/8] Order parameters recursively
-                $orderedJSONParameters = Get-OrderedParametersJSON -ParametersJSON ($JSONParametersWithoutValue | ConvertTo-Json -Depth 99) -RequiredParametersList $RequiredParametersList
-
-                # [5/8] Remove any JSON specific formatting
-                $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
-                if ($templateParameterObject -ne '{}') {
-                    $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
-                    $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
-                    $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
-                    $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
-
-                    $bicepParamsArray = $contentInBicepFormat -split '\n'
-                    $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
-                }
-
-                # [6/8] Format params with indent
-                $bicepExample = $bicepParamsArray | ForEach-Object { "  $_" } | Out-String
-
-                # [7/8]  Add comment where required & optional parameters start
-                $splitInputObject = @{
-                    BicepExample           = $bicepExample
+                # [4/5] Convert the JSON parameters to a Bicep parameters block
+                $conversionInputObject = @{
+                    JSONParameters         = $JSONParametersWithoutValue
                     RequiredParametersList = $RequiredParametersList
-                    AllParametersList      = $JSONParametersWithoutValue.Keys
                 }
-                $bicepExample = Add-BicepParameterTypeComment @splitInputObject
+                $bicepExample = ConvertTo-FormattedBicep @conversionInputObject
 
-                # [8/8] Create the final content block: That means
+                # [5/5] Create the final content block: That means
                 # - the 'existing' Key Vault resources
                 # - a 'module' header that mimics a module deployment
                 # - all parameters in Bicep format
