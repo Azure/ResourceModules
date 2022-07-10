@@ -497,8 +497,8 @@ function Set-DeploymentExamplesSection {
                         $requiredParameterEndIndex = $requiredParameterStartIndex
                     }
 
-                    # Add a comment where the non-required parameters start
-                    $bicepExampleArray = $bicepExampleArray[0..$requiredParameterEndIndex] + ('{0}// Non-required parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(($requiredParameterEndIndex + 1) .. ($bicepExampleArray.Count))]
+                    # Add a comment where the additional parameters start
+                    $bicepExampleArray = $bicepExampleArray[0..$requiredParameterEndIndex] + ('{0}// Additional parameters' -f (' ' * $requiredParameterIndent)) + $bicepExampleArray[(($requiredParameterEndIndex + 1) .. ($bicepExampleArray.Count))]
                 }
 
                 $bicepExample = $bicepExampleArray | Out-String
