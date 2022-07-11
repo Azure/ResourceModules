@@ -16,8 +16,6 @@ This template deploys a disk
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Compute/disks` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-08-01/disks) |
-| `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -46,8 +44,7 @@ This template deploys a disk
 | `maxShares` | int | `1` |  | The maximum number of VMs that can attach to the disk at the same time. Default value is 0. |
 | `networkAccessPolicy` | string | `'DenyAll'` | `[AllowAll, AllowPrivate, DenyAll]` | Policy for accessing the disk via network. |
 | `osType` | string | `''` | `[Windows, Linux, ]` | Sources of a disk creation. |
-| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `[, Enabled, Disabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Policy for controlling export on the disk. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `securityDataUri` | string | `''` |  | If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state. |
 | `sourceResourceId` | string | `''` |  | If create option is Copy, this is the ARM id of the source snapshot or disk. |
@@ -152,83 +149,6 @@ tags: {
     ServiceName: 'DeploymentValidation'
     Role: 'DeploymentValidation'
 }
-```
-
-</details>
-<p>
-
-### Parameter Usage: `privateEndpoints`
-
-To use Private Endpoint the following dependencies must be deployed:
-
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"privateEndpoints": {
-    "value": [
-        // Example showing all available fields
-        {
-            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<<serviceName>>", // e.g. vault, registry, file, blob, queue, table etc.
-            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-            ],
-            "customDnsConfigs": [ // Optional
-                {
-                    "fqdn": "customname.test.local",
-                    "ipAddresses": [
-                        "10.10.10.10"
-                    ]
-                }
-            ]
-        },
-        // Example showing only mandatory fields
-        {
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<<serviceName>>" // e.g. vault, registry, file, blob, queue, table etc.
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-privateEndpoints:  [
-    // Example showing all available fields
-    {
-        name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
-        privateDnsZoneResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
-        ]
-        // Optional
-        customDnsConfigs: [
-            {
-                fqdn: 'customname.test.local'
-                ipAddresses: [
-                    '10.10.10.10'
-                ]
-            }
-        ]
-    }
-    // Example showing only mandatory fields
-    {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
-    }
-]
 ```
 
 </details>
