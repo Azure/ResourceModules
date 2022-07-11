@@ -1,4 +1,4 @@
-# Web StaticSites LinkedBackends `[Microsoft.Web/staticSites/linkedBackends]`
+# Static Site Linked Backend `[Microsoft.Web/staticSites/linkedBackends]`
 
 This module deploys Web StaticSites LinkedBackends.
 // TODO: Replace Resource and fill in description
