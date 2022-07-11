@@ -261,6 +261,12 @@ userAssignedIdentities: {
 
 Using this object you can configure the service's firewall. Note, that the `defaultAction` either allows all / denies all communication via the `publicNetwork` and `privateEndpoints`. You can subsequently allow/deny individual actions using the corresponding arrays.
 
+Either block supports any array of values:
+- 'ClientConnection'
+- 'RESTAPI'
+- 'ServerConnection'
+- 'Trace'
+
 <details>
 
 <summary>Parameter JSON format</summary>
