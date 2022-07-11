@@ -203,7 +203,7 @@ resource redisCache 'Microsoft.Cache/redis@2021-06-01' = {
     shardCount: family == 'P' ? shardCount : null // Not supported in free tier
     sku: {
       capacity: capacity
-      family: family
+      family: skuName == 'Premium' ? family : any(null)
       name: skuName
     }
     staticIP: !empty(staticIP) ? staticIP : null
