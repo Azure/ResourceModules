@@ -1,4 +1,4 @@
-# Web StaticSites Config `[Microsoft.Web/staticSites/config]`
+# Static Site Config `[Microsoft.Web/staticSites/config]`
 
 This module deploys a Static Site Config.
 
