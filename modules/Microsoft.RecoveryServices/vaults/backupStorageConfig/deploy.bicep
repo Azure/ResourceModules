@@ -16,22 +16,6 @@ param storageModelType string = 'GeoRedundant'
 @description('Optional. Opt in details of Cross Region Restore feature.')
 param crossRegionRestoreFlag bool = true
 
-@description('Optional. Change Vault Dedup state.')
-@allowed([
-  'Disabled'
-  'Enabled'
-  'Invalid'
-])
-param dedupState string = 'Disabled'
-
-@description('Optional. Change Vault x-cool state.')
-@allowed([
-  'Disabled'
-  'Enabled'
-  'Invalid'
-])
-param xcoolState string = 'Disabled'
-
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -57,8 +41,6 @@ resource backupStorageConfig 'Microsoft.RecoveryServices/vaults/backupstoragecon
   properties: {
     storageModelType: storageModelType
     crossRegionRestoreFlag: crossRegionRestoreFlag
-    dedupState: dedupState
-    xcoolState: xcoolState
   }
 }
 

@@ -199,8 +199,6 @@ module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!
     storageModelType: backupStorageConfig.storageModelType
     crossRegionRestoreFlag: backupStorageConfig.crossRegionRestoreFlag
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    dedupState: backupStorageConfig.dedupState
-    xcoolState: backupStorageConfig.xcoolState
   }
 }
 
