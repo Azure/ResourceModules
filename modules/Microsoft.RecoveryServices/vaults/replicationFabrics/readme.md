@@ -15,8 +15,8 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2021-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics/replicationProtectionContainers) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2021-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics/replicationProtectionContainers) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
 
 ## Parameters
 
