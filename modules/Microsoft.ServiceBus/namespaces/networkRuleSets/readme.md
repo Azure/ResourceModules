@@ -21,7 +21,7 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | :-- | :-- | :-- | :-- |
 | `defaultAction` | string |  | Configure default action in virtual network rule set. |
 | `name` | string | `'default'` | The default is the only valid ruleset. |
-| `publicNetworkAccess` | string |  | Configure Publice Network Access restrictions in virtual network rule set. |
+| `publicNetworkAccess` | string |  | Configure Public Network Access restrictions in virtual network rule set. |
 | `trustedServiceAccessEnabled` | bool |  | Configure Trusted Services in virtual network rule set. |
 
 **Conditional parameters**
