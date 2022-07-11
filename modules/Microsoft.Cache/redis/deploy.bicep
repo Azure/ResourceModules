@@ -32,7 +32,7 @@ param enableNonSslPort bool = false
   '1.1'
   '1.2'
 ])
-@description('Optional. Specify the type of lock.')
+@description('Optional. Requires clients to use a specified TLS version (or higher) to connect.')
 param minimumTlsVersion string = '1.2'
 
 @description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
