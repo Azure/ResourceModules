@@ -90,7 +90,7 @@ param family string = 'P'
   'Standard'
 ])
 @description('Optional. The type of Redis cache to deploy.')
-param skuName string = 'Premium'
+param skuName string = 'Basic'
 
 @description('Optional. Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default.')
 param staticIP string = ''

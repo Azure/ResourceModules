@@ -53,7 +53,7 @@ This module deploys a Redis Cache service.
 | `replicasPerPrimary` | int | `1` |  | The number of replicas to be created per primary. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `shardCount` | int | `1` |  | The number of shards to be created on a Premium Cluster Cache. |
-| `skuName` | string | `'Premium'` | `[Basic, Premium, Standard]` | The type of Redis cache to deploy. |
+| `skuName` | string | `'Basic'` | `[Basic, Premium, Standard]` | The type of Redis cache to deploy. |
 | `staticIP` | string | `''` |  | Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default. |
 | `subnetId` | string | `''` |  | The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
