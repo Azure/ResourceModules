@@ -65,7 +65,7 @@ param resourceLogConfigurationsToEnable array = [
 param clientCertEnabled bool = false
 
 @description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.')
-param networkAcls array = []
+param networkAcls object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -81,15 +81,6 @@ var identity = {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 }
-
-@description('Optional. Network ACLs for the resource. The values for the \'allow\' and \'deny\' array can be one or more of: ClientConnection, ServerConnection, RESTAPI.')
-var webPubSubNetworkAcls = [for acl in networkAcls: {
-  defaultAction: !empty(acl.defaultAction) ? contains([ 'Allow', 'Deny' ], acl.defaultAction) ? acl.defaultAction : 'Deny' : null
-  publicNetwork: {
-    allow: !empty(acl.allow) ? acl.allow : []
-    deny: !empty(acl.deny) ? acl.deny : []
-  }
-}]
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -116,7 +107,7 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   properties: {
     disableAadAuth: disableAadAuth
     disableLocalAuth: disableLocalAuth
-    networkACLs: !empty(webPubSubNetworkAcls) && sku != 'Free_F1' ? any(webPubSubNetworkAcls) : null
+    networkACLs: !empty(networkAcls) && sku != 'Free_F1' ? any(networkAcls) : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     resourceLogConfiguration: {
       categories: resourceLogConfiguration
@@ -130,7 +121,9 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
 module webPubSub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-appConfiguration-PrivateEndpoint-${index}'
   params: {
-    groupIds: [ privateEndpoint.service ]
+    groupIds: [
+      privateEndpoint.service
+    ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(webPubSub.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: webPubSub.id
     subnetResourceId: privateEndpoint.subnetResourceId

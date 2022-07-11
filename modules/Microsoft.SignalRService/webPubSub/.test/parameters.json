@@ -36,6 +36,28 @@
         }
       ]
     },
+    "networkAcls": {
+      "value": {
+        "defaultAction": "Allow",
+        "privateEndpoints": [
+          {
+            "name": "pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0",
+            "allow": [],
+            "deny": [
+              "ServerConnection",
+              "Trace"
+            ]
+          }
+        ],
+        "publicNetwork": {
+          "allow": [],
+          "deny": [
+            "RESTAPI",
+            "Trace"
+          ]
+        }
+      }
+    },
     "systemAssignedIdentity": {
       "value": true
     },
