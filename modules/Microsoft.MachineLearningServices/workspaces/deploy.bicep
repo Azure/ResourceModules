@@ -43,7 +43,7 @@ param allowPublicAccessWhenBehindVnet bool = false
 @sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@sys.description('Optional. Configuration Details for private endpoints.')
+@sys.description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @sys.description('Optional. Computes to create respectively attach to the workspace.')
@@ -113,14 +113,17 @@ param description string = ''
 @sys.description('Optional. URL for the discovery service to identify regional endpoints for machine learning experimentation services.')
 param discoveryUrl string = ''
 
-@sys.description('Optional. The Resource ID of the user assigned identity that will be used to access the customer managed key vault.')
-param encryptionIdentity string = ''
+@sys.description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
 
-@sys.description('Conditional. Key vault URI to access the encryption key. Required if an \'encryptionIdentity\' was provided.')
-param encryptionKeyIdentifier string = ''
+@sys.description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
 
-@sys.description('Conditional. The ResourceID of the keyVault where the customer owned encryption key is present. Required if an \'encryptionIdentity\' was provided.')
-param encryptionKeyVaultResourceId string = ''
+@sys.description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
+
+@sys.description('Optional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
+param cMKUserAssignedIdentityResourceId string = ''
 
 @sys.description('Optional. The compute name for image build.')
 param imageBuildCompute string = ''
@@ -181,6 +184,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
   name: name
   location: location
@@ -200,15 +208,16 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     allowPublicAccessWhenBehindVnet: allowPublicAccessWhenBehindVnet
     description: description
     discoveryUrl: discoveryUrl
-    encryption: any({
-      identity: !empty(encryptionIdentity) ? {
-        userAssignedIdentity: encryptionIdentity
+    encryption: !empty(cMKKeyName) ? {
+      status: 'Enabled'
+      identity: !empty(cMKUserAssignedIdentityResourceId) ? {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
       } : null
-      keyVaultProperties: !empty(encryptionIdentity) ? {
-        keyIdentifier: encryptionKeyIdentifier
-        keyVaultArmId: encryptionKeyVaultResourceId
-      } : null
-    })
+      keyVaultProperties: {
+        keyVaultArmId: cMKKeyVaultResourceId
+        keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
+      }
+    } : null
     imageBuildCompute: imageBuildCompute
     primaryUserAssignedIdentity: primaryUserAssignedIdentity
     publicNetworkAccess: publicNetworkAccess

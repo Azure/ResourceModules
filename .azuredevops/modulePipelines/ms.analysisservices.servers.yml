@@ -23,7 +23,9 @@ trigger:
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.AnalysisServices/servers/*'
       - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
@@ -45,9 +47,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/max.parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/max.parameters.json
 
   - stage: Publishing
     displayName: Publishing

@@ -186,8 +186,8 @@ This group of resources has a dependency on one or more resources in the group a
       - '_adp-\<<namePrefix\>>-az-nsg-x-apgw_': NSG with required network security rules to be leveraged by the \[application gateway] subnet.
       - '_adp-\<<namePrefix\>>-az-nsg-x-ase_': NSG with required network security rules to be leveraged by the \[app service environment] subnet.
       - '_adp-\<<namePrefix\>>-az-nsg-x-bastion_': NSG with required network security rules to be leveraged by the \[bastion host] subnet.
-      - '_adp-\<<namePrefix\>>-az-nsg-x-sqlmi_': NSG with required network security rules to be leveraged by the \[sql managed instance] subnet.
-        >**Note**: This resource is deployed and configured only if SQL-MI dependency resources are enabled.
+      - '_adp-\<<namePrefix\>>-az-nsg-x-sqlmi_': NSG with required network security rules to be leveraged by the \[SQL managed instance] subnet.
+        >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       - '_adp-\<<namePrefix\>>-az-nsg-x-001_': default NSG leveraged by all other subnets.
   1. Application insight: This resource supports monitoring, hence it has a dependency on the \[storage account], \[log analytics workspace] and \[event hub] deployed in the group above. This resource is leveraged by the \[machine learning service] resource.
   1. Automation account: This resource supports monitoring, hence it has a dependency on the \[storage account], \[log analytics workspace] and \[event hub] deployed in the group above. This resource is leveraged by the \[log analytics workspace] resource.
@@ -216,11 +216,12 @@ This group of resources has a dependency on one or more resources in the groups 
       - '_adp-\<<namePrefix\>>-az-vnet-x-peer02_': Leveraged by the \[virtual network peering] resource.
       - '_adp-\<<namePrefix\>>-az-vnet-x-azfw_': Leveraged by the \[azure firewall] resource.
       - '_adp-\<<namePrefix\>>-az-vnet-x-aks_': Leveraged by the \[azure kubernetes service] resource.
-      - '_adp-\<<namePrefix\>>-az-vnet-x-sqlmi_': Leveraged by the \[sql managed instance] resource.
+      - '_adp-\<<namePrefix\>>-az-vnet-x-sqlmi_': Leveraged by the \[SQL managed instance] resource.
         >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       - '_adp-\<<namePrefix\>>-az-vnet-x-001_': Hosting multiple subnets to be leveraged by \[virtual machine], \[virtual machine scale set], \[service bus], \[azure NetApp files], \[azure bastion], \[private endpoints], \[app service environment] and \[application gateway] resources.
   1. Azure Image Builder template: This resource triggers the build and distribution of a VHD in a storage account. The VHD file is copied to a known storage account blob container and leveraged by \[compute disks] and \[compute images] resources.
     >**Note**: This resource is deployed and configured only if the 'Enable deployment of a VHD stored in a blob container' option is selected.
+  1. Disk Encryption Set: This resource is leveraged by the \[Managed Cluster] resource.
 
 #### **5th level resources**
 

@@ -15,7 +15,9 @@ This module deploys a DocumentDB database account and its child resources.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.DocumentDB/databaseAccounts` | [2021-06-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts) |
+| `Microsoft.DocumentDB/databaseAccounts` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts) |
+| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases) |
+| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases/graphs) |
 | `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases) |
 | `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases/collections) |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases` | [2021-06-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts/sqlDatabases) |
@@ -34,6 +36,12 @@ This module deploys a DocumentDB database account and its child resources.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticFailover` | bool | `True` |  | Enable automatic failover for regions. |
+| `backupIntervalInMinutes` | int | `240` |  | An integer representing the interval in minutes between two backups. Only applies to periodic backup type. |
+| `backupPolicyContinuousTier` | string | `'Continuous30Days'` | `[Continuous30Days, Continuous7Days]` | Configuration values for continuous mode backup. |
+| `backupPolicyType` | string | `'Continuous'` | `[Periodic, Continuous]` | Describes the mode of backups. |
+| `backupRetentionIntervalInHours` | int | `8` |  | An integer representing the time (in hours) that each backup is retained. Only applies to periodic backup type. |
+| `backupStorageRedundancy` | string | `'Local'` | `[Geo, Local, Zone]` | Enum to indicate type of backup residency. Only applies to periodic backup type. |
+| `capabilitiesToAdd` | array | `[]` | `[EnableCassandra, EnableTable, EnableGremlin, EnableMongo, DisableRateLimitingResponses, EnableServerless]` | List of Cosmos DB capabilities for the account. |
 | `databaseAccountOfferType` | string | `'Standard'` | `[Standard]` | The offer type for the Cosmos DB database account. |
 | `defaultConsistencyLevel` | string | `'Session'` | `[Eventual, ConsistentPrefix, Session, BoundedStaleness, Strong]` | The default consistency level of the Cosmos DB account. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -45,13 +53,14 @@ This module deploys a DocumentDB database account and its child resources.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `gremlinDatabases` | _[gremlinDatabases](gremlinDatabases/readme.md)_ array | `[]` |  | Gremlin Databases configurations. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxIntervalInSeconds` | int | `300` |  | Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400. |
 | `maxStalenessPrefix` | int | `100000` |  | Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000. |
 | `mongodbDatabases` | _[mongodbDatabases](mongodbDatabases/readme.md)_ array | `[]` |  | MongoDB Databases configurations. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `serverVersion` | string | `'4.0'` | `[3.2, 3.6, 4.0]` | Specifies the MongoDB server version to use. |
+| `serverVersion` | string | `'4.2'` | `[3.2, 3.6, 4.0, 4.2]` | Specifies the MongoDB server version to use. |
 | `sqlDatabases` | _[sqlDatabases](sqlDatabases/readme.md)_ array | `[]` |  | SQL Databases configurations. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Database Account resource. |
@@ -299,6 +308,73 @@ mongodbDatabases: [
 
 Please reference the documentation for [mongodbDatabases](./mongodbDatabases/readme.md)
 
+### Parameter Usage: `gremlinDatabases`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"mongodbDatabases": {
+  "value": [
+    {
+      "name": "graphDb01",
+      "graphs": [
+        {
+          "name": "graph01",
+          "automaticIndexing": true,
+          "partitionKeyPaths": [
+            "/name"
+          ]
+        },
+        {
+          "name": "graph02",
+          "automaticIndexing": true,
+          "partitionKeyPaths": [
+            "/name"
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+gremlinDatabases: [
+  {
+    name: 'graphDb01'
+    graphs: [
+      {
+        name: 'graph01'
+        automaticIndexing: true
+        partitionKeyPaths: [
+          '/name'
+        ]
+      }
+      {
+        name: 'graph02'
+        automaticIndexing: true
+        partitionKeyPaths: [
+          '/name'
+        ]
+      }
+    ]
+  }
+]
+```
+
+</details>
+<p>
+
+Please reference the documentation for [gremlinDatabases](./gremlinDatabases/readme.md)
+
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
@@ -457,6 +533,204 @@ userAssignedIdentities: {
 ## Deployment examples
 
 <h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-cdb-gremlindb-001"
+    },
+    "location": {
+      "value": "West Europe"
+    },
+    "locations": {
+      "value": [
+        {
+          "locationName": "West Europe",
+          "failoverPriority": 0,
+          "isZoneRedundant": false
+        },
+        {
+          "locationName": "North Europe",
+          "failoverPriority": 1,
+          "isZoneRedundant": false
+        }
+      ]
+    },
+    "capabilitiesToAdd": {
+      "value": [
+        "EnableGremlin"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ]
+        }
+      ]
+    },
+    "gremlinDatabases": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-gdb-x-001",
+          "graphs": [
+            {
+              "name": "car_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/car_id"
+              ]
+            },
+            {
+              "name": "truck_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/truck_id"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "<<namePrefix>>-az-gdb-x-002",
+          "collections": [
+            {
+              "name": "bike_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/bike_id"
+              ]
+            },
+            {
+              "name": "bicycle_collection",
+              "automaticIndexing": true,
+              "partitionKeyPaths": [
+                "/bicycle_id"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-databaseAccounts'
+  params: {
+    name: '<<namePrefix>>-az-cdb-gremlindb-001'
+    location: 'West Europe'
+    locations: [
+      {
+        locationName: 'West Europe'
+        failoverPriority: 0
+        isZoneRedundant: false
+      }
+      {
+        locationName: 'North Europe'
+        failoverPriority: 1
+        isZoneRedundant: false
+      }
+    ]
+    capabilitiesToAdd: [
+      'EnableGremlin'
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    gremlinDatabases: [
+      {
+        name: '<<namePrefix>>-az-gdb-x-001'
+        graphs: [
+          {
+            name: 'car_collection'
+            automaticIndexing: true
+            partitionKeyPaths: [
+              '/car_id'
+            ]
+          }
+          {
+            name: 'truck_collection'
+            automaticIndexing: true
+            partitionKeyPaths: [
+              '/truck_id'
+            ]
+          }
+        ]
+      }
+      {
+        name: '<<namePrefix>>-az-gdb-x-002'
+        collections: [
+          {
+            name: 'bike_collection'
+            automaticIndexing: true
+            partitionKeyPaths: [
+              '/bike_id'
+            ]
+          }
+          {
+            name: 'bicycle_collection'
+            automaticIndexing: true
+            partitionKeyPaths: [
+              '/bicycle_id'
+            ]
+          }
+        ]
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    systemAssignedIdentity: true
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
 
 <details>
 
@@ -934,7 +1208,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 </details>
 <p>
 
-<h3>Example 2</h3>
+<h3>Example 3</h3>
 
 <details>
 
@@ -1038,7 +1312,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 </details>
 <p>
 
-<h3>Example 3</h3>
+<h3>Example 4</h3>
 
 <details>
 

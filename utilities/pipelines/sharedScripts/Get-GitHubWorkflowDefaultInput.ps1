@@ -121,7 +121,7 @@ function Get-GitHubWorkflowDefaultInput {
         $workflowContent = Get-Content -Path $workflowPath -Raw
 
         $workflowParameters = @{
-            removeDeployment = Get-DefaultValue -InputName 'removeDeployment' -Content $workflowContent -Verbose
+            removeDeployment = Get-DefaultValue -InputName 'removeDeployment' -Content $workflowContent
         }
 
         Write-Verbose 'Get workflow default input complete'

@@ -30,6 +30,9 @@ param storageAccessIdentity string = ''
 @description('Optional. The allocation mode for creating pools in the Batch account. Determines which quota will be used.')
 param poolAllocationMode string = 'BatchService'
 
+@description('Conditional. The key vault to associate with the Batch account. Required if the \'poolAllocationMode\' is set to \'UserSubscription\' and requires the service principal \'Microsoft Azure Batch\' to be granted contributor permissions on this key vault.')
+param keyVaultReferenceResourceId string = ''
+
 @allowed([
   'Disabled'
   'Enabled'
@@ -73,21 +76,14 @@ param tags object = {}
 @description('Optional. List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.')
 param allowedAuthenticationModes array = []
 
-@allowed([
-  'Microsoft.Batch'
-  'Microsoft.KeyVault'
-])
-@description('Optional. Type of the key source.')
-param encryptionKeySource string = 'Microsoft.Batch'
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
 
-@description('Conditional. Full path to the versioned secret. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
-param encryptionKeyIdentifier string = ''
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
 
-@description('Conditional. The resource ID of the Azure key vault associated with the Batch account. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
-param keyVaultResourceId string = ''
-
-@description('Conditional. The URL of the Azure key vault associated with the Batch account. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
-param keyVaultUri string = ''
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -110,6 +106,9 @@ param diagnosticMetricsToEnable array = [
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
@@ -147,6 +146,8 @@ var autoStorageConfig = {
   storageAccountId: storageAccountId
 }
 
+var enableReferencedModulesTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -159,6 +160,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource keyVaultReferenceKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(keyVaultReferenceResourceId)) {
+  name: last(split(keyVaultReferenceResourceId, '/'))
+  scope: resourceGroup(split(keyVaultReferenceResourceId, '/')[2], split(keyVaultReferenceResourceId, '/')[4])
+}
+
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
   name: name
   location: location
@@ -167,15 +178,15 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
   properties: {
     allowedAuthenticationModes: allowedAuthenticationModes
     autoStorage: autoStorageConfig
-    encryption: {
-      keySource: encryptionKeySource
-      keyVaultProperties: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true || poolAllocationMode == 'UserSubscription' ? {
-        keyIdentifier: encryptionKeyIdentifier
-      } : null
-    }
-    keyVaultReference: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true || poolAllocationMode == 'UserSubscription' ? {
-      id: keyVaultResourceId
-      url: keyVaultUri
+    encryption: !empty(cMKKeyName) ? {
+      keySource: 'Microsoft.KeyVault'
+      keyVaultProperties: {
+        keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
+      }
+    } : null
+    keyVaultReference: poolAllocationMode == 'UserSubscription' ? {
+      id: keyVaultReferenceResourceId
+      url: keyVaultReferenceKeyVault.properties.vaultUri
     } : null
     poolAllocationMode: poolAllocationMode
     publicNetworkAccess: publicNetworkAccess
@@ -203,6 +214,26 @@ resource batchAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
   }
   scope: batchAccount
 }
+
+module batchAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-BatchAccount-PrivateEndpoint-${index}'
+  params: {
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(batchAccount.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: batchAccount.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+  }
+}]
 
 @description('The name of the batch account.')
 output name string = batchAccount.name
