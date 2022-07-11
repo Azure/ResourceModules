@@ -41,7 +41,6 @@ This module deploys a Redis Cache service.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableNonSslPort` | bool | `False` |  | Specifies whether the non-ssl Redis server port (6379) is enabled. |
-| `family` | string | `'P'` | `[C, P]` | The SKU family to use. (C = Basic/Standard, P = Premium). |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Redis cache service. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minimumTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | Specify the type of lock. |
@@ -386,9 +385,6 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     "enableNonSslPort": {
       "value": true
     },
-    "family": {
-      "value": "P"
-    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -450,7 +446,6 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
       'AllMetrics'
     ]
     enableNonSslPort: true
-    family: 'P'
     lock: 'CanNotDelete'
     minimumTlsVersion: '1.2'
     diagnosticSettingsName: 'redisdiagnostics'

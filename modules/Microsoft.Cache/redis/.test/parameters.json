@@ -22,9 +22,6 @@
     "enableNonSslPort": {
       "value": true
     },
-    "family": {
-      "value": "P"
-    },
     "lock": {
       "value": "CanNotDelete"
     },

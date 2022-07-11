@@ -78,13 +78,6 @@ param shardCount int = 1
 param capacity int = 1
 
 @allowed([
-  'C'
-  'P'
-])
-@description('Optional. The SKU family to use. (C = Basic/Standard, P = Premium).')
-param family string = 'P'
-
-@allowed([
   'Basic'
   'Premium'
   'Standard'
@@ -200,10 +193,10 @@ resource redisCache 'Microsoft.Cache/redis@2021-06-01' = {
     redisVersion: redisVersion
     replicasPerMaster: skuName == 'Premium' ? replicasPerMaster : null
     replicasPerPrimary: skuName == 'Premium' ? replicasPerPrimary : null
-    shardCount: family == 'P' ? shardCount : null // Not supported in free tier
+    shardCount: skuName == 'Premium' ? shardCount : null // Not supported in free tier
     sku: {
       capacity: capacity
-      family: skuName == 'Premium' ? family : any(null)
+      family: skuName == 'Premium' ? 'P' : 'C'
       name: skuName
     }
     staticIP: !empty(staticIP) ? staticIP : null
