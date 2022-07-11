@@ -11,7 +11,7 @@ This section provides an overview of the library's feature set.
 
 # Feature table
 
-| # | Module | RBAC | Locks | Tags | Diag | EP | PIP | # children | # lines |
+| # | Module | RBAC | Locks | Tags | Diag | PE | PIP | # children | # lines |
 | - | - | - | - | - | - | - | - | - | - |
 | 1 | MS.AAD<p>DomainServices | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 226 |
 | 2 | MS.AnalysisServices<p>servers | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 141 |
