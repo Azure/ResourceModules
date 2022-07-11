@@ -64,7 +64,7 @@ param resourceLogConfigurationsToEnable array = [
 @description('Optional. Request client certificate during TLS handshake if enabled.')
 param clientCertEnabled bool = false
 
-@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.')
+@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. Can only be set if the \'SKU\' is not \'Free_F1\'. For security reasons, it is recommended to set the DefaultAction Deny.')
 param networkAcls object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -107,7 +107,7 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   properties: {
     disableAadAuth: disableAadAuth
     disableLocalAuth: disableLocalAuth
-    networkACLs: !empty(networkAcls) && sku != 'Free_F1' ? any(networkAcls) : null
+    networkACLs: !empty(networkAcls) ? any(networkAcls) : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     resourceLogConfiguration: {
       categories: resourceLogConfiguration
