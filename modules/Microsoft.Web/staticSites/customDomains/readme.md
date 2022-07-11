@@ -1,4 +1,5 @@
-# Web StaticSites CustomDomains `[Microsoft.Web/staticSites/customDomains]`
+# Static Site Custom Domain `[Microsoft.Web/staticSites/customDomains]`
+
 
 This module deploys Web StaticSites CustomDomains.
 // TODO: Replace Resource and fill in description
