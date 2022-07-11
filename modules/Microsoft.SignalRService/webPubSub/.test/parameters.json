@@ -6,7 +6,7 @@
       "value": "westeurope"
     },
     "name": {
-      "value": "<<namePrefix>>-az-pubsub-full-001"
+      "value": "<<namePrefix>>-az-pubsub-x-001"
     },
     "capacity": {
       "value": 2
