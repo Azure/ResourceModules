@@ -35,7 +35,7 @@ With this module you can perform policy assignments on a management group level.
 | `location` | string | `[deployment().location]` |  | Location for all resources. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` |  | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `nonComplianceMessage` | string | `''` |  | The messages that describe why a resource is non-compliant with the policy. |
+| `nonComplianceMessages` | array | `[]` |  | The messages that describe why a resource is non-compliant with the policy. |
 | `notScopes` | array | `[]` |  | The policy excluded scopes. |
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
 | `userAssignedIdentityId` | string | `''` |  | The Resource ID for the user assigned identity to assign to the policy assignment. |

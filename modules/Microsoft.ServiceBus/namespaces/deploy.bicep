@@ -77,6 +77,9 @@ param roleAssignments array = []
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
+@description('Optional. Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules.')
+param networkRuleSets object = {}
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -91,6 +94,21 @@ param queues array = []
 
 @description('Optional. The topics to create in the service bus namespace.')
 param topics array = []
+
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key.')
+param cMKKeyName string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
+
+@description('Optional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
+param cMKUserAssignedIdentityResourceId string = ''
+
+@description('Optional. Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters.')
+param requireInfrastructureEncryption bool = true
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -155,6 +173,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
   name: !empty(name) ? name : uniqueServiceBusNamespaceName
   location: location
@@ -165,6 +193,20 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview
   identity: identity
   properties: {
     zoneRedundant: zoneRedundant
+    encryption: !empty(cMKKeyName) ? {
+      keySource: 'Microsoft.KeyVault'
+      keyVaultProperties: [
+        {
+          identity: !empty(cMKUserAssignedIdentityResourceId) ? {
+            userAssignedIdentity: cMKUserAssignedIdentityResourceId
+          } : null
+          keyName: cMKKeyName
+          keyVaultUri: cMKKeyVault.properties.vaultUri
+          keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
+        }
+      ]
+      requireInfrastructureEncryption: requireInfrastructureEncryption
+    } : null
   }
 }
 
@@ -199,6 +241,19 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
+
+module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets)) {
+  name: '${uniqueString(deployment().name, location)}-networkRuleSet'
+  params: {
+    namespaceName: serviceBusNamespace.name
+    defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
+    publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) ? 'Disabled' : null)
+    trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
+    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.virtualNetworkRules : [] : null
+    ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
 
 module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
   name: '${uniqueString(deployment().name, location)}-AuthorizationRules-${index}'

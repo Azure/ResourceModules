@@ -19,6 +19,7 @@ This template deploys a log analytics workspace.
 | `Microsoft.OperationalInsights/workspaces` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces) |
 | `Microsoft.OperationalInsights/workspaces/dataSources` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources) |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices) |
+| `Microsoft.OperationalInsights/workspaces/linkedStorageAccounts` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedStorageAccounts) |
 | `Microsoft.OperationalInsights/workspaces/savedSearches` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/savedSearches) |
 | `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs) |
 | `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
@@ -29,6 +30,11 @@ This template deploys a log analytics workspace.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Log Analytics workspace. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `linkedStorageAccounts` | _[linkedStorageAccounts](linkedStorageAccounts/readme.md)_ array | List of Storage Accounts to be linked. Required if 'forceCmkForQuery' is set to 'true' and 'savedSearches' is not empty. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -45,6 +51,7 @@ This template deploys a log analytics workspace.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `forceCmkForQuery` | bool | `True` |  | Indicates whether customer managed storage is mandatory for query management. |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the log analytics workspace. |
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -523,6 +530,14 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
                 }
             ]
         },
+        "linkedStorageAccounts": {
+            "value": [
+                {
+                    "name": "Query",
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001"
+                }
+            ]
+        },
         "savedSearches": {
             "value": [
                 {
@@ -686,6 +701,12 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
       {
         name: 'Automation'
         resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001'
+      }
+    ]
+    linkedStorageAccounts: [
+      {
+        name: 'Query'
+        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
       }
     ]
     savedSearches: [
