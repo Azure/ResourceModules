@@ -35,12 +35,13 @@ param enableNonSslPort bool = false
 @description('Optional. Specify the type of lock.')
 param minimumTlsVersion string = '1.2'
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
-  'Disabled'
+  ''
   'Enabled'
+  'Disabled'
 ])
-@description('Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled.')
-param publicNetworkAccess string = 'Enabled'
+param publicNetworkAccess string = ''
 
 @description('Optional. All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.')
 param redisConfiguration object = {}
