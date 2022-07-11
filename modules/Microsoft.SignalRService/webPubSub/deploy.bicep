@@ -117,7 +117,7 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
     disableAadAuth: disableAadAuth
     disableLocalAuth: disableLocalAuth
     networkACLs: !empty(webPubSubNetworkAcls) && sku != 'Free_F1' ? any(webPubSubNetworkAcls) : null
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     resourceLogConfiguration: {
       categories: resourceLogConfiguration
     }
