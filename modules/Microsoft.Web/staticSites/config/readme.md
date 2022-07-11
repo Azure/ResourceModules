@@ -1,7 +1,6 @@
 # Web StaticSites Config `[Microsoft.Web/staticSites/config]`
 
-This module deploys Web StaticSites Config.
-// TODO: Replace Resource and fill in description
+This module deploys a Static Site Config.
 
 ## Navigation
 
