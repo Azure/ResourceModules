@@ -132,7 +132,7 @@ function Get-ModulesFeatureOutline {
             'Locks'      = $supportsLocks
             'Tags'       = $supportsTags
             'Diag'       = $supportsDiagnostics
-            'EP'         = $supportsEndpoints
+            'PE'         = $supportsEndpoints
             'PIP'        = $supportsPipDeployment
             '# children' = $numberOfChildrenFormatted
             '# lines'    = $numberOfLines
@@ -181,7 +181,7 @@ function Get-ModulesFeatureOutline {
                     'Locks'      = $_.'Locks'
                     'Tags'       = $_.'Tags'
                     'Diag'       = $_.'Diag'
-                    'EP'         = $_.'EP'
+                    'PE'         = $_.'PE'
                     'Pip-Depl.'  = $_.'Pip-Depl.'
                     '# children' = $_.'# children'
                     '# lines'    = $_.'# lines'
