@@ -190,7 +190,7 @@ resource redisCache 'Microsoft.Cache/redis@2021-06-01' = {
   properties: {
     enableNonSslPort: enableNonSslPort
     minimumTlsVersion: minimumTlsVersion
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     redisConfiguration: !empty(redisConfiguration) ? redisConfiguration : null
     redisVersion: redisVersion
     replicasPerMaster: skuName == 'Premium' ? replicasPerMaster : null
