@@ -94,7 +94,7 @@ param subnetId string = ''
 @description('Optional. A dictionary of tenant settings.')
 param tenantSettings object = {}
 
-@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
