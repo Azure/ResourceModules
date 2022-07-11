@@ -1,8 +1,6 @@
 # Static Site Custom Domain `[Microsoft.Web/staticSites/customDomains]`
 
-
-This module deploys Web StaticSites CustomDomains.
-// TODO: Replace Resource and fill in description
+This module deploys a Custom Domain into a Static Site.
 
 ## Navigation
 

@@ -1,7 +1,6 @@
 # Static Site Linked Backend `[Microsoft.Web/staticSites/linkedBackends]`
 
-This module deploys Web StaticSites LinkedBackends.
-// TODO: Replace Resource and fill in description
+This module deploys a Custom Function App into a Static Site using the linkedBackends property.
 
 ## Navigation
 
