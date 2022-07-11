@@ -43,12 +43,13 @@ param disableAadAuth bool = false
 @description('Optional. Disables all authentication methods other than AAD authentication. For security reasons, this value should be set to `true`.')
 param disableLocalAuth bool = true
 
-@description('Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled. For security reasons, this value should be set to `Disabled`.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
+  ''
   'Enabled'
   'Disabled'
 ])
-param publicNetworkAccess string = 'Enabled'
+param publicNetworkAccess string = ''
 
 @allowed([
   'ConnectivityLogs'
