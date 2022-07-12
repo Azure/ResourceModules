@@ -182,7 +182,7 @@ jobs:
               Run        = @{
                 Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
                   repoRootPath = $repoRootPath
-                  moduleFolderPaths = $moduleFolderPaths
+                  # moduleFolderPaths = $moduleFolderPaths
                   enforcedTokenList = $enforcedTokenList
                 }
               }
