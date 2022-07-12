@@ -102,7 +102,7 @@ runs:
         # Set and print test output path
         $moduleTestFilePath = '${{ inputs.moduleTestFilePath }}'
         $outputPathDirectory = Split-Path $moduleTestFilePath -Parent
-        $outputPathFile = 'global-testResults.xml'
+        $outputPathFile = 'testResults.xml'
         $outputPath = Join-Path $outputPathDirectory $outputPathFile
         Write-Verbose "Pester tests output: $outputPath" -Verbose
         Write-Output ('::set-output name={0}::{1}' -f 'outputPath', $outputPath)
@@ -114,7 +114,7 @@ runs:
           Run        = @{
             Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
               repoRootPath = $repoRootPath
-              # moduleFolderPaths = $moduleFolderPaths
+              moduleFolderPaths = $moduleFolderPaths
               enforcedTokenList = $enforcedTokenList
             }
           }

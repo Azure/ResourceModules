@@ -170,7 +170,7 @@ jobs:
             $moduleTestFilePath = '${{ parameters.moduleTestFilePath }}'
             $outputPathDirectory = Split-Path $moduleTestFilePath -Parent
             Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathDirectory', $outputPathDirectory)
-            $outputPathFile = 'global-testResults.xml'
+            $outputPathFile = 'testResults.xml'
             Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathFile', $outputPathFile)
             $outputPath = Join-Path $outputPathDirectory $outputPathFile
             Write-Verbose "Pester tests output: $outputPath" -Verbose
@@ -182,7 +182,7 @@ jobs:
               Run        = @{
                 Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
                   repoRootPath = $repoRootPath
-                  # moduleFolderPaths = $moduleFolderPaths
+                  moduleFolderPaths = $moduleFolderPaths
                   enforcedTokenList = $enforcedTokenList
                 }
               }
