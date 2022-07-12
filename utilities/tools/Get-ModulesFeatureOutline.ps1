@@ -182,7 +182,7 @@ function Get-ModulesFeatureOutline {
                     'Tags'       = $_.'Tags'
                     'Diag'       = $_.'Diag'
                     'PE'         = $_.'PE'
-                    'Pip-Depl.'  = $_.'Pip-Depl.'
+                    'PIP'  = $_.'PIP'
                     '# children' = $_.'# children'
                     '# lines'    = $_.'# lines'
                 }
