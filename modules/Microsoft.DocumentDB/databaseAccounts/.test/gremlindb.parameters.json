@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "carml-az-cdb-gremlindb-001"
+      "value": "<<namePrefix>>-az-cdb-gremlindb-001"
     },
     "location": {
       "value": "West Europe"
@@ -32,7 +32,7 @@
         {
           "roleDefinitionIdOrName": "Reader",
           "principalIds": [
-            "e58511af-4da2-449c-a5cd-6a10271cfb83"
+            "<<deploymentSpId>>"
           ]
         }
       ]
@@ -40,7 +40,7 @@
     "gremlinDatabases": {
       "value": [
         {
-          "name": "carml-az-gdb-x-001",
+          "name": "<<namePrefix>>-az-gdb-x-001",
           "graphs": [
             {
               "name": "car_collection",
@@ -59,7 +59,7 @@
           ]
         },
         {
-          "name": "carml-az-gdb-x-002",
+          "name": "<<namePrefix>>-az-gdb-x-002",
           "collections": [
             {
               "name": "bike_collection",
@@ -83,16 +83,16 @@
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001"
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001"
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },
     "diagnosticEventHubName": {
-      "value": "adp-carml-az-evh-x-001"
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
     },
     "systemAssignedIdentity": {
       "value": true
