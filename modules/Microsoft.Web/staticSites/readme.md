@@ -18,6 +18,9 @@ This module deploys a Static Web Site.
 | `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Web/staticSites` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/staticSites) |
+| `Microsoft.Web/staticSites/config` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/staticSites/config) |
+| `Microsoft.Web/staticSites/customDomains` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/staticSites/customDomains) |
+| `Microsoft.Web/staticSites/linkedBackends` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/staticSites) |
 
 ## Parameters
 
@@ -29,14 +32,18 @@ This module deploys a Static Web Site.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowConfigFileUpdates` | bool | `True` |  | If config file is locked for this static web app. |
+| `allowConfigFileUpdates` | bool | `True` |  | False if config file is locked for this static web app; otherwise, true. |
+| `appSettings` | object | `{object}` |  | Static site app settings. |
 | `branch` | string | `''` |  | The branch name of the GitHub repo. |
 | `buildProperties` | object | `{object}` |  | Build properties for the static site. |
+| `customDomains` | _[customDomains](customDomains/readme.md)_ array | `[]` |  | The custom domains associated with this static site. The deployment will fail as long as the validation records are not present. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enterpriseGradeCdnStatus` | string | `'Disabled'` | `[Disabled, Disabling, Enabled, Enabling]` | State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
+| `functionAppSettings` | object | `{object}` |  | Function app settings. |
+| `linkedBackend` | object | `{object}` |  | Object with "resourceId" and "location" of the a user defined function app. |
 | `location` | string | `[resourceGroup().location]` |  | Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. |
 | `provider` | string | `'None'` |  | The provider that submitted the last deployment to the primary environment of the static site. |
 | `repositoryToken` | secureString | `''` |  | The Personal Access Token for accessing the GitHub repo. |
 | `repositoryUrl` | string | `''` |  | The name of the GitHub repo. |
@@ -279,13 +286,13 @@ userAssignedIdentities: {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-wss-min-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-wss-min-001"
     }
+  }
 }
 ```
 
@@ -315,54 +322,78 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-wss-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "sku": {
-            "value": "Standard"
-        },
-        "stagingEnvironmentPolicy": {
-            "value": "Enabled"
-        },
-        "allowConfigFileUpdates": {
-            "value": true
-        },
-        "enterpriseGradeCdnStatus": {
-            "value": "Disabled"
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "privateEndpoints": {
-            "value": [
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "staticSites"
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-wss-x-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "sku": {
+      "value": "Standard"
+    },
+    "stagingEnvironmentPolicy": {
+      "value": "Enabled"
+    },
+    "allowConfigFileUpdates": {
+      "value": true
+    },
+    "enterpriseGradeCdnStatus": {
+      "value": "Disabled"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "customDomains": {
+      "value": [
+        "<<namePrefix>>domain1.domain",
+        "<<namePrefix>>domain2.domain.domain",
+        "<<namePrefix>>domain3.domain.domain.domain"
+      ]
+    },
+    "appSettings": {
+      "value": {
+        "foo": "bar",
+        "setting": 1
+      }
+    },
+    "functionAppSettings": {
+      "value": {
+        "foo": "bar",
+        "setting": 1
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ]
         }
+      ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+          "service": "staticSites"
+        }
+      ]
+    },
+    "linkedBackend": {
+      "value": {
+        "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/<<namePrefix>>-az-fa-x-001"
+      }
     }
+  }
 }
 ```
 
@@ -383,6 +414,19 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     allowConfigFileUpdates: true
     enterpriseGradeCdnStatus: 'Disabled'
     systemAssignedIdentity: true
+    customDomains: [
+      '<<namePrefix>>domain1.domain'
+      '<<namePrefix>>domain2.domain.domain'
+      '<<namePrefix>>domain3.domain.domain.domain'
+    ]
+    appSettings: {
+      foo: 'bar'
+      setting: 1
+    }
+    functionAppSettings: {
+      foo: 'bar'
+      setting: 1
+    }
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
@@ -400,6 +444,9 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
         service: 'staticSites'
       }
     ]
+    linkedBackend: {
+      resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/<<namePrefix>>-az-fa-x-001'
+    }
   }
 }
 ```
