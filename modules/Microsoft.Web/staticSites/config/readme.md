@@ -25,7 +25,13 @@ This module deploys a Static Site Config.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `staticSiteName` | string | The name of the parent Static Web App. Required if the template is used in a standalone deployment. |
+| `name` | string | The name of the parent Static Web App. Required if the template is used in a standalone deployment. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` | Location for all resources. |
 
 
 ## Outputs

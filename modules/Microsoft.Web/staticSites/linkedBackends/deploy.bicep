@@ -8,18 +8,36 @@ param region string = resourceGroup().location
 param staticSiteName string
 
 @description('Optional. Name of the backend to link to the static site.')
-param linkedBackendName string = uniqueString(backendResourceId)
+param name string = uniqueString(backendResourceId)
+
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
+@description('Optional. Location for all resources.')
+param location string = resourceGroup().location
 
 resource staticSite 'Microsoft.Web/staticSites@2022-03-01' existing = {
   name: staticSiteName
 }
 
 resource linkedBackend 'Microsoft.Web/staticSites/linkedBackends@2022-03-01' = {
-  name: linkedBackendName
+  name: name
   parent: staticSite
   properties: {
     backendResourceId: backendResourceId
     region: region
+  }
+}
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
   }
 }
 

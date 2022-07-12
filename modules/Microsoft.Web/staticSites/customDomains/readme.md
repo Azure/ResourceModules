@@ -25,6 +25,8 @@ This module deploys a Custom Domain into a Static Site.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `validationMethod` | string | `'cname-delegation'` | Validation method for adding a custom domain. |
 
 

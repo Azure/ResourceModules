@@ -24,7 +24,9 @@ This module deploys a Custom Function App into a Static Site using the linkedBac
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `linkedBackendName` | string | `[uniqueString(parameters('backendResourceId'))]` | Name of the backend to link to the static site. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` | Location for all resources. |
+| `name` | string | `[uniqueString(parameters('backendResourceId'))]` | Name of the backend to link to the static site. |
 | `region` | string | `[resourceGroup().location]` | The region of the backend linked to the static site. |
 
 **Requried parameters**

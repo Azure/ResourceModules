@@ -13,7 +13,7 @@ param sku string = 'Free'
 @description('Optional. False if config file is locked for this static web app; otherwise, true.')
 param allowConfigFileUpdates bool = true
 
-@description('Optional. Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2.')
+@description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
 @allowed([
@@ -138,6 +138,7 @@ module staticSite_linkedBackend 'linkedBackends/deploy.bicep' = if (!empty(linke
     staticSiteName: staticSite.name
     backendResourceId: linkedBackend.resourceId
     region: contains(linkedBackend, 'location') ? linkedBackend.location : location
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -145,8 +146,9 @@ module staticSite_appSettings 'config/deploy.bicep' = if (!empty(appSettings)) {
   name: '${uniqueString(deployment().name, location)}-StaticSite-appSettings'
   params: {
     kind: 'appsettings'
-    staticSiteName: staticSite.name
+    name: staticSite.name
     properties: appSettings
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -154,8 +156,9 @@ module staticSite_functionAppSettings 'config/deploy.bicep' = if (!empty(functio
   name: '${uniqueString(deployment().name, location)}-StaticSite-functionAppSettings'
   params: {
     kind: 'functionappsettings'
-    staticSiteName: staticSite.name
+    name: staticSite.name
     properties: functionAppSettings
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -165,6 +168,7 @@ module staticSite_customDomains 'customDomains/deploy.bicep' = [for (customDomai
     name: customDomain
     staticSiteName: staticSite.name
     validationMethod: indexOf(customDomain, '.') == lastIndexOf(customDomain, '.') ? 'dns-txt-token' : 'cname-delegation'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
