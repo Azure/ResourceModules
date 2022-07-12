@@ -128,7 +128,7 @@ param cMKUserAssignedIdentityResourceId string = ''
 @sys.description('Optional. The compute name for image build.')
 param imageBuildCompute string = ''
 
-@sys.description('Conditional. The user assigned identity resource id that represents the workspace identity. Required if \'userAssignedIdentities\' is not empty and may not be used if \'systemAssignedIdentity\' is enabled.')
+@sys.description('Conditional. The user assigned identity resource ID that represents the workspace identity. Required if \'userAssignedIdentities\' is not empty and may not be used if \'systemAssignedIdentity\' is enabled.')
 param primaryUserAssignedIdentity string = ''
 
 @sys.description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
