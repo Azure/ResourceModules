@@ -1,4 +1,4 @@
-@description('Requried. The resource id of the backend linked to the static site.')
+@description('Required. The resource id of the backend linked to the static site.')
 param backendResourceId string
 
 @description('Optional. The region of the backend linked to the static site.')
