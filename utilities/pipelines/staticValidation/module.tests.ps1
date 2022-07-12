@@ -2,7 +2,7 @@
 
 param (
     [Parameter(Mandatory = $false)]
-    [array] $moduleFolderPaths = ((Get-ChildItem (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName -Recurse -Directory -Force).FullName | Where-Object {
+    [array] $moduleFolderPaths = ((Get-ChildItem $repoRootPath -Recurse -Directory -Force).FullName | Where-Object {
         (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }),
 
