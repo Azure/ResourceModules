@@ -50,7 +50,7 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-previ
   name: databaseAccountName
 }
 
-var databaseOptions = contains(databaseAccount.properties.capabilities, 'EnableServerless') ? {} : {
+var databaseOptions = contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? {} : {
   autoscaleSettings: throughput == -1 ? {
     maxThroughput: maxThroughput
   } : null
