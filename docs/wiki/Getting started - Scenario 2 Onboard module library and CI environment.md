@@ -127,11 +127,12 @@ For _GitHub_, you have to perform the following environment-specific steps:
 
 To use the environment's pipelines you should use the information you gathered during the [Azure setup](#1-configure-your-azure-environment) to set up the following repository secrets:
 
+<!-- TODO: Update this to use OIDC -->
 | Secret Name | Example | Description |
 | - | - | - |
 | `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
-| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
+| `AZURE_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
+| `AZURE_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
 | `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The service principal ID (Object ID) of the principal used as the Azure service connection. Also used for test Role Assignments when modules are being deployed into Azure. |
 | `AZURE_CREDENTIALS` | `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the deployment principal used to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A private access token (PAT) with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date. |
@@ -157,6 +158,7 @@ To use the environment's pipelines you should use the information you gathered d
 
 <p>
 
+<!-- TODO: Update this to use OIDC -->
 > Special case: `AZURE_CREDENTIALS`,
 > This secret represent the service connection to Azure, and its value is a compressed JSON object that must match the following format:
 >
@@ -258,12 +260,13 @@ The variable group `PLATFORM_VARIABLES` must be set up in Azure DevOps as descri
 
 Based on the information you gathered in the [Azure setup](#1-configure-your-azure-environment), you must configure the following secrets in the variable group:
 
+<!-- TODO: Update this to use OIDC -->
 | Secret Name | Example | Description |
 | - | - | - |
 | `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
-| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
-| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The service principal ID (Object ID) of the principal used as the Azure service connection. Also used for test Role Assignments when modules are being deployed into Azure. |
+| `ARM_VALIDATION_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
+| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the tenant to test-deploy modules in. |
+| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The service principal ID (Object ID) of the principal used as the Azure service connection. Also used for test Role Assignments when modules are being deployed into Azure |
 
 Make sure its name matches the `group` reference used in the module pipelines. For example
 

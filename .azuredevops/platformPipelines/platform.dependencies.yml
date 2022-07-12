@@ -238,7 +238,7 @@ stages:
           - task: AzurePowerShell@5
             displayName: Upload files to storage account
             inputs:
-              azureSubscription: $(serviceConnection)
+              azureSubscription: $(serviceConnectionValidation)
               ScriptType: 'InlineScript'
               Inline: |
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
@@ -350,7 +350,7 @@ stages:
               - task: AzurePowerShell@5
                 displayName: Trigger building new image
                 inputs:
-                  azureSubscription: $(serviceConnection)
+                  azureSubscription: $(serviceConnectionValidation)
                   ScriptType: 'InlineScript'
                   Inline: |
                     # Retrieving parameters from previous job outputs
@@ -366,10 +366,9 @@ stages:
               - task: AzurePowerShell@5
                 displayName: Copy baked vhd to a storage account
                 inputs:
-                  azureSubscription: $(serviceConnection)
+                  azureSubscription: $(serviceConnectionValidation)
                   ScriptType: 'InlineScript'
                   Inline: |
-
                     # Load used functions
                     . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
@@ -688,7 +687,7 @@ stages:
           - task: AzurePowerShell@5
             displayName: Set key vault secrets keys and certificates
             inputs:
-              azureSubscription: $(serviceConnection)
+              azureSubscription: $(serviceConnectionValidation)
               ScriptType: 'InlineScript'
               Inline: |
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
@@ -826,10 +825,9 @@ stages:
               - task: AzurePowerShell@5
                 displayName: Set sqlmi key vault secrets and keys
                 inputs:
-                  azureSubscription: $(serviceConnection)
+                  azureSubscription: $(serviceConnectionValidation)
                   ScriptType: 'InlineScript'
                   Inline: |
-
                     $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
                     # Load used functions
                     . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')

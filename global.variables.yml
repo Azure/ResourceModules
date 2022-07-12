@@ -38,7 +38,8 @@ variables:
 
   vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
   poolName: '' # Use this for self-hosted agents
-  serviceConnection: 'CARML-CSU-Tenant-Connection'
+  serviceConnectionValidation: 'validation-svccon'
+  serviceConnectionPublishing: 'publishing-svccon'
 
   ######################################
   # Source

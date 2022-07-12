@@ -68,7 +68,7 @@ runs:
         $functionInput = @{
           InputFilePath   = '${{ inputs.variablesPath }}'
           ListName        = 'variables'
-          OutputFilePath  =  $Env:GITHUB_ENV
+          OutputFilePath  = $Env:GITHUB_ENV
         }
 
         Write-Verbose "Invoke task with" -Verbose

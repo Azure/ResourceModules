@@ -405,8 +405,12 @@ on:
       - 'network-hub-rg/Parameters/**'
       - '.github/workflows/network-hub.yml'
 
+permissions:
+  id-token: write      # Required for OIDC
+  contents: read       # Required for OIDC
+
 env:
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }} # TODO: Update this to use OIDC
   removeDeployment: false
   variablesPath: 'global.variables.yml'
 
@@ -440,7 +444,7 @@ jobs:
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/ResourceGroup/parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: $(removeDeployment)
 
@@ -451,7 +455,7 @@ jobs:
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/NetworkSecurityGroups/parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: $(removeDeployment)
 
@@ -462,7 +466,7 @@ jobs:
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetwork/vnet-A.parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: $(removeDeployment)
 ```

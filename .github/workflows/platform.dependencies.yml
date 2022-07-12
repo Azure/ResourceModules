@@ -22,16 +22,20 @@ on:
   #     - '.github/workflows/platform.dependencies.yml'
   #     - 'utilities/pipelines/dependencies/**'
 
+permissions:
+  id-token: write # Required for OIDC
+  contents: read # Required for OIDC
+
 env:
   location: 'WestEurope'
   defaultResourceGroupName: 'validation-rg'
   resourceGroupNameArtifacts: 'artifacts-rg'
   removeDeployment: 'false'
   dependencyPath: 'utilities/pipelines/dependencies'
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  AZURE_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
+  AZURE_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+  AZURE_TENANT_ID: '${{ secrets.AZURE_TENANT_ID }}'
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
@@ -45,6 +49,7 @@ jobs:
       matrix:
         parameterFilePaths:
           ['validation.parameters.json', 'locks.parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -57,7 +62,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -72,6 +77,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -85,7 +91,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -102,6 +108,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -116,7 +123,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -142,6 +149,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -155,7 +163,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -170,6 +178,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -183,7 +192,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -198,6 +207,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['mg.parameters.json', 'sub.parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -211,7 +221,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -226,6 +236,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -239,7 +250,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -260,6 +271,7 @@ jobs:
             'sol.parameters.json',
             'parameters.json',
           ]
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -273,7 +285,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -289,6 +301,7 @@ jobs:
       matrix:
         parameterFilePaths:
           ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -302,7 +315,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -313,6 +326,7 @@ jobs:
       namespace: 'Microsoft.Storage\storageAccounts'
     needs:
       - job_deploy_sa
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -336,7 +350,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: '${{ env.AZURE_CLIENT_ID }}'
+          tenant-id: '${{ env.AZURE_TENANT_ID }}'
+          subscription-id: '${{ env.AZURE_SUBSCRIPTION_ID }}'
           enable-AzPSSession: true
 
       - name: Run PowerShell
@@ -397,6 +413,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -410,7 +427,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -430,6 +447,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -444,7 +462,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -472,6 +490,7 @@ jobs:
     needs:
       - job_deploy_imgt
       - job_deploy_sa
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -496,7 +515,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: '${{ env.AZURE_CLIENT_ID }}'
+          tenant-id: '${{ env.AZURE_TENANT_ID }}'
+          subscription-id: '${{ env.AZURE_SUBSCRIPTION_ID }}'
           enable-AzPSSession: true
 
       - name: 'Trigger building new image'
@@ -594,6 +615,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -607,7 +629,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -622,6 +644,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -635,7 +658,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -650,6 +673,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -663,7 +687,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -679,6 +703,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['sqlMi.parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -692,7 +717,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -716,6 +741,7 @@ jobs:
             'aadds.parameters.json',
             'parameters.json',
           ]
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -729,7 +755,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -747,6 +773,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['sqlmi.parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -760,7 +787,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -786,6 +813,7 @@ jobs:
             'fw.parameters.json',
             'fw.additional.parameters.json',
           ]
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -799,7 +827,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -816,6 +844,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -829,7 +858,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -846,6 +875,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -859,7 +889,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -876,6 +906,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -889,7 +920,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -907,6 +938,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -920,7 +952,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
@@ -940,6 +972,7 @@ jobs:
       matrix:
         parameterFilePaths:
           ['parameters.json', 'pe.parameters.json', 'nopr.parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -953,7 +986,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
@@ -966,6 +999,7 @@ jobs:
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_kv
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -989,7 +1023,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: '${{ env.AZURE_CLIENT_ID }}'
+          tenant-id: '${{ env.AZURE_TENANT_ID }}'
+          subscription-id: '${{ env.AZURE_SUBSCRIPTION_ID }}'
           enable-AzPSSession: true
 
       - name: 'Set key vault secrets keys and certificates'
@@ -1120,6 +1156,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['sqlmi.parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1133,7 +1170,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
@@ -1146,6 +1183,7 @@ jobs:
       - job_deploy_sqlmi_kv
     env:
       namespace: 'Microsoft.KeyVault\vaults'
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1169,7 +1207,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: '${{ env.AZURE_CLIENT_ID }}'
+          tenant-id: '${{ env.AZURE_TENANT_ID }}'
+          subscription-id: '${{ env.AZURE_SUBSCRIPTION_ID }}'
           enable-AzPSSession: true
 
       - name: 'Set sqlmi key vault secrets and keys'
@@ -1270,6 +1310,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1283,7 +1324,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -1298,6 +1339,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1311,7 +1353,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
@@ -1342,6 +1384,7 @@ jobs:
             '13.bastion.parameters.json',
             'parameters.json',
           ]
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1355,7 +1398,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -1372,6 +1415,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['6.sqlmi.parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1385,7 +1429,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -1400,6 +1444,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1413,7 +1458,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -1430,6 +1475,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1443,7 +1489,7 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
@@ -1458,6 +1504,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['internal.parameters.json']
+    environment: 'Validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1471,6 +1518,6 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'

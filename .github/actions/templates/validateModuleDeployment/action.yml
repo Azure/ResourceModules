@@ -113,7 +113,9 @@ runs:
     - name: Azure Login
       uses: Azure/login@v1
       with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
+        client-id: '${{ env.AZURE_CLIENT_ID }}'
+        tenant-id: '${{ env.AZURE_TENANT_ID }}'
+        subscription-id: '${{ env.AZURE_SUBSCRIPTION_ID }}'
         enable-AzPSSession: true
 
     # [Token replacement] task(s)
@@ -145,7 +147,7 @@ runs:
             resourceGroupName = '${{ inputs.resourceGroupName }}'
             subscriptionId    = '${{ inputs.subscriptionId }}'
             managementGroupId = '${{ inputs.managementGroupId }}'
-            tenantId          = '${{ env.ARM_TENANT_ID }}'
+            tenantId          = '${{ env.AZURE_TENANT_ID }}'
             deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
           }
 
