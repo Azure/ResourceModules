@@ -154,7 +154,10 @@ param cMKKeyVaultResourceId string = ''
 @description('Optional. The name of the customer managed key to use for encryption. Note, CMK requires the \'acrSku\' to be \'Premium\'.')
 param cMKKeyName string = ''
 
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKeyName\' is not empty.')
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
@@ -197,7 +200,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource encryptionIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
+resource encryptionIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
   name: last(split(cMKUserAssignedIdentityResourceId, '/'))
   scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
 }
@@ -221,7 +224,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
       status: 'enabled'
       keyVaultProperties: {
         identity: encryptionIdentity.properties.clientId
-        keyIdentifier: cMKKeyVaultKey.properties.keyUri
+        keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       }
     } : null
     policies: {

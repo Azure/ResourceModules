@@ -35,7 +35,9 @@ If any of these parallel deployments require multiple/different/specific resourc
 
 The parameter files used in this stage should ideally cover as many configurations as possible to validate the template flexibility, i.e., to verify that the module can cover multiple scenarios in which the given Azure resource may be used. Using the example of the CosmosDB module, we may want to have one parameter file for the minimum amount of required parameters, one parameter file for each CosmosDB type to test individual configurations, and at least one parameter file testing the supported extension resources such as RBAC & diagnostic settings.
 
-> **Note**: Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently and naming conventions need to be verified beforehand.
+> **Note:** Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently and naming conventions need to be verified beforehand.
+
+> **Note:** Management-Group deployments may eventually exceed the limit of [800](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#management-group-limits) and require you to remove some of them manually. If you are faced with any corresponding error message you can manually remove deployments on a Management-Group-Level on scale using one of our [utilities](./The%20CI%20environment%20-%20Management%20Group%20Deployment%20removal%20utility).
 
 ### Output example
 

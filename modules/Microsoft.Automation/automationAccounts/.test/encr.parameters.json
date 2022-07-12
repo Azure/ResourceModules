@@ -5,25 +5,19 @@
         "name": {
             "value": "<<namePrefix>>-az-aut-encr-001"
         },
-        "encryptionKeySource": {
-            "value": "Microsoft.Keyvault"
-        },
-        "encryptionUserAssignedIdentity": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001" // this identity needs to be one of the identities defined in userAssignedIdentities section
-        },
-        "keyName": {
-            "value": "keyEncryptionKey"
-        },
-        "keyvaultUri": {
-            "value": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/"
-        },
-        "keyVersion": {
-            "value": "9917c14be51d4d93b37218de7d326f60"
-        },
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
+        },
+        "cMKUserAssignedIdentityResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        },
+        "cMKKeyName": {
+            "value": "keyEncryptionKey"
+        },
+        "cMKKeyVaultResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
         }
     }
 }
