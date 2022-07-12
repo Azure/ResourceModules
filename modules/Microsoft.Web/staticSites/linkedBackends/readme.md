@@ -16,6 +16,11 @@ This module deploys a Custom Function App into a Static Site using the linkedBac
 
 ## Parameters
 
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `backendResourceId` | string | The resource id of the backend linked to the static site. |
+
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
@@ -28,11 +33,6 @@ This module deploys a Custom Function App into a Static Site using the linkedBac
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `name` | string | `[uniqueString(parameters('backendResourceId'))]` | Name of the backend to link to the static site. |
 | `region` | string | `[resourceGroup().location]` | The region of the backend linked to the static site. |
-
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `backendResourceId` | string | The resource id of the backend linked to the static site. |
 
 
 ## Outputs
