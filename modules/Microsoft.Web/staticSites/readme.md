@@ -266,6 +266,39 @@ userAssignedIdentities: {
 </details>
 <p>
 
+### Parameter Usage: `customDomains`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"customDomains": {
+  "value": [
+    "<<namePrefix>>domain1.domain",
+    "<<namePrefix>>domain2.domain.domain",
+    "<<namePrefix>>domain3.domain.domain.domain"
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+customDomains: [
+  'carmldomain1.domain'
+  'carmldomain2.domain.domain'
+  'carmldomain3.domain.domain.domain'
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
