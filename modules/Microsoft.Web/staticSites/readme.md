@@ -379,13 +379,6 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     "systemAssignedIdentity": {
       "value": true
     },
-    "customDomains": {
-      "value": [
-        "<<namePrefix>>domain1.domain",
-        "<<namePrefix>>domain2.domain.domain",
-        "<<namePrefix>>domain3.domain.domain.domain"
-      ]
-    },
     "appSettings": {
       "value": {
         "foo": "bar",
@@ -447,11 +440,6 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     allowConfigFileUpdates: true
     enterpriseGradeCdnStatus: 'Disabled'
     systemAssignedIdentity: true
-    customDomains: [
-      '<<namePrefix>>domain1.domain'
-      '<<namePrefix>>domain2.domain.domain'
-      '<<namePrefix>>domain3.domain.domain.domain'
-    ]
     appSettings: {
       foo: 'bar'
       setting: 1
