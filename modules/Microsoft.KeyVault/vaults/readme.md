@@ -439,7 +439,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
             "value": [
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "vault"
+                    "service": "vault",
+                    "privateDnsZoneResourceIds": [
+                        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+                    ]
                 }
             ]
         },
@@ -572,6 +575,9 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'vault'
+        privateDnsZoneResourceIds: [
+          '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
+        ]
       }
     ]
     networkAcls: {
