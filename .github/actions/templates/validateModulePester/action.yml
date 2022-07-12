@@ -64,12 +64,12 @@ runs:
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run global tests via Pester'
+    - name: 'Run Pester tests'
       id: pester_run_step
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Run global tests via Pester"
+        Write-Output "::group::Run Pester tests"
 
         # Set repo root path
         $repoRootPath = $env:GITHUB_WORKSPACE

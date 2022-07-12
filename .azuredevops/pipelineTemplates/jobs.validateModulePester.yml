@@ -68,7 +68,7 @@ parameters:
 ##---------------------------------------------##
 jobs:
   - job:
-    displayName: Run global tests
+    displayName: Run Pester tests
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
