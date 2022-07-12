@@ -60,7 +60,7 @@
     },
     "linkedBackend": {
       "value": {
-        "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/<<namePrefix>>-az-fa-x-001"
+        "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/adp-<<namePrefix>>-az-fa-001"
       }
     }
   }

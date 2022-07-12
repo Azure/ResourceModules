@@ -416,7 +416,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     },
     "linkedBackend": {
       "value": {
-        "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/<<namePrefix>>-az-fa-x-001"
+        "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/adp-<<namePrefix>>-az-fa-001"
       }
     }
   }
@@ -466,7 +466,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
       }
     ]
     linkedBackend: {
-      resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/<<namePrefix>>-az-fa-x-001'
+      resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/adp-<<namePrefix>>-az-fa-001'
     }
   }
 }
