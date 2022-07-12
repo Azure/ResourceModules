@@ -1,4 +1,4 @@
-# Static Web Sites `[Microsoft.Web/staticSites]`
+# Static Site `[Microsoft.Web/staticSites]`
 
 This module deploys a Static Web Site.
 
