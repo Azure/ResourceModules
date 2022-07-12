@@ -810,6 +810,7 @@ function Set-DeploymentExamplesSection {
             $rawBicepExampleString = ($rawBicepExample | Out-String)
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{serviceShort\}', $serviceShort
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', $namePrefix
+            $rawBicepExampleString = $rawBicepExampleString -replace '(?m):\s*location\s*$', ': ''<location>'''
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
@@ -1319,7 +1320,8 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-OutputsSection @inputObject
     }
 
-    if ($SectionsToRefresh -contains 'Deployment examples') {
+    $isTopLevelModule = $TemplateFilePath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 3 # <provider>/<resourceType>/deploy.*
+    if ($SectionsToRefresh -contains 'Deployment examples' -and $isTopLevelModule) {
         # Handle [Deployment examples] section
         # ===================================
         $inputObject = @{
