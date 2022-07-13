@@ -457,6 +457,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
       vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
     }
   }
+  dependsOn: [
+    keyVaultReference
+  ]
 }
 ```
 
