@@ -20,5 +20,5 @@ resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
 @description('The principal ID of the created managed identity')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
-@description('The principal ID of the created managed identity')
+@description('The resource ID of the created Virtual WAN')
 output virtualWWANResourceId string = virtualWan.id

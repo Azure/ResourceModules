@@ -16,7 +16,7 @@ param resourceGroupName string = '${serviceShort}-ms.network-vpnSites-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'vsimin'
+param serviceShort string = 'vhpar'
 
 // =========== //
 // Deployments //
@@ -29,11 +29,12 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'nestedTemplates/min.parameters.nested.bicep' = {
+module resourceGroupResources 'nestedTemplates/default.parameters.nested.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     virtualWANName: 'dep-${namePrefix}-vw-${serviceShort}-001'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}-001'
   }
 }
 
@@ -43,13 +44,37 @@ module resourceGroupResources 'nestedTemplates/min.parameters.nested.bicep' = {
 
 module testDeployment '../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-vpnSites-${serviceShort}'
+  name: '${uniqueString(deployment().name)}-test-virtualHub-${serviceShort}'
   params: {
     name: '${namePrefix}-${serviceShort}-001'
+    lock: 'CanNotDelete'
+    addressPrefix: '10.1.0.0/16'
     virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
-    addressPrefixes: [
-      '10.0.0.0/16'
+    hubRouteTables: [
+      {
+        name: 'routeTable1'
+      }
     ]
-    ipAddress: '1.2.3.4'
+    hubVirtualNetworkConnections: [
+      {
+        name: 'connection1'
+        remoteVirtualNetworkId: resourceGroupResources.outputs.virtualNetworkResourceId
+        routingConfiguration: {
+          associatedRouteTable: {
+            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/${namePrefix}-${serviceShort}-001/hubRouteTables/routeTable1'
+          }
+          propagatedRouteTables: {
+            ids: [
+              {
+                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/${namePrefix}-${serviceShort}-001/hubRouteTables/routeTable1'
+              }
+            ]
+            labels: [
+              'none'
+            ]
+          }
+        }
+      }
+    ]
   }
 }

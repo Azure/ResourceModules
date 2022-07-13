@@ -32,7 +32,7 @@ module resourceGroupResources 'nestedTemplates/max.parameters.nested.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-${namePrefix}-az-msi-${serviceShort}-01'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}-01'
   }
 }
 
@@ -58,7 +58,7 @@ module testDeployment '../deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
   params: {
-    name: '${namePrefix}azas${serviceShort}001'
+    name: '${namePrefix}az${serviceShort}001'
     lock: 'CanNotDelete'
     skuName: 'S0'
     skuCapacity: 1

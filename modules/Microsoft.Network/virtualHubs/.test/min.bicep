@@ -10,13 +10,13 @@ param namePrefix string
 
 @description('Optional. The name of the resource group to deploy for a testing purposes')
 @maxLength(90)
-param resourceGroupName string = '${serviceShort}-ms.sql-servers-rg'
+param resourceGroupName string = '${serviceShort}-ms.network-vpnSites-rg'
 
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'sqladmin'
+param serviceShort string = 'vhmin'
 
 // =========== //
 // Deployments //
@@ -33,7 +33,7 @@ module resourceGroupResources 'nestedTemplates/min.parameters.nested.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}-01'
+    virtualWANName: 'dep-${namePrefix}-vw-${serviceShort}-001'
   }
 }
 
@@ -43,15 +43,10 @@ module resourceGroupResources 'nestedTemplates/min.parameters.nested.bicep' = {
 
 module testDeployment '../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
+  name: '${uniqueString(deployment().name)}-test-virtualHub-${serviceShort}'
   params: {
     name: '${namePrefix}-${serviceShort}-001'
-    administrators: {
-      azureADOnlyAuthentication: true
-      login: 'myspn'
-      sid: resourceGroupResources.outputs.managedIdentityPrincipalId
-      principalType: 'Application'
-      tenantId: tenant().tenantId
-    }
+    addressPrefix: '10.0.0.0/16'
+    virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
   }
 }

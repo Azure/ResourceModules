@@ -33,7 +33,7 @@ module resourceGroupResources 'nestedTemplates/default.parameters.nested.bicep' 
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-${namePrefix}-az-msi-${serviceShort}-01'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}-01'
     virtualNetworkName: 'adp-${namePrefix}-vnet-${serviceShort}-01'
     deploymentScriptName: 'adp-${namePrefix}-ds-kv-${serviceShort}-01'
     keyVaultName: 'adp-${namePrefix}-kv-${serviceShort}-01'
@@ -69,7 +69,7 @@ module testDeployment '../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
   params: {
-    name: '${namePrefix}-az-${serviceShort}-x-001'
+    name: '${namePrefix}-${serviceShort}-001'
     lock: 'CanNotDelete'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: keyVaultReference.getSecret(resourceGroupResources.outputs.secretName)
@@ -95,7 +95,7 @@ module testDeployment '../deploy.bicep' = {
     }
     databases: [
       {
-        name: '${namePrefix}-az-${serviceShort}db-x-001'
+        name: '${namePrefix}-${serviceShort}db-001'
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         skuTier: 'BusinessCritical'
         skuName: 'BC_Gen5'
