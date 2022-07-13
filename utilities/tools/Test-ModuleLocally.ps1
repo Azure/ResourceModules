@@ -187,10 +187,12 @@ function Test-ModuleLocally {
 
             # Find Test Parameter Files
             # -------------------------
-            if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
-                $ModuleParameterFiles = (Get-ChildItem -Path $testFilePath).FullName
-            } else {
-                $ModuleParameterFiles = @($testFilePath)
+            if ($TemplateFilePath -notlike '*.test*') {
+                if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
+                    $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
+                } else {
+                    $moduleTestFiles = @($testFilePath)
+                }
             }
 
             # Replace parameter file tokens
@@ -229,7 +231,9 @@ function Test-ModuleLocally {
             }
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
+            if ($moduleTestFiles) {
+                $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
+            }
 
             # Deployment & Validation Testing
             # -------------------------------
@@ -241,14 +245,36 @@ function Test-ModuleLocally {
                 managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
                 Verbose           = $true
             }
+
+            if (-not $moduleTestFiles) {
+                # Using new testing templates - adding special parameters
+                if ((Split-Path $TemplateFilePath -Extension) -eq '.bicep') {
+                    $testTemplatePossibleParameters = (az bicep build --file $TemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
+                } else {
+                    $testTemplatePossibleParameters = ((Get-Content $TemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+                }
+
+                if (Test-Path $settingsFilePath) {
+                    if ($testTemplatePossibleParameters -contains 'namePrefix') {
+                        $functionInput['additionalParameters'] += @{
+                            namePrefix = ($Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }).value
+                        }
+                    }
+                }
+            }
+
             try {
                 # Validate template
                 # -----------------
                 if ($ValidationTest) {
                     # Loop through test parameter files
-                    foreach ($paramFilePath in $moduleParameterFiles) {
-                        Write-Verbose ('Validating module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
-                        Test-TemplateDeployment @functionInput -ParameterFilePath $paramFilePath
+                    if ($moduleTestFiles) {
+                        foreach ($paramFilePath in $moduleTestFiles) {
+                            Write-Verbose ('Validating module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
+                            Test-TemplateDeployment @functionInput -ParameterFilePath $paramFilePath
+                        }
+                    } else {
+                        Test-TemplateDeployment @functionInput
                     }
                 }
 
@@ -258,11 +284,16 @@ function Test-ModuleLocally {
                 if ($DeploymentTest) {
                     $functionInput['retryLimit'] = 1 # Overwrite default of 3
                     # Loop through test parameter files
-                    foreach ($paramFilePath in $moduleParameterFiles) {
-                        Write-Verbose ('Deploy module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
-                        if ($PSCmdlet.ShouldProcess(('Module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)), 'Deploy')) {
-                            New-TemplateDeployment @functionInput -ParameterFilePath $paramFilePath
+                    if ($moduleTestFiles) {
+
+                        foreach ($paramFilePath in $moduleTestFiles) {
+                            Write-Verbose ('Deploy module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
+                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)), 'Deploy')) {
+                                New-TemplateDeployment @functionInput -ParameterFilePath $paramFilePath
+                            }
                         }
+                    } else {
+                        New-TemplateDeployment @functionInput
                     }
                 }
             } catch {
@@ -270,10 +301,10 @@ function Test-ModuleLocally {
             } finally {
                 # Restore parameter files
                 # -----------------------
-                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
+                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and $moduleTestFiles) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
-                    $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
+                    $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
                 }
             }
         }
