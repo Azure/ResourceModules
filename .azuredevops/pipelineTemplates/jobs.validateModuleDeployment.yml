@@ -364,10 +364,10 @@ jobs:
             $res = New-TemplateDeployment @functionInput -Verbose
 
             # Get deployment name
-            Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
-            $deploymentName=$res.deploymentName
+            $deploymentName = $res.deploymentName
             Write-Verbose "Deployment name: $deploymentName" -Verbose
-            Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'deploymentName', $deploymentName)
+            Write-Host "##vso[task.setvariable variable=deploymentName]$deploymentName"
+            Write-Host "##vso[task.setvariable variable=deploymentName;isOutput=true]$deploymentName"
 
             # Populate further outputs
             $deploymentOutputHash=@{}
@@ -379,7 +379,7 @@ jobs:
 
             $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
             Write-Verbose "Deployment output: $deploymentOutput" -Verbose
-            Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'deploymentOutput', $deploymentOutput)
+            Write-Output "##vso[task.setvariable variable=deploymentOutput;isOutput=true]$deploymentOutput"
 
             if ($res.ContainsKey('exception')) {
               # Happens only if there is an exception
@@ -390,7 +390,7 @@ jobs:
       #------------------
       - task: AzurePowerShell@5
         displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-        condition: and(succeededOrFailed(), eq('${{ parameters.removeDeployment }}', 'true'), not(eq( '$(deploymentName)', '')), not(startsWith( '$(deploymentName)', '$(' )))
+        condition: and(succeededOrFailed(), eq('${{ parameters.removeDeployment }}', 'True'), not(eq( '$(deploymentName)', '')), not(startsWith( '$(deploymentName)', '$(' )))
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
