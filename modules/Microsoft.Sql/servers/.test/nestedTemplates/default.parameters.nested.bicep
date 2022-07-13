@@ -42,7 +42,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
   name: keyVaultName
   location: location
   properties: {
@@ -51,18 +51,20 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
       name: 'standard'
     }
     tenantId: tenant().tenantId
-    accessPolicies: [
-      {
-        objectId: managedIdentity.properties.principalId
-        permissions: {
-          secrets: [
-            'All'
-          ]
-        }
-        tenantId: tenant().tenantId
-      }
-    ]
+    enableRbacAuthorization: true
+    enabledForTemplateDeployment: true
   }
+}
+
+resource kvRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+  name: guid(keyVault.id, 'msi', 'Key Vault Secrets Officer')
+  properties: {
+    description: 'Secrets access for MSI'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b86a8fe4-44ce-4948-aee5-eccb2c155cd7')
+    principalId: managedIdentity.properties.principalId
+    principalType: 'ServicePrincipal'
+  }
+  scope: keyVault
 }
 
 resource keyVaultdeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
@@ -91,13 +93,16 @@ resource keyVaultdeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10
       Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $PasswordSecretName -SecretValue $password
     '''
   }
+  dependsOn: [
+    kvRoleAssignment
+  ]
 }
 
 @description('The principal ID of the created managed identity')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
 @description('The resource ID of the created managed identity')
-output managedIdentitResourceId string = managedIdentity.properties.principalId
+output managedIdentitResourceId string = managedIdentity.id
 
 @description('The resource ID of the created virtual network subnet')
 output privateEndpointSubnetResourceId string = vnet.properties.subnets[0].id

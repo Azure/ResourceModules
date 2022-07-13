@@ -135,4 +135,7 @@ module testDeployment '../deploy.bicep' = {
       }
     ]
   }
+  dependsOn: [
+    keyVaultReference
+  ]
 }
