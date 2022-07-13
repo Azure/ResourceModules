@@ -43,7 +43,7 @@ resource collection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/coll
   name: name
   parent: databaseAccount::mongodbDatabase
   properties: {
-    options: {
+    options: contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? null : {
       throughput: throughput
     }
     resource: {

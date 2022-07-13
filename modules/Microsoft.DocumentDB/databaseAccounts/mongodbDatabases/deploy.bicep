@@ -42,7 +42,7 @@ resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases
     resource: {
       id: name
     }
-    options: {
+    options: contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? null : {
       throughput: throughput
     }
   }

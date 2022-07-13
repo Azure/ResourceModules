@@ -59,7 +59,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `networkRuleSetDefaultAction` | string | `'Deny'` | `[Allow, Deny]` | The default action of allow or deny when no other rules match. |
 | `networkRuleSetIpRules` | array | `[]` |  | The IP ACL rules. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | Whether or not public network access is allowed for the container registry. - Enabled or Disabled. |
+| `publicNetworkAccess` | string | `''` | `[, Enabled, Disabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `quarantinePolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the quarantine policy is enabled or not. |
 | `replications` | _[replications](replications/readme.md)_ array | `[]` |  | All replications to create. |
 | `retentionPolicyDays` | int | `15` |  | The number of days to retain an untagged manifest after which it gets purged. |
