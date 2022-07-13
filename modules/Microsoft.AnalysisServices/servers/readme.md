@@ -157,6 +157,10 @@ roleAssignments: [
 
 ## Deployment examples
 
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
 <h3>Example 1: Default</h3>
 
 <details>
@@ -167,22 +171,24 @@ roleAssignments: [
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-aspar'
   params: {
-    name: 'carmlazasaspar001'
+    // Required parameters
+    name: 'carmlazaspar001'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     lock: 'CanNotDelete'
-    skuName: 'S0'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          '<managedIdentityPrincipalId>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    skuName: 'S0'
   }
 }
 ```
@@ -199,24 +205,16 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
-      "value": "carmlazasaspar001"
+      "value": "carmlazaspar001"
     },
-    "lock": {
-      "value": "CanNotDelete"
+    // Non-required parameters
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
-    "skuName": {
-      "value": "S0"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "managedIdentityPrincipalId"
-          ],
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
@@ -227,11 +225,21 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    "lock": {
+      "value": "CanNotDelete"
     },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuName": {
+      "value": "S0"
     }
   }
 }
@@ -250,40 +258,42 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-asmax'
   params: {
-    name: 'carmlazasasmax001'
-    lock: 'CanNotDelete'
-    skuName: 'S0'
-    skuCapacity: 1
-    firewallSettings: {
-      firewallRules: [
-        {
-          firewallRuleName: 'AllowFromAll'
-          rangeStart: '0.0.0.0'
-          rangeEnd: '255.255.255.255'
-        }
-      ]
-      enablePowerBIService: true
-    }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
-        ]
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    // Required parameters
+    name: 'carmlazasmax001'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogCategoriesToEnable: [
       'Engine'
       'Service'
     ]
+    diagnosticLogsRetentionInDays: 7
     diagnosticMetricsToEnable: [
       'AllMetrics'
     ]
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    firewallSettings: {
+      enablePowerBIService: true
+      firewallRules: [
+        {
+          firewallRuleName: 'AllowFromAll'
+          rangeEnd: '255.255.255.255'
+          rangeStart: '0.0.0.0'
+        }
+      ]
+    }
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuCapacity: 1
+    skuName: 'S0'
   }
 }
 ```
@@ -300,49 +310,11 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
-      "value": "carmlazasasmax001"
+      "value": "carmlazasmax001"
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "skuName": {
-      "value": "S0"
-    },
-    "skuCapacity": {
-      "value": 1
-    },
-    "firewallSettings": {
-      "value": {
-        "firewallRules": [
-          {
-            "rangeEnd": "255.255.255.255",
-            "rangeStart": "0.0.0.0",
-            "firewallRuleName": "AllowFromAll"
-          }
-        ],
-        "enablePowerBIService": true
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "managedIdentityPrincipalId"
-          ],
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
+    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -355,10 +327,50 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
         "Service"
       ]
     },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
     "diagnosticMetricsToEnable": {
       "value": [
         "AllMetrics"
       ]
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "firewallSettings": {
+      "value": {
+        "enablePowerBIService": true,
+        "firewallRules": [
+          {
+            "firewallRuleName": "AllowFromAll",
+            "rangeEnd": "255.255.255.255",
+            "rangeStart": "0.0.0.0"
+          }
+        ]
+      }
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuCapacity": {
+      "value": 1
+    },
+    "skuName": {
+      "value": "S0"
     }
   }
 }
@@ -377,7 +389,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-asmin'
   params: {
-    name: 'carmlazasasmin001'
+    name: 'carmlazasmin001'
   }
 }
 ```
@@ -395,7 +407,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "carmlazasasmin001"
+      "value": "carmlazasmin001"
     }
   }
 }

@@ -322,6 +322,10 @@ roleAssignments: [
 
 ## Deployment examples
 
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
 <h3>Example 1: Default</h3>
 
 <details>
@@ -332,19 +336,36 @@ roleAssignments: [
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-vpnSites-vsipar'
   params: {
-    name: 'carml-az-vsipar-001'
-    virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
+    // Required parameters
+    name: 'carml-vsipar-001'
+    virtualWanId: '<virtualWanId>'
+    // Non-required parameters
+    deviceProperties: {
+      linkSpeedInMbps: 0
+    }
     lock: 'CanNotDelete'
+    o365Policy: {
+      breakOutCategories: {
+        allow: true
+        default: true
+        optimize: true
+      }
+    }
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     tags: {
       tagA: 'valueA'
       tagB: 'valueB'
     }
-    deviceProperties: {
-      linkSpeedInMbps: 0
-    }
     vpnSiteLinks: [
       {
-        name: 'carml-az-vSite-vsipar-001'
+        name: 'carml-vSite-vsipar-001'
         properties: {
           bgpProperties: {
             asn: 65010
@@ -372,21 +393,6 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
         }
       }
     ]
-    o365Policy: {
-      breakOutCategories: {
-        optimize: true
-        allow: true
-        default: true
-      }
-    }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
-        ]
-      }
-    ]
   }
 }
 ```
@@ -403,64 +409,28 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
-      "value": "carml-az-vsipar-001"
+      "value": "carml-vsipar-001"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "tags": {
-      "value": {
-        "tagA": "valueA",
-        "tagB": "valueB"
-      }
-    },
+    // Non-required parameters
     "deviceProperties": {
       "value": {
         "linkSpeedInMbps": 0
       }
     },
-    "vpnSiteLinks": {
-      "value": [
-        {
-          "properties": {
-            "linkProperties": {
-              "linkProviderName": "contoso",
-              "linkSpeedInMbps": 5
-            },
-            "bgpProperties": {
-              "bgpPeeringAddress": "1.1.1.1",
-              "asn": 65010
-            },
-            "ipAddress": "1.2.3.4"
-          },
-          "name": "carml-az-vSite-vsipar-001"
-        },
-        {
-          "properties": {
-            "linkProperties": {
-              "linkProviderName": "contoso",
-              "linkSpeedInMbps": 5
-            },
-            "bgpProperties": {
-              "bgpPeeringAddress": "192.168.1.0",
-              "asn": 65020
-            },
-            "ipAddress": "2.2.2.2"
-          },
-          "name": "Link1"
-        }
-      ]
+    "lock": {
+      "value": "CanNotDelete"
     },
     "o365Policy": {
       "value": {
         "breakOutCategories": {
-          "optimize": true,
           "allow": true,
-          "default": true
+          "default": true,
+          "optimize": true
         }
       }
     },
@@ -468,9 +438,47 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
       "value": [
         {
           "principalIds": [
-            "managedIdentityPrincipalId"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "tagA": "valueA",
+        "tagB": "valueB"
+      }
+    },
+    "vpnSiteLinks": {
+      "value": [
+        {
+          "name": "carml-vSite-vsipar-001",
+          "properties": {
+            "bgpProperties": {
+              "asn": 65010,
+              "bgpPeeringAddress": "1.1.1.1"
+            },
+            "ipAddress": "1.2.3.4",
+            "linkProperties": {
+              "linkProviderName": "contoso",
+              "linkSpeedInMbps": 5
+            }
+          }
+        },
+        {
+          "name": "Link1",
+          "properties": {
+            "bgpProperties": {
+              "asn": 65020,
+              "bgpPeeringAddress": "192.168.1.0"
+            },
+            "ipAddress": "2.2.2.2",
+            "linkProperties": {
+              "linkProviderName": "contoso",
+              "linkSpeedInMbps": 5
+            }
+          }
         }
       ]
     }
@@ -491,8 +499,10 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-vpnSites-vsimin'
   params: {
-    name: 'carml-az-vsimin-001'
-    virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
+    // Required parameters
+    name: 'carml-vsimin-001'
+    virtualWanId: '<virtualWanId>'
+    // Non-required parameters
     addressPrefixes: [
       '10.0.0.0/16'
     ]
@@ -513,12 +523,14 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
-      "value": "carml-az-vsimin-001"
+      "value": "carml-vsimin-001"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
     },
+    // Non-required parameters
     "addressPrefixes": {
       "value": [
         "10.0.0.0/16"

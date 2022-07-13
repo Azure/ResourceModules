@@ -333,7 +333,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-sqladmin'
   params: {
     // Required parameters
-    name: 'carml-az-sqladmin-admin-001'
+    name: 'carml-sqladmin-001'
     // Non-required parameters
     administrators: {
       azureADOnlyAuthentication: true
@@ -360,7 +360,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "carml-az-sqladmin-admin-001"
+      "value": "carml-sqladmin-001"
     },
     // Non-required parameters
     "administrators": {
@@ -390,7 +390,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-sqlpar'
   params: {
     // Required parameters
-    name: 'carml-az-sqlpar-x-001'
+    name: 'carml-sqlpar-001'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -404,7 +404,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: 'carml-az-sqlpardb-x-001'
+        name: 'carml-sqlpardb-001'
         skuCapacity: 12
         skuFamily: 'Gen5'
         skuName: 'BC_Gen5'
@@ -477,7 +477,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "carml-az-sqlpar-x-001"
+      "value": "carml-sqlpar-001"
     },
     // Non-required parameters
     "administratorLogin": {
@@ -497,7 +497,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "carml-az-sqlpardb-x-001",
+          "name": "carml-sqlpardb-001",
           "skuCapacity": 12,
           "skuFamily": "Gen5",
           "skuName": "BC_Gen5",
