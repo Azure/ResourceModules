@@ -1,6 +1,8 @@
-Bicep is a relatively new Domain-specific language (DSL) and - at the time of writing - not yet in the state of General Availability (GA). For this reason, some people may want to wait for Bicep's _General Availability_ and prefer to use ARM/JSON for the time being.
 
-For these scenarios, the CARML library provides a script that uses the Bicep Toolkit translator/compiler to support the conversion of CARML Bicep modules to ARM/JSON Templates.
+Bicep is [ready for production use](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/frequently-asked-questions#is-this-ready-for-production-use) starting with version 0.3. It is supported by Microsoft support plans and has parity with what can be accomplished with ARM Templates.
+
+However, for users who still prefer using ARM templates over Bicep, the CARML library provides a script that uses the Bicep Toolkit translator/compiler to support the conversion of CARML Bicep modules to ARM/JSON Templates.
+
 This page documents the conversion utility and how to use it.
 
 ---

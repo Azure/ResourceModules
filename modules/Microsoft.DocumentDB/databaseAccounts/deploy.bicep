@@ -50,14 +50,18 @@ param maxIntervalInSeconds int = 300
   '3.2'
   '3.6'
   '4.0'
+  '4.2'
 ])
-param serverVersion string = '4.0'
+param serverVersion string = '4.2'
 
 @description('Optional. SQL Databases configurations.')
 param sqlDatabases array = []
 
 @description('Optional. MongoDB Databases configurations.')
 param mongodbDatabases array = []
+
+@description('Optional. Gremlin Databases configurations.')
+param gremlinDatabases array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -125,6 +129,49 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@allowed([
+  'EnableCassandra'
+  'EnableTable'
+  'EnableGremlin'
+  'EnableMongo'
+  'DisableRateLimitingResponses'
+  'EnableServerless'
+])
+@description('Optional. List of Cosmos DB capabilities for the account.')
+param capabilitiesToAdd array = []
+
+@allowed([
+  'Periodic'
+  'Continuous'
+])
+@description('Optional. Describes the mode of backups.')
+param backupPolicyType string = 'Continuous'
+
+@allowed([
+  'Continuous30Days'
+  'Continuous7Days'
+])
+@description('Optional. Configuration values for continuous mode backup.')
+param backupPolicyContinuousTier string = 'Continuous30Days'
+
+@minValue(60)
+@maxValue(1440)
+@description('Optional. An integer representing the interval in minutes between two backups. Only applies to periodic backup type.')
+param backupIntervalInMinutes int = 240
+
+@minValue(2)
+@maxValue(720)
+@description('Optional. An integer representing the time (in hours) that each backup is retained. Only applies to periodic backup type.')
+param backupRetentionIntervalInHours int = 8
+
+@allowed([
+  'Geo'
+  'Local'
+  'Zone'
+])
+@description('Optional. Enum to indicate type of backup residency. Only applies to periodic backup type.')
+param backupStorageRedundancy string = 'Local'
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -177,25 +224,45 @@ var databaseAccount_locations = [for location in locations: {
   locationName: location.locationName
 }]
 
-var kind = !empty(sqlDatabases) ? 'GlobalDocumentDB' : (!empty(mongodbDatabases) ? 'MongoDB' : 'Parse')
+var kind = !empty(sqlDatabases) || !empty(gremlinDatabases) ? 'GlobalDocumentDB' : (!empty(mongodbDatabases) ? 'MongoDB' : 'Parse')
 
 var enableReferencedModulesTelemetry = false
 
-var databaseAccount_properties = !empty(sqlDatabases) ? {
-  consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
-  locations: databaseAccount_locations
-  databaseAccountOfferType: databaseAccountOfferType
-  enableAutomaticFailover: automaticFailover
-} : (!empty(mongodbDatabases) ? {
-  consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
-  locations: databaseAccount_locations
-  databaseAccountOfferType: databaseAccountOfferType
-  apiProperties: {
-    serverVersion: serverVersion
+var capabilities = [for capability in capabilitiesToAdd: {
+  name: capability
+}]
+
+var backupPolicy = backupPolicyType == 'Continuous' ? {
+  type: backupPolicyType
+  continuousModeProperties: {
+    tier: backupPolicyContinuousTier
   }
 } : {
-  databaseAccountOfferType: databaseAccountOfferType
-})
+  type: backupPolicyType
+  periodicModeProperties: {
+    backupIntervalInMinutes: backupIntervalInMinutes
+    backupRetentionIntervalInHours: backupRetentionIntervalInHours
+    backupStorageRedundancy: backupStorageRedundancy
+  }
+}
+
+var databaseAccount_properties = union({
+    databaseAccountOfferType: databaseAccountOfferType
+  }, ((!empty(sqlDatabases) || !empty(mongodbDatabases) || !empty(gremlinDatabases)) ? {
+    // Common properties
+    consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
+    locations: databaseAccount_locations
+    capabilities: capabilities
+    backupPolicy: backupPolicy
+  } : {}), (!empty(sqlDatabases) ? {
+    // SQLDB properties
+    enableAutomaticFailover: automaticFailover
+  } : {}), (!empty(mongodbDatabases) ? {
+    // MongoDb properties
+    apiProperties: {
+      serverVersion: serverVersion
+    }
+  } : {}))
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -209,7 +276,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' = {
   name: name
   location: location
   tags: tags
@@ -251,7 +318,7 @@ module databaseAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [
   }
 }]
 
-module sqlDatabases_resource 'sqlDatabases/deploy.bicep' = [for sqlDatabase in sqlDatabases: {
+module databaseAccount_sqlDatabases 'sqlDatabases/deploy.bicep' = [for sqlDatabase in sqlDatabases: {
   name: '${uniqueString(deployment().name, location)}-sqldb-${sqlDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
@@ -261,12 +328,22 @@ module sqlDatabases_resource 'sqlDatabases/deploy.bicep' = [for sqlDatabase in s
   }
 }]
 
-module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbDatabase in mongodbDatabases: {
+module databaseAccount_mongodbDatabases 'mongodbDatabases/deploy.bicep' = [for mongodbDatabase in mongodbDatabases: {
   name: '${uniqueString(deployment().name, location)}-mongodb-${mongodbDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
     name: mongodbDatabase.name
     collections: contains(mongodbDatabase, 'collections') ? mongodbDatabase.collections : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module databaseAccount_gremlinDatabases 'gremlinDatabases/deploy.bicep' = [for gremlinDatabase in gremlinDatabases: {
+  name: '${uniqueString(deployment().name, location)}-gremlin-${gremlinDatabase.name}'
+  params: {
+    databaseAccountName: databaseAccount.name
+    name: gremlinDatabase.name
+    graphs: contains(gremlinDatabase, 'graphs') ? gremlinDatabase.graphs : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

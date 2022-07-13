@@ -30,12 +30,13 @@ param disableLocalAuth bool = false
 @description('Optional. Property specifying whether protection against purge is enabled for this configuration store.')
 param enablePurgeProtection bool = false
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
-  'Disabled'
+  ''
   'Enabled'
+  'Disabled'
 ])
-@description('Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled.')
-param publicNetworkAccess string = 'Enabled'
+param publicNetworkAccess string = ''
 
 @description('Optional. The amount of time in days that the configuration store will be retained when it is soft deleted.')
 @minValue(1)
@@ -100,7 +101,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 var enableReferencedModulesTelemetry = false
@@ -155,7 +156,7 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
     createMode: createMode
     disableLocalAuth: disableLocalAuth
     enablePurgeProtection: sku == 'Free' ? false : enablePurgeProtection
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     softDeleteRetentionInDays: sku == 'Free' ? 0 : softDeleteRetentionInDays
   }
 }

@@ -32,7 +32,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Note, CMK requires the 'acrSku' to be 'Premium'. Required if 'cMKeyName' is not empty. |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Note, CMK requires the 'acrSku' to be 'Premium'. Required if 'cMKKeyName' is not empty. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -41,6 +41,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `acrSku` | string | `'Basic'` | `[Basic, Premium, Standard]` | Tier of your Azure container registry. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Note, CMK requires the 'acrSku' to be 'Premium'. |
 | `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the 'acrSku' to be 'Premium'. |
+| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `dataEndpointEnabled` | bool | `False` |  | Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -58,7 +59,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `networkRuleSetDefaultAction` | string | `'Deny'` | `[Allow, Deny]` | The default action of allow or deny when no other rules match. |
 | `networkRuleSetIpRules` | array | `[]` |  | The IP ACL rules. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | Whether or not public network access is allowed for the container registry. - Enabled or Disabled. |
+| `publicNetworkAccess` | string | `''` | `[, Enabled, Disabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `quarantinePolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the quarantine policy is enabled or not. |
 | `replications` | _[replications](replications/readme.md)_ array | `[]` |  | All replications to create. |
 | `retentionPolicyDays` | int | `15` |  | The number of days to retain an untagged manifest after which it gets purged. |

@@ -33,9 +33,9 @@ This module deploys an Azure Monitor Private Link Scope.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `'global'` |  | The location of the private link scope. Should be global. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
+| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `scopedResources` | _[scopedResources](scopedResources/readme.md)_ array | `[]` |  | Configuration Details for Azure Monitor Resources. |
+| `scopedResources` | _[scopedResources](scopedResources/readme.md)_ array | `[]` |  | Configuration details for Azure Monitor Resources. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
 
