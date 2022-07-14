@@ -31,7 +31,7 @@ function Set-ResourceTypesSection {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'ResourceTypesToExclude', Justification = 'Variable used inside Where-Object block.')]
     param (
         [Parameter(Mandatory)]
-        [hashtable] $TemplateFileContent,
+        [Hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory)]
         [object[]] $ReadMeFileContent,
@@ -118,7 +118,7 @@ function Set-ParametersSection {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [hashtable] $TemplateFileContent,
+        [Hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory)]
         [object[]] $ReadMeFileContent,
@@ -187,8 +187,8 @@ function Set-ParametersSection {
             }
 
             # Add external single quotes to all default values of type string except for those using functions
-            $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f ($parameter.defaultValue -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
-            $allowedValue = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f ($parameter.allowedValues -join ', ')) : (($parameter.allowedValues -is [hashtable]) ? '{object}' : $parameter.allowedValues)
+            $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f ($parameter.defaultValue -join ', ')) : (($parameter.defaultValue -is [Hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
+            $allowedValue = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f ($parameter.allowedValues -join ', ')) : (($parameter.allowedValues -is [Hashtable]) ? '{object}' : $parameter.allowedValues)
             $description = $parameter.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
 
             # Update parameter table content based on parameter category
@@ -260,7 +260,7 @@ function Set-OutputsSection {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [hashtable] $TemplateFileContent,
+        [Hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory)]
         [object[]] $ReadMeFileContent,
@@ -334,13 +334,16 @@ function Add-BicepParameterTypeComment {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
         [string] $BicepParams,
 
-        [Parameter(Mandatory = $true)]
-        [string[]] $AllParametersList,
+        [Parameter(Mandatory = $false)]
+        [AllowEmptyCollection()]
+        [string[]] $AllParametersList = @(),
 
-        [Parameter(Mandatory = $true)]
-        [string[]] $RequiredParametersList
+        [Parameter(Mandatory = $false)]
+        [AllowEmptyCollection()]
+        [string[]] $RequiredParametersList = @()
     )
 
     if ($RequiredParametersList.Count -ge 1 -and $AllParametersList.Count -ge 2) {
@@ -409,8 +412,9 @@ function Get-OrderedParametersJSON {
         [Parameter(Mandatory = $true)]
         [string] $ParametersJSON,
 
-        [Parameter(Mandatory = $true)]
-        [string[]] $RequiredParametersList
+        [Parameter(Mandatory = $false)]
+        [AllowEmptyCollection()]
+        [string[]] $RequiredParametersList = @()
     )
 
     # Load used function(s)
@@ -479,8 +483,9 @@ function Build-OrderedJSONObject {
         [Parameter(Mandatory = $true)]
         [string] $ParametersJSON,
 
-        [Parameter(Mandatory = $true)]
-        [string[]] $RequiredParametersList
+        [Parameter(Mandatory = $false)]
+        [AllowEmptyCollection()]
+        [string[]] $RequiredParametersList = @()
     )
 
     # [1/9] Sort parameter alphabetically
@@ -647,15 +652,16 @@ function ConvertTo-FormattedBicep {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [hashtable] $JSONParameters,
+        [Hashtable] $JSONParameters,
 
-        [Parameter(Mandatory = $true)]
-        [string[]] $RequiredParametersList
+        [Parameter(Mandatory = $false)]
+        [AllowEmptyCollection()]
+        [string[]] $RequiredParametersList = @()
     )
 
     # Remove 'value' parameter property, if any (e.g. when dealing with a classic parameter file)
     $JSONParametersWithoutValue = @{}
-    foreach ($parameter in $JSONParameters.Keys) {
+    foreach ($parameter in $JSONParameters.psbase.Keys) {
         if ($JSONParameters[$parameter].Keys -eq 'value') {
             $JSONParametersWithoutValue[$parameter] = $JSONParameters.$parameter.value
         } else {
@@ -664,8 +670,11 @@ function ConvertTo-FormattedBicep {
     }
 
     # [1/4] Order parameters recursively
-    $orderedJSONParameters = Get-OrderedParametersJSON -ParametersJSON ($JSONParametersWithoutValue | ConvertTo-Json -Depth 99) -RequiredParametersList $RequiredParametersList
-
+    if ($JSONParametersWithoutValue.Keys.Count -gt 0) {
+        $orderedJSONParameters = Get-OrderedParametersJSON -ParametersJSON ($JSONParametersWithoutValue | ConvertTo-Json -Depth 99) -RequiredParametersList $RequiredParametersList
+    } else {
+        $orderedJSONParameters = @{}
+    }
     # [2/4] Remove any JSON specific formatting
     $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
     if ($templateParameterObject -ne '{}') {
@@ -733,7 +742,7 @@ function Set-DeploymentExamplesSection {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory)]
-        [hashtable] $TemplateFileContent,
+        [Hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory = $true)]
         [object[]] $ReadMeFileContent,
@@ -745,7 +754,7 @@ function Set-DeploymentExamplesSection {
         [bool] $addBicep = $true,
 
         [Parameter(Mandatory = $false)]
-        [hashtable] $ProjectSettings = @{},
+        [Hashtable] $ProjectSettings = @{},
 
         [Parameter(Mandatory = $false)]
         [string] $SectionStartIdentifier = '## Deployment examples'
@@ -971,9 +980,9 @@ function Set-DeploymentExamplesSection {
                 #      If we're handling a classic ARM-JSON parameter file that includes replacing all 'references' with the link to one of the 'existing' Key Vault resources
                 if ((ConvertFrom-Json $rawContent -Depth 99).'$schema' -like '*deploymentParameters*') {
                     # If handling a classic parameter file
-                    $JSONParameters = (ConvertFrom-Json $rawContent -Depth 99 -AsHashtable).parameters
+                    $JSONParameters = (ConvertFrom-Json $rawContent -Depth 99 -AsHashtable -NoEnumerate).parameters
                     $JSONParametersWithoutValue = @{}
-                    foreach ($parameterName in $JSONParameters.Keys) {
+                    foreach ($parameterName in $JSONParameters.psbase.Keys) {
                         if ($JSONParameters[$parameterName].Keys -eq 'value') {
                             $JSONParametersWithoutValue[$parameterName] = $JSONParameters[$parameterName]['value']
                         } else {
@@ -993,7 +1002,7 @@ function Set-DeploymentExamplesSection {
                 # [4/5] Convert the JSON parameters to a Bicep parameters block
                 $conversionInputObject = @{
                     JSONParameters         = $JSONParametersWithoutValue
-                    RequiredParametersList = $RequiredParametersList
+                    RequiredParametersList = $null -ne $RequiredParametersList ? $RequiredParametersList : @()
                 }
                 $bicepExample = ConvertTo-FormattedBicep @conversionInputObject
 
@@ -1030,7 +1039,7 @@ function Set-DeploymentExamplesSection {
                 # [1/2] Get all parameters from the parameter object and order them recursively
                 $orderingInputObject = @{
                     ParametersJSON         = (($jsonParameterContent | ConvertFrom-Json).parameters | ConvertTo-Json -Depth 99)
-                    RequiredParametersList = $RequiredParametersList
+                    RequiredParametersList = $null -ne $RequiredParametersList ? $RequiredParametersList : @()
                 }
                 $orderedJSONExample = Build-OrderedJSONObject @orderingInputObject
 
