@@ -616,9 +616,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         "allowBlobPublicAccess": {
             "value": false
         },
-        "publicNetworkAccess": {
-            "value": "Disabled"
-        },
+        // "publicNetworkAccess": {
+        //     "value": "Disabled"
+        // },
         "requireInfrastructureEncryption": {
             "value": true
         },
@@ -673,24 +673,24 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                 }
             ]
         },
-        "networkAcls": {
-            "value": {
-                "bypass": "AzureServices",
-                "defaultAction": "Deny",
-                "virtualNetworkRules": [
-                    {
-                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
-                        "action": "Allow"
-                    }
-                ],
-                "ipRules": [
-                    {
-                        "action": "Allow",
-                        "value": "1.1.1.1"
-                    }
-                ]
-            }
-        },
+        // "networkAcls": {
+        //     "value": {
+        //         "bypass": "AzureServices",
+        //         "defaultAction": "Deny",
+        //         "virtualNetworkRules": [
+        //             {
+        //                 "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+        //                 "action": "Allow"
+        //             }
+        //         ],
+        //         "ipRules": [
+        //             {
+        //                 "action": "Allow",
+        //                 "value": "1.1.1.1"
+        //             }
+        //         ]
+        //     }
+        // },
         "blobServices": {
             "value": {
                 "diagnosticLogsRetentionInDays": 7,
@@ -838,7 +838,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     name: '<<namePrefix>>azsax001'
     storageAccountSku: 'Standard_LRS'
     allowBlobPublicAccess: false
-    publicNetworkAccess: 'Disabled'
     requireInfrastructureEncryption: true
     lock: 'CanNotDelete'
     privateEndpoints: [
@@ -887,22 +886,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         ]
       }
     ]
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Deny'
-      virtualNetworkRules: [
-        {
-          id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-          action: 'Allow'
-        }
-      ]
-      ipRules: [
-        {
-          action: 'Allow'
-          value: '1.1.1.1'
-        }
-      ]
-    }
     blobServices: {
       diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
