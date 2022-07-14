@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.web.hostingenvironments.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Web/hostingEnvironments/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

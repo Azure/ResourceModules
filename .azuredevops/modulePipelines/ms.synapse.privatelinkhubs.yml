@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.synapse.privatelinkhubs.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Synapse/privateLinkHubs/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

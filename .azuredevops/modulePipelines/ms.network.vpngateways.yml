@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.network.vpngateways.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Network/vpnGateways/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

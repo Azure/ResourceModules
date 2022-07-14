@@ -16,7 +16,7 @@ You can find the script under [`/utilities/tools/Test-ModuleLocally.ps1`](https:
 # How it works
 
 If the switch for Pester tests (`-PesterTest`) is provided the script will
-1. Invoke the global module test for the provided template file path and run all tests for it.
+1. Invoke the module test for the provided template file path and run all tests for it.
 
 If the switch for either the validation test (`-ValidationTest`) or deployment test (`-DeploymentTest`) is provided alongside a HashTable for the token replacement (`-ValidateOrDeployParameters`), the script will
 1. Either fetch all parameter files of the module's parameter folder (default) or you can specify a single parameter file by leveraging the `parameterFilePath` parameter instead.

@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.web.sites.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Web/sites/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

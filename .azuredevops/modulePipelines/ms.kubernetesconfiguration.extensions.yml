@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.kubernetesconfiguration.extensions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.KubernetesConfiguration/extensions/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

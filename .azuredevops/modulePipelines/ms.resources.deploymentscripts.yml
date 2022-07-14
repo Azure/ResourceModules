@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.resources.deploymentscripts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Resources/deploymentScripts/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

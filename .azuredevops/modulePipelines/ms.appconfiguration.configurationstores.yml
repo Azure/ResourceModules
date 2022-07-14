@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.appconfiguration.configurationstores.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.AppConfiguration/configurationStores/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'
