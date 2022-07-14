@@ -388,12 +388,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
             "value": "CanNotDelete"
         },
         "administratorLogin": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "administratorLogin"
-            }
+            "value": "adminUserName"
         },
         "administratorLoginPassword": {
             "reference": {
@@ -505,7 +500,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-sqlsrv-x-001'
     lock: 'CanNotDelete'
-    administratorLogin: kv1.getSecret('administratorLogin')
+    administratorLogin: 'adminUserName'
     administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
     location: 'westeurope'
     minimalTlsVersion: '1.2'
