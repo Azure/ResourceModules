@@ -38,7 +38,7 @@ module resourceGroupResources 'nestedTemplates/max.parameters.nested.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../.global/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {

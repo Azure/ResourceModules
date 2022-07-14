@@ -49,7 +49,7 @@ resource keyVaultReference 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../.global/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
