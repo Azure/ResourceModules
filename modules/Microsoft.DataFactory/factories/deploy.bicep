@@ -10,12 +10,13 @@ param integrationRuntime object = {}
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Whether or not public network access is allowed for this resource.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
+  ''
   'Enabled'
   'Disabled'
 ])
-param publicNetworkAccess string = 'Disabled'
+param publicNetworkAccess string = ''
 
 @description('Optional. Boolean to define whether or not to configure git during template deployment.')
 param gitConfigureLater bool = true

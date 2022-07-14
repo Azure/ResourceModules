@@ -1,6 +1,6 @@
-# Event Grid Topics `[Microsoft.EventGrid/topics]`
+# SignalRService `[Microsoft.SignalRService/webPubSub]`
 
-This module deploys an event grid topic.
+This module deploys a Web PubSub resource.
 
 ## Navigation
 
@@ -15,37 +15,36 @@ This module deploys an event grid topic.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.EventGrid/topics` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2020-06-01/topics) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.SignalRService/webPubSub` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.SignalRService/2021-10-01/webPubSub) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Event Grid Topic. |
+| `name` | string | The name of the Web PubSub resource. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[DeliveryFailures, PublishFailures]` | `[DeliveryFailures, PublishFailures]` | The name of logs that will be streamed. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
+| `capacity` | int | `1` |  | The unit count of the resource. 1 by default. |
+| `clientCertEnabled` | bool | `False` |  | Request client certificate during TLS handshake if enabled. |
+| `disableAadAuth` | bool | `False` |  | When set as true, connection with AuthType=aad won't work. |
+| `disableLocalAuth` | bool | `True` |  | Disables all authentication methods other than AAD authentication. For security reasons, this value should be set to `true`. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `inboundIpRules` | array | `[]` |  | Array of IPs to whitelist. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
+| `location` | string | `[resourceGroup().location]` |  | The location for all Web PubSub resources. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `networkAcls` | object | `{object}` |  | Networks ACLs, this value contains IPs to whitelist and/or Subnet information. Can only be set if the 'SKU' is not 'Free_F1'. For security reasons, it is recommended to set the DefaultAction Deny. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `[, Enabled, Disabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| `resourceLogConfigurationsToEnable` | array | `[ConnectivityLogs, MessagingLogs]` | `[ConnectivityLogs, MessagingLogs]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `sku` | string | `'Standard_S1'` | `[Free_F1, Standard_S1]` | Pricing tier of App Configuration. |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
 ### Parameter Usage: `privateEndpoints`
@@ -225,14 +224,122 @@ tags: {
 </details>
 <p>
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `networkAcls`
+
+Using this object you can configure the service's firewall. Note, that the `defaultAction` either allows all / denies all communication via the `publicNetwork` and `privateEndpoints`. You can subsequently allow/deny individual actions using the corresponding arrays.
+
+Either block supports any array of values:
+- 'ClientConnection'
+- 'RESTAPI'
+- 'ServerConnection'
+- 'Trace'
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"networkAcls": {
+  "value": {
+    "defaultAction": "Deny",
+    "privateEndpoints": [
+      {
+        "name": "pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0",
+        "allow": [
+          "ServerConnection",
+          "Trace"
+        ],
+        "deny": []
+      }
+    ],
+    "publicNetwork": {
+      "allow": [
+        "RESTAPI",
+        "Trace"
+      ],
+      "deny": []
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+networkAcls: {
+  defaultAction: 'Deny'
+  privateEndpoints: [
+    {
+      name: 'pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0'
+      allow: [
+        'ServerConnection'
+        'Trace'
+      ],
+      deny: []
+    }
+  ]
+  publicNetwork: {
+    allow: [
+      'RESTAPI'
+      'Trace'
+    ]
+    deny: []
+  }
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `externalIP` | string | The Web PubSub externalIP. |
+| `hostName` | string | The Web PubSub hostName. |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the event grid topic. |
-| `resourceGroupName` | string | The name of the resource group the event grid was deployed into. |
-| `resourceId` | string | The resource ID of the event grid. |
+| `name` | string | The Web PubSub name. |
+| `publicPort` | int | The Web PubSub publicPort. |
+| `resourceGroupName` | string | The Web PubSub resource group. |
+| `resourceId` | string | The Web PubSub resource ID. |
+| `serverPort` | int | The Web PubSub serverPort. |
 
 ## Deployment examples
 
@@ -244,49 +351,13 @@ tags: {
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-egtn-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "privateEndpoints": {
-            "value": [
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "topic"
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-pubsub-min-001"
     }
+  }
 }
 ```
 
@@ -297,11 +368,127 @@ tags: {
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-topics'
+module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-webPubSub'
   params: {
-    name: '<<namePrefix>>-az-egtn-x-001'
+    name: '<<namePrefix>>-az-pubsub-min-001'
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "westeurope"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-pubsub-x-001"
+    },
+    "capacity": {
+      "value": 2
+    },
+    "clientCertEnabled": {
+      "value": false
+    },
+    "disableAadAuth": {
+      "value": false
+    },
+    "disableLocalAuth": {
+      "value": true
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "sku": {
+      "value": "Standard_S1"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ]
+        }
+      ]
+    },
+    "networkAcls": {
+      "value": {
+        "defaultAction": "Allow",
+        "privateEndpoints": [
+          {
+            "name": "pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0",
+            "allow": [],
+            "deny": [
+              "ServerConnection",
+              "Trace"
+            ]
+          }
+        ],
+        "publicNetwork": {
+          "allow": [],
+          "deny": [
+            "RESTAPI",
+            "Trace"
+          ]
+        }
+      }
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "tags": {
+      "value": {
+        "purpose": "test"
+      }
+    },
+    "resourceLogConfigurationsToEnable": {
+      "value": [
+        "ConnectivityLogs"
+      ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+          "service": "webpubsub"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-webPubSub'
+  params: {
+    location: 'westeurope'
+    name: '<<namePrefix>>-az-pubsub-x-001'
+    capacity: 2
+    clientCertEnabled: false
+    disableAadAuth: false
+    disableLocalAuth: true
     lock: 'CanNotDelete'
+    sku: 'Standard_S1'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -310,17 +497,39 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
         ]
       }
     ]
+    networkAcls: {
+      defaultAction: 'Allow'
+      privateEndpoints: [
+        {
+          name: 'pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0'
+          allow: []
+          deny: [
+            'ServerConnection'
+            'Trace'
+          ]
+        }
+      ]
+      publicNetwork: {
+        allow: []
+        deny: [
+          'RESTAPI'
+          'Trace'
+        ]
+      }
+    }
+    systemAssignedIdentity: true
+    tags: {
+      purpose: 'test'
+    }
+    resourceLogConfigurationsToEnable: [
+      'ConnectivityLogs'
+    ]
     privateEndpoints: [
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'topic'
+        service: 'webpubsub'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 }
 ```
