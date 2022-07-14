@@ -1399,7 +1399,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['vaultcore.parameters.json', 'blob.parameters.json']
+        parameterFilePaths: ['vaultcore.parameters.json', 'blob.parameters.json', 'file.parameters.json', 'queue.parameters.json', 'table.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
