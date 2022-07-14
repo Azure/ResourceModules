@@ -68,7 +68,7 @@ Finally, once your contribution is implemented and validated, open a PR for the 
 - Provide a meaningful PR title in the following format: `[<Category>] <PR title>`. For `[<Category>]` use one of the following, depending on which one is the primary improvement your PR intends to make:
   - `[Modules]`: For improvements to the CARML library.
   - `[CI environment]`: For improvements to the CI environment pipelines.
-  - `[Static Validation]`: For improvements to global Pester tests.
+  - `[Static Validation]`: For improvements to Pester tests.
   - `[Wiki]`: For improvements to the documentation.
   - `[Utilities]`: For improvements to the tools in the utilities.
   - `[Fixes]`: For bug fixes when not specifically related to any of the above categories.

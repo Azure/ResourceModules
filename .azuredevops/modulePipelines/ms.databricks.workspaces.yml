@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.databricks.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Databricks/workspaces/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

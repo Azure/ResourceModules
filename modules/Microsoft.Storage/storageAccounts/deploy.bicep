@@ -119,13 +119,13 @@ param enableDefaultTelemetry bool = true
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param basetime string = utcNow('u')
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
+  ''
   'Enabled'
   'Disabled'
 ])
-
-@description('Optional. Enable or disallow public network access to Storage Account..')
-param publicNetworkAccess string = 'Enabled'
+param publicNetworkAccess string = ''
 
 @description('Optional. Allows HTTPS traffic only to storage service if sets to true.')
 param supportsHttpsTrafficOnly bool = true
@@ -242,7 +242,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
       ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
     } : null
     allowBlobPublicAccess: allowBlobPublicAccess
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     azureFilesIdentityBasedAuthentication: !empty(azureFilesIdentityBasedAuthentication) ? azureFilesIdentityBasedAuthentication : null
   }
 }
