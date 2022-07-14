@@ -16,10 +16,10 @@ Invoke the function with the default path. Prints a list such as:
 > The modules in path [C:\dev\ip\Azure-ResourceModules\ResourceModules\modules] have the following local folder dependencies:
 >
 > Resource: Microsoft.EventGrid/topics
-> - Microsoft.EventGrid/Microsoft.Network/privateEndpoints
+> - Microsoft.Network/privateEndpoints
 >
 > Resource: Microsoft.Synapse/privateLinkHubs
-> - Microsoft.Synapse/Microsoft.Network/privateEndpoints
+> - Microsoft.Network/privateEndpoints
 
 .EXAMPLE
 Get-LinkedLocalModuleList -Path './Microsoft.Sql'
@@ -29,14 +29,17 @@ Get only the references of the modules in folder path './Microsoft.Sql'
 > The modules in path [..\..\modules\Microsoft.Sql\] have the following local folder dependencies:
 >
 > Resource: Microsoft.Sql/servers
-> - Microsoft.Sql/Microsoft.Network/privateEndpoints
+> - Microsoft.Network/privateEndpoints
 #>
 function Get-LinkedLocalModuleList {
 
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules')
+        [string] $path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules'),
+
+        [Parameter(Mandatory = $false)]
+        [switch] $ReturnMarkdown,
     )
 
     # Load used functions
