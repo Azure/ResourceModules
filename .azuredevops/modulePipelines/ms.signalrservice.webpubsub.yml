@@ -1,4 +1,4 @@
-name: 'SignalRService - webPubSub'
+name: 'SignalR Service - WebPubSub'
 
 parameters:
   - name: removeDeployment
@@ -22,8 +22,9 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.signalrservice.webpubsub.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.SignalRService/webPubSub/*'
-      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

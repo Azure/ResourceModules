@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.insights.components.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Insights/components/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'
