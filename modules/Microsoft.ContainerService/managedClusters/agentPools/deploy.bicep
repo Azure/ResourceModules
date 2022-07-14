@@ -5,7 +5,7 @@ param managedClusterName string
 @description('Required. Name of the agent pool.')
 param name string
 
-@description('Optional. The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is "VirtualMachineScaleSets".	.')
+@description('Optional. The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is "VirtualMachineScaleSets".')
 param availabilityZones array = []
 
 @description('Optional. Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1.')
@@ -83,7 +83,7 @@ param nodeLabels object = {}
 @description('Optional. ResourceId of the node PublicIPPrefix.')
 param nodePublicIpPrefixId string = ''
 
-@description('Optional. The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.	.')
+@description('Optional. The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.')
 param nodeTaints array = []
 
 @description('Optional. As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control plane. The node pool minor version must be within two minor versions of the control plane version. The node pool version cannot be greater than the control plane version. For more information see upgrading a node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).')
@@ -115,7 +115,7 @@ param osSku string = ''
 ])
 param osType string = 'Linux'
 
-@description('Optional. Subnet ID for the pod IPs. If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}	.')
+@description('Optional. Subnet ID for the pod IPs. If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.')
 param podSubnetId string = ''
 
 @description('Optional. The ID for the Proximity Placement Group.')
@@ -128,7 +128,7 @@ param proximityPlacementGroupId string = ''
 ])
 param scaleDownMode string = 'Delete'
 
-@description('Optional. The eviction policy specifies what to do with the VM when it is evicted. The default is Delete. For more information about eviction see spot VMs	.')
+@description('Optional. The eviction policy specifies what to do with the VM when it is evicted. The default is Delete. For more information about eviction see spot VMs.')
 @allowed([
   'Deallocate'
   'Delete'
@@ -158,7 +158,7 @@ param maxSurge string = ''
 @description('Optional. VM size. VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on restricted VM sizes, see: /azure/aks/quotas-skus-regions.')
 param vmSize string = 'Standard_D2s_v3'
 
-@description('Optional. Node Subnet ID. If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to nodes and pods, otherwise it applies to just nodes. This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}	.')
+@description('Optional. Node Subnet ID. If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to nodes and pods, otherwise it applies to just nodes. This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.')
 param vnetSubnetId string = ''
 
 @description('Optional. Determines the type of workload a node can run.')
