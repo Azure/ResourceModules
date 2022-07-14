@@ -354,9 +354,6 @@ networkAcls: {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "location": {
-      "value": "westeurope"
-    },
     "name": {
       "value": "<<namePrefix>>-az-pubsub-min-001"
     }
@@ -374,7 +371,6 @@ networkAcls: {
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-webPubSub'
   params: {
-    location: 'westeurope'
     name: '<<namePrefix>>-az-pubsub-min-001'
   }
 }
