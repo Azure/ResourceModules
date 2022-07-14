@@ -1,0 +1,83 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "westeurope"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-pubsub-x-001"
+    },
+    "capacity": {
+      "value": 2
+    },
+    "clientCertEnabled": {
+      "value": false
+    },
+    "disableAadAuth": {
+      "value": false
+    },
+    "disableLocalAuth": {
+      "value": true
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "sku": {
+      "value": "Standard_S1"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ]
+        }
+      ]
+    },
+    "networkAcls": {
+      "value": {
+        "defaultAction": "Allow",
+        "privateEndpoints": [
+          {
+            "name": "pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0",
+            "allow": [],
+            "deny": [
+              "ServerConnection",
+              "Trace"
+            ]
+          }
+        ],
+        "publicNetwork": {
+          "allow": [],
+          "deny": [
+            "RESTAPI",
+            "Trace"
+          ]
+        }
+      }
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "tags": {
+      "value": {
+        "purpose": "test"
+      }
+    },
+    "resourceLogConfigurationsToEnable": {
+      "value": [
+        "ConnectivityLogs"
+      ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+          "service": "webpubsub"
+        }
+      ]
+    }
+  }
+}
