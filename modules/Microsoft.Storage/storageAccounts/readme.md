@@ -640,15 +640,36 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                 },
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "table"
+                    "service": "table",
+                    "privateDnsZoneGroups": [
+                        {
+                            "privateDNSResourceIds": [
+                                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net"
+                            ]
+                        }
+                    ]
                 },
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "queue"
+                    "service": "queue",
+                    "privateDnsZoneGroups": [
+                        {
+                            "privateDNSResourceIds": [
+                                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net"
+                            ]
+                        }
+                    ]
                 },
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "file"
+                    "service": "file",
+                    "privateDnsZoneGroups": [
+                        {
+                            "privateDNSResourceIds": [
+                                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net"
+                            ]
+                        }
+                    ]
                 }
             ]
         },
@@ -835,14 +856,35 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'table'
+        privateDnsZoneGroups: [
+          {
+            privateDNSResourceIds: [
+              '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net'
+            ]
+          }
+        ]
       }
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'queue'
+        privateDnsZoneGroups: [
+          {
+            privateDNSResourceIds: [
+              '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net'
+            ]
+          }
+        ]
       }
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'file'
+        privateDnsZoneGroups: [
+          {
+            privateDNSResourceIds: [
+              '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net'
+            ]
+          }
+        ]
       }
     ]
     networkAcls: {
