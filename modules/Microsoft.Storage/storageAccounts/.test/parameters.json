@@ -11,9 +11,9 @@
         "allowBlobPublicAccess": {
             "value": false
         },
-        "publicNetworkAccess": {
-            "value": "Disabled"
-        },
+        // "publicNetworkAccess": {
+        //     "value": "Disabled"
+        // },
         "requireInfrastructureEncryption": {
             "value": true
         },
@@ -68,24 +68,24 @@
                 }
             ]
         },
-        "networkAcls": {
-            "value": {
-                "bypass": "AzureServices",
-                "defaultAction": "Deny",
-                "virtualNetworkRules": [
-                    {
-                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
-                        "action": "Allow"
-                    }
-                ],
-                "ipRules": [
-                    {
-                        "action": "Allow",
-                        "value": "1.1.1.1"
-                    }
-                ]
-            }
-        },
+        // "networkAcls": {
+        //     "value": {
+        //         "bypass": "AzureServices",
+        //         "defaultAction": "Deny",
+        //         "virtualNetworkRules": [
+        //             {
+        //                 "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+        //                 "action": "Allow"
+        //             }
+        //         ],
+        //         "ipRules": [
+        //             {
+        //                 "action": "Allow",
+        //                 "value": "1.1.1.1"
+        //             }
+        //         ]
+        //     }
+        // },
         "blobServices": {
             "value": {
                 "diagnosticLogsRetentionInDays": 7,
