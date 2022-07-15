@@ -9,7 +9,7 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable or Disable AzureADOnlyAuthentication on All Workspace subresource')
+@description('Optional. Enable or Disable AzureADOnlyAuthentication on All Workspace subresource.')
 param azureADOnlyAuthentication bool = false
 
 @description('Optional. AAD object ID of initial workspace admin.')
@@ -25,7 +25,7 @@ param defaultDataLakeStorageFilesystem string
 param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 
 @description('Optional. Double encryption using a customer-managed key.')
-param encryption bool = false 
+param encryption bool = false
 
 @description('Optional. Keyvault where the encryption key is stored.')
 param encryptionKeyVaultName string = ''
@@ -49,7 +49,7 @@ param encryptionActivateWorkspace bool = false
 param enableDefaultTelemetry bool = true
 
 @maxLength(90)
-@description('Optional. Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and \'-\', \'_\', \'(\', \')\' and\'.\'. Note that the name cannot end with \'.\'')
+@description('Optional. Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and \'-\', \'_\', \'(\', \')\' and\'.\'. Note that the name cannot end with \'.\'.')
 param managedResourceGroupName string = ''
 
 @description('Optional. Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources.')
@@ -84,14 +84,14 @@ param sqlAdministratorLoginPassword string = ''
 param userAssignedIdentities object = {}
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Configuration Details for private endpoints.')
@@ -134,8 +134,8 @@ param diagnosticLogCategoriesToEnable array = [
 
 // Variables
 var userAssignedIdentitiesUnion = union(userAssignedIdentities, !empty(encryptionUserAssignedIdentity) ? {
-  '${encryptionUserAssignedIdentity}': {}
-} : {})
+    '${encryptionUserAssignedIdentity}': {}
+  } : {})
 
 var identityType = !empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
 
@@ -223,11 +223,11 @@ module workspace_cmk '.bicep/nested_cmk.bicep' = if (encryptionActivateWorkspace
 }
 
 // Resource Lock
-resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: workspace
 }
@@ -277,3 +277,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The workspace connectivity endpoints.')
 output connectivityEndpoints object = workspace.properties.connectivityEndpoints
+
+@description('The location the resource was deployed into.')
+output location string = workspace.location

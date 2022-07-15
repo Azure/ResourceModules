@@ -10,7 +10,7 @@ param location string = resourceGroup().location
 @description('Required. Used to activate the workspace after a customer managed key is provided.')
 param isActiveCMK bool
 
-@description('Required. The Key Vault Url of the workspace key.')
+@description('Required. The Key Vault URL of the workspace key.')
 param keyVaultUrl string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -41,11 +41,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-@description('The name of the deployed key')
+@description('The name of the deployed key.')
 output name string = key.name
 
-@description('The resource ID of the deployed key')
+@description('The resource ID of the deployed key.')
 output resourceId string = key.id
 
-@description('The resource group of the deployed key')
+@description('The resource group of the deployed key.')
 output resourceGroupName string = resourceGroup().name
