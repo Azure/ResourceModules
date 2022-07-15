@@ -43,28 +43,11 @@ This module deploys OperationsManagement Solutions.
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "Updates"
-        },
-        "logAnalyticsWorkspaceName": {
-            "value": "adp-<<namePrefix>>-az-law-sol-001"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -74,8 +57,9 @@ This module deploys OperationsManagement Solutions.
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
-    name: 'Updates'
+    // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    name: 'Updates'
   }
 }
 ```
@@ -83,34 +67,30 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "AzureAutomation"
-        },
-        "logAnalyticsWorkspaceName": {
-            "value": "adp-<<namePrefix>>-az-law-sol-001"
-        },
-        "product": {
-            "value": "OMSGallery"
-        },
-        "publisher": {
-            "value": "Microsoft"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "logAnalyticsWorkspaceName": {
+      "value": "adp-<<namePrefix>>-az-law-sol-001"
+    },
+    "name": {
+      "value": "Updates"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Ms</h3>
 
 <details>
 
@@ -120,8 +100,10 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
-    name: 'AzureAutomation'
+    // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    name: 'AzureAutomation'
+    // Non-required parameters
     product: 'OMSGallery'
     publisher: 'Microsoft'
   }
@@ -131,34 +113,37 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "nonmsTestSolution"
-        },
-        "logAnalyticsWorkspaceName": {
-            "value": "adp-<<namePrefix>>-az-law-sol-001"
-        },
-        "product": {
-            "value": "nonmsTestSolutionProduct"
-        },
-        "publisher": {
-            "value": "nonmsTestSolutionPublisher"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "logAnalyticsWorkspaceName": {
+      "value": "adp-<<namePrefix>>-az-law-sol-001"
+    },
+    "name": {
+      "value": "AzureAutomation"
+    },
+    // Non-required parameters
+    "product": {
+      "value": "OMSGallery"
+    },
+    "publisher": {
+      "value": "Microsoft"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Nonms</h3>
 
 <details>
 
@@ -168,10 +153,42 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-solutions'
   params: {
-    name: 'nonmsTestSolution'
+    // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    name: 'nonmsTestSolution'
+    // Non-required parameters
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "logAnalyticsWorkspaceName": {
+      "value": "adp-<<namePrefix>>-az-law-sol-001"
+    },
+    "name": {
+      "value": "nonmsTestSolution"
+    },
+    // Non-required parameters
+    "product": {
+      "value": "nonmsTestSolutionProduct"
+    },
+    "publisher": {
+      "value": "nonmsTestSolutionPublisher"
+    }
   }
 }
 ```

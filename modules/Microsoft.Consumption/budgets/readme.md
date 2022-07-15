@@ -48,39 +48,11 @@ This module deploys budgets for subscriptions.
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "amount": {
-            "value": 500
-        },
-        "thresholds": {
-            "value": [
-                50,
-                75,
-                90,
-                100,
-                110
-            ]
-        },
-        "contactEmails": {
-            "value": [
-                "dummy@contoso.com"
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -90,7 +62,12 @@ This module deploys budgets for subscriptions.
 module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-budgets'
   params: {
+    // Required parameters
     amount: 500
+    // Non-required parameters
+    contactEmails: [
+      'dummy@contoso.com'
+    ]
     thresholds: [
       50
       75
@@ -98,9 +75,41 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
       100
       110
     ]
-    contactEmails: [
-      'dummy@contoso.com'
-    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "amount": {
+      "value": 500
+    },
+    // Non-required parameters
+    "contactEmails": {
+      "value": [
+        "dummy@contoso.com"
+      ]
+    },
+    "thresholds": {
+      "value": [
+        50,
+        75,
+        90,
+        100,
+        110
+      ]
+    }
   }
 }
 ```

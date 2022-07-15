@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.aad.domainservices.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.AAD/DomainServices/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

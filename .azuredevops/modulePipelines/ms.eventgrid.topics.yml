@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.eventgrid.topics.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.EventGrid/topics/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

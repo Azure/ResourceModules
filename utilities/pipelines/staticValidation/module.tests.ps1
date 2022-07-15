@@ -2,17 +2,23 @@
 
 param (
     [Parameter(Mandatory = $false)]
-    [array] $moduleFolderPaths = ((Get-ChildItem (Split-Path $PSScriptRoot -Parent) -Recurse -Directory -Force).FullName | Where-Object {
+    [array] $moduleFolderPaths = ((Get-ChildItem $repoRootPath -Recurse -Directory -Force).FullName | Where-Object {
         (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }),
+
+    [Parameter(Mandatory = $false)]
+    [string] $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName,
 
     # Tokens to test for (i.e. their value should not be used in the parameter files, but their placeholder)
     [Parameter(Mandatory = $false)]
     [hashtable] $enforcedTokenList = @{}
 )
 
-$script:RepoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-$script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json -AsHashtable
+Write-Verbose ("repoRootPath: $repoRootPath") -Verbose
+Write-Verbose ("moduleFolderPaths: $($moduleFolderPaths.count)") -Verbose
+
+
+$script:Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json -AsHashtable
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
@@ -44,7 +50,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        if (Test-Path (Join-Path $repoRoot '.github')) {
+        if (Test-Path (Join-Path $repoRootPath '.github')) {
             It '[<moduleFolderName>] Module should have a GitHub workflow' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
                 param(
@@ -52,14 +58,14 @@ Describe 'File/folder tests' -Tag Modules {
                     [string] $moduleFolderPath
                 )
 
-                $workflowsFolderName = Join-Path $RepoRoot '.github' 'workflows'
+                $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
                 $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
                 $workflowPath = Join-Path $workflowsFolderName $workflowFileName
                 Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
             }
         }
 
-        if (Test-Path (Join-Path $repoRoot '.azuredevops')) {
+        if (Test-Path (Join-Path $repoRootPath '.azuredevops')) {
             It '[<moduleFolderName>] Module should have an Azure DevOps pipeline' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
                 param(
@@ -67,7 +73,7 @@ Describe 'File/folder tests' -Tag Modules {
                     [string] $moduleFolderPath
                 )
 
-                $pipelinesFolderName = Join-Path $RepoRoot '.azuredevops' 'modulePipelines'
+                $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
                 $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
                 $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
                 Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
@@ -449,7 +455,7 @@ Describe 'Readme tests' -Tag Readme {
             $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
 
             # Load function
-            . (Join-Path $repoRoot 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
+            . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
 
             # Apply update with already compiled template content
             Set-ModuleReadMe -TemplateFilePath $templateFilePath -TemplateFileContent $templateContent

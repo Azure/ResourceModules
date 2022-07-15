@@ -311,7 +311,27 @@ customDomains: [
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-staticSites'
+  params: {
+    name: '<<namePrefix>>-az-wss-min-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -330,6 +350,9 @@ customDomains: [
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -339,15 +362,49 @@ customDomains: [
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-staticSites'
   params: {
-    name: '<<namePrefix>>-az-wss-min-001'
+    // Required parameters
+    name: '<<namePrefix>>-az-wss-x-001'
+    // Non-required parameters
+    allowConfigFileUpdates: true
+    appSettings: {
+      foo: 'bar'
+      setting: 1
+    }
+    enterpriseGradeCdnStatus: 'Disabled'
+    functionAppSettings: {
+      foo: 'bar'
+      setting: 1
+    }
+    linkedBackend: {
+      resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/adp-<<namePrefix>>-az-fa-001'
+    }
+    lock: 'CanNotDelete'
+    privateEndpoints: [
+      {
+        service: 'staticSites'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sku: 'Standard'
+    stagingEnvironmentPolicy: 'Enabled'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -358,25 +415,12 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-wss-x-001"
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "sku": {
-      "value": "Standard"
-    },
-    "stagingEnvironmentPolicy": {
-      "value": "Enabled"
-    },
+    // Non-required parameters
     "allowConfigFileUpdates": {
-      "value": true
-    },
-    "enterpriseGradeCdnStatus": {
-      "value": "Disabled"
-    },
-    "systemAssignedIdentity": {
       "value": true
     },
     "appSettings": {
@@ -385,88 +429,54 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
         "setting": 1
       }
     },
+    "enterpriseGradeCdnStatus": {
+      "value": "Disabled"
+    },
     "functionAppSettings": {
       "value": {
         "foo": "bar",
         "setting": 1
       }
     },
-    "userAssignedIdentities": {
-      "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "roleDefinitionIdOrName": "Reader",
-          "principalIds": [
-            "<<deploymentSpId>>"
-          ]
-        }
-      ]
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-          "service": "staticSites"
-        }
-      ]
-    },
     "linkedBackend": {
       "value": {
         "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/adp-<<namePrefix>>-az-fa-001"
       }
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-staticSites'
-  params: {
-    name: '<<namePrefix>>-az-wss-x-001'
-    lock: 'CanNotDelete'
-    sku: 'Standard'
-    stagingEnvironmentPolicy: 'Enabled'
-    allowConfigFileUpdates: true
-    enterpriseGradeCdnStatus: 'Disabled'
-    systemAssignedIdentity: true
-    appSettings: {
-      foo: 'bar'
-      setting: 1
-    }
-    functionAppSettings: {
-      foo: 'bar'
-      setting: 1
-    }
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "staticSites",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Standard"
+    },
+    "stagingEnvironmentPolicy": {
+      "value": "Enabled"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
       }
-    ]
-    privateEndpoints: [
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'staticSites'
-      }
-    ]
-    linkedBackend: {
-      resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/adp-<<namePrefix>>-az-fa-001'
     }
   }
 }
