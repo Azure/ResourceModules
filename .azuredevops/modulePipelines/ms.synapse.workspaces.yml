@@ -1,4 +1,4 @@
-name: 'Synapse - Workspaces'
+name: 'Storage - StorageAccounts'
 
 parameters:
   - name: removeDeployment
@@ -20,16 +20,18 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.synapse.workspaces.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Synapse/workspaces/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Synapse/workspaces/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Synapse/workspaces'
+    value: '/modules/Microsoft.Synapse/workspaces'
 
 stages:
   - stage: Validation
