@@ -340,21 +340,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     disableLocalAuth: false
     enablePurgeProtection: false
-    keyValues: [
-      {
-        contentType: 'contentType'
-        name: 'keyName'
-        roleAssignments: [
-          {
-            principalIds: [
-              '<<deploymentSpId>>'
-            ]
-            roleDefinitionIdOrName: 'Reader'
-          }
-        ]
-        value: 'valueName'
-      }
-    ]
+    keyValues: 'valueName'
     lock: 'CanNotDelete'
     privateEndpoints: [
       {

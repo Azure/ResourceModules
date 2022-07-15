@@ -318,7 +318,27 @@ privateEndpoints:  [
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module redis './Microsoft.Cache/redis/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-redis'
+  params: {
+    name: '<<namePrefix>>-az-redis-min-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -337,6 +357,9 @@ privateEndpoints:  [
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -346,15 +369,41 @@ privateEndpoints:  [
 module redis './Microsoft.Cache/redis/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-redis'
   params: {
-    name: '<<namePrefix>>-az-redis-min-001'
+    // Required parameters
+    name: '<<namePrefix>>-az-redis-full-001'
+    // Non-required parameters
+    capacity: 2
+    diagnosticLogCategoriesToEnable: [
+      'ApplicationGatewayAccessLog'
+      'ApplicationGatewayFirewallLog'
+    ]
+    diagnosticMetricsToEnable: [
+      'AllMetrics'
+    ]
+    diagnosticSettingsName: 'redisdiagnostics'
+    enableNonSslPort: true
+    lock: 'CanNotDelete'
+    minimumTlsVersion: '1.2'
+    privateEndpoints: [
+      {
+        service: 'redisCache'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    publicNetworkAccess: 'Enabled'
+    redisVersion: '6'
+    shardCount: 1
+    skuName: 'Premium'
+    systemAssignedIdentity: true
+    tags: {
+      resourceType: 'Redis Cache'
+    }
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -365,9 +414,11 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-redis-full-001"
     },
+    // Non-required parameters
     "capacity": {
       "value": 2
     },
@@ -382,6 +433,9 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
         "AllMetrics"
       ]
     },
+    "diagnosticSettingsName": {
+      "value": "redisdiagnostics"
+    },
     "enableNonSslPort": {
       "value": true
     },
@@ -391,8 +445,13 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     "minimumTlsVersion": {
       "value": "1.2"
     },
-    "diagnosticSettingsName": {
-      "value": "redisdiagnostics"
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "redisCache",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
     },
     "publicNetworkAccess": {
       "value": "Enabled"
@@ -400,69 +459,20 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     "redisVersion": {
       "value": "6"
     },
+    "shardCount": {
+      "value": 1
+    },
     "skuName": {
       "value": "Premium"
     },
     "systemAssignedIdentity": {
       "value": true
     },
-    "shardCount": {
-      "value": 1
-    },
     "tags": {
       "value": {
         "resourceType": "Redis Cache"
       }
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-          "service": "redisCache"
-        }
-      ]
     }
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module redis './Microsoft.Cache/redis/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-redis'
-  params: {
-    name: '<<namePrefix>>-az-redis-full-001'
-    capacity: 2
-    diagnosticLogCategoriesToEnable: [
-      'ApplicationGatewayAccessLog'
-      'ApplicationGatewayFirewallLog'
-    ]
-    diagnosticMetricsToEnable: [
-      'AllMetrics'
-    ]
-    enableNonSslPort: true
-    lock: 'CanNotDelete'
-    minimumTlsVersion: '1.2'
-    diagnosticSettingsName: 'redisdiagnostics'
-    publicNetworkAccess: 'Enabled'
-    redisVersion: '6'
-    skuName: 'Premium'
-    systemAssignedIdentity: true
-    shardCount: 1
-    tags: {
-      resourceType: 'Redis Cache'
-    }
-    privateEndpoints: [
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'redisCache'
-      }
-    ]
   }
 }
 ```

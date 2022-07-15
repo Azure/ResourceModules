@@ -352,12 +352,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         secret: true
       }
     ]
-    policies: [
-      {
-        format: 'xml'
-        value: '<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
-      }
-    ]
+    policies: '<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
     portalSettings: [
       {
         name: 'signin'
@@ -670,12 +665,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     // Non-required parameters
     lock: 'CanNotDelete'
-    policies: [
-      {
-        format: 'xml'
-        value: '<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
-      }
-    ]
+    policies: '<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
     portalSettings: [
       {
         name: 'signin'
