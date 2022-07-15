@@ -47,6 +47,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/deploy.bicep'
+          customParametersPath: $(dependencyPath)/$(resourceType)
           # deploymentBlocks:
           #   - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
           #     templateFilePath: $(templateFilePath)
