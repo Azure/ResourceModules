@@ -1018,7 +1018,7 @@ stages:
               displayName: Azure Synapse Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/azurewebsites.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Web Sites Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/batch.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Private DNS Zones
