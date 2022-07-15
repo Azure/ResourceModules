@@ -1051,7 +1051,7 @@ stages:
               displayName: Redis Cache Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/servicebus.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Service Bus Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/siterecovery.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Site Recovery Private DNS Zone
