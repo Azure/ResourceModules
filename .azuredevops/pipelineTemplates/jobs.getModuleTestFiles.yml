@@ -5,7 +5,7 @@ parameters:
 
   # Logic-related parameters
   modulePath: '$(modulePath)'
-  testFilesFolderName: '.test'
+  testFilesFolderName: '$(testFilesFolderName)'
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
