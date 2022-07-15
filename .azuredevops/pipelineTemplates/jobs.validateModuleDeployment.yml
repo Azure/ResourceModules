@@ -148,7 +148,7 @@ jobs:
                   return
                 }
 
-                if([String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
+                if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
                   $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(customParametersPath)' '$(parameterFilePath)'
                 } else {
                   $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
@@ -217,7 +217,7 @@ jobs:
 
             $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
 
-            if([String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
+            if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
               $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(customParametersPath)' '$(parameterFilePath)'
             } else {
               $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
@@ -312,7 +312,7 @@ jobs:
 
             $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
 
-            if([String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
+            if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
               $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(customParametersPath)' '$(parameterFilePath)'
             } else {
               $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
