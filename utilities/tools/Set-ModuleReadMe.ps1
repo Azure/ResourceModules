@@ -661,11 +661,12 @@ function ConvertTo-FormattedBicep {
 
     # Remove 'value' parameter property, if any (e.g. when dealing with a classic parameter file)
     $JSONParametersWithoutValue = @{}
-    foreach ($parameter in $JSONParameters.psbase.Keys) {
-        if ($JSONParameters[$parameter].Keys -eq 'value') {
-            $JSONParametersWithoutValue[$parameter] = $JSONParameters.$parameter.value
+    foreach ($parameterName in $JSONParameters.psbase.Keys) {
+        $keysOnLevel = $JSONParameters[$parameterName].Keys
+        if ($keysOnLevel.count -eq 1 -and $keysOnLevel -eq 'value') {
+            $JSONParametersWithoutValue[$parameterName] = $JSONParameters[$parameterName].value
         } else {
-            $JSONParametersWithoutValue[$parameter] = $JSONParameters.$parameter
+            $JSONParametersWithoutValue[$parameterName] = $JSONParameters[$parameterName]
         }
     }
 
@@ -986,7 +987,8 @@ function Set-DeploymentExamplesSection {
                     $JSONParameters = (ConvertFrom-Json $rawContent -Depth 99 -AsHashtable -NoEnumerate).parameters
                     $JSONParametersWithoutValue = @{}
                     foreach ($parameterName in $JSONParameters.psbase.Keys) {
-                        if ($JSONParameters[$parameterName].Keys -eq 'value') {
+                        $keysOnLevel = $JSONParameters[$parameter].Keys
+                        if ($keysOnLevel.count -eq 1 -and $keysOnLevel -eq 'value') {
                             $JSONParametersWithoutValue[$parameterName] = $JSONParameters[$parameterName]['value']
                         } else {
                             # replace key vault references
