@@ -10,7 +10,7 @@ param serviceResourceId string
 @description('Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to.')
 param groupIds array
 
-@description('Optional. Private DNS zone group configuration on the private endpoint.')
+@description('Optional. The private DNS zone group configuration used to associate the private endpoint with one or multiple private DNS zones. Each DNS zone group can support up to 5 DNS zones.')
 param privateDnsZoneGroup object = {}
 
 @description('Optional. Location for all Resources.')
@@ -78,7 +78,6 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
 module privateEndpoint_privateDnsZoneGroup 'privateDnsZoneGroups/deploy.bicep' = if (!empty(privateDnsZoneGroup)) {
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-PrivateDnsZoneGroup'
   params: {
-    name: contains(privateDnsZoneGroup, name) ? privateDnsZoneGroup.name : 'default'
     privateDNSResourceIds: privateDnsZoneGroup.privateDNSResourceIds
     privateEndpointName: privateEndpoint.name
     enableDefaultTelemetry: enableReferencedModulesTelemetry
