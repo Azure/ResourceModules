@@ -58,7 +58,7 @@ parameters:
   templateFilePath: ''
   customParameterFileTokens: ''
   modulePath: '$(modulePath)'
-  customParametersPath: ''
+  customParametersFolderPath: ''
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
@@ -74,9 +74,9 @@ parameters:
 ##---------------------------------------------##
 jobs:
   - template: /.azuredevops/pipelineTemplates/jobs.getModuleTestFiles.yml
-    ${{ if ne(parameters.customParametersPath, '') }}:
+    ${{ if ne(parameters.customParametersFolderPath, '') }}:
       parameters:
-        modulePath: '${{ parameters.customParametersPath }}'
+        modulePath: '${{ parameters.customParametersFolderPath }}'
   - job: deploy
     displayName: 'Deploying ' # Auto-populated
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
@@ -148,8 +148,8 @@ jobs:
                   return
                 }
 
-                if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
-                  $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.customParametersPath }}' '$(parameterFilePath)'
+                if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersFolderPath }}')) {
+                  $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.customParametersFolderPath }}' '$(parameterFilePath)'
                 } else {
                   $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
                 }
@@ -217,8 +217,8 @@ jobs:
 
             $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
 
-            if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
-              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.customParametersPath }}' '$(parameterFilePath)'
+            if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersFolderPath }}')) {
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.customParametersFolderPath }}' '$(parameterFilePath)'
             } else {
               $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
@@ -312,8 +312,8 @@ jobs:
 
             $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
 
-            if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
-              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.customParametersPath }}' '$(parameterFilePath)'
+            if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersFolderPath }}')) {
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.customParametersFolderPath }}' '$(parameterFilePath)'
             } else {
               $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }

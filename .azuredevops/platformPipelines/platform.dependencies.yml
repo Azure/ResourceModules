@@ -47,67 +47,57 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/deploy.bicep'
-          customParametersPath: $(dependencyPath)/$(resourceType)
-          # deploymentBlocks:
-          #   - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
-          #     templateFilePath: $(templateFilePath)
-          #     displayName: Validation Resource Group
-          #   - path: $(dependencyPath)/$(resourceType)/parameters/locks.parameters.json
-          #     templateFilePath: $(templateFilePath)
-          #     displayName: Locks Resource Group
+          customParametersFolderPath: $(dependencyPath)/$(resourceType)
 
-  # - stage: deploy_ppg
-  #   displayName: Deploy proximity placement group
-  #   dependsOn:
-  #     - deploy_rg
-  #   variables:
-  #     resourceType: 'Microsoft.Compute/proximityPlacementGroups'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Proximity Placement Group
+  - stage: deploy_ppg
+    displayName: Deploy proximity placement group
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Compute/proximityPlacementGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      modulePath: $(modulesPath)/$(resourceType)
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          templateFilePath: $(templateFilePath)
+          customParametersFolderPath: $(dependencyPath)/$(resourceType)
 
-  # - stage: deploy_msi
-  #   displayName: Deploy user assigned identity
-  #   dependsOn:
-  #     - deploy_rg
-  #   variables:
-  #     resourceType: 'Microsoft.ManagedIdentity/userAssignedIdentities'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: User Assigned Identity
-  #             jobName: job_deploy_msi
-  #     - job: job_set_msi_id
-  #       displayName: Set msi principal ID output
-  #       dependsOn:
-  #         - job_deploy_msi
-  #       pool:
-  #         ${{ if eq(variables['vmImage'], '') }}:
-  #           name: $(poolName)
-  #         ${{ if eq(variables['poolName'], '') }}:
-  #           vmImage: $(vmImage)
-  #       variables:
-  #         deploymentOutput: $[ dependencies.job_deploy_msi.outputs['DeployModule.deploymentOutput'] ]
-  #       steps:
-  #         - task: PowerShell@2
-  #           name: print_msi_prinId
-  #           inputs:
-  #             targetType: inline
-  #             pwsh: true
-  #             script: |
-  #               # Write-Verbose $(deploymentOutput) -Verbose
-  #               $msiPrincipalId = (ConvertFrom-Json '$(deploymentOutput)').principalId
-  #               Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
-  #               Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
+  - stage: deploy_msi
+    displayName: Deploy user assigned identity
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.ManagedIdentity/userAssignedIdentities'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          templateFilePath: $(templateFilePath)
+          customParametersFolderPath: $(dependencyPath)/$(resourceType)
+          jobName: job_deploy_msi
+      - job: job_set_msi_id
+        displayName: Set msi principal ID output
+        dependsOn:
+          - job_deploy_msi
+        pool:
+          ${{ if eq(variables['vmImage'], '') }}:
+            name: $(poolName)
+          ${{ if eq(variables['poolName'], '') }}:
+            vmImage: $(vmImage)
+        variables:
+          deploymentOutput: $[ dependencies.job_deploy_msi.outputs['DeployModule.deploymentOutput'] ]
+        steps:
+          - task: PowerShell@2
+            name: print_msi_prinId
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Write-Verbose $(deploymentOutput) -Verbose
+                $msiPrincipalId = (ConvertFrom-Json '$(deploymentOutput)').principalId
+                Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
+                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
 
   # - stage: deploy_sf
   #   displayName: Deploy server farm
@@ -119,7 +109,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Server farm
@@ -134,7 +123,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Function App
@@ -149,7 +137,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/mg.parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Policy assignment (mg)
@@ -167,7 +154,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: EventHub
@@ -182,7 +168,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default LAW
@@ -203,7 +188,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default storage account
@@ -299,7 +283,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default SIG and SID
@@ -315,6 +298,7 @@ stages:
   #         resourceType: 'Microsoft.VirtualMachineImages\imageTemplates'
   #         saResourceType: 'Microsoft.Storage\storageAccounts'
   #         templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      modulePath: $(modulesPath)/$(resourceType)
   #       jobs:
   #         - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #           parameters:
@@ -452,7 +436,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Action Group
@@ -467,7 +450,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Application Security Groups
@@ -482,7 +464,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default User Defined Routes
@@ -503,7 +484,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default NSG
@@ -536,7 +516,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: App Gateway Public IP
@@ -571,7 +550,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Application Insights
@@ -588,7 +566,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Automation Account
@@ -605,7 +582,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default AVD Host Pool
@@ -624,7 +600,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default recovery services vault
@@ -644,7 +619,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Key Vault
@@ -897,7 +871,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Application Group
@@ -912,7 +885,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Application Group
@@ -928,7 +900,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: MSI Role Assignment
@@ -946,7 +917,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Virtual Network
@@ -1002,7 +972,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/automation.parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Automation Account Private DNS Zone
@@ -1082,7 +1051,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Virtual Machine
@@ -1097,7 +1065,6 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
   #       parameters:
-  #         deploymentBlocks:
   #           - path: $(dependencyPath)/$(resourceType)/parameters/internal.parameters.json
   #             templateFilePath: $(templateFilePath)
   #             displayName: Deploy module
