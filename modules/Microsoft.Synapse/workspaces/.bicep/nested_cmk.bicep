@@ -32,7 +32,7 @@ module workspace_cmk '../keys/deploy.bicep' = {
   params: {
     name: cMKKeyName
     isActiveCMK: true
-    keyVaultUrl: cMKKeyVault.properties.vaultUri
+    keyVaultResourceId: cMKKeyVaultResourceId
     workspaceName: workspaceName
   }
   dependsOn: [

@@ -10,11 +10,16 @@ param location string = resourceGroup().location
 @description('Required. Used to activate the workspace after a customer managed key is provided.')
 param isActiveCMK bool
 
-@description('Required. The Key Vault URL of the workspace key.')
-param keyVaultUrl string
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param keyVaultResourceId string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = false
+
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(keyVaultResourceId)) {
+  name: '${last(split(keyVaultResourceId, '/'))}/${name}'
+  scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
+}
 
 resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = {
   name: workspaceName
@@ -25,7 +30,7 @@ resource key 'Microsoft.Synapse/workspaces/keys@2021-06-01' = {
   parent: workspace
   properties: {
     isActiveCMK: isActiveCMK
-    keyVaultUrl: keyVaultUrl
+    keyVaultUrl: cMKKeyVaultKey.properties.keyUri
   }
 }
 

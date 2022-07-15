@@ -27,11 +27,11 @@ param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 @description('Optional. Double encryption using a customer-managed key.')
 param encryption bool = false
 
-@description('Optional. The encryption key name in KeyVault.')
-param cMKKeyName string = ''
-
-@description('Optional. Keyvault where the encryption key is stored.')
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
 param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
 
 @description('Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
 param cMKUserAssignedIdentityResourceId bool = false
@@ -150,8 +150,8 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   }
 }]
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
@@ -189,7 +189,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
           useSystemAssignedIdentity: cMKUserAssignedIdentityResourceId ? true : false
         }
         key: {
-          keyVaultUrl: cMKKeyVault.properties.vaultUri
+          keyVaultUrl: cMKKeyVaultKey.properties.keyUri
           name: cMKKeyName
         }
       }
