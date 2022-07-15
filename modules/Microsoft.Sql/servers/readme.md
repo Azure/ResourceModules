@@ -329,7 +329,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep' = {
+module servers './Microsoft.sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
     // Required parameters
@@ -391,7 +391,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
   scope: resourceGroup('<<subscriptionId>>','<<resourceGroupName>>')
 }
 
-module servers './Microsoft.Sql/servers/deploy.bicep' = {
+module servers './Microsoft.sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
     // Required parameters
