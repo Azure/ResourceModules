@@ -1009,7 +1009,7 @@ stages:
               displayName: ACR Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/azureml.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: ML Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/azurestaticapps.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Static Apps Private DNS Zone
