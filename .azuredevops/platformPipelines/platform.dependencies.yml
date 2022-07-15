@@ -1036,7 +1036,7 @@ stages:
               displayName: Default Private DNS Zones
             - path: $(dependencyPath)/$(resourceType)/parameters/eventgrid.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Event Grid Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/file.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Storage Files Private DNS Zone
