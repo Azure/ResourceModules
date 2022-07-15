@@ -57,7 +57,6 @@ parameters:
   removeDeployment: false
   templateFilePath: ''
   customParameterFileTokens: ''
-  testFilesFolderName: .test
   modulePath: '$(modulePath)'
   customParametersPath: ''
   location: '$(location)'

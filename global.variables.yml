@@ -8,6 +8,7 @@ variables:
   ######################################
 
   moduleTestFilePath: 'utilities/pipelines/staticValidation/module.tests.ps1'
+  testFilesFolderName: .test
 
   ######################################
   # Validation deployment settings
