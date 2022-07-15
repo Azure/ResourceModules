@@ -68,7 +68,7 @@ param redirectConfigurations array = []
 @description('Optional. Request routing rules of the application gateway resource.')
 param requestRoutingRules array = []
 
-@description('Optional. Rewrite rules for the application gateway resource.	.')
+@description('Optional. Rewrite rules for the application gateway resource.')
 param rewriteRuleSets array = []
 
 @description('Optional. The name of the SKU for the Application Gateway.')

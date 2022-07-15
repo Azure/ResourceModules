@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.eventhub.namespaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.EventHub/namespaces/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'
