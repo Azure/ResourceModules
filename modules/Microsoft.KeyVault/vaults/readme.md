@@ -492,13 +492,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroups: [
-          {
-            privateDNSResourceIds: [
-              '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
-            ]
-          }
-        ]
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
+          ]
+        }
         service: 'vault'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
@@ -635,13 +633,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroups": [
-            {
-              "privateDNSResourceIds": [
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
-              ]
-            }
-          ],
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+            ]
+          },
           "service": "vault",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }

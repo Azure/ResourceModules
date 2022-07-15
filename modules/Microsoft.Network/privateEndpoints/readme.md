@@ -240,13 +240,11 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
     // Non-required parameters
     lock: 'CanNotDelete'
-    privateDnsZoneGroups: [
-      {
-        privateDNSResourceIds: [
-          '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
-        ]
-      }
-    ]
+    privateDnsZoneGroup: {
+      privateDNSResourceIds: [
+        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
+      ]
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -290,14 +288,12 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
-    "privateDnsZoneGroups": {
-      "value": [
-        {
-          "privateDNSResourceIds": [
-            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
-          ]
-        }
-      ]
+    "privateDnsZoneGroup": {
+      "value": {
+        "privateDNSResourceIds": [
+          "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+        ]
+      }
     },
     "roleAssignments": {
       "value": [
