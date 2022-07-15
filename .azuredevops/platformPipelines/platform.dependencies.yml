@@ -1045,7 +1045,7 @@ stages:
               displayName: Default Private DNS Zones
             - path: $(dependencyPath)/$(resourceType)/parameters/queue.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Storage Queue Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/redis.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Redis Cache Private DNS Zone
