@@ -1054,7 +1054,7 @@ stages:
               displayName: Default Private DNS Zones
             - path: $(dependencyPath)/$(resourceType)/parameters/siterecovery.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Site Recovery Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/table.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Storage Table Private DNS Zone
