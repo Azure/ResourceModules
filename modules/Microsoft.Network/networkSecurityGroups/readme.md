@@ -155,25 +155,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-nsg-min-001"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -191,119 +177,26 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-nsg-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "securityRules": {
-            "value": [
-                {
-                    "name": "Specific",
-                    "properties": {
-                        "description": "Tests specific IPs and ports",
-                        "protocol": "*",
-                        "sourcePortRange": "*",
-                        "destinationPortRange": "8080",
-                        "sourceAddressPrefix": "*",
-                        "destinationAddressPrefix": "*",
-                        "access": "Allow",
-                        "priority": 100,
-                        "direction": "Inbound"
-                    }
-                },
-                {
-                    "name": "Ranges",
-                    "properties": {
-                        "description": "Tests Ranges",
-                        "protocol": "*",
-                        "access": "Allow",
-                        "priority": 101,
-                        "direction": "Inbound",
-                        "sourcePortRanges": [
-                            "80",
-                            "81"
-                        ],
-                        "destinationPortRanges": [
-                            "90",
-                            "91"
-                        ],
-                        "sourceAddressPrefixes": [
-                            "10.0.0.0/16",
-                            "10.1.0.0/16"
-                        ],
-                        "destinationAddressPrefixes": [
-                            "10.2.0.0/16",
-                            "10.3.0.0/16"
-                        ]
-                    }
-                },
-                {
-                    "name": "Port_8082",
-                    "properties": {
-                        "description": "Allow inbound access on TCP 8082",
-                        "protocol": "*",
-                        "sourcePortRange": "*",
-                        "destinationPortRange": "8082",
-                        "access": "Allow",
-                        "priority": 102,
-                        "direction": "Inbound",
-                        "sourceApplicationSecurityGroups": [
-                            {
-                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
-                            }
-                        ],
-                        "destinationApplicationSecurityGroups": [
-                            {
-                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-nsg-min-001"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -313,85 +206,202 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-networkSecurityGroups'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-nsg-x-001'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     securityRules: [
       {
         name: 'Specific'
         properties: {
-          description: 'Tests specific IPs and ports'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '8080'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: '*'
           access: 'Allow'
-          priority: 100
+          description: 'Tests specific IPs and ports'
+          destinationAddressPrefix: '*'
+          destinationPortRange: '8080'
           direction: 'Inbound'
+          priority: 100
+          protocol: '*'
+          sourceAddressPrefix: '*'
+          sourcePortRange: '*'
         }
       }
       {
         name: 'Ranges'
         properties: {
-          description: 'Tests Ranges'
-          protocol: '*'
           access: 'Allow'
-          priority: 101
-          direction: 'Inbound'
-          sourcePortRanges: [
-            '80'
-            '81'
+          description: 'Tests Ranges'
+          destinationAddressPrefixes: [
+            '10.2.0.0/16'
+            '10.3.0.0/16'
           ]
           destinationPortRanges: [
             '90'
             '91'
           ]
+          direction: 'Inbound'
+          priority: 101
+          protocol: '*'
           sourceAddressPrefixes: [
             '10.0.0.0/16'
             '10.1.0.0/16'
           ]
-          destinationAddressPrefixes: [
-            '10.2.0.0/16'
-            '10.3.0.0/16'
+          sourcePortRanges: [
+            '80'
+            '81'
           ]
         }
       }
       {
         name: 'Port_8082'
         properties: {
-          description: 'Allow inbound access on TCP 8082'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '8082'
           access: 'Allow'
-          priority: 102
-          direction: 'Inbound'
-          sourceApplicationSecurityGroups: [
-            {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
-            }
-          ]
+          description: 'Allow inbound access on TCP 8082'
           destinationApplicationSecurityGroups: [
             {
               id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
             }
           ]
+          destinationPortRange: '8082'
+          direction: 'Inbound'
+          priority: 102
+          protocol: '*'
+          sourceApplicationSecurityGroups: [
+            {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+            }
+          ]
+          sourcePortRange: '*'
         }
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-nsg-x-001"
+    },
+    // Non-required parameters
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "securityRules": {
+      "value": [
+        {
+          "name": "Specific",
+          "properties": {
+            "access": "Allow",
+            "description": "Tests specific IPs and ports",
+            "destinationAddressPrefix": "*",
+            "destinationPortRange": "8080",
+            "direction": "Inbound",
+            "priority": 100,
+            "protocol": "*",
+            "sourceAddressPrefix": "*",
+            "sourcePortRange": "*"
+          }
+        },
+        {
+          "name": "Ranges",
+          "properties": {
+            "access": "Allow",
+            "description": "Tests Ranges",
+            "destinationAddressPrefixes": [
+              "10.2.0.0/16",
+              "10.3.0.0/16"
+            ],
+            "destinationPortRanges": [
+              "90",
+              "91"
+            ],
+            "direction": "Inbound",
+            "priority": 101,
+            "protocol": "*",
+            "sourceAddressPrefixes": [
+              "10.0.0.0/16",
+              "10.1.0.0/16"
+            ],
+            "sourcePortRanges": [
+              "80",
+              "81"
+            ]
+          }
+        },
+        {
+          "name": "Port_8082",
+          "properties": {
+            "access": "Allow",
+            "description": "Allow inbound access on TCP 8082",
+            "destinationApplicationSecurityGroups": [
+              {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+              }
+            ],
+            "destinationPortRange": "8082",
+            "direction": "Inbound",
+            "priority": 102,
+            "protocol": "*",
+            "sourceApplicationSecurityGroups": [
+              {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+              }
+            ],
+            "sourcePortRange": "*"
+          }
+        }
+      ]
+    }
   }
 }
 ```

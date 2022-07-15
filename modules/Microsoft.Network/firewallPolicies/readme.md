@@ -136,25 +136,11 @@ userAssignedIdentities: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-fwpol-min-001"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -172,65 +158,26 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-fwpol-x-002"
-        },
-        "ruleCollectionGroups": {
-            "value": [
-                {
-                    "name": "<<namePrefix>>-rule-001",
-                    "priority": 5000,
-                    "ruleCollections": [
-                        {
-                            "name": "collection002",
-                            "priority": 5555,
-                            "action": {
-                                "type": "Allow"
-                            },
-                            "rules": [
-                                {
-                                    "name": "rule002",
-                                    "ipProtocols": [
-                                        "TCP",
-                                        "UDP"
-                                    ],
-                                    "destinationPorts": [
-                                        "80"
-                                    ],
-                                    "sourceAddresses": [
-                                        "*"
-                                    ],
-                                    "sourceIpGroups": [],
-                                    "ruleType": "NetworkRule",
-                                    "destinationIpGroups": [],
-                                    "destinationAddresses": [
-                                        "*"
-                                    ],
-                                    "destinationFqdns": []
-                                }
-                            ],
-                            "ruleCollectionType": "FirewallPolicyFilterRuleCollection"
-                        }
-                    ]
-                }
-            ]
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-fwpol-min-001"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -240,45 +187,108 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-firewallPolicies'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-fwpol-x-002'
+    // Non-required parameters
     ruleCollectionGroups: [
       {
         name: '<<namePrefix>>-rule-001'
         priority: 5000
         ruleCollections: [
           {
-            name: 'collection002'
-            priority: 5555
             action: {
               type: 'Allow'
             }
+            name: 'collection002'
+            priority: 5555
+            ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
             rules: [
               {
-                name: 'rule002'
-                ipProtocols: [
-                  'TCP'
-                  'UDP'
-                ]
-                destinationPorts: [
-                  '80'
-                ]
-                sourceAddresses: [
-                  '*'
-                ]
-                sourceIpGroups: []
-                ruleType: 'NetworkRule'
-                destinationIpGroups: []
                 destinationAddresses: [
                   '*'
                 ]
                 destinationFqdns: []
+                destinationIpGroups: []
+                destinationPorts: [
+                  '80'
+                ]
+                ipProtocols: [
+                  'TCP'
+                  'UDP'
+                ]
+                name: 'rule002'
+                ruleType: 'NetworkRule'
+                sourceAddresses: [
+                  '*'
+                ]
+                sourceIpGroups: []
               }
             ]
-            ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
           }
         ]
       }
     ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-fwpol-x-002"
+    },
+    // Non-required parameters
+    "ruleCollectionGroups": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-rule-001",
+          "priority": 5000,
+          "ruleCollections": [
+            {
+              "action": {
+                "type": "Allow"
+              },
+              "name": "collection002",
+              "priority": 5555,
+              "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+              "rules": [
+                {
+                  "destinationAddresses": [
+                    "*"
+                  ],
+                  "destinationFqdns": [],
+                  "destinationIpGroups": [],
+                  "destinationPorts": [
+                    "80"
+                  ],
+                  "ipProtocols": [
+                    "TCP",
+                    "UDP"
+                  ],
+                  "name": "rule002",
+                  "ruleType": "NetworkRule",
+                  "sourceAddresses": [
+                    "*"
+                  ],
+                  "sourceIpGroups": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   }
 }
 ```

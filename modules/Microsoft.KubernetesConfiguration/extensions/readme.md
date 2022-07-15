@@ -65,37 +65,11 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "flux"
-        },
-        "extensionType": {
-            "value": "microsoft.flux"
-        },
-        "clusterName": {
-            "value": "<<namePrefix>>-az-aks-kubenet-001"
-        },
-        "releaseTrain": {
-            "value": "Stable"
-        },
-        "releaseNamespace": {
-            "value": "flux-system"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -105,11 +79,13 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-extensions'
   params: {
-    name: 'flux'
-    extensionType: 'microsoft.flux'
+    // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    releaseTrain: 'Stable'
+    extensionType: 'microsoft.flux'
+    name: 'flux'
+    // Non-required parameters
     releaseNamespace: 'flux-system'
+    releaseTrain: 'Stable'
   }
 }
 ```
@@ -117,50 +93,40 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "flux"
-        },
-        "extensionType": {
-            "value": "microsoft.flux"
-        },
-        "clusterName": {
-            "value": "<<namePrefix>>-az-aks-kubenet-001"
-        },
-        "releaseTrain": {
-            "value": "Stable"
-        },
-        "releaseNamespace": {
-            "value": "flux-system"
-        },
-        "version": {
-            "value": "0.5.2"
-        },
-        "configurationSettings": {
-            "value": {
-                // "helm-controller.enabled": "false",
-                "source-controller.enabled": "true",
-                "kustomize-controller.enabled": "true",
-                "notification-controller.enabled": "false",
-                "image-automation-controller.enabled": "false",
-                "image-reflector-controller.enabled": "false"
-            }
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<<namePrefix>>-az-aks-kubenet-001"
+    },
+    "extensionType": {
+      "value": "microsoft.flux"
+    },
+    "name": {
+      "value": "flux"
+    },
+    // Non-required parameters
+    "releaseNamespace": {
+      "value": "flux-system"
+    },
+    "releaseTrain": {
+      "value": "Stable"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -170,18 +136,65 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-extensions'
   params: {
-    name: 'flux'
-    extensionType: 'microsoft.flux'
+    // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    releaseTrain: 'Stable'
-    releaseNamespace: 'flux-system'
-    version: '0.5.2'
+    extensionType: 'microsoft.flux'
+    name: 'flux'
+    // Non-required parameters
     configurationSettings: {
-      'source-controller.enabled': 'true'
-      'kustomize-controller.enabled': 'true'
-      'notification-controller.enabled': 'false'
       'image-automation-controller.enabled': 'false'
       'image-reflector-controller.enabled': 'false'
+      'kustomize-controller.enabled': 'true'
+      'notification-controller.enabled': 'false'
+      'source-controller.enabled': 'true'
+    }
+    releaseNamespace: 'flux-system'
+    releaseTrain: 'Stable'
+    version: '0.5.2'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<<namePrefix>>-az-aks-kubenet-001"
+    },
+    "extensionType": {
+      "value": "microsoft.flux"
+    },
+    "name": {
+      "value": "flux"
+    },
+    // Non-required parameters
+    "configurationSettings": {
+      "value": {
+        "image-automation-controller.enabled": "false",
+        "image-reflector-controller.enabled": "false",
+        "kustomize-controller.enabled": "true",
+        "notification-controller.enabled": "false",
+        "source-controller.enabled": "true"
+      }
+    },
+    "releaseNamespace": {
+      "value": "flux-system"
+    },
+    "releaseTrain": {
+      "value": "Stable"
+    },
+    "version": {
+      "value": "0.5.2"
     }
   }
 }
