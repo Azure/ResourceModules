@@ -303,7 +303,57 @@ userAssignedIdentities: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+<h3>Example 1: Basic</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-workspaces'
+  params: {
+    // Required parameters
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux004'
+    defaultDataLakeStorageFilesystem: 'synapsews'
+    name: '<<namePrefix>>-az-synws-basic-001'
+    sqlAdministratorLogin: 'synwsadmin'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogCategoriesToEnable: [
+      'BuiltinSqlReqsEnded'
+      'GatewayApiRequests'
+      'IntegrationActivityRuns'
+      'IntegrationPipelineRuns'
+      'IntegrationTriggerRuns'
+      'SynapseRbacOperations'
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    initialWorkspaceAdminObjectId: '<<deploymentSpId>>'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -314,34 +364,34 @@ userAssignedIdentities: {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-synws-basic-001"
-    },
+    // Required parameters
     "defaultDataLakeStorageAccountName": {
       "value": "adp<<namePrefix>>azsaweux004"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
     },
+    "name": {
+      "value": "<<namePrefix>>-az-synws-basic-001"
+    },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
     },
-    "initialWorkspaceAdminObjectId": {
-      "value": "<<deploymentSpId>>"
+    // Non-required parameters
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
     },
-    "userAssignedIdentities": {
-      "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-      }
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
     },
-    "roleAssignments": {
+    "diagnosticLogCategoriesToEnable": {
       "value": [
-        {
-          "roleDefinitionIdOrName": "Reader",
-          "principalIds": [
-            "<<deploymentSpId>>"
-          ]
-        }
+        "BuiltinSqlReqsEnded",
+        "GatewayApiRequests",
+        "IntegrationActivityRuns",
+        "IntegrationPipelineRuns",
+        "IntegrationTriggerRuns",
+        "SynapseRbacOperations"
       ]
     },
     "diagnosticLogsRetentionInDays": {
@@ -353,27 +403,32 @@ userAssignedIdentities: {
     "diagnosticWorkspaceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    "initialWorkspaceAdminObjectId": {
+      "value": "<<deploymentSpId>>"
     },
-    "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
-    },
-    "diagnosticLogCategoriesToEnable": {
+    "roleAssignments": {
       "value": [
-        "SynapseRbacOperations",
-        "GatewayApiRequests",
-        "BuiltinSqlReqsEnded",
-        "IntegrationPipelineRuns",
-        "IntegrationActivityRuns",
-        "IntegrationTriggerRuns"
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
       ]
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
     }
   }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Encryptionwsai</h3>
 
 <details>
 
@@ -383,43 +438,23 @@ userAssignedIdentities: {
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-synws-basic-001'
+    // Required parameters
     defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux004'
     defaultDataLakeStorageFilesystem: 'synapsews'
+    name: '<<namePrefix>>-az-synws-encryptwsai-001'
     sqlAdministratorLogin: 'synwsadmin'
-    initialWorkspaceAdminObjectId: '<<deploymentSpId>>'
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    diagnosticLogCategoriesToEnable: [
-      'SynapseRbacOperations'
-      'GatewayApiRequests'
-      'BuiltinSqlReqsEnded'
-      'IntegrationPipelineRuns'
-      'IntegrationActivityRuns'
-      'IntegrationTriggerRuns'
-    ]
+    // Non-required parameters
+    cMKKeyName: 'keyEncryptionKey'
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    cMKUserAssignedIdentityResourceId: true
+    encryption: true
+    encryptionActivateWorkspace: true
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -430,28 +465,30 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-synws-encryptwsai-001"
-    },
+    // Required parameters
     "defaultDataLakeStorageAccountName": {
       "value": "adp<<namePrefix>>azsaweux004"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
     },
+    "name": {
+      "value": "<<namePrefix>>-az-synws-encryptwsai-001"
+    },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
     },
-    "encryption": {
-      "value": true
+    // Non-required parameters
+    "cMKKeyName": {
+      "value": "keyEncryptionKey"
     },
     "cMKKeyVaultResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
     },
-    "cMKKeyName": {
-      "value": "keyEncryptionKey"
-    },
     "cMKUserAssignedIdentityResourceId": {
+      "value": true
+    },
+    "encryption": {
       "value": true
     },
     "encryptionActivateWorkspace": {
@@ -462,6 +499,9 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Encryptionwuai</h3>
 
 <details>
 
@@ -471,23 +511,22 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-synws-encryptwsai-001'
+    // Required parameters
     defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux004'
     defaultDataLakeStorageFilesystem: 'synapsews'
+    name: '<<namePrefix>>-az-synws-encryptwuai-001'
     sqlAdministratorLogin: 'synwsadmin'
-    encryption: true
-    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    // Non-required parameters
     cMKKeyName: 'keyEncryptionKey'
-    cMKUserAssignedIdentityResourceId: true
-    encryptionActivateWorkspace: true
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    encryption: true
+    encryptionUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 3</h3>
 
 <details>
 
@@ -498,26 +537,28 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-synws-encryptwuai-001"
-    },
+    // Required parameters
     "defaultDataLakeStorageAccountName": {
       "value": "adp<<namePrefix>>azsaweux004"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
     },
+    "name": {
+      "value": "<<namePrefix>>-az-synws-encryptwuai-001"
+    },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
     },
-    "encryption": {
-      "value": true
+    // Non-required parameters
+    "cMKKeyName": {
+      "value": "keyEncryptionKey"
     },
     "cMKKeyVaultResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
     },
-    "cMKKeyName": {
-      "value": "keyEncryptionKey"
+    "encryption": {
+      "value": true
     },
     "encryptionUserAssignedIdentity": {
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
@@ -527,6 +568,9 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 ```
 
 </details>
+<p>
+
+<h3>Example 4: Managedvnet</h3>
 
 <details>
 
@@ -536,22 +580,23 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-synws-encryptwuai-001'
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux004'
+    // Required parameters
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux005'
     defaultDataLakeStorageFilesystem: 'synapsews'
+    name: '<<namePrefix>>-az-synws-managedvnet-001'
     sqlAdministratorLogin: 'synwsadmin'
-    encryption: true
-    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
-    cMKKeyName: 'keyEncryptionKey'
-    encryptionUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    // Non-required parameters
+    allowedAadTenantIdsForLinking: [
+      '<<tenantId>>'
+    ]
+    managedVirtualNetwork: true
+    preventDataExfiltration: true
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 4</h3>
 
 <details>
 
@@ -562,32 +607,39 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-synws-managedvnet-001"
-    },
+    // Required parameters
     "defaultDataLakeStorageAccountName": {
       "value": "adp<<namePrefix>>azsaweux005"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
     },
+    "name": {
+      "value": "<<namePrefix>>-az-synws-managedvnet-001"
+    },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
+    },
+    // Non-required parameters
+    "allowedAadTenantIdsForLinking": {
+      "value": [
+        "<<tenantId>>"
+      ]
     },
     "managedVirtualNetwork": {
       "value": true
     },
     "preventDataExfiltration": {
       "value": true
-    },
-    "allowedAadTenantIdsForLinking": {
-      "value": ["<<tenantId>>"]
     }
   }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 5: Min</h3>
 
 <details>
 
@@ -597,23 +649,17 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-synws-managedvnet-001'
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux005'
+    // Required parameters
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux004'
     defaultDataLakeStorageFilesystem: 'synapsews'
+    name: '<<namePrefix>>-az-synws-min-001'
     sqlAdministratorLogin: 'synwsadmin'
-    managedVirtualNetwork: true
-    preventDataExfiltration: true
-    allowedAadTenantIdsForLinking: [
-      '<<tenantId>>'
-    ]
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 5</h3>
 
 <details>
 
@@ -624,36 +670,19 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-synws-min-001"
-    },
+    // Required parameters
     "defaultDataLakeStorageAccountName": {
       "value": "adp<<namePrefix>>azsaweux004"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
     },
+    "name": {
+      "value": "<<namePrefix>>-az-synws-min-001"
+    },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
     }
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
-  params: {
-    name: '<<namePrefix>>-az-synws-min-001'
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux004'
-    defaultDataLakeStorageFilesystem: 'synapsews'
-    sqlAdministratorLogin: 'synwsadmin'
   }
 }
 ```
