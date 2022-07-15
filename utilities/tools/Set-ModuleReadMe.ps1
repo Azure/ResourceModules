@@ -987,7 +987,7 @@ function Set-DeploymentExamplesSection {
                     $JSONParameters = (ConvertFrom-Json $rawContent -Depth 99 -AsHashtable -NoEnumerate).parameters
                     $JSONParametersWithoutValue = @{}
                     foreach ($parameterName in $JSONParameters.psbase.Keys) {
-                        $keysOnLevel = $JSONParameters[$parameter].Keys
+                        $keysOnLevel = $JSONParameters[$parameterName].Keys
                         if ($keysOnLevel.count -eq 1 -and $keysOnLevel -eq 'value') {
                             $JSONParametersWithoutValue[$parameterName] = $JSONParameters[$parameterName]['value']
                         } else {
