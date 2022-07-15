@@ -1021,7 +1021,7 @@ stages:
               displayName: Web Sites Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/batch.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Batch Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/blob.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Storage Blob Private DNS Zone
