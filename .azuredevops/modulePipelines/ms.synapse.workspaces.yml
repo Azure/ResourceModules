@@ -46,11 +46,11 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/basic.parameters.json
-            - path: $(modulePath)/.parameters/encryptionwsai.parameters.json
-            - path: $(modulePath)/.parameters/encryptionwuai.parameters.json
-            - path: $(modulePath)/.parameters/managedvnet.parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/basic.parameters.json
+            - path: $(modulePath)/.test/encryptionwsai.parameters.json
+            - path: $(modulePath)/.test/encryptionwuai.parameters.json
+            - path: $(modulePath)/.test/managedvnet.parameters.json
 
   - stage: Publishing
     displayName: Publishing

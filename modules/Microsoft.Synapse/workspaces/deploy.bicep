@@ -27,17 +27,14 @@ param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 @description('Optional. Double encryption using a customer-managed key.')
 param encryption bool = false
 
-@description('Optional. Keyvault where the encryption key is stored.')
-param encryptionKeyVaultName string = ''
-
-@description('Optional. Keyvault resource group name.')
-param encryptionKeyVaultResourceGroupName string = ''
-
 @description('Optional. The encryption key name in KeyVault.')
-param encryptionKeyName string = ''
+param cMKKeyName string = ''
+
+@description('Optional. Keyvault where the encryption key is stored.')
+param cMKKeyVaultResourceId string = ''
 
 @description('Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
-param encryptionUseSystemAssignedIdentity bool = false
+param cMKUserAssignedIdentityResourceId bool = false
 
 @description('Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
 param encryptionUserAssignedIdentity string = ''
@@ -144,8 +141,6 @@ var identity = {
   userAssignedIdentities: !empty(userAssignedIdentitiesUnion) ? userAssignedIdentitiesUnion : null
 }
 
-var keyVaultUrl = 'https://${encryptionKeyVaultName}${environment().suffixes.keyvaultDns}/keys/${encryptionKeyName}'
-
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -154,6 +149,11 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -186,11 +186,11 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       cmk: {
         kekIdentity: {
           userAssignedIdentity: !empty(encryptionUserAssignedIdentity) ? encryptionUserAssignedIdentity : null
-          useSystemAssignedIdentity: encryptionUseSystemAssignedIdentity ? true : false
+          useSystemAssignedIdentity: cMKUserAssignedIdentityResourceId ? true : false
         }
         key: {
-          keyVaultUrl: keyVaultUrl
-          name: encryptionKeyName
+          keyVaultUrl: cMKKeyVault.properties.vaultUri
+          name: cMKKeyName
         }
       }
     } : null
@@ -214,9 +214,8 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
 module workspace_cmk '.bicep/nested_cmk.bicep' = if (encryptionActivateWorkspace) {
   name: '${deployment().name}-cmk'
   params: {
-    encryptionKeyName: encryptionKeyName
-    encryptionKeyVaultName: encryptionKeyVaultName
-    encryptionKeyVaultResourceGroupName: encryptionKeyVaultResourceGroupName
+    cMKKeyName: cMKKeyName
+    cMKKeyVaultResourceId: cMKKeyVaultResourceId
     workspaceName: workspace.name
     workspacePrincipalId: workspace.identity.principalId
   }

@@ -17,16 +17,13 @@
     "encryption": {
       "value": true
     },
-    "encryptionKeyVaultName": {
-      "value": "adp-<<namePrefix>>-az-kv-nopr-002"
+    "cMKKeyVaultResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
     },
-    "encryptionKeyVaultResourceGroupName": {
-      "value": "validation-rg"
-    },
-    "encryptionKeyName": {
+    "cMKKeyName": {
       "value": "keyEncryptionKey"
     },
-    "encryptionUseSystemAssignedIdentity": {
+    "cMKUserAssignedIdentityResourceId": {
       "value": true
     },
     "encryptionActivateWorkspace": {

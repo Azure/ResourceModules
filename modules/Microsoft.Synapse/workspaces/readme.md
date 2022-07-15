@@ -39,6 +39,9 @@ This module deploys a Synapse Workspace.
 | :-- | :-- | :-- | :-- | :-- |
 | `allowedAadTenantIdsForLinking` | array | `[]` |  | Allowed Aad Tenant Ids For Linking. |
 | `azureADOnlyAuthentication` | bool | `False` |  | Enable or Disable AzureADOnlyAuthentication on All Workspace subresource. |
+| `cMKKeyName` | string | `''` |  | The encryption key name in KeyVault. |
+| `cMKKeyVaultResourceId` | string | `''` |  | Keyvault where the encryption key is stored. |
+| `cMKUserAssignedIdentityResourceId` | bool | `False` |  | Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `defaultDataLakeStorageCreateManagedPrivateEndpoint` | bool | `False` |  | Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -49,11 +52,7 @@ This module deploys a Synapse Workspace.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryption` | bool | `False` |  | Double encryption using a customer-managed key. |
 | `encryptionActivateWorkspace` | bool | `False` |  | Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
-| `encryptionKeyName` | string | `''` |  | The encryption key name in KeyVault. |
-| `encryptionKeyVaultName` | string | `''` |  | Keyvault where the encryption key is stored. |
-| `encryptionKeyVaultResourceGroupName` | string | `''` |  | Keyvault resource group name. |
 | `encryptionUserAssignedIdentity` | string | `''` |  | The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
-| `encryptionUseSystemAssignedIdentity` | bool | `False` |  | Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `initialWorkspaceAdminObjectID` | string | `''` |  | AAD object ID of initial workspace admin. |
 | `linkedAccessCheckOnTargetResource` | bool | `False` |  | Linked Access Check On Target Resource. |
 | `location` | string | `[resourceGroup().location]` |  | The geo-location where the resource lives. |
@@ -446,16 +445,13 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     "encryption": {
       "value": true
     },
-    "encryptionKeyVaultName": {
-      "value": "adp-<<namePrefix>>-az-kv-nopr-002"
+    "cMKKeyVaultResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
     },
-    "encryptionKeyVaultResourceGroupName": {
-      "value": "validation-rg"
-    },
-    "encryptionKeyName": {
+    "cMKKeyName": {
       "value": "keyEncryptionKey"
     },
-    "encryptionUseSystemAssignedIdentity": {
+    "cMKUserAssignedIdentityResourceId": {
       "value": true
     },
     "encryptionActivateWorkspace": {
@@ -480,10 +476,9 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     defaultDataLakeStorageFilesystem: 'synapsews'
     sqlAdministratorLogin: 'synwsadmin'
     encryption: true
-    encryptionKeyVaultName: 'adp-<<namePrefix>>-az-kv-nopr-002'
-    encryptionKeyVaultResourceGroupName: 'validation-rg'
-    encryptionKeyName: 'keyEncryptionKey'
-    encryptionUseSystemAssignedIdentity: true
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    cMKKeyName: 'keyEncryptionKey'
+    cMKUserAssignedIdentityResourceId: true
     encryptionActivateWorkspace: true
   }
 }
@@ -518,13 +513,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     "encryption": {
       "value": true
     },
-    "encryptionKeyVaultName": {
-      "value": "adp-<<namePrefix>>-az-kv-nopr-002"
+    "cMKKeyVaultResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
     },
-    "encryptionKeyVaultResourceGroupName": {
-      "value": "validation-rg"
-    },
-    "encryptionKeyName": {
+    "cMKKeyName": {
       "value": "keyEncryptionKey"
     },
     "encryptionUserAssignedIdentity": {
@@ -549,9 +541,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     defaultDataLakeStorageFilesystem: 'synapsews'
     sqlAdministratorLogin: 'synwsadmin'
     encryption: true
-    encryptionKeyVaultName: 'adp-<<namePrefix>>-az-kv-nopr-002'
-    encryptionKeyVaultResourceGroupName: 'validation-rg'
-    encryptionKeyName: 'keyEncryptionKey'
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    cMKKeyName: 'keyEncryptionKey'
     encryptionUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
   }
 }
