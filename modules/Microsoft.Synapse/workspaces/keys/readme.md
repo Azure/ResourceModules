@@ -21,7 +21,6 @@ This module deploys a Synapse Workspaces Key.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `isActiveCMK` | bool | Used to activate the workspace after a customer managed key is provided. |
-| `keyVaultUrl` | string | The Key Vault URL of the workspace key. |
 | `name` | string | Encryption key name. |
 | `workspaceName` | string | Synapse workspace name. |
 
@@ -29,6 +28,7 @@ This module deploys a Synapse Workspaces Key.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `False` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `keyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `location` | string | `[resourceGroup().location]` | The geo-location where the resource lives. |
 
 

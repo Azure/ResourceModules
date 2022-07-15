@@ -9,7 +9,7 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable or Disable AzureADOnlyAuthentication on All Workspace subresource.')
+@description('Optional. Enable or Disable AzureADOnlyAuthentication on All Workspace sub-resource.')
 param azureADOnlyAuthentication bool = false
 
 @description('Optional. AAD object ID of initial workspace admin.')
@@ -52,7 +52,7 @@ param managedResourceGroupName string = ''
 @description('Optional. Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources.')
 param managedVirtualNetwork bool = false
 
-@description('Optional. Allowed Aad Tenant Ids For Linking.')
+@description('Optional. Allowed AAD Tenant IDs For Linking.')
 param allowedAadTenantIdsForLinking array = []
 
 @description('Optional. Linked Access Check On Target Resource.')
@@ -150,8 +150,13 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   }
 }]
 
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  name: '${cMKKeyVault.name}/${cMKKeyName}'
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
@@ -211,14 +216,29 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
 }
 
 // Workspace encryption with customer managed keys
-module workspace_cmk '.bicep/nested_cmk.bicep' = if (encryptionActivateWorkspace) {
-  name: '${deployment().name}-cmk'
+// - Assign Synapse Workspace MSI access to encryption key
+module workspace_cmk_rbac './.bicep/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
+  name: '${workspace.name}-cmk-rbac'
   params: {
-    cMKKeyName: cMKKeyName
-    cMKKeyVaultResourceId: cMKKeyVaultResourceId
-    workspaceName: workspace.name
-    workspacePrincipalId: workspace.identity.principalId
+    workspaceIdentity: workspace.identity.principalId
+    keyvaultName: cMKKeyVault.name
+    usesRbacAuthorization: cMKKeyVault.properties.enableRbacAuthorization
   }
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+// - Workspace encryption - Activate Workspace
+module workspace_key './keys/deploy.bicep' = if (encryptionActivateWorkspace) {
+  name: '${workspace.name}-cmk-activation'
+  params: {
+    name: cMKKeyName
+    isActiveCMK: true
+    keyVaultResourceId: cMKKeyVaultResourceId
+    workspaceName: workspace.name
+  }
+  dependsOn: [
+    workspace_cmk_rbac
+  ]
 }
 
 // Resource Lock
