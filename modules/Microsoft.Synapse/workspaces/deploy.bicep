@@ -155,7 +155,7 @@ resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empt
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
   name: '${cMKKeyVault.name}/${cMKKeyName}'
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
@@ -221,10 +221,10 @@ module workspace_cmk_rbac './.bicep/nested_cmkRbac.bicep' = if (encryptionActiva
   name: '${workspace.name}-cmk-rbac'
   params: {
     workspaceIdentity: workspace.identity.principalId
-    keyvaultName: cMKKeyVault.name
-    usesRbacAuthorization: cMKKeyVault.properties.enableRbacAuthorization
+    keyvaultName: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.name : ''
+    usesRbacAuthorization: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.properties.enableRbacAuthorization : true
   }
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+  scope: encryptionActivateWorkspace ? resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4]) : resourceGroup()
 }
 
 // - Workspace encryption - Activate Workspace
