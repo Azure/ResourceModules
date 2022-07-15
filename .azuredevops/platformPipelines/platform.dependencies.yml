@@ -1024,7 +1024,7 @@ stages:
               displayName: Default Private DNS Zones
             - path: $(dependencyPath)/$(resourceType)/parameters/blob.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Storage Blob Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/cognitiveservices.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Cognitive Services Private DNS Zone
