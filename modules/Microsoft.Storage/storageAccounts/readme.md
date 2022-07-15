@@ -616,9 +616,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         "allowBlobPublicAccess": {
             "value": false
         },
-        // "publicNetworkAccess": {
-        //     "value": "Disabled"
-        // },
+        "publicNetworkAccess": {
+            "value": "Disabled"
+        },
         "requireInfrastructureEncryption": {
             "value": true
         },
@@ -629,68 +629,40 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
             "value": [
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "blob",
-                    "privateDnsZoneGroups": [
-                        {
-                            "privateDNSResourceIds": [
-                                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-                            ]
-                        }
-                    ]
+                    "service": "blob"
                 },
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "table",
-                    "privateDnsZoneGroups": [
-                        {
-                            "privateDNSResourceIds": [
-                                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net"
-                            ]
-                        }
-                    ]
+                    "service": "table"
                 },
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "queue",
-                    "privateDnsZoneGroups": [
-                        {
-                            "privateDNSResourceIds": [
-                                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net"
-                            ]
-                        }
-                    ]
+                    "service": "queue"
                 },
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "file",
-                    "privateDnsZoneGroups": [
-                        {
-                            "privateDNSResourceIds": [
-                                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net"
-                            ]
-                        }
-                    ]
+                    "service": "file"
                 }
             ]
         },
-        // "networkAcls": {
-        //     "value": {
-        //         "bypass": "AzureServices",
-        //         "defaultAction": "Deny",
-        //         "virtualNetworkRules": [
-        //             {
-        //                 "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
-        //                 "action": "Allow"
-        //             }
-        //         ],
-        //         "ipRules": [
-        //             {
-        //                 "action": "Allow",
-        //                 "value": "1.1.1.1"
-        //             }
-        //         ]
-        //     }
-        // },
+        "networkAcls": {
+            "value": {
+                "bypass": "AzureServices",
+                "defaultAction": "Deny",
+                "virtualNetworkRules": [
+                    {
+                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+                        "action": "Allow"
+                    }
+                ],
+                "ipRules": [
+                    {
+                        "action": "Allow",
+                        "value": "1.1.1.1"
+                    }
+                ]
+            }
+        },
         "blobServices": {
             "value": {
                 "diagnosticLogsRetentionInDays": 7,
@@ -838,54 +810,43 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     name: '<<namePrefix>>azsax001'
     storageAccountSku: 'Standard_LRS'
     allowBlobPublicAccess: false
+    publicNetworkAccess: 'Disabled'
     requireInfrastructureEncryption: true
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'blob'
-        privateDnsZoneGroups: [
-          {
-            privateDNSResourceIds: [
-              '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
-            ]
-          }
-        ]
       }
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'table'
-        privateDnsZoneGroups: [
-          {
-            privateDNSResourceIds: [
-              '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net'
-            ]
-          }
-        ]
       }
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'queue'
-        privateDnsZoneGroups: [
-          {
-            privateDNSResourceIds: [
-              '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net'
-            ]
-          }
-        ]
       }
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'file'
-        privateDnsZoneGroups: [
-          {
-            privateDNSResourceIds: [
-              '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net'
-            ]
-          }
-        ]
       }
     ]
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      virtualNetworkRules: [
+        {
+          id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          action: 'Allow'
+        }
+      ]
+      ipRules: [
+        {
+          action: 'Allow'
+          value: '1.1.1.1'
+        }
+      ]
+    }
     blobServices: {
       diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
