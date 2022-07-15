@@ -78,7 +78,7 @@ jobs:
       parameters:
         modulePath: '${{ parameters.customParametersPath }}'
   - job: deploy
-    displayName: Deploying [${{ replace( parameters.templateFilePath, parameters.modulePath, '') }}]
+    displayName: 'Deploying ' # Auto-populated
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
@@ -148,10 +148,16 @@ jobs:
                   return
                 }
 
+                if([String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
+                  $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(customParametersPath)' '$(parameterFilePath)'
+                } else {
+                  $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+                }
+
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
                     Tokens      = @{}
-                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+                    FilePath    = $moduleTestFilePath
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
@@ -210,7 +216,12 @@ jobs:
             $managementGroupId = '${{ parameters.managementGroupId }}'
 
             $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+
+            if([String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(customParametersPath)' '$(parameterFilePath)'
+            } else {
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+            }
 
             if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
                 $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
@@ -300,7 +311,12 @@ jobs:
             $managementGroupId = '${{ parameters.managementGroupId }}'
 
             $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+
+            if([String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(customParametersPath)' '$(parameterFilePath)'
+            } else {
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+            }
 
             if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
                 $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
