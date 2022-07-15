@@ -1006,7 +1006,7 @@ stages:
               displayName: AzConfig Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/azurecr.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: ACR Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/azureml.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Private DNS Zones
