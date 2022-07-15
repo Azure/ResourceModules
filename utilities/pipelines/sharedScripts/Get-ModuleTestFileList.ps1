@@ -9,22 +9,33 @@ The relative path is returned instead of the full one to make paths easier to re
 .PARAMETER ModulePath
 Mandatory. The module path to search in.
 
+.PARAMETER SearchFolder
+Optional. The folder to search for files in
+
 .EXAMPLE
 Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\arm\Microsoft.Compute\virtualMachines'
 
-Returns the relative file paths of all parameter files of the virtual machines module.
+Returns the relative file paths of all parameter files of the virtual machines module in folder $SearchFolder.
+
+.EXAMPLE
+Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\arm\Microsoft.Compute\virtualMachines' -SearchFolder 'parameters'
+
+Returns the relative file paths of all parameter files of the virtual machines module in folder 'parameters'.
 #>
 function Get-ModuleTestFileList {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string] $ModulePath
+        [string] $ModulePath,
+
+        [Parameter(Mandatory = $false)]
+        [string] $SearchFolder = '.test'
     )
 
     $deploymentTests = @()
-    if (Test-Path (Join-Path $ModulePath '.test')) {
-        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath '.test') -Depth 0 -Include ('*.json', '*.bicep') -File).FullName
+    if (Test-Path (Join-Path $ModulePath $SearchFolder)) {
+        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath $SearchFolder) -Depth 0 -Include ('*.json', '*.bicep') -File).FullName
     }
 
     if (-not $deploymentTests) {
