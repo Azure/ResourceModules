@@ -1060,7 +1060,7 @@ stages:
               displayName: Default Private DNS Zones
             - path: $(dependencyPath)/$(resourceType)/parameters/vaultcore.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Vault Core Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/webpubsub.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Private DNS Zones
