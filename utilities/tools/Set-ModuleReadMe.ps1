@@ -1235,10 +1235,15 @@ function Set-ModuleReadMe {
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
 
     if (-not $TemplateFileContent) {
-        if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
-            $templateFileContent = az bicep build --file $TemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+
+        if (-not (Test-Path $TemplateFilePath -PathType 'Leaf')) {
+            throw "[$TemplateFilePath] is no valid file path."
         } else {
-            $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
+            if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
+                $templateFileContent = az bicep build --file $TemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+            } else {
+                $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
+            }
         }
     }
 
