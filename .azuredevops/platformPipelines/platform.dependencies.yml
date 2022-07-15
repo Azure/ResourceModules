@@ -1000,7 +1000,7 @@ stages:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/automation.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Automation Account Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/azconfig.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Private DNS Zones
