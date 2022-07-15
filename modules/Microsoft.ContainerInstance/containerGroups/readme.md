@@ -170,54 +170,11 @@ userAssignedIdentities: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-acg-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "containerName": {
-            "value": "<<namePrefix>>-az-aci-x-001"
-        },
-        "image": {
-            "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
-        },
-        "ports": {
-            "value": [
-                {
-                    "protocol": "Tcp",
-                    "port": "80"
-                },
-                {
-                    "protocol": "Tcp",
-                    "port": "443"
-                }
-            ]
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -227,23 +184,75 @@ userAssignedIdentities: {
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-containerGroups'
   params: {
-    name: '<<namePrefix>>-az-acg-x-001'
-    lock: 'CanNotDelete'
+    // Required parameters
     containerName: '<<namePrefix>>-az-aci-x-001'
     image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+    name: '<<namePrefix>>-az-acg-x-001'
+    // Non-required parameters
+    lock: 'CanNotDelete'
     ports: [
       {
-        protocol: 'Tcp'
         port: '80'
+        protocol: 'Tcp'
       }
       {
-        protocol: 'Tcp'
         port: '443'
+        protocol: 'Tcp'
       }
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containerName": {
+      "value": "<<namePrefix>>-az-aci-x-001"
+    },
+    "image": {
+      "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-acg-x-001"
+    },
+    // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "ports": {
+      "value": [
+        {
+          "port": "80",
+          "protocol": "Tcp"
+        },
+        {
+          "port": "443",
+          "protocol": "Tcp"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
     }
   }
 }
