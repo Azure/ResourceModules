@@ -242,7 +242,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
                 "vault"
             ]
         },
-        "privateDnsZoneGroups": {
+        "privateDnsZoneGroup": {
             "value": {
                 "privateDNSResourceIds": [
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
@@ -280,7 +280,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     groupIds: [
       'vault'
     ]
-    privateDnsZoneGroups: {
+    privateDnsZoneGroup: {
       privateDNSResourceIds: [
         '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
       ]
