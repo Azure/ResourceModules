@@ -228,56 +228,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-sfc-cert-001"
-        },
-        "managementEndpoint": {
-            "value": "https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080"
-        },
-        "reliabilityLevel": {
-            "value": "None"
-        },
-        "certificate": {
-            "value": {
-                "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130", // Mutual exclusive with the other cert specs
-                "x509StoreName": "My"
-            }
-        },
-        "nodeTypes": {
-            "value": [
-                {
-                    "applicationPorts": {
-                        "endPort": 30000,
-                        "startPort": 20000
-                    },
-                    "clientConnectionEndpointPort": 19000,
-                    "durabilityLevel": "Bronze",
-                    "ephemeralPorts": {
-                        "endPort": 65534,
-                        "startPort": 49152
-                    },
-                    "httpGatewayEndpointPort": 19080,
-                    "isPrimary": true,
-                    "name": "Node01"
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Cert</h3>
 
 <details>
 
@@ -287,13 +242,15 @@ tags: {
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
-    name: '<<namePrefix>>-az-sfc-cert-001'
+    // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080'
     reliabilityLevel: 'None'
+    // Non-required parameters
     certificate: {
       thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
       x509StoreName: 'My'
     }
+    name: '<<namePrefix>>-az-sfc-cert-001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -318,224 +275,59 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-sfc-full-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "tags": {
-            "value": {
-                "resourceType": "Service Fabric",
-                "clusterName": "<<namePrefix>>-az-sfc-full-001"
-            }
-        },
-        "addOnFeatures": {
-            "value": [
-                "RepairManager",
-                "DnsService",
-                "BackupRestoreService",
-                "ResourceMonitorService"
-            ]
-        },
-        "maxUnusedVersionsToKeep": {
-            "value": 2
-        },
-        "azureActiveDirectory": {
-            "value": {
-                "clientApplication": "<<deploymentSpId>>",
-                "clusterApplication": "cf33fea8-b30f-424f-ab73-c48d99e0b222",
-                "tenantId": "<<tenantId>>"
-            }
-        },
-        "certificateCommonNames": {
-            "value": {
-                "commonNames": [
-                    {
-                        "certificateCommonName": "certcommon",
-                        "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130"
-                    }
-                ],
-                "x509StoreName": ""
-            }
-        },
-        "clientCertificateCommonNames": {
-            "value": [
-                {
-                    "certificateCommonName": "clientcommoncert1",
-                    "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
-                    "isAdmin": false
-                },
-                {
-                    "certificateCommonName": "clientcommoncert2",
-                    "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC131",
-                    "isAdmin": false
-                }
-            ]
-        },
-        "clientCertificateThumbprints": {
-            "value": [
-                {
-                    "certificateThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
-                    "isAdmin": false
-                },
-                {
-                    "certificateThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC131",
-                    "isAdmin": false
-                }
-            ]
-        },
-        "diagnosticsStorageAccountConfig": {
-            "value": {
-                "blobEndpoint": "https://adp<<namePrefix>>azsaweux001.blob.core.windows.net/",
-                "protectedAccountKeyName": "StorageAccountKey1",
-                "queueEndpoint": "https://adp<<namePrefix>>azsaweux001.queue.core.windows.net/",
-                "storageAccountName": "adp<<namePrefix>>azsaweux001",
-                "tableEndpoint": "https://adp<<namePrefix>>azsaweux001.table.core.windows.net/"
-            }
-        },
-        "fabricSettings": {
-            "value": [
-                {
-                    "name": "Security",
-                    "parameters": [
-                        {
-                            "name": "ClusterProtectionLevel",
-                            "value": "EncryptAndSign"
-                        }
-                    ]
-                },
-                {
-                    "name": "UpgradeService",
-                    "parameters": [
-                        {
-                            "name": "AppPollIntervalInSeconds",
-                            "value": "60"
-                        }
-                    ]
-                }
-            ]
-        },
-        "managementEndpoint": {
-            "value": "https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080"
-        },
-        "nodeTypes": {
-            "value": [
-                {
-                    "applicationPorts": {
-                        "endPort": 30000,
-                        "startPort": 20000
-                    },
-                    "capacities": {},
-                    "clientConnectionEndpointPort": 19000,
-                    "durabilityLevel": "Silver",
-                    "ephemeralPorts": {
-                        "endPort": 65534,
-                        "startPort": 49152
-                    },
-                    "httpGatewayEndpointPort": 19080,
-                    "isPrimary": true,
-                    "isStateless": false,
-                    "multipleAvailabilityZones": false,
-                    "name": "Node01",
-                    "placementProperties": {},
-                    "reverseProxyEndpointPort": "",
-                    "vmInstanceCount": 5
-                },
-                {
-                    "applicationPorts": {
-                        "endPort": 30000,
-                        "startPort": 20000
-                    },
-                    "clientConnectionEndpointPort": 19000,
-                    "durabilityLevel": "Bronze",
-                    "ephemeralPorts": {
-                        "endPort": 64000,
-                        "startPort": 49000
-                    },
-                    "httpGatewayEndpointPort": 19007,
-                    "isPrimary": true,
-                    "name": "Node02",
-                    "vmInstanceCount": 5
-                }
-            ]
-        },
-        "notifications": {
-            "value": [
-                {
-                    "isEnabled": true,
-                    "notificationCategory": "WaveProgress",
-                    "notificationLevel": "Critical",
-                    "notificationTargets": [
-                        {
-                            "notificationChannel": "EmailUser",
-                            "receivers": [
-                                "SomeReceiver"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "upgradeDescription": {
-            "value": {
-                "forceRestart": false,
-                "upgradeReplicaSetCheckTimeout": "1.00:00:00",
-                "healthCheckWaitDuration": "00:00:30",
-                "healthCheckStableDuration": "00:01:00",
-                "healthCheckRetryTimeout": "00:45:00",
-                "upgradeTimeout": "02:00:00",
-                "upgradeDomainTimeout": "02:00:00",
-                "healthPolicy": {
-                    "maxPercentUnhealthyNodes": 0,
-                    "maxPercentUnhealthyApplications": 0
-                },
-                "deltaHealthPolicy": {
-                    "maxPercentDeltaUnhealthyNodes": 0,
-                    "maxPercentUpgradeDomainDeltaUnhealthyNodes": 0,
-                    "maxPercentDeltaUnhealthyApplications": 0
-                }
-            }
-        },
-        "reliabilityLevel": {
-            "value": "Silver"
-        },
-        "vmImage": {
-            "value": "Linux"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "applicationTypes": {
-            "value": [
-                {
-                    "name": "WordCount" // not idempotent
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "managementEndpoint": {
+      "value": "https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080"
+    },
+    "reliabilityLevel": {
+      "value": "None"
+    },
+    // Non-required parameters
+    "certificate": {
+      "value": {
+        "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
+        "x509StoreName": "My"
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-sfc-cert-001"
+    },
+    "nodeTypes": {
+      "value": [
+        {
+          "applicationPorts": {
+            "endPort": 30000,
+            "startPort": 20000
+          },
+          "clientConnectionEndpointPort": 19000,
+          "durabilityLevel": "Bronze",
+          "ephemeralPorts": {
+            "endPort": 65534,
+            "startPort": 49152
+          },
+          "httpGatewayEndpointPort": 19080,
+          "isPrimary": true,
+          "name": "Node01"
         }
+      ]
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Full</h3>
 
 <details>
 
@@ -545,19 +337,21 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
-    name: '<<namePrefix>>-az-sfc-full-001'
-    lock: 'CanNotDelete'
-    tags: {
-      resourceType: 'Service Fabric'
-      clusterName: '<<namePrefix>>-az-sfc-full-001'
-    }
+    // Required parameters
+    managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
+    reliabilityLevel: 'Silver'
+    // Non-required parameters
     addOnFeatures: [
-      'RepairManager'
-      'DnsService'
       'BackupRestoreService'
+      'DnsService'
+      'RepairManager'
       'ResourceMonitorService'
     ]
-    maxUnusedVersionsToKeep: 2
+    applicationTypes: [
+      {
+        name: 'WordCount'
+      }
+    ]
     azureActiveDirectory: {
       clientApplication: '<<deploymentSpId>>'
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
@@ -621,7 +415,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         ]
       }
     ]
-    managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
+    lock: 'CanNotDelete'
+    maxUnusedVersionsToKeep: 2
+    name: '<<namePrefix>>-az-sfc-full-001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -676,39 +472,37 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         ]
       }
     ]
-    upgradeDescription: {
-      forceRestart: false
-      upgradeReplicaSetCheckTimeout: '1.00:00:00'
-      healthCheckWaitDuration: '00:00:30'
-      healthCheckStableDuration: '00:01:00'
-      healthCheckRetryTimeout: '00:45:00'
-      upgradeTimeout: '02:00:00'
-      upgradeDomainTimeout: '02:00:00'
-      healthPolicy: {
-        maxPercentUnhealthyNodes: 0
-        maxPercentUnhealthyApplications: 0
-      }
-      deltaHealthPolicy: {
-        maxPercentDeltaUnhealthyNodes: 0
-        maxPercentUpgradeDomainDeltaUnhealthyNodes: 0
-        maxPercentDeltaUnhealthyApplications: 0
-      }
-    }
-    reliabilityLevel: 'Silver'
-    vmImage: 'Linux'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    applicationTypes: [
-      {
-        name: 'WordCount'
+    tags: {
+      clusterName: '<<namePrefix>>-az-sfc-full-001'
+      resourceType: 'Service Fabric'
+    }
+    upgradeDescription: {
+      deltaHealthPolicy: {
+        maxPercentDeltaUnhealthyApplications: 0
+        maxPercentDeltaUnhealthyNodes: 0
+        maxPercentUpgradeDomainDeltaUnhealthyNodes: 0
       }
-    ]
+      forceRestart: false
+      healthCheckRetryTimeout: '00:45:00'
+      healthCheckStableDuration: '00:01:00'
+      healthCheckWaitDuration: '00:00:30'
+      healthPolicy: {
+        maxPercentUnhealthyApplications: 0
+        maxPercentUnhealthyNodes: 0
+      }
+      upgradeDomainTimeout: '02:00:00'
+      upgradeReplicaSetCheckTimeout: '1.00:00:00'
+      upgradeTimeout: '02:00:00'
+    }
+    vmImage: 'Linux'
   }
 }
 ```
@@ -716,50 +510,227 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-sfc-min-001"
-        },
-        "managementEndpoint": {
-            "value": "https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080"
-        },
-        "reliabilityLevel": {
-            "value": "None"
-        },
-        "nodeTypes": {
-            "value": [
-                {
-                    "applicationPorts": {
-                        "endPort": 30000,
-                        "startPort": 20000
-                    },
-                    "clientConnectionEndpointPort": 19000,
-                    "durabilityLevel": "Bronze",
-                    "ephemeralPorts": {
-                        "endPort": 65534,
-                        "startPort": 49152
-                    },
-                    "httpGatewayEndpointPort": 19080,
-                    "isPrimary": true,
-                    "name": "Node01"
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "managementEndpoint": {
+      "value": "https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080"
+    },
+    "reliabilityLevel": {
+      "value": "Silver"
+    },
+    // Non-required parameters
+    "addOnFeatures": {
+      "value": [
+        "BackupRestoreService",
+        "DnsService",
+        "RepairManager",
+        "ResourceMonitorService"
+      ]
+    },
+    "applicationTypes": {
+      "value": [
+        {
+          "name": "WordCount"
         }
+      ]
+    },
+    "azureActiveDirectory": {
+      "value": {
+        "clientApplication": "<<deploymentSpId>>",
+        "clusterApplication": "cf33fea8-b30f-424f-ab73-c48d99e0b222",
+        "tenantId": "<<tenantId>>"
+      }
+    },
+    "certificateCommonNames": {
+      "value": {
+        "commonNames": [
+          {
+            "certificateCommonName": "certcommon",
+            "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130"
+          }
+        ],
+        "x509StoreName": ""
+      }
+    },
+    "clientCertificateCommonNames": {
+      "value": [
+        {
+          "certificateCommonName": "clientcommoncert1",
+          "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
+          "isAdmin": false
+        },
+        {
+          "certificateCommonName": "clientcommoncert2",
+          "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC131",
+          "isAdmin": false
+        }
+      ]
+    },
+    "clientCertificateThumbprints": {
+      "value": [
+        {
+          "certificateThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
+          "isAdmin": false
+        },
+        {
+          "certificateThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC131",
+          "isAdmin": false
+        }
+      ]
+    },
+    "diagnosticsStorageAccountConfig": {
+      "value": {
+        "blobEndpoint": "https://adp<<namePrefix>>azsaweux001.blob.core.windows.net/",
+        "protectedAccountKeyName": "StorageAccountKey1",
+        "queueEndpoint": "https://adp<<namePrefix>>azsaweux001.queue.core.windows.net/",
+        "storageAccountName": "adp<<namePrefix>>azsaweux001",
+        "tableEndpoint": "https://adp<<namePrefix>>azsaweux001.table.core.windows.net/"
+      }
+    },
+    "fabricSettings": {
+      "value": [
+        {
+          "name": "Security",
+          "parameters": [
+            {
+              "name": "ClusterProtectionLevel",
+              "value": "EncryptAndSign"
+            }
+          ]
+        },
+        {
+          "name": "UpgradeService",
+          "parameters": [
+            {
+              "name": "AppPollIntervalInSeconds",
+              "value": "60"
+            }
+          ]
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "maxUnusedVersionsToKeep": {
+      "value": 2
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-sfc-full-001"
+    },
+    "nodeTypes": {
+      "value": [
+        {
+          "applicationPorts": {
+            "endPort": 30000,
+            "startPort": 20000
+          },
+          "capacities": {},
+          "clientConnectionEndpointPort": 19000,
+          "durabilityLevel": "Silver",
+          "ephemeralPorts": {
+            "endPort": 65534,
+            "startPort": 49152
+          },
+          "httpGatewayEndpointPort": 19080,
+          "isPrimary": true,
+          "isStateless": false,
+          "multipleAvailabilityZones": false,
+          "name": "Node01",
+          "placementProperties": {},
+          "reverseProxyEndpointPort": "",
+          "vmInstanceCount": 5
+        },
+        {
+          "applicationPorts": {
+            "endPort": 30000,
+            "startPort": 20000
+          },
+          "clientConnectionEndpointPort": 19000,
+          "durabilityLevel": "Bronze",
+          "ephemeralPorts": {
+            "endPort": 64000,
+            "startPort": 49000
+          },
+          "httpGatewayEndpointPort": 19007,
+          "isPrimary": true,
+          "name": "Node02",
+          "vmInstanceCount": 5
+        }
+      ]
+    },
+    "notifications": {
+      "value": [
+        {
+          "isEnabled": true,
+          "notificationCategory": "WaveProgress",
+          "notificationLevel": "Critical",
+          "notificationTargets": [
+            {
+              "notificationChannel": "EmailUser",
+              "receivers": [
+                "SomeReceiver"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "clusterName": "<<namePrefix>>-az-sfc-full-001",
+        "resourceType": "Service Fabric"
+      }
+    },
+    "upgradeDescription": {
+      "value": {
+        "deltaHealthPolicy": {
+          "maxPercentDeltaUnhealthyApplications": 0,
+          "maxPercentDeltaUnhealthyNodes": 0,
+          "maxPercentUpgradeDomainDeltaUnhealthyNodes": 0
+        },
+        "forceRestart": false,
+        "healthCheckRetryTimeout": "00:45:00",
+        "healthCheckStableDuration": "00:01:00",
+        "healthCheckWaitDuration": "00:00:30",
+        "healthPolicy": {
+          "maxPercentUnhealthyApplications": 0,
+          "maxPercentUnhealthyNodes": 0
+        },
+        "upgradeDomainTimeout": "02:00:00",
+        "upgradeReplicaSetCheckTimeout": "1.00:00:00",
+        "upgradeTimeout": "02:00:00"
+      }
+    },
+    "vmImage": {
+      "value": "Linux"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Min</h3>
 
 <details>
 
@@ -769,9 +740,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
-    name: '<<namePrefix>>-az-sfc-min-001'
+    // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080'
     reliabilityLevel: 'None'
+    // Non-required parameters
+    name: '<<namePrefix>>-az-sfc-min-001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -789,6 +762,52 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         name: 'Node01'
       }
     ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "managementEndpoint": {
+      "value": "https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080"
+    },
+    "reliabilityLevel": {
+      "value": "None"
+    },
+    // Non-required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-sfc-min-001"
+    },
+    "nodeTypes": {
+      "value": [
+        {
+          "applicationPorts": {
+            "endPort": 30000,
+            "startPort": 20000
+          },
+          "clientConnectionEndpointPort": 19000,
+          "durabilityLevel": "Bronze",
+          "ephemeralPorts": {
+            "endPort": 65534,
+            "startPort": 49152
+          },
+          "httpGatewayEndpointPort": 19080,
+          "isPrimary": true,
+          "name": "Node01"
+        }
+      ]
+    }
   }
 }
 ```

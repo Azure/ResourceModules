@@ -343,7 +343,27 @@ networkAcls: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-webPubSub'
+  params: {
+    name: '<<namePrefix>>-az-pubsub-min-001'
+  }
+}
+```
+
+</details>
+<p>
 
 <details>
 
@@ -362,6 +382,9 @@ networkAcls: {
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -371,15 +394,63 @@ networkAcls: {
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-webPubSub'
   params: {
-    name: '<<namePrefix>>-az-pubsub-min-001'
+    // Required parameters
+    name: '<<namePrefix>>-az-pubsub-x-001'
+    // Additional parameters
+    capacity: 2
+    clientCertEnabled: false
+    disableAadAuth: false
+    disableLocalAuth: true
+    location: 'westeurope'
+    lock: 'CanNotDelete'
+    networkAcls: {
+      defaultAction: 'Allow'
+      privateEndpoints: [
+        {
+          allow: []
+          deny: [
+            'ServerConnection'
+            'Trace'
+          ]
+          name: 'pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0'
+        }
+      ]
+      publicNetwork: {
+        allow: []
+        deny: [
+          'RESTAPI'
+          'Trace'
+        ]
+      }
+    }
+    privateEndpoints: [
+      {
+        service: 'webpubsub'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    resourceLogConfigurationsToEnable: [
+      'ConnectivityLogs'
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sku: 'Standard_S1'
+    systemAssignedIdentity: true
+    tags: {
+      purpose: 'test'
+    }
   }
 }
 ```
 
 </details>
 <p>
-
-<h3>Example 2</h3>
 
 <details>
 
@@ -390,12 +461,11 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "location": {
-      "value": "westeurope"
-    },
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-pubsub-x-001"
     },
+    // Additional parameters
     "capacity": {
       "value": 2
     },
@@ -408,33 +478,23 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     "disableLocalAuth": {
       "value": true
     },
+    "location": {
+      "value": "westeurope"
+    },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "sku": {
-      "value": "Standard_S1"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "roleDefinitionIdOrName": "Reader",
-          "principalIds": [
-            "<<deploymentSpId>>"
-          ]
-        }
-      ]
     },
     "networkAcls": {
       "value": {
         "defaultAction": "Allow",
         "privateEndpoints": [
           {
-            "name": "pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0",
             "allow": [],
             "deny": [
               "ServerConnection",
               "Trace"
-            ]
+            ],
+            "name": "pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0"
           }
         ],
         "publicNetwork": {
@@ -446,6 +506,32 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
         }
       }
     },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "webpubsub",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
+    },
+    "resourceLogConfigurationsToEnable": {
+      "value": [
+        "ConnectivityLogs"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Standard_S1"
+    },
     "systemAssignedIdentity": {
       "value": true
     },
@@ -453,83 +539,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
       "value": {
         "purpose": "test"
       }
-    },
-    "resourceLogConfigurationsToEnable": {
-      "value": [
-        "ConnectivityLogs"
-      ]
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-          "service": "webpubsub"
-        }
-      ]
     }
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-webPubSub'
-  params: {
-    location: 'westeurope'
-    name: '<<namePrefix>>-az-pubsub-x-001'
-    capacity: 2
-    clientCertEnabled: false
-    disableAadAuth: false
-    disableLocalAuth: true
-    lock: 'CanNotDelete'
-    sku: 'Standard_S1'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-    networkAcls: {
-      defaultAction: 'Allow'
-      privateEndpoints: [
-        {
-          name: 'pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0'
-          allow: []
-          deny: [
-            'ServerConnection'
-            'Trace'
-          ]
-        }
-      ]
-      publicNetwork: {
-        allow: []
-        deny: [
-          'RESTAPI'
-          'Trace'
-        ]
-      }
-    }
-    systemAssignedIdentity: true
-    tags: {
-      purpose: 'test'
-    }
-    resourceLogConfigurationsToEnable: [
-      'ConnectivityLogs'
-    ]
-    privateEndpoints: [
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'webpubsub'
-      }
-    ]
   }
 }
 ```
