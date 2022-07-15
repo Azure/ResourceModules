@@ -31,7 +31,7 @@ function Set-ResourceTypesSection {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'ResourceTypesToExclude', Justification = 'Variable used inside Where-Object block.')]
     param (
         [Parameter(Mandatory)]
-        [Hashtable] $TemplateFileContent,
+        [hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory)]
         [object[]] $ReadMeFileContent,
@@ -118,7 +118,7 @@ function Set-ParametersSection {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [Hashtable] $TemplateFileContent,
+        [hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory)]
         [object[]] $ReadMeFileContent,
@@ -187,8 +187,8 @@ function Set-ParametersSection {
             }
 
             # Add external single quotes to all default values of type string except for those using functions
-            $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f ($parameter.defaultValue -join ', ')) : (($parameter.defaultValue -is [Hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
-            $allowedValue = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f ($parameter.allowedValues -join ', ')) : (($parameter.allowedValues -is [Hashtable]) ? '{object}' : $parameter.allowedValues)
+            $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f ($parameter.defaultValue -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
+            $allowedValue = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f ($parameter.allowedValues -join ', ')) : (($parameter.allowedValues -is [hashtable]) ? '{object}' : $parameter.allowedValues)
             $description = $parameter.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
 
             # Update parameter table content based on parameter category
@@ -260,7 +260,7 @@ function Set-OutputsSection {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [Hashtable] $TemplateFileContent,
+        [hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory)]
         [object[]] $ReadMeFileContent,
@@ -652,7 +652,7 @@ function ConvertTo-FormattedBicep {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [Hashtable] $JSONParameters,
+        [hashtable] $JSONParameters,
 
         [Parameter(Mandatory = $false)]
         [AllowEmptyCollection()]
@@ -746,7 +746,7 @@ function Set-DeploymentExamplesSection {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory)]
-        [Hashtable] $TemplateFileContent,
+        [hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory = $true)]
         [object[]] $ReadMeFileContent,
@@ -758,7 +758,7 @@ function Set-DeploymentExamplesSection {
         [bool] $addBicep = $true,
 
         [Parameter(Mandatory = $false)]
-        [Hashtable] $ProjectSettings = @{},
+        [hashtable] $ProjectSettings = @{},
 
         [Parameter(Mandatory = $false)]
         [string] $SectionStartIdentifier = '## Deployment examples'
@@ -1203,7 +1203,7 @@ function Set-ModuleReadMe {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [Hashtable] $TemplateFileContent,
+        [hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory = $false)]
         [string] $ReadMeFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) 'readme.md'),
