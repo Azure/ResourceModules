@@ -35,7 +35,7 @@ param additionalRecipients array = []
 ])
 param domainConfigurationType string = 'FullySynced'
 
-@description('Optional. The value is to synchronise scoped users and groups.')
+@description('Optional. The value is to synchronize scoped users and groups.')
 param filteredSync string = 'Enabled'
 
 @description('Optional. The value is to enable clients making request using TLSv1.')

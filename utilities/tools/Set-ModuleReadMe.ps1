@@ -708,6 +708,9 @@ Generate 'Deployment examples' for the ReadMe out of the parameter files current
 .DESCRIPTION
 Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
 
+.PARAMETER TemplateFilePath
+Mandatory. The path to the template file
+
 .PARAMETER TemplateFileContent
 Mandatory. The template file content object to crawl data from
 
