@@ -1039,7 +1039,7 @@ stages:
               displayName: Default Private DNS Zones
             - path: $(dependencyPath)/$(resourceType)/parameters/file.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Storage Files Private DNS Zone
             - path: $(dependencyPath)/$(resourceType)/parameters/monitor.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Monitoring Private DNS Zone
