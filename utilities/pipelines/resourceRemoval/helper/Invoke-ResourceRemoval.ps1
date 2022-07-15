@@ -39,8 +39,38 @@ function Invoke-ResourceRemoval {
             }
             break
         }
+        'Microsoft.Authorization/locks' {
+            $lockName = ($resourceId -split '/')[-1]
+            $lockScope = ($resourceId -split '/providers/Microsoft.Authorization/locks')[0]
+
+            $null = Remove-AzResourceLock -LockName $lockName -Scope $lockScope -Force
+            Write-Verbose "Removed lock [$resourceName]. Waiting 10 seconds for propagation." -Verbose
+            Start-Sleep 10
+            break
+        }
+        'Microsoft.KeyVault/vaults/keys' {
+            Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
+            # Also, we don't want to accidently remove keys of the dependency key vault
+            break
+        }
         'Microsoft.KeyVault/vaults/accessPolicies' {
             Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
+            break
+        }
+        'Microsoft.ServiceBus/namespaces/ipfilterrules' {
+            Write-Verbose ('Skip resource removal for type [{0}]. Reason: Service Bus IP Filter Rules are not a resource that can be removed.' -f $type) -Verbose
+            break
+        }
+        'Microsoft.ServiceBus/namespaces/virtualnetworkrules' {
+            Write-Verbose ('Skip resource removal for type [{0}]. Reason: Service Bus Virtual Network Rules are not a resource that can be removed.' -f $type) -Verbose
+            break
+        }
+        'Microsoft.ServiceBus/namespaces/AuthorizationRules' {
+            if ((Split-Path $ResourceId '/')[-1] -eq 'RootManageSharedAccessKey') {
+                Write-Verbose ('Skip resource removal for type [{0}]. Reason: The Service Bus''s default authorization key [RootManageSharedAccessKey] cannot be removed.' -f $type) -Verbose
+            } else {
+                $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
+            }
             break
         }
         'Microsoft.Compute/diskEncryptionSets' {
@@ -68,6 +98,13 @@ function Invoke-ResourceRemoval {
         }
         'Microsoft.RecoveryServices/vaults/backupstorageconfig' {
             # Not a 'resource' that can be removed, but represents settings on the RSV. The config is deleted with the RSV
+            break
+        }
+        'Microsoft.Authorization/roleAssignments' {
+            $idElem = $ResourceId.Split('/')
+            $scope = $idElem[0..($idElem.Count - 5)] -join '/'
+            $roleAssignmentsOnScope = Get-AzRoleAssignment -Scope $scope
+            $roleAssignmentsOnScope | Where-Object { $_.RoleAssignmentId -eq $ResourceId } | Remove-AzRoleAssignment
             break
         }
         'Microsoft.RecoveryServices/vaults' {

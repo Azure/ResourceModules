@@ -20,16 +20,18 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.proximityplacementgroups.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Compute/proximityPlacementGroups/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Compute/proximityPlacementGroups/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Compute/proximityPlacementGroups'
+    value: '/modules/Microsoft.Compute/proximityPlacementGroups'
 
 stages:
   - stage: Validation
@@ -44,7 +46,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing

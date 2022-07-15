@@ -20,16 +20,18 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.batch.batchaccounts.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Batch/batchAccounts/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Batch/batchAccounts/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Batch/batchAccounts'
+    value: '/modules/Microsoft.Batch/batchAccounts'
 
 stages:
   - stage: Validation
@@ -44,7 +46,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/encr.parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing

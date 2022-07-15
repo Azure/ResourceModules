@@ -4,7 +4,7 @@ parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Needs custom removals script
+    default: true
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
@@ -20,16 +20,18 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.diagnosticsettings.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Insights/diagnosticSettings/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Insights/diagnosticSettings/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Insights/diagnosticSettings'
+    value: '/modules/Microsoft.Insights/diagnosticSettings'
 
 stages:
   - stage: Validation
@@ -44,7 +46,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing

@@ -20,16 +20,18 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.virtualnetworks.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/virtualNetworks/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Network/virtualNetworks/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/virtualNetworks'
+    value: '/modules/Microsoft.Network/virtualNetworks'
 
 stages:
   - stage: Validation
@@ -44,8 +46,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/vnetPeering.parameters.json
+            - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/vnetPeering.parameters.json
 
   - stage: Publishing
     displayName: Publishing

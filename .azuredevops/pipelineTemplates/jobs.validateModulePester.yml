@@ -1,8 +1,8 @@
 #########################################################
-## VALIDATION PIPELINE                                 ##
+## 'Validate module with Pester' Pipeline Template     ##
 #########################################################
 ##
-## This pipeline template contains the logic to validate a given module's ARM template using the provided parameter file(s)
+## This pipeline template contains the logic to validate a module using a set of Pester tests
 ##
 ## Enabled levels of validation
 ## - Resource-Group-Level
@@ -21,24 +21,25 @@
 ##
 ## NOTE: If you don't need to overwrite a shared value, you can IGNORE this section
 ##
-##   |=============================================================================================================================================================================================================================|
-##   | Parameter                       | Default Value                        | Description                                                                                               | Example                                |
-##   |---------------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------|----------------------------------------|
-##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                             | 'demo-internal'                        |
-##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'Custom Deployment Pool'               |
-##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                          |
-##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                    |
-##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                           |
-##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                      | 'c:/KeyVault'                          |
-##   | location                        | '$(location)'                 | The location to validate with                                                                             | 'France Central'                       |
-##   | resourceGroupName               | '$(resourceGroupName)'        | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                        |
-##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
-##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to validate with. Required only for Management-Group-Level validations     | '477c9620-cb01-454f-9ebc-fc6b1df48c14' |
-##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                            |
-##   | modulesRepository               | '$(modulesRepository)'               | The respository with the modules.                                                                         | 'Components'                           |
-##   | azurePowerShellVersion          | '$(azurePowerShellVersion)'          | Used for configuring the Azure PowerShellModules Version, one of the example values.                      | 'latestVersion' or 'OtherVersion'      |
-##   | preferredAzurePowerShellVersion | '$(preferredAzurePowerShellVersion)' | Used for configuring the Azure PowerShellModules Version, either an empty string or the specific version. | '4.4.0'                                |
-##   |=============================================================================================================================================================================================================================|
+##   |=====================================================================================================================================================================================================================================================|
+##   | Parameter                       | Default Value                        | Description                                                                                               | Example                                                        |
+##   |---------------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
+##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                             | 'demo-internal'                                                |
+##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'Custom Deployment Pool'                                       |
+##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                                                  |
+##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                                            |
+##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                                                   |
+##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                                  |
+##   | moduleTestFilePath              | '$(moduleTestFilePath)'              | The path to the module Pester tests.                                                                      | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
+##   | location                        | '$(location)'                        | The location to validate with                                                                             | 'France Central'                                               |
+##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                                                |
+##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'                         |
+##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to validate with. Required only for Management-Group-Level validations     | '477c9620-cb01-454f-9ebc-fc6b1df48c14'                         |
+##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                                                    |
+##   | modulesRepository               | '$(modulesRepository)'               | The respository with the modules.                                                                         | 'Components'                                                   |
+##   | azurePowerShellVersion          | '$(azurePowerShellVersion)'          | Used for configuring the Azure PowerShellModules Version, one of the example values.                      | 'latestVersion' or 'OtherVersion'                              |
+##   | preferredAzurePowerShellVersion | '$(preferredAzurePowerShellVersion)' | Used for configuring the Azure PowerShellModules Version, either an empty string or the specific version. | '4.4.0'                                                        |
+##   |=====================================================================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
 
@@ -51,6 +52,7 @@ parameters:
   checkoutRepositories: ''
   # Logic-related parameters
   modulePath: '$(modulePath)'
+  moduleTestFilePath: '$(moduleTestFilePath)'
   parametersRepository: '$(Build.Repository.Name)'
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
@@ -66,7 +68,7 @@ parameters:
 ##---------------------------------------------##
 jobs:
   - job:
-    displayName: Run global tests
+    displayName: Run Pester tests
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
@@ -136,7 +138,11 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
-            $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
+            # Set repo root path
+            $repoRootPath = '$(moduleRepoRoot)'
+
+            # Set test input module path
+            $moduleFolderPaths = @(Join-Path $repoRootPath '${{ parameters.modulePath }}')
             $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
               (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
             }
@@ -145,24 +151,44 @@ jobs:
               Write-Verbose "- [($moduleFolderPath]" -Verbose
             }
 
+            # Set enforced token list
+            $enforcedTokenList = @{}
+            if (-not [String]::IsNullOrEmpty('${{ parameters.subscriptionId }}')) {
+                $enforcedTokenList['subscriptionId'] = '${{ parameters.subscriptionId }}'
+            }
+            if (-not [String]::IsNullOrEmpty('${{ parameters.managementGroupId }}')) {
+                $enforcedTokenList['managementGroupId'] = '${{ parameters.managementGroupId }}'
+            }
+            if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SP_ID)')) {
+                $enforcedTokenList['deploymentSpId'] = '$(DEPLOYMENT_SP_ID)'
+            }
+            if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
+                $enforcedTokenList['tenantId'] =  '$(ARM_TENANT_ID)'
+            }
+
+            # Set and print test output path
+            $moduleTestFilePath = '${{ parameters.moduleTestFilePath }}'
+            $outputPathDirectory = Split-Path $moduleTestFilePath -Parent
+            Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathDirectory', $outputPathDirectory)
+            $outputPathFile = 'testResults.xml'
+            Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'outputPathFile', $outputPathFile)
+            $outputPath = Join-Path $outputPathDirectory $outputPathFile
+            Write-Verbose "Pester tests output: $outputPath" -Verbose
+
+            # --------------------- #
+            # Invoke Pester test(s) #
+            # --------------------- #
             Invoke-Pester -Configuration @{
               Run        = @{
-                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
+                Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
+                  repoRootPath = $repoRootPath
                   moduleFolderPaths = $moduleFolderPaths
-                  enforcedTokenList = @{
-                    subscriptionId    = '${{ parameters.subscriptionId }}'
-                    managementGroupId = '${{ parameters.managementGroupId }}'
-                    tenantId          = '$(ARM_TENANT_ID)'
-                    deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
-                  }
+                  enforcedTokenList = $enforcedTokenList
                 }
               }
-              Filter     = @{
-                ExcludeTag = 'ApiCheck'
-              }
               TestResult = @{
-                TestSuiteName = 'Global Module Tests'
-                OutputPath    = 'arm/.global/global-testResults.xml'
+                TestSuiteName = 'Module Tests'
+                OutputPath    = $outputPath
                 OutputFormat  = 'NUnitXml'
                 Enabled       = $true
               }
@@ -175,115 +201,10 @@ jobs:
       - task: PublishTestResults@2
         displayName: Publish Test Results
         inputs:
-          testRunTitle: 'Global Module Tests'
+          testRunTitle: 'Module Tests'
           testResultsFormat: NUnit
-          testResultsFiles: global-testResults.xml
+          testResultsFiles: $(outputPathFile)
           failTaskOnFailedTests: true
-          searchFolder: 'arm/.global'
-        continueOnError: false
-        condition: succeededOrFailed()
-
-  - job:
-    displayName: Run global API tests
-    timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
-    pool:
-      ${{ if ne(parameters.vmImage, '') }}:
-        vmImage: ${{ parameters.vmImage }}
-      ${{ if ne(parameters.poolName, '') }}:
-        name: ${{ parameters.poolName }}
-    steps:
-      # [Checkout Repositories] task(s)
-      #--------------------------------
-      - checkout: self
-      - ${{ if ne(parameters.checkoutRepositories, '') }}:
-          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
-              - checkout: ${{ checkoutRepository }}
-                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: 's/${{ checkoutRepository }}'
-
-      # [Multi Repo] Support task
-      #--------------------------
-      - task: PowerShell@2
-        displayName: Handle Multi-Repo Invocation
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
-              Write-Verbose "Multi-Repo Checkout" -Verbose
-              $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
-              $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
-            } else {
-              Write-Verbose "No Multi-Repo Checkout" -Verbose
-              $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
-              $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
-            }
-            Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-            Write-Output "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
-
-      # [Agent] Prepare environment
-      #----------------------------
-      - task: PowerShell@2
-        displayName: 'Setup agent'
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Load used functions
-            . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-            # Set agent up
-            Set-EnvironmentOnAgent
-
-      # [Module Pester Test] task(s)
-      #-----------------------------
-      - task: AzurePowerShell@5
-        displayName: 'Run API tests via (Pester) via connection [${{ parameters.serviceConnection }}]'
-        inputs:
-          azureSubscription: ${{ parameters.serviceConnection }}
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          ScriptType: InlineScript
-          pwsh: true
-          inline: |
-            $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
-            $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
-              (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
-            }
-            Write-Verbose "Execute tests in path(s):" -Verbose
-            foreach($moduleFolderPath in $moduleFolderPaths) {
-              Write-Verbose "- [($moduleFolderPath]" -Verbose
-            }
-
-            Invoke-Pester -Configuration @{
-              Run        = @{
-                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
-                  moduleFolderPaths = $moduleFolderPaths
-                }
-              }
-              Filter     = @{
-                Tag = 'ApiCheck'
-              }
-              TestResult = @{
-                TestSuiteName = 'Global Module API Tests'
-                OutputPath    = 'arm/.global/api-testResults.xml'
-                OutputFormat  = 'NUnitXml'
-                Enabled       = $true
-              }
-              Output     = @{
-                Verbosity = 'Detailed'
-              }
-            } -ErrorAction 'Stop'
-          errorActionPreference: continue
-
-      - task: PublishTestResults@2
-        displayName: Publish Test Results
-        inputs:
-          testRunTitle: 'Global Module API Tests'
-          testResultsFormat: NUnit
-          testResultsFiles: api-testResults.xml
-          failTaskOnFailedTests: true
-          searchFolder: 'arm/.global'
+          searchFolder: $(outputPathDirectory)
         continueOnError: false
         condition: succeededOrFailed()

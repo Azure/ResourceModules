@@ -31,7 +31,7 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
 
 .EXAMPLE
-Test-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Test-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -parameterFilePath 'C:/KeyVault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Test the deploy.bicep of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
@@ -41,7 +41,7 @@ Test-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -location '
 Test the deploy.bicep of the KeyVault module using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Test-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
+Test-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.test/parameters.json' -location 'WestEurope'
 
 Test the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
@@ -94,7 +94,7 @@ function Test-TemplateDeployment {
             $DeploymentInputs += $additionalParameters
         }
 
-        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
+        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath -Verbose
 
         if ($deploymentScope -ne 'resourceGroup') {
             $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
@@ -115,6 +115,10 @@ function Test-TemplateDeployment {
         #######################
         switch ($deploymentScope) {
             'resourceGroup' {
+                if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+                    Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+                    $null = Set-AzContext -Subscription $subscriptionId
+                }
                 if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
                     if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
                         New-AzResourceGroup -Name $resourceGroupName -Location $location
@@ -126,9 +130,9 @@ function Test-TemplateDeployment {
                 break
             }
             'subscription' {
-                if ($subscriptionId -and ($Context = Get-AzContext -ListAvailable | Where-Object { $_.Subscription.Id -eq $subscriptionId })) {
-                    Write-Verbose ('Setting context to subscription [{0}]' -f $Context.Subscription.Name)
-                    $null = $Context | Set-AzContext
+                if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+                    Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+                    $null = Set-AzContext -Subscription $subscriptionId
                 }
                 if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Test')) {
                     $res = Test-AzSubscriptionDeployment @DeploymentInputs -Location $Location

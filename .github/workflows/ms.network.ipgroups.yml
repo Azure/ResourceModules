@@ -19,14 +19,14 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.ipgroups.yml'
-      - 'arm/Microsoft.Network/ipGroups/**'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.Network/ipGroups/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Network/ipGroups'
+  modulePath: 'modules/Microsoft.Network/ipGroups'
   workflowPath: '.github/workflows/ms.network.ipgroups.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -71,10 +71,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Run tests'
         uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
+          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   #############################
   #   Deployment validation   #

@@ -1,0 +1,56 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-apim-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "publisherEmail": {
+            "value": "apimgmt-noreply@mail.windowsazure.com"
+        },
+        "publisherName": {
+            "value": "<<namePrefix>>-az-amorg-x-001"
+        },
+        "portalSettings": {
+            "value": [
+                {
+                    "name": "signin",
+                    "properties": {
+                        "enabled": false
+                    }
+                },
+                {
+                    "name": "signup",
+                    "properties": {
+                        "enabled": false,
+                        "termsOfService": {
+                            "enabled": false,
+                            "consentRequired": false
+                        }
+                    }
+                }
+            ]
+        },
+        "policies": {
+            "value": [
+                {
+                    "value": "<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>",
+                    "format": "xml"
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}

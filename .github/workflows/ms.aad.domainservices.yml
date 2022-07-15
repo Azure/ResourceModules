@@ -1,4 +1,4 @@
-name: 'AAD - DomainServices'
+name: 'AAD: DomainServices'
 
 on:
   workflow_dispatch:
@@ -19,13 +19,14 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.aad.domainservices.yml'
-      - 'arm/Microsoft.AAD/DomainServices/**'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.AAD/DomainServices/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
-  modulePath: 'arm/Microsoft.AAD/DomainServices'
+  variablesPath: 'global.variables.yml'
+  modulePath: 'modules/Microsoft.AAD/DomainServices'
   workflowPath: '.github/workflows/ms.aad.domainservices.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -34,83 +35,93 @@ env:
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
-  ############################
-  #   SET INPUT PARAMETERS   #
-  ############################
-  job_set_workflow_param:
+  ###########################
+  #   Initialize pipeline   #
+  ###########################
+  job_initialize_pipeline:
     runs-on: ubuntu-20.04
-    name: 'Set input parameters to output variables'
+    name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Set input parameters'
+      - name: 'Set input parameters to output variables'
         id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
           workflowPath: '${{ env.workflowPath}}'
-    outputs:
-      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-
-  ####################
-  #   Pester Tests   #
-  ####################
-  job_module_pester_validation:
-    runs-on: ubuntu-20.04
-    name: 'Pester tests'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Run tests'
-        uses: ./.github/actions/templates/validateModulePester
+      - name: 'Get parameter file paths'
+        id: get-parameter-file-paths
+        uses: ./.github/actions/templates/getParameterFiles
         with:
           modulePath: '${{ env.modulePath }}'
+    outputs:
+      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
-  ####################
-  # Deployment tests #
-  ####################
-  job_module_deploy_validation:
+  #########################
+  #   Static validation   #
+  #########################
+  job_module_pester_validation:
     runs-on: ubuntu-20.04
-    name: 'Deployment tests'
-    needs:
-      - job_set_workflow_param
-      - job_module_pester_validation
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
+    name: 'Static validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          variableFileName: 'global.variables'
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Run tests'
+        uses: ./.github/actions/templates/validateModulePester
+        with:
+          modulePath: '${{ env.modulePath }}'
+          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
+
+  #############################
+  #   Deployment validation   #
+  #############################
+  job_module_deploy_validation:
+    runs-on: ubuntu-20.04
+    name: 'Deployment validation'
+    needs:
+      - job_initialize_pipeline
+      - job_module_pester_validation
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.parameterFilePaths) }}
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+          removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
 
-  ###############
-  #   PUBLISH   #
-  ###############
+  ##################
+  #   Publishing   #
+  ##################
   job_publish_module:
-    name: 'Publish module'
+    name: 'Publishing'
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
-      - job_set_workflow_param
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
@@ -118,10 +129,10 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          variableFileName: 'global.variables'
-      - name: 'Publish module'
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Publishing'
         uses: ./.github/actions/templates/publishModule
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'

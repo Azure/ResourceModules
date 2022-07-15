@@ -102,7 +102,7 @@ Optional. Maximum retry limit if the deployment fails. Default is 3.
 Optional. Do not throw an exception if it failed. Still returns the error message though
 
 .EXAMPLE
-New-DeploymentWithParameterFile -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-DeploymentWithParameterFile -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
@@ -211,15 +211,13 @@ function New-DeploymentWithParameterFile {
             try {
                 switch ($deploymentScope) {
                     'resourcegroup' {
-                        if ($subscriptionId) {
-                            $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
-                            if ($Context) {
-                                $null = $Context | Set-AzContext
-                            }
+                        if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+                            Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+                            $null = Set-AzContext -Subscription $subscriptionId
                         }
                         if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
                             if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
-                                New-AzResourceGroup -Name $resourceGroupName -Location $location
+                                $null = New-AzResourceGroup -Name $resourceGroupName -Location $location
                             }
                         }
                         if ($PSCmdlet.ShouldProcess('Resource group level deployment', 'Create')) {
@@ -228,9 +226,9 @@ function New-DeploymentWithParameterFile {
                         break
                     }
                     'subscription' {
-                        if ($subscriptionId -and ($Context = Get-AzContext -ListAvailable | Where-Object { $_.Subscription.Id -eq $subscriptionId })) {
-                            Write-Verbose ('Setting context to subscription [{0}]' -f $Context.Subscription.Name)
-                            $null = $Context | Set-AzContext
+                        if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+                            Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+                            $null = Set-AzContext -Subscription $subscriptionId
                         }
                         if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Create')) {
                             $res = New-AzSubscriptionDeployment @DeploymentInputs -Location $location
@@ -343,7 +341,7 @@ Optional. Maximum retry limit if the deployment fails. Default is 3.
 Optional. Do not throw an exception if it failed. Still returns the error message though
 
 .EXAMPLE
-New-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -parameterFilePath 'C:/KeyVault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the deploy.bicep of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
@@ -353,7 +351,7 @@ New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.bicep' -locati
 Deploy the deploy.json of the ResourceGroup module in location 'WestEurope'
 
 .EXAMPLE
-New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
+New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.test/parameters.json' -location 'WestEurope'
 
 Deploy the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>

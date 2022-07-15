@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-fa-001"
+        },
+        "kind": {
+            "value": "functionapp"
+        },
+        "serverFarmResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
+        }
+    }
+}

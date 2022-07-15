@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-vm-win-02"
+        },
+        "imageReference": {
+            "value": {
+                "publisher": "MicrosoftWindowsServer",
+                "offer": "WindowsServer",
+                "sku": "2022-datacenter-azure-edition",
+                "version": "latest"
+            }
+        },
+        "osType": {
+            "value": "Windows"
+        },
+        "vmSize": {
+            "value": "Standard_B12ms"
+        },
+        "osDisk": {
+            "value": {
+                "diskSizeGB": "128",
+                "managedDisk": {
+                    "storageAccountType": "Premium_LRS"
+                }
+            }
+        },
+        "adminUsername": {
+            "value": "localAdminUser"
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "adminPassword"
+            }
+        },
+        "nicConfigurations": {
+            "value": [
+                {
+                    "nicSuffix": "-nic-01",
+                    "ipConfigurations": [
+                        {
+                            "name": "ipconfig01",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

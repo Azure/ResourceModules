@@ -20,16 +20,18 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.activitylogalerts.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Insights/activityLogAlerts/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Insights/activityLogAlerts/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Insights/activityLogAlerts'
+    value: '/modules/Microsoft.Insights/activityLogAlerts'
 
 stages:
   - stage: Validation
@@ -44,7 +46,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing

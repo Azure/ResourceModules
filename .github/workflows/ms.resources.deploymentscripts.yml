@@ -19,14 +19,14 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.resources.deploymentscripts.yml'
-      - 'arm/Microsoft.Resources/deploymentScripts/**'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.Resources/deploymentScripts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Resources/deploymentScripts'
+  modulePath: 'modules/Microsoft.Resources/deploymentScripts'
   workflowPath: '.github/workflows/ms.resources.deploymentscripts.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -71,10 +71,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Run tests'
         uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
+          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   #############################
   #   Deployment validation   #

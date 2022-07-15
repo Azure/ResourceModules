@@ -20,16 +20,18 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.desktopvirtualization.applicationgroups.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.DesktopVirtualization/applicationgroups/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.DesktopVirtualization/applicationgroups/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.DesktopVirtualization/applicationgroups'
+    value: '/modules/Microsoft.DesktopVirtualization/applicationgroups'
 
 stages:
   - stage: Validation
@@ -44,8 +46,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing

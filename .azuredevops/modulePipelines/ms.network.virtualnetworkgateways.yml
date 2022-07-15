@@ -20,16 +20,18 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.virtualnetworkgateways.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/virtualNetworkGateways/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Network/virtualNetworkGateways/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/virtualNetworkGateways'
+    value: '/modules/Microsoft.Network/virtualNetworkGateways'
 
 stages:
   - stage: Validation
@@ -44,8 +46,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/expressRoute.parameters.json
-            - path: $(modulePath)/.parameters/vpn.parameters.json
+            - path: $(modulePath)/.test/expressRoute.parameters.json
+            - path: $(modulePath)/.test/vpn.parameters.json
 
   - stage: Publishing
     displayName: Publishing

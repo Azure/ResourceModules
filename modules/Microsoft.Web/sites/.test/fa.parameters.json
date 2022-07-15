@@ -1,0 +1,146 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fa-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "kind": {
+            "value": "functionapp"
+        },
+        "serverFarmResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
+        },
+        "siteConfig": {
+            "value": {
+                "alwaysOn": true,
+                "use32BitWorkerProcess": false
+            }
+        },
+        "appInsightId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
+        },
+        "storageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "setAzureWebJobsDashboard": {
+            "value": true
+        },
+        "appSettingsKeyValuePairs": {
+            "value": {
+                "FUNCTIONS_EXTENSION_VERSION": "~4",
+                "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+                "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
+                "EASYAUTH_SECRET": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password"
+            }
+        },
+        "authSettingV2Configuration": {
+            "value": {
+                "globalValidation": {
+                    "requireAuthentication": true,
+                    "unauthenticatedClientAction": "Return401"
+                },
+                "httpSettings": {
+                    "forwardProxy": {
+                        "convention": "NoProxy"
+                    },
+                    "requireHttps": true,
+                    "routes": {
+                        "apiPrefix": "/.auth"
+                    }
+                },
+                "identityProviders": {
+                    "azureActiveDirectory": {
+                        "enabled": true,
+                        "login": {
+                            "disableWWWAuthenticate": false
+                        },
+                        "registration": {
+                            "openIdIssuer": "https://sts.windows.net/<<tenantId>>/v2.0/",
+                            "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
+                            "clientSecretSettingName": "EASYAUTH_SECRET"
+                        },
+                        "validation": {
+                            "allowedAudiences": [
+                                "api://d874dd2f-2032-4db1-a053-f0ec243685aa"
+                            ],
+                            "defaultAuthorizationPolicy": {
+                                "allowedPrincipals": {}
+                            },
+                            "jwtClaimChecks": {}
+                        }
+                    }
+                },
+                "login": {
+                    "allowedExternalRedirectUrls": [
+                        "string"
+                    ],
+                    "cookieExpiration": {
+                        "convention": "FixedTime",
+                        "timeToExpiration": "08:00:00"
+                    },
+                    "nonce": {
+                        "nonceExpirationInterval": "00:05:00",
+                        "validateNonce": true
+                    },
+                    "preserveUrlFragmentsForLogins": false,
+                    "routes": {},
+                    "tokenStore": {
+                        "azureBlobStorage": {},
+                        "enabled": true,
+                        "fileSystem": {},
+                        "tokenRefreshExtensionHours": 72
+                    }
+                },
+                "platform": {
+                    "enabled": true,
+                    "runtimeVersion": "~1"
+                }
+            }
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "sites"
+                }
+            ]
+        }
+    }
+}

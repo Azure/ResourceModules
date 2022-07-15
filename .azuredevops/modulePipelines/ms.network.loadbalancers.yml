@@ -20,16 +20,18 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.loadbalancers.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/loadBalancers/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Network/loadBalancers/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/loadBalancers'
+    value: '/modules/Microsoft.Network/loadBalancers'
 
 stages:
   - stage: Validation
@@ -44,9 +46,9 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/internal.parameters.json
+            - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/internal.parameters.json
 
   - stage: Publishing
     displayName: Publishing

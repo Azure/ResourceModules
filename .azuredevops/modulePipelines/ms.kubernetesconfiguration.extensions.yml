@@ -4,11 +4,13 @@ parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false
+    default: true
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
     default: false
+
+pr: none
 
 trigger:
   batch: true
@@ -18,16 +20,18 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.kubernetesconfiguration.extensions.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.KubernetesConfiguration/extensions/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.KubernetesConfiguration/extensions/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.KubernetesConfiguration/extensions'
+    value: '/modules/Microsoft.KubernetesConfiguration/extensions'
 
 stages:
   - stage: Validation
@@ -42,8 +46,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/parameters.json
 
   - stage: Publishing
     displayName: Publishing
