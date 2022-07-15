@@ -30,8 +30,8 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-ModuleTestFileList.ps1')
 
             $functionInput = @{
-              ModulePath   = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)'
-              SearchFolder = '$(testFilesFolderName)'
+              ModulePath   = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath) }}'
+              SearchFolder = '${{ parameters.testFilesFolderName }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose
