@@ -10,8 +10,8 @@ param serviceResourceId string
 @description('Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to.')
 param groupIds array
 
-@description('Optional. Array of Private DNS zone groups configuration on the private endpoint.')
-param privateDnsZoneGroups array = []
+@description('Optional. Private DNS zone group configuration on the private endpoint.')
+param privateDnsZoneGroup object = {}
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -75,14 +75,14 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   }
 }
 
-module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' = [for (privateDnsZoneGroup, index) in privateDnsZoneGroups: {
-  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-PrivateDnsZoneGroup-${index}'
+module privateEndpoint_privateDnsZoneGroup 'privateDnsZoneGroups/deploy.bicep' = if (!empty(privateDnsZoneGroup)) {
+  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-PrivateDnsZoneGroup'
   params: {
     privateDNSResourceIds: privateDnsZoneGroup.privateDNSResourceIds
     privateEndpointName: privateEndpoint.name
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
-}]
+}
 
 resource privateEndpoint_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${privateEndpoint.name}-${lock}-lock'
