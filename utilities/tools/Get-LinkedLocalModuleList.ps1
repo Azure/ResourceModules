@@ -5,11 +5,14 @@ Print a list of all local references for the modules in a given path
 .DESCRIPTION
 The result will be a list of all modules in the given path alongside their individual references to other modules in the folder structure
 
-.PARAMETER path
+.PARAMETER Path
 Optional. The path to search in. Defaults to the 'modules' folder
 
+.PARAMETER Print
+Optional. Instead of returning the dependency, print them to the terminal
+
 .EXAMPLE
-Get-LinkedLocalModuleList
+Get-LinkedLocalModuleList -Print
 
 Invoke the function with the default path. Prints a list such as:
 
@@ -22,7 +25,7 @@ Invoke the function with the default path. Prints a list such as:
 > - Microsoft.Network/privateEndpoints
 
 .EXAMPLE
-Get-LinkedLocalModuleList -Path './Microsoft.Sql'
+Get-LinkedLocalModuleList -Path './Microsoft.Sql' -Print
 
 Get only the references of the modules in folder path './Microsoft.Sql'
 
@@ -36,10 +39,10 @@ function Get-LinkedLocalModuleList {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules'),
+        [string] $Path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules'),
 
         [Parameter(Mandatory = $false)]
-        [switch] $ReturnMarkdown,
+        [switch] $Print
     )
 
     # Load used functions
@@ -47,9 +50,9 @@ function Get-LinkedLocalModuleList {
 
     $allReferences = Get-LinkedModuleList -path $path
 
-    $resultSet = @{}
+    $resultSet = [ordered]@{}
 
-    foreach ($resourceType in $allReferences.Keys) {
+    foreach ($resourceType in ($allReferences.Keys | Sort-Object)) {
         $relevantLocalReferences = $allReferences[$resourceType].localPathReferences | Where-Object { $_ -match '^\.\..*$' }
         if ($relevantLocalReferences) {
             $relevantLocalReferences = $relevantLocalReferences | ForEach-Object {
@@ -68,16 +71,33 @@ function Get-LinkedLocalModuleList {
                     '{0}/{1}' -f (Split-Path $resourceType -Parent), $matches[1]
                 }
             }
-            $resultSet[$resourceType] = $relevantLocalReferences
+            $resultSet[$resourceType] = @() + $relevantLocalReferences
         }
     }
 
-    Write-Verbose "The modules in path [$path] have the following local folder dependencies:" -Verbose
-    foreach ($resourceType in $resultSet.Keys) {
-        Write-Verbose '' -Verbose
-        Write-Verbose "Resource: $resourceType" -Verbose
-        $resultSet[$resourceType] | ForEach-Object {
-            Write-Verbose "- $_" -Verbose
+    # Add nested dependencies - Should be recursive?
+    $resolvedResultSet = @{}
+    foreach ($type in $resultSet.Keys) {
+        foreach ($dependency in $resultSet[$type]) {
+            if ($dependency -in $resultSet.Keys) {
+                $resolvedResultSet[$type] = (@() + $resultSet[$type] + $resultSet[$dependency]) | Select-Object -Unique
+            } else {
+                $resolvedResultSet[$type] = $resultSet[$type]
+            }
         }
+    }
+    $resultSet = $resolvedResultSet
+
+    if ($Print) {
+        Write-Verbose "The modules in path [$path] have the following local folder dependencies:" -Verbose
+        foreach ($resourceType in $resultSet.Keys) {
+            Write-Verbose '' -Verbose
+            Write-Verbose "Resource: $resourceType" -Verbose
+            $resultSet[$resourceType] | ForEach-Object {
+                Write-Verbose "- $_" -Verbose
+            }
+        }
+    } else {
+        return $resultSet
     }
 }
