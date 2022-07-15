@@ -326,7 +326,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -337,65 +337,8 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-vpnSites-vsipar'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-vSite-min-001'
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
-    // Non-required parameters
-    addressPrefixes: [
-      '10.0.0.0/16'
-    ]
-    ipAddress: '1.2.3.4'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-vSite-min-001"
-    },
-    "virtualWanId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
-    },
-    // Non-required parameters
-    "addressPrefixes": {
-      "value": [
-        "10.0.0.0/16"
-      ]
-    },
-    "ipAddress": {
-      "value": "1.2.3.4"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnSites'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-az-vSite-x-001'
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
+    name: 'carml-vsipar-001'
+    virtualWanId: '<virtualWanId>'
     // Non-required parameters
     deviceProperties: {
       linkSpeedInMbps: 0
@@ -411,7 +354,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -468,10 +411,10 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-vSite-x-001"
+      "value": "carml-vsipar-001"
     },
     "virtualWanId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
+      "value": "<virtualWanId>"
     },
     // Non-required parameters
     "deviceProperties": {
@@ -495,7 +438,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -510,7 +453,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     "vpnSiteLinks": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-vSite-x-001",
+          "name": "carml-vSite-vsipar-001",
           "properties": {
             "bgpProperties": {
               "asn": 65010,
@@ -538,6 +481,63 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
           }
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
+  name: '${uniqueString(deployment().name)}-test-vpnSites-vsimin'
+  params: {
+    // Required parameters
+    name: 'carml-vsimin-001'
+    virtualWanId: '<virtualWanId>'
+    // Non-required parameters
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    ipAddress: '1.2.3.4'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "carml-vsimin-001"
+    },
+    "virtualWanId": {
+      "value": "<virtualWanId>"
+    },
+    // Non-required parameters
+    "addressPrefixes": {
+      "value": [
+        "10.0.0.0/16"
+      ]
+    },
+    "ipAddress": {
+      "value": "1.2.3.4"
     }
   }
 }

@@ -586,32 +586,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
     variables: [
-      {
-        description: 'TestStringDescription'
-        name: 'TestString'
-        value: '\'TestString\''
-      }
-      {
-        description: 'TestIntegerDescription'
-        name: 'TestInteger'
-        value: '500'
-      }
-      {
-        description: 'TestBooleanDescription'
-        name: 'TestBoolean'
-        value: 'false'
-      }
-      {
-        description: 'TestDateTimeDescription'
-        isEncrypted: false
-        name: 'TestDateTime'
-        value: '\'\\/Date(1637934042656)\\/\''
-      }
-      {
-        description: 'TestEncryptedDescription'
-        name: 'TestEncryptedVariable'
-        value: '\'TestEncryptedValue\''
-      }
+      '\'\\/Date(1637934042656)\\/\''
+      '\'TestEncryptedValue\''
+      '\'TestString\''
+      '500'
+      'false'
     ]
   }
 }

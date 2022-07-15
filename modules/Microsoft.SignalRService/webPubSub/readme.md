@@ -396,7 +396,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-pubsub-x-001'
-    // Additional parameters
+    // Non-required parameters
     capacity: 2
     clientCertEnabled: false
     disableAadAuth: false
@@ -465,7 +465,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-pubsub-x-001"
     },
-    // Additional parameters
+    // Non-required parameters
     "capacity": {
       "value": 2
     },
