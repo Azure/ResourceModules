@@ -74,7 +74,7 @@ parameters:
 jobs:
   - template: /.azuredevops/pipelineTemplates/jobs.getModuleTestFiles.yml
   - job: deploy
-    displayName: Deploying [${{ replace( ('/' parameters.templateFilePath), parameters.modulePath, '') }}]
+    displayName: Deploying [${{ replace( join('/', parameters.templateFilePath), parameters.modulePath, '') }}]
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
