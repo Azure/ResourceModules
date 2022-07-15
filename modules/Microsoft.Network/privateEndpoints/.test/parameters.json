@@ -21,6 +21,7 @@
         },
         "privateDnsZoneGroup": {
             "value": {
+                "name": "privateDnsZoneGroup",
                 "privateDNSResourceIds": [
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
                 ]
