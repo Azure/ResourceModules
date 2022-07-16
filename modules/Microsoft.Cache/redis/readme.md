@@ -312,7 +312,7 @@ privateEndpoints:  [
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The resource name. |
 | `resourceGroupName` | string | The name of the resource group the Redis cache was created in. |
-| `resourceId` | string | The resource id. |
+| `resourceId` | string | The resource ID. |
 | `sslPort` | int | Redis SSL port. |
 | `subnetId` | string | The full resource ID of a subnet in a virtual network where the Redis cache was deployed in. |
 

@@ -262,7 +262,7 @@ module redisCache_privateEndpoints '../../Microsoft.Network/privateEndpoints/dep
 @description('The resource name.')
 output name string = redisCache.name
 
-@description('The resource id.')
+@description('The resource ID.')
 output resourceId string = redisCache.id
 
 @description('The name of the resource group the Redis cache was created in.')
