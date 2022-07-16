@@ -315,11 +315,34 @@ function Set-DependenciesSection {
 
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'tools' 'Get-LinkedModuleList.ps1')
 
+    $moduleRoot = Split-Path $TemplateFilePath -Parent
+    $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
+
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
         '| Dependency | Type |',
         '| :-- | :-- |'
     )
+
+    $dependencies = (Get-LinkedModuleList)[$resourceTypeIdentifier]
+
+    if ($dependencies.Keys -contains 'localPathReferences' -and $dependencies['localPathReferences']) {
+        foreach ($reference in ($dependencies['localPathReferences'] | Sort-Object)) {
+            $SectionContent += ("| ``{0}`` | {1} |" -f $reference, 'Local reference')
+        }
+    }
+
+    if ($dependencies.Keys -contains 'remoteReferences' -and $dependencies['remoteReferences']) {
+        foreach ($reference in ($dependencies['remoteReferences'] | Sort-Object)) {
+            $SectionContent += ("| ``{0}`` | {1} |" -f $reference, 'Registry reference')
+        }
+    }
+
+    if ($SectionContent.Count -eq 2) {
+        # No content was added, adding placeholder
+        $SectionContent = '_None_'
+
+    }
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
@@ -342,7 +365,9 @@ Mandatory. The template file content object to crawl data from
 Mandatory. The readme file content array to update
 
 .PARAMETER SectionStartIdentifier
-Optional. The identifier of the 'outputs' section. Defaults to '## Deployment examples'
+Optional. The identifier of the 'outputs' section. Defaults to '## Dependencies
+
+## Deployment examples'
 
 .PARAMETER addJson
 Optional. A switch to control whether or not to add a ARM-JSON-Parameter file example. Defaults to true.
@@ -372,7 +397,9 @@ function Set-DeploymentExamplesSection {
         [bool] $addBicep = $true,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Deployment examples'
+        [string] $SectionStartIdentifier = '## Dependencies
+
+## Deployment examples'
     )
 
     # Process content
@@ -637,7 +664,8 @@ function Set-ModuleReadMe {
             'Outputs',
             'Template references',
             'Navigation',
-            'Deployment examples'
+            'Deployment examples',
+            'Dependencies'
         )]
         [string[]] $SectionsToRefresh = @(
             'Resource Types',
@@ -646,6 +674,7 @@ function Set-ModuleReadMe {
             'Template references',
             'Navigation',
             'Deployment examples'
+            'Dependencies'
         )
     )
 

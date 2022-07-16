@@ -51,7 +51,8 @@ As an output you will receive a hashtable that (for each provider namespace) lis
 - Linked remote module tempaltes (e.g. via "module rg 'br/modules:(..):(..)'")
 
 .PARAMETER Path
-Optional. The path to search in. Defaults to the 'modules' folder
+Optional. The path to search in. Defaults to the 'modules' folder.
+Note, any local references will only be searched within this path too.
 
 .PARAMETER PrintLocalReferencesOnly
 Optional. Print all local dependencies to the terminal only
@@ -62,7 +63,11 @@ Get-LinkedModuleList
 Invoke the function with the default path. Returns an object such as:
 {
     "Microsoft.Compute/availabilitySets": {
-        "localPathReferences": ".bicep/nested_roleAssignments.bicep",
+        "localPathReferences": [
+            Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems
+            Microsoft.Network/publicIPAddresses
+            Microsoft.Network/networkInterfaces
+        ],
         "remoteReferences": null,
         "resourceReferences": [
             "Microsoft.Resources/deployments@2021-04-01",
