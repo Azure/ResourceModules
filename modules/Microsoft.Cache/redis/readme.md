@@ -308,7 +308,7 @@ privateEndpoints:  [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `hostName` | string | Redis host name. |
+| `hostName` | string | Redis hostname. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The resource name. |
 | `resourceGroupName` | string | The name of the resource group the Redis cache was created in. |

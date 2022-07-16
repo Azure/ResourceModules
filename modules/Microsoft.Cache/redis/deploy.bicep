@@ -268,7 +268,7 @@ output resourceId string = redisCache.id
 @description('The name of the resource group the Redis cache was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('Redis host name.')
+@description('Redis hostname.')
 output hostName string = redisCache.properties.hostName
 
 @description('Redis SSL port.')
