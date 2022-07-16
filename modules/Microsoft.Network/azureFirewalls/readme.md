@@ -8,6 +8,7 @@ This module deploys a firewall.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -298,6 +299,10 @@ The `applicationRuleCollections` parameter accepts a JSON Array of AzureFirewall
 The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetworkRuleCollection objects.
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Network/publicIPAddresses` | Local reference |
 
 ## Deployment examples
 

@@ -7,6 +7,7 @@ This module deploys a GremlinDB within a CosmosDB account.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -176,3 +177,7 @@ userAssignedIdentities: {
 | `name` | string | The name of the Gremlin database. |
 | `resourceGroupName` | string | The name of the resource group the Gremlin database was created in. |
 | `resourceId` | string | The resource ID of the Gremlin database. |
+
+## Dependencies
+
+_None_

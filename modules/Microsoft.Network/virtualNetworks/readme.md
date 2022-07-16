@@ -8,6 +8,7 @@ This template deploys a virtual network (vNet).
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -347,6 +348,8 @@ The network security group and route table resources must reside in the same res
 | `subnetResourceIds` | array | The resource IDs of the deployed subnets. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

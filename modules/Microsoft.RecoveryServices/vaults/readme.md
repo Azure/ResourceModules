@@ -7,6 +7,7 @@ This module deploys a recovery service vault.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -892,6 +893,10 @@ privateEndpoints:  [
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

@@ -7,6 +7,7 @@ This module deploys load balancers inbound NAT rules.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -49,3 +50,7 @@ This module deploys load balancers inbound NAT rules.
 | `name` | string | The name of the inbound NAT rule. |
 | `resourceGroupName` | string | The resource group the inbound NAT rule was deployed into. |
 | `resourceId` | string | The resource ID of the inbound NAT rule. |
+
+## Dependencies
+
+_None_

@@ -7,6 +7,7 @@ This module deploys ContainerRegistry Registries Webhooks.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -91,3 +92,7 @@ tags: {
 | `resourceGroupName` | string | The name of the Azure container registry. |
 | `resourceId` | string | The resource ID of the webhook. |
 | `status` | string | The status of the webhook. |
+
+## Dependencies
+
+_None_

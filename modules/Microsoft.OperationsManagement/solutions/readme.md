@@ -7,6 +7,7 @@ This module deploys OperationsManagement Solutions.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -42,6 +43,8 @@ This module deploys OperationsManagement Solutions.
 | `resourceId` | string | The resource ID of the deployed solution. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

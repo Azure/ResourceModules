@@ -7,6 +7,7 @@ This template deploys a private endpoint for a generic service.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -161,6 +162,8 @@ roleAssignments: [
 | `resourceId` | string | The resource ID of the private endpoint. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

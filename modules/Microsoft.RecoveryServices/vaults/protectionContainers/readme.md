@@ -7,6 +7,7 @@ This module deploys a Protection Container for a Recovery Services Vault
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource types
 
@@ -46,3 +47,7 @@ This module deploys a Protection Container for a Recovery Services Vault
 | `name` | string | The Name of the Protection Container. |
 | `resourceGroupName` | string | The name of the Resource Group the Protection Container was created in. |
 | `resourceId` | string | The resource ID of the Protection Container. |
+
+## Dependencies
+
+_None_

@@ -7,6 +7,7 @@ This template deploys a log analytics workspace.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -446,6 +447,10 @@ tags: {
 | `resourceId` | string | The resource ID of the deployed log analytics workspace. |
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.OperationsManagement/solutions` | Local reference |
 
 ## Deployment examples
 

@@ -7,6 +7,7 @@ This template deploys an express route circuit.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -166,6 +167,8 @@ tags: {
 | `serviceKey` | string | The service key of the express route circuit. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

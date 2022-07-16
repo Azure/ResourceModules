@@ -9,6 +9,7 @@ This module deploys custom RBAC Role Definitions across the management group, su
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -170,6 +171,8 @@ This module can be deployed both at subscription or resource group level:
 - To deploy the module at the management group level, provide an existing management group ID in the `managementGroupId` parameter.
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

@@ -7,6 +7,7 @@ This module deploys virtual hub virtual network connections.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -46,3 +47,7 @@ This module deploys virtual hub virtual network connections.
 | `name` | string | The name of the virtual hub connection. |
 | `resourceGroupName` | string | The resource group the virtual hub connection was deployed into. |
 | `resourceId` | string | The resource ID of the virtual hub connection. |
+
+## Dependencies
+
+_None_

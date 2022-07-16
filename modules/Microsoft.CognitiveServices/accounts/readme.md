@@ -8,6 +8,7 @@ This module deploys different kinds of cognitive services resources
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -403,6 +404,10 @@ userAssignedIdentities: {
 - Not all kinds of Cognitive Services support virtual networks. Please visit the link below to determine supported services.
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

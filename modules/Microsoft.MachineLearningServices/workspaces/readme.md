@@ -7,6 +7,7 @@ This module deploys a Machine Learning Services Workspace.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -397,6 +398,10 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the machine learning service. |
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

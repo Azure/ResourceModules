@@ -7,6 +7,7 @@ This module deploys AVD Applications.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource types
 
@@ -47,3 +48,7 @@ This module deploys AVD Applications.
 | `name` | string | The Name of the Application Group to register the Application in. |
 | `resourceGroupName` | string | The name of the Resource Group the AVD Application was created in. |
 | `resourceId` | string | The resource ID of the deployed Application. |
+
+## Dependencies
+
+_None_

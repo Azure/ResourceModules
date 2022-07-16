@@ -5,6 +5,7 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -158,6 +159,8 @@ roleAssignments: [
 | `resourceId` | string | The resource ID of the public IP address. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

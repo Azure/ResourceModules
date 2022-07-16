@@ -7,6 +7,7 @@ This template deploys a SQL Managed Instances Database.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource types
 
@@ -111,3 +112,7 @@ tags: {
 | `name` | string | The name of the deployed database. |
 | `resourceGroupName` | string | The resource group the database was deployed into. |
 | `resourceId` | string | The resource ID of the deployed database. |
+
+## Dependencies
+
+_None_

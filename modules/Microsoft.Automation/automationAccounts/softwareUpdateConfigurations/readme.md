@@ -7,6 +7,7 @@ This module deploys an Azure Automation Account Software update Configuration.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -170,3 +171,7 @@ monthlyOccurrences: [
 | `name` | string | The name of the deployed softwareUpdateConfiguration. |
 | `resourceGroupName` | string | The resource group of the deployed softwareUpdateConfiguration. |
 | `resourceId` | string | The resource ID of the deployed softwareUpdateConfiguration. |
+
+## Dependencies
+
+_None_

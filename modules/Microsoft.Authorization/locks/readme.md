@@ -7,6 +7,7 @@ This module deploys Authorization Locks.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -41,6 +42,8 @@ This module deploys Authorization Locks.
 | `scope` | string | The scope this lock applies to. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

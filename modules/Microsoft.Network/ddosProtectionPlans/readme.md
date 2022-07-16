@@ -7,6 +7,7 @@ This template deploys a DDoS protection plan.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -144,6 +145,8 @@ tags: {
 | `resourceId` | string | The resource ID of the DDOS protection plan. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

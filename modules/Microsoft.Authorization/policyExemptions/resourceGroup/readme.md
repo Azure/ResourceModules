@@ -7,6 +7,7 @@ With this module you can create policy exemptions on a resource group level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -44,3 +45,7 @@ With this module you can create policy exemptions on a resource group level.
 | `resourceGroupName` | string | The name of the resource group the policy exemption was applied at. |
 | `resourceId` | string | Policy Exemption resource ID. |
 | `scope` | string | Policy Exemption Scope. |
+
+## Dependencies
+
+_None_

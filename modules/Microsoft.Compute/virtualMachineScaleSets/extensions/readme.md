@@ -7,6 +7,7 @@ This module deploys a virtual machine scale set extension.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -48,3 +49,7 @@ This module deploys a virtual machine scale set extension.
 | `name` | string | The name of the extension. |
 | `resourceGroupName` | string | The name of the Resource Group the extension was created in. |
 | `resourceId` | string | The ResourceId of the extension. |
+
+## Dependencies
+
+_None_

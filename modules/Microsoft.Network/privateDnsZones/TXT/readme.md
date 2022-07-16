@@ -7,6 +7,7 @@ This module deploys a Private DNS Zone TXT record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -136,3 +137,7 @@ roleAssignments: [
 | `name` | string | The name of the deployed TXT record. |
 | `resourceGroupName` | string | The resource group of the deployed TXT record. |
 | `resourceId` | string | The resource ID of the deployed TXT record. |
+
+## Dependencies
+
+_None_

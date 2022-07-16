@@ -8,6 +8,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -22,7 +23,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/networkInterfaces` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkInterfaces) |
 | `Microsoft.Network/publicIPAddresses` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses) |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-06-01/vaults/backupFabrics/protectionContainers/protectedItems) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers/protectedItems) |
 
 ## Parameters
 
@@ -999,6 +1000,12 @@ For further details on automanage please refer to [Automanage virtual machines](
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Network/networkInterfaces` | Local reference |
+| `Microsoft.Network/publicIPAddresses` | Local reference |
+| `Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems` | Local reference |
 
 ## Deployment examples
 

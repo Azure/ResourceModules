@@ -7,6 +7,7 @@ This module deploys an Event Grid System Topic.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -268,6 +269,8 @@ userAssignedIdentities: {
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

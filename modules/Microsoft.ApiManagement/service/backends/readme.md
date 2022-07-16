@@ -7,6 +7,7 @@ This module deploys API Management Service Backends.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource types
 
@@ -139,3 +140,7 @@ tls: {
 | `name` | string | The name of the API management service backend. |
 | `resourceGroupName` | string | The resource group the API management service backend was deployed into. |
 | `resourceId` | string | The resource ID of the API management service backend. |
+
+## Dependencies
+
+_None_

@@ -7,6 +7,7 @@ This module deploys load balancer backend address pools.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -41,3 +42,7 @@ This module deploys load balancer backend address pools.
 | `name` | string | The name of the backend address pool. |
 | `resourceGroupName` | string | The resource group the backend address pool was deployed into. |
 | `resourceId` | string | The resource ID of the backend address pool. |
+
+## Dependencies
+
+_None_

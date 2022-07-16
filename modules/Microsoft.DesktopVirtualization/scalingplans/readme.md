@@ -7,6 +7,7 @@ This module deploys an AVD Scaling Plan.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -256,6 +257,8 @@ roleAssignments: [
 | `resourceId` | string | The resource ID of the AVD scaling plan. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

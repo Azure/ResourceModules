@@ -5,6 +5,7 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -218,6 +219,8 @@ tags: {
 | `resourceId` | string | The resource ID of the deployed databricks workspace. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

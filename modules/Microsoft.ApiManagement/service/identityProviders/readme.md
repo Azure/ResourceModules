@@ -7,6 +7,7 @@ This module deploys API Management Service Identity Provider.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -50,3 +51,7 @@ This module deploys API Management Service Identity Provider.
 | `name` | string | The name of the API management service identity provider. |
 | `resourceGroupName` | string | The resource group the API management service identity provider was deployed into. |
 | `resourceId` | string | The resource ID of the API management service identity provider. |
+
+## Dependencies
+
+_None_

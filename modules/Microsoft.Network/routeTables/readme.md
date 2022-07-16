@@ -7,6 +7,7 @@ This module deploys a user defined route table.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -235,6 +236,8 @@ tags: {
 | `resourceId` | string | The resource ID of the route table. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

@@ -7,6 +7,7 @@ This module deploys a Service Fabric Cluster.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -227,6 +228,8 @@ tags: {
 | `resourceId` | string | The Service Fabric Cluster resource ID. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

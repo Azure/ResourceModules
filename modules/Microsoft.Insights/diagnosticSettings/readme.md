@@ -7,6 +7,7 @@ This module deploys a subscription wide export of the activity log.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -40,6 +41,8 @@ This module deploys a subscription wide export of the activity log.
 | `subscriptionName` | string | The name of the subscription to deploy into. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

@@ -7,6 +7,7 @@ This template deploys Azure NetApp Files.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -153,6 +154,8 @@ tags: {
 | `resourceId` | string | The Resource ID of the NetApp account. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

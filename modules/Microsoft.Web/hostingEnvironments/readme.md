@@ -7,6 +7,7 @@ This module deploys an app service environment.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -198,6 +199,8 @@ tags: {
 | `resourceId` | string | The resource ID of the app service environment. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

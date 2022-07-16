@@ -12,6 +12,7 @@ remote/managing tenant.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -164,6 +165,8 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

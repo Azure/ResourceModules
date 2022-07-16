@@ -7,12 +7,13 @@ This module deploys Resources Tags on a subscription scope.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Resources/tags` | [2019-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/tags) |
+| `Microsoft.Resources/tags` | [2019-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/tags) |
 
 ## Parameters
 
@@ -74,3 +75,7 @@ tags: {
 | `name` | string | The name of the tags resource. |
 | `resourceId` | string | The resource ID of the applied tags. |
 | `tags` | object | The applied tags. |
+
+## Dependencies
+
+_None_

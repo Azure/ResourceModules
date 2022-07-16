@@ -7,6 +7,7 @@ This module deploys a service bus namespace resource.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -335,6 +336,10 @@ userAssignedIdentities: {
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

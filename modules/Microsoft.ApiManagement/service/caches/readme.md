@@ -7,6 +7,7 @@ This module deploys an API Management Service Cache.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource types
 
@@ -43,3 +44,7 @@ This module deploys an API Management Service Cache.
 | `name` | string | The name of the API management service cache. |
 | `resourceGroupName` | string | The resource group the API management service cache was deployed into. |
 | `resourceId` | string | The resource ID of the API management service cache. |
+
+## Dependencies
+
+_None_

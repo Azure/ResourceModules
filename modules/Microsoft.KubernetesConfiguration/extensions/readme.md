@@ -8,6 +8,7 @@ This module deploys Kubernetes Configuration Extensions.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Prerequisites
@@ -64,6 +65,8 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `resourceId` | string | The resource ID of the extension. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

@@ -7,6 +7,7 @@ This template deploys a disk
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -164,6 +165,8 @@ tags: {
 | `resourceId` | string | The resource ID of the disk. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

@@ -9,6 +9,7 @@ With this module you can create policy set definitions across the management gro
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -131,6 +132,8 @@ module policysetdefinition 'yourpath/modules/Microsoft.Authorization.policySetDe
 - Policy Set Definitions (Initiatives) have a dependency on Policy Assignments being applied before creating an initiative. You can use the Policy Assignment [Module](../policyDefinitions/deploy.bicep) to deploy a Policy Definition and then create an initiative for it on the required scope.
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

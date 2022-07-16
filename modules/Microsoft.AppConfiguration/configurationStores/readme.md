@@ -7,6 +7,7 @@ This module deploys an App Configuration Store.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -277,6 +278,10 @@ privateEndpoints:  [
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

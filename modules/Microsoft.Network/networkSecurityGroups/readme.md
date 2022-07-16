@@ -7,6 +7,7 @@ This template deploys a network security group (NSG) with optional security rule
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -154,6 +155,8 @@ tags: {
 | `resourceId` | string | The resource ID of the network security group. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

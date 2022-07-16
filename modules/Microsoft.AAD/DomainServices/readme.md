@@ -8,6 +8,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -206,6 +207,8 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
 | `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS). |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

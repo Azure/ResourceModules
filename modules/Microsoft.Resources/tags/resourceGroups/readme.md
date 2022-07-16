@@ -7,6 +7,7 @@ This module deploys Resources Tags on a resource group scope.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -74,3 +75,7 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the tags were applied to. |
 | `resourceId` | string | The resource ID of the applied tags. |
 | `tags` | object | The applied tags. |
+
+## Dependencies
+
+_None_

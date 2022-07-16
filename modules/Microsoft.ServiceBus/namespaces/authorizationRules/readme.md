@@ -7,6 +7,7 @@ This module deploys authorization rules for a service bus namespace
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -40,3 +41,7 @@ This module deploys authorization rules for a service bus namespace
 | `name` | string | The name of the authorization rule. |
 | `resourceGroupName` | string | The name of the Resource Group the authorization rule was created in. |
 | `resourceId` | string | The resource ID of the authorization rule. |
+
+## Dependencies
+
+_None_

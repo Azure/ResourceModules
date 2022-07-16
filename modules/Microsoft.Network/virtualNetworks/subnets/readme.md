@@ -8,6 +8,7 @@ This module deploys a virtual network subnet.
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -190,3 +191,7 @@ The `privateEndpointNetworkPolicies` property must be set to disabled for subnet
 | `resourceId` | string | The resource ID of the virtual network peering. |
 | `subnetAddressPrefix` | string | The address prefix for the subnet. |
 | `subnetAddressPrefixes` | array | List of address prefixes for the subnet. |
+
+## Dependencies
+
+_None_

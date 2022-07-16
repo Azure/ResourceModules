@@ -7,6 +7,7 @@ This module deploys a Protection Container Protected Item for a Recovery Service
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource types
 
@@ -44,3 +45,7 @@ This module deploys a Protection Container Protected Item for a Recovery Service
 | `name` | string | The Name of the protected item. |
 | `resourceGroupName` | string | The name of the Resource Group the protected item was created in. |
 | `resourceId` | string | The resource ID of the protected item. |
+
+## Dependencies
+
+_None_

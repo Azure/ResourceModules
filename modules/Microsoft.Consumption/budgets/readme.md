@@ -7,6 +7,7 @@ This module deploys budgets for subscriptions.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -47,6 +48,8 @@ This module deploys budgets for subscriptions.
 | `subscriptionName` | string | The subscription the budget was deployed into. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

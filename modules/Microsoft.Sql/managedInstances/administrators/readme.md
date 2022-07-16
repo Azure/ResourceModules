@@ -7,6 +7,7 @@ This module deploys an administrator for the SQL managed instance
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -42,3 +43,7 @@ This module deploys an administrator for the SQL managed instance
 | `name` | string | The name of the deployed managed instance. |
 | `resourceGroupName` | string | The resource group of the deployed managed instance. |
 | `resourceId` | string | The resource ID of the deployed managed instance. |
+
+## Dependencies
+
+_None_

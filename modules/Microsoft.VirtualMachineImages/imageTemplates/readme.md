@@ -7,6 +7,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -259,6 +260,8 @@ roleAssignments: [
 | `runThisCommand` | string | The command to run in order to trigger the image build. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

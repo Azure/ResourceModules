@@ -8,6 +8,7 @@ This module deploys an API management service.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -267,6 +268,10 @@ userAssignedIdentities: {
 - *None*
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.ApiManagement/authorizationServers` | Local reference |
 
 ## Deployment examples
 

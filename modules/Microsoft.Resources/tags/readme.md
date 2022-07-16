@@ -7,6 +7,7 @@ This module deploys Resources Tags on a subscription or resource group scope.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -78,6 +79,8 @@ tags: {
 | `tags` | object | The applied tags. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

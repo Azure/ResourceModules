@@ -7,6 +7,7 @@ This template deploys a disk encryption set.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -150,6 +151,10 @@ tags: {
 | `systemAssignedPrincipalId` | string | The principal ID of the disk encryption set. |
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.KeyVault/vaults/accessPolicies` | Local reference |
 
 ## Deployment examples
 

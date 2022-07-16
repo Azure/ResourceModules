@@ -5,6 +5,7 @@
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -149,6 +150,8 @@ tags: {
 | `resourceId` | string | The resource ID of the application insights component. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

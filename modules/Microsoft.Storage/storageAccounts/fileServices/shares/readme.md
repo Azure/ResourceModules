@@ -7,6 +7,7 @@ This module deploys a storage account file share.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -104,3 +105,7 @@ roleAssignments: [
 | `name` | string | The name of the deployed file share. |
 | `resourceGroupName` | string | The resource group of the deployed file share. |
 | `resourceId` | string | The resource ID of the deployed file share. |
+
+## Dependencies
+
+_None_

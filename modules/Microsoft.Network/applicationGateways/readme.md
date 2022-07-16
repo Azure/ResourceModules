@@ -7,6 +7,7 @@ This module deploys Network ApplicationGateways.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -221,6 +222,8 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the application gateway. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

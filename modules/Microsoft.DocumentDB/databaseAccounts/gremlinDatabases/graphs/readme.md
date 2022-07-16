@@ -7,6 +7,7 @@ This module deploys DocumentDB DatabaseAccounts GremlinDatabases Graphs.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -115,3 +116,7 @@ graphs: [
 | `name` | string | The name of the graph. |
 | `resourceGroupName` | string | The name of the resource group the graph was created in. |
 | `resourceId` | string | The resource ID of the graph. |
+
+## Dependencies
+
+_None_

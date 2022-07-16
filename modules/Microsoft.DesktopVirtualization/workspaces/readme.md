@@ -7,6 +7,7 @@ This module deploys an Azure virtual desktop workspace.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -155,6 +156,8 @@ tags: {
 | `resourceId` | string | The resource ID of the AVD workspace. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

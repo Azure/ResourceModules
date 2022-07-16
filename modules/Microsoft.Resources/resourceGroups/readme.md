@@ -8,6 +8,7 @@ This module deploys a resource group.
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -148,6 +149,10 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 | `resourceId` | string | The resource ID of the resource group. |
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Authorization/locks/resourceGroup` | Local reference |
 
 ## Deployment examples
 

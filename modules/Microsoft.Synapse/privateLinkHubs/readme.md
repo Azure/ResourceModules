@@ -7,6 +7,7 @@ This module deploys Azure Synapse Analytics (private link hubs).
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -224,6 +225,10 @@ tags: {
 | `resourceId` | string | The resource ID of the deployed Synapse Private Link Hub. |
 
 ## Dependencies
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

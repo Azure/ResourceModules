@@ -7,6 +7,7 @@ This module deploys an Azure virtual desktop host pool.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -254,6 +255,8 @@ tags: {
 | `tokenExpirationTime` | string | The expiration time for the registration token. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

@@ -7,6 +7,7 @@ This module deploys a VPN Site.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -317,6 +318,8 @@ roleAssignments: [
 | `resourceId` | string | The resource ID of the VPN site. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

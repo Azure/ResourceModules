@@ -7,6 +7,7 @@ This module deploys a variable to an Azure Automation Account.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -93,3 +94,7 @@ value: '\'TestString\''
 | `name` | string | The name of the deployed variable. |
 | `resourceGroupName` | string | The resource group of the deployed variable. |
 | `resourceId` | string | The resource ID of the deployed variable. |
+
+## Dependencies
+
+_None_

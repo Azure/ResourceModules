@@ -9,6 +9,7 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -45,3 +46,7 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 | `name` | string | The name of the replication policy. |
 | `resourceGroupName` | string | The name of the resource group the replication policy was created in. |
 | `resourceId` | string | The resource ID of the replication policy. |
+
+## Dependencies
+
+_None_

@@ -5,6 +5,7 @@
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -83,3 +84,7 @@ tags: {
 | `name` | string | The name of the container. |
 | `resourceGroupName` | string | The name of the resource group the container was created in. |
 | `resourceId` | string | The resource ID of the container. |
+
+## Dependencies
+
+_None_

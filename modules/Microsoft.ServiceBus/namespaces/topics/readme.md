@@ -7,6 +7,7 @@ This module deploys a topic for a service bus namespace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -115,3 +116,7 @@ roleAssignments: [
 | `name` | string | The name of the deployed topic. |
 | `resourceGroupName` | string | The resource group of the deployed topic. |
 | `resourceId` | string | The resource ID of the deployed topic. |
+
+## Dependencies
+
+_None_

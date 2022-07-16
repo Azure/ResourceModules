@@ -7,6 +7,7 @@ This template deploys a storage insights configuration for a Log Analytics works
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -84,3 +85,7 @@ tags: {
 | `name` | string | The name of the storage insights configuration. |
 | `resourceGroupName` | string | The resource group where the storage insight configuration is deployed. |
 | `resourceId` | string | The resource ID of the deployed storage insights configuration. |
+
+## Dependencies
+
+_None_

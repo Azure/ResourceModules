@@ -7,6 +7,7 @@ This module deploys a compute image.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -148,6 +149,8 @@ tags: {
 | `resourceId` | string | The resource ID of the image. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

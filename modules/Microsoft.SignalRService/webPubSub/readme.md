@@ -7,6 +7,7 @@ This module deploys a Web PubSub resource.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -343,6 +344,10 @@ networkAcls: {
 
 ## Dependencies
 
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -398,7 +403,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-pubsub-x-001'
-    // Additional parameters
+    // Non-required parameters
     capacity: 2
     clientCertEnabled: false
     disableAadAuth: false
@@ -467,7 +472,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-pubsub-x-001"
     },
-    // Additional parameters
+    // Non-required parameters
     "capacity": {
       "value": 2
     },

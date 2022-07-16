@@ -7,6 +7,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource types
 
@@ -29,7 +30,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `availabilityZones` | array | `[]` |  | The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is "VirtualMachineScaleSets".. |
+| `availabilityZones` | array | `[]` |  | The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is "VirtualMachineScaleSets". |
 | `count` | int | `1` |  | Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1. |
 | `enableAutoScaling` | bool | `False` | `[True, False]` | Whether to enable auto-scaler. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -114,3 +115,7 @@ tags: {
 | `name` | string | The name of the agent pool. |
 | `resourceGroupName` | string | The resource group the agent pool was deployed into. |
 | `resourceId` | string | The resource ID of the agent pool. |
+
+## Dependencies
+
+_None_

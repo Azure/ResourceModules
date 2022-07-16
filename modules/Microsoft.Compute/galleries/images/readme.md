@@ -7,6 +7,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource types
 
@@ -163,3 +164,7 @@ tags: {
 | `name` | string | The name of the image. |
 | `resourceGroupName` | string | The resource group the image was deployed into. |
 | `resourceId` | string | The resource ID of the image. |
+
+## Dependencies
+
+_None_

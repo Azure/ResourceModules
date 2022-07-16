@@ -7,6 +7,7 @@ This module deploys a storage account table service
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -46,3 +47,7 @@ This module deploys a storage account table service
 | `name` | string | The name of the deployed table service. |
 | `resourceGroupName` | string | The resource group of the deployed table service. |
 | `resourceId` | string | The resource ID of the deployed table service. |
+
+## Dependencies
+
+_None_

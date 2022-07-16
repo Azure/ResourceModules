@@ -7,6 +7,7 @@ This module deploys an Analysis Services Server.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -156,6 +157,8 @@ roleAssignments: [
 | `resourceId` | string | The resource ID of the analysis service. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

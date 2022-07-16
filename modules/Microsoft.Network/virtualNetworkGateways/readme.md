@@ -7,6 +7,7 @@ This module deploys a virtual network gateway.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -239,6 +240,8 @@ tags: {
 | `resourceId` | string | The resource ID of the virtual network gateway. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

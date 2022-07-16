@@ -7,6 +7,7 @@ This module deploys API Management Service Product APIs.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -40,3 +41,7 @@ This module deploys API Management Service Product APIs.
 | `name` | string | The name of the product API. |
 | `resourceGroupName` | string | The resource group the product API was deployed into. |
 | `resourceId` | string | The resource ID of the product API. |
+
+## Dependencies
+
+_None_

@@ -7,6 +7,7 @@ This module deploys a virtual machine scale set.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -872,6 +873,8 @@ userAssignedIdentities: {
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

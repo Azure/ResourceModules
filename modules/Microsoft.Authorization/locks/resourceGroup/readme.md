@@ -7,6 +7,7 @@ This module deploys Authorization Locks on Resource Group level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -37,3 +38,7 @@ This module deploys Authorization Locks on Resource Group level.
 | `resourceGroupName` | string | The name of the resource group name the lock was applied to. |
 | `resourceId` | string | The resource ID of the lock. |
 | `scope` | string | The scope this lock applies to. |
+
+## Dependencies
+
+_None_

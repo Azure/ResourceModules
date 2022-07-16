@@ -7,6 +7,7 @@ This module deploys a Private DNS Zone AAAA record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -103,3 +104,7 @@ roleAssignments: [
 | `name` | string | The name of the deployed AAAA record. |
 | `resourceGroupName` | string | The resource group of the deployed AAAA record. |
 | `resourceId` | string | The resource ID of the deployed AAAA record. |
+
+## Dependencies
+
+_None_

@@ -7,6 +7,7 @@ This module deploys an SQL Server Security Alert Policy.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -46,3 +47,7 @@ This module deploys an SQL Server Security Alert Policy.
 | `name` | string | The name of the deployed security alert policy. |
 | `resourceGroupName` | string | The resource group of the deployed security alert policy. |
 | `resourceId` | string | The resource ID of the deployed security alert policy. |
+
+## Dependencies
+
+_None_

@@ -7,6 +7,7 @@ This module deploys Firewall Policies.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -135,6 +136,8 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the deployed firewall policy. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

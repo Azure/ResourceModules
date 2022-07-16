@@ -7,6 +7,7 @@ This template deploys a proximity placement group.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -145,6 +146,8 @@ tags: {
 | `resourceId` | string | The resourceId the proximity placement group. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

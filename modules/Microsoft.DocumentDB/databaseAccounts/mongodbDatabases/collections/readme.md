@@ -7,6 +7,7 @@ This module deploys a collection within a MongoDB.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 
 ## Resource Types
 
@@ -173,3 +174,7 @@ shardKey: {
 | `name` | string | The name of the mongodb database. |
 | `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
 | `resourceId` | string | The resource ID of the mongodb database. |
+
+## Dependencies
+
+_None_

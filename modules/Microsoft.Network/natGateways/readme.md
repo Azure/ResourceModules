@@ -7,6 +7,7 @@ This module deploys a NAT gateway.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -162,6 +163,8 @@ tags: {
 | `resourceId` | string | The resource ID of the NAT Gateway. |
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 

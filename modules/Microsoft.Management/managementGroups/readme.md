@@ -13,6 +13,7 @@ This module has some known **limitations**:
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Dependencies](#Dependencies)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -122,6 +123,8 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
 ```
 
 ## Dependencies
+
+_None_
 
 ## Deployment examples
 
