@@ -445,6 +445,8 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed log analytics workspace. |
 | `resourceId` | string | The resource ID of the deployed log analytics workspace. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

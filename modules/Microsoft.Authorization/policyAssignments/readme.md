@@ -166,6 +166,8 @@ module policyassignment 'yourpath/modules/Microsoft.Authorization.policyAssignme
 | `principalId` | string | Policy Assignment principal ID. |
 | `resourceId` | string | Policy Assignment resource ID. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

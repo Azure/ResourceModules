@@ -341,6 +341,8 @@ networkAcls: {
 | `resourceId` | string | The Web PubSub resource ID. |
 | `serverPort` | int | The Web PubSub serverPort. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

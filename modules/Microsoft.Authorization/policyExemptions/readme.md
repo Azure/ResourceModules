@@ -147,6 +147,8 @@ module policyexemption 'yourpath/modules/Microsoft.Authorization.policyExemption
 
 - Policy Exemptions have a dependency on Policy Assignments being applied before creating an exemption. You can use the Policy Assignment [Module](../policyAssignments/deploy.bicep) to deploy a Policy Assignment and then create the exemption for it on the required scope.
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

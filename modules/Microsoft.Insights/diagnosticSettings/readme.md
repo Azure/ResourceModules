@@ -39,6 +39,8 @@ This module deploys a subscription wide export of the activity log.
 | `resourceId` | string | The resource ID of the diagnostic settings. |
 | `subscriptionName` | string | The name of the subscription to deploy into. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

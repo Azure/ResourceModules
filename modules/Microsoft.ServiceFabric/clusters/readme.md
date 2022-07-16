@@ -226,6 +226,8 @@ tags: {
 | `resourceGroupName` | string | The Service Fabric Cluster resource group. |
 | `resourceId` | string | The Service Fabric Cluster resource ID. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

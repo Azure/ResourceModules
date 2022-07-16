@@ -149,6 +149,8 @@ tags: {
 | `resourceId` | string | The resource ID of the disk encryption set. |
 | `systemAssignedPrincipalId` | string | The principal ID of the disk encryption set. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

@@ -147,6 +147,8 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 | `name` | string | The name of the resource group. |
 | `resourceId` | string | The resource ID of the resource group. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

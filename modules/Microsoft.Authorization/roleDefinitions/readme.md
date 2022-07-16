@@ -169,6 +169,8 @@ This module can be deployed both at subscription or resource group level:
 - To deploy the module at the subscription level, provide an existing subscription ID in the `subscriptionId` parameter.
 - To deploy the module at the management group level, provide an existing management group ID in the `managementGroupId` parameter.
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

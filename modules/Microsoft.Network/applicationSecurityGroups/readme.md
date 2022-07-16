@@ -143,6 +143,8 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the application security group was deployed into. |
 | `resourceId` | string | The resource ID of the application security group. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

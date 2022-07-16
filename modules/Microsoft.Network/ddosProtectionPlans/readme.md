@@ -143,6 +143,8 @@ tags: {
 | `resourceGroupName` | string | The resource group the DDOS protection plan was deployed into. |
 | `resourceId` | string | The resource ID of the DDOS protection plan. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

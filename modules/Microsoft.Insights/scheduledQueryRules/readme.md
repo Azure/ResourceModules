@@ -155,6 +155,8 @@ tags: {
 | `resourceGroupName` | string | The Resource Group of the created query rule. |
 | `resourceId` | string | The resource ID of the created query rule. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

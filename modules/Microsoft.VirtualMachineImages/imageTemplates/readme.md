@@ -258,6 +258,8 @@ roleAssignments: [
 | `resourceId` | string | The resource ID of the image template. |
 | `runThisCommand` | string | The command to run in order to trigger the image build. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

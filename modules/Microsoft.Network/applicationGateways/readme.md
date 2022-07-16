@@ -220,6 +220,8 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the application gateway was deployed into. |
 | `resourceId` | string | The resource ID of the application gateway. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

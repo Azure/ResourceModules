@@ -134,6 +134,8 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group of the deployed firewall policy. |
 | `resourceId` | string | The resource ID of the deployed firewall policy. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

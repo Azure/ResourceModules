@@ -157,6 +157,8 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the public IP address was deployed into. |
 | `resourceId` | string | The resource ID of the public IP address. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

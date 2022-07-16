@@ -390,6 +390,8 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the site. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

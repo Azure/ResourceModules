@@ -40,6 +40,8 @@ This module deploys Authorization Locks.
 | `resourceId` | string | The resource ID of the lock. |
 | `scope` | string | The scope this lock applies to. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

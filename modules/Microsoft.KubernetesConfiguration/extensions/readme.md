@@ -63,6 +63,8 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `resourceGroupName` | string | The name of the resource group the extension was deployed into. |
 | `resourceId` | string | The resource ID of the extension. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

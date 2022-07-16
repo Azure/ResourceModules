@@ -77,6 +77,8 @@ tags: {
 | `resourceId` | string | The resource ID of the applied tags. |
 | `tags` | object | The applied tags. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

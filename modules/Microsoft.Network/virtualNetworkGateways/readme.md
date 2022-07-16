@@ -238,6 +238,8 @@ tags: {
 | `resourceGroupName` | string | The resource group the virtual network gateway was deployed. |
 | `resourceId` | string | The resource ID of the virtual network gateway. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

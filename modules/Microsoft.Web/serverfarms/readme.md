@@ -196,6 +196,8 @@ tags: {
 | `resourceGroupName` | string | The resource group the app service plan was deployed into. |
 | `resourceId` | string | The resource ID of the app service plan. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

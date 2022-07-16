@@ -223,6 +223,8 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed Synapse Private Link Hub. |
 | `resourceId` | string | The resource ID of the deployed Synapse Private Link Hub. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

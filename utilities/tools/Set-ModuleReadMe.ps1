@@ -370,8 +370,6 @@ Mandatory. The readme file content array to update
 .PARAMETER SectionStartIdentifier
 Optional. The identifier of the 'outputs' section. Defaults to '## Dependencies
 
-## Deployment examples'
-
 .PARAMETER addJson
 Optional. A switch to control whether or not to add a ARM-JSON-Parameter file example. Defaults to true.
 
@@ -403,9 +401,7 @@ function Set-DeploymentExamplesSection {
         [bool] $addBicep = $true,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Dependencies
-
-## Deployment examples'
+        [string] $SectionStartIdentifier = '## Dependencies'
     )
 
     # Load used function(s)

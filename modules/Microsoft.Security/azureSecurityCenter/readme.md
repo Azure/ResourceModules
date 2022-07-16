@@ -94,6 +94,8 @@ securityContactProperties: {
 | `name` | string | The name of the security center. |
 | `workspaceId` | string | The resource ID of the used log analytics workspace. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

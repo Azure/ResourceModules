@@ -124,6 +124,8 @@ module policydefinition 'yourpath/modules/Microsoft.Authorization.policyDefiniti
 | `resourceId` | string | Policy Definition resource ID. |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

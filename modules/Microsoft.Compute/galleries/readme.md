@@ -146,6 +146,8 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed image gallery. |
 | `resourceId` | string | The resource ID of the deployed image gallery. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

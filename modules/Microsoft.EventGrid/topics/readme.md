@@ -234,6 +234,8 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the event grid was deployed into. |
 | `resourceId` | string | The resource ID of the event grid. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

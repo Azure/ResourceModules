@@ -396,6 +396,8 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the machine learning service was deployed into. |
 | `resourceId` | string | The resource ID of the machine learning service. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

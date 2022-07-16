@@ -205,6 +205,8 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
 | `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in. |
 | `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS). |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

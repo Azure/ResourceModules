@@ -197,6 +197,8 @@ tags: {
 | `resourceGroupName` | string | The resource group the app service environment was deployed into. |
 | `resourceId` | string | The resource ID of the app service environment. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.

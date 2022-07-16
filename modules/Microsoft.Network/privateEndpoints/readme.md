@@ -160,6 +160,8 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the private endpoint was deployed into. |
 | `resourceId` | string | The resource ID of the private endpoint. |
 
+## Dependencies
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
