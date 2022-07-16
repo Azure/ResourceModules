@@ -151,52 +151,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-lng-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "localAddressPrefixes": {
-            "value": [
-                "192.168.1.0/24"
-            ]
-        },
-        "localGatewayPublicIpAddress": {
-            "value": "8.8.8.8"
-        },
-        "localAsn": {
-            "value": "65123"
-        },
-        "localBgpPeeringAddress": {
-            "value": "192.168.1.5"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -206,22 +165,72 @@ tags: {
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-localNetworkGateways'
   params: {
-    name: '<<namePrefix>>-az-lng-x-001'
-    lock: 'CanNotDelete'
+    // Required parameters
     localAddressPrefixes: [
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
+    name: '<<namePrefix>>-az-lng-x-001'
+    // Non-required parameters
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "localAddressPrefixes": {
+      "value": [
+        "192.168.1.0/24"
+      ]
+    },
+    "localGatewayPublicIpAddress": {
+      "value": "8.8.8.8"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-lng-x-001"
+    },
+    // Non-required parameters
+    "localAsn": {
+      "value": "65123"
+    },
+    "localBgpPeeringAddress": {
+      "value": "192.168.1.5"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    }
   }
 }
 ```

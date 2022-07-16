@@ -394,63 +394,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ala-x-001"
-        },
-        "scopes": {
-            "value": [
-                "/subscriptions/<<subscriptionId>>"
-            ]
-        },
-        "conditions": {
-            "value": [
-                {
-                    "field": "category",
-                    "equals": "Administrative"
-                },
-                {
-                    "field": "resourceType",
-                    "equals": "microsoft.compute/virtualmachines"
-                },
-                {
-                    "field": "operationName",
-                    "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action"
-                }
-            ]
-        },
-        "actions": {
-            "value": [
-                {
-                    "actionGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -460,24 +408,23 @@ tags: {
 module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-activityLogAlerts'
   params: {
-    name: '<<namePrefix>>-az-ala-x-001'
-    scopes: [
-      '/subscriptions/<<subscriptionId>>'
-    ]
+    // Required parameters
     conditions: [
       {
-        field: 'category'
         equals: 'Administrative'
+        field: 'category'
       }
       {
-        field: 'resourceType'
         equals: 'microsoft.compute/virtualmachines'
+        field: 'resourceType'
       }
       {
-        field: 'operationName'
         equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
+        field: 'operationName'
       }
     ]
+    name: '<<namePrefix>>-az-ala-x-001'
+    // Non-required parameters
     actions: [
       {
         actionGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
@@ -485,12 +432,74 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
     ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    scopes: [
+      '/subscriptions/<<subscriptionId>>'
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "conditions": {
+      "value": [
+        {
+          "equals": "Administrative",
+          "field": "category"
+        },
+        {
+          "equals": "microsoft.compute/virtualmachines",
+          "field": "resourceType"
+        },
+        {
+          "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action",
+          "field": "operationName"
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-ala-x-001"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        {
+          "actionGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scopes": {
+      "value": [
+        "/subscriptions/<<subscriptionId>>"
+      ]
+    }
   }
 }
 ```
