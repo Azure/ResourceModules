@@ -160,21 +160,28 @@ function Test-ModuleLocally {
             TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
-        ## Enforced Tokens
+        # Add Enforced Tokens
+        $enforcedTokenList = @{}
         if ($ValidateOrDeployParameters.ContainsKey('subscriptionId')) {
-            $tokenConfiguration.Tokens['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
+            $enforcedTokenList['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
         }
         if ($ValidateOrDeployParameters.ContainsKey('managementGroupId')) {
-            $tokenConfiguration.Tokens['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
+            $enforcedTokenList['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
         }
         if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
-            $tokenConfiguration.Tokens['deploymentSpId'] = $AdditionalTokens['deploymentSpId']
+            $enforcedTokenList['deploymentSpId'] = $AdditionalTokens['deploymentSpId']
         }
         if ($AdditionalTokens.ContainsKey('tenantId')) {
-            $tokenConfiguration.Tokens['tenantId'] = $AdditionalTokens['tenantId']
+            $enforcedTokenList['tenantId'] = $AdditionalTokens['tenantId']
+        }
+        $tokenConfiguration.Tokens += $enforcedTokenList
+
+        # Add local (source control) tokens
+        foreach ($localToken in ($GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } })) {
+            $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
         }
 
-        #Add Other Parameter File Tokens (For Testing)
+        # Add Other Parameter File Tokens (For Testing)
         $AdditionalTokens.Keys | ForEach-Object {
             if (-not $tokenConfiguration.Tokens.ContainsKey($PSItem)) {
                 $tokenConfiguration.Tokens[$PSItem] = $AdditionalTokens.$PSItem
@@ -185,12 +192,20 @@ function Test-ModuleLocally {
         ################
         if ($PesterTest) {
             Write-Verbose "Pester Testing Module: $ModuleName"
+
+            # Construct Pester Token Configuration Input
+            $PesterTokenConfiguration = @{
+                Tokens      = $enforcedTokenList
+                TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+                TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+            }
+
             try {
                 Invoke-Pester -Configuration @{
                     Run    = @{
                         Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
                             moduleFolderPaths  = Split-Path $TemplateFilePath -Parent
-                            tokenConfiguration = $tokenConfiguration
+                            tokenConfiguration = $PesterTokenConfiguration
                         }
                     }
                     Output = @{
@@ -238,7 +253,6 @@ function Test-ModuleLocally {
                         Test-TemplateDeployment @functionInput -ParameterFilePath $paramFilePath
                     }
                 }
-
 
                 # Deploy template
                 # ---------------
