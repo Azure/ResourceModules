@@ -1523,7 +1523,31 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths:
+          [
+            'automation.parameters.json',
+            'azconfig.parameters.json',
+            'azurecr.parameters.json',
+            'azureml.parameters.json',
+            'azurestaticapps.parameters.json',
+            'azuresynapse.parameters.json',
+            'azurewebsites.parameters.json',
+            'batch.parameters.json',
+            'blob.parameters.json',
+            'cognitiveservices.parameters.json',
+            'database.parameters.json',
+            'datafactory.parameters.json',
+            'eventgrid.parameters.json',
+            'file.parameters.json',
+            'monitor.parameters.json',
+            'queue.parameters.json',
+            'redis.parameters.json',
+            'servicebus.parameters.json',
+            'siterecovery.parameters.json',
+            'table.parameters.json',
+            'vaultcore.parameters.json',
+            'webpubsub.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

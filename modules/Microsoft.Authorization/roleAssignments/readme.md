@@ -167,28 +167,11 @@ This module can be deployed at the management group, subscription or resource gr
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Storage Queue Data Reader"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Mg Min</h3>
 
 <details>
 
@@ -198,8 +181,9 @@ This module can be deployed at the management group, subscription or resource gr
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
-    roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    // Required parameters
     principalId: '<<deploymentSpId>>'
+    roleDefinitionIdOrName: 'Storage Queue Data Reader'
   }
 }
 ```
@@ -207,37 +191,30 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Backup Reader"
-        },
-        "description": {
-            "value": "Role Assignment (management group scope)"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        },
-        "principalType": {
-            "value": "ServicePrincipal"
-        },
-        "managementGroupId": {
-            "value": "<<managementGroupId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Storage Queue Data Reader"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Mg</h3>
 
 <details>
 
@@ -247,11 +224,13 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
+    // Required parameters
+    principalId: '<<deploymentSpId>>'
     roleDefinitionIdOrName: 'Backup Reader'
+    // Non-required parameters
     description: 'Role Assignment (management group scope)'
-    principalId: '<<deploymentSpId>>'
-    principalType: 'ServicePrincipal'
     managementGroupId: '<<managementGroupId>>'
+    principalType: 'ServicePrincipal'
   }
 }
 ```
@@ -259,34 +238,40 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 3</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Storage Queue Data Reader"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        },
-        "resourceGroupName": {
-            "value": "<<resourceGroupName>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Backup Reader"
+    },
+    // Non-required parameters
+    "description": {
+      "value": "Role Assignment (management group scope)"
+    },
+    "managementGroupId": {
+      "value": "<<managementGroupId>>"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Rg Min</h3>
 
 <details>
 
@@ -296,10 +281,12 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
-    roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    // Required parameters
     principalId: '<<deploymentSpId>>'
-    subscriptionId: '<<subscriptionId>>'
+    roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    // Non-required parameters
     resourceGroupName: '<<resourceGroupName>>'
+    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -307,40 +294,37 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 4</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Backup Reader"
-        },
-        "description": {
-            "value": "Role Assignment (resource group scope)"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        },
-        "principalType": {
-            "value": "ServicePrincipal"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        },
-        "resourceGroupName": {
-            "value": "<<resourceGroupName>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Storage Queue Data Reader"
+    },
+    // Non-required parameters
+    "resourceGroupName": {
+      "value": "<<resourceGroupName>>"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 4: Rg</h3>
 
 <details>
 
@@ -350,55 +334,13 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
+    // Required parameters
+    principalId: '<<deploymentSpId>>'
     roleDefinitionIdOrName: 'Backup Reader'
+    // Non-required parameters
     description: 'Role Assignment (resource group scope)'
-    principalId: '<<deploymentSpId>>'
     principalType: 'ServicePrincipal'
-    subscriptionId: '<<subscriptionId>>'
     resourceGroupName: '<<resourceGroupName>>'
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 5</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Storage Queue Data Reader"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
-  params: {
-    roleDefinitionIdOrName: 'Storage Queue Data Reader'
-    principalId: '<<deploymentSpId>>'
     subscriptionId: '<<subscriptionId>>'
   }
 }
@@ -407,37 +349,43 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 6</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleDefinitionIdOrName": {
-            "value": "Backup Reader"
-        },
-        "description": {
-            "value": "Role Assignment (subscription scope)"
-        },
-        "principalId": {
-            "value": "<<deploymentSpId>>"
-        },
-        "principalType": {
-            "value": "ServicePrincipal"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Backup Reader"
+    },
+    // Non-required parameters
+    "description": {
+      "value": "Role Assignment (resource group scope)"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
+    },
+    "resourceGroupName": {
+      "value": "<<resourceGroupName>>"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 5: Sub Min</h3>
 
 <details>
 
@@ -447,11 +395,95 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
-    roleDefinitionIdOrName: 'Backup Reader'
-    description: 'Role Assignment (subscription scope)'
+    // Required parameters
     principalId: '<<deploymentSpId>>'
+    roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    // Non-required parameters
+    subscriptionId: '<<subscriptionId>>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Storage Queue Data Reader"
+    },
+    // Non-required parameters
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 6: Sub</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-roleAssignments'
+  params: {
+    // Required parameters
+    principalId: '<<deploymentSpId>>'
+    roleDefinitionIdOrName: 'Backup Reader'
+    // Non-required parameters
+    description: 'Role Assignment (subscription scope)'
     principalType: 'ServicePrincipal'
     subscriptionId: '<<subscriptionId>>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "principalId": {
+      "value": "<<deploymentSpId>>"
+    },
+    "roleDefinitionIdOrName": {
+      "value": "Backup Reader"
+    },
+    // Non-required parameters
+    "description": {
+      "value": "Role Assignment (subscription scope)"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
+    }
   }
 }
 ```

@@ -12,7 +12,7 @@ param enableDefaultTelemetry bool = true
 @description('Required. Configure default action in virtual network rule set.')
 param defaultAction string
 
-@description('Required. Configure Publice Network Access restrictions in virtual network rule set.')
+@description('Required. Configure Public Network Access restrictions in virtual network rule set.')
 param publicNetworkAccess string
 
 @description('Required. Configure Trusted Services in virtual network rule set.')

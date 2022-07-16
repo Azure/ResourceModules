@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.compute.availabilitysets.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Compute/availabilitySets/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

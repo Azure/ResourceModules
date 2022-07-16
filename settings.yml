@@ -24,6 +24,12 @@ variables:
   tokenSuffix: '>>'
 
   ######################################
+  # Common folders and file paths
+  ######################################
+
+  moduleTestFilePath: 'utilities/pipelines/staticValidation/module.tests.ps1'
+
+  ######################################
   # Validation deployment settings
   ######################################
 

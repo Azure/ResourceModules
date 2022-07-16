@@ -22,7 +22,6 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.web.connections.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Web/connections/*'
-      - '/modules/.global/global.module.tests.ps1'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'

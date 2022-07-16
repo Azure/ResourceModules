@@ -49,6 +49,9 @@ param storageTypeState string = 'Locked'
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. Is soft delete feature state editable.')
+param isSoftDeleteFeatureStateEditable bool = true
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -61,11 +64,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' existing = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-02-01' existing = {
   name: recoveryVaultName
 }
 
-resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2021-10-01' = {
+resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2022-02-01' = {
   name: name
   parent: rsv
   properties: {
@@ -75,6 +78,7 @@ resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2021-10-01
     storageModelType: storageModelType
     storageType: storageType
     storageTypeState: storageTypeState
+    isSoftDeleteFeatureStateEditable: isSoftDeleteFeatureStateEditable
   }
 }
 

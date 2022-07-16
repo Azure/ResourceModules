@@ -9,12 +9,7 @@
             "value": "CanNotDelete"
         },
         "administratorLogin": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "administratorLogin"
-            }
+            "value": "adminUserName"
         },
         "administratorLoginPassword": {
             "reference": {

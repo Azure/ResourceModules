@@ -123,31 +123,11 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "testMG"
-        },
-        "displayName": {
-            "value": "Test MG"
-        },
-        "parentId": {
-            "value": "<<managementGroupId>>"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -157,9 +137,38 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
 module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managementGroups'
   params: {
+    // Required parameters
     name: 'testMG'
+    // Non-required parameters
     displayName: 'Test MG'
     parentId: '<<managementGroupId>>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "testMG"
+    },
+    // Non-required parameters
+    "displayName": {
+      "value": "Test MG"
+    },
+    "parentId": {
+      "value": "<<managementGroupId>>"
+    }
   }
 }
 ```

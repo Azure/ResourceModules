@@ -149,53 +149,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-img-x-001"
-        },
-        "osAccountType": {
-            "value": "Premium_LRS"
-        },
-        "osType": {
-            "value": "Windows"
-        },
-        "osDiskBlobUri": {
-            "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
-        },
-        "osDiskCaching": {
-            "value": "ReadWrite"
-        },
-        "zoneResilient": {
-            "value": true
-        },
-        "hyperVGeneration": {
-            "value": "V1"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -205,21 +163,72 @@ tags: {
 module images './Microsoft.Compute/images/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-images'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-img-x-001'
     osAccountType: 'Premium_LRS'
-    osType: 'Windows'
     osDiskBlobUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
     osDiskCaching: 'ReadWrite'
-    zoneResilient: true
+    osType: 'Windows'
+    // Non-required parameters
     hyperVGeneration: 'V1'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    zoneResilient: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-img-x-001"
+    },
+    "osAccountType": {
+      "value": "Premium_LRS"
+    },
+    "osDiskBlobUri": {
+      "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
+    },
+    "osDiskCaching": {
+      "value": "ReadWrite"
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    // Non-required parameters
+    "hyperVGeneration": {
+      "value": "V1"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "zoneResilient": {
+      "value": true
+    }
   }
 }
 ```

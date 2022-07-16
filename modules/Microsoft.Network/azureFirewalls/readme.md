@@ -299,36 +299,11 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-fw-add-001"
-        },
-        "vNetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw"
-        },
-        "additionalPublicIpConfigurations": {
-            "value": [
-                {
-                    "name": "ipConfig01",
-                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-fw"
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Addpip</h3>
 
 <details>
 
@@ -338,8 +313,10 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-fw-add-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw'
+    // Non-required parameters
     additionalPublicIpConfigurations: [
       {
         name: 'ipConfig01'
@@ -353,85 +330,29 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-fw-custompip-001"
-        },
-        "vNetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw"
-        },
-        "publicIPAddressObject": {
-            "value": {
-                "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
-                "publicIPPrefixResourceId": "",
-                "publicIPAllocationMethod": "Static",
-                "skuName": "Standard",
-                "skuTier": "Regional",
-                "roleAssignments": [
-                    {
-                        "roleDefinitionIdOrName": "Reader",
-                        "principalIds": [
-                            "<<deploymentSpId>>"
-                        ]
-                    }
-                ],
-                "diagnosticMetricsToEnable": [
-                    "AllMetrics"
-                ],
-                "diagnosticLogCategoriesToEnable": [
-                    "DDoSProtectionNotifications",
-                    "DDoSMitigationFlowLogs",
-                    "DDoSMitigationReports"
-                ]
-            }
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-azureFirewalls'
-  params: {
-    name: '<<namePrefix>>-az-fw-custompip-001'
-    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
-    publicIPAddressObject: {
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
-      publicIPPrefixResourceId: ''
-      publicIPAllocationMethod: 'Static'
-      skuName: 'Standard'
-      skuTier: 'Regional'
-      roleAssignments: [
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-fw-add-001"
+    },
+    "vNetId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw"
+    },
+    // Non-required parameters
+    "additionalPublicIpConfigurations": {
+      "value": [
         {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
+          "name": "ipConfig01",
+          "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-fw"
         }
-      ]
-      diagnosticMetricsToEnable: [
-        'AllMetrics'
-      ]
-      diagnosticLogCategoriesToEnable: [
-        'DDoSProtectionNotifications'
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
       ]
     }
   }
@@ -441,28 +362,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-fw-min-001"
-        },
-        "vNetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 2: Custompip</h3>
 
 <details>
 
@@ -472,6 +372,100 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
+    // Required parameters
+    name: '<<namePrefix>>-az-fw-custompip-001'
+    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
+    // Non-required parameters
+    publicIPAddressObject: {
+      diagnosticLogCategoriesToEnable: [
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+        'DDoSProtectionNotifications'
+      ]
+      diagnosticMetricsToEnable: [
+        'AllMetrics'
+      ]
+      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
+      publicIPAllocationMethod: 'Static'
+      publicIPPrefixResourceId: ''
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      skuName: 'Standard'
+      skuTier: 'Regional'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-fw-custompip-001"
+    },
+    "vNetId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw"
+    },
+    // Non-required parameters
+    "publicIPAddressObject": {
+      "value": {
+        "diagnosticLogCategoriesToEnable": [
+          "DDoSMitigationFlowLogs",
+          "DDoSMitigationReports",
+          "DDoSProtectionNotifications"
+        ],
+        "diagnosticMetricsToEnable": [
+          "AllMetrics"
+        ],
+        "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
+        "publicIPAllocationMethod": "Static",
+        "publicIPPrefixResourceId": "",
+        "roleAssignments": [
+          {
+            "principalIds": [
+              "<<deploymentSpId>>"
+            ],
+            "roleDefinitionIdOrName": "Reader"
+          }
+        ],
+        "skuName": "Standard",
+        "skuTier": "Regional"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-azureFirewalls'
+  params: {
+    // Required parameters
     name: '<<namePrefix>>-az-fw-min-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw'
   }
@@ -481,151 +475,30 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-fw-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "zones": {
-            "value": [
-                "1",
-                "2",
-                "3"
-            ]
-        },
-        "vNetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw"
-        },
-        "azureFirewallSubnetPublicIpId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw"
-        },
-        "applicationRuleCollections": {
-            "value": [
-                {
-                    "name": "allow-app-rules",
-                    "properties": {
-                        "priority": 100,
-                        "action": {
-                            "type": "allow"
-                        },
-                        "rules": [
-                            {
-                                "name": "allow-ase-tags",
-                                "sourceAddresses": [
-                                    "*"
-                                ],
-                                "protocols": [
-                                    {
-                                        "protocolType": "HTTP",
-                                        "port": "80"
-                                    },
-                                    {
-                                        "protocolType": "HTTPS",
-                                        "port": "443"
-                                    }
-                                ],
-                                "fqdnTags": [
-                                    "AppServiceEnvironment",
-                                    "WindowsUpdate"
-                                ]
-                            },
-                            {
-                                "name": "allow-ase-management",
-                                "sourceAddresses": [
-                                    "*"
-                                ],
-                                "protocols": [
-                                    {
-                                        "protocolType": "HTTP",
-                                        "port": "80"
-                                    },
-                                    {
-                                        "protocolType": "HTTPS",
-                                        "port": "443"
-                                    }
-                                ],
-                                "targetFqdns": [
-                                    "management.azure.com"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "networkRuleCollections": {
-            "value": [
-                {
-                    "name": "allow-network-rules",
-                    "properties": {
-                        "priority": 100,
-                        "action": {
-                            "type": "allow"
-                        },
-                        "rules": [
-                            {
-                                "name": "allow-ntp",
-                                "sourceAddresses": [
-                                    "*"
-                                ],
-                                "destinationAddresses": [
-                                    "*"
-                                ],
-                                "destinationPorts": [
-                                    "123",
-                                    "12000"
-                                ],
-                                "protocols": [
-                                    "Any"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-fw-min-001"
+    },
+    "vNetId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 4: Parameters</h3>
 
 <details>
 
@@ -635,58 +508,53 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-fw-x-001'
-    lock: 'CanNotDelete'
-    zones: [
-      '1'
-      '2'
-      '3'
-    ]
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw'
-    azureFirewallSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
+    // Non-required parameters
     applicationRuleCollections: [
       {
         name: 'allow-app-rules'
         properties: {
-          priority: 100
           action: {
             type: 'allow'
           }
+          priority: 100
           rules: [
             {
-              name: 'allow-ase-tags'
-              sourceAddresses: [
-                '*'
-              ]
-              protocols: [
-                {
-                  protocolType: 'HTTP'
-                  port: '80'
-                }
-                {
-                  protocolType: 'HTTPS'
-                  port: '443'
-                }
-              ]
               fqdnTags: [
                 'AppServiceEnvironment'
                 'WindowsUpdate'
               ]
-            }
-            {
-              name: 'allow-ase-management'
+              name: 'allow-ase-tags'
+              protocols: [
+                {
+                  port: '80'
+                  protocolType: 'HTTP'
+                }
+                {
+                  port: '443'
+                  protocolType: 'HTTPS'
+                }
+              ]
               sourceAddresses: [
                 '*'
               ]
+            }
+            {
+              name: 'allow-ase-management'
               protocols: [
                 {
-                  protocolType: 'HTTP'
                   port: '80'
+                  protocolType: 'HTTP'
                 }
                 {
-                  protocolType: 'HTTPS'
                   port: '443'
+                  protocolType: 'HTTPS'
                 }
+              ]
+              sourceAddresses: [
+                '*'
               ]
               targetFqdns: [
                 'management.azure.com'
@@ -696,29 +564,36 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
       }
     ]
+    azureFirewallSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    lock: 'CanNotDelete'
     networkRuleCollections: [
       {
         name: 'allow-network-rules'
         properties: {
-          priority: 100
           action: {
             type: 'allow'
           }
+          priority: 100
           rules: [
             {
-              name: 'allow-ntp'
-              sourceAddresses: [
-                '*'
-              ]
               destinationAddresses: [
                 '*'
               ]
               destinationPorts: [
-                '123'
                 '12000'
+                '123'
               ]
+              name: 'allow-ntp'
               protocols: [
                 'Any'
+              ]
+              sourceAddresses: [
+                '*'
               ]
             }
           ]
@@ -727,17 +602,164 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    zones: [
+      '1'
+      '2'
+      '3'
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-fw-x-001"
+    },
+    "vNetId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw"
+    },
+    // Non-required parameters
+    "applicationRuleCollections": {
+      "value": [
+        {
+          "name": "allow-app-rules",
+          "properties": {
+            "action": {
+              "type": "allow"
+            },
+            "priority": 100,
+            "rules": [
+              {
+                "fqdnTags": [
+                  "AppServiceEnvironment",
+                  "WindowsUpdate"
+                ],
+                "name": "allow-ase-tags",
+                "protocols": [
+                  {
+                    "port": "80",
+                    "protocolType": "HTTP"
+                  },
+                  {
+                    "port": "443",
+                    "protocolType": "HTTPS"
+                  }
+                ],
+                "sourceAddresses": [
+                  "*"
+                ]
+              },
+              {
+                "name": "allow-ase-management",
+                "protocols": [
+                  {
+                    "port": "80",
+                    "protocolType": "HTTP"
+                  },
+                  {
+                    "port": "443",
+                    "protocolType": "HTTPS"
+                  }
+                ],
+                "sourceAddresses": [
+                  "*"
+                ],
+                "targetFqdns": [
+                  "management.azure.com"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "azureFirewallSubnetPublicIpId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "networkRuleCollections": {
+      "value": [
+        {
+          "name": "allow-network-rules",
+          "properties": {
+            "action": {
+              "type": "allow"
+            },
+            "priority": 100,
+            "rules": [
+              {
+                "destinationAddresses": [
+                  "*"
+                ],
+                "destinationPorts": [
+                  "12000",
+                  "123"
+                ],
+                "name": "allow-ntp",
+                "protocols": [
+                  "Any"
+                ],
+                "sourceAddresses": [
+                  "*"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "zones": {
+      "value": [
+        "1",
+        "2",
+        "3"
+      ]
+    }
   }
 }
 ```
