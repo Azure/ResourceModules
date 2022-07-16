@@ -270,6 +270,35 @@ function Set-OutputsSection {
     )
 
     # Process content
+    $SectionContent = [System.Collections.ArrayList]@(
+        '| Dependency | Type |',
+        '| :-- | :-- |'
+    )
+
+    # Build result
+    if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+    }
+    return $updatedFileContent
+}
+
+function Set-DependenciesSection {
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory)]
+        [hashtable] $TemplateFileContent,
+
+        [Parameter(Mandatory)]
+        [object[]] $ReadMeFileContent,
+
+        [Parameter(Mandatory = $false)]
+        [string] $SectionStartIdentifier = '## Dependencies'
+    )
+
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'tools' 'Get-LinkedModuleList.ps1')
+
+    # Process content
     if ($TemplateFileContent.outputs.Values.metadata) {
         # Template has output descriptions
         $SectionContent = [System.Collections.ArrayList]@(
@@ -294,7 +323,7 @@ function Set-OutputsSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
     }
     return $updatedFileContent
 }
@@ -716,6 +745,16 @@ function Set-ModuleReadMe {
             TemplateFileContent = $templateFileContent
         }
         $readMeFileContent = Set-OutputsSection @inputObject
+    }
+
+    if ($SectionsToRefresh -contains 'Dependencies') {
+        # Handle [Dependencies] section
+        # ========================
+        $inputObject = @{
+            ReadMeFileContent   = $readMeFileContent
+            TemplateFileContent = $templateFileContent
+        }
+        $readMeFileContent = Set-DependenciesSection @inputObject
     }
 
     if ($SectionsToRefresh -contains 'Deployment examples') {
