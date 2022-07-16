@@ -28,7 +28,6 @@
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'Custom Deployment Pool'                   |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                              |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                        |
-##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                      | 'c:/KeyVault'                              |
 ##   | deploymentBlocks                |                                      | The parameter file(s) to deploy with. Must be provided                                                    | path: 'C:/parameters.json'                 |
 ##   | location                        | '$(location)'                 | The location to deploy with                                                                               | 'EastUs2'                                  |
 ##   | resourceGroupName               | '$(resourceGroupName)'        | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments                      | 'validation-rg'                            |
@@ -48,7 +47,6 @@ parameters:
   defaultJobTimeoutInMinutes: 120
   dependsOn: []
   # Logic-related parameters
-  modulePath: '$(modulePath)'
   deploymentBlocks: ''
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
@@ -65,11 +63,7 @@ parameters:
 jobs:
   - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
       - job: ${{ deploymentBlock.jobName }}
-
-        ${{ if ne( deploymentBlock.displayName, '') }}:
-          displayName: ${{ deploymentBlock.displayName }}
-        ${{ if eq( deploymentBlock.displayName, '') }}:
-          displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
+        displayName: ${{ deploymentBlock.displayName }}
         timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
         ${{ if ne( parameters.dependsOn, '') }}:
           dependsOn: ${{ parameters.dependsOn }}
@@ -124,7 +118,7 @@ jobs:
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
                     Tokens      = @{}
-                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ deploymentBlock.path }}'
+                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' '${{ deploymentBlock.path }}'
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
@@ -176,7 +170,8 @@ jobs:
                 # INVOKE TEST #
                 # ----------- #
                 $functionInput = @{
-                  templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ deploymentBlock.templateFilePath }}'
+                  templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.templateFilePath }}'
+                  parameterFilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.path }}'
                   location             = '${{ parameters.location }}'
                   resourceGroupName    = '${{ parameters.resourceGroupName }}'
                   subscriptionId       = '${{ parameters.subscriptionId }}'
@@ -184,9 +179,7 @@ jobs:
                   additionalParameters = @{}
                 }
 
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
-                  $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ deploymentBlock.path }}'
-                }
+
 
                 $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
                 if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
@@ -219,7 +212,8 @@ jobs:
                 # INVOKE DEPLOYMENT #
                 # ----------------- #
                 $functionInput = @{
-                  templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ deploymentBlock.templateFilePath }}'
+                  templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.templateFilePath }}'
+                  parameterFilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.path }}'
                   location             = '${{ parameters.location }}'
                   resourceGroupName    = '${{ parameters.resourceGroupName }}'
                   subscriptionId       = '${{ parameters.subscriptionId }}'
@@ -228,9 +222,6 @@ jobs:
                   additionalParameters = @{}
                 }
 
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
-                  $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '${{ deploymentBlock.path }}'
-                }
 
                 $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
                 if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
