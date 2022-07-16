@@ -19,7 +19,7 @@ This module deploys a private endpoint private DNS zone group
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateDNSResourceIds` | array | Array of private DNS zone resource IDs. Each DNS zone group can support up to 5 DNS zones. |
+| `privateDNSResourceIds` | array | Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones. |
 
 **Conditional parameters**
 | Parameter Name | Type | Description |

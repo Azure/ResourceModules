@@ -1,7 +1,7 @@
 @description('Conditional. The name of the parent private endpoint. Required if the template is used in a standalone deployment.')
 param privateEndpointName string
 
-@description('Required. Array of private DNS zone resource IDs. Each DNS zone group can support up to 5 DNS zones.')
+@description('Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones.')
 @minLength(1)
 @maxLength(5)
 param privateDNSResourceIds array
