@@ -5,7 +5,6 @@ parameters:
 
   # Logic-related parameters
   modulePath: '$(modulePath)'
-  testFilesFolderName: '$(testFilesFolderName)'
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
@@ -30,8 +29,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-ModuleTestFileList.ps1')
 
             $functionInput = @{
-              ModulePath   = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
-              SearchFolder = '${{ parameters.testFilesFolderName }}'
+              ModulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose

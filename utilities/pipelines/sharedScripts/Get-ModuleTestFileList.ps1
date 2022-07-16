@@ -15,7 +15,7 @@ Optional. The folder to search for files in
 .EXAMPLE
 Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\arm\Microsoft.Compute\virtualMachines'
 
-Returns the relative file paths of all parameter files of the virtual machines module in folder $SearchFolder.
+Returns the relative file paths of all parameter files of the virtual machines module in folder '.test'.
 
 .EXAMPLE
 Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\arm\Microsoft.Compute\virtualMachines' -SearchFolder 'parameters'
