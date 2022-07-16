@@ -54,7 +54,6 @@ parameters:
   templateFilePath: ''
   customParameterFileTokens: ''
   modulePath: '$(modulePath)'
-  customParametersPath: ''
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
@@ -68,9 +67,6 @@ parameters:
 ##---------------------------------------------##
 jobs:
   - template: /.azuredevops/pipelineTemplates/jobs.getModuleTestFiles.yml
-    ${{ if ne(parameters.customParametersPath, '') }}:
-      parameters:
-        modulePath: '${{ parameters.customParametersPath }}'
   - job: deploy
     displayName: 'Deploying ' # Auto-populated
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
