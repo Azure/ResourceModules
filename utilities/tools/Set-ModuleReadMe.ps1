@@ -340,13 +340,13 @@ function Set-DependenciesSection {
 
     if ($SectionContent.Count -eq 2) {
         # No content was added, adding placeholder
-        $SectionContent = '_None_'
+        $SectionContent += '| - | - |'
 
     }
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
     return $updatedFileContent
 }
