@@ -294,7 +294,7 @@ function Set-OutputsSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
     return $updatedFileContent
 }
@@ -323,7 +323,7 @@ function Set-DependenciesSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
     }
     return $updatedFileContent
 }
