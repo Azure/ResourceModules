@@ -1,5 +1,47 @@
 ﻿<#
 .SYNOPSIS
+Find any nested dependency recursively
+
+.DESCRIPTION
+Find any nested dependency recursively
+
+.PARAMETER DependencyMap
+Required. The map/dictionary/hashtable of dependencies to search in
+
+.PARAMETER ResourceType
+Required. The resource type to search any dependency for
+
+.EXAMPLE
+Resolve-DependencyList -DependencyMap @{ a = @('b','c'); b = @('d')} -ResourceType 'a'
+
+Get an array of all dependencies of resource type 'a', as defined in the given DependencyMap. Would return @('b','c','d')
+#>
+function Resolve-DependencyList {
+
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [hashtable] $DependencyMap,
+
+        [Parameter()]
+        [string] $ResourceType
+    )
+
+    $resolvedDependencies = @()
+    if ($DependencyMap.Keys -contains $ResourceType) {
+        $resolvedDependencies = $DependencyMap[$ResourceType]
+        foreach ($dependency in $DependencyMap[$ResourceType]) {
+            $resolvedDependencies += Resolve-DependencyList -DependencyMap $DependencyMap -ResourceType $dependency
+        }
+    }
+
+    $resolvedDependencies = $resolvedDependencies | Select-Object -Unique
+
+    return $resolvedDependencies
+}
+
+<#
+.SYNOPSIS
 Print a list of all local references for the modules in a given path
 
 .DESCRIPTION
@@ -75,16 +117,14 @@ function Get-LinkedLocalModuleList {
         }
     }
 
-    # Add nested dependencies - Should be recursive?
+    # Add nested dependencies
     $resolvedResultSet = @{}
-    foreach ($type in $resultSet.Keys) {
-        foreach ($dependency in $resultSet[$type]) {
-            if ($dependency -in $resultSet.Keys) {
-                $resolvedResultSet[$type] = (@() + $resultSet[$type] + $resultSet[$dependency]) | Select-Object -Unique
-            } else {
-                $resolvedResultSet[$type] = $resultSet[$type]
-            }
+    foreach ($resourceType in $resultSet.Keys) {
+        $resolvedDependencies = $resultSet[$typresourceTypee]
+        foreach ($dependency in $resultSet[$resourceType]) {
+            $resolvedDependencies += Resolve-DependencyList -DependencyMap $resultSet -ResourceType $resourceType
         }
+        $resolvedResultSet[$type] = $resolvedDependencies | Select-Object -Unique
     }
     $resultSet = $resolvedResultSet
 
