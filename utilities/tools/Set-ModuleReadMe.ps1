@@ -340,7 +340,7 @@ function Set-DependenciesSection {
 
     if ($SectionContent.Count -eq 2) {
         # No content was added, adding placeholder
-        $SectionContent += '| - | - |'
+        $SectionContent = @('_None_')
 
     }
 
@@ -401,7 +401,7 @@ function Set-DeploymentExamplesSection {
         [bool] $addBicep = $true,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Dependencies'
+        [string] $SectionStartIdentifier = '## Deployment examples'
     )
 
     # Load used function(s)
