@@ -118,13 +118,13 @@ function Get-LinkedLocalModuleList {
     }
 
     # Add nested dependencies
-    $resolvedResultSet = @{}
+    $resolvedResultSet = [ordered]@{}
     foreach ($resourceType in $resultSet.Keys) {
-        $resolvedDependencies = $resultSet[$typresourceTypee]
+        $resolvedDependencies = $resultSet[$resourceType]
         foreach ($dependency in $resultSet[$resourceType]) {
             $resolvedDependencies += Resolve-DependencyList -DependencyMap $resultSet -ResourceType $resourceType
         }
-        $resolvedResultSet[$type] = $resolvedDependencies | Select-Object -Unique
+        $resolvedResultSet[$resourceType] = $resolvedDependencies | Select-Object -Unique
     }
     $resultSet = $resolvedResultSet
 
