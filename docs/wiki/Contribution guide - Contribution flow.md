@@ -19,9 +19,14 @@ Depending on the nature of your contribution, the number and implementation of t
 We kindly ask you to have an issue mapped to the contribution you'd like to make.
 How you proceed from here, depends on the scenario:
 
-- If you just want to contribute to this project, but don't know yet where and how you should start, navigate to the '[Projects](https://github.com/Azure/ResourceModules/projects)' tab on the repository, check what items are currently still in the 'to-do' swim lane and pick one that speaks to you. In this case you should assign the item to yourself / or reach out to discuss its content & priority.
+- If you just want to contribute to this project, but don't know yet where and how you should start, navigate to the '[Projects (classic)](https://github.com/Azure/ResourceModules/projects?type=classic)' tab on the repository. You will find, that we have 2 projects: 'Bug board' & 'Backlog'. In the CARML repository we apply the following priorities when selecting issues:
+  1. The Bug board's `'High Priority'` column
+  1. The Bug board's `'Low Priority'` column
+  1. The Backlog's `'To do'` column, which has its items sorted by priority from the top <p>
 
-   <img src="./media/ContributionGuide/projectsTab.jpg" alt="Projects Tab" height="178" width="414">
+  For the biggest impact, you can help us by following the same path. However, if none of the items speak to you, feel free to self-assign any other item of the `'To do'` column that you feel comfortable with. In this case you should assign the item to yourself / or reach out to discuss its content & priority.
+
+   <img src="./media/ContributionGuide/projectsTab.png" alt="Projects Tab" height="300">
 
   > Note: For starters, we suggest to search for issues labelled with `good first issue`.
 
