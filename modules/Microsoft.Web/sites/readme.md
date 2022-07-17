@@ -24,10 +24,11 @@ This module deploys a web or function app.
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `kind` | string | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
-| `name` | string |  | Name of the site. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `kind` | string |  | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
+| `name` | string |  |  | Name of the site. |
+| `serverFarmResourceId` | string | `''` |  | The resource ID of the app service plan to use for the site. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -51,7 +52,6 @@ This module deploys a web or function app.
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `serverFarmResourceId` | string | `''` |  | The resource ID of the app service plan to use for the site. |
 | `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` |  | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
 | `siteConfig` | object | `{object}` |  | The site config object. |
 | `storageAccountId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
