@@ -397,7 +397,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>-az-sqlsrv-x-001'
     // Non-required parameters
-    administratorLogin: kv1.getSecret('administratorLogin')
+    administratorLogin: 'adminUserName'
     administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
     databases: [
       {
@@ -483,12 +483,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     // Non-required parameters
     "administratorLogin": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLogin"
-      }
+      "value": "adminUserName"
     },
     "administratorLoginPassword": {
       "reference": {
