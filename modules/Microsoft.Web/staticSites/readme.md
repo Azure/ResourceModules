@@ -1,6 +1,6 @@
-# Static Web Sites `[Microsoft.Web/staticSites]`
+# Web Static Sites `[Microsoft.Web/staticSites]`
 
-This module deploys a Static Web Site.
+This module deploys a Web Static Site.
 
 ## Navigation
 
