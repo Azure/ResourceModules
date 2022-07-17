@@ -7,7 +7,7 @@ This module deploys a key vault key.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross Referenced Modules](#Cross-Referenced-Modules)
 
 ## Resource Types
 

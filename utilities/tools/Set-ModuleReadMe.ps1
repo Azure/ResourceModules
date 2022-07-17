@@ -310,7 +310,7 @@ function Set-DependenciesSection {
         [object[]] $ReadMeFileContent,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Dependencies'
+        [string] $SectionStartIdentifier = '## Cross Referenced Modules'
     )
 
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'tools' 'Get-LinkedModuleList.ps1')
@@ -320,6 +320,8 @@ function Set-DependenciesSection {
 
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
+        'This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs). ',
+        '',
         '| Dependency | Type |',
         '| :-- | :-- |'
     )
@@ -334,11 +336,11 @@ function Set-DependenciesSection {
 
     if ($dependencies.Keys -contains 'remoteReferences' -and $dependencies['remoteReferences']) {
         foreach ($reference in ($dependencies['remoteReferences'] | Sort-Object)) {
-            $SectionContent += ("| ``{0}`` | {1} |" -f $reference, 'Registry reference')
+            $SectionContent += ("| ``{0}`` | {1} |" -f $reference, 'Remote reference')
         }
     }
 
-    if ($SectionContent.Count -eq 2) {
+    if ($SectionContent.Count -eq 4) {
         # No content was added, adding placeholder
         $SectionContent = @('_None_')
 

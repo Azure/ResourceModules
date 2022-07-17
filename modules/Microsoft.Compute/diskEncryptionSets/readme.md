@@ -152,6 +152,8 @@ tags: {
 
 ## Cross Referenced Modules
 
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
 | Dependency | Type |
 | :-- | :-- |
 | `Microsoft.KeyVault/vaults/accessPolicies` | Local reference |
