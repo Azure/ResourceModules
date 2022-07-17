@@ -65,6 +65,9 @@
         "softDeleteRetentionInDays": {
             "value": 1
         },
+        "publicNetworkAccess": {
+            "value": "Enabled"
+        },
         "privateEndpoints": {
             "value": [
                 {

@@ -366,6 +366,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
     ]
+    publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {
         principalIds: [
@@ -450,6 +451,9 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
       ]
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
     },
     "roleAssignments": {
       "value": [
