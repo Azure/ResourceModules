@@ -62,9 +62,6 @@
         "enablePurgeProtection": {
             "value": false
         },
-        "publicNetworkAccess": {
-            "value": "Enabled"
-        },
         "softDeleteRetentionInDays": {
             "value": 1
         },
@@ -72,7 +69,12 @@
             "value": [
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "configurationStores"
+                    "service": "configurationStores",
+                    "privateDnsZoneGroup": {
+                        "privateDNSResourceIds": [
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io"
+                        ]
+                    }
                 }
             ]
         }
