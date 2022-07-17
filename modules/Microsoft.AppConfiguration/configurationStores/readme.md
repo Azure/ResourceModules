@@ -355,12 +355,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         value: 'valueName'
       }
     ]
-    privateEndpoints: [
-      {
-        service: 'configurationStores'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-      }
-    ]
     roleAssignments: [
       {
         principalIds: [
@@ -430,14 +424,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
             }
           ],
           "value": "valueName"
-        }
-      ]
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "service": "configurationStores",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
       ]
     },
