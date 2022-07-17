@@ -3,11 +3,11 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-appcs-x-001"
+            "value": "<<namePrefix>>-az-appc-x-001"
         },
-        "lock": {
-            "value": "CanNotDelete"
-        },
+        // "lock": {
+        //     "value": "CanNotDelete"
+        // },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
