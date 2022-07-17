@@ -921,8 +921,8 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             foreach ($parameterFileTestCase in $testFileTestCases) {
-                $TemplateFile_RequiredParametersNames = $parameterFileTestCase.templateFile_RequiredParametersNames
-                $testFile_AllParameterNames = $parameterFileTestCase.templateFile_AllParameterNames
+                $TemplateFile_RequiredParametersNames = $parameterFileTestCase.TemplateFile_RequiredParametersNames
+                $testFile_AllParameterNames = $parameterFileTestCase.testFile_AllParameterNames
 
                 $missingParameters = $templateFile_RequiredParametersNames | Where-Object { $testFile_AllParameterNames -notcontains $_ }
                 $missingParameters.Count | Should -Be 0 -Because ('no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}]' -f ($missingParameters -join ', '))
