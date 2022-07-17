@@ -921,11 +921,27 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             foreach ($parameterFileTestCase in $testFileTestCases) {
-                $TemplateFile_RequiredParametersNames = $parameterFileTestCase.TemplateFile_RequiredParametersNames
-                $testFile_AllParameterNames = $parameterFileTestCase.testFile_AllParameterNames
+                $TemplateFile_RequiredParametersNames = $parameterFileTestCase.templateFile_RequiredParametersNames
+                $testFile_AllParameterNames = $parameterFileTestCase.templateFile_AllParameterNames
 
                 $missingParameters = $templateFile_RequiredParametersNames | Where-Object { $testFile_AllParameterNames -notcontains $_ }
                 $missingParameters.Count | Should -Be 0 -Because ('no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}]' -f ($missingParameters -join ', '))
+            }
+        }
+
+        It '[<moduleFolderName>] All non-required parameters in template file should not have description that start with "Required."' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $testFileTestCases,
+                [hashtable] $templateContent
+            )
+
+            foreach ($parameterFileTestCase in $testFileTestCases) {
+                $TemplateFile_RequiredParametersNames = $parameterFileTestCase.templateFile_RequiredParametersNames
+                $templateFile_AllParameterNames = $parameterFileTestCase.templateFile_AllParameterNames
+                $nonRequiredParameterNames = $templateFile_AllParameterNames | Where-Object { $_ -notin $TemplateFile_RequiredParametersNames }
+
+                $incorrectParameters = $nonRequiredParameterNames | Where-Object { ($templateContent.parameters[$_].defaultValue) -and ($templateContent.parameters[$_].metadata.description -like 'Required. *') }
+                $incorrectParameters.Count | Should -Be 0 -Because ('all non-required parameters in the template file should not have a description that starts with "Required.". Found incorrect items: [{0}]' -f ($incorrectParameters -join ', '))
             }
         }
     }
