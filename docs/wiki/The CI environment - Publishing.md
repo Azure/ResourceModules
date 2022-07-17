@@ -45,7 +45,7 @@ The following table provides you with a comparison of the locations described ab
 
 | Category | Feature | Template Specs | Bicep Registry | Universal Packages |
 | - | - | - | - | - |
-| UI capabilities |
+| Portal/UI |
 | | Template can be viewed |:white_check_mark: | | |
 | | Template can be downloaded | | | |
 | Template deployment |
