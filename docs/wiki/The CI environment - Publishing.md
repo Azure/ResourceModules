@@ -53,7 +53,7 @@ The following table provides you with a comparison of the locations described ab
 | | Template can be downloaded | | | |
 | |
 | Deployment |
-| | Supports [template-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :wavy_dash: |
+| | Supports [template-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :large_orange_diamond: |
 | | Supports [pipeline-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :white_check_mark:  |
 | | Supports single endpoint | | :white_check_mark: | :white_check_mark: |
 | |
