@@ -27,8 +27,8 @@ This module deploys EventHub Namespaces NetworkRuleSets.
 | `defaultAction` | string | `'Allow'` | `[Allow, Deny]` | Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules/virtualNetworkRules or are being used. If ipRules/virtualNetworkRules are not used and PublicNetworkAccess is set to "Disabled", setting this to "Deny" would render the namespace resources inaccessible for data-plane requests. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ipRules` | array | `[]` |  | List of IpRules. When used, defaultAction will be set to "Deny" and publicNetworkAccess will be set to "Enabled". |
-| `publicNetworkAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | This determines if traffic is allowed over public network. Default it is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only. |
-| `trustedServiceAccessEnabled` | bool | `True` | `[True, False]` | Value that indicates whether Trusted Service Access is Enabled or not. Default is "true". |
+| `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | This determines if traffic is allowed over public network. Default it is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only. |
+| `trustedServiceAccessEnabled` | bool | `True` | `[False, True]` | Value that indicates whether Trusted Service Access is Enabled or not. Default is "true". |
 | `virtualNetworkRules` | array | `[]` |  | List VirtualNetwork Rules. When used, defaultAction will be set to "Deny" and publicNetworkAccess will be set to "Enabled". |
 
 

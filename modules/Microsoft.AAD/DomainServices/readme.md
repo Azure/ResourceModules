@@ -43,25 +43,25 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `domainConfigurationType` | string | `'FullySynced'` | `[FullySynced, ResourceTrusting]` | The value is to provide domain configuration type. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `externalAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable the Secure LDAP for external services of Azure ADDS Services. |
+| `externalAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable the Secure LDAP for external services of Azure ADDS Services. |
 | `filteredSync` | string | `'Enabled'` |  | The value is to synchronize scoped users and groups. |
-| `kerberosArmoring` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable to provide a protected channel between the Kerberos client and the KDC. |
-| `kerberosRc4Encryption` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable Kerberos requests that use RC4 encryption. |
-| `ldaps` | string | `'Enabled'` | `[Enabled, Disabled]` | A flag to determine whether or not Secure LDAP is enabled or disabled. |
+| `kerberosArmoring` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable to provide a protected channel between the Kerberos client and the KDC. |
+| `kerberosRc4Encryption` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable Kerberos requests that use RC4 encryption. |
+| `ldaps` | string | `'Enabled'` | `[Disabled, Enabled]` | A flag to determine whether or not Secure LDAP is enabled or disabled. |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Azure ADDS Services. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `logsToEnable` | array | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | The name of logs that will be streamed. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `logsToEnable` | array | `[AccountLogon, AccountManagement, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]` | `[AccountLogon, AccountManagement, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]` | The name of logs that will be streamed. |
 | `name` | string | `[parameters('domainName')]` |  | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |
-| `notifyDcAdmins` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to notify the DC Admins. |
-| `notifyGlobalAdmins` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to notify the Global Admins. |
-| `ntlmV1` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable clients making request using NTLM v1. |
+| `notifyDcAdmins` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to notify the DC Admins. |
+| `notifyGlobalAdmins` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to notify the Global Admins. |
+| `ntlmV1` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable clients making request using NTLM v1. |
 | `replicaSets` | array | `[]` |  | Additional replica set for the managed domain. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'Standard'` | `[Standard, Enterprise, Premium]` | The name of the SKU specific to Azure ADDS Services. |
-| `syncNtlmPasswords` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable synchronized users to use NTLM authentication. |
-| `syncOnPremPasswords` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable on-premises users to authenticate against managed domain. |
+| `sku` | string | `'Standard'` | `[Enterprise, Premium, Standard]` | The name of the SKU specific to Azure ADDS Services. |
+| `syncNtlmPasswords` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable synchronized users to use NTLM authentication. |
+| `syncOnPremPasswords` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable on-premises users to authenticate against managed domain. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `tlsV1` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable clients making request using TLSv1. |
+| `tlsV1` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable clients making request using TLSv1. |
 
 
 ### Parameter Usage: `roleAssignments`
