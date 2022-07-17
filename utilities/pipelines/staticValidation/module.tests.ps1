@@ -532,7 +532,6 @@ Describe 'Readme tests' -Tag Readme {
                 git checkout HEAD -- $readMeFilePath
             }
             $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
-
         }
     }
 }
