@@ -62,6 +62,6 @@ The following resources are required to be able to deploy this resource.
 | `resourceGroupName` | string | The resource group the API management service authorization server was deployed into. |
 | `resourceId` | string | The resource ID of the API management service authorization server. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

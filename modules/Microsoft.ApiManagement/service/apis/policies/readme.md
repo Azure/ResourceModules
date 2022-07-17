@@ -44,6 +44,6 @@ This module deploys API Management Service APIs policies.
 | `resourceGroupName` | string | The resource group the API policy was deployed into. |
 | `resourceId` | string | The resource ID of the API policy. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -144,7 +144,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the DDOS protection plan was deployed into. |
 | `resourceId` | string | The resource ID of the DDOS protection plan. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

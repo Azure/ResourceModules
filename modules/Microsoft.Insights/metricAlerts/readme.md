@@ -374,7 +374,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the metric alert was deployed into. |
 | `resourceId` | string | The resource ID of the metric alert. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

@@ -98,6 +98,6 @@ replicationContainers: [
 | `resourceGroupName` | string | The name of the resource group the replication fabric was created in. |
 | `resourceId` | string | The resource ID of the replication fabric. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

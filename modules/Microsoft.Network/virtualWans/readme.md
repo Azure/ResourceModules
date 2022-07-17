@@ -148,7 +148,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the virtual WAN was deployed into. |
 | `resourceId` | string | The resource ID of the virtual WAN. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

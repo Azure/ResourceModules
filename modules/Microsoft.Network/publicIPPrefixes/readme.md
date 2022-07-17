@@ -145,7 +145,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the public IP prefix was deployed into. |
 | `resourceId` | string | The resource ID of the public IP prefix. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

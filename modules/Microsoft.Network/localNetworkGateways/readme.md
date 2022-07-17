@@ -150,7 +150,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the local network gateway was deployed into. |
 | `resourceId` | string | The resource ID of the local network gateway. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

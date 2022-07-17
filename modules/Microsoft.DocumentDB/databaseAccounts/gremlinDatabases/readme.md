@@ -178,6 +178,6 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The name of the resource group the Gremlin database was created in. |
 | `resourceId` | string | The resource ID of the Gremlin database. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

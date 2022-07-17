@@ -226,7 +226,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the private link scope was deployed into. |
 | `resourceId` | string | The resource ID of the private link scope. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

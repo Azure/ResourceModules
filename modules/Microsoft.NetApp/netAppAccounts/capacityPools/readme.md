@@ -152,6 +152,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the Resource Group the Capacity Pool was created in. |
 | `resourceId` | string | The resource ID of the Capacity Pool. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

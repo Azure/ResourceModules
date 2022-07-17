@@ -42,6 +42,6 @@ This module deploys an EventHub Namespace Disaster Recovery Config
 | `resourceGroupName` | string | The name of the resource group the disaster recovery config was created in. |
 | `resourceId` | string | The resource ID of the disaster recovery config. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

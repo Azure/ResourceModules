@@ -155,7 +155,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the AVD workspace was deployed into. |
 | `resourceId` | string | The resource ID of the AVD workspace. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

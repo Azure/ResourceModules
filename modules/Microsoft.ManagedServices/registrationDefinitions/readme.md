@@ -164,7 +164,7 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 **More info on this topic:**
 
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

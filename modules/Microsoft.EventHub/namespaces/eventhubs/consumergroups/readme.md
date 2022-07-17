@@ -43,6 +43,6 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 | `resourceGroupName` | string | The name of the resource group the consumer group was created in. |
 | `resourceId` | string | The resource ID of the consumer group. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

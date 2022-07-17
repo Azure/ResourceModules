@@ -42,7 +42,7 @@ This module deploys OperationsManagement Solutions.
 | `resourceGroupName` | string | The resource group where the solution is deployed. |
 | `resourceId` | string | The resource ID of the deployed solution. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

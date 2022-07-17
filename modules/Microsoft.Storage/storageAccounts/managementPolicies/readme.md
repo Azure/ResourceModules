@@ -123,6 +123,6 @@ rules: [
 | `resourceGroupName` | string | The resource group of the deployed management policy. |
 | `resourceId` | string | The resource ID of the deployed management policy. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

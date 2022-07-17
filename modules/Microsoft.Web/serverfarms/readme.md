@@ -197,7 +197,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the app service plan was deployed into. |
 | `resourceId` | string | The resource ID of the app service plan. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

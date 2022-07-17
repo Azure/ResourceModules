@@ -90,6 +90,6 @@ Please reference the documentation for [collections](./collections/readme.md)
 | `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
 | `resourceId` | string | The resource ID of the mongodb database. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

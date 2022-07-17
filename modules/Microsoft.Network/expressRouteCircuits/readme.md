@@ -166,7 +166,7 @@ tags: {
 | `resourceId` | string | The resource ID of express route curcuit. |
 | `serviceKey` | string | The service key of the express route circuit. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

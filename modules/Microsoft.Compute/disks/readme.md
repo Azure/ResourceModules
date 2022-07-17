@@ -164,7 +164,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the  disk was deployed into. |
 | `resourceId` | string | The resource ID of the disk. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

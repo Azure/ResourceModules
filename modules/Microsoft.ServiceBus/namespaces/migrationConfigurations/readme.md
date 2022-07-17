@@ -43,6 +43,6 @@ This module deploys a migration configuration for a service bus namespace
 | `resourceGroupName` | string | The name of the Resource Group the migration configuration was created in. |
 | `resourceId` | string | The Resource ID of the migration configuration. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

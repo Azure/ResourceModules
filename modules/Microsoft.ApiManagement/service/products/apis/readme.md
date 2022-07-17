@@ -42,6 +42,6 @@ This module deploys API Management Service Product APIs.
 | `resourceGroupName` | string | The resource group the product API was deployed into. |
 | `resourceId` | string | The resource ID of the product API. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

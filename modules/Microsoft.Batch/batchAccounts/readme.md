@@ -220,7 +220,7 @@ privateEndpoints:  [
 | `resourceGroupName` | string | The resource group the batch account was deployed into. |
 | `resourceId` | string | The resource ID of the batch account. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

@@ -259,7 +259,7 @@ roleAssignments: [
 | `resourceId` | string | The resource ID of the image template. |
 | `runThisCommand` | string | The command to run in order to trigger the image build. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

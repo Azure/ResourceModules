@@ -446,7 +446,7 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed log analytics workspace. |
 | `resourceId` | string | The resource ID of the deployed log analytics workspace. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

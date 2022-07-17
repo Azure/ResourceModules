@@ -192,6 +192,6 @@ The `privateEndpointNetworkPolicies` property must be set to disabled for subnet
 | `subnetAddressPrefix` | string | The address prefix for the subnet. |
 | `subnetAddressPrefixes` | array | List of address prefixes for the subnet. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -145,7 +145,7 @@ tags: {
 | `resourceGroupName` | string | The resource group of the IP group was deployed into. |
 | `resourceId` | string | The resource ID of the IP group. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

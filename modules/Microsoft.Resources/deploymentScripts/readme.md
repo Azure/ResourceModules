@@ -140,7 +140,7 @@ userAssignedIdentities: {
 
 This module requires a User Assigned Identity (MSI, managed service identity) to exist, and this MSI has to have contributor rights on the subscription - that allows the Deployment Script to create the required Storage Account and the Azure Container Instance.
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

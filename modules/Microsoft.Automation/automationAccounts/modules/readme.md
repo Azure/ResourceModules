@@ -87,6 +87,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed module. |
 | `resourceId` | string | The resource ID of the deployed module. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

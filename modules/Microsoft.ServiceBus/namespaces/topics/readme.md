@@ -117,6 +117,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed topic. |
 | `resourceId` | string | The resource ID of the deployed topic. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

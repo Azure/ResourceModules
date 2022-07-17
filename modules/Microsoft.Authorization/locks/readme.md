@@ -41,7 +41,7 @@ This module deploys Authorization Locks.
 | `resourceId` | string | The resource ID of the lock. |
 | `scope` | string | The scope this lock applies to. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

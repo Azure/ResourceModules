@@ -317,7 +317,7 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the VPN site was deployed into. |
 | `resourceId` | string | The resource ID of the VPN site. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

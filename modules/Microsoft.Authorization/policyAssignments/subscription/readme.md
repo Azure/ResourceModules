@@ -51,6 +51,6 @@ With this module you can perform policy assignments on a subscription level.
 | `principalId` | string | Policy Assignment principal ID. |
 | `resourceId` | string | Policy Assignment resource ID. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

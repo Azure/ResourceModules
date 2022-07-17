@@ -56,6 +56,6 @@ This module deploys Network Security Group Security Rules.
 | `resourceGroupName` | string | The resource group the security rule was deployed into. |
 | `resourceId` | string | The resource ID of the security rule. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

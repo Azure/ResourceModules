@@ -231,7 +231,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the action group was deployed into. |
 | `resourceId` | string | The resource ID of the action group . |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

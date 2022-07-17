@@ -106,6 +106,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed file share. |
 | `resourceId` | string | The resource ID of the deployed file share. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

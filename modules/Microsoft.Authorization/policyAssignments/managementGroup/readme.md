@@ -51,6 +51,6 @@ With this module you can perform policy assignments on a management group level.
 | `principalId` | string | Policy Assignment principal ID. |
 | `resourceId` | string | Policy Assignment resource ID. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

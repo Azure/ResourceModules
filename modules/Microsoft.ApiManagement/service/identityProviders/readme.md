@@ -52,6 +52,6 @@ This module deploys API Management Service Identity Provider.
 | `resourceGroupName` | string | The resource group the API management service identity provider was deployed into. |
 | `resourceId` | string | The resource ID of the API management service identity provider. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -156,7 +156,7 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the analysis service was deployed into. |
 | `resourceId` | string | The resource ID of the analysis service. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

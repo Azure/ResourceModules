@@ -81,6 +81,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the connection monitor was deployed into. |
 | `resourceId` | string | The resource ID of the deployed connection monitor. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

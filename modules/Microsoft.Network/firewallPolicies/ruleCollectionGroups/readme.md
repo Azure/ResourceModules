@@ -43,6 +43,6 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 | `resourceGroupName` | string | The resource group of the deployed rule collection group. |
 | `resourceId` | string | The resource ID of the deployed rule collection group. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

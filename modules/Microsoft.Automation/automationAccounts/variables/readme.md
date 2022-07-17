@@ -95,6 +95,6 @@ value: '\'TestString\''
 | `resourceGroupName` | string | The resource group of the deployed variable. |
 | `resourceId` | string | The resource ID of the deployed variable. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

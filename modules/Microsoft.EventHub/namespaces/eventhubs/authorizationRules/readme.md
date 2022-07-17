@@ -43,6 +43,6 @@ This module deploys an EventHub Namespace EventHubs Authorization Rule
 | `resourceGroupName` | string | The name of the resource group the authorization rule was created in. |
 | `resourceId` | string | The resource ID of the authorization rule. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

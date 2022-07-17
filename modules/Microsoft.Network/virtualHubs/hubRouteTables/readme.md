@@ -43,6 +43,6 @@ This module deploys virtual hub route tables.
 | `resourceGroupName` | string | The resource group the virtual hub route table was deployed into. |
 | `resourceId` | string | The resource ID of the deployed virtual hub route table. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -44,6 +44,6 @@ With this module you can create policy definitions on a subscription level.
 | `resourceId` | string | Policy Definition resource ID. |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

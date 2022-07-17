@@ -165,6 +165,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the image was deployed into. |
 | `resourceId` | string | The resource ID of the image. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -75,6 +75,6 @@ typeProperties: {
 | `resourceGroupName` | string | The name of the Resource Group the Integration Runtime was created in. |
 | `resourceId` | string | The resource ID of the Integration Runtime. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

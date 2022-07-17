@@ -148,7 +148,7 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 | `name` | string | The name of the resource group. |
 | `resourceId` | string | The resource ID of the resource group. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

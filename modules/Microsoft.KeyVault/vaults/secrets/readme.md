@@ -149,6 +149,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the resource group the secret was created in. |
 | `resourceId` | string | The resource ID of the secret. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

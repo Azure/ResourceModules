@@ -53,6 +53,6 @@ This module can be used to deploy a blob service into a storage account.
 | `resourceGroupName` | string | The name of the deployed blob service. |
 | `resourceId` | string | The resource ID of the deployed blob service. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

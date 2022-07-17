@@ -53,6 +53,6 @@ This module deploys an Azure Automation Account Schedule.
 | `resourceGroupName` | string | The resource group of the deployed schedule. |
 | `resourceId` | string | The resource ID of the deployed schedule. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

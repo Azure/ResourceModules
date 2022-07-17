@@ -48,6 +48,6 @@ This module deploys virtual hub virtual network connections.
 | `resourceGroupName` | string | The resource group the virtual hub connection was deployed into. |
 | `resourceId` | string | The resource ID of the virtual hub connection. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

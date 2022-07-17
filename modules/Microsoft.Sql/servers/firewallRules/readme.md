@@ -43,6 +43,6 @@ This module deploys an SQL Server Firewall rule.
 | `resourceGroupName` | string | The resource group of the deployed firewall rule. |
 | `resourceId` | string | The resource ID of the deployed firewall rule. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

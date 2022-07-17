@@ -90,6 +90,6 @@ tags: {
 | `resourceGroupName` | string | The resource group where the saved search is deployed. |
 | `resourceId` | string | The resource ID of the deployed saved search. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -117,6 +117,6 @@ graphs: [
 | `resourceGroupName` | string | The name of the resource group the graph was created in. |
 | `resourceId` | string | The resource ID of the graph. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

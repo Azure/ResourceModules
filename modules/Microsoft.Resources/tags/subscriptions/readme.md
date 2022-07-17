@@ -76,6 +76,6 @@ tags: {
 | `resourceId` | string | The resource ID of the applied tags. |
 | `tags` | object | The applied tags. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

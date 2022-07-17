@@ -48,6 +48,6 @@ This module deploys a Protection Container for a Recovery Services Vault
 | `resourceGroupName` | string | The name of the Resource Group the Protection Container was created in. |
 | `resourceId` | string | The resource ID of the Protection Container. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

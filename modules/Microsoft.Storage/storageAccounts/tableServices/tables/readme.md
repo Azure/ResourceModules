@@ -42,6 +42,6 @@ This module deploys a storage account table
 | `resourceGroupName` | string | The resource group of the deployed file share service. |
 | `resourceId` | string | The resource ID of the deployed file share service. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

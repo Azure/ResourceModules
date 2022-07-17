@@ -51,6 +51,6 @@ This module can be used to deploy a file share service into a storage account.
 | `resourceGroupName` | string | The resource group of the deployed file share service. |
 | `resourceId` | string | The resource ID of the deployed file share service. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

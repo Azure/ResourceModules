@@ -147,7 +147,7 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed image gallery. |
 | `resourceId` | string | The resource ID of the deployed image gallery. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

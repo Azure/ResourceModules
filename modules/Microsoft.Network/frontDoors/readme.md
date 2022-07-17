@@ -161,7 +161,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the front door was deployed into. |
 | `resourceId` | string | The resource ID of the front door. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

@@ -144,7 +144,7 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the application security group was deployed into. |
 | `resourceId` | string | The resource ID of the application security group. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

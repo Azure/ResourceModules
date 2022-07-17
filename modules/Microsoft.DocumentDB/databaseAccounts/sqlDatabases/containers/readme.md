@@ -85,6 +85,6 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the container was created in. |
 | `resourceId` | string | The resource ID of the container. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

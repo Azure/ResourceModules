@@ -54,6 +54,6 @@ The following resources are required to be able to deploy this resource.
 | `resourceGroupName` | string | The resource group the virtual network peering was deployed into. |
 | `resourceId` | string | The resource ID of the virtual network peering. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

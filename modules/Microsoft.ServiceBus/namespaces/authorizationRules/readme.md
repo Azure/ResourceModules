@@ -42,6 +42,6 @@ This module deploys authorization rules for a service bus namespace
 | `resourceGroupName` | string | The name of the Resource Group the authorization rule was created in. |
 | `resourceId` | string | The resource ID of the authorization rule. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

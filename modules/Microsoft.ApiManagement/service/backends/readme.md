@@ -141,6 +141,6 @@ tls: {
 | `resourceGroupName` | string | The resource group the API management service backend was deployed into. |
 | `resourceId` | string | The resource ID of the API management service backend. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

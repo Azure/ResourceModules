@@ -93,6 +93,6 @@ replicationContainerMappings: [
 | `resourceGroupName` | string | The name of the resource group the replication container was created in. |
 | `resourceId` | string | The resource ID of the replication container. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

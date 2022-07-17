@@ -86,6 +86,6 @@ tags: {
 | `resourceGroupName` | string | The resource group where the storage insight configuration is deployed. |
 | `resourceId` | string | The resource ID of the deployed storage insights configuration. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

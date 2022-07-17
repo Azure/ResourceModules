@@ -107,6 +107,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed container. |
 | `resourceId` | string | The resource ID of the deployed container. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

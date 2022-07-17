@@ -45,6 +45,6 @@ With this module you can perform role assignments on a resource group level
 | `resourceId` | string | The resource ID of the Role Assignment. |
 | `scope` | string | The scope this Role Assignment applies to. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

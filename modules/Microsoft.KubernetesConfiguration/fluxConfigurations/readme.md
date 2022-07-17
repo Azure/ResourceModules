@@ -66,7 +66,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `resourceGroupName` | string | The name of the resource group the flux configuration was deployed into. |
 | `resourceId` | string | The resource ID of the flux configuration. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

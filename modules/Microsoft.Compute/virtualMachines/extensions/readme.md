@@ -52,6 +52,6 @@ This module deploys a virtual machine extension.
 | `resourceGroupName` | string | The name of the Resource Group the extension was created in. |
 | `resourceId` | string | The resource ID of the extension. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

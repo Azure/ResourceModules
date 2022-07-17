@@ -87,6 +87,6 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the replication was created in. |
 | `resourceId` | string | The resource ID of the replication. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -42,6 +42,6 @@ This template deploys a linked Storage Accounts for a Log Analytics workspace.
 | `resourceGroupName` | string | The resource group where the linked storage account is deployed. |
 | `resourceId` | string | The resource ID of the deployed linked storage account. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

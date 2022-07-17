@@ -44,6 +44,6 @@ This module deploys IP filter rules for a service bus namespace
 | `resourceGroupName` | string | The name of the Resource Group the IP filter rule was created in. |
 | `resourceId` | string | The Resource ID of the IP filter rule. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

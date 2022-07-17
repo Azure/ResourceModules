@@ -73,6 +73,6 @@ siteConfig: [
 | `resourceGroupName` | string | The resource group the site config was deployed into. |
 | `resourceId` | string | The resource ID of the site config. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

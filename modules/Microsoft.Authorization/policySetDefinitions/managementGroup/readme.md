@@ -43,6 +43,6 @@ With this module you can create policy set definitions on a management group lev
 | `name` | string | Policy Set Definition Name. |
 | `resourceId` | string | Policy Set Definition resource ID. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

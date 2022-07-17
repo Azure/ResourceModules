@@ -347,7 +347,7 @@ The network security group and route table resources must reside in the same res
 | `subnetNames` | array | The names of the deployed subnets. |
 | `subnetResourceIds` | array | The resource IDs of the deployed subnets. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

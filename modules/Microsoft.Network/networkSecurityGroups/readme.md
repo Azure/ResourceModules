@@ -154,7 +154,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the network security group was deployed into. |
 | `resourceId` | string | The resource ID of the network security group. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

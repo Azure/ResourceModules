@@ -176,6 +176,6 @@ properties: {
 | `resourceGroupName` | string | The name of the resource group the backup policy was created in. |
 | `resourceId` | string | The resource ID of the backup policy. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -379,7 +379,7 @@ privateEndpoints:  [
 | `resourceId` | string | The resource ID of the key vault. |
 | `uri` | string | The URI of the key vault. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

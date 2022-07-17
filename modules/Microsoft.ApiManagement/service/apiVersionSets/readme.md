@@ -38,6 +38,6 @@ This module deploys API Management Service APIs Version Set.
 | `resourceGroupName` | string | The resource group the API Version set was deployed into. |
 | `resourceId` | string | The resource ID of the API Version set. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

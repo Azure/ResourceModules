@@ -282,7 +282,7 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the Azure Bastion was deployed into. |
 | `resourceId` | string | The resource ID the Azure Bastion. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

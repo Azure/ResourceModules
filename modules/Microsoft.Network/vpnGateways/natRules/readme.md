@@ -46,6 +46,6 @@ This module deploys VPN Gateways NATRules
 | `resourceGroupName` | string | The name of the resource group the NAT rule was deployed into. |
 | `resourceId` | string | The resource ID of the NAT rule. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

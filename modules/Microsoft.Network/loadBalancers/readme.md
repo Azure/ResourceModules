@@ -458,7 +458,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the load balancer was deployed into. |
 | `resourceId` | string | The resource ID of the load balancer. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

@@ -177,6 +177,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the batch account was deployed into. |
 | `resourceId` | string | The resource ID of the key values. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

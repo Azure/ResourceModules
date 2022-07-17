@@ -45,6 +45,6 @@ With this module you can create role definitions on a resource group level
 | `resourceId` | string | The resource ID of the Role Definition. |
 | `scope` | string | The scope this Role Definition applies to. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -239,7 +239,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the virtual network gateway was deployed. |
 | `resourceId` | string | The resource ID of the virtual network gateway. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

@@ -221,7 +221,7 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the application gateway was deployed into. |
 | `resourceId` | string | The resource ID of the application gateway. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

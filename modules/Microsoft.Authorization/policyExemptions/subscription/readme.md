@@ -45,6 +45,6 @@ With this module you can create policy exemptions on a subscription level.
 | `resourceId` | string | Policy Exemption resource ID. |
 | `scope` | string | Policy Exemption Scope. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

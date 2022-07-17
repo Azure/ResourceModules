@@ -125,7 +125,7 @@ module policydefinition 'yourpath/modules/Microsoft.Authorization.policyDefiniti
 | `resourceId` | string | Policy Definition resource ID. |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

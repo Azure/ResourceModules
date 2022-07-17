@@ -166,7 +166,7 @@ module roleassignment 'yourpath/modules/Microsoft.Authorization.roleAssignments/
 
 This module can be deployed at the management group, subscription or resource group level
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

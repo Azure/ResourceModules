@@ -135,7 +135,7 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group of the deployed firewall policy. |
 | `resourceId` | string | The resource ID of the deployed firewall policy. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

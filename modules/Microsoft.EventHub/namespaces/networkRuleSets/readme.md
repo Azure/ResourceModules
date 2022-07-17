@@ -83,6 +83,6 @@ Contains an array of objects for the public IP ranges you want to allow via the 
 | `resourceGroupName` | string | The name of the resource group the network rule set was created in. |
 | `resourceId` | string | The resource ID of the network rule set. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

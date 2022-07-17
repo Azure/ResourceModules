@@ -93,6 +93,6 @@ tags: {
 | `resourceId` | string | The resource ID of the webhook. |
 | `status` | string | The status of the webhook. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

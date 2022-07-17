@@ -148,7 +148,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the network watcher was deployed into. |
 | `resourceId` | string | The resource ID of the deployed network watcher. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

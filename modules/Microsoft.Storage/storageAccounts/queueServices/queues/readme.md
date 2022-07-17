@@ -104,6 +104,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed queue. |
 | `resourceId` | string | The resource ID of the deployed queue. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

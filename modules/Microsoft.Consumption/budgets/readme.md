@@ -47,7 +47,7 @@ This module deploys budgets for subscriptions.
 | `resourceId` | string | The resource ID of the budget. |
 | `subscriptionName` | string | The subscription the budget was deployed into. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

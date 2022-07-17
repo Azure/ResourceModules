@@ -235,7 +235,7 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the event grid was deployed into. |
 | `resourceId` | string | The resource ID of the event grid. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

@@ -77,6 +77,6 @@ keyVault: {
 | `resourceGroupName` | string | The resource group the named value was deployed into. |
 | `resourceId` | string | The resource ID of the named value. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -254,7 +254,7 @@ tags: {
 | `resourceId` | string | The resource ID of the AVD host pool. |
 | `tokenExpirationTime` | string | The expiration time for the registration token. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

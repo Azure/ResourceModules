@@ -397,7 +397,7 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the machine learning service was deployed into. |
 | `resourceId` | string | The resource ID of the machine learning service. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

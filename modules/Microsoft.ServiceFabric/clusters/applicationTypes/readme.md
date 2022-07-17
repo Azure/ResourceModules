@@ -79,6 +79,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the Application type. |
 | `resourceID` | string | The resource ID of the Application type. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

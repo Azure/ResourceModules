@@ -172,6 +172,6 @@ monthlyOccurrences: [
 | `resourceGroupName` | string | The resource group of the deployed softwareUpdateConfiguration. |
 | `resourceId` | string | The resource ID of the deployed softwareUpdateConfiguration. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

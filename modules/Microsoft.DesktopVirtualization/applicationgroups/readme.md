@@ -158,7 +158,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the AVD application group was deployed into. |
 | `resourceId` | string | The resource ID of the AVD application group. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

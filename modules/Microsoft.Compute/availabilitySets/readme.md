@@ -148,7 +148,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the availability set was deployed into. |
 | `resourceId` | string | The resource ID of the availability set. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

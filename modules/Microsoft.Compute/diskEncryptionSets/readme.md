@@ -150,7 +150,7 @@ tags: {
 | `resourceId` | string | The resource ID of the disk encryption set. |
 | `systemAssignedPrincipalId` | string | The principal ID of the disk encryption set. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

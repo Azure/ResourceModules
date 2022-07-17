@@ -42,6 +42,6 @@ This module deploys a private endpoint private DNS zone group
 | `resourceGroupName` | string | The resource group the private endpoint DNS zone group was deployed into. |
 | `resourceId` | string | The resource ID of the private endpoint DNS zone group. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -46,6 +46,6 @@ This module deploys a Protection Container Protected Item for a Recovery Service
 | `resourceGroupName` | string | The name of the Resource Group the protected item was created in. |
 | `resourceId` | string | The resource ID of the protected item. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

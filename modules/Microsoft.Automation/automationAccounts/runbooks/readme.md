@@ -96,6 +96,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed runbook. |
 | `resourceId` | string | The resource ID of the deployed runbook. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

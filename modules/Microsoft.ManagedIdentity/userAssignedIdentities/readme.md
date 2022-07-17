@@ -141,7 +141,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the user assigned identity was deployed into. |
 | `resourceId` | string | The resource ID of the user assigned identity. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

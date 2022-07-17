@@ -161,7 +161,7 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the private endpoint was deployed into. |
 | `resourceId` | string | The resource ID of the private endpoint. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

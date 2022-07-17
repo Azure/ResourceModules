@@ -95,6 +95,6 @@ tags: {
 | `resourceGroupName` | string | The resource group where the data source is deployed. |
 | `resourceId` | string | The resource ID of the deployed data source. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

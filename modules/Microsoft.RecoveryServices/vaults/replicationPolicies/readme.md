@@ -47,6 +47,6 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 | `resourceGroupName` | string | The name of the resource group the replication policy was created in. |
 | `resourceId` | string | The resource ID of the replication policy. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

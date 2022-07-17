@@ -42,6 +42,6 @@ This module deploys Insights PrivateLinkScopes ScopedResources.
 | `resourceGroupName` | string | The name of the resource group where the resource has been deployed. |
 | `resourceId` | string | The resource ID of the deployed scopedResource. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

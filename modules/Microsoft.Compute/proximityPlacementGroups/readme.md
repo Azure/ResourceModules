@@ -145,7 +145,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the proximity placement group was deployed into. |
 | `resourceId` | string | The resourceId the proximity placement group. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

@@ -317,7 +317,7 @@ privateEndpoints:  [
 | `resourceId` | string | The resource ID of the deployed SQL server. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

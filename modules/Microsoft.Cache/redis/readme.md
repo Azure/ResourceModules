@@ -317,7 +317,7 @@ privateEndpoints:  [
 | `sslPort` | int | Redis SSL port. |
 | `subnetId` | string | The full resource ID of a subnet in a virtual network where the Redis cache was deployed in. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

@@ -112,6 +112,6 @@ routingConfiguration: {
 | `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into. |
 | `resourceId` | string | The resource ID of the VPN connection. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

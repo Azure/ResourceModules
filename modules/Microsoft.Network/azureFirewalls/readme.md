@@ -298,7 +298,7 @@ tags: {
 The `applicationRuleCollections` parameter accepts a JSON Array of AzureFirewallApplicationRule objects.
 The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetworkRuleCollection objects.
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

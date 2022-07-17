@@ -41,6 +41,6 @@ This module deploys an Immutability Policy for a blob container
 | `resourceGroupName` | string | The resource group of the deployed immutability policy. |
 | `resourceId` | string | The resource ID of the deployed immutability policy. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

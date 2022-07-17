@@ -162,7 +162,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the NAT Gateway was deployed into. |
 | `resourceId` | string | The resource ID of the NAT Gateway. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

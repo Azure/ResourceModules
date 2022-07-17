@@ -46,6 +46,6 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | `resourceGroupName` | string | The name of the Resource Group the virtual network rule set was created in. |
 | `resourceId` | string | The Resource ID of the virtual network rule set. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

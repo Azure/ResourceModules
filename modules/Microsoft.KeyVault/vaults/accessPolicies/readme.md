@@ -97,6 +97,6 @@ accessPolicies: [
 | `resourceGroupName` | string | The name of the resource group the access policies assignment was created in. |
 | `resourceId` | string | The resource ID of the access policies assignment. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

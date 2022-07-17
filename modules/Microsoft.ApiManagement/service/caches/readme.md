@@ -45,6 +45,6 @@ This module deploys an API Management Service Cache.
 | `resourceGroupName` | string | The resource group the API management service cache was deployed into. |
 | `resourceId` | string | The resource ID of the API management service cache. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

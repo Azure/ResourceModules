@@ -167,7 +167,7 @@ module policyassignment 'yourpath/modules/Microsoft.Authorization.policyAssignme
 | `principalId` | string | Policy Assignment principal ID. |
 | `resourceId` | string | Policy Assignment resource ID. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

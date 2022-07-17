@@ -235,7 +235,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the route table was deployed into. |
 | `resourceId` | string | The resource ID of the route table. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

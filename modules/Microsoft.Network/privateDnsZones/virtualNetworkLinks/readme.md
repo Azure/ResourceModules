@@ -87,6 +87,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed virtual network link. |
 | `resourceId` | string | The resource ID of the deployed virtual network link. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

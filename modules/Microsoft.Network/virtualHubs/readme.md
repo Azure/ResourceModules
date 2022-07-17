@@ -102,7 +102,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the virtual hub was deployed into. |
 | `resourceId` | string | The resource ID of the virtual hub. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

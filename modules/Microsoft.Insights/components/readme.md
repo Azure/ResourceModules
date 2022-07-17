@@ -149,7 +149,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the application insights component was deployed into. |
 | `resourceId` | string | The resource ID of the application insights component. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

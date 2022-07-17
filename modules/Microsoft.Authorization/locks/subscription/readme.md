@@ -39,6 +39,6 @@ This module deploys Authorization Locks on Subscription level.
 | `scope` | string | The scope this lock applies to. |
 | `subscriptionName` | string | The subscription name the lock was deployed into. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -47,6 +47,6 @@ This module deploys API Management Subscriptions.
 | `resourceGroupName` | string | The resource group the API management service subscription was deployed into. |
 | `resourceId` | string | The resource ID of the API management service subscription. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

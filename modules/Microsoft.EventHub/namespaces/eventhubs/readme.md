@@ -121,6 +121,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the event hub was deployed into. |
 | `resourceId` | string | The authentication rule resource ID of the event hub. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

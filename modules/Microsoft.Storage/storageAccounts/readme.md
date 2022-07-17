@@ -363,7 +363,7 @@ userAssignedIdentities: {
 This is a generic module for deploying a Storage Account. Any customization for different storage needs (such as a diagnostic or other storage account) need to be done through the Archetype.
 The hierarchical namespace of the storage account (see parameter `enableHierarchicalNamespace`), can be only set at creation time.
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

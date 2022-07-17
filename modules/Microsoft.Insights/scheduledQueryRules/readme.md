@@ -156,7 +156,7 @@ tags: {
 | `resourceGroupName` | string | The Resource Group of the created query rule. |
 | `resourceId` | string | The resource ID of the created query rule. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

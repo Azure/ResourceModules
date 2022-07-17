@@ -151,6 +151,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the resource group the key was created in. |
 | `resourceId` | string | The resource ID of the key. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

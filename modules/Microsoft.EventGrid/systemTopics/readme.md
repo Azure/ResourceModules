@@ -268,7 +268,7 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the event grid system topic. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

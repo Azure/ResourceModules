@@ -249,7 +249,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the traffic manager was deployed into. |
 | `resourceId` | string | The resource ID of the traffic manager. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

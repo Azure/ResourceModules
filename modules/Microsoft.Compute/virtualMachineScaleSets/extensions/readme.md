@@ -50,6 +50,6 @@ This module deploys a virtual machine scale set extension.
 | `resourceGroupName` | string | The name of the Resource Group the extension was created in. |
 | `resourceId` | string | The ResourceId of the extension. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

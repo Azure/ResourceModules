@@ -105,6 +105,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed MX record. |
 | `resourceId` | string | The resource ID of the deployed MX record. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

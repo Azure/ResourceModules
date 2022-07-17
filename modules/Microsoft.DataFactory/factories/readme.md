@@ -281,7 +281,7 @@ privateEndpoints:  [
 | `resourceId` | string | The Resource ID of the Data factory. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

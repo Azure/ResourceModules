@@ -49,6 +49,6 @@ This module deploys AVD Applications.
 | `resourceGroupName` | string | The name of the Resource Group the AVD Application was created in. |
 | `resourceId` | string | The resource ID of the deployed Application. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

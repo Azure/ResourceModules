@@ -48,6 +48,6 @@ This module deploys a storage account table service
 | `resourceGroupName` | string | The resource group of the deployed table service. |
 | `resourceId` | string | The resource ID of the deployed table service. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

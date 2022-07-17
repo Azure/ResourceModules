@@ -218,7 +218,7 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed databricks workspace. |
 | `resourceId` | string | The resource ID of the deployed databricks workspace. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

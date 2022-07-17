@@ -145,7 +145,7 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the health bot was deployed into. |
 | `resourceId` | string | The resource ID of the health bot. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

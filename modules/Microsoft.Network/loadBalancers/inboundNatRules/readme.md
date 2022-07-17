@@ -51,6 +51,6 @@ This module deploys load balancers inbound NAT rules.
 | `resourceGroupName` | string | The resource group the inbound NAT rule was deployed into. |
 | `resourceId` | string | The resource ID of the inbound NAT rule. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

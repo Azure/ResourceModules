@@ -84,6 +84,6 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the SQL database was created in. |
 | `resourceId` | string | The resource ID of the SQL database. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

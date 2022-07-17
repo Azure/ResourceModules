@@ -53,6 +53,6 @@ With this module you can perform policy assignments on a resource group level
 | `resourceGroupName` | string | The name of the resource group the policy was assigned to. |
 | `resourceId` | string | Policy Assignment resource ID. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

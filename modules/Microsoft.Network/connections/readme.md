@@ -303,7 +303,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the remote connection was deployed into. |
 | `resourceId` | string | The resource ID of the remote connection. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

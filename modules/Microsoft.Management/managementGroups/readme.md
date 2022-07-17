@@ -122,7 +122,7 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Auto
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
 ```
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

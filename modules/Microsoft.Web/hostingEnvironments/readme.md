@@ -198,7 +198,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the app service environment was deployed into. |
 | `resourceId` | string | The resource ID of the app service environment. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

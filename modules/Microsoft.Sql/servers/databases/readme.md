@@ -111,6 +111,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed database. |
 | `resourceId` | string | The resource ID of the deployed database. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

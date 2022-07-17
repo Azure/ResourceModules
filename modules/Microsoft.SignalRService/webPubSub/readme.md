@@ -342,7 +342,7 @@ networkAcls: {
 | `resourceId` | string | The Web PubSub resource ID. |
 | `serverPort` | int | The Web PubSub serverPort. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

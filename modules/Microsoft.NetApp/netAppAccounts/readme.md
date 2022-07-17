@@ -153,7 +153,7 @@ tags: {
 | `resourceGroupName` | string | The name of the Resource Group the NetApp account was created in. |
 | `resourceId` | string | The Resource ID of the NetApp account. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

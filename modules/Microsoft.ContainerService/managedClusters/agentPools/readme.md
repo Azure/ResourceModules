@@ -116,6 +116,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the agent pool was deployed into. |
 | `resourceId` | string | The resource ID of the agent pool. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

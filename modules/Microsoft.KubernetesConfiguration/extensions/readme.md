@@ -64,7 +64,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `resourceGroupName` | string | The name of the resource group the extension was deployed into. |
 | `resourceId` | string | The resource ID of the extension. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

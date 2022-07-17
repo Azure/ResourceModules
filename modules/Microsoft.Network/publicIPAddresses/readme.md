@@ -158,7 +158,7 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the public IP address was deployed into. |
 | `resourceId` | string | The resource ID of the public IP address. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

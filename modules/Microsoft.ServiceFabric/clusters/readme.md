@@ -227,7 +227,7 @@ tags: {
 | `resourceGroupName` | string | The Service Fabric Cluster resource group. |
 | `resourceId` | string | The Service Fabric Cluster resource ID. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

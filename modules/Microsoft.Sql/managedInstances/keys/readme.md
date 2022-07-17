@@ -39,6 +39,6 @@ This module deploys a key for a SQL managed instance.
 | `resourceGroupName` | string | The resource group of the deployed managed instance. |
 | `resourceId` | string | The resource ID of the deployed managed instance. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

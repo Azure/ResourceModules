@@ -393,7 +393,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the activity log alert was deployed into. |
 | `resourceId` | string | The resource ID of the activity log alert. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

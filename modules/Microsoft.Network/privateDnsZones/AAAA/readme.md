@@ -105,6 +105,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed AAAA record. |
 | `resourceId` | string | The resource ID of the deployed AAAA record. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

@@ -95,7 +95,7 @@ securityContactProperties: {
 | `name` | string | The name of the security center. |
 | `workspaceId` | string | The resource ID of the used log analytics workspace. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

@@ -267,7 +267,7 @@ userAssignedIdentities: {
 
 - *None*
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

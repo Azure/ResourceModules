@@ -224,7 +224,7 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed Synapse Private Link Hub. |
 | `resourceId` | string | The resource ID of the deployed Synapse Private Link Hub. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

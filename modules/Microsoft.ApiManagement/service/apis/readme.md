@@ -63,6 +63,6 @@ This module deploys API Management Service APIs.
 | `resourceGroupName` | string | The resource group the API management service API was deployed to. |
 | `resourceId` | string | The resource ID of the API management service API. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

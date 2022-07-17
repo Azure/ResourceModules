@@ -162,7 +162,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the private DNS zone was deployed into. |
 | `resourceId` | string | The resource ID of the private DNS zone. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

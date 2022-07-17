@@ -343,7 +343,7 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the deployed automation account. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Dependencies
+## Cross Referenced Modules
 
 | Dependency | Type |
 | :-- | :-- |

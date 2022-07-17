@@ -105,6 +105,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed PTR record. |
 | `resourceId` | string | The resource ID of the deployed PTR record. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

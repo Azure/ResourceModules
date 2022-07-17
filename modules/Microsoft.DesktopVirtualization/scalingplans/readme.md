@@ -256,7 +256,7 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the AVD scaling plan was deployed into. |
 | `resourceId` | string | The resource ID of the AVD scaling plan. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 

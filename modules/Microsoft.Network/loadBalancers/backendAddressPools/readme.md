@@ -43,6 +43,6 @@ This module deploys load balancer backend address pools.
 | `resourceGroupName` | string | The resource group the backend address pool was deployed into. |
 | `resourceId` | string | The resource ID of the backend address pool. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_

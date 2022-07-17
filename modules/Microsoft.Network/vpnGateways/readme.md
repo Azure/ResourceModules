@@ -169,7 +169,7 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the VPN gateway was deployed into. |
 | `resourceId` | string | The resource ID of the VPN gateway. |
 
-## Dependencies
+## Cross Referenced Modules
 
 _None_
 
