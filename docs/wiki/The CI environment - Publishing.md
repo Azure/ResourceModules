@@ -1,6 +1,7 @@
 This section provides an overview of the principles the publishing is built upon, how it is set up, and how you can interact with it.
 
 - [Publishing overview](#publishing-overview)
+- [Considerations](#considerations)
 - [How it works](#how-it-works)
   - [Example scenario](#example-scenario)
   - [Output example](#output-example)
@@ -11,7 +12,7 @@ This section provides an overview of the principles the publishing is built upon
 The publishing phase concludes each module's pipeline. If all previous tests succeed (i.e., no phase failed) and the pipeline is run in the `main` or `master` branch, a new module version is published to all configured target locations. Currently, we support the following target locations:
 
 - _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
-- _[Private Bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
+- _[Bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
 - _[Azure DevOps universal packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
    > Note: this is only available if using Azure DevOps pipelines.
 
@@ -19,6 +20,39 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 
 > **Note**<br>
 > The `version` used for publishing any artifact is the same for all three target locations, which reduces the maintenance effort.
+
+# Considerations
+
+While the CARML CI-environment can publish to all locations mentioned above, you may effectively decide to configure only subset as per your requirements. To help you with the decision, the following content provides you with an overview of the possibilities of each target location.
+
+## Outline
+- **Template Specs**<p>
+  A [Template Spec](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell) is an Azure resource with the purpose of storing & referencing Azure Resource Manager (ARM) templates. <p>
+  When publishing Bicep modules as Template Specs, the module is compiled - and the resulting ARM template is uploaded as a Template Spec resource version to a Resource Group of your choice.
+  > **Note:** Even though the published resource is an ARM template, you can reference it in you Bicep template as a remote module like it would be native Bicep.
+
+- **Bicep Registry**<p>
+  A [Bicep Registry](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry) is an Azure Container Registry that can be used to store & reference Bicep modules.<p>
+
+- **Azure DevOps universal packages**<p>
+  - A [Universal Package](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages) is a packaged folder in an Azure DevOps artifact feed.<p>
+  As such, they contain the content of a CARML module 'as-is', including the template file(s), ReadMe file(s) and test file(s).
+
+
+## Comparison
+
+The following table provides you with a comparison of the locations described above:
+
+| Category | Feature | Template Specs | Bicep Registry | Universal Packages |
+| - | - | - | - | - |
+| UI |
+| | Template can be seen |:white_check_mark: | | |
+| | Template can be downloaded | | | |
+| Template deployment |
+| | Supports linked templates | :white_check_mark: | :white_check_mark: | |
+| | Provides single endpoint | | :white_check_mark: | :white_check_mark: |
+| Other |
+| | Template can be downloaded via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 # How it works
 
