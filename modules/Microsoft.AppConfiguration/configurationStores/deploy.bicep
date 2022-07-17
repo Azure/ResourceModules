@@ -226,6 +226,7 @@ module configurationStore_privateEndpoints '../../Microsoft.Network/privateEndpo
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
+  // dependsOn: configurationStore_keyValues
 }]
 
 @description('The name of the app configuration.')
