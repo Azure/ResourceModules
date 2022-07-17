@@ -45,14 +45,16 @@ The following table provides you with a comparison of the locations described ab
 
 | Category | Feature | Template Specs | Bicep Registry | Universal Packages |
 | - | - | - | - | - |
-| UI |
-| | Template can be seen |:white_check_mark: | | |
+| UI capabilities |
+| | Template can be viewed |:white_check_mark: | | |
 | | Template can be downloaded | | | |
 | Template deployment |
 | | Supports linked templates | :white_check_mark: | :white_check_mark: | |
 | | Provides single endpoint | | :white_check_mark: | :white_check_mark: |
 | Other |
 | | Template can be downloaded via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| | Recommended [orchestration](./Solution%20creation#Orchestration-overview) | Template-Orchestration | Template-Orchestration | Pipeline-Orchestration |
+
 
 # How it works
 
