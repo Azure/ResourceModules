@@ -52,7 +52,7 @@ This module deploys a Machine Learning Services Workspace.
 | `description` | string | `''` |  | The description of this workspace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[AmlComputeClusterEvent, AmlComputeClusterNodeEvent, AmlComputeJobEvent, AmlComputeCpuGpuUtilization, AmlRunStatusChangedEvent]` | `[AmlComputeClusterEvent, AmlComputeClusterNodeEvent, AmlComputeJobEvent, AmlComputeCpuGpuUtilization, AmlRunStatusChangedEvent]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[AmlComputeClusterEvent, AmlComputeClusterNodeEvent, AmlComputeCpuGpuUtilization, AmlComputeJobEvent, AmlRunStatusChangedEvent]` | `[AmlComputeClusterEvent, AmlComputeClusterNodeEvent, AmlComputeCpuGpuUtilization, AmlComputeJobEvent, AmlRunStatusChangedEvent]` | The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -63,9 +63,9 @@ This module deploys a Machine Learning Services Workspace.
 | `hbiWorkspace` | bool | `False` |  | The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service. |
 | `imageBuildCompute` | string | `''` |  | The compute name for image build. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `[, Enabled, Disabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Resource tags. |
 

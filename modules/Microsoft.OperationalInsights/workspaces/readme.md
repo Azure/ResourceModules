@@ -55,12 +55,12 @@ This template deploys a log analytics workspace.
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the log analytics workspace. |
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `publicNetworkAccessForIngestion` | string | `'Enabled'` | `[Enabled, Disabled]` | The network access type for accessing Log Analytics ingestion. |
-| `publicNetworkAccessForQuery` | string | `'Enabled'` | `[Enabled, Disabled]` | The network access type for accessing Log Analytics query. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `publicNetworkAccessForIngestion` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for accessing Log Analytics ingestion. |
+| `publicNetworkAccessForQuery` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for accessing Log Analytics query. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `savedSearches` | _[savedSearches](savedSearches/readme.md)_ array | `[]` |  | Kusto Query Language searches to save. |
-| `serviceTier` | string | `'PerGB2018'` | `[Free, Standalone, PerNode, PerGB2018]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
+| `serviceTier` | string | `'PerGB2018'` | `[Free, PerGB2018, PerNode, Standalone]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
