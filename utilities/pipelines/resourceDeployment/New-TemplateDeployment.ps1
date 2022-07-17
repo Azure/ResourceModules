@@ -252,6 +252,18 @@ function New-DeploymentWithParameterFile {
                         $Stoploop = $true
                     }
                 }
+                if ($res.ProvisioningState -eq 'Failed') {
+                    # Deployment failed but no exception was thrown. Hence we must do it for the command.
+
+                    $errorInputObject = @{
+                        DeploymentScope   = $deploymentScope
+                        DeploymentName    = $deploymentName
+                        ResourceGroupName = $resourceGroupName
+                    }
+                    $exceptionMessage = Get-ErrorMessageForScope @errorInputObject
+
+                    throw "Deployed failed with provisioning state [Failed]. Error Message: [$exceptionMessage]. Please review the Azure logs of deployment [$deploymentName] in scope [$deploymentScope] for further details."
+                }
                 $Stoploop = $true
             } catch {
                 if ($retryCount -ge $retryLimit) {
