@@ -525,13 +525,14 @@ Describe 'Readme tests' -Tag Readme {
             # Compare
             $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
             if (-not $filesAreTheSame) {
-                $diffReponse = git diff
+                $diffReponse = git diff $readMeFilePath
                 Write-Warning ($diffReponse | Out-String) -Verbose
+
+                # Reset readme file to original state
+                git checkout HEAD -- $readMeFilePath
             }
             $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
 
-            # Reset readme file to original state
-            git checkout HEAD -- $readMeFilePath
         }
     }
 }
