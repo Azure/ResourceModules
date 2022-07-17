@@ -378,7 +378,7 @@ Comments:
           "name": "ipconfig2",
           "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
           "privateIPAllocationMethod": "Static",
-          "vmIPAddress": "10.0.0.9"
+          "privateIPAddress": "10.0.0.9"
         }
       ]
     }
@@ -443,7 +443,7 @@ nicConfigurations: {
           name: 'ipconfig2'
           subnetId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
           privateIPAllocationMethod: 'Static'
-          vmIPAddress: '10.0.0.9'
+          privateIPAddress: '10.0.0.9'
         }
       ]
     }
