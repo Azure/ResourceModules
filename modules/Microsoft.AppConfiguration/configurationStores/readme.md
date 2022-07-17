@@ -292,7 +292,7 @@ The following module usage examples are retrieved from the content of the files 
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-configurationStores'
   params: {
-    name: '<<namePrefix>>-az-appcs-min-001'
+    name: '<<namePrefix>>-az-appc-min-001'
   }
 }
 ```
@@ -310,7 +310,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>-az-appcs-min-001"
+      "value": "<<namePrefix>>-az-appc-min-001"
     }
   }
 }
@@ -330,7 +330,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   name: '${uniqueString(deployment().name)}-configurationStores'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-appcs-x-001'
+    name: '<<namePrefix>>-az-appc-x-001'
     // Non-required parameters
     createMode: 'Default'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
@@ -355,7 +355,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         value: 'valueName'
       }
     ]
-    lock: 'CanNotDelete'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -395,7 +394,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-appcs-x-001"
+      "value": "<<namePrefix>>-az-appc-x-001"
     },
     // Non-required parameters
     "createMode": {
@@ -438,9 +437,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
           "value": "valueName"
         }
       ]
-    },
-    "lock": {
-      "value": "CanNotDelete"
     },
     "privateEndpoints": {
       "value": [
