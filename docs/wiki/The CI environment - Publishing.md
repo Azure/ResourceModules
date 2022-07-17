@@ -48,9 +48,11 @@ The following table provides you with a comparison of the locations described ab
 | Portal/UI |
 | | Template can be viewed |:white_check_mark: | | |
 | | Template can be downloaded | | | |
+| |
 | Template deployment |
 | | Supports linked templates | :white_check_mark: | :white_check_mark: | |
 | | Supports single endpoint | | :white_check_mark: | :white_check_mark: |
+| |
 | Other |
 | | Template can be downloaded/restored via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | | Recommended [orchestration](./Solution%20creation#Orchestration-overview) | Template-Orchestration | Template-Orchestration | Pipeline-Orchestration |
