@@ -31,7 +31,7 @@ With this module you can perform role assignments on a subscription level
 | `description` | string | `''` |  | The description of the role assignment. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
-| `principalType` | string | `''` | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | The principal type of the assigned principal ID. |
+| `principalType` | string | `''` | `['', Device, ForeignGroup, Group, ServicePrincipal, User]` | The principal type of the assigned principal ID. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | Subscription ID of the subscription to assign the RBAC role to. If not provided, will use the current scope for deployment. |
 
 
