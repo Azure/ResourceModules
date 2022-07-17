@@ -7,7 +7,7 @@ This module deploys DataProtection BackupVaults BackupPolicies.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -176,6 +176,6 @@ properties: {
 | `resourceGroupName` | string | The name of the resource group the backup policy was created in. |
 | `resourceId` | string | The resource ID of the backup policy. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

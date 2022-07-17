@@ -7,7 +7,7 @@ This module deploys an Event Hub.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -121,6 +121,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the event hub was deployed into. |
 | `resourceId` | string | The authentication rule resource ID of the event hub. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

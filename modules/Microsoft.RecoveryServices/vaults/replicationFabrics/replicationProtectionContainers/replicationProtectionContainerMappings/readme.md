@@ -9,7 +9,7 @@ This module deploys a Replication Protection Container Mapping.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -46,6 +46,6 @@ This module deploys a Replication Protection Container Mapping.
 | `resourceGroupName` | string | The name of the resource group the replication container was created in. |
 | `resourceId` | string | The resource ID of the replication container. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

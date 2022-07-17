@@ -7,7 +7,7 @@ This module deploys an Azure virtual desktop host pool.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -254,7 +254,7 @@ tags: {
 | `resourceId` | string | The resource ID of the AVD host pool. |
 | `tokenExpirationTime` | string | The expiration time for the registration token. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

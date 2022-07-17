@@ -7,7 +7,7 @@ This module deploys an Azure Automation Account Job Schedule.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -45,6 +45,6 @@ This module deploys an Azure Automation Account Job Schedule.
 | `resourceGroupName` | string | The resource group of the deployed job schedule. |
 | `resourceId` | string | The resource ID of the deployed job schedule. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

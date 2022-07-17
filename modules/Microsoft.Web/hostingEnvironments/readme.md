@@ -7,7 +7,7 @@ This module deploys an app service environment.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -198,7 +198,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the app service environment was deployed into. |
 | `resourceId` | string | The resource ID of the app service environment. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

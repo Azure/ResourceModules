@@ -7,7 +7,7 @@ With this module you can create policy definitions on a management group level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -44,6 +44,6 @@ With this module you can create policy definitions on a management group level.
 | `resourceId` | string | Policy Definition resource ID. |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

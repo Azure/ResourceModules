@@ -7,7 +7,7 @@ This template deploys a saved search for a Log Analytics workspace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -90,6 +90,6 @@ tags: {
 | `resourceGroupName` | string | The resource group where the saved search is deployed. |
 | `resourceId` | string | The resource ID of the deployed saved search. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

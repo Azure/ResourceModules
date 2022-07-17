@@ -7,7 +7,7 @@ This module deploys an Azure virtual desktop application group.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -158,7 +158,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the AVD application group was deployed into. |
 | `resourceId` | string | The resource ID of the AVD application group. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

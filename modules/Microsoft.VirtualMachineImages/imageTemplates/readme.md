@@ -7,7 +7,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -259,7 +259,7 @@ roleAssignments: [
 | `resourceId` | string | The resource ID of the image template. |
 | `runThisCommand` | string | The command to run in order to trigger the image build. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

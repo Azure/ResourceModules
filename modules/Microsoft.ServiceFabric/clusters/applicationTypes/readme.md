@@ -7,7 +7,7 @@ This module deploys a Service Fabric Cluster Application Type.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -79,6 +79,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the Application type. |
 | `resourceID` | string | The resource ID of the Application type. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

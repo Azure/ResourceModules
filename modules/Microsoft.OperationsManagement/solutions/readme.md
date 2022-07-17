@@ -7,7 +7,7 @@ This module deploys OperationsManagement Solutions.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -42,7 +42,7 @@ This module deploys OperationsManagement Solutions.
 | `resourceGroupName` | string | The resource group where the solution is deployed. |
 | `resourceId` | string | The resource ID of the deployed solution. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

@@ -7,7 +7,7 @@ This module deploys a storage account table
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -42,6 +42,6 @@ This module deploys a storage account table
 | `resourceGroupName` | string | The resource group of the deployed file share service. |
 | `resourceId` | string | The resource ID of the deployed file share service. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

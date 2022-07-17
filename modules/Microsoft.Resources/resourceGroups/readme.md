@@ -8,7 +8,7 @@ This module deploys a resource group.
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -148,7 +148,7 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 | `name` | string | The name of the resource group. |
 | `resourceId` | string | The resource ID of the resource group. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
 

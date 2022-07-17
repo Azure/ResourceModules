@@ -7,7 +7,7 @@ This module deploys a VPN Site.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -317,7 +317,7 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the VPN site was deployed into. |
 | `resourceId` | string | The resource ID of the VPN site. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

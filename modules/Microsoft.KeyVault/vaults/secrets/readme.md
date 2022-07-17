@@ -7,7 +7,7 @@ This module deploys a key vault secret.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Cross Referenced Modules](#Cross-Referenced-Modules)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -149,6 +149,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the resource group the secret was created in. |
 | `resourceId` | string | The resource ID of the secret. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

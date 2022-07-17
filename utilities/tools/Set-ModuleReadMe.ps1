@@ -310,7 +310,7 @@ function Set-DependenciesSection {
         [object[]] $ReadMeFileContent,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Cross Referenced Modules'
+        [string] $SectionStartIdentifier = '## Cross-referenced modules'
     )
 
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'tools' 'Get-LinkedModuleList.ps1')

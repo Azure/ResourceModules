@@ -7,7 +7,7 @@ This module deploys API Management Service APIs policies.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -44,6 +44,6 @@ This module deploys API Management Service APIs policies.
 | `resourceGroupName` | string | The resource group the API policy was deployed into. |
 | `resourceId` | string | The resource ID of the API policy. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

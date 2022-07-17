@@ -7,7 +7,7 @@ This module deploys a key vault key.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Cross Referenced Modules](#Cross-Referenced-Modules)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -151,6 +151,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the resource group the key was created in. |
 | `resourceId` | string | The resource ID of the key. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

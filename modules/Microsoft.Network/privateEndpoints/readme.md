@@ -7,7 +7,7 @@ This template deploys a private endpoint for a generic service.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -161,7 +161,7 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the private endpoint was deployed into. |
 | `resourceId` | string | The resource ID of the private endpoint. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

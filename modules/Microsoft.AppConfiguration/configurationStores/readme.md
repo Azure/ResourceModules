@@ -7,7 +7,7 @@ This module deploys an App Configuration Store.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -277,7 +277,7 @@ privateEndpoints:  [
 | `resourceId` | string | The resource ID of the app configuration. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
 

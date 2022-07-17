@@ -7,7 +7,7 @@ This module deploys a DocumentDB database account and its child resources.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -531,7 +531,7 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the database account. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

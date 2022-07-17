@@ -8,7 +8,7 @@ With this module you can perform policy assignments across the management group,
 - [Parameters](#Parameters)
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -167,7 +167,7 @@ module policyassignment 'yourpath/modules/Microsoft.Authorization.policyAssignme
 | `principalId` | string | Policy Assignment principal ID. |
 | `resourceId` | string | Policy Assignment resource ID. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

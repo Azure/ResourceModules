@@ -7,7 +7,7 @@ This module deploys an Azure API connection.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -152,7 +152,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the connection was deployed into. |
 | `resourceId` | string | The resource ID of the connection. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

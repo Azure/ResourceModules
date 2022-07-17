@@ -7,7 +7,7 @@ This template deploys a private DNS zone.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -162,7 +162,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the private DNS zone was deployed into. |
 | `resourceId` | string | The resource ID of the private DNS zone. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

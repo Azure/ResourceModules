@@ -7,7 +7,7 @@ This module deploys an authorization rule for a service bus namespace topic.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -43,6 +43,6 @@ This module deploys an authorization rule for a service bus namespace topic.
 | `resourceGroupName` | string | The name of the Resource Group the authorization rule was created in. |
 | `resourceId` | string | The Resource ID of the authorization rule. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

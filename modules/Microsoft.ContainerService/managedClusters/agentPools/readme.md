@@ -7,7 +7,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -116,6 +116,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the agent pool was deployed into. |
 | `resourceId` | string | The resource ID of the agent pool. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

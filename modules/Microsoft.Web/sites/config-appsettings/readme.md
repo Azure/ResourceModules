@@ -7,7 +7,7 @@ This module deploys the app settings.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -91,6 +91,6 @@ appSettingsKeyValuePairs: [
 | `resourceGroupName` | string | The resource group the site config was deployed into. |
 | `resourceId` | string | The resource ID of the site config. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

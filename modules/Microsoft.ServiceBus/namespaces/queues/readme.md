@@ -7,7 +7,7 @@ This module deploys a queue for a service bus namespace.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -118,6 +118,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed queue. |
 | `resourceId` | string | The resource ID of the deployed queue. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

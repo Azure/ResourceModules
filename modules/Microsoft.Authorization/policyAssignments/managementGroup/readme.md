@@ -7,7 +7,7 @@ With this module you can perform policy assignments on a management group level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -51,6 +51,6 @@ With this module you can perform policy assignments on a management group level.
 | `principalId` | string | Policy Assignment principal ID. |
 | `resourceId` | string | Policy Assignment resource ID. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

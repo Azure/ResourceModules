@@ -7,7 +7,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -111,6 +111,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the Resource Group the Volume was created in. |
 | `resourceId` | string | The Resource ID of the Volume. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

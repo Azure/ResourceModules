@@ -7,7 +7,7 @@ This module deploys Network Security Group Security Rules.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -56,6 +56,6 @@ This module deploys Network Security Group Security Rules.
 | `resourceGroupName` | string | The resource group the security rule was deployed into. |
 | `resourceId` | string | The resource ID of the security rule. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

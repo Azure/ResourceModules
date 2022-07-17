@@ -7,7 +7,7 @@ This module deploys an Azure Automation Account Runbook.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -96,6 +96,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed runbook. |
 | `resourceId` | string | The resource ID of the deployed runbook. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

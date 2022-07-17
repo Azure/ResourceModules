@@ -7,7 +7,7 @@ This module deploys a load balancer.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -458,7 +458,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the load balancer was deployed into. |
 | `resourceId` | string | The resource ID of the load balancer. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

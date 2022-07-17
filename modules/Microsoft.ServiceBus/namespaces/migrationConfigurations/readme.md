@@ -7,7 +7,7 @@ This module deploys a migration configuration for a service bus namespace
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -43,6 +43,6 @@ This module deploys a migration configuration for a service bus namespace
 | `resourceGroupName` | string | The name of the Resource Group the migration configuration was created in. |
 | `resourceId` | string | The Resource ID of the migration configuration. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

@@ -7,7 +7,7 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -46,6 +46,6 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | `resourceGroupName` | string | The name of the Resource Group the virtual network rule set was created in. |
 | `resourceId` | string | The Resource ID of the virtual network rule set. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

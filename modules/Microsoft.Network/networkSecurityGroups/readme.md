@@ -7,7 +7,7 @@ This template deploys a network security group (NSG) with optional security rule
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -154,7 +154,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the network security group was deployed into. |
 | `resourceId` | string | The resource ID of the network security group. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

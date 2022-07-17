@@ -6,7 +6,7 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -38,6 +38,6 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 | `resourceGroupName` | string | The name of the Resource Group the backup storage configuration was created in. |
 | `resourceId` | string | The resource ID of the backup storage config. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

@@ -7,7 +7,7 @@ This module deploys Authorization Locks on Subscription level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -39,6 +39,6 @@ This module deploys Authorization Locks on Subscription level.
 | `scope` | string | The scope this lock applies to. |
 | `subscriptionName` | string | The subscription name the lock was deployed into. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

@@ -7,7 +7,7 @@ This module deploys an Azure SQL Server.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -111,6 +111,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed database. |
 | `resourceId` | string | The resource ID of the deployed database. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

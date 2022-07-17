@@ -7,7 +7,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -152,6 +152,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the Resource Group the Capacity Pool was created in. |
 | `resourceId` | string | The resource ID of the Capacity Pool. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

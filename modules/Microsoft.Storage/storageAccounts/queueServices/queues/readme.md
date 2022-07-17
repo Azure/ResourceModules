@@ -7,7 +7,7 @@ This module deploys a storage account queue
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -104,6 +104,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed queue. |
 | `resourceId` | string | The resource ID of the deployed queue. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

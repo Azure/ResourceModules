@@ -7,7 +7,7 @@ With this module you can create policy exemptions on a management group level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -45,6 +45,6 @@ With this module you can create policy exemptions on a management group level.
 | `resourceId` | string | Policy Exemption resource ID. |
 | `scope` | string | Policy Exemption Scope. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

@@ -7,7 +7,7 @@ This module deploys a Redis Cache service.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -317,7 +317,7 @@ privateEndpoints:  [
 | `sslPort` | int | Redis SSL port. |
 | `subnetId` | string | The full resource ID of a subnet in a virtual network where the Redis cache was deployed in. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
 

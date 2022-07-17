@@ -7,7 +7,7 @@ This module deploys a virtual network rule for a service bus namespace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -42,6 +42,6 @@ This module deploys a virtual network rule for a service bus namespace.
 | `resourceGroupName` | string | The name of the Resource Group the virtual network rule was created in. |
 | `resourceId` | string | The Resource ID of the virtual network rule. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

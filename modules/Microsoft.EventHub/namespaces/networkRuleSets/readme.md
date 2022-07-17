@@ -7,7 +7,7 @@ This module deploys EventHub Namespaces NetworkRuleSets.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -83,6 +83,6 @@ Contains an array of objects for the public IP ranges you want to allow via the 
 | `resourceGroupName` | string | The name of the resource group the network rule set was created in. |
 | `resourceId` | string | The resource ID of the network rule set. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

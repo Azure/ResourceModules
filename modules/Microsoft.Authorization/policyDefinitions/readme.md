@@ -8,7 +8,7 @@ With this module you can create policy definitions across the management group o
 - [Parameters](#Parameters)
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -125,7 +125,7 @@ module policydefinition 'yourpath/modules/Microsoft.Authorization.policyDefiniti
 | `resourceId` | string | Policy Definition resource ID. |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

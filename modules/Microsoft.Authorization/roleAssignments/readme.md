@@ -9,7 +9,7 @@ This module deploys Role Assignments across the management group, subscription o
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -166,7 +166,7 @@ module roleassignment 'yourpath/modules/Microsoft.Authorization.roleAssignments/
 
 This module can be deployed at the management group, subscription or resource group level
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

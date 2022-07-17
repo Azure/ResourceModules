@@ -7,7 +7,7 @@ This module deploys VPN Gateways NATRules
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -46,6 +46,6 @@ This module deploys VPN Gateways NATRules
 | `resourceGroupName` | string | The name of the resource group the NAT rule was deployed into. |
 | `resourceId` | string | The resource ID of the NAT rule. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

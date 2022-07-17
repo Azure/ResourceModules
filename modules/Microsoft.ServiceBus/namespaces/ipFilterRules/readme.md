@@ -7,7 +7,7 @@ This module deploys IP filter rules for a service bus namespace
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -44,6 +44,6 @@ This module deploys IP filter rules for a service bus namespace
 | `resourceGroupName` | string | The name of the Resource Group the IP filter rule was created in. |
 | `resourceId` | string | The Resource ID of the IP filter rule. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

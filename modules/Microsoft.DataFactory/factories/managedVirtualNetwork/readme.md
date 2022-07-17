@@ -7,7 +7,7 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -41,6 +41,6 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 | `resourceGroupName` | string | The name of the Resource Group the Managed Virtual Network was created in. |
 | `resourceId` | string | The resource ID of the Managed Virtual Network. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

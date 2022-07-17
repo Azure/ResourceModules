@@ -8,7 +8,7 @@ This module deploys a virtual network subnet.
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -192,6 +192,6 @@ The `privateEndpointNetworkPolicies` property must be set to disabled for subnet
 | `subnetAddressPrefix` | string | The address prefix for the subnet. |
 | `subnetAddressPrefixes` | array | List of address prefixes for the subnet. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

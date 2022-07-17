@@ -7,7 +7,7 @@ This module deploys a Logic App resource.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -312,7 +312,7 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the logic app. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

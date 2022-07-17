@@ -7,7 +7,7 @@ This module deploys an EventHub Namespace Authorization Rule
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -42,6 +42,6 @@ This module deploys an EventHub Namespace Authorization Rule
 | `resourceGroupName` | string | The name of the resource group the authorization rule was created in. |
 | `resourceId` | string | The resource ID of the authorization rule. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

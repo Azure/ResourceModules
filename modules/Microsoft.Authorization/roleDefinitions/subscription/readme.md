@@ -7,7 +7,7 @@ With this module you can create role definitions on a subscription level
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -44,6 +44,6 @@ With this module you can create role definitions on a subscription level
 | `resourceId` | string | The resource ID of the Role Definition. |
 | `scope` | string | The scope this Role Definition applies to. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

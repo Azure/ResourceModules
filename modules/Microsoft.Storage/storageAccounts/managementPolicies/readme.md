@@ -7,7 +7,7 @@ This module can be used to deploy a management policies into a storage account.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -123,6 +123,6 @@ rules: [
 | `resourceGroupName` | string | The resource group of the deployed management policy. |
 | `resourceId` | string | The resource ID of the deployed management policy. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

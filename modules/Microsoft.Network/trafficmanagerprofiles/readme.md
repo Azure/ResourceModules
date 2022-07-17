@@ -7,7 +7,7 @@ This module deploys a traffic manager profile.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -249,7 +249,7 @@ tags: {
 | `resourceGroupName` | string | The resource group the traffic manager was deployed into. |
 | `resourceId` | string | The resource ID of the traffic manager. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

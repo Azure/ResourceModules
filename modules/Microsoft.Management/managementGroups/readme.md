@@ -13,7 +13,7 @@ This module has some known **limitations**:
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -122,7 +122,7 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Auto
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
 ```
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
 

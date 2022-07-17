@@ -7,7 +7,7 @@ This module deploys Insights PrivateLinkScopes ScopedResources.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -42,6 +42,6 @@ This module deploys Insights PrivateLinkScopes ScopedResources.
 | `resourceGroupName` | string | The name of the resource group where the resource has been deployed. |
 | `resourceId` | string | The resource ID of the deployed scopedResource. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

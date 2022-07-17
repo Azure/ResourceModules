@@ -7,7 +7,7 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -43,6 +43,6 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 | `resourceGroupName` | string | The name of the resource group the consumer group was created in. |
 | `resourceId` | string | The resource ID of the consumer group. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_

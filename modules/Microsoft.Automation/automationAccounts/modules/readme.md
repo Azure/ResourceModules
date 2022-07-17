@@ -7,7 +7,7 @@ This module deploys an Azure Automation Account Module.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Dependencies](#Dependencies)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -87,6 +87,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed module. |
 | `resourceId` | string | The resource ID of the deployed module. |
 
-## Cross Referenced Modules
+## Cross-referenced modules
 
 _None_
