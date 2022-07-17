@@ -29,14 +29,17 @@ While the CARML CI-environment can publish to all locations mentioned above, you
 - **Template Specs**<p>
   A [Template Spec](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell) is an Azure resource with the purpose of storing & referencing Azure Resource Manager (ARM) templates. <p>
   When publishing Bicep modules as Template Specs, the module is compiled - and the resulting ARM template is uploaded as a Template Spec resource version to a Resource Group of your choice.
+  For deployment, it is recommended to apply a [template-orchestrated](./Solution%20creation#Orchestration-overview) approach. As Bicep supports the Template-Specs as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
   > **Note:** Even though the published resource is an ARM template, you can reference it in you Bicep template as a remote module like it would be native Bicep.
 
 - **Bicep Registry**<p>
   A [Bicep Registry](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry) is an Azure Container Registry that can be used to store & reference Bicep modules.<p>
+  For deployment, it is recommended to apply a [template-orchestrated](./Solution%20creation#Orchestration-overview) approach. As Bicep supports the Bicep registry as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
 
 - **Azure DevOps universal packages**<p>
   - A [Universal Package](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages) is a packaged folder in an Azure DevOps artifact feed.<p>
-  As such, they contain the content of a CARML module 'as-is', including the template file(s), ReadMe file(s) and test file(s).
+  As such, they contain the content of a CARML module 'as-is', including the template file(s), ReadMe file(s) and test file(s). <p>
+  For deployment, it is recommended to use Universal Packages only for a [pipeline-orchestrated](./Solution%20creation#Orchestration-overview) approach - i.e., each job would download a single package and deploy it. Technically, it would be possible to also use Universal Packages for the template-orchestrated approach, by downloading all packages into a specific location first, and then reference them. Given the indirect nature of this approach, this is however not recommended.
 
 
 ## Comparison
@@ -49,14 +52,13 @@ The following table provides you with a comparison of the locations described ab
 | | Template can be viewed |:white_check_mark: | | |
 | | Template can be downloaded | | | |
 | |
-| Template deployment |
-| | Supports linked templates | :white_check_mark: | :white_check_mark: | |
+| Deployment |
+| | Supports [template-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :wavy_dash: |
+| | Supports [pipeline-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :white_check_mark:  |
 | | Supports single endpoint | | :white_check_mark: | :white_check_mark: |
 | |
 | Other |
 | | Template can be downloaded/restored via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| | Recommended [orchestration](./Solution%20creation#Orchestration-overview) | Template-Orchestration | Template-Orchestration | Pipeline-Orchestration |
-
 
 # How it works
 
