@@ -117,69 +117,68 @@ jobs:
 
       # [Agent] Replace tokens
       #-----------------------
-      - ${{ if not(contains( parameters.templateFilePath, '.dependencies')) }}:
-          - task: AzurePowerShell@5
-            displayName: 'Replace Tokens [$(parameterFilePath)] via connection [${{ parameters.serviceConnection }}]'
-            inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
-              azurePowerShellVersion: 'latestVersion'
-              preferredAzurePowerShellVersion: ''
-              ScriptType: InlineScript
-              pwsh: true
-              inline: |
-                # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+        - task: AzurePowerShell@5
+          displayName: 'Replace Tokens [$(parameterFilePath)] via connection [${{ parameters.serviceConnection }}]'
+          inputs:
+            azureSubscription: ${{ parameters.serviceConnection }}
+            azurePowerShellVersion: 'latestVersion'
+            preferredAzurePowerShellVersion: ''
+            ScriptType: InlineScript
+            pwsh: true
+            inline: |
+              # Load used functions
+              . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
-                # Load Settings File
-                $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+              # Load Settings File
+              $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
 
-                if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
-                  Write-Verbose 'Skipping token replacement as the deployment test file is no JSON-Parameter file' -Verbose
-                  return
+              if((Split-Path '$(parameterFilePath)' -Extension) -ne '.json') {
+                Write-Verbose 'Skipping token replacement as the deployment test file is no JSON-Parameter file' -Verbose
+                return
+              }
+
+              if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
+                $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.customParametersPath }}' '$(parameterFilePath)'
+              } else {
+                $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+              }
+
+              # Construct Token Function Input
+              $ConvertTokensInputs = @{
+                  Tokens      = @{}
+                  FilePath    = $moduleTestFilePath
+                  TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                  TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+              }
+
+              # Add defaults
+              $ConvertTokensInputs.Tokens += @{
+                resourceGroupName = '${{ parameters.resourceGroupName }}'
+                subscriptionId    = '${{ parameters.subscriptionId }}'
+                managementGroupId = '${{ parameters.managementGroupId }}'
+                tenantId          = '$(ARM_TENANT_ID)'
+                deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
+              }
+
+              # Add local tokens
+              if ($Settings.parameterFileTokens.localTokens) {
+                $tokenMap = @{}
+                foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                  $tokenMap += @{ $token.name = $token.value }
                 }
+                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                $ConvertTokensInputs.Tokens += $tokenMap
+              }
 
-                if(-not [String]::IsNullOrEmpty('${{ parameters.customParametersPath }}')) {
-                  $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.customParametersPath }}' '$(parameterFilePath)'
-                } else {
-                  $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
-                }
+              # Add custom tokens (passed in via the pipeline)
+              if(-not [String]::IsNullOrEmpty('${{ parameters.customParameterFileTokens }}')) {
+                $customTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+                Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
+                $ConvertTokensInputs.Tokens += $customTokens
+              }
 
-                # Construct Token Function Input
-                $ConvertTokensInputs = @{
-                    Tokens      = @{}
-                    FilePath    = $moduleTestFilePath
-                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-                }
-
-                # Add defaults
-                $ConvertTokensInputs.Tokens += @{
-                  resourceGroupName = '${{ parameters.resourceGroupName }}'
-                  subscriptionId    = '${{ parameters.subscriptionId }}'
-                  managementGroupId = '${{ parameters.managementGroupId }}'
-                  tenantId          = '$(ARM_TENANT_ID)'
-                  deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
-                }
-
-                # Add local tokens
-                if ($Settings.parameterFileTokens.localTokens) {
-                  $tokenMap = @{}
-                  foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                  }
-                  Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.Tokens += $tokenMap
-                }
-
-                # Add custom tokens (passed in via the pipeline)
-                if(-not [String]::IsNullOrEmpty('${{ parameters.customParameterFileTokens }}')) {
-                  $customTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
-                  Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.Tokens += $customTokens
-                }
-
-                # Invoke Token Replacement Functionality
-                $null = Convert-TokensInFile @ConvertTokensInputs
+              # Invoke Token Replacement Functionality
+              $null = Convert-TokensInFile @ConvertTokensInputs
 
       # [Validation] task(s)
       #---------------------
