@@ -19,7 +19,7 @@ This template deploys a linked Storage Accounts for a Log Analytics workspace.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `name` | string | `[Query, Alerts, CustomLogs, AzureWatson]` | Name of the link. |
+| `name` | string | `[Alerts, AzureWatson, CustomLogs, Query]` | Name of the link. |
 | `resourceId` | string |  | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access. |
 
 **Conditional parameters**

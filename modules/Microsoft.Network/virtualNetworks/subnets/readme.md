@@ -39,8 +39,8 @@ This module deploys a virtual network subnet.
 | `name` | string |  |  | The Name of the subnet resource. |
 | `natGatewayId` | string | `''` |  | The resource ID of the NAT Gateway to use for the subnet. |
 | `networkSecurityGroupId` | string | `''` |  | The resource ID of the network security group to assign to the subnet. |
-| `privateEndpointNetworkPolicies` | string | `''` | `[Disabled, Enabled, ]` | enable or disable apply network policies on private endpoint in the subnet. |
-| `privateLinkServiceNetworkPolicies` | string | `''` | `[Disabled, Enabled, ]` | enable or disable apply network policies on private link service in the subnet. |
+| `privateEndpointNetworkPolicies` | string | `''` | `['', Disabled, Enabled]` | enable or disable apply network policies on private endpoint in the subnet. |
+| `privateLinkServiceNetworkPolicies` | string | `''` | `['', Disabled, Enabled]` | enable or disable apply network policies on private link service in the subnet. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `routeTableId` | string | `''` |  | The resource ID of the route table to assign to the subnet. |
 | `serviceEndpointPolicies` | array | `[]` |  | An array of service endpoint policies. |

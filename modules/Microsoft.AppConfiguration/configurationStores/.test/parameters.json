@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-appcs-x-001"
+            "value": "<<namePrefix>>-az-appc-x-001"
         },
         "lock": {
             "value": "CanNotDelete"
@@ -72,7 +72,12 @@
             "value": [
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "configurationStores"
+                    "service": "configurationStores",
+                    "privateDnsZoneGroup": {
+                        "privateDNSResourceIds": [
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io"
+                        ]
+                    }
                 }
             ]
         }

@@ -42,13 +42,13 @@ param templateProperties object = {}
 param provider string = 'None'
 
 @secure()
-@description('Optional. The Personal Access Token for accessing the GitHub repo.')
+@description('Optional. The Personal Access Token for accessing the GitHub repository.')
 param repositoryToken string = ''
 
-@description('Optional. The name of the GitHub repo.')
+@description('Optional. The name of the GitHub repository.')
 param repositoryUrl string = ''
 
-@description('Optional. The branch name of the GitHub repo.')
+@description('Optional. The branch name of the GitHub repository.')
 param branch string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
@@ -150,7 +150,7 @@ module staticSite_privateEndpoints '../../Microsoft.Network/privateEndpoints/dep
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []

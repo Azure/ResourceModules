@@ -34,7 +34,7 @@
 | `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[ActivityRuns, PipelineRuns, TriggerRuns, SSISPackageEventMessages, SSISPackageExecutableStatistics, SSISPackageEventMessageContext, SSISPackageExecutionComponentPhases, SSISPackageExecutionDataStatistics, SSISIntegrationRuntimeLogs]` | `[ActivityRuns, PipelineRuns, TriggerRuns, SSISPackageEventMessages, SSISPackageExecutableStatistics, SSISPackageEventMessageContext, SSISPackageExecutionComponentPhases, SSISPackageExecutionDataStatistics, SSISIntegrationRuntimeLogs]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[ActivityRuns, PipelineRuns, SSISIntegrationRuntimeLogs, SSISPackageEventMessageContext, SSISPackageEventMessages, SSISPackageExecutableStatistics, SSISPackageExecutionComponentPhases, SSISPackageExecutionDataStatistics, TriggerRuns]` | `[ActivityRuns, PipelineRuns, SSISIntegrationRuntimeLogs, SSISPackageEventMessageContext, SSISPackageEventMessages, SSISPackageExecutableStatistics, SSISPackageExecutionComponentPhases, SSISPackageExecutionDataStatistics, TriggerRuns]` | The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -50,10 +50,10 @@
 | `gitRootFolder` | string | `'/'` |  | The root folder path name. Default is '/'. |
 | `integrationRuntime` | _[integrationRuntime](integrationRuntime/readme.md)_ object | `{object}` |  | The object for the configuration of a Integration Runtime. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedVirtualNetworkName` | string | `''` |  | The name of the Managed Virtual Network. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `[, Enabled, Disabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |

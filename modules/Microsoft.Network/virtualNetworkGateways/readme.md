@@ -25,8 +25,8 @@ This module deploys a virtual network gateway.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `name` | string |  |  | Specifies the Virtual Network Gateway name. |
-| `virtualNetworkGatewaySku` | string |  | `[Basic, VpnGw1, VpnGw2, VpnGw3, VpnGw1AZ, VpnGw2AZ, VpnGw3AZ, Standard, HighPerformance, UltraPerformance, ErGw1AZ, ErGw2AZ, ErGw3AZ]` | The Sku of the Gateway. |
-| `virtualNetworkGatewayType` | string |  | `[Vpn, ExpressRoute]` | Specifies the gateway type. E.g. VPN, ExpressRoute. |
+| `virtualNetworkGatewaySku` | string |  | `[Basic, ErGw1AZ, ErGw2AZ, ErGw3AZ, HighPerformance, Standard, UltraPerformance, VpnGw1, VpnGw1AZ, VpnGw2, VpnGw2AZ, VpnGw3, VpnGw3AZ]` | The Sku of the Gateway. |
+| `virtualNetworkGatewayType` | string |  | `[ExpressRoute, Vpn]` | Specifies the gateway type. E.g. VPN, ExpressRoute. |
 | `vNetResourceId` | string |  |  | Virtual Network resource ID. |
 | `vpnType` | string | `'RouteBased'` | `[PolicyBased, RouteBased]` | Specifies the VPN type. |
 
@@ -49,14 +49,14 @@ This module deploys a virtual network gateway.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gatewayPipName` | string | `[format('{0}-pip1', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `publicIpdiagnosticLogCategoriesToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | The name of logs that will be streamed. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `publicIpdiagnosticLogCategoriesToEnable` | array | `[DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | `[DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. |
 | `publicIpDiagnosticSettingsName` | string | `'diagnosticSettings'` |  | The name of the diagnostic setting, if deployed. |
 | `publicIPPrefixResourceId` | string | `''` |  | Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `publicIpZones` | array | `[]` |  | Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `virtualNetworkGatewaydiagnosticLogCategoriesToEnable` | array | `[GatewayDiagnosticLog, TunnelDiagnosticLog, RouteDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog]` | `[GatewayDiagnosticLog, TunnelDiagnosticLog, RouteDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog]` | The name of logs that will be streamed. |
+| `virtualNetworkGatewaydiagnosticLogCategoriesToEnable` | array | `[GatewayDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog, RouteDiagnosticLog, TunnelDiagnosticLog]` | `[GatewayDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog, RouteDiagnosticLog, TunnelDiagnosticLog]` | The name of logs that will be streamed. |
 | `virtualNetworkGatewayDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `vpnClientAddressPoolPrefix` | string | `''` |  | The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
 
