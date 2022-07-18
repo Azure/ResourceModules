@@ -23,7 +23,7 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 
 # Considerations
 
-While the CARML CI-environment can publish to all locations mentioned above, you may effectively decide to configure only subset as per your requirements. To help you with the decision, the following content provides you with an overview of the possibilities of each target location.
+While the CARML CI environment can publish to all locations mentioned above, you may effectively decide to configure only a subset as per your requirements. To help you with the decision, the following content provides you with an overview of the possibilities of each target location.
 
 ## Outline
 - **Template Specs**<p>
