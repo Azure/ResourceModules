@@ -1,4 +1,4 @@
-# Static Web App `[Microsoft.Web/staticSites]`
+# Static Web Apps `[Microsoft.Web/staticSites]`
 
 This module deploys a Static Web App.
 
