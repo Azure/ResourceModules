@@ -1,7 +1,7 @@
-@description('Optional. The location for all Web PubSub resources.')
+@description('Optional. The location for the resource.')
 param location string = resourceGroup().location
 
-@description('Required. The name of the Web PubSub resource.')
+@description('Required. The name of the Web PubSub Service resource.')
 param name string
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
@@ -28,7 +28,7 @@ param capacity int = 1
   'Free_F1'
   'Standard_S1'
 ])
-@description('Optional. Pricing tier of App Configuration.')
+@description('Optional. Pricing tier of the resource.')
 param sku string = 'Standard_S1'
 
 @description('Optional. Enables system assigned managed identity on the resource.')
@@ -64,7 +64,7 @@ param resourceLogConfigurationsToEnable array = [
 @description('Optional. Request client certificate during TLS handshake if enabled.')
 param clientCertEnabled bool = false
 
-@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. Can only be set if the \'SKU\' is not \'Free_F1\'. For security reasons, it is recommended to set the DefaultAction Deny.')
+@description('Optional. Networks ACLs, this value contains IPs to allow and/or Subnet information. Can only be set if the \'SKU\' is not \'Free_F1\'. For security reasons, it is recommended to set the DefaultAction Deny.')
 param networkAcls object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -108,7 +108,8 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
     disableAadAuth: disableAadAuth
     disableLocalAuth: disableLocalAuth
     networkACLs: !empty(networkAcls) ? any(networkAcls) : null
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    // publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkAcls) ? 'Disabled' : null)
     resourceLogConfiguration: {
       categories: resourceLogConfiguration
     }
@@ -119,7 +120,7 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
 }
 
 module webPubSub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-appConfiguration-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-WebPubSub-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
@@ -147,7 +148,7 @@ resource webPubSub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(
 }
 
 module webPubSub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-AppConfig-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-WebPubSub-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
