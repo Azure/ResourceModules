@@ -379,11 +379,29 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-storageAccounts'
   params: {
     allowBlobPublicAccess: false
+    blobServices: {
+      containers: [
+        {
+          name: '<<namePrefix>>container'
+          publicAccess: 'None'
+        }
+      ]
+    }
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
     name: '<<namePrefix>>azsaencr001'
-    publicNetworkAccess: 'Disabled'
+    privateEndpoints: [
+      {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
+          ]
+        }
+        service: 'blob'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
     requireInfrastructureEncryption: true
     storageAccountSku: 'Standard_LRS'
     systemAssignedIdentity: false
@@ -409,6 +427,16 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "allowBlobPublicAccess": {
       "value": false
     },
+    "blobServices": {
+      "value": {
+        "containers": [
+          {
+            "name": "<<namePrefix>>container",
+            "publicAccess": "None"
+          }
+        ]
+      }
+    },
     "cMKKeyName": {
       "value": "keyEncryptionKey"
     },
@@ -421,8 +449,18 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>azsaencr001"
     },
-    "publicNetworkAccess": {
-      "value": "Disabled"
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+            ]
+          },
+          "service": "blob",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
     },
     "requireInfrastructureEncryption": {
       "value": true
