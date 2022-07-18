@@ -16,8 +16,8 @@ This module deploys a service bus namespace resource.
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.ServiceBus/namespaces` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces) |
 | `Microsoft.ServiceBus/namespaces/AuthorizationRules` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/AuthorizationRules) |
 | `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/disasterRecoveryConfigs) |
@@ -35,7 +35,7 @@ This module deploys a service bus namespace resource.
 **Required parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `skuName` | string | `'Basic'` | `[Basic, Standard, Premium]` | Name of this SKU. - Basic, Standard, Premium. |
+| `skuName` | string | `'Basic'` | `[Basic, Premium, Standard]` | Name of this SKU. - Basic, Standard, Premium. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -57,7 +57,7 @@ This module deploys a service bus namespace resource.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ipFilterRules` | _[ipFilterRules](ipFilterRules/readme.md)_ array | `[]` |  | IP Filter Rules for the Service Bus namespace. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/readme.md)_ object | `{object}` |  | The migration configuration. |
 | `name` | string | `''` |  | Name of the Service Bus Namespace. If no name is provided, then unique name will be created. |
 | `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules. |

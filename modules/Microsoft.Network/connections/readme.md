@@ -32,13 +32,13 @@ This template deploys a virtual network gateway connection.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec]. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `peer` | object | `{object}` |  | The remote peer. Used for connection type [ExpressRoute]. |
 | `routingWeight` | int | `-1` |  | The weight added to routes learned from this BGP speaker. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
 | `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet]. |
-| `virtualNetworkGatewayConnectionType` | string | `'IPsec'` | `[IPsec, Vnet2Vnet, ExpressRoute, VPNClient]` | Gateway connection type. |
+| `virtualNetworkGatewayConnectionType` | string | `'IPsec'` | `[ExpressRoute, IPsec, Vnet2Vnet, VPNClient]` | Gateway connection type. |
 | `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
 
 

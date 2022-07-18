@@ -20,7 +20,7 @@ param storageAccountId string
 @description('Optional. The authentication mode which the Batch service will use to manage the auto-storage account.')
 param storageAuthenticationMode string = 'StorageKeys'
 
-@description('Optional. The reference to a user assigned identity associated with the Batch pool which a compute node will use.')
+@description('Optional. The resource ID of a user assigned identity assigned to pools which have compute nodes that need access to auto-storage.')
 param storageAccessIdentity string = ''
 
 @allowed([
@@ -228,7 +228,7 @@ module batchAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/d
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []

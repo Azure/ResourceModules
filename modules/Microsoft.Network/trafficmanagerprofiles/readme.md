@@ -39,13 +39,13 @@ This module deploys a traffic manager profile.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `endpoints` | array | `[]` |  | The list of endpoints in the Traffic Manager profile. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxReturn` | int | `1` |  | Maximum number of endpoints to be returned for MultiValue routing type. |
 | `monitorConfig` | object | `{object}` |  | The endpoint monitoring settings of the Traffic Manager profile. |
-| `profileStatus` | string | `'Enabled'` | `[Enabled, Disabled]` | The status of the Traffic Manager profile. |
+| `profileStatus` | string | `'Enabled'` | `[Disabled, Enabled]` | The status of the Traffic Manager profile. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Resource tags. |
-| `trafficRoutingMethod` | string | `'Performance'` | `[Performance, Priority, Weighted, Geographic, MultiValue, Subnet]` | The traffic routing method of the Traffic Manager profile. |
+| `trafficRoutingMethod` | string | `'Performance'` | `[Geographic, MultiValue, Performance, Priority, Subnet, Weighted]` | The traffic routing method of the Traffic Manager profile. |
 | `trafficViewEnrollmentStatus` | string | `'Disabled'` | `[Disabled, Enabled]` | Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile. |
 | `ttl` | int | `60` |  | The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile. |
 

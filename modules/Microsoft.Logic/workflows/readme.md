@@ -44,9 +44,9 @@ This module deploys a Logic App resource.
 | `integrationAccount` | object | `{object}` |  | The integration account. |
 | `integrationServiceEnvironment` | object | `{object}` |  | The integration service environment. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `state` | string | `'Enabled'` | `[NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended]` | The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended. |
+| `state` | string | `'Enabled'` | `[Completed, Deleted, Disabled, Enabled, NotSpecified, Suspended]` | The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `triggersAccessControlConfiguration` | object | `{object}` |  | The access control configuration for invoking workflow triggers. |

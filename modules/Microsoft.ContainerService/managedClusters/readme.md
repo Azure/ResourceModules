@@ -50,8 +50,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `aksClusterDockerBridgeCidr` | string | `''` |  | Specifies the CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range. |
 | `aksClusterKubernetesVersion` | string | `''` |  | Version of Kubernetes specified when creating the managed cluster. |
 | `aksClusterLoadBalancerSku` | string | `'standard'` | `[basic, standard]` | Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools. |
-| `aksClusterNetworkPlugin` | string | `''` | `[, azure, kubenet]` | Specifies the network plugin used for building Kubernetes network. - azure or kubenet. |
-| `aksClusterNetworkPolicy` | string | `''` | `[, azure, calico]` | Specifies the network policy used for building Kubernetes network. - calico or azure. |
+| `aksClusterNetworkPlugin` | string | `''` | `['', azure, kubenet]` | Specifies the network plugin used for building Kubernetes network. - azure or kubenet. |
+| `aksClusterNetworkPolicy` | string | `''` | `['', azure, calico]` | Specifies the network policy used for building Kubernetes network. - calico or azure. |
 | `aksClusterOutboundType` | string | `'loadBalancer'` | `[loadBalancer, userDefinedRouting]` | Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting. |
 | `aksClusterPodCidr` | string | `''` |  | Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used. |
 | `aksClusterServiceCidr` | string | `''` |  | A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. |
@@ -80,7 +80,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `azurePolicyVersion` | string | `'v2'` |  | Specifies the azure policy version to use. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler, cluster-autoscaler]` | `[kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler, cluster-autoscaler]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[cluster-autoscaler, kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler]` | `[cluster-autoscaler, kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler]` | The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -101,7 +101,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedOutboundIPCount` | int | `0` |  | Outbound IP Count for the Load balancer. |
 | `monitoringWorkspaceId` | string | `''` |  | Resource ID of the monitoring log analytics workspace. |
 | `nodeResourceGroup` | string | `[format('{0}_aks_{1}_nodes', resourceGroup().name, parameters('name'))]` |  | Name of the resource group containing agent pool nodes. |
