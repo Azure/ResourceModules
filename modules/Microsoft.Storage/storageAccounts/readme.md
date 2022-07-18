@@ -506,7 +506,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     }
-    name: '<<namePrefix>>azsax002'
+    name: '<<namePrefix>>azsanfs001'
     roleAssignments: [
       {
         principalIds: [
@@ -567,7 +567,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>azsax002"
+      "value": "<<namePrefix>>azsanfs001"
     },
     "roleAssignments": {
       "value": [
@@ -692,23 +692,42 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     }
     privateEndpoints: [
       {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
+          ]
+        }
         service: 'blob'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
       {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net'
+          ]
+        }
         service: 'table'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
       {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net'
+          ]
+        }
         service: 'queue'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
       {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net'
+          ]
+        }
         service: 'file'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
     ]
-    publicNetworkAccess: 'Disabled'
     queueServices: {
       diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
@@ -877,25 +896,42 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+            ]
+          },
           "service": "blob",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         },
         {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net"
+            ]
+          },
           "service": "table",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         },
         {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net"
+            ]
+          },
           "service": "queue",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         },
         {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net"
+            ]
+          },
           "service": "file",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
       ]
-    },
-    "publicNetworkAccess": {
-      "value": "Disabled"
     },
     "queueServices": {
       "value": {
@@ -979,6 +1015,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-storageAccounts'
   params: {
     allowBlobPublicAccess: false
+    name: '<<namePrefix>>azsav1001'
     storageAccountKind: 'Storage'
   }
 }
@@ -998,6 +1035,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     "allowBlobPublicAccess": {
       "value": false
+    },
+    "name": {
+      "value": "<<namePrefix>>azsav1001"
     },
     "storageAccountKind": {
       "value": "Storage"
