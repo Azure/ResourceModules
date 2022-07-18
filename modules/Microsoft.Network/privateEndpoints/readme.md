@@ -178,17 +178,11 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   params: {
     // Required parameters
     groupIds: [
-      'configurationStores'
+      'vault'
     ]
-    name: '<<namePrefix>>-az-appc-x-001-pe'
-    serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.AppConfiguration/configurationStores/<<namePrefix>>-az-appc-x-001'
+    name: '<<namePrefix>>-az-pe-kvlt-min-001'
+    serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-    // Non-required parameters
-    privateDnsZoneGroup: {
-      privateDNSResourceIds: [
-        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io'
-      ]
-    }
   }
 }
 ```
@@ -208,25 +202,17 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     // Required parameters
     "groupIds": {
       "value": [
-        "configurationStores"
+        "vault"
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-appc-x-001-pe"
+      "value": "<<namePrefix>>-az-pe-kvlt-min-001"
     },
     "serviceResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.AppConfiguration/configurationStores/<<namePrefix>>-az-appc-x-001"
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe"
     },
     "subnetResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
-    },
-    // Non-required parameters
-    "privateDnsZoneGroup": {
-      "value": {
-        "privateDNSResourceIds": [
-          "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io"
-        ]
-      }
     }
   }
 }

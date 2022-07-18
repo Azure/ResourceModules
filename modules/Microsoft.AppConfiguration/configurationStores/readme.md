@@ -340,6 +340,34 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     disableLocalAuth: false
     enablePurgeProtection: false
+    keyValues: [
+      {
+        contentType: 'contentType'
+        name: 'keyName'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        value: 'valueName'
+      }
+    ]
+    lock: 'CanNotDelete'
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io'
+          ]
+        }
+        service: 'configurationStores'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {
         principalIds: [
@@ -394,6 +422,42 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     },
     "enablePurgeProtection": {
       "value": false
+    },
+    "keyValues": {
+      "value": [
+        {
+          "contentType": "contentType",
+          "name": "keyName",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<<deploymentSpId>>"
+              ],
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "value": "valueName"
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io"
+            ]
+          },
+          "service": "configurationStores",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
     },
     "roleAssignments": {
       "value": [
