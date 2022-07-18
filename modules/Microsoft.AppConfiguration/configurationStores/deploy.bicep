@@ -157,8 +157,6 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
     disableLocalAuth: disableLocalAuth
     enablePurgeProtection: sku == 'Free' ? false : enablePurgeProtection
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
-    // publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : null
-    // publicNetworkAccess: empty(privateEndpoints) ? null : any(publicNetworkAccess)
     softDeleteRetentionInDays: sku == 'Free' ? 0 : softDeleteRetentionInDays
   }
 }
@@ -226,7 +224,6 @@ module configurationStore_privateEndpoints '../../Microsoft.Network/privateEndpo
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
-  // dependsOn: configurationStore_keyValues
 }]
 
 @description('The name of the app configuration.')
