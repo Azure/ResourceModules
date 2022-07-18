@@ -1,6 +1,6 @@
-# SignalRService `[Microsoft.SignalRService/webPubSub]`
+# Web PubSub Services `[Microsoft.SignalRService/webPubSub]`
 
-This module deploys a Web PubSub resource.
+This module deploys a Web PubSub Service resource.
 
 ## Navigation
 
@@ -425,6 +425,11 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     }
     privateEndpoints: [
       {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.webpubsub.azure.com'
+          ]
+        }
         service: 'webpubsub'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
@@ -509,6 +514,11 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.webpubsub.azure.com"
+            ]
+          },
           "service": "webpubsub",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
