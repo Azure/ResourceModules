@@ -61,7 +61,8 @@ The following table provides you with a comparison of the locations described ab
 | |
 | Other |
 | | Template can be downloaded/restored via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| | Supports publishing of latest [major & minor](#how-it-works) | :white_check_mark: | :white_check_mark: | |
+| | Allows referencing latest [minor](#how-it-works) | :white_check_mark: | :white_check_mark: | |
+| | Allows referencing latest [major](#how-it-works) | :white_check_mark: | :white_check_mark: | white_check_mark |
 
 # How it works
 
