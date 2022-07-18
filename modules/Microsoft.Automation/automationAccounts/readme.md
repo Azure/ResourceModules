@@ -365,6 +365,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    publicNetworkAccess: 'Enabled'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
@@ -397,6 +398,9 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     },
     "cMKUserAssignedIdentityResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
     },
     "userAssignedIdentities": {
       "value": {
