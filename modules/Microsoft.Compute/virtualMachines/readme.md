@@ -1030,7 +1030,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
             }
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
         ]
         nicSuffix: '-nic-01'
@@ -1091,7 +1091,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
               "pipConfiguration": {
                 "publicIpNameSuffix": "-pip-01"
               },
-              "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
             }
           ],
           "nicSuffix": "-nic-01"
@@ -1163,7 +1163,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
             }
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
         ]
         nicSuffix: '-nic-01'
@@ -1223,7 +1223,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
               "pipConfiguration": {
                 "publicIpNameSuffix": "-pip-01"
               },
-              "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
             }
           ],
           "nicSuffix": "-nic-01"
@@ -1311,7 +1311,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
                 }
               ]
             }
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
         ]
         nicSuffix: '-nic-01'
@@ -1482,7 +1482,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
                   }
                 ]
               },
-              "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
             }
           ],
           "nicSuffix": "-nic-01",
@@ -1691,7 +1691,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         ipConfigurations: [
           {
             name: 'ipconfig01'
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
         ]
         nicSuffix: '-nic-01'
@@ -1743,7 +1743,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           "ipConfigurations": [
             {
               "name": "ipconfig01",
-              "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
             }
           ],
           "nicSuffix": "-nic-01"
@@ -1814,7 +1814,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         ipConfigurations: [
           {
             name: 'ipconfig01'
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
         ]
         nicSuffix: '-nic-01'
@@ -1865,7 +1865,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           "ipConfigurations": [
             {
               "name": "ipconfig01",
-              "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
             }
           ],
           "nicSuffix": "-nic-01"
@@ -1955,7 +1955,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
                 }
               ]
             }
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
         ]
         nicSuffix: '-nic-01'
@@ -2138,7 +2138,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
                   }
                 ]
               },
-              "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
             }
           ],
           "nicSuffix": "-nic-01",
