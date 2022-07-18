@@ -1,4 +1,4 @@
-name: '.Platform: Auto Assign PR'
+name: '.Platform: Assign Pull Request to Author'
 on:
   pull_request:
     types: [opened]
@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: kentaro-m/auto-assign-action@v1.2.1
         with:
-          configuration-path: '.github/platform.auto-assign-PR.configuration.yml'
+          configuration-path: '.github/platform.assignPrToAuthor.configuration.yml'

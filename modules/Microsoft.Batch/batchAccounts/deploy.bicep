@@ -20,7 +20,7 @@ param storageAccountId string
 @description('Optional. The authentication mode which the Batch service will use to manage the auto-storage account.')
 param storageAuthenticationMode string = 'StorageKeys'
 
-@description('Optional. The reference to a user assigned identity associated with the Batch pool which a compute node will use.')
+@description('Optional. The resource ID of a user assigned identity assigned to pools which have compute nodes that need access to auto-storage.')
 param storageAccessIdentity string = ''
 
 @allowed([
