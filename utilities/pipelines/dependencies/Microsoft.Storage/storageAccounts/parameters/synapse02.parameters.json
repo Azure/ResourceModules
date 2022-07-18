@@ -5,18 +5,6 @@
     "name": {
       "value": "adp<<namePrefix>>azsaweux002"
     },
-    "storageAccountKind": {
-      "value": "StorageV2"
-    },
-    "storageAccountSku": {
-      "value": "Standard_LRS"
-    },
-    "storageAccountAccessTier": {
-      "value": "Hot"
-    },
-    "allowBlobPublicAccess": {
-      "value": false
-    },
     "enableHierarchicalNamespace": {
       "value": true
     },
@@ -32,16 +20,7 @@
       "value": {
         "containers": [
           {
-            "name": "synapsews",
-            "publicAccess": "None",
-            "roleAssignments": [
-              {
-                "roleDefinitionIdOrName": "Owner",
-                "principalIds": [
-                  "<<deploymentSpId>>"
-                ]
-              }
-            ]
+            "name": "synapsews"
           }
         ]
       }
