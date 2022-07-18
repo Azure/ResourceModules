@@ -15,8 +15,8 @@ This template deploys a private endpoint for a generic service.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
 
 ### Resource dependency
 
@@ -44,9 +44,9 @@ The following resources are required to be able to deploy this resource:
 | `customDnsConfigs` | array | `[]` |  | Custom DNS configurations. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `manualPrivateLinkServiceConnections` | array | `[]` |  | Manual PrivateLink Service Connections. |
-| `privateDnsZoneGroups` | _[privateDnsZoneGroups](privateDnsZoneGroups/readme.md)_ array | `[]` |  | Array of Private DNS zone groups configuration on the private endpoint. |
+| `privateDnsZoneGroup` | object | `{object}` |  | The private DNS zone group configuration used to associate the private endpoint with one or multiple private DNS zones. A DNS zone group can support up to 5 DNS zones. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags to be applied on all resources/resource groups in this deployment. |
 
@@ -240,13 +240,11 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
     // Non-required parameters
     lock: 'CanNotDelete'
-    privateDnsZoneGroups: [
-      {
-        privateDNSResourceIds: [
-          '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
-        ]
-      }
-    ]
+    privateDnsZoneGroup: {
+      privateDNSResourceIds: [
+        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
+      ]
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -290,14 +288,12 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
-    "privateDnsZoneGroups": {
-      "value": [
-        {
-          "privateDNSResourceIds": [
-            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
-          ]
-        }
-      ]
+    "privateDnsZoneGroup": {
+      "value": {
+        "privateDNSResourceIds": [
+          "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+        ]
+      }
     },
     "roleAssignments": {
       "value": [

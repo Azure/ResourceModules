@@ -187,9 +187,13 @@ function Set-ParametersSection {
             }
 
             # Add external single quotes to all default values of type string except for those using functions
-            $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f ($parameter.defaultValue -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
-            $allowedValue = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f ($parameter.allowedValues -join ', ')) : (($parameter.allowedValues -is [hashtable]) ? '{object}' : $parameter.allowedValues)
+            $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
             $description = $parameter.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
+            $allowedValue = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f (($parameter.allowedValues | Sort-Object) -join ', ')) : (($parameter.allowedValues -is [hashtable]) ? '{object}' : $parameter.allowedValues)
+            # Further, replace all "empty string" default values with actual visible quotes
+            if ([regex]::Match($allowedValue, '^(\[\s*,.+)|(\[.+,\s*,)|(.+,\s*\])$').Captures.Count -gt 0) {
+                $allowedValue = $allowedValue -replace '\[\s*,', "[''," -replace ',\s*,', ", ''," -replace ',\s*\]', ", '']"
+            }
 
             # Update parameter table content based on parameter category
             ## Remove category from parameter description
