@@ -31,7 +31,7 @@ This module deploys a security alert policy for a SQL managed instance.
 | :-- | :-- | :-- | :-- | :-- |
 | `emailAccountAdmins` | bool | `False` |  | Specifies that the schedule scan notification will be is sent to the subscription administrators. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `state` | string | `'Disabled'` | `[Enabled, Disabled]` | Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided. |
+| `state` | string | `'Disabled'` | `[Disabled, Enabled]` | Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided. |
 
 
 ## Outputs
