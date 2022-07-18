@@ -164,7 +164,7 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
 }
 
 module configurationStore_keyValues 'keyValues/deploy.bicep' = [for (keyValue, index) in keyValues: {
-  name: '${uniqueString(deployment().name, location)}-appConfig-KeyValues-${index}'
+  name: '${uniqueString(deployment().name, location)}-AppConfig-KeyValues-${index}'
   params: {
     appConfigurationName: configurationStore.name
     name: keyValue.name
@@ -209,7 +209,7 @@ module configurationStore_roleAssignments '.bicep/nested_roleAssignments.bicep' 
 }]
 
 module configurationStore_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-configurationStore-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-AppConfig-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
