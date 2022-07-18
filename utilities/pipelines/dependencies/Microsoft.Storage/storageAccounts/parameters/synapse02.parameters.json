@@ -10,10 +10,10 @@
     },
     "networkAcls": {
       "value": {
-        "bypass": null,
-        "defaultAction": null,
-        "virtualNetworkRules": null,
-        "ipRules": null
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "virtualNetworkRules": [],
+        "ipRules": []
       }
     },
     "blobServices": {
