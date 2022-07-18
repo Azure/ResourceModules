@@ -258,7 +258,7 @@ resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(
 
 // RBAC
 module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-Workspace-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-Workspace-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
