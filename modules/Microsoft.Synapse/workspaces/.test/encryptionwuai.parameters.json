@@ -6,7 +6,7 @@
       "value": "<<namePrefix>>-az-synws-encryptwuai-001"
     },
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux004"
+      "value": "adp<<namePrefix>>azsaweux001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"

@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adpsxxazsaweux004"
+      "value": "adp<<namePrefix>>azsaweux001"
     },
     "storageAccountKind": {
       "value": "StorageV2"
@@ -29,7 +29,9 @@
             "roleAssignments": [
               {
                 "roleDefinitionIdOrName": "Owner",
-                "principalIds": ["<<deploymentSpId>>"]
+                "principalIds": [
+                  "<<deploymentSpId>>"
+                ]
               }
             ]
           }

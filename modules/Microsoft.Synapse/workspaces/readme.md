@@ -306,7 +306,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux004'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-encryptwsai-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -334,7 +334,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux004"
+      "value": "adp<<namePrefix>>azsaweux001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -379,7 +379,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux004'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-encryptwuai-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -406,7 +406,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux004"
+      "value": "adp<<namePrefix>>azsaweux001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -448,7 +448,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux005'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux002'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-managedvnet-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -476,7 +476,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux005"
+      "value": "adp<<namePrefix>>azsaweux002"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -517,7 +517,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux004'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-min-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -539,7 +539,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux004"
+      "value": "adp<<namePrefix>>azsaweux001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -568,7 +568,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux004'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-x-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -627,7 +627,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux004"
+      "value": "adp<<namePrefix>>azsaweux001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
