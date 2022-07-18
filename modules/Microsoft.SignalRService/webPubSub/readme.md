@@ -556,3 +556,72 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 
 </details>
 <p>
+
+<h3>Example 3: Pe</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-webPubSub'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-az-pubsub-pe-001'
+    // Non-required parameters
+    privateEndpoints: [
+      {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.webpubsub.azure.com'
+          ]
+        }
+        service: 'webpubsub'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    sku: 'Standard_S1'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-pubsub-pe-001"
+    },
+    // Non-required parameters
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.webpubsub.azure.com"
+            ]
+          },
+          "service": "webpubsub",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Standard_S1"
+    }
+  }
+}
+```
+
+</details>
+<p>
