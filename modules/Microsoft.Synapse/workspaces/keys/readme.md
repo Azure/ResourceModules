@@ -22,7 +22,11 @@ This module deploys a Synapse Workspaces Key.
 | :-- | :-- | :-- |
 | `isActiveCMK` | bool | Used to activate the workspace after a customer managed key is provided. |
 | `name` | string | Encryption key name. |
-| `workspaceName` | string | Synapse workspace name. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `workspaceName` | string | The name of the parent Synapse Workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
