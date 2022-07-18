@@ -1412,7 +1412,8 @@ jobs:
             'azurecr.parameters.json',
             'azureml.parameters.json',
             'azurestaticapps.parameters.json',
-            'azuresynapse.parameters.json',
+            'azuresynapse.plh.parameters.json',
+            'azuresynapse.workspace.parameters.json',
             'azurewebsites.parameters.json',
             'batch.parameters.json',
             'blob.parameters.json',
@@ -1428,7 +1429,7 @@ jobs:
             'siterecovery.parameters.json',
             'table.parameters.json',
             'vaultcore.parameters.json',
-            'webpubsub.parameters.json'
+            'webpubsub.parameters.json',
           ]
     steps:
       - name: 'Checkout'

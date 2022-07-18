@@ -241,7 +241,8 @@ This group of resources has a dependency on one or more resources in the groups 
       - '_privatelink.monitor.azure.com_': Leveraged by the \[private link scope] resource.
       - '_privatelink.api.azureml.ms_': Leveraged by the \[machine learning workspace] resource.
       - '_privatelink.siterecovery.windowsazure.com_': Leveraged by the \[recovery services vault] resource.
-      - '_privatelink.azuresynapse.net_': Leveraged by the \[synapse] resource.
+      - '_privatelink.azuresynapse.net_': Leveraged by the \[synapse private link hub] resource.
+      - '_privatelink.sql.azuresynapse.net_': Leveraged by the \[synapse workspace] resource.
       - '_privatelink.database.windows.net_': Leveraged by the \[sql server] resource.
       - '_privatelink.azurewebsites.net_': Leveraged by the \[web site] resource.
       - '_privatelink.azurestaticapps.net_': Leveraged by the \[web static site] resource.
