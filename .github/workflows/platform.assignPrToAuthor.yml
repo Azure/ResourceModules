@@ -1,4 +1,4 @@
-name: '.Platform: Auto Assign PR'
+name: '.Platform: Assign Pull Request to Author'
 on:
   pull_request:
     types: [opened]
