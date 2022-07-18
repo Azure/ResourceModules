@@ -42,7 +42,7 @@ jobs:
             foreach($deploymentTestPath in $deploymentTestPaths) {
               $deploymentTestFileName = Split-Path $deploymentTestPath -Leaf
               $testTable[$deploymentTestFileName] = @{
-                parameterFilePath = $deploymentTestPath
+                moduleTestFilePath = $deploymentTestPath
               }
             }
 
