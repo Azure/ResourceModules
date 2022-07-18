@@ -13,7 +13,7 @@ The publishing phase concludes each module's pipeline. If all previous tests suc
 
 - _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
 - _[Bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
-- _[Azure DevOps universal packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
+- _[Azure DevOps Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
    > Note: this is only available if using Azure DevOps pipelines.
 
 Besides the publishing phase's runtime, there is also the possibility to set the switch `Publish prerelease module`. This switch makes it possible to publish a prerelease version in every workflow run that is not based on `main` or `master`. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module-pipeline-inputs).
@@ -37,11 +37,12 @@ While the CARML CI environment can publish to all locations mentioned above, you
   A [Bicep Registry](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry) is an Azure Container Registry that can be used to store & reference Bicep modules.<p>
   For deployment, it is recommended to apply a [template-orchestrated](./Solution%20creation#Orchestration-overview) approach. As Bicep supports the Bicep registry as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
 
-- **Azure DevOps universal packages**<p>
+- **Azure DevOps Universal Packages**<p>
   A [Universal Package](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages) is a packaged folder in an Azure DevOps artifact feed.<p>
   As such, it contains the content of a CARML module 'as-is', including the template file(s), ReadMe file(s) and test file(s). <p>
   For deployment, it is recommended to use Universal Packages only for a [pipeline-orchestrated](./Solution%20creation#Orchestration-overview) approach - i.e., each job would download a single package and deploy it. <p>
   Technically, it would be possible to also use Universal Packages for the template-orchestrated approach, by downloading all packages into a specific location first, and then reference them. Given the indirect nature of this approach, this is however not recommended.
+  > **Note:** Azure DevOps Universal Packages enforce _semver_. As such, it is not possible to overwrite an existing version.
 
 ## Comparison
 
@@ -60,6 +61,7 @@ The following table provides you with a comparison of the locations described ab
 | |
 | Other |
 | | Template can be downloaded/restored via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| | Supports publishing of latest [major & minor](#how-it-works) | :white_check_mark: | :white_check_mark: | |
 
 # How it works
 
