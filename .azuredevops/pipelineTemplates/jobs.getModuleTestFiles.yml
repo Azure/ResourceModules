@@ -1,0 +1,51 @@
+parameters:
+  # Pipeline-related parameters
+  poolName: '$(poolName)'
+  vmImage: '$(vmImage)'
+
+  # Logic-related parameters
+  modulePath: '$(modulePath)'
+
+##---------------------------------------------##
+## TEMPLATE LOGIC                              ##
+##---------------------------------------------##
+jobs:
+  - job: getModuleTestFiles
+    displayName: Get deployment test file paths
+    pool:
+      ${{ if ne(parameters.vmImage, '') }}:
+        vmImage: ${{ parameters.vmImage }}
+      ${{ if ne(parameters.poolName, '') }}:
+        name: ${{ parameters.poolName }}
+    steps:
+      - task: PowerShell@2
+        displayName: 'Get parameter files'
+        name: getModuleTestFilesTask
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-ModuleTestFileList.ps1')
+
+            $functionInput = @{
+              ModulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            # Set agent up
+            $deploymentTestPaths = Get-ModuleTestFileList @functionInput -Verbose
+
+            $testTable = @{}
+            foreach($deploymentTestPath in $deploymentTestPaths) {
+              $deploymentTestFileName = Split-Path $deploymentTestPath -Leaf
+              $testTable[$deploymentTestFileName] = @{
+                parameterFilePath = $deploymentTestPath
+              }
+            }
+
+            $deploymentTestPathsOutput = $testTable | ConvertTo-Json -Compress
+            Write-Host ('##vso[task.setVariable variable=parameterTests;isOutput=true]{0}' -f ($testTable | ConvertTo-Json -Compress))
+            Write-Verbose "Parameter files: $deploymentTestPathsOutput" -Verbose
