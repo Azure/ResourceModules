@@ -31,6 +31,7 @@ While the CARML CI environment can publish to all locations mentioned above, you
   When publishing Bicep modules as Template Specs, the module is compiled - and the resulting ARM template is uploaded as a Template Spec resource version to a Resource Group of your choice.
   For deployment, it is recommended to apply a [template-orchestrated](./Solution%20creation#Orchestration-overview) approach. As Bicep supports the Template-Specs as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
   > **Note:** Even though the published resource is an ARM template, you can reference it in you Bicep template as a remote module like it would be native Bicep.
+  > **Note:** Template Spec names have a maximum of 90 characters
 
 - **Bicep Registry**<p>
   A [Bicep Registry](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry) is an Azure Container Registry that can be used to store & reference Bicep modules.<p>
