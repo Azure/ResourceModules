@@ -42,7 +42,6 @@ While the CARML CI environment can publish to all locations mentioned above, you
   For deployment, it is recommended to use Universal Packages only for a [pipeline-orchestrated](./Solution%20creation#Orchestration-overview) approach - i.e., each job would download a single package and deploy it. <p>
   Technically, it would be possible to also use Universal Packages for the template-orchestrated approach, by downloading all packages into a specific location first, and then reference them. Given the indirect nature of this approach, this is however not recommended.
 
-
 ## Comparison
 
 The following table provides you with a comparison of the locations described above:
