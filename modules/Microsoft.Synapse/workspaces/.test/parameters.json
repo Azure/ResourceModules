@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>-az-synws-basic-001"
+      "value": "<<namePrefix>>-az-synws-x-001"
     },
     "defaultDataLakeStorageAccountName": {
       "value": "adp<<namePrefix>>azsaweux004"
@@ -29,6 +29,19 @@
           "principalIds": [
             "<<deploymentSpId>>"
           ]
+        }
+      ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+          "service": "SQL",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
+            ]
+          }
         }
       ]
     },

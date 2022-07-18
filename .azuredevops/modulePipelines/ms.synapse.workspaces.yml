@@ -47,7 +47,7 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.test/min.parameters.json
-            - path: $(modulePath)/.test/basic.parameters.json
+            - path: $(modulePath)/.test/parameters.json
             - path: $(modulePath)/.test/encryptionwsai.parameters.json
             - path: $(modulePath)/.test/encryptionwuai.parameters.json
             - path: $(modulePath)/.test/managedvnet.parameters.json
