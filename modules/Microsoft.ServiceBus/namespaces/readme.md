@@ -412,19 +412,20 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       defaultAction: 'Deny'
       ipRules: [
         {
-          action: 'Accept'
-          filterName: 'ipFilter1'
+          action: 'Allow'
           ipMask: '10.0.1.0/32'
         }
         {
-          action: 'Accept'
-          filterName: 'ipFilter2'
+          action: 'Allow'
           ipMask: '10.0.2.0/32'
         }
       ]
       trustedServiceAccessEnabled: true
       virtualNetworkRules: [
-        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003'
+        {
+          ignoreMissingVnetServiceEndpoint: true
+          subnet: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003'
+        }
       ]
     }
     privateEndpoints: [
@@ -588,19 +589,20 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         "defaultAction": "Deny",
         "ipRules": [
           {
-            "action": "Accept",
-            "filterName": "ipFilter1",
+            "action": "Allow",
             "ipMask": "10.0.1.0/32"
           },
           {
-            "action": "Accept",
-            "filterName": "ipFilter2",
+            "action": "Allow",
             "ipMask": "10.0.2.0/32"
           }
         ],
         "trustedServiceAccessEnabled": true,
         "virtualNetworkRules": [
-          "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003"
+          {
+            "ignoreMissingVnetServiceEndpoint": true,
+            "subnet": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003"
+          }
         ]
       }
     },
