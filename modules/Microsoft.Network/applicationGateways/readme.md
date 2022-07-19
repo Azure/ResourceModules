@@ -48,7 +48,7 @@ This module deploys Network ApplicationGateways.
 | `enableHttp2` | bool | `False` |  | Whether HTTP2 is enabled on the application gateway resource. |
 | `enableRequestBuffering` | bool | `False` |  | Enable request buffering. |
 | `enableResponseBuffering` | bool | `False` |  | Enable response buffering. |
-| `firewallPolicyId` | string | `''` |  | The resource ID of an associated firewall policy. |
+| `firewallPolicyId` | string | `''` |  | The resource ID of an associated firewall policy. Should be configured for security reasons. |
 | `frontendIPConfigurations` | array | `[]` |  | Frontend IP addresses of the application gateway resource. |
 | `frontendPorts` | array | `[]` |  | Frontend ports of the application gateway resource. |
 | `gatewayIPConfigurations` | array | `[]` |  | Subnets of the application gateway resource. |
@@ -74,7 +74,7 @@ This module deploys Network ApplicationGateways.
 | `trustedRootCertificates` | array | `[]` |  | Trusted Root certificates of the application gateway resource. |
 | `urlPathMaps` | array | `[]` |  | URL path map of the application gateway resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `webApplicationFirewallConfiguration` | object | `{object}` |  | Application gateway web application firewall configuration. |
+| `webApplicationFirewallConfiguration` | object | `{object}` |  | Application gateway web application firewall configuration. Should be configured for security reasons. |
 | `zones` | array | `[]` |  | A list of availability zones denoting where the resource needs to come from. |
 
 
