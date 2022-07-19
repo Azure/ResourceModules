@@ -11,8 +11,8 @@ This section provides an overview of the principles the publishing is built upon
 # Publishing overview
 The publishing phase concludes each module's pipeline. If all previous tests succeed (i.e., no phase failed) and the pipeline is run in the `main` or `master` branch, a new module version is published to all configured target locations. Currently, we support the following target locations:
 
-- _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
-- _[Bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
+- _[Template Specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
+- _[Bicep Registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
 - _[Azure DevOps Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
    > Note: this is only available if using Azure DevOps pipelines.
 
@@ -62,7 +62,7 @@ The following table provides you with a comparison of the locations described ab
 | Other |
 | | Template can be downloaded/restored via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | | Allows referencing latest [minor](#how-it-works) | :white_check_mark: | :white_check_mark: | |
-| | Allows referencing latest [major](#how-it-works) | :white_check_mark: | :white_check_mark: | white_check_mark |
+| | Allows referencing latest [major](#how-it-works) | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 # How it works
 
