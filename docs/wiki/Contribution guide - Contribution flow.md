@@ -79,7 +79,6 @@ Finally, once your contribution is implemented and validated, open a PR for the 
   - `[Fixes]`: For bug fixes when not specifically related to any of the above categories.
 - Provide a meaningful PR description.
 - Follow instructions you find in the PR template.
-- Set your GitHub handle as assignee.
 - Reference the issue number as per the [Create or pick up an issue](#create-or-pick-up-an-issue) step.
 - If applicable, please reference the badge status of your pipeline run. This badge will show the reviewer that the code changes were successfully validated & tested in your environment. To create a badge, first select the three dots (`...`) at the top right of the pipeline, and then chose the `Create status badge` option.
 
