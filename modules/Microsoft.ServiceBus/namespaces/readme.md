@@ -409,21 +409,28 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     disasterRecoveryConfigs: {}
-    ipFilterRules: [
-      {
-        action: 'Accept'
-        filterName: 'ipFilter1'
-        ipMask: '10.0.1.0/32'
-      }
-      {
-        action: 'Accept'
-        filterName: 'ipFilter2'
-        ipMask: '10.0.2.0/32'
-      }
-    ]
     lock: 'CanNotDelete'
     migrationConfigurations: {}
     name: '<<namePrefix>>-az-sbn-x-002'
+    networkRuleSets: {
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          action: 'Accept'
+          filterName: 'ipFilter1'
+          ipMask: '10.0.1.0/32'
+        }
+        {
+          action: 'Accept'
+          filterName: 'ipFilter2'
+          ipMask: '10.0.2.0/32'
+        }
+      ]
+      trustedServiceAccessEnabled: true
+      virtualNetworkRules: [
+        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003'
+      ]
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroups: {
@@ -509,9 +516,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
-    virtualNetworkRules: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003'
-    ]
   }
 }
 ```
@@ -574,20 +578,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     "disasterRecoveryConfigs": {
       "value": {}
     },
-    "ipFilterRules": {
-      "value": [
-        {
-          "action": "Accept",
-          "filterName": "ipFilter1",
-          "ipMask": "10.0.1.0/32"
-        },
-        {
-          "action": "Accept",
-          "filterName": "ipFilter2",
-          "ipMask": "10.0.2.0/32"
-        }
-      ]
-    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -596,6 +586,27 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>-az-sbn-x-002"
+    },
+    "networkRuleSets": {
+      "value": {
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "action": "Accept",
+            "filterName": "ipFilter1",
+            "ipMask": "10.0.1.0/32"
+          },
+          {
+            "action": "Accept",
+            "filterName": "ipFilter2",
+            "ipMask": "10.0.2.0/32"
+          }
+        ],
+        "trustedServiceAccessEnabled": true,
+        "virtualNetworkRules": [
+          "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003"
+        ]
+      }
     },
     "privateEndpoints": {
       "value": [
@@ -697,11 +708,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       "value": {
         "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
       }
-    },
-    "virtualNetworkRules": {
-      "value": [
-        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003"
-      ]
     }
   }
 }
