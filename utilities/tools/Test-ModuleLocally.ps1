@@ -264,7 +264,7 @@ function Test-ModuleLocally {
                     $functionInput['retryLimit'] = 1 # Overwrite default of 3
                     # Loop through test parameter files
                     foreach ($moduleTestFile in $moduleTestFiles) {
-                        Write-Verbose ('Deploy module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        Write-Verbose ('Deploy module [{0}] with test [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
                         if ($PSCmdlet.ShouldProcess(('Module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
                             New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                         }
