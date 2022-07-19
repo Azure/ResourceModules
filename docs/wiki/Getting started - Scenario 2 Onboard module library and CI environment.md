@@ -208,7 +208,7 @@ The primary pipeline variable file ([`global.variables.yml`](https://github.com/
 
 > **NOTE:** If you plan to use the private container registry for Bicep, make sure to update its value in `bicepRegistryName`, as it must be globally unique.
 
-> **NOTE:** If you are uncertain which publishing option to choose, [this section](./The%20CI%20environment%20-%20Publishing#considerations) may be of help.
+> **NOTE:** If you are uncertain which publishing option to choose, [this section](./Solution%20creation#publish-location-considerations) may be of help.
 
 ### 3.2.3 Enable actions
 
@@ -331,7 +331,7 @@ The primary pipeline variable file ([`global.variables.yml`](https://github.com/
 
 > **NOTE:** If you plan to use the private container registry for Bicep, make sure to update its value in `bicepRegistryName` as it must be globally unique.
 
-> **NOTE:** If you are uncertain which publishing option to choose, [this section](./The%20CI%20environment%20-%20Publishing#considerations) may be of help.
+> **NOTE:** If you are uncertain which publishing option to choose, [this section](./Solution%20creation#publish-location-considerations) may be of help.
 
 ### 3.2.4 Register pipelines
 

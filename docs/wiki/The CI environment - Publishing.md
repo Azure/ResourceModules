@@ -1,7 +1,6 @@
 This section provides an overview of the principles the publishing is built upon, how it is set up, and how you can interact with it.
 
 - [Publishing overview](#publishing-overview)
-- [Considerations](#considerations)
 - [How it works](#how-it-works)
   - [Example scenario](#example-scenario)
   - [Output example](#output-example)
@@ -21,48 +20,7 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 > **Note**<br>
 > The `version` used for publishing any artifact is the same for all three target locations, which reduces the maintenance effort.
 
-# Considerations
-
-While the CARML CI environment can publish to all locations mentioned above, you may effectively decide to configure only a subset as per your requirements. To help you with the decision, the following content provides you with an overview of the possibilities of each target location.
-
-## Outline
-- **Template Specs**<p>
-  A [Template Spec](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell) is an Azure resource with the purpose of storing & referencing Azure Resource Manager (ARM) templates. <p>
-  When publishing Bicep modules as Template Specs, the module is compiled - and the resulting ARM template is uploaded as a Template Spec resource version to a Resource Group of your choice.
-  For deployment, it is recommended to apply a [template-orchestrated](./Solution%20creation#Orchestration-overview) approach. As Bicep supports the Template-Specs as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
-  > **Note:** Even though the published resource is an ARM template, you can reference it in you Bicep template as a remote module like it would be native Bicep.
-  > **Note:** Template Spec names have a maximum of 90 characters
-
-- **Bicep Registry**<p>
-  A [Bicep Registry](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry) is an Azure Container Registry that can be used to store & reference Bicep modules.<p>
-  For deployment, it is recommended to apply a [template-orchestrated](./Solution%20creation#Orchestration-overview) approach. As Bicep supports the Bicep registry as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
-
-- **Azure DevOps Universal Packages**<p>
-  A [Universal Package](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages) is a packaged folder in an Azure DevOps artifact feed.<p>
-  As such, it contains the content of a CARML module 'as-is', including the template file(s), ReadMe file(s) and test file(s). <p>
-  For deployment, it is recommended to use Universal Packages only for a [pipeline-orchestrated](./Solution%20creation#Orchestration-overview) approach - i.e., each job would download a single package and deploy it. <p>
-  Technically, it would be possible to also use Universal Packages for the template-orchestrated approach, by downloading all packages into a specific location first, and then reference them. Given the indirect nature of this approach, this is however not recommended. (:large_orange_diamond:)
-  > **Note:** Azure DevOps Universal Packages enforce _semver_. As such, it is not possible to overwrite an existing version.
-
-## Comparison
-
-The following table provides you with a comparison of the locations described above:
-
-| Category | Feature | Template Specs | Bicep Registry | Universal Packages |
-| - | - | - | - | - |
-| Portal/UI |
-| | Template can be viewed |:white_check_mark: | | |
-| | Template can be downloaded | | | |
-| |
-| Deployment |
-| | Supports [template-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :large_orange_diamond: |
-| | Supports [pipeline-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :white_check_mark:  |
-| | Supports single endpoint | | :white_check_mark: | :white_check_mark: |
-| |
-| Other |
-| | Template can be downloaded/restored via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| | Allows referencing latest [minor](#how-it-works) | :white_check_mark: | :white_check_mark: | |
-| | Allows referencing latest [major](#how-it-works) | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+> **Note:** The orchestration options described in the [solution creation](./Solution%20creation) section work differently well with the publishing locations we offer in CARML. To help you select the best location for your use case, we provide further information [here](./Solution%20creation#publish-location-considerations) section.
 
 # How it works
 

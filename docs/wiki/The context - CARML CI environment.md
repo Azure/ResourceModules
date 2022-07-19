@@ -68,6 +68,6 @@ From left to right, there are the three phases introduced before, _Develop modul
    - _[Azure DevOps Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
      > Note: this is only available if using Azure DevOps pipelines.
 
-   To dive deeper and understand which target locations may be best suited for your use case, we provide further information in the [Publishing](./The%20CI%20environment%20-%20Publishing#Considerations) section.
+   To dive deeper and understand which target locations may be best suited for your use case, we provide further information in the [Publish-location considerations](./Solution%20creation#publish-location-considerations) section.
 
 1. The third phase, **Consume modules** is represented on the right. The top right corner provides examples of orchestrations deploying the target solutions by referencing the published modules. The deployments performed in this third phase are supposed to target an integration/production environment. This phase references the validated and published modules coming out of the CARML CI environment, and leverages them with the correctly configured parameters to orchestrate their deployment in the intended order.
