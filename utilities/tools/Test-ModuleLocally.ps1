@@ -252,7 +252,7 @@ function Test-ModuleLocally {
                 if ($ValidationTest) {
                     # Loop through test parameter files
                     foreach ($moduleTestFile in $moduleTestFiles) {
-                        Write-Verbose ('Validating module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        Write-Verbose ('Validating module [{0}] with test [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
                         Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                     }
                 }
