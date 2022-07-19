@@ -264,12 +264,12 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/depl
 //   }
 // }]
 
-module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets)) {
-  name: '${uniqueString(deployment().name, location)}-networkRuleSet'
+module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets) || !empty(privateEndpoints)) {
+  name: '${uniqueString(deployment().name, location)}-NetworkRuleSet'
   params: {
     namespaceName: serviceBusNamespace.name
     defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
-    publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) ? 'Disabled' : null)
+    publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) && empty(networkRuleSets) ? 'Disabled' : null)
     trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
     virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.virtualNetworkRules) ? networkRuleSets.virtualNetworkRules : [] : null
     ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
