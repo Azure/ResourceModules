@@ -47,5 +47,5 @@ jobs:
             }
 
             $deploymentTestPathsOutput = $testTable | ConvertTo-Json -Compress
-            Write-Host ('##vso[task.setVariable variable=parameterTests;isOutput=true]{0}' -f ($testTable | ConvertTo-Json -Compress))
-            Write-Verbose "Parameter files: $deploymentTestPathsOutput" -Verbose
+            Write-Host ('##vso[task.setVariable variable=moduleTests;isOutput=true]{0}' -f ($testTable | ConvertTo-Json -Compress))
+            Write-Verbose "Module test files: $deploymentTestPathsOutput" -Verbose

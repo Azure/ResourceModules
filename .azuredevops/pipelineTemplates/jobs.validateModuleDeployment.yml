@@ -78,7 +78,7 @@ jobs:
     dependsOn:
       - getModuleTestFiles
     strategy:
-      matrix: $[ dependencies.getModuleTestFiles.outputs['getModuleTestFilesTask.parameterTests'] ]
+      matrix: $[ dependencies.getModuleTestFiles.outputs['getModuleTestFilesTask.moduleTests'] ]
     ##---------------------------------------------##
     ## TEMPLATE LOGIC                              ##
     ##---------------------------------------------##
