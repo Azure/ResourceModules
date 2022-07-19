@@ -159,7 +159,12 @@
             "value": [
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "namespace"
+                    "service": "namespace",
+                    "privateDnsZoneGroups": {
+                        "privateDNSResourceIds": [
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
+                        ]
+                    }
                 }
             ]
         },
