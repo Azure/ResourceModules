@@ -24,6 +24,13 @@ param ipRules array = []
 @description('Optional. Configure Virtual Network Rules in virtual network rule set.')
 param virtualNetworkRules array = []
 
+var networkRules = [for (virtualNetworkRule, index) in virtualNetworkRules: {
+  ignoreMissingVnetServiceEndpoint: contains(virtualNetworkRule, 'ignoreMissingVnetServiceEndpoint') ? virtualNetworkRule.ignoreMissingVnetServiceEndpoint : null
+  subnet: contains(virtualNetworkRule, 'subnet') ? {
+    id: virtualNetworkRule.subnet
+  } : null
+}]
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -48,7 +55,8 @@ resource networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11
     publicNetworkAccess: publicNetworkAccess
     trustedServiceAccessEnabled: trustedServiceAccessEnabled
     ipRules: ipRules
-    virtualNetworkRules: virtualNetworkRules
+    // virtualNetworkRules: virtualNetworkRules
+    virtualNetworkRules: networkRules
   }
 }
 
