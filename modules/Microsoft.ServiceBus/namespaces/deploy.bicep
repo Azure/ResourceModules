@@ -242,6 +242,18 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
   }
 }]
 
+module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ipFilterRule, index) in ipFilterRules: {
+  name: '${uniqueString(deployment().name, location)}-IpFilterRules-${index}'
+  params: {
+    namespaceName: serviceBusNamespace.name
+    name: contains(ipFilterRule, 'name') ? ipFilterRule.name : ipFilterRule.filterName
+    action: ipFilterRule.action
+    filterName: ipFilterRule.filterName
+    ipMask: ipFilterRule.ipMask
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets)) {
   name: '${uniqueString(deployment().name, location)}-networkRuleSet'
   params: {
@@ -261,18 +273,6 @@ module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' 
     namespaceName: serviceBusNamespace.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
-
-module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ipFilterRule, index) in ipFilterRules: {
-  name: '${uniqueString(deployment().name, location)}-IpFilterRules-${index}'
-  params: {
-    namespaceName: serviceBusNamespace.name
-    name: contains(ipFilterRule, 'name') ? ipFilterRule.name : ipFilterRule.filterName
-    action: ipFilterRule.action
-    filterName: ipFilterRule.filterName
-    ipMask: ipFilterRule.ipMask
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
