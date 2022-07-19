@@ -31,6 +31,8 @@ There are several open-source repositories that leverage the CARML library today
 
 # Orchestration overview
 
+> **Note:** The orchestration options described in below work differently well with the publishing locations we offer in CARML. To help you select the best location for your use case, we provide further information in the [Publishing](./The%20CI%20environment%20-%20Publishing#Considerations) section.
+
 When it comes to deploying multi-module solutions (applications/workloads/environments/landing zone accelerators/etc.), we can differentiate two types of orchestration methods:
 
 - **_Template-orchestration_**: These types of deployments reference individual modules from a 'main' Bicep or ARM/JSON template and use the capabilities of this template to pass parameters & orchestrate the deployments. By default, deployments are run in parallel by the Azure Resource Manager, while accounting for all dependencies defined. With this approach, the deploying pipeline only needs one deployment job that triggers the template's deployment.
