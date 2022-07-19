@@ -271,8 +271,10 @@ module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!
     defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
     publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) && empty(networkRuleSets) ? 'Disabled' : 'Enabled')
     trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
-    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.virtualNetworkRules) ? networkRuleSets.virtualNetworkRules : [] : null
-    ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
+    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? networkRuleSets.virtualNetworkRules : []
+    ipRules: contains(networkRuleSets, 'ipRules') ? networkRuleSets.ipRules : []
+    // virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.virtualNetworkRules) ? networkRuleSets.virtualNetworkRules : [] : null
+    // ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
