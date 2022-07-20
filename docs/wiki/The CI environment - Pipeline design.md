@@ -159,11 +159,11 @@ This group of resources has a dependency only on the resource group which will h
   1. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
       >**Note**: This resource needs a global scope name.
     Multiple instances are deployed:
-      - '_adp<<namePrefix>>azsax001_' : Default Storage.
-      - '_adp<<namePrefix>>azsafa001_' : Function App Data Storage.
-      - '_adp<<namePrefix>>azsalaw001_' : Diagnostic Storage.
-      - '_adp<<namePrefix>>azsasynapse001_' : Synapse DataLake Gen2 #1.
-      - '_adp<<namePrefix>>azsasynapse002_' : Synapse DataLake Gen2 #2.
+      - '_adp\<<namePrefix\>>azsax001_' : Default Storage.
+      - '_adp\<<namePrefix\>>azsafa001_' : Function App Data Storage.
+      - '_adp\<<namePrefix\>>azsalaw001_' : Diagnostic Storage.
+      - '_adp\<<namePrefix\>>azsasynapse001_' : Synapse DataLake Gen2 #1.
+      - '_adp\<<namePrefix\>>azsasynapse002_' : Synapse DataLake Gen2 #2.
   1. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
       >**Note**: This resource has a global scope name.
   1. Log analytics workspaces: These resources are leveraged by all resources supporting diagnostic settings on LAW. Multiple instances are deployed:
