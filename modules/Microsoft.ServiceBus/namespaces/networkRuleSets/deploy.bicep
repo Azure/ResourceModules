@@ -3,26 +3,38 @@
 @maxLength(50)
 param namespaceName string
 
-@description('Required. The default is the only valid ruleset.')
+@description('Optional. The default is the only valid ruleset.')
 param name string = 'default'
+
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('Optional. This determines if traffic is allowed over public network. Default it is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only.')
+param publicNetworkAccess string = 'Enabled'
+
+@allowed([
+  'Allow'
+  'Deny'
+])
+@description('Optional. Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules/virtualNetworkRules or are being used. If ipRules/virtualNetworkRules are not used and PublicNetworkAccess is set to "Disabled", setting this to "Deny" would render the namespace resources inaccessible for data-plane requests.')
+param defaultAction string = 'Allow'
+
+@allowed([
+  true
+  false
+])
+@description('Optional. Value that indicates whether Trusted Service Access is enabled or not. Default is "true".')
+param trustedServiceAccessEnabled bool = true
+
+@description('Optional. List virtual network rules. When used, defaultAction will be set to "Deny".')
+param virtualNetworkRules array = []
+
+@description('Optional. List of IpRules. When used, defaultAction will be set to "Deny".')
+param ipRules array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
-
-@description('Required. Configure default action in virtual network rule set.')
-param defaultAction string
-
-@description('Required. Configure Public Network Access restrictions in virtual network rule set.')
-param publicNetworkAccess string
-
-@description('Required. Configure Trusted Services in virtual network rule set.')
-param trustedServiceAccessEnabled bool
-
-@description('Optional. Configure IpFilter rules in virtual network rule set.')
-param ipRules array = []
-
-@description('Optional. Configure Virtual Network Rules in virtual network rule set.')
-param virtualNetworkRules array = []
 
 var networkRules = [for (virtualNetworkRule, index) in virtualNetworkRules: {
   ignoreMissingVnetServiceEndpoint: contains(virtualNetworkRule, 'ignoreMissingVnetServiceEndpoint') ? virtualNetworkRule.ignoreMissingVnetServiceEndpoint : null
@@ -51,12 +63,11 @@ resource networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11
   name: name
   parent: namespace
   properties: {
-    defaultAction: defaultAction
     publicNetworkAccess: publicNetworkAccess
+    defaultAction: !empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : defaultAction
     trustedServiceAccessEnabled: trustedServiceAccessEnabled
-    ipRules: ipRules
-    // virtualNetworkRules: virtualNetworkRules
-    virtualNetworkRules: networkRules
+    ipRules: publicNetworkAccess == 'Disabled' ? null : ipRules
+    virtualNetworkRules: publicNetworkAccess == 'Disabled' ? null : networkRules
   }
 }
 

@@ -33,7 +33,7 @@ resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
   name: namespaceName
 }
 
-resource authorizationRule 'Microsoft.ServiceBus/namespaces/authorizationRules@2017-04-01' = {
+resource authorizationRule 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2017-04-01' = {
   name: name
   parent: namespace
   properties: {
