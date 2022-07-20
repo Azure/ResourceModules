@@ -39,15 +39,15 @@ This module deploys a DocumentDB database account and its child resources.
 | `automaticFailover` | bool | `True` |  | Enable automatic failover for regions. |
 | `backupIntervalInMinutes` | int | `240` |  | An integer representing the interval in minutes between two backups. Only applies to periodic backup type. |
 | `backupPolicyContinuousTier` | string | `'Continuous30Days'` | `[Continuous30Days, Continuous7Days]` | Configuration values for continuous mode backup. |
-| `backupPolicyType` | string | `'Continuous'` | `[Periodic, Continuous]` | Describes the mode of backups. |
+| `backupPolicyType` | string | `'Continuous'` | `[Continuous, Periodic]` | Describes the mode of backups. |
 | `backupRetentionIntervalInHours` | int | `8` |  | An integer representing the time (in hours) that each backup is retained. Only applies to periodic backup type. |
 | `backupStorageRedundancy` | string | `'Local'` | `[Geo, Local, Zone]` | Enum to indicate type of backup residency. Only applies to periodic backup type. |
-| `capabilitiesToAdd` | array | `[]` | `[EnableCassandra, EnableTable, EnableGremlin, EnableMongo, DisableRateLimitingResponses, EnableServerless]` | List of Cosmos DB capabilities for the account. |
+| `capabilitiesToAdd` | array | `[]` | `[DisableRateLimitingResponses, EnableCassandra, EnableGremlin, EnableMongo, EnableServerless, EnableTable]` | List of Cosmos DB capabilities for the account. |
 | `databaseAccountOfferType` | string | `'Standard'` | `[Standard]` | The offer type for the Cosmos DB database account. |
-| `defaultConsistencyLevel` | string | `'Session'` | `[Eventual, ConsistentPrefix, Session, BoundedStaleness, Strong]` | The default consistency level of the Cosmos DB account. |
+| `defaultConsistencyLevel` | string | `'Session'` | `[BoundedStaleness, ConsistentPrefix, Eventual, Session, Strong]` | The default consistency level of the Cosmos DB account. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[DataPlaneRequests, MongoRequests, QueryRuntimeStatistics, PartitionKeyStatistics, PartitionKeyRUConsumption, ControlPlaneRequests, CassandraRequests, GremlinRequests, TableApiRequests]` | `[DataPlaneRequests, MongoRequests, QueryRuntimeStatistics, PartitionKeyStatistics, PartitionKeyRUConsumption, ControlPlaneRequests, CassandraRequests, GremlinRequests, TableApiRequests]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[CassandraRequests, ControlPlaneRequests, DataPlaneRequests, GremlinRequests, MongoRequests, PartitionKeyRUConsumption, PartitionKeyStatistics, QueryRuntimeStatistics, TableApiRequests]` | `[CassandraRequests, ControlPlaneRequests, DataPlaneRequests, GremlinRequests, MongoRequests, PartitionKeyRUConsumption, PartitionKeyStatistics, QueryRuntimeStatistics, TableApiRequests]` | The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[Requests]` | `[Requests]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -56,7 +56,7 @@ This module deploys a DocumentDB database account and its child resources.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gremlinDatabases` | _[gremlinDatabases](gremlinDatabases/readme.md)_ array | `[]` |  | Gremlin Databases configurations. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxIntervalInSeconds` | int | `300` |  | Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400. |
 | `maxStalenessPrefix` | int | `100000` |  | Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000. |
 | `mongodbDatabases` | _[mongodbDatabases](mongodbDatabases/readme.md)_ array | `[]` |  | MongoDB Databases configurations. |

@@ -40,7 +40,7 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 | `location` | string | `[resourceGroup().location]` |  | Specifies the location of the resource. |
 | `properties` | object | `{object}` |  | The properties of the compute. Will be ignored in case "resourceId" is set. |
 | `resourceId` | string | `''` |  | ARM resource ID of the underlying compute. |
-| `sku` | string | `''` | `[Basic, Enterprise, ]` | Specifies the sku, also referred as "edition". Required for creating a compute resource. |
+| `sku` | string | `''` | `['', Basic, Enterprise]` | Specifies the sku, also referred as "edition". Required for creating a compute resource. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 | `tags` | object | `{object}` |  | Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |

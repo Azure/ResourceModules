@@ -17,34 +17,29 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `defaultAction` | string |  | Configure default action in virtual network rule set. |
-| `name` | string | `'default'` | The default is the only valid ruleset. |
-| `publicNetworkAccess` | string |  | Configure Public Network Access restrictions in virtual network rule set. |
-| `trustedServiceAccessEnabled` | bool |  | Configure Trusted Services in virtual network rule set. |
-
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `namespaceName` | string | The name of the parent Service Bus Namespace for the Service Bus Network Rule Set. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `ipRules` | array | `[]` | Configure IpFilter rules in virtual network rule set. |
-| `virtualNetworkRules` | array | `[]` | Configure Virtual Network Rules in virtual network rule set. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `defaultAction` | string | `'Allow'` | `[Allow, Deny]` | Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules or virtualNetworkRules are being used. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `ipRules` | array | `[]` |  | List of IpRules. When used, defaultAction will be set to "Deny". |
+| `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | This determines if traffic is allowed over public network. Default is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only. |
+| `trustedServiceAccessEnabled` | bool | `True` | `[False, True]` | Value that indicates whether Trusted Service Access is enabled or not. Default is "true". |
+| `virtualNetworkRules` | array | `[]` |  | List virtual network rules. When used, defaultAction will be set to "Deny". |
 
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the virtual network rule set deployment. |
-| `resourceGroupName` | string | The name of the Resource Group the virtual network rule set was created in. |
-| `resourceId` | string | The Resource ID of the virtual network rule set. |
+| `name` | string | The name of the network rule set. |
+| `resourceGroupName` | string | The name of the resource group the network rule set was created in. |
+| `resourceId` | string | The resource ID of the network rule set. |
 
 ## Cross-referenced modules
 

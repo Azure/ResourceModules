@@ -37,7 +37,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `imageRegistryCredentials` | array | `[]` |  | The image registry credentials by which the container group is created from. |
 | `ipAddressType` | string | `'Public'` |  | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `memoryInGB` | int | `2` |  | The amount of memory to allocate to the container in gigabytes. |
 | `osType` | string | `'Linux'` |  | The operating system type required by the containers in the container group. - Windows or Linux. |
 | `ports` | array | `[System.Collections.Hashtable]` |  | Port to open on the container and the public IP address. |

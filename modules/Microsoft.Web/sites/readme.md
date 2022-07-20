@@ -27,8 +27,9 @@ This module deploys a web or function app.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `kind` | string | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
+| `kind` | string | `[app, functionapp, functionapp,linux]` | Type of site to deploy. |
 | `name` | string |  | Name of the site. |
+| `serverFarmResourceId` | string |  | The resource ID of the app service plan to use for the site. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -40,7 +41,7 @@ This module deploys a web or function app.
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[if(equals(parameters('kind'), 'functionapp'), createArray('FunctionAppLogs'), createArray('AppServiceHTTPLogs', 'AppServiceConsoleLogs', 'AppServiceAppLogs', 'AppServiceAuditLogs', 'AppServiceIPSecAuditLogs', 'AppServicePlatformLogs'))]` | `[AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceAuditLogs, AppServiceIPSecAuditLogs, AppServicePlatformLogs, FunctionAppLogs]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[if(equals(parameters('kind'), 'functionapp'), createArray('FunctionAppLogs'), createArray('AppServiceHTTPLogs', 'AppServiceConsoleLogs', 'AppServiceAppLogs', 'AppServiceAuditLogs', 'AppServiceIPSecAuditLogs', 'AppServicePlatformLogs'))]` | `[AppServiceAppLogs, AppServiceAuditLogs, AppServiceConsoleLogs, AppServiceHTTPLogs, AppServiceIPSecAuditLogs, AppServicePlatformLogs, FunctionAppLogs]` | The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -49,10 +50,9 @@ This module deploys a web or function app.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `httpsOnly` | bool | `True` |  | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `serverFarmResourceId` | string | `''` |  | The resource ID of the app service plan to use for the site. |
 | `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` |  | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
 | `siteConfig` | object | `{object}` |  | The site config object. |
 | `storageAccountId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
@@ -418,8 +418,8 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     // Required parameters
     kind: 'functionapp'
     name: '<<namePrefix>>-az-fa-min-001'
-    // Non-required parameters
     serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
+    // Non-required parameters
     siteConfig: {
       alwaysOn: true
     }
@@ -446,10 +446,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-fa-min-001"
     },
-    // Non-required parameters
     "serverFarmResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
     },
+    // Non-required parameters
     "siteConfig": {
       "value": {
         "alwaysOn": true
@@ -475,6 +475,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     // Required parameters
     kind: 'functionapp'
     name: '<<namePrefix>>-az-fa-x-001'
+    serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
     // Non-required parameters
     appInsightId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
     appSettingsKeyValuePairs: {
@@ -565,7 +566,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
     setAzureWebJobsDashboard: true
     siteConfig: {
       alwaysOn: true
@@ -598,6 +598,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>-az-fa-x-001"
+    },
+    "serverFarmResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
     },
     // Non-required parameters
     "appInsightId": {
@@ -711,9 +714,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
       ]
     },
-    "serverFarmResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
-    },
     "setAzureWebJobsDashboard": {
       "value": true
     },
@@ -754,7 +754,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     // Required parameters
     kind: 'app'
     name: '<<namePrefix>>-az-wa-min-001'
-    // Non-required parameters
     serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
   }
 }
@@ -779,7 +778,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-az-wa-min-001"
     },
-    // Non-required parameters
     "serverFarmResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
     }
@@ -803,6 +801,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     // Required parameters
     kind: 'app'
     name: '<<namePrefix>>-az-wa-x-001'
+    serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
@@ -824,7 +823,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
     siteConfig: {
       alwaysOn: true
       metadata: [
@@ -860,6 +858,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>-az-wa-x-001"
+    },
+    "serverFarmResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -897,9 +898,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
-    },
-    "serverFarmResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
     },
     "siteConfig": {
       "value": {

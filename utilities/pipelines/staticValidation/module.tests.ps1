@@ -171,7 +171,7 @@ Describe 'Readme tests' -Tag Readme {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
                         throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
@@ -548,7 +548,7 @@ Describe 'Deployment template tests' -Tag Template {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
                         throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
@@ -587,7 +587,7 @@ Describe 'Deployment template tests' -Tag Template {
                     if ((Split-Path $moduleTestFilePath -Extension) -eq '.json') {
                         $deploymentTestFile_AllParameterNames = ((Get-Content $moduleTestFilePath) | ConvertFrom-Json -AsHashtable).parameters.Keys | Sort-Object
                     } else {
-                        $deploymentFileContent = az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                        $deploymentFileContent = az bicep build --file $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
                         $deploymentTestFile_AllParameterNames = $deploymentFileContent.resources[-1].properties.parameters.keys | Sort-Object # The last resource should be the test
                     }
                     $testFileTestCases += @{
@@ -1048,7 +1048,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
 
                 if (-not $templateContent) {
                     throw ($bicepTemplateCompilationFailedException -f $templateFilePath)

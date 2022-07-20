@@ -74,11 +74,11 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `hardwareFamily` | string | `'Gen5'` |  | If the service has different generations of hardware, for the same SKU, then that can be captured here. |
 | `instancePoolResourceId` | string | `''` |  | The resource ID of the instance pool this managed server belongs to. |
 | `keys` | _[keys](keys/readme.md)_ array | `[]` |  | The keys to configure. |
-| `licenseType` | string | `'LicenseIncluded'` | `[LicenseIncluded, BasePrice]` | The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
+| `licenseType` | string | `'LicenseIncluded'` | `[BasePrice, LicenseIncluded]` | The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedInstanceCreateMode` | string | `'Default'` | `[Default, PointInTimeRestore]` | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
-| `proxyOverride` | string | `'Proxy'` | `[Proxy, Redirect, Default]` | Connection type used for connecting to the instance. |
+| `proxyOverride` | string | `'Proxy'` | `[Default, Proxy, Redirect]` | Connection type used for connecting to the instance. |
 | `publicDataEndpointEnabled` | bool | `False` |  | Whether or not the public data endpoint is enabled. |
 | `requestedBackupStorageRedundancy` | string | `'Geo'` | `[Geo, GeoZone, Local, Zone]` | The storage account type used to store backups for this database. |
 | `restorePointInTime` | string | `''` |  | Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. |

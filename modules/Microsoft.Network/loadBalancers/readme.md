@@ -45,7 +45,7 @@ This module deploys a load balancer.
 | `loadBalancerSku` | string | `'Standard'` | `[Basic, Standard]` | Name of a load balancer SKU. |
 | `loadBalancingRules` | array | `[]` |  | Array of objects containing all load balancing rules. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `outboundRules` | array | `[]` |  | The outbound rules. |
 | `probes` | array | `[]` |  | Array of objects containing all probes, these are references in the load balancing rules. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |

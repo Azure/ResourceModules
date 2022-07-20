@@ -44,7 +44,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | `minRecommendedvCPUs` | int | `1` |  | The minimum number of the CPU cores recommended for this image. |
 | `offer` | string | `'WindowsServer'` |  | The name of the gallery Image Definition offer. |
 | `osState` | string | `'Generalized'` | `[Generalized, Specialized]` | This property allows the user to specify whether the virtual machines created under this image are 'Generalized' or 'Specialized'. |
-| `osType` | string | `'Windows'` | `[Windows, Linux]` | OS type of the image to be created. |
+| `osType` | string | `'Windows'` | `[Linux, Windows]` | OS type of the image to be created. |
 | `planName` | string | `''` |  | The plan ID. |
 | `planPublisherName` | string | `''` |  | The publisher ID. |
 | `privacyStatementUri` | string | `''` |  | The privacy statement uri. Has to be a valid URL. |

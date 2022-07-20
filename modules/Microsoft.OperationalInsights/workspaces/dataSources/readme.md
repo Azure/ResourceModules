@@ -20,7 +20,7 @@ This template deploys a data source for a Log Analytics workspace.
 **Required parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `kind` | string | `'AzureActivityLog'` | `[AzureActivityLog, WindowsEvent, WindowsPerformanceCounter, IISLogs, LinuxSyslog, LinuxSyslogCollection, LinuxPerformanceObject, LinuxPerformanceCollection]` | The kind of the DataSource. |
+| `kind` | string | `'AzureActivityLog'` | `[AzureActivityLog, IISLogs, LinuxPerformanceCollection, LinuxPerformanceObject, LinuxSyslog, LinuxSyslogCollection, WindowsEvent, WindowsPerformanceCounter]` | The kind of the DataSource. |
 | `name` | string |  |  | Name of the solution. |
 
 **Conditional parameters**

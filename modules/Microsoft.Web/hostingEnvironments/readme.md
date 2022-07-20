@@ -42,12 +42,12 @@ This module deploys an app service environment.
 | `dnsSuffix` | string | `''` |  | DNS suffix of the App Service Environment. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `frontEndScaleFactor` | int | `15` |  | Scale factor for frontends. |
-| `internalLoadBalancingMode` | string | `'None'` | `[None, Web, Publishing]` | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. |
+| `internalLoadBalancingMode` | string | `'None'` | `[None, Publishing, Web]` | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. |
 | `ipsslAddressCount` | int | `-1` |  | Number of IP SSL addresses reserved for the App Service Environment. |
 | `kind` | string | `'ASEv3'` |  | Kind of resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `multiSize` | string | `''` | `[, Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Frontend VM size. Cannot be used with 'kind' `ASEv3`. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `multiSize` | string | `''` | `['', ExtraLarge, Large, Medium, Standard_D1_V2, Standard_D2, Standard_D2_V2, Standard_D3, Standard_D3_V2, Standard_D4, Standard_D4_V2]` | Frontend VM size. Cannot be used with 'kind' `ASEv3`. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Resource tags. |
 | `userWhitelistedIpRanges` | array | `[]` |  | User added IP ranges to whitelist on ASE DB. Cannot be used with 'kind' `ASEv3`. |

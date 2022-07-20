@@ -20,7 +20,7 @@ This module deploys the app settings.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `kind` | string | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
+| `kind` | string | `[app, functionapp, functionapp,linux]` | Type of site to deploy. |
 
 **Conditional parameters**
 | Parameter Name | Type | Description |

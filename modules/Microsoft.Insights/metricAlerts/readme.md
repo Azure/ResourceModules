@@ -35,18 +35,18 @@ This module deploys an alert based on metrics.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | The list of actions to take when alert triggers. |
-| `alertCriteriaType` | string | `'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'` | `[Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria]` | Maps to the 'odata.type' field. Specifies the type of the alert criteria. |
+| `alertCriteriaType` | string | `'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'` | `[Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria]` | Maps to the 'odata.type' field. Specifies the type of the alert criteria. |
 | `alertDescription` | string | `''` |  | Description of the alert. |
 | `autoMitigate` | bool | `True` |  | The flag that indicates whether the alert should be auto resolved or not. |
 | `enabled` | bool | `True` |  | Indicates whether this alert is enabled. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `evaluationFrequency` | string | `'PT5M'` | `[PT1M, PT5M, PT15M, PT30M, PT1H]` | how often the metric alert is evaluated represented in ISO 8601 duration format. |
+| `evaluationFrequency` | string | `'PT5M'` | `[PT15M, PT1H, PT1M, PT30M, PT5M]` | how often the metric alert is evaluated represented in ISO 8601 duration format. |
 | `location` | string | `'global'` |  | Location for all resources. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scopes` | array | `[[subscription().id]]` |  | the list of resource IDs that this metric alert is scoped to. |
 | `severity` | int | `3` | `[0, 1, 2, 3, 4]` | The severity of the alert. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `windowSize` | string | `'PT15M'` | `[PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H, P1D]` | the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. |
+| `windowSize` | string | `'PT15M'` | `[P1D, PT12H, PT15M, PT1H, PT1M, PT30M, PT5M, PT6H]` | the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. |
 
 
 ### Parameter Usage: actions

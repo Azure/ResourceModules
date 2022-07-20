@@ -68,7 +68,7 @@ This module deploys an API management service.
 | `hostnameConfigurations` | array | `[]` |  | Custom hostname configuration of the API Management service. |
 | `identityProviders` | _[identityProviders](identityProviders/readme.md)_ array | `[]` |  | Identity providers. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minApiVersion` | string | `''` |  | Limit control plane API calls to API Management service with version equal to or newer than this value. |
 | `namedValues` | _[namedValues](namedValues/readme.md)_ array | `[]` |  | Named values. |
 | `newGuidValue` | string | `[newGuid()]` |  | Necessary to create a new GUID. |
@@ -78,14 +78,14 @@ This module deploys an API management service.
 | `products` | _[products](products/readme.md)_ array | `[]` |  | Products. |
 | `restore` | bool | `False` |  | Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'Developer'` | `[Consumption, Developer, Basic, Standard, Premium]` | The pricing tier of this API Management service. |
+| `sku` | string | `'Developer'` | `[Basic, Consumption, Developer, Premium, Standard]` | The pricing tier of this API Management service. |
 | `skuCount` | int | `1` | `[1, 2]` | The instance size of this API Management service. |
 | `subnetResourceId` | string | `''` |  | The full resource ID of a subnet in a virtual network to deploy the API Management service in. |
 | `subscriptions` | _[subscriptions](subscriptions/readme.md)_ array | `[]` |  | Subscriptions. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `virtualNetworkType` | string | `'None'` | `[None, External, Internal]` | The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. |
+| `virtualNetworkType` | string | `'None'` | `[External, Internal, None]` | The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. |
 | `zones` | array | `[]` |  | A list of availability zones denoting where the resource needs to come from. |
 
 
