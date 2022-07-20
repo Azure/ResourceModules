@@ -137,7 +137,7 @@ resource topic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock
 }
 
 module topic_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds

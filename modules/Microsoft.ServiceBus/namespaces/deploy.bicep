@@ -357,7 +357,7 @@ module serviceBusNamespace_privateEndpoints '../../Microsoft.Network/privateEndp
 }]
 
 module serviceBusNamespace_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
