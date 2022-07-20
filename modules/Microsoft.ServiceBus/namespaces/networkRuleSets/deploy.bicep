@@ -3,9 +3,6 @@
 @maxLength(50)
 param namespaceName string
 
-@description('Optional. The default is the only valid ruleset.')
-param name string = 'default'
-
 @allowed([
   'Enabled'
   'Disabled'
@@ -60,7 +57,7 @@ resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
 }
 
 resource networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11-01' = {
-  name: name
+  name: 'default'
   parent: namespace
   properties: {
     publicNetworkAccess: publicNetworkAccess
@@ -71,11 +68,11 @@ resource networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11
   }
 }
 
-@description('The name of the virtual network rule set deployment.')
+@description('The name of the network rule set.')
 output name string = networkRuleSet.name
 
-@description('The Resource ID of the virtual network rule set.')
+@description('The resource ID of the network rule set.')
 output resourceId string = networkRuleSet.id
 
-@description('The name of the Resource Group the virtual network rule set was created in.')
+@description('The name of the resource group the network rule set was created in.')
 output resourceGroupName string = resourceGroup().name
