@@ -46,7 +46,13 @@ Both the _template-orchestration_, as well as _pipeline-orchestration_ may run a
 
 ## Publish-location considerations
 
-While the CARML CI environment can publish to all locations mentioned above, you may effectively decide to configure only a subset as per your requirements. To help you with the decision, the following content provides you with an overview of the possibilities of each target location.
+For your solution, it is recommended to reference modules from a published location, to leverage versioning and avoid the risk of breaking changes. 
+
+CARML supports publishing to different locations, either through the use of the CI environment or by locally running the same scripts leveraged by the publishing step of the CI environment pipeline, as explained next.
+
+In either case, you may effectively decide to configure only a subset of publishing locations as per your requirements.
+
+To help you with the decision, the following content provides you with an overview of the possibilities of each target location.
 
 ### Outline
 - **Template Specs**<p>
