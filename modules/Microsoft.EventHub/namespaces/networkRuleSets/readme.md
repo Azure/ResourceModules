@@ -24,12 +24,12 @@ This module deploys EventHub Namespaces NetworkRuleSets.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `defaultAction` | string | `'Allow'` | `[Allow, Deny]` | Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules/virtualNetworkRules or are being used. If ipRules/virtualNetworkRules are not used and PublicNetworkAccess is set to "Disabled", setting this to "Deny" would render the namespace resources inaccessible for data-plane requests. |
+| `defaultAction` | string | `'Allow'` | `[Allow, Deny]` | Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules or virtualNetworkRules are being used. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `ipRules` | array | `[]` |  | List of IpRules. When used, defaultAction will be set to "Deny" and publicNetworkAccess will be set to "Enabled". |
-| `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | This determines if traffic is allowed over public network. Default it is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only. |
-| `trustedServiceAccessEnabled` | bool | `True` | `[False, True]` | Value that indicates whether Trusted Service Access is Enabled or not. Default is "true". |
-| `virtualNetworkRules` | array | `[]` |  | List VirtualNetwork Rules. When used, defaultAction will be set to "Deny" and publicNetworkAccess will be set to "Enabled". |
+| `ipRules` | array | `[]` |  | List of IpRules. When used, defaultAction will be set to "Deny". |
+| `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | This determines if traffic is allowed over public network. Default is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only. |
+| `trustedServiceAccessEnabled` | bool | `True` | `[False, True]` | Value that indicates whether Trusted Service Access is enabled or not. Default is "true". |
+| `virtualNetworkRules` | array | `[]` |  | List virtual network rules. When used, defaultAction will be set to "Deny". |
 
 
 ### Parameter Usage: `<virtualNetworkRules>`

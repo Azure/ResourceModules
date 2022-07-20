@@ -48,6 +48,8 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.test/min.parameters.json
             - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/pe.parameters.json
+
 
   - stage: Publishing
     displayName: Publishing
