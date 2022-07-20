@@ -28,17 +28,11 @@ param authorizationRules array = [
   }
 ]
 
-// @description('Optional. IP Filter Rules for the Service Bus namespace.')
-// param ipFilterRules array = []
-
 @description('Optional. The migration configuration.')
 param migrationConfigurations object = {}
 
 @description('Optional. The disaster recovery configuration.')
 param disasterRecoveryConfigs object = {}
-
-// @description('Optional. vNet Rules SubnetIds for the Service Bus namespace.')
-// param virtualNetworkRules array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -242,28 +236,6 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/depl
   }
 }
 
-// module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep' = [for (virtualNetworkRule, index) in virtualNetworkRules: {
-//   name: '${uniqueString(deployment().name, location)}-VirtualNetworkRules-${index}'
-//   params: {
-//     namespaceName: serviceBusNamespace.name
-//     name: last(split(virtualNetworkRule, '/'))
-//     virtualNetworkSubnetId: virtualNetworkRule
-//     enableDefaultTelemetry: enableReferencedModulesTelemetry
-//   }
-// }]
-
-// module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ipFilterRule, index) in ipFilterRules: {
-//   name: '${uniqueString(deployment().name, location)}-IpFilterRules-${index}'
-//   params: {
-//     namespaceName: serviceBusNamespace.name
-//     name: contains(ipFilterRule, 'name') ? ipFilterRule.name : ipFilterRule.filterName
-//     action: ipFilterRule.action
-//     filterName: ipFilterRule.filterName
-//     ipMask: ipFilterRule.ipMask
-//     enableDefaultTelemetry: enableReferencedModulesTelemetry
-//   }
-// }]
-
 module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets) || !empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-NetworkRuleSet'
   params: {
@@ -273,8 +245,6 @@ module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!
     trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
     virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? networkRuleSets.virtualNetworkRules : []
     ipRules: contains(networkRuleSets, 'ipRules') ? networkRuleSets.ipRules : []
-    // virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.virtualNetworkRules) ? networkRuleSets.virtualNetworkRules : [] : null
-    // ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
