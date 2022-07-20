@@ -10,14 +10,14 @@ param name string = 'default'
   'Enabled'
   'Disabled'
 ])
-@description('Optional. This determines if traffic is allowed over public network. Default it is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only.')
+@description('Optional. This determines if traffic is allowed over public network. Default is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only.')
 param publicNetworkAccess string = 'Enabled'
 
 @allowed([
   'Allow'
   'Deny'
 ])
-@description('Optional. Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules/virtualNetworkRules or are being used. If ipRules/virtualNetworkRules are not used and PublicNetworkAccess is set to "Disabled", setting this to "Deny" would render the namespace resources inaccessible for data-plane requests.')
+@description('Optional. Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules or virtualNetworkRules are being used.')
 param defaultAction string = 'Allow'
 
 @allowed([
