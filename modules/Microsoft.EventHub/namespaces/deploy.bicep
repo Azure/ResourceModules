@@ -198,7 +198,7 @@ module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = 
   }
 }]
 
-module eventHubNamespace_diasterRecoveryConfig 'disasterRecoveryConfigs/deploy.bicep' = if (!empty(disasterRecoveryConfig)) {
+module eventHubNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.bicep' = if (!empty(disasterRecoveryConfig)) {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-DisRecConfig'
   params: {
     namespaceName: eventHubNamespace.name
