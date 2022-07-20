@@ -58,6 +58,7 @@ This module deploys an Azure Automation Account.
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `modules` | _[modules](modules/readme.md)_ array | `[]` |  | List of modules to be created in the automation account. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `runbooks` | _[runbooks](runbooks/readme.md)_ array | `[]` |  | List of runbooks to be created in the automation account. |
 | `schedules` | _[schedules](schedules/readme.md)_ array | `[]` |  | List of schedules to be created in the automation account. |
@@ -364,6 +365,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    publicNetworkAccess: 'Enabled'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
@@ -396,6 +398,9 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     },
     "cMKUserAssignedIdentityResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
     },
     "userAssignedIdentities": {
       "value": {
@@ -488,10 +493,20 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     ]
     privateEndpoints: [
       {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azure-automation.net'
+          ]
+        }
         service: 'Webhook'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
       {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azure-automation.net'
+          ]
+        }
         service: 'DSCAndHybridWorker'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
@@ -684,10 +699,20 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     "privateEndpoints": {
       "value": [
         {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azure-automation.net"
+            ]
+          },
           "service": "Webhook",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         },
         {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azure-automation.net"
+            ]
+          },
           "service": "DSCAndHybridWorker",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }

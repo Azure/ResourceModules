@@ -109,7 +109,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
           id: ipConfiguration.publicIPAddressResourceId
         } : null) : null
         subnet: {
-          id: ipConfiguration.subnetId
+          id: ipConfiguration.subnetResourceId
         }
         loadBalancerBackendAddressPools: contains(ipConfiguration, 'loadBalancerBackendAddressPools') ? ipConfiguration.loadBalancerBackendAddressPools : null
         applicationSecurityGroups: contains(ipConfiguration, 'applicationSecurityGroups') ? ipConfiguration.applicationSecurityGroups : null
