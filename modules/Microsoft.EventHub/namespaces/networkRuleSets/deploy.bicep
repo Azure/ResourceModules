@@ -5,31 +5,38 @@ param namespaceName string
   'Enabled'
   'Disabled'
 ])
-@description('Optional. This determines if traffic is allowed over public network. Default it is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only.')
+@description('Optional. This determines if traffic is allowed over public network. Default is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only.')
 param publicNetworkAccess string = 'Enabled'
 
 @allowed([
   'Allow'
   'Deny'
 ])
-@description('Optional. Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules or virtualNetworkRules.')
+@description('Optional. Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules or virtualNetworkRules are being used.')
 param defaultAction string = 'Allow'
 
 @allowed([
   true
   false
 ])
-@description('Optional. Value that indicates whether Trusted Service Access is Enabled or not. Default is "true".')
+@description('Optional. Value that indicates whether Trusted Service Access is enabled or not. Default is "true".')
 param trustedServiceAccessEnabled bool = true
+
+@description('Optional. List virtual network rules. When used, defaultAction will be set to "Deny".')
+param virtualNetworkRules array = []
 
 @description('Optional. List of IpRules. When used, defaultAction will be set to "Deny".')
 param ipRules array = []
 
-@description('Optional. List VirtualNetwork Rules. When used, defaultAction will be set to "Deny".')
-param virtualNetworkRules array = []
-
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var networkRules = [for (virtualNetworkRule, index) in virtualNetworkRules: {
+  ignoreMissingVnetServiceEndpoint: contains(virtualNetworkRule, 'ignoreMissingVnetServiceEndpoint') ? virtualNetworkRule.ignoreMissingVnetServiceEndpoint : null
+  subnet: contains(virtualNetworkRule, 'subnet') ? {
+    id: virtualNetworkRule.subnet
+  } : null
+}]
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -55,7 +62,7 @@ resource networkRuleSet 'Microsoft.EventHub/namespaces/networkRuleSets@2021-11-0
     defaultAction: !empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : defaultAction
     trustedServiceAccessEnabled: trustedServiceAccessEnabled
     ipRules: publicNetworkAccess == 'Disabled' ? null : ipRules
-    virtualNetworkRules: publicNetworkAccess == 'Disabled' ? null : virtualNetworkRules
+    virtualNetworkRules: publicNetworkAccess == 'Disabled' ? null : networkRules
   }
 }
 
