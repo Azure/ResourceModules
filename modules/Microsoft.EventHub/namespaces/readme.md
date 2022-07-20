@@ -402,7 +402,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>-az-evnsp-x-001'
+    name: '<<namePrefix>>-az-evhns-x-001'
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -415,9 +415,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       virtualNetworkRules: [
         {
           ignoreMissingVnetServiceEndpoint: true
-          subnet: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-          }
+          subnet: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
         }
       ]
     }
@@ -551,7 +549,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>-az-evnsp-x-001"
+      "value": "<<namePrefix>>-az-evhns-x-001"
     },
     "networkRuleSets": {
       "value": {
@@ -566,9 +564,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         "virtualNetworkRules": [
           {
             "ignoreMissingVnetServiceEndpoint": true,
-            "subnet": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
-            }
+            "subnet": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
           }
         ]
       }
@@ -621,7 +617,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
-    name: '<<namePrefix>>-az-evnsp-pe-001'
+    name: '<<namePrefix>>-az-evhns-pe-001'
     privateEndpoints: [
       {
         privateDnsZoneGroups: {
@@ -650,7 +646,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>-az-evnsp-pe-001"
+      "value": "<<namePrefix>>-az-evhns-pe-001"
     },
     "privateEndpoints": {
       "value": [

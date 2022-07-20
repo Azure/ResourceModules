@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-evnsp-pe-001"
+            "value": "<<namePrefix>>-az-evhns-pe-001"
         },
         "privateEndpoints": {
             "value": [

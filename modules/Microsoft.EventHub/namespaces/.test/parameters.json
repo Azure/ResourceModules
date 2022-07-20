@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-evnsp-x-001"
+            "value": "<<namePrefix>>-az-evhns-x-001"
         },
         "lock": {
             "value": "CanNotDelete"
@@ -132,9 +132,7 @@
                 ],
                 "virtualNetworkRules": [
                     {
-                        "subnet": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
-                        },
+                        "subnet": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
                         "ignoreMissingVnetServiceEndpoint": true
                     }
                 ],
