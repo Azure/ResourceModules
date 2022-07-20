@@ -52,25 +52,6 @@
                 ]
             }
         },
-        // "virtualNetworkRules": {
-        //     "value": [
-        //         "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003"
-        //     ]
-        // },
-        // "ipFilterRules": {
-        //     "value": [
-        //         {
-        //             "filterName": "ipFilter1",
-        //             "ipMask": "10.0.1.0/32",
-        //             "action": "Accept"
-        //         },
-        //         {
-        //             "filterName": "ipFilter2",
-        //             "ipMask": "10.0.2.0/32",
-        //             "action": "Accept"
-        //         }
-        //     ]
-        // },
         "authorizationRules": {
             "value": [
                 {
