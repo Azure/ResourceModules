@@ -288,7 +288,13 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
+          [
+            'fa.parameters.json',
+            'law.parameters.json',
+            'parameters.json',
+            'synapse01.parameters.json',
+            'synapse02.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1406,7 +1412,8 @@ jobs:
             'azurecr.parameters.json',
             'azureml.parameters.json',
             'azurestaticapps.parameters.json',
-            'azuresynapse.parameters.json',
+            'azuresynapse.plh.parameters.json',
+            'azuresynapse.workspace.parameters.json',
             'azurewebsites.parameters.json',
             'batch.parameters.json',
             'blob.parameters.json',

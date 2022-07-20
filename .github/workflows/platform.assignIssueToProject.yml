@@ -1,5 +1,5 @@
-# Add new issues to the corrrect project
-name: '.Platform: Assign Issues to Projects'
+# Add new issues to the correct project
+name: '.Platform: Assign Issue to Project'
 
 on:
   workflow_dispatch:

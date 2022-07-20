@@ -3,26 +3,42 @@
 @maxLength(50)
 param namespaceName string
 
-@description('Required. The default is the only valid ruleset.')
-param name string = 'default'
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('Optional. This determines if traffic is allowed over public network. Default is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only.')
+param publicNetworkAccess string = 'Enabled'
+
+@allowed([
+  'Allow'
+  'Deny'
+])
+@description('Optional. Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules or virtualNetworkRules are being used.')
+param defaultAction string = 'Allow'
+
+@allowed([
+  true
+  false
+])
+@description('Optional. Value that indicates whether Trusted Service Access is enabled or not. Default is "true".')
+param trustedServiceAccessEnabled bool = true
+
+@description('Optional. List virtual network rules. When used, defaultAction will be set to "Deny".')
+param virtualNetworkRules array = []
+
+@description('Optional. List of IpRules. When used, defaultAction will be set to "Deny".')
+param ipRules array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Required. Configure default action in virtual network rule set.')
-param defaultAction string
-
-@description('Required. Configure Public Network Access restrictions in virtual network rule set.')
-param publicNetworkAccess string
-
-@description('Required. Configure Trusted Services in virtual network rule set.')
-param trustedServiceAccessEnabled bool
-
-@description('Optional. Configure IpFilter rules in virtual network rule set.')
-param ipRules array = []
-
-@description('Optional. Configure Virtual Network Rules in virtual network rule set.')
-param virtualNetworkRules array = []
+var networkRules = [for (virtualNetworkRule, index) in virtualNetworkRules: {
+  ignoreMissingVnetServiceEndpoint: contains(virtualNetworkRule, 'ignoreMissingVnetServiceEndpoint') ? virtualNetworkRule.ignoreMissingVnetServiceEndpoint : null
+  subnet: contains(virtualNetworkRule, 'subnet') ? {
+    id: virtualNetworkRule.subnet
+  } : null
+}]
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -36,27 +52,27 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
   name: namespaceName
 }
 
 resource networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11-01' = {
-  name: name
+  name: 'default'
   parent: namespace
   properties: {
-    defaultAction: defaultAction
     publicNetworkAccess: publicNetworkAccess
+    defaultAction: !empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : defaultAction
     trustedServiceAccessEnabled: trustedServiceAccessEnabled
-    ipRules: ipRules
-    virtualNetworkRules: virtualNetworkRules
+    ipRules: publicNetworkAccess == 'Disabled' ? null : ipRules
+    virtualNetworkRules: publicNetworkAccess == 'Disabled' ? null : networkRules
   }
 }
 
-@description('The name of the virtual network rule set deployment.')
+@description('The name of the network rule set.')
 output name string = networkRuleSet.name
 
-@description('The Resource ID of the virtual network rule set.')
+@description('The resource ID of the network rule set.')
 output resourceId string = networkRuleSet.id
 
-@description('The name of the Resource Group the virtual network rule set was created in.')
+@description('The name of the resource group the network rule set was created in.')
 output resourceGroupName string = resourceGroup().name

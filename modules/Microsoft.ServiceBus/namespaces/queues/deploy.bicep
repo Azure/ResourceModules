@@ -97,7 +97,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
   name: namespaceName
 }
 
@@ -141,7 +141,7 @@ resource queue_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock
 }
 
 module queue_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
