@@ -78,6 +78,12 @@ Alternatively, you can also do the same with a specific release by navigating to
 
 # 3. Configure the CI environment
 
+CARML uses a single ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) file for configuring the CI environment. To replicate the CI environment locally on your machine, and perform local modules tests and validations, you must install the ([powershell-yaml](https://www.powershellgallery.com/packages/powershell-yaml/0.4.2)) module from the PowerShell gallery by executing the following on your PowerShell CLI:
+
+```powershell
+Install-Module -Name powershell-yaml
+```
+
 To configure the CI environment you have to perform several steps:
 - [3.1 Update default `namePrefix`](#31-update-default-nameprefix)
 - [3.2 Set up CI-environment-specific configuration](#32-set-up-ci-environment-specific-configuration)
