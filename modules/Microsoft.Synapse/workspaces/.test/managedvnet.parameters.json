@@ -6,7 +6,7 @@
       "value": "<<namePrefix>>-az-synws-managedvnet-001"
     },
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux002"
+      "value": "adp<<namePrefix>>azsasynapse002"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"

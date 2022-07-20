@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp<<namePrefix>>azsaweux001"
+      "value": "adp<<namePrefix>>azsasynapse001"
     },
     "enableHierarchicalNamespace": {
       "value": true
