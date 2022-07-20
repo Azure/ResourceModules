@@ -8,6 +8,7 @@ This module deploys a Synapse Workspace.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Deployment examples](#Deployment-examples)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -306,7 +307,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-encryptwsai-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -334,7 +335,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux001"
+      "value": "adp<<namePrefix>>azsasynapse001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -379,7 +380,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-encryptwuai-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -406,7 +407,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux001"
+      "value": "adp<<namePrefix>>azsasynapse001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -448,7 +449,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux002'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse002'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-managedvnet-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -476,7 +477,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux002"
+      "value": "adp<<namePrefix>>azsasynapse002"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -517,7 +518,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-min-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -539,7 +540,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux001"
+      "value": "adp<<namePrefix>>azsasynapse001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -568,7 +569,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-x-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -627,7 +628,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux001"
+      "value": "adp<<namePrefix>>azsasynapse001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -701,3 +702,12 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 </details>
 <p>
+
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Dependency | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
