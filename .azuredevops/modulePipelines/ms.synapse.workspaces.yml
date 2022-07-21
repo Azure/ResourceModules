@@ -1,4 +1,4 @@
-name: 'SignalR Service - WebPubSub'
+name: 'Synapse - Workspaces'
 
 parameters:
   - name: removeDeployment
@@ -19,9 +19,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.signalrservice.webpubsub.yml'
+      - '/.azuredevops/modulePipelines/ms.synapse.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.SignalRService/webPubSub/*'
+      - '/modules/Microsoft.Synapse/workspaces/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'
@@ -31,7 +31,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.SignalRService/webPubSub'
+    value: '/modules/Microsoft.Synapse/workspaces'
 
 stages:
   - stage: Validation
@@ -48,7 +48,9 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.test/min.parameters.json
             - path: $(modulePath)/.test/parameters.json
-            - path: $(modulePath)/.test/pe.parameters.json
+            - path: $(modulePath)/.test/encryptionwsai.parameters.json
+            - path: $(modulePath)/.test/encryptionwuai.parameters.json
+            - path: $(modulePath)/.test/managedvnet.parameters.json
 
   - stage: Publishing
     displayName: Publishing

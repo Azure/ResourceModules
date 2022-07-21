@@ -8,6 +8,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 - [Upstream workloads](#upstream-workloads)
 - [Orchestration overview](#orchestration-overview)
+  - [Publish-location considerations](#publish-location-considerations)
 - [Template-orchestration](#template-orchestration)
   - [How to start](#how-to-start)
   - [Examples](#examples)
@@ -42,6 +43,55 @@ When it comes to deploying multi-module solutions (applications/workloads/enviro
 Both the _template-orchestration_, as well as _pipeline-orchestration_ may run a validation and subsequent deployment in the same _Azure_ subscription. This subscription should be the subscription where you want to host your production solution. However, you can extend the concept and for example, deploy the solution first to an integration and then a production subscription.
 
    <img src="./media/SolutionCreation/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
+
+## Publish-location considerations
+
+For your solution, it is recommended to reference modules from a published location, to leverage versioning and avoid the risk of breaking changes. 
+
+CARML supports publishing to different locations, either through the use of the CI environment or by locally running the same scripts leveraged by the publishing step of the CI environment pipeline, as explained next.
+
+In either case, you may effectively decide to configure only a subset of publishing locations as per your requirements.
+
+To help you with the decision, the following content provides you with an overview of the possibilities of each target location.
+
+### Outline
+- **Template Specs**<p>
+  A [Template Spec](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell) is an Azure resource with the purpose of storing & referencing Azure Resource Manager (ARM) templates. <p>
+  When publishing Bicep modules as Template Specs, the module is compiled - and the resulting ARM template is uploaded as a Template Spec resource version to a Resource Group of your choice.
+  For deployment, it is recommended to apply a [template-orchestrated](#Orchestration-overview) approach. As Bicep supports the Template-Specs as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
+  > **Note:** Even though the published resource is an ARM template, you can reference it in you Bicep template as a remote module like it would be native Bicep.
+  > **Note:** Template Spec names have a maximum of 90 characters
+
+- **Bicep Registry**<p>
+  A [Bicep Registry](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry) is an Azure Container Registry that can be used to store & reference Bicep modules.<p>
+  For deployment, it is recommended to apply a [template-orchestrated](#Orchestration-overview) approach. As Bicep supports the Bicep registry as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
+
+- **Azure DevOps Universal Packages**<p>
+  A [Universal Package](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages) is a packaged folder in an Azure DevOps artifact feed.<p>
+  As such, it contains the content of a CARML module 'as-is', including the template file(s), ReadMe file(s) and test file(s). <p>
+  For deployment, it is recommended to use Universal Packages only for a [pipeline-orchestrated](#Orchestration-overview) approach - i.e., each job would download a single package and deploy it. <p>
+  Technically, it would be possible to also use Universal Packages for the template-orchestrated approach, by downloading all packages into a specific location first, and then reference them. Given the indirect nature of this approach, this is however not recommended. (:large_orange_diamond:)
+  > **Note:** Azure DevOps Universal Packages enforce _semver_. As such, it is not possible to overwrite an existing version.
+
+### Comparison
+
+The following table provides you with a comparison of the locations described above:
+
+| Category | Feature | Template Specs | Bicep Registry | Universal Packages |
+| - | - | - | - | - |
+| Portal/UI |
+| | Template can be viewed |:white_check_mark: | | |
+| | Template can be downloaded | | | |
+| |
+| Deployment |
+| | Supports [template-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :large_orange_diamond: |
+| | Supports [pipeline-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :white_check_mark:  |
+| | Supports single endpoint | | :white_check_mark: | :white_check_mark: |
+| |
+| Other |
+| | Template can be downloaded/restored via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| | Allows referencing latest [minor](./The%20CI%20environment%20-%20Publishing#how-it-works) | :white_check_mark: | :white_check_mark: | |
+| | Allows referencing latest [major](./The%20CI%20environment%20-%20Publishing#how-it-works) | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 # Template-orchestration
 
