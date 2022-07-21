@@ -337,7 +337,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-vpnSites-vsipar'
   params: {
     // Required parameters
-    name: 'carml-vsipar-001'
+    name: '-vsipar-001'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     deviceProperties: {
@@ -365,7 +365,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
     }
     vpnSiteLinks: [
       {
-        name: 'carml-vSite-vsipar-001'
+        name: '-vSite-vsipar-001'
         properties: {
           bgpProperties: {
             asn: 65010
@@ -411,7 +411,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "carml-vsipar-001"
+      "value": "-vsipar-001"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
@@ -453,7 +453,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
     "vpnSiteLinks": {
       "value": [
         {
-          "name": "carml-vSite-vsipar-001",
+          "name": "-vSite-vsipar-001",
           "properties": {
             "bgpProperties": {
               "asn": 65010,
@@ -500,7 +500,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-vpnSites-vsimin'
   params: {
     // Required parameters
-    name: 'carml-vsimin-001'
+    name: '-vsimin-001'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     addressPrefixes: [
@@ -525,7 +525,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "carml-vsimin-001"
+      "value": "-vsimin-001"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"

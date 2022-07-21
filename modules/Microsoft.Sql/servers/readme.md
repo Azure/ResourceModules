@@ -329,11 +329,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.sql/servers/deploy.bicep = {
+module servers './Microsoft.Sql/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-sqladmin'
   params: {
     // Required parameters
-    name: 'carml-sqladmin-001'
+    name: '-sqladmin-001'
     // Non-required parameters
     administrators: {
       azureADOnlyAuthentication: true
@@ -360,7 +360,7 @@ module servers './Microsoft.sql/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "carml-sqladmin-001"
+      "value": "-sqladmin-001"
     },
     // Non-required parameters
     "administrators": {
@@ -386,11 +386,11 @@ module servers './Microsoft.sql/servers/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.sql/servers/deploy.bicep = {
+module servers './Microsoft.Sql/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-sqlpar'
   params: {
     // Required parameters
-    name: 'carml-sqlpar-001'
+    name: '-sqlpar-001'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -404,7 +404,7 @@ module servers './Microsoft.sql/servers/deploy.bicep = {
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: 'carml-sqlpardb-001'
+        name: '-sqlpardb-001'
         skuCapacity: 12
         skuFamily: 'Gen5'
         skuName: 'BC_Gen5'
@@ -474,7 +474,7 @@ module servers './Microsoft.sql/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "carml-sqlpar-001"
+      "value": "-sqlpar-001"
     },
     // Non-required parameters
     "administratorLogin": {
@@ -494,7 +494,7 @@ module servers './Microsoft.sql/servers/deploy.bicep = {
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "carml-sqlpardb-001",
+          "name": "-sqlpardb-001",
           "skuCapacity": 12,
           "skuFamily": "Gen5",
           "skuName": "BC_Gen5",

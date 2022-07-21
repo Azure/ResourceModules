@@ -797,7 +797,11 @@ function Set-DeploymentExamplesSection {
         $rawContent = Get-Content -Path $testFilePath -Encoding 'utf8' | Out-String
 
         # Format example header
-        $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
+        if ((Split-Path (Split-Path $testFilePath -Parent) -Leaf) -ne '.test') {
+            $exampleTitle = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+        } else {
+            $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
+        }
         $TextInfo = (Get-Culture).TextInfo
         $exampleTitle = $TextInfo.ToTitleCase($exampleTitle)
         $SectionContent += @(
