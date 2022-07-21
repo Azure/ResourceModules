@@ -217,6 +217,8 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 > **NOTE:** If you plan to use the private container registry for Bicep, make sure to update its value in `bicepRegistryName`, as it must be globally unique.
 
+> **NOTE:** If you are uncertain which publishing option to choose, [this section](./Solution%20creation#publish-location-considerations) may be of help.
+
 ### 3.2.3 Enable actions
 
 Finally, 'GitHub Actions' are disabled by default and hence, must be enabled first.
@@ -338,6 +340,8 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 <p>
 
 > **NOTE:** If you plan to use the private container registry for Bicep, make sure to update its value in `bicepRegistryName` as it must be globally unique.
+
+> **NOTE:** If you are uncertain which publishing option to choose, [this section](./Solution%20creation#publish-location-considerations) may be of help.
 
 ### 3.2.4 Register pipelines
 
