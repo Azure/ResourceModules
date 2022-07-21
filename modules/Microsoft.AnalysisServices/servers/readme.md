@@ -172,7 +172,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-aspar'
   params: {
     // Required parameters
-    name: 'carmlazaspar001'
+    name: 'azaspar001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -207,7 +207,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "carmlazaspar001"
+      "value": "azaspar001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -259,7 +259,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-asmax'
   params: {
     // Required parameters
-    name: 'carmlazasmax001'
+    name: 'azasmax001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -312,7 +312,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "carmlazasmax001"
+      "value": "azasmax001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -389,7 +389,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-servers-asmin'
   params: {
-    name: 'carmlazasmin001'
+    name: 'azasmin001'
   }
 }
 ```
@@ -407,7 +407,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "carmlazasmin001"
+      "value": "azasmin001"
     }
   }
 }
