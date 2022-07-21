@@ -29,7 +29,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'nestedTemplates/default.parameters.nested.bicep' = {
+module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -49,7 +49,7 @@ resource keyVaultReference 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
@@ -65,7 +65,7 @@ module diagnosticDependencies '../../../.shared/dependencyConstructs/diagnostic.
 // Test Execution //
 // ============== //
 
-module testDeployment '../deploy.bicep' = {
+module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
   params: {

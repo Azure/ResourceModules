@@ -15,7 +15,7 @@ param resourceGroupName string = '${serviceShort}-ms.analysisservices-servers-rg
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'asmax'
+param serviceShort string = 'aspar'
 
 // =========== //
 // Deployments //
@@ -28,7 +28,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'nestedTemplates/max.parameters.nested.bicep' = {
+module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -38,7 +38,7 @@ module resourceGroupResources 'nestedTemplates/max.parameters.nested.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
@@ -54,24 +54,13 @@ module diagnosticDependencies '../../../.shared/dependencyConstructs/diagnostic.
 // Test Execution //
 // ============== //
 
-module testDeployment '../deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
+module testDeployment '../../deploy.bicep' = {
+  scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
   params: {
     name: '${namePrefix}az${serviceShort}001'
     lock: 'CanNotDelete'
     skuName: 'S0'
-    skuCapacity: 1
-    firewallSettings: {
-      firewallRules: [
-        {
-          firewallRuleName: 'AllowFromAll'
-          rangeStart: '0.0.0.0'
-          rangeEnd: '255.255.255.255'
-        }
-      ]
-      enablePowerBIService: true
-    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -85,12 +74,5 @@ module testDeployment '../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    diagnosticLogCategoriesToEnable: [
-      'Engine'
-      'Service'
-    ]
-    diagnosticMetricsToEnable: [
-      'AllMetrics'
-    ]
   }
 }

@@ -29,7 +29,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'nestedTemplates/default.parameters.nested.bicep' = {
+module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -42,7 +42,7 @@ module resourceGroupResources 'nestedTemplates/default.parameters.nested.bicep' 
 // Test Execution //
 // ============== //
 
-module testDeployment '../deploy.bicep' = {
+module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-virtualHub-${serviceShort}'
   params: {
