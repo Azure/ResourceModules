@@ -161,7 +161,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Default</h3>
+<h3>Example 1: Deploy Test</h3>
 
 <details>
 
@@ -248,7 +248,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
 </details>
 <p>
 
-<h3>Example 2: Max</h3>
+<h3>Example 2: Deploy Test</h3>
 
 <details>
 
@@ -379,7 +379,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
 </details>
 <p>
 
-<h3>Example 3: Min</h3>
+<h3>Example 3: Deploy Test</h3>
 
 <details>
 

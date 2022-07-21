@@ -127,7 +127,7 @@ Describe 'File/folder tests' -Tag Modules {
                 [string] $moduleFolderPath
             )
 
-            $moduleTestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+            $moduleTestFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
             $moduleTestFilePaths.Count | Should -BeGreaterThan 0
         }
 
@@ -135,7 +135,7 @@ Describe 'File/folder tests' -Tag Modules {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             $testFolderPath = Join-Path $moduleFolderPath '.test'
             if (Test-Path $testFolderPath) {
-                foreach ($testFilePath in ((Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' })) {
+                foreach ($testFilePath in (Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ })) {
                     $testFolderFilesTestCases += @{
                         moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                         testFilePath     = $testFilePath
@@ -482,7 +482,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-                $testFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+                $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
                 foreach ($testFilePath in $testFilePaths) {
                     $testFileContent = Get-Content $testFilePath
 
@@ -504,13 +504,13 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             }
         }
 
-        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [module testDeployment '../deploy.bicep' = {]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [module testDeployment '../../deploy.bicep' = {]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
             )
 
-            $expectedTestFormat = ($testFileContent | Out-String) -match "\s*module testDeployment '../deploy.bicep' = {\s*"
+            $expectedTestFormat = ($testFileContent | Out-String) -match "\s*module testDeployment '../../deploy.bicep' = {\s*"
 
             $expectedTestFormat | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
         }
@@ -672,7 +672,7 @@ Describe 'Deployment template tests' -Tag Template {
             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
 
                 # Can be removed after full migration to bicep test files
-                $moduleTestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+                $moduleTestFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
 
                 foreach ($moduleTestFilePath in $moduleTestFilePaths) {
                     if ((Split-Path $moduleTestFilePath -Extension) -eq '.json') {
