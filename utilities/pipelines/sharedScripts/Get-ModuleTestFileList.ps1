@@ -1,9 +1,9 @@
 ﻿<#
 .SYNOPSIS
-Get the relative file paths of all parameter files in the given module.
+Get the relative file paths of all test files in the given module.
 
 .DESCRIPTION
-Get the relative file paths of all parameter files in the given module.
+Get the relative file paths of all test files (*.json / deploy.test.bicep) in the given module.
 The relative path is returned instead of the full one to make paths easier to read in the pipeline.
 
 .PARAMETER ModulePath
@@ -35,7 +35,7 @@ function Get-ModuleTestFileList {
 
     $deploymentTests = @()
     if (Test-Path (Join-Path $ModulePath $SearchFolder)) {
-        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath $SearchFolder) -Depth 0 -Include ('*.json', '*.bicep') -File).FullName
+        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath $SearchFolder) -Recurse -Include ('*.json', 'deploy.test.bicep') -File).FullName
     }
 
     if (-not $deploymentTests) {
