@@ -1,6 +1,6 @@
-# Static Web Sites `[Microsoft.Web/staticSites]`
+# Static Web Apps `[Microsoft.Web/staticSites]`
 
-This module deploys a Static Web Site.
+This module deploys a Static Web App.
 
 ## Navigation
 
@@ -15,8 +15,8 @@ This module deploys a Static Web Site.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Web/staticSites` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/staticSites) |
 | `Microsoft.Web/staticSites/config` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/staticSites/config) |
 | `Microsoft.Web/staticSites/customDomains` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/staticSites/customDomains) |
@@ -34,7 +34,7 @@ This module deploys a Static Web Site.
 | :-- | :-- | :-- | :-- | :-- |
 | `allowConfigFileUpdates` | bool | `True` |  | False if config file is locked for this static web app; otherwise, true. |
 | `appSettings` | object | `{object}` |  | Static site app settings. |
-| `branch` | string | `''` |  | The branch name of the GitHub repo. |
+| `branch` | string | `''` |  | The branch name of the GitHub repository. |
 | `buildProperties` | object | `{object}` |  | Build properties for the static site. |
 | `customDomains` | _[customDomains](customDomains/readme.md)_ array | `[]` |  | The custom domains associated with this static site. The deployment will fail as long as the validation records are not present. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -42,14 +42,14 @@ This module deploys a Static Web Site.
 | `functionAppSettings` | object | `{object}` |  | Function app settings. |
 | `linkedBackend` | object | `{object}` |  | Object with "resourceId" and "location" of the a user defined function app. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `provider` | string | `'None'` |  | The provider that submitted the last deployment to the primary environment of the static site. |
-| `repositoryToken` | secureString | `''` |  | The Personal Access Token for accessing the GitHub repo. |
-| `repositoryUrl` | string | `''` |  | The name of the GitHub repo. |
+| `repositoryToken` | secureString | `''` |  | The Personal Access Token for accessing the GitHub repository. |
+| `repositoryUrl` | string | `''` |  | The name of the GitHub repository. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | string | `'Free'` | `[Free, Standard]` | Type of static site to deploy. |
-| `stagingEnvironmentPolicy` | string | `'Enabled'` | `[Enabled, Disabled]` | State indicating whether staging environments are allowed or not allowed for a static web app. |
+| `stagingEnvironmentPolicy` | string | `'Enabled'` | `[Disabled, Enabled]` | State indicating whether staging environments are allowed or not allowed for a static web app. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `templateProperties` | object | `{object}` |  | Template Options for the static site. |

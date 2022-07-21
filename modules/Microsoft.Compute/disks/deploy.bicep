@@ -45,7 +45,7 @@ param logicalSectorSize int = 4096
 @description('Optional. If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state.')
 param securityDataUri string = ''
 
-@description('Optional. If create option is Copy, this is the ARM id of the source snapshot or disk.')
+@description('Optional. If create option is Copy, this is the ARM ID of the source snapshot or disk.')
 param sourceResourceId string = ''
 
 @description('Optional. If create option is Import, this is the URI of a blob to be imported into a managed disk.')

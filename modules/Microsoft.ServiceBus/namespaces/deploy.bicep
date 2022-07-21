@@ -28,17 +28,11 @@ param authorizationRules array = [
   }
 ]
 
-@description('Optional. IP Filter Rules for the Service Bus namespace.')
-param ipFilterRules array = []
-
 @description('Optional. The migration configuration.')
 param migrationConfigurations object = {}
 
 @description('Optional. The disaster recovery configuration.')
 param disasterRecoveryConfigs object = {}
-
-@description('Optional. vNet Rules SubnetIds for the Service Bus namespace.')
-param virtualNetworkRules array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -77,7 +71,7 @@ param roleAssignments array = []
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-@description('Optional. Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules.')
+@description('Optional. Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.')
 param networkRuleSets object = {}
 
 @description('Optional. Tags of the resource.')
@@ -183,7 +177,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
+resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   name: !empty(name) ? name : uniqueServiceBusNamespaceName
   location: location
   tags: empty(tags) ? null : tags
@@ -210,6 +204,16 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview
   }
 }
 
+module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
+  name: '${uniqueString(deployment().name, location)}-AuthorizationRules-${index}'
+  params: {
+    namespaceName: serviceBusNamespace.name
+    name: authorizationRule.name
+    rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.bicep' = if (!empty(disasterRecoveryConfigs)) {
   name: '${uniqueString(deployment().name, location)}-DisasterRecoveryConfig'
   params: {
@@ -232,50 +236,18 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/depl
   }
 }
 
-module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep' = [for (virtualNetworkRule, index) in virtualNetworkRules: {
-  name: '${uniqueString(deployment().name, location)}-VirtualNetworkRules-${index}'
-  params: {
-    namespaceName: serviceBusNamespace.name
-    name: last(split(virtualNetworkRule, '/'))
-    virtualNetworkSubnetId: virtualNetworkRule
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
-
-module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets)) {
-  name: '${uniqueString(deployment().name, location)}-networkRuleSet'
+module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets) || !empty(privateEndpoints)) {
+  name: '${uniqueString(deployment().name, location)}-NetworkRuleSet'
   params: {
     namespaceName: serviceBusNamespace.name
     defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
-    publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) ? 'Disabled' : null)
+    publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) && empty(networkRuleSets) ? 'Disabled' : 'Enabled')
     trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
-    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.virtualNetworkRules : [] : null
-    ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
+    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? networkRuleSets.virtualNetworkRules : []
+    ipRules: contains(networkRuleSets, 'ipRules') ? networkRuleSets.ipRules : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
-
-module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
-  name: '${uniqueString(deployment().name, location)}-AuthorizationRules-${index}'
-  params: {
-    namespaceName: serviceBusNamespace.name
-    name: authorizationRule.name
-    rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
-
-module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ipFilterRule, index) in ipFilterRules: {
-  name: '${uniqueString(deployment().name, location)}-IpFilterRules-${index}'
-  params: {
-    namespaceName: serviceBusNamespace.name
-    name: contains(ipFilterRule, 'name') ? ipFilterRule.name : ipFilterRule.filterName
-    action: ipFilterRule.action
-    filterName: ipFilterRule.filterName
-    ipMask: ipFilterRule.ipMask
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
 
 module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in queues: {
   name: '${uniqueString(deployment().name, location)}-Queue-${index}'
@@ -376,7 +348,7 @@ module serviceBusNamespace_privateEndpoints '../../Microsoft.Network/privateEndp
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
@@ -385,7 +357,7 @@ module serviceBusNamespace_privateEndpoints '../../Microsoft.Network/privateEndp
 }]
 
 module serviceBusNamespace_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds

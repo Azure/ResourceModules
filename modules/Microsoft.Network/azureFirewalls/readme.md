@@ -34,11 +34,11 @@ This module deploys a firewall.
 | `additionalPublicIpConfigurations` | array | `[]` |  | This is to add any additional public ip configurations on top of the public ip with subnet ip configuration. |
 | `applicationRuleCollections` | array | `[]` |  | Collection of application rule collections used by Azure Firewall. |
 | `azureFirewallSubnetPublicIpId` | string | `''` |  | The public ip resource ID to associate to the AzureFirewallSubnet. If empty, then the public ip that is created as part of this module will be applied to the AzureFirewallSubnet. |
-| `azureSkuName` | string | `'AZFW_VNet'` | `[AZFW_VNet, AZFW_Hub]` | Name of an Azure Firewall SKU. |
-| `azureSkuTier` | string | `'Standard'` | `[Standard, Premium]` | Tier of an Azure Firewall. |
+| `azureSkuName` | string | `'AZFW_VNet'` | `[AZFW_Hub, AZFW_VNet]` | Name of an Azure Firewall SKU. |
+| `azureSkuTier` | string | `'Standard'` | `[Premium, Standard]` | Tier of an Azure Firewall. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[AzureFirewallApplicationRule, AzureFirewallNetworkRule, AzureFirewallDnsProxy]` | `[AzureFirewallApplicationRule, AzureFirewallNetworkRule, AzureFirewallDnsProxy]` | The name of firewall logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[AzureFirewallApplicationRule, AzureFirewallDnsProxy, AzureFirewallNetworkRule]` | `[AzureFirewallApplicationRule, AzureFirewallDnsProxy, AzureFirewallNetworkRule]` | The name of firewall logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -48,7 +48,7 @@ This module deploys a firewall.
 | `firewallPolicyId` | string | `''` |  | Resource ID of the Firewall Policy that should be attached. |
 | `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `natRuleCollections` | array | `[]` |  | Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | `[]` |  | Collection of network rule collections used by Azure Firewall. |
 | `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Firewall. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Firewall's name. |

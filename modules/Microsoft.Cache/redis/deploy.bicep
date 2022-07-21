@@ -251,7 +251,7 @@ module redisCache_privateEndpoints '../../Microsoft.Network/privateEndpoints/dep
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
@@ -262,13 +262,13 @@ module redisCache_privateEndpoints '../../Microsoft.Network/privateEndpoints/dep
 @description('The resource name.')
 output name string = redisCache.name
 
-@description('The resource id.')
+@description('The resource ID.')
 output resourceId string = redisCache.id
 
 @description('The name of the resource group the Redis cache was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('Redis host name.')
+@description('Redis hostname.')
 output hostName string = redisCache.properties.hostName
 
 @description('Redis SSL port.')

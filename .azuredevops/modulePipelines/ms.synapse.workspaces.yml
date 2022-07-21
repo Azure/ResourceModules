@@ -1,0 +1,59 @@
+name: 'Synapse - Workspaces'
+
+parameters:
+  - name: removeDeployment
+    displayName: Remove deployed module
+    type: boolean
+    default: true
+  - name: prerelease
+    displayName: Publish prerelease module
+    type: boolean
+    default: false
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - '/.azuredevops/modulePipelines/ms.synapse.workspaces.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.Synapse/workspaces/*'
+      - '/utilities/pipelines/*'
+    exclude:
+      - '/utilities/pipelines/dependencies/*'
+      - '/**/*.md'
+
+variables:
+  - template: '../../global.variables.yml'
+  - group: 'PLATFORM_VARIABLES'
+  - name: modulePath
+    value: '/modules/Microsoft.Synapse/workspaces'
+
+stages:
+  - stage: Validation
+    displayName: Static validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+
+  - stage: Deployment
+    displayName: Deployment validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks:
+            - path: $(modulePath)/.test/min.parameters.json
+            - path: $(modulePath)/.test/parameters.json
+            - path: $(modulePath)/.test/encryptionwsai.parameters.json
+            - path: $(modulePath)/.test/encryptionwuai.parameters.json
+            - path: $(modulePath)/.test/managedvnet.parameters.json
+
+  - stage: Publishing
+    displayName: Publishing
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
