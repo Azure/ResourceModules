@@ -20,7 +20,7 @@ Returns the relative file paths of all parameter files of the virtual machines m
 .EXAMPLE
 Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\arm\Microsoft.Compute\virtualMachines' -SearchFolder 'parameters'
 
-Returns the relative file paths of all parameter files of the virtual machines module in folder 'parameters'.
+Returns the relative file paths of all test files of the virtual machines module in folder 'parameters'.
 #>
 function Get-ModuleTestFileList {
 
