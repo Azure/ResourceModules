@@ -768,6 +768,9 @@ function Set-DeploymentExamplesSection {
         [string] $SectionStartIdentifier = '## Deployment examples'
     )
 
+    # Load used function(s)
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-ModuleTestFileList.ps1')
+
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
         'The following module usage examples are retrieved from the content of the files hosted in the module''s `.test` folder.',
@@ -779,7 +782,7 @@ function Set-DeploymentExamplesSection {
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
     $resourceType = $resourceTypeIdentifier.Split('/')[1]
-    $testFilePaths = (Get-ChildItem (Join-Path -Path $moduleRoot -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+    $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleRoot | ForEach-Object { Join-Path $moduleRoot $_ }
 
     $RequiredParametersList = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' } | Sort-Object
 
@@ -794,7 +797,11 @@ function Set-DeploymentExamplesSection {
         $rawContent = Get-Content -Path $testFilePath -Encoding 'utf8' | Out-String
 
         # Format example header
-        $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
+        if ((Split-Path (Split-Path $testFilePath -Parent) -Leaf) -ne '.test') {
+            $exampleTitle = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+        } else {
+            $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
+        }
         $TextInfo = (Get-Culture).TextInfo
         $exampleTitle = $TextInfo.ToTitleCase($exampleTitle)
         $SectionContent += @(
@@ -811,7 +818,7 @@ function Set-DeploymentExamplesSection {
             # ------------------------- #
 
             # [1/6] Search for the relevant parameter start & end index
-            $bicepTestStartIndex = $rawContentArray.IndexOf("module testDeployment '../deploy.bicep' = {")
+            $bicepTestStartIndex = $rawContentArray.IndexOf("module testDeployment '../../deploy.bicep' = {")
 
             $bicepTestEndIndex = $bicepTestStartIndex
             do {
@@ -821,12 +828,11 @@ function Set-DeploymentExamplesSection {
             $rawBicepExample = $rawContentArray[$bicepTestStartIndex..$bicepTestEndIndex]
 
             # [2/6] Replace placeholders
-            $namePrefix = ($ProjectSettings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }).value
             $serviceShort = ([regex]::Match($rawContent, "(?m)^param serviceShort string = '(.+)'\s*$")).Captures.Groups[1].Value
 
             $rawBicepExampleString = ($rawBicepExample | Out-String)
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{serviceShort\}', $serviceShort
-            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', $namePrefix
+            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', '' # Replacing with empty to not expose prefix and avoid potential deployment conflicts
             $rawBicepExampleString = $rawBicepExampleString -replace '(?m):\s*location\s*$', ': ''<location>'''
 
             # [3/6] Format header, remove scope property & any empty line
