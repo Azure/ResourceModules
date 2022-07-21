@@ -74,7 +74,7 @@ $TestModuleLocallyInput = @{
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
 
-Run all Pesters test for a given template and a Test-Az*Deployment using each test file in the module's .test folder in combination with the template and the provided tokens
+Run all Pester tests for a given template and a Test-Az*Deployment using each test file in the module's default test folder ('.test') in combination with the template and the provided tokens
 
 .EXAMPLE
 
