@@ -936,7 +936,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             foreach ($parameterFileTestCase in $testFileTestCases) {
-                $TemplateFile_RequiredParametersNames = $parameterFileTestCase.templateFile_RequiredParametersNames
+                $templateFile_RequiredParametersNames = $parameterFileTestCase.templateFile_RequiredParametersNames
                 $templateFile_AllParameterNames = $parameterFileTestCase.templateFile_AllParameterNames
                 $nonRequiredParameterNames = $templateFile_AllParameterNames | Where-Object { $_ -notin $TemplateFile_RequiredParametersNames }
 
