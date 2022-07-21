@@ -928,6 +928,22 @@ Describe 'Deployment template tests' -Tag Template {
                 $missingParameters.Count | Should -Be 0 -Because ('no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}]' -f ($missingParameters -join ', '))
             }
         }
+
+        It '[<moduleFolderName>] All non-required parameters in template file should not have description that start with "Required."' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $testFileTestCases,
+                [hashtable] $templateContent
+            )
+
+            foreach ($parameterFileTestCase in $testFileTestCases) {
+                $templateFile_RequiredParametersNames = $parameterFileTestCase.templateFile_RequiredParametersNames
+                $templateFile_AllParameterNames = $parameterFileTestCase.templateFile_AllParameterNames
+                $nonRequiredParameterNames = $templateFile_AllParameterNames | Where-Object { $_ -notin $templateFile_RequiredParametersNames }
+
+                $incorrectParameters = $nonRequiredParameterNames | Where-Object { ($templateContent.parameters[$_].defaultValue) -and ($templateContent.parameters[$_].metadata.description -like 'Required. *') }
+                $incorrectParameters.Count | Should -Be 0 -Because ('all non-required parameters in the template file should not have a description that starts with "Required.". Found incorrect items: [{0}]' -f ($incorrectParameters -join ', '))
+            }
+        }
     }
 
     Context 'Parameter file token tests' {
