@@ -153,7 +153,7 @@ module nsg 'modules/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name: 'LocalFilesDemoNsg'
+    name: 'defaultNsg'
   }
   dependsOn: [
     rg
@@ -165,7 +165,7 @@ module vnet 'modules/Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name: 'LocalFilesDemoVnet'
+    name: 'defaultVNET'
     addressPrefixes: [
       '10.0.0.0/16'
     ]
@@ -229,7 +229,7 @@ module nsg 'br/modules:microsoft.network.networksecuritygroups:1.0.0' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name: 'LocalFilesDemoNsg'
+    name: 'defaultNsg'
   }
   dependsOn: [
     rg
@@ -241,7 +241,7 @@ module vnet 'br/modules:microsoft.network.virtualnetworks:1.0.0' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name: 'LocalFilesDemoVnet'
+    name: 'defaultVNET'
     addressPrefixes: [
       '10.0.0.0/16'
     ]
@@ -320,7 +320,7 @@ module nsg 'ts/modules:microsoft.network.networksecuritygroups:1.0.0' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name: 'LocalFilesDemoNsg'
+    name: 'defaultNsg'
   }
   dependsOn: [
     rg
@@ -332,7 +332,7 @@ module vnet 'ts/modules:microsoft.network.virtualnetworks:1.0.0' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name: 'LocalFilesDemoVnet'
+    name: 'defaultVNET'
     addressPrefixes: [
       '10.0.0.0/16'
     ]
