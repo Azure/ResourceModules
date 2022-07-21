@@ -26,7 +26,7 @@ on:
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Synapse/workspaces'
+  modulePath: 'modules/Microsoft.Synapse/workspaces'
   workflowPath: '.github/workflows/ms.synapse.workspaces.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
