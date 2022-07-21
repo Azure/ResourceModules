@@ -824,12 +824,11 @@ function Set-DeploymentExamplesSection {
             $rawBicepExample = $rawContentArray[$bicepTestStartIndex..$bicepTestEndIndex]
 
             # [2/6] Replace placeholders
-            $namePrefix = ($ProjectSettings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }).value
             $serviceShort = ([regex]::Match($rawContent, "(?m)^param serviceShort string = '(.+)'\s*$")).Captures.Groups[1].Value
 
             $rawBicepExampleString = ($rawBicepExample | Out-String)
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{serviceShort\}', $serviceShort
-            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', $namePrefix
+            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', '' # Replacing with empty to not expose prefix and avoid potential deployment conflicts
             $rawBicepExampleString = $rawBicepExampleString -replace '(?m):\s*location\s*$', ': ''<location>'''
 
             # [3/6] Format header, remove scope property & any empty line
