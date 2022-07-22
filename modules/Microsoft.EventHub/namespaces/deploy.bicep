@@ -247,7 +247,7 @@ module eventHubNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!em
   params: {
     namespaceName: eventHubNamespace.name
     publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) && empty(networkRuleSets) ? 'Disabled' : 'Enabled')
-    defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
+    defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : null
     trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
     ipRules: contains(networkRuleSets, 'ipRules') ? networkRuleSets.ipRules : []
     virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? networkRuleSets.virtualNetworkRules : []
