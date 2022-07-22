@@ -5,7 +5,7 @@ param namespaceName string
   'Enabled'
   'Disabled'
 ])
-@description('Optional. This determines if traffic is allowed over public network. Default is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only.')
+@description('Optional. This determines if traffic is allowed over public network. Default is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only and network rules will not be applied.')
 param publicNetworkAccess string = 'Enabled'
 
 @allowed([
@@ -59,8 +59,8 @@ resource networkRuleSet 'Microsoft.EventHub/namespaces/networkRuleSets@2021-11-0
   parent: namespace
   properties: {
     publicNetworkAccess: publicNetworkAccess
-    defaultAction: !empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : defaultAction
-    trustedServiceAccessEnabled: trustedServiceAccessEnabled
+    defaultAction: publicNetworkAccess == 'Disabled' ? null : (!empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : defaultAction)
+    trustedServiceAccessEnabled: publicNetworkAccess == 'Disabled' ? null : trustedServiceAccessEnabled
     ipRules: publicNetworkAccess == 'Disabled' ? null : ipRules
     virtualNetworkRules: publicNetworkAccess == 'Disabled' ? null : networkRules
   }
