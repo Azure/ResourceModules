@@ -13,7 +13,7 @@ This module deploys Firewall Policies.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/firewallPolicies` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies) |
+| `Microsoft.Network/firewallPolicies` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/firewallPolicies) |
 | `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups) |
 
 ## Parameters
@@ -35,7 +35,7 @@ This module deploys Firewall Policies.
 | `fqdns` | array | `[]` |  | List of FQDNs for the ThreatIntel Allowlist. |
 | `insightsIsEnabled` | bool | `False` |  | A flag to indicate if the insights are enabled on the policy. |
 | `ipAddresses` | array | `[]` |  | List of IP addresses for the ThreatIntel Allowlist. |
-| `keyVaultSecretId` | string | `''` |  | Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault. |
+| `keyVaultSecretId` | string | `''` |  | Secret ID of (base-64 encoded unencrypted PFX) Secret or Certificate object stored in KeyVault. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `mode` | string | `'Off'` | `[Alert, Deny, Off]` | The configuring of intrusion detection. |
 | `privateRanges` | array | `[]` |  | List of private IP addresses/IP address ranges to not be SNAT. |
