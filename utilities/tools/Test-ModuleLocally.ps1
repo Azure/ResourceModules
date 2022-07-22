@@ -1,5 +1,4 @@
-﻿
-<#
+﻿<#
 .SYNOPSIS
 This function helps with testing a module locally
 
@@ -204,9 +203,9 @@ function Test-ModuleLocally {
                 Invoke-Pester -Configuration @{
                     Run    = @{
                         Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
-                            repoRootPath      = $repoRootPath
-                            moduleFolderPaths = Split-Path $TemplateFilePath -Parent
-                            enforcedTokenList = $enforcedTokenList
+                            repoRootPath       = $repoRootPath
+                            moduleFolderPaths  = Split-Path $TemplateFilePath -Parent
+                            tokenConfiguration = $PesterTokenConfiguration
                         }
                     }
                     Output = @{
@@ -232,7 +231,7 @@ function Test-ModuleLocally {
             }
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
+            $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ }
 
             # Deployment & Validation Testing
             # -------------------------------
@@ -242,41 +241,40 @@ function Test-ModuleLocally {
                 resourceGroupName = $ValidateOrDeployParameters.ResourceGroupName
                 subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
                 managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
-                Verbose           = $trueration -FilePath $_ ration -FilePath $_ 
+                Verbose           = $true
             }
-        }
-    }
-    try {
-        # Validate template
-        # -----------------
-        if ($ValidationTest) {
-            # Loop through test parameter files
-            foreach ($moduleTestFile in $moduleTestFiles) {
-                Write-Verbose ('Validating Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
-            }
-        }
-
-        # Deploy template
-        # ---------------
-        if ($DeploymentTest) {
-            $functionInput['retryLimit'] = 1 # Overwrite default of 3
-            # Loop through test parameter files
-            foreach ($moduleTestFile in $moduleTestFiles) {
-                Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
-                    New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+            try {
+                # Validate template
+                # -----------------
+                if ($ValidationTest) {
+                    # Loop through test parameter files
+                    foreach ($moduleTestFile in $moduleTestFiles) {
+                        Write-Verbose ('Validating Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+                    }
                 }
-            }
-        }
-    } catch {
-        Write-Error $_
-    } finally {
-        # Restore parameter files
-        # -----------------------
-        if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
+
+                # Deploy template
+                # ---------------
+                if ($DeploymentTest) {
+                    $functionInput['retryLimit'] = 1 # Overwrite default of 3
+                    # Loop through test parameter files
+                    foreach ($moduleTestFile in $moduleTestFiles) {
+                        Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
+                            New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+                        }
+                    }
+                }
+            } catch {
+                Write-Error $_
+            } finally {
+                # Restore parameter files
+                # -----------------------
+                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
+                    # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
-                    $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
+                    $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ -SwapValueWithName $true }
                 }
             }
         }
