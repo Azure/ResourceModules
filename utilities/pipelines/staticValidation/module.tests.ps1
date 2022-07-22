@@ -6,6 +6,9 @@ param (
         (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }),
 
+    [Parameter(Mandatory = $false)]
+    [string] $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName,
+
     # Dedicated Tokens configuration hashtable containing the tokens and token prefix and suffix.
     [Parameter(Mandatory = $false)]
     [hashtable] $tokenConfiguration = @{}
