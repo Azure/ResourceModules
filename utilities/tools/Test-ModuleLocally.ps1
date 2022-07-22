@@ -74,7 +74,7 @@ $TestModuleLocallyInput = @{
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
 
-Run all Pesters test for a given template and a Test-Az*Deployment using each parameter file in the module's parameter folder in combination with the template and the provided tokens
+Run all Pester tests for a given template and a Test-Az*Deployment using each test file in the module's default test folder ('.test') in combination with the template and the provided tokens
 
 .EXAMPLE
 
@@ -204,8 +204,9 @@ function Test-ModuleLocally {
                 Invoke-Pester -Configuration @{
                     Run    = @{
                         Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
-                            moduleFolderPaths  = Split-Path $TemplateFilePath -Parent
-                            tokenConfiguration = $PesterTokenConfiguration
+                            repoRootPath      = $repoRootPath
+                            moduleFolderPaths = Split-Path $TemplateFilePath -Parent
+                            enforcedTokenList = $enforcedTokenList
                         }
                     }
                     Output = @{
@@ -225,13 +226,13 @@ function Test-ModuleLocally {
             # Find Test Parameter Files
             # -------------------------
             if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
-                $ModuleParameterFiles = (Get-ChildItem -Path $testFilePath).FullName
+                $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
             } else {
-                $ModuleParameterFiles = @($testFilePath)
+                $moduleTestFiles = @($testFilePath)
             }
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ }
+            $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
 
             # Deployment & Validation Testing
             # -------------------------------
@@ -241,40 +242,41 @@ function Test-ModuleLocally {
                 resourceGroupName = $ValidateOrDeployParameters.ResourceGroupName
                 subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
                 managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
-                Verbose           = $true
+                Verbose           = $trueration -FilePath $_ ration -FilePath $_ 
             }
-            try {
-                # Validate template
-                # -----------------
-                if ($ValidationTest) {
-                    # Loop through test parameter files
-                    foreach ($paramFilePath in $moduleParameterFiles) {
-                        Write-Verbose ('Validating module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
-                        Test-TemplateDeployment @functionInput -ParameterFilePath $paramFilePath
-                    }
-                }
+        }
+    }
+    try {
+        # Validate template
+        # -----------------
+        if ($ValidationTest) {
+            # Loop through test parameter files
+            foreach ($moduleTestFile in $moduleTestFiles) {
+                Write-Verbose ('Validating Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+            }
+        }
 
-                # Deploy template
-                # ---------------
-                if ($DeploymentTest) {
-                    $functionInput['retryLimit'] = 1 # Overwrite default of 3
-                    # Loop through test parameter files
-                    foreach ($paramFilePath in $moduleParameterFiles) {
-                        Write-Verbose ('Deploy module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
-                        if ($PSCmdlet.ShouldProcess(('Module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)), 'Deploy')) {
-                            New-TemplateDeployment @functionInput -ParameterFilePath $paramFilePath
-                        }
-                    }
+        # Deploy template
+        # ---------------
+        if ($DeploymentTest) {
+            $functionInput['retryLimit'] = 1 # Overwrite default of 3
+            # Loop through test parameter files
+            foreach ($moduleTestFile in $moduleTestFiles) {
+                Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
+                    New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                 }
-            } catch {
-                Write-Error $_
-            } finally {
-                # Restore parameter files
-                # -----------------------
-                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
-                    # Replace Values with Tokens For Repo Updates
+            }
+        }
+    } catch {
+        Write-Error $_
+    } finally {
+        # Restore parameter files
+        # -----------------------
+        if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
                     Write-Verbose 'Restoring Tokens'
-                    $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ -SwapValueWithName $true }
+                    $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
                 }
             }
         }
