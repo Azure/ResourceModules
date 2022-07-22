@@ -26,7 +26,7 @@ param domainNameLabel array = []
 ])
 param virtualNetworkGatewayType string
 
-@description('Required. The Sku of the Gateway.')
+@description('Required. The SKU of the Gateway.')
 @allowed([
   'Basic'
   'VpnGw1'
@@ -44,7 +44,7 @@ param virtualNetworkGatewayType string
 ])
 param virtualNetworkGatewaySku string
 
-@description('Required. Specifies the VPN type.')
+@description('Optional. Specifies the VPN type.')
 @allowed([
   'PolicyBased'
   'RouteBased'
