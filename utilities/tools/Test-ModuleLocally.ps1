@@ -74,7 +74,7 @@ $TestModuleLocallyInput = @{
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
 
-Run all Pesters test for a given template and a Test-Az*Deployment using each test file in the module's test folder in combination with the template and the provided tokens
+Run all Pester tests for a given template and a Test-Az*Deployment using each test file in the module's default test folder ('.test') in combination with the template and the provided tokens
 
 .EXAMPLE
 
@@ -275,7 +275,7 @@ function Test-ModuleLocally {
                     # Loop through test parameter files
                     if ($moduleTestFiles) {
                         foreach ($moduleTestFile in $moduleTestFiles) {
-                            Write-Verbose ('Validating module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                            Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
                             Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                         }
                     } else {
@@ -292,8 +292,8 @@ function Test-ModuleLocally {
                     if ($moduleTestFiles) {
 
                         foreach ($moduleTestFile in $moduleTestFiles) {
-                            Write-Verbose ('Deploy module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
+                            Write-Verbose ('Deploy module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
                                 New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                             }
                         }

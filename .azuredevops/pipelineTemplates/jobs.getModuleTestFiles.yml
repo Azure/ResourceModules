@@ -42,10 +42,10 @@ jobs:
             foreach($deploymentTestPath in $deploymentTestPaths) {
               $deploymentTestFileName = Split-Path $deploymentTestPath -Leaf
               $testTable[$deploymentTestFileName] = @{
-                parameterFilePath = $deploymentTestPath
+                moduleTestFilePath = $deploymentTestPath
               }
             }
 
             $deploymentTestPathsOutput = $testTable | ConvertTo-Json -Compress
-            Write-Host ('##vso[task.setVariable variable=parameterTests;isOutput=true]{0}' -f ($testTable | ConvertTo-Json -Compress))
-            Write-Verbose "Parameter files: $deploymentTestPathsOutput" -Verbose
+            Write-Host ('##vso[task.setVariable variable=moduleTests;isOutput=true]{0}' -f ($testTable | ConvertTo-Json -Compress))
+            Write-Verbose "Module test files: $deploymentTestPathsOutput" -Verbose

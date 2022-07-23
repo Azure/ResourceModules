@@ -118,7 +118,7 @@ In addition to module pipelines, the repository includes several platform pipeli
 
 ## Dependencies pipeline
 
-In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources need to be deployed beforehand.
+In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources may need to be deployed beforehand.
 
 For example, any instance of the \[Virtual Machine] module needs an existing virtual network to be connected to and a Key Vault hosting its required local admin credentials to be referenced.
 
