@@ -146,7 +146,7 @@ module staticSite_appSettings 'config/deploy.bicep' = if (!empty(appSettings)) {
   name: '${uniqueString(deployment().name, location)}-StaticSite-appSettings'
   params: {
     kind: 'appsettings'
-    name: staticSite.name
+    staticSiteName: staticSite.name
     properties: appSettings
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -156,7 +156,7 @@ module staticSite_functionAppSettings 'config/deploy.bicep' = if (!empty(functio
   name: '${uniqueString(deployment().name, location)}-StaticSite-functionAppSettings'
   params: {
     kind: 'functionappsettings'
-    name: staticSite.name
+    staticSiteName: staticSite.name
     properties: functionAppSettings
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
