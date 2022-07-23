@@ -127,12 +127,12 @@ jobs:
           pwsh: true
           inline: |
             # Load used functions
-            . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{
                 Tokens      = @{}
-                FilePath    = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
+                FilePath    = $moduleTestFilePath
                 TokenPrefix = '$(tokenPrefix)'
                 TokenSuffix = '$(tokenSuffix)'
             }
@@ -161,8 +161,8 @@ jobs:
             }
 
             # Add custom tokens (passed in via the pipeline)
-            if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.customParameterFileTokens }}')) {
-              $customTokens = '${{ deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+            if(-not [String]::IsNullOrEmpty('${{ parameters.customParameterFileTokens }}')) {
+              $customTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
               Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
               $ConvertTokensInputs.Tokens += $customTokens
             }
@@ -219,7 +219,7 @@ jobs:
 
             # Handle additional parameters
             # ----------------------------
-            if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+            if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = [System.Convert]::ToBoolean('$(enableDefaultTelemetry)')
                 }
@@ -278,7 +278,7 @@ jobs:
 
             # Handle additional parameters
             # ----------------------------
-            if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+            if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = [System.Convert]::ToBoolean('$(enableDefaultTelemetry)')
                 }
