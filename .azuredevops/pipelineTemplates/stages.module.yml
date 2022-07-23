@@ -1,0 +1,28 @@
+parameters:
+  removeDeployment: true
+  prerelease: false
+  templateFilePath: ''
+  defaultJobTimeoutInMinutes: 120
+
+stages:
+  - stage: validation
+    displayName: Static validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+
+  - stage: deployment
+    displayName: Deployment validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          templateFilePath: '$(modulePath)/deploy.bicep'
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          defaultJobTimeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
+
+  - stage: Publishing
+    dependsOn:
+      - deployment
+    displayName: Publish module
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
