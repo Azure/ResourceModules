@@ -496,11 +496,11 @@ configurationProfileAssignments: [
   "value": {
     "enabled": true,
     "settings": {
-      "domainName": "contoso.com",
-      "domainJoinUser": "test.user@testcompany.com",
-      "domainJoinOU": "OU=testOU; DC=contoso; DC=com",
-      "domainJoinRestart": true,
-      "domainJoinOptions": 3
+      "name": "contoso.com",
+      "user": "test.user@testcompany.com",
+      "ouPath": "OU=testOU; DC=contoso; DC=com",
+      "restart": true,
+      "options": 3
     }
   }
 },
@@ -522,11 +522,11 @@ configurationProfileAssignments: [
 extensionDomainJoinConfig: {
     enabled: true
     settings: {
-      domainName: 'contoso.com'
-      domainJoinUser: 'test.user@testcompany.com'
-      domainJoinOU: 'OU=testOU; DC=contoso; DC=com'
-      domainJoinRestart: true
-      domainJoinOptions: 3
+      name: 'contoso.com'
+      user: 'test.user@testcompany.com'
+      ouPath: 'OU=testOU; DC=contoso; DC=com'
+      restart: true
+      options: 3
     }
 }
 
