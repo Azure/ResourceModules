@@ -66,7 +66,7 @@ function Initialize-DeploymentRemoval {
             'Microsoft.Network/privateEndpoints',
             'Microsoft.OperationsManagement/solutions',
             'Microsoft.OperationalInsights/workspaces/linkedServices',
-            'Microsoft.OperationalInsights/workspaces'
+            'Microsoft.OperationalInsights/workspaces',
             'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )
