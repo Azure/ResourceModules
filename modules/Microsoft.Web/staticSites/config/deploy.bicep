@@ -18,7 +18,7 @@ param enableDefaultTelemetry bool = true
 param location string = resourceGroup().location
 
 resource staticSite 'Microsoft.Web/staticSites@2022-03-01' existing = {
-  name: name
+  name: staticSiteName
 }
 
 resource config 'Microsoft.Web/staticSites/config@2022-03-01' = {
