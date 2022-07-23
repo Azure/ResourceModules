@@ -25,7 +25,7 @@ This module deploys a Static Site Config.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the parent Static Web App. Required if the template is used in a standalone deployment. |
+| `staticSiteName` | string | The name of the parent Static Web App. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
