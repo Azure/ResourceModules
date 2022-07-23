@@ -61,7 +61,7 @@ Let's say you'd want to use this token inside a Key Vault parameter file, to dep
 
 Once the Key Vault is deployed, you'll notice that the Key Vault name in Azure will be `foo-keyVault-bar`
 
-The token prefix `'<<'` and suffix `'>>'` in the above example are also configurable in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) file.
+The token prefix `'<<'` and suffix `'>>'` in the above example are also configurable in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) file and are used to identify the tokens in the files.
 
 The solution comes with one predefined local token `namePrefix`. This token is leveraged in most of the parameter files for test deployments. It allows using a consistent naming prefix that is applied to all resources being tested. There are two ways this token can be set and one will take precedence over the other:
 
