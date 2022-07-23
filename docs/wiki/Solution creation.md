@@ -182,9 +182,6 @@ module vnet 'modules/Microsoft.Network/virtualNetworks/deploy.bicep' = {
       }
     ]
   }
-  dependsOn: [
-    rg
-  ]
 }
 ```
 
@@ -258,9 +255,6 @@ module vnet 'br/modules:microsoft.network.virtualnetworks:1.0.0' = {
       }
     ]
   }
-  dependsOn: [
-    rg
-  ]
 }
 ```
 
@@ -349,9 +343,6 @@ module vnet 'ts/modules:microsoft.network.virtualnetworks:1.0.0' = {
       }
     ]
   }
-  dependsOn: [
-    rg
-  ]
 }
 ```
 
