@@ -25,7 +25,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-05-01' existing = {
+resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-08-01' existing = {
   name: firewallPolicyName
 }
 

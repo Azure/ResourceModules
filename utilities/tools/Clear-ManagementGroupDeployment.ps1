@@ -57,7 +57,7 @@ function Clear-ManagementGroupDeployment {
         return
     }
 
-    $relevantDeploymentChunks = , (Split-Array -InputArray $relevantDeployments -SplitSize 100)
+    $relevantDeploymentChunks = @() + (Split-Array -InputArray $relevantDeployments -SplitSize 100)
 
     Write-Verbose ('Triggering the removal of [{0}] deployments of management group [{1}]' -f $relevantDeployments.Count, $ManagementGroupId)
 

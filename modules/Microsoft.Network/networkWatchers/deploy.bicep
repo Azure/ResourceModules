@@ -1,4 +1,4 @@
-@description('Required. Name of the Network Watcher resource (hidden).')
+@description('Optional. Name of the Network Watcher resource (hidden).')
 @minLength(1)
 param name string = 'NetworkWatcher_${location}'
 

@@ -54,10 +54,10 @@ function Set-ReadMeModuleTable {
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('GitHub', 'ADO')]
-        [string]$Environment,
+        [string] $Environment,
 
         [Parameter(Mandatory = $false)]
-        [string]$ProjectName = ''
+        [string] $ProjectName = ''
     )
 
     # Load external functions
