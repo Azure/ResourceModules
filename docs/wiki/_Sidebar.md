@@ -11,6 +11,7 @@
   - [**Scenario 2:** Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment)
   - [**Scenario 3:** Contribute](./Getting%20started%20-%20Scenario%203%20Contribute)
 - [The library](./The%20library)
+  - [Module overview](./The%20library%20-%20Module%20overview)
   - [Module design](./The%20library%20-%20Module%20design)
   - [Module usage](./The%20library%20-%20Module%20usage)
 - [The CI environment](./The%20CI%20environment)
