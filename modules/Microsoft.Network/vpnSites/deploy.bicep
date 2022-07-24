@@ -57,7 +57,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource vpnSite 'Microsoft.Network/vpnSites@2022-01-01' = {
+resource vpnSite 'Microsoft.Network/vpnSites@2021-08-01' = {
   name: name
   location: location
   tags: tags
