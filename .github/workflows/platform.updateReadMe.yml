@@ -34,7 +34,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE '$(relativeScriptPath_SetReadMeModuleTable)')
+          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMeModuleTable)
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
