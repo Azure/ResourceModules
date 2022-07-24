@@ -43,7 +43,7 @@ var builtInRoleNames = {
   'Virtual Machine User Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2022-01-01' existing = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-08-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
