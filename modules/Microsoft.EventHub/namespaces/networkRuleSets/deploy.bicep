@@ -33,8 +33,8 @@ param enableDefaultTelemetry bool = true
 
 var networkRules = [for (virtualNetworkRule, index) in virtualNetworkRules: {
   ignoreMissingVnetServiceEndpoint: contains(virtualNetworkRule, 'ignoreMissingVnetServiceEndpoint') ? virtualNetworkRule.ignoreMissingVnetServiceEndpoint : null
-  subnet: contains(virtualNetworkRule, 'subnetId') ? {
-    id: virtualNetworkRule.subnetId
+  subnet: contains(virtualNetworkRule, 'subnetResourceId') ? {
+    id: virtualNetworkRule.subnetResourceId
   } : null
 }]
 
