@@ -150,6 +150,8 @@ jobs:
                   $ConvertTokensInputs.Tokens += $customTokens
                 }
 
+                Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
+
                 # Invoke Token Replacement Functionality
                 $null = Convert-TokensInFile @ConvertTokensInputs
 
