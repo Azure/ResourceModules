@@ -115,7 +115,7 @@ jobs:
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
                     Tokens      = @{}
-                    FilePath    = $moduleTestFilePath
+                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' '${{ deploymentBlock.path }}'
                     TokenPrefix = '$(tokenPrefix)'
                     TokenSuffix = '$(tokenSuffix)'
                 }
@@ -182,7 +182,7 @@ jobs:
 
                 # Handle additional parameters
                 # ----------------------------
-                if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
+                if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
                     $functionInput['additionalParameters'] += @{
                         enableDefaultTelemetry = [System.Convert]::ToBoolean('$(enableDefaultTelemetry)')
                     }
@@ -224,7 +224,7 @@ jobs:
 
                 # Handle additional parameters
                 # ----------------------------
-                if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
+                if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
                     $functionInput['additionalParameters'] += @{
                         enableDefaultTelemetry = [System.Convert]::ToBoolean('$(enableDefaultTelemetry)')
                     }
