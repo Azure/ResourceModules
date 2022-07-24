@@ -15,7 +15,7 @@
 ##   | Parameter                 | Required | Default | Description                                           | Example                                                                    |
 ##   |---------------------------|----------|---------|-------------------------------------------------------|----------------------------------------------------------------------------|
 ##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'modules/Microsoft.ApiManagement/service/deploy.bicep'                     |
-##   | parameterFilePath         | true     | ''      | The path to the parameter file to use for deployment  | 'modules/Microsoft.ApiManagement/service/.test/parameters.json' |
+##   | parameterFilePath         | true     | ''      | The path to the parameter file to use for deployment  | 'modules/Microsoft.ApiManagement/service/.test/parameters.json'            |
 ##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                               |
 ##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                            |
 ##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
@@ -118,7 +118,8 @@ runs:
 
     # [Token replacement] task(s)
     # ---------------------------
-    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]'
+      if: ${{ inputs.parameterFilePath != '' }}
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
@@ -184,30 +185,82 @@ runs:
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
+          # Prepare general parameters
+          # --------------------------
+          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+
+          # Fetching parameters
+          $location = '${{ inputs.location }}'
+          $resourceGroupName = '${{ inputs.resourceGroupName }}'
+          $subscriptionId = '${{ inputs.subscriptionId }}'
+          $managementGroupId = '${{ inputs.managementGroupId }}'
+
+          if ('${{ inputs.templateFilePath }}' -like '*/.test/*') {
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
+          } else {
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          }
+
+          if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
+            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+            $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+          } else {
+            $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+          }
+
           # ----------- #
           # INVOKE TEST #
           # ----------- #
           $functionInput = @{
-            templateFilePath     = '${{ inputs.templateFilePath }}'
-            location             = '${{ inputs.location }}'
-            resourceGroupName    = '${{ inputs.resourceGroupName }}'
-            subscriptionId       = '${{ inputs.subscriptionId }}'
-            managementGroupId    = '${{ inputs.managementGroupId }}'
+            location             = $location
+            resourceGroupName    = $resourceGroupName
+            subscriptionId       = $subscriptionId
+            managementGroupId    = $managementGroupId
             additionalParameters = @{}
           }
 
-          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
-            $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
-          }
+          # Handle template file
+          if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
 
-          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+            # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
+            # ===============================================
+
+            $functionInput['templateFilePath'] = $moduleTemplateFilePath
+            $functionInput['parameterFilePath'] = $moduleTestFilePath
+
+          } else {
+
+            # CASE: MODULE USES NEW TEST FILES
+            # ================================
+
+            $functionInput['templateFilePath'] = $moduleTestFilePath
+
+            # Handle test template parameters
+            # -------------------------------
+            if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+              $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
+            } else {
+              $testTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+            }
+
+            if ($testTemplatePossibleParameters -contains 'namePrefix') {
               $functionInput['additionalParameters'] += @{
-                  enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                namePrefix = ($projectSettings.parameterFileTokens.localTokens  | Where-Object { $_.name -eq 'namePrefix' }).value
               }
+            }
           }
 
-          Write-Verbose "Invoke task with" -Verbose
+          # Handle additional parameters
+          # ----------------------------
+          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
+            $functionInput['additionalParameters'] += @{
+              enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+            }
+          }
+
+          Write-Verbose 'Invoke task with' -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Test-TemplateDeployment @functionInput -Verbose
@@ -228,28 +281,82 @@ runs:
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
+          # Prepare general parameters
+          # --------------------------
+          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+
+          # Fetching parameters
+          $location = '${{ inputs.location }}'
+          $resourceGroupName = '${{ inputs.resourceGroupName }}'
+          $subscriptionId = '${{ inputs.subscriptionId }}'
+          $managementGroupId = '${{ inputs.managementGroupId }}'
+
+          if ('${{ inputs.templateFilePath }}' -like '*/.test/*') {
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
+          } else {
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          }
+
+          if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
+            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+            $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+          } else {
+            $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+          }
+
+          # ----------- #
+          # INVOKE TEST #
+          # ----------- #
           $functionInput = @{
-            templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-            location             = '${{ inputs.location }}'
-            resourceGroupName    = '${{ inputs.resourceGroupName }}'
-            subscriptionId       = '${{ inputs.subscriptionId }}'
-            managementGroupId    = '${{ inputs.managementGroupId }}'
-            doNotThrow           = $true
+            location             = $location
+            resourceGroupName    = $resourceGroupName
+            subscriptionId       = $subscriptionId
+            managementGroupId    = $managementGroupId
             additionalParameters = @{}
           }
 
-          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
-            $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
-          }
+          # Handle template file
+          if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
 
-          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+            # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
+            # ===============================================
+
+            $functionInput['templateFilePath'] = $moduleTemplateFilePath
+            $functionInput['parameterFilePath'] = $moduleTestFilePath
+
+          } else {
+
+            # CASE: MODULE USES NEW TEST FILES
+            # ================================
+
+            $functionInput['templateFilePath'] = $moduleTestFilePath
+
+            # Handle test template parameters
+            # -------------------------------
+            if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+              $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
+            } else {
+              $testTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+            }
+
+            if ($testTemplatePossibleParameters -contains 'namePrefix') {
               $functionInput['additionalParameters'] += @{
-                  enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                namePrefix = ($projectSettings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }).value
               }
+            }
           }
 
-          Write-Verbose "Invoke task with" -Verbose
+          # Handle additional parameters
+          # ----------------------------
+          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
+            $functionInput['additionalParameters'] += @{
+              enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+            }
+          }
+
+          Write-Verbose 'Invoke task with' -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           # Invoke deployment
