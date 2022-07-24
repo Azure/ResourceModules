@@ -62,7 +62,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' existing = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' existing = {
   name: loadBalancerName
 }
 

@@ -21,11 +21,6 @@ This template deploys a network watcher.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` | Name of the Network Watcher resource (hidden). |
-
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
@@ -34,6 +29,7 @@ This template deploys a network watcher.
 | `flowLogs` | _[flowLogs](flowLogs/readme.md)_ array | `[]` |  | Array that contains the Flow Logs. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` |  | Name of the Network Watcher resource (hidden). |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 

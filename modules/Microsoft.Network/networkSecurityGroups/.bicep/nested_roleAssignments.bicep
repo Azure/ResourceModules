@@ -42,7 +42,7 @@ var builtInRoleNames = {
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-05-01' existing = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' existing = {
   name: last(split(resourceId, '/'))
 }
 

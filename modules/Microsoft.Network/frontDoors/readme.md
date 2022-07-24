@@ -22,32 +22,32 @@ This module deploys Front Doors.
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `backendPools` | array | `[]` | Backend address pool of the frontdoor resource. |
-| `enabledState` | string | `'Enabled'` | State of the frontdoor resource. |
-| `friendlyName` | string | `''` | Friendly name of the frontdoor resource. |
-| `frontendEndpoints` | array | `[]` | Frontend endpoints of the frontdoor resource. |
-| `healthProbeSettings` | array | `[]` | Heath probe settings of the frontdoor resource. |
-| `loadBalancingSettings` | array | `[]` | Load balancing settings of the frontdoor resource. |
-| `name` | string |  | The name of the frontDoor. |
-| `routingRules` | array | `[]` | Routing rules settings of the frontdoor resource. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the frontDoor. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `backendPools` | array | `[]` |  | Backend address pool of the frontdoor resource. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enabledState` | string | `'Enabled'` |  | State of the frontdoor resource. |
 | `enforceCertificateNameCheck` | string | `'Disabled'` |  | Enforce certificate name check of the frontdoor resource. |
+| `friendlyName` | string | `''` |  | Friendly name of the frontdoor resource. |
+| `frontendEndpoints` | array | `[]` |  | Frontend endpoints of the frontdoor resource. |
+| `healthProbeSettings` | array | `[]` |  | Heath probe settings of the frontdoor resource. |
+| `loadBalancingSettings` | array | `[]` |  | Load balancing settings of the frontdoor resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `logsToEnable` | array | `[FrontdoorAccessLog, FrontdoorWebApplicationFirewallLog]` | `[FrontdoorAccessLog, FrontdoorWebApplicationFirewallLog]` | The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `routingRules` | array | `[]` |  | Routing rules settings of the frontdoor resource. |
 | `sendRecvTimeoutSeconds` | int | `600` |  | Certificate name check time of the frontdoor resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
