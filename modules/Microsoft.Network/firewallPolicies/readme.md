@@ -13,7 +13,7 @@ This module deploys Firewall Policies.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/firewallPolicies` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/firewallPolicies) |
+| `Microsoft.Network/firewallPolicies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/firewallPolicies) |
 | `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups) |
 
 ## Parameters

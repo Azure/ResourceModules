@@ -155,7 +155,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2022-01-01' = {
+resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01' = {
   name: name
   location: location
   tags: tags
