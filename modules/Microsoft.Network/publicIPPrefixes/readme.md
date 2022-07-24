@@ -15,7 +15,7 @@ This template deploys a public IP prefix.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/publicIPPrefixes` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/publicIPPrefixes) |
+| `Microsoft.Network/publicIPPrefixes` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/publicIPPrefixes) |
 
 ## Parameters
 
