@@ -55,7 +55,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE '$(relativeScriptPath_SetReadMeModuleTable)')
+          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMeModuleTable)
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
@@ -75,7 +75,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE '$(relativeScriptPath_SetModuleOverviewTable)')
+          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetModuleOverviewTable)
 
           $functionInput = @{
             MarkdownFilePath = Join-Path $env:GITHUB_WORKSPACE 'docs' 'wiki' 'The library - Module overview.md'
