@@ -10,7 +10,7 @@ param peeringLocation string
 @description('Required. This is the bandwidth in Mbps of the circuit being created. It must exactly match one of the available bandwidth offers List ExpressRoute Service Providers API call.')
 param bandwidthInMbps int
 
-@description('Required. Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard SKU tiers.')
+@description('Optional. Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard SKU tiers.')
 @allowed([
   'Local'
   'Standard'
@@ -18,7 +18,7 @@ param bandwidthInMbps int
 ])
 param skuTier string = 'Standard'
 
-@description('Required. Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families.')
+@description('Optional. Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families.')
 @allowed([
   'MeteredData'
   'UnlimitedData'
@@ -155,7 +155,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-05-01' = {
+resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01' = {
   name: name
   location: location
   tags: tags

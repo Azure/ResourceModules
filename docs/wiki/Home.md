@@ -19,6 +19,7 @@ If you're unfamiliar with Infrastructure as Code or wonder how you can use the c
     - [Check namePrefix availability](./Getting%20started%20-%20Check%20NamePrefix%20availability)
   - [**Scenario 3:** Contribute](./Getting%20started%20-%20Scenario%203%20Contribute)
 - [The library](./The%20library)
+  - [Module overview](./The%20library%20-%20Module%20overview)
   - [Module design](./The%20library%20-%20Module%20design)
   - [Module usage](./The%20library%20-%20Module%20usage)
 - [The CI environment](./The%20CI%20environment)

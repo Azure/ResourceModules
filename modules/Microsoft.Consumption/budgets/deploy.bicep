@@ -24,7 +24,7 @@ param amount int
 @description('Optional. The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers.')
 param resetPeriod string = 'Monthly'
 
-@description('Required. The start date for the budget. Start date should be the first day of the month and cannot be in the past (except for the current month).')
+@description('Optional. The start date for the budget. Start date should be the first day of the month and cannot be in the past (except for the current month).')
 param startDate string = '${utcNow('yyyy')}-${utcNow('MM')}-01T00:00:00Z'
 
 @description('Optional. The end date for the budget. If not provided, it will default to 10 years from the start date.')
