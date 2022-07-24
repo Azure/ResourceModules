@@ -120,7 +120,7 @@ This section provides an overview of the library's feature set.
 
 | Term | Description |
 | - | - |
-| `Module` | The name of the module |
+| `Module` | The name of the module. |
 | `RBAC` | Whether the module can deploy _Role Assignments_. |
 | `Locks` | Whether the module can deploy _Locks_. |
 | `Tags` | Whether the module can deploy _Tags_. |
