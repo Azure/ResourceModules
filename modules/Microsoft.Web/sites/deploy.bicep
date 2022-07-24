@@ -16,8 +16,8 @@ param location string = resourceGroup().location
 ])
 param kind string
 
-@description('Optional. The resource ID of the app service plan to use for the site.')
-param serverFarmResourceId string = ''
+@description('Required. The resource ID of the app service plan to use for the site.')
+param serverFarmResourceId string
 
 @description('Optional. Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests.')
 param httpsOnly bool = true

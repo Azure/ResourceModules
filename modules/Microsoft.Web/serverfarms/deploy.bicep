@@ -90,10 +90,6 @@ param diagnosticMetricsToEnable array = [
 // =========== //
 // Variables   //
 // =========== //
-var hostingEnvironmentProfile = {
-  id: appServiceEnvironmentId
-}
-
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
@@ -127,7 +123,9 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   sku: sku
   properties: {
     workerTierName: workerTierName
-    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? hostingEnvironmentProfile : null
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? {
+      id: appServiceEnvironmentId
+    } : null
     perSiteScaling: perSiteScaling
     maximumElasticWorkerCount: maximumElasticWorkerCount
     reserved: serverOS == 'Linux'

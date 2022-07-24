@@ -23,7 +23,8 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 * For introduction guidance visit the [Wiki](https://github.com/azure/ResourceModules/wiki)
 * For information on contributing, see [Contribution](<https://github.com/Azure/ResourceModules/wiki/Contribution%20guide>)
 * File an issue via [GitHub Issues](https://github.com/azure/ResourceModules/issues/new/choose)
-* For reference documentation visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
+* For reference documentation, visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
+* For an outline of the module features, visit [Module overview](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview)
 
 ## Available Resource Modules
 
@@ -119,6 +120,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | [SQL Servers](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Sql/servers) | [!['Sql: Servers'](https://github.com/Azure/ResourceModules/workflows/Sql:%20Servers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.servers.yml) |
 | [Static Web Apps](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Web/staticSites) | [!['Web: StaticSites'](https://github.com/Azure/ResourceModules/workflows/Web:%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |
 | [Storage Accounts](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Storage/storageAccounts) | [!['Storage: StorageAccounts'](https://github.com/Azure/ResourceModules/workflows/Storage:%20StorageAccounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.storage.storageaccounts.yml) |
+| [Synapse Workspaces](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Synapse/workspaces) | [!['Synapse: Workspaces'](https://github.com/Azure/ResourceModules/workflows/Synapse:%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.synapse.workspaces.yml) |
 | [Traffic Manager Profiles](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/trafficmanagerprofiles) | [!['Network: TrafficManagerProfiles'](https://github.com/Azure/ResourceModules/workflows/Network:%20TrafficManagerProfiles/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.trafficmanagerprofiles.yml) |
 | [User Assigned Identities](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.ManagedIdentity/userAssignedIdentities) | [!['ManagedIdentity: UserAssignedIdentities'](https://github.com/Azure/ResourceModules/workflows/ManagedIdentity:%20UserAssignedIdentities/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.managedidentity.userassignedidentities.yml) |
 | [Virtual Hubs](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/virtualHubs) | [!['Network: VirtualHubs'](https://github.com/Azure/ResourceModules/workflows/Network:%20VirtualHubs/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualhubs.yml) |
