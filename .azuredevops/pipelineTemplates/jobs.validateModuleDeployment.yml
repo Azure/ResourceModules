@@ -132,7 +132,7 @@ jobs:
             # Construct Token Function Input
             $ConvertTokensInputs = @{
                 Tokens      = @{}
-                FilePath    = $moduleTestFilePath
+                FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
                 TokenPrefix = '$(tokenPrefix)'
                 TokenSuffix = '$(tokenSuffix)'
             }
