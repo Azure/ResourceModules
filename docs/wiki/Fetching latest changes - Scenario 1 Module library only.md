@@ -40,6 +40,7 @@ In some cases, you might need to add to the library company/organization' specif
 In this scenario every time you'll fetch updates from the public CARML repository merge conflicts are expected. You'll have to compare the new public code with your customized one and re-apply your customizations to the updated code.
 
 This process can be automated, by script or CI, if customization tasks are repeatable.
+
 # 5. Test and publish modules
 
 If you have customized your library without contributing on the public CARML repository, public modules are not tested with your customization, so you'll need to manage the test of your updated and customized modules.
