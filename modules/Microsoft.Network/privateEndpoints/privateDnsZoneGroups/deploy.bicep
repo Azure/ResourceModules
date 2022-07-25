@@ -1,10 +1,12 @@
 @description('Conditional. The name of the parent private endpoint. Required if the template is used in a standalone deployment.')
 param privateEndpointName string
 
-@description('Required. List of private DNS resource IDs.')
+@description('Required. Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones.')
+@minLength(1)
+@maxLength(5)
 param privateDNSResourceIds array
 
-@description('Optional. The name of the private DNS Zone Group.')
+@description('Optional. The name of the private DNS zone group.')
 param name string = 'default'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -29,11 +31,11 @@ var privateDnsZoneConfigs = [for privateDNSResourceId in privateDNSResourceIds: 
   }
 }]
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' existing = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-08-01' existing = {
   name: privateEndpointName
 }
 
-resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-05-01' = {
+resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-08-01' = {
   name: name
   parent: privateEndpoint
   properties: {

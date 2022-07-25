@@ -30,7 +30,7 @@ This module deploys a user defined route table.
 | `disableBgpRoutePropagation` | bool | `False` |  | Switch to disable BGP route propagation. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `routes` | array | `[]` |  | An Array of Routes to be established within the hub route table. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -236,50 +236,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-udr-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "routes": {
-            "value": [
-                {
-                    "name": "default",
-                    "properties": {
-                        "addressPrefix": "0.0.0.0/0",
-                        "nextHopType": "VirtualAppliance",
-                        "nextHopIpAddress": "172.16.0.20"
-                    }
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -289,26 +250,74 @@ tags: {
 module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-routeTables'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-udr-x-001'
+    // Non-required parameters
     lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     routes: [
       {
         name: 'default'
         properties: {
           addressPrefix: '0.0.0.0/0'
-          nextHopType: 'VirtualAppliance'
           nextHopIpAddress: '172.16.0.20'
+          nextHopType: 'VirtualAppliance'
         }
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-udr-x-001"
+    },
+    // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "routes": {
+      "value": [
+        {
+          "name": "default",
+          "properties": {
+            "addressPrefix": "0.0.0.0/0",
+            "nextHopIpAddress": "172.16.0.20",
+            "nextHopType": "VirtualAppliance"
+          }
+        }
+      ]
+    }
   }
 }
 ```

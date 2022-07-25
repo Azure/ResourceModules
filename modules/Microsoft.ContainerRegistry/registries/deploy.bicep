@@ -57,12 +57,13 @@ param retentionPolicyDays int = 15
 @description('Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access.')
 param dataEndpointEnabled bool = false
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
-  'Disabled'
+  ''
   'Enabled'
+  'Disabled'
 ])
-@description('Optional. Whether or not public network access is allowed for the container registry. - Enabled or Disabled.')
-param publicNetworkAccess string = 'Enabled'
+param publicNetworkAccess string = ''
 
 @description('Optional. Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None.')
 param networkRuleBypassOptions string = 'AzureServices'
@@ -154,7 +155,10 @@ param cMKKeyVaultResourceId string = ''
 @description('Optional. The name of the customer managed key to use for encryption. Note, CMK requires the \'acrSku\' to be \'Premium\'.')
 param cMKKeyName string = ''
 
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKeyName\' is not empty.')
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
@@ -197,7 +201,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource encryptionIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
+resource encryptionIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
   name: last(split(cMKUserAssignedIdentityResourceId, '/'))
   scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
 }
@@ -221,7 +225,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
       status: 'enabled'
       keyVaultProperties: {
         identity: encryptionIdentity.properties.clientId
-        keyIdentifier: cMKKeyVaultKey.properties.keyUri
+        keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       }
     } : null
     policies: {
@@ -241,7 +245,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
       } : null
     }
     dataEndpointEnabled: dataEndpointEnabled
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     networkRuleBypassOptions: networkRuleBypassOptions
     networkRuleSet: !empty(networkRuleSetIpRules) ? {
       defaultAction: networkRuleSetDefaultAction
@@ -330,7 +334,7 @@ module registry_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []

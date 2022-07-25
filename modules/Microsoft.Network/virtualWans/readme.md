@@ -32,10 +32,10 @@ This template deploys a virtual WAN.
 | `disableVpnEncryption` | bool | `False` |  | VPN encryption to be disabled or not. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `type` | string | `'Standard'` | `[Standard, Basic]` | The type of the Virtual WAN. |
+| `type` | string | `'Standard'` | `[Basic, Standard]` | The type of the Virtual WAN. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -149,25 +149,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vw-min-001"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -185,50 +171,26 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vw-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "type": {
-            "value": "Basic"
-        },
-        "allowBranchToBranchTraffic": {
-            "value": true
-        },
-        "allowVnetToVnetTraffic": {
-            "value": true
-        },
-        "disableVpnEncryption": {
-            "value": true
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-vw-min-001"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -238,20 +200,68 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualWans'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-vw-x-001'
-    lock: 'CanNotDelete'
-    type: 'Basic'
+    // Non-required parameters
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
     disableVpnEncryption: true
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    type: 'Basic'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-vw-x-001"
+    },
+    // Non-required parameters
+    "allowBranchToBranchTraffic": {
+      "value": true
+    },
+    "allowVnetToVnetTraffic": {
+      "value": true
+    },
+    "disableVpnEncryption": {
+      "value": true
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "type": {
+      "value": "Basic"
+    }
   }
 }
 ```

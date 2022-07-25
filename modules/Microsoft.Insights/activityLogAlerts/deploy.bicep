@@ -10,7 +10,7 @@ param location string = 'global'
 @description('Optional. Indicates whether this alert is enabled.')
 param enabled bool = true
 
-@description('Required. the list of resource IDs that this metric alert is scoped to.')
+@description('Optional. The list of resource IDs that this metric alert is scoped to.')
 param scopes array = [
   subscription().id
 ]

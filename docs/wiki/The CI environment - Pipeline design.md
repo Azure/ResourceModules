@@ -118,7 +118,7 @@ In addition to module pipelines, the repository includes several platform pipeli
 
 ## Dependencies pipeline
 
-In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources need to be deployed beforehand.
+In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources may need to be deployed beforehand.
 
 For example, any instance of the \[Virtual Machine] module needs an existing virtual network to be connected to and a Key Vault hosting its required local admin credentials to be referenced.
 
@@ -157,7 +157,13 @@ Since also dependency resources are in turn subject to dependencies with each ot
 This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
 
   1. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
-      >**Note**: This resource has a global scope name.
+      >**Note**: This resource needs a global scope name.
+    Multiple instances are deployed:
+      - '_adp\<<namePrefix\>>azsax001_' : Default Storage.
+      - '_adp\<<namePrefix\>>azsafa001_' : Function App Data Storage.
+      - '_adp\<<namePrefix\>>azsalaw001_' : Diagnostic Storage.
+      - '_adp\<<namePrefix\>>azsasynapse001_' : Synapse DataLake Gen2 #1.
+      - '_adp\<<namePrefix\>>azsasynapse002_' : Synapse DataLake Gen2 #2.
   1. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
       >**Note**: This resource has a global scope name.
   1. Log analytics workspaces: These resources are leveraged by all resources supporting diagnostic settings on LAW. Multiple instances are deployed:
@@ -228,7 +234,30 @@ This group of resources has a dependency on one or more resources in the groups 
 This group of resources has a dependency on one or more resources in the groups above.
 
   1. Virtual Machine: This resource is depending on the \[virtual networks] and \[Key Vault] deployed above. This resource is leveraged by the \[network watcher] resource.
-  1. Private DNS zone: This resource is depending on the \[virtual networks] deployed above. This resource is leveraged by the \[private endpoint] resource.
+  1. Private DNS zones: This resource is depending on the \[virtual networks] deployed above. This resource is leveraged by the \[private endpoint] resource which is cross-referenced from all modules providing a private endpoint connection. Multiple instances are deployed:
+      - '_privatelink.azconfig.io_': Leveraged by the \[configuration store] resource.
+      - '_privatelink.azure-automation.net_': Leveraged by the \[automation account] resource.
+      - '_privatelink.batch.azure.com_': Leveraged by the \[batch account] resource.
+      - '_privatelink.redis.cache.windows.net_': Leveraged by the \[redis cache] resource.
+      - '_privatelink.cognitiveservices.azure.com_': Leveraged by the \[cognitive services account] resource.
+      - '_privatelink.azurecr.io_': Leveraged by the \[azure container registry] resource.
+      - '_privatelink.datafactory.azure.net_': Leveraged by the \[data factory] resource.
+      - '_privatelink.eventgrid.azure.net_': Leveraged by the \[event grid topic] resource.
+      - '_privatelink.servicebus.windows.net_': Leveraged by the \[service bus and event hub] resources.
+      - '_privatelink.monitor.azure.com_': Leveraged by the \[private link scope] resource.
+      - '_privatelink.api.azureml.ms_': Leveraged by the \[machine learning workspace] resource.
+      - '_privatelink.siterecovery.windowsazure.com_': Leveraged by the \[recovery services vault] resource.
+      - '_privatelink.azuresynapse.net_': Leveraged by the \[synapse private link hub] resource.
+      - '_privatelink.sql.azuresynapse.net_': Leveraged by the \[synapse workspace] resource.
+      - '_privatelink.database.windows.net_': Leveraged by the \[sql server] resource.
+      - '_privatelink.azurewebsites.net_': Leveraged by the \[web site] resource.
+      - '_privatelink.azurestaticapps.net_': Leveraged by the \[web static site] resource.
+      - '_privatelink.blob.azure.com_': Leveraged by the \[storage account (blob)] resource.
+      - '_privatelink.file.azure.com_': Leveraged by the \[storage account (file)] resource.
+      - '_privatelink.queue.azure.com_': Leveraged by the \[storage account (queue)] resource.
+      - '_privatelink.table.azure.com_': Leveraged by the \[storage account (table)] resource.
+      - '_privatelink.vaultcore.azure.net_': Leveraged by the \[key vault] resource.
+      - '_privatelink.webpubsub.azure.net_': Leveraged by the \[web pubsub] resource.
 
 ### Required secrets and keys
 

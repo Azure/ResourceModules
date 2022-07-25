@@ -157,87 +157,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "myAlert01"
-        },
-        "alertDescription": {
-            "value": "My sample Alert"
-        },
-        "scopes": {
-            "value": [
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-            ]
-        },
-        "evaluationFrequency": {
-            "value": "PT5M"
-        },
-        "windowSize": {
-            "value": "PT5M"
-        },
-        "suppressForMinutes": {
-            "value": "PT5M"
-        },
-        "queryTimeRange": {
-            "value": "PT5M"
-        },
-        "autoMitigate": {
-            "value": false
-        },
-        "criterias": {
-            "value": {
-                "allOf": [
-                    {
-                        "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
-                        "timeAggregation": "Average",
-                        "metricMeasureColumn": "AggregatedValue",
-                        "dimensions": [
-                            {
-                                "name": "Computer",
-                                "operator": "Include",
-                                "values": [
-                                    "*"
-                                ]
-                            },
-                            {
-                                "name": "InstanceName",
-                                "operator": "Include",
-                                "values": [
-                                    "*"
-                                ]
-                            }
-                        ],
-                        "operator": "GreaterThan",
-                        "threshold": 0
-                    }
-                ]
-            }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -247,22 +171,14 @@ tags: {
 module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-scheduledQueryRules'
   params: {
+    // Required parameters
     name: 'myAlert01'
+    // Non-required parameters
     alertDescription: 'My sample Alert'
-    scopes: [
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    ]
-    evaluationFrequency: 'PT5M'
-    windowSize: 'PT5M'
-    suppressForMinutes: 'PT5M'
-    queryTimeRange: 'PT5M'
     autoMitigate: false
     criterias: {
       allOf: [
         {
-          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
-          timeAggregation: 'Average'
-          metricMeasureColumn: 'AggregatedValue'
           dimensions: [
             {
               name: 'Computer'
@@ -279,19 +195,112 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
               ]
             }
           ]
+          metricMeasureColumn: 'AggregatedValue'
           operator: 'GreaterThan'
+          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
           threshold: 0
+          timeAggregation: 'Average'
         }
       ]
     }
+    evaluationFrequency: 'PT5M'
+    queryTimeRange: 'PT5M'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    scopes: [
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    ]
+    suppressForMinutes: 'PT5M'
+    windowSize: 'PT5M'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "myAlert01"
+    },
+    // Non-required parameters
+    "alertDescription": {
+      "value": "My sample Alert"
+    },
+    "autoMitigate": {
+      "value": false
+    },
+    "criterias": {
+      "value": {
+        "allOf": [
+          {
+            "dimensions": [
+              {
+                "name": "Computer",
+                "operator": "Include",
+                "values": [
+                  "*"
+                ]
+              },
+              {
+                "name": "InstanceName",
+                "operator": "Include",
+                "values": [
+                  "*"
+                ]
+              }
+            ],
+            "metricMeasureColumn": "AggregatedValue",
+            "operator": "GreaterThan",
+            "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
+            "threshold": 0,
+            "timeAggregation": "Average"
+          }
+        ]
+      }
+    },
+    "evaluationFrequency": {
+      "value": "PT5M"
+    },
+    "queryTimeRange": {
+      "value": "PT5M"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scopes": {
+      "value": [
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      ]
+    },
+    "suppressForMinutes": {
+      "value": "PT5M"
+    },
+    "windowSize": {
+      "value": "PT5M"
+    }
   }
 }
 ```

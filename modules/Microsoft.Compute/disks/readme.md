@@ -23,7 +23,7 @@ This template deploys a disk
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | The name of the disk that is being created. |
-| `sku` | string | `[Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS, Premium_ZRS]` | The disks sku name. Can be . |
+| `sku` | string | `[Premium_LRS, Premium_ZRS, Premium_ZRS, Standard_LRS, StandardSSD_LRS, UltraSSD_LRS]` | The disks sku name. Can be . |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -39,15 +39,15 @@ This template deploys a disk
 | `hyperVGeneration` | string | `'V2'` | `[V1, V2]` | The hypervisor generation of the Virtual Machine. Applicable to OS disks only. |
 | `imageReferenceId` | string | `''` |  | A relative uri containing either a Platform Image Repository or user image reference. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `logicalSectorSize` | int | `4096` |  | Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. |
 | `maxShares` | int | `1` |  | The maximum number of VMs that can attach to the disk at the same time. Default value is 0. |
 | `networkAccessPolicy` | string | `'DenyAll'` | `[AllowAll, AllowPrivate, DenyAll]` | Policy for accessing the disk via network. |
-| `osType` | string | `''` | `[Windows, Linux, ]` | Sources of a disk creation. |
+| `osType` | string | `''` | `['', Linux, Windows]` | Sources of a disk creation. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Policy for controlling export on the disk. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `securityDataUri` | string | `''` |  | If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state. |
-| `sourceResourceId` | string | `''` |  | If create option is Copy, this is the ARM id of the source snapshot or disk. |
+| `sourceResourceId` | string | `''` |  | If create option is Copy, this is the ARM ID of the source snapshot or disk. |
 | `sourceUri` | string | `''` |  | If create option is Import, this is the URI of a blob to be imported into a managed disk. |
 | `storageAccountId` | string | `''` |  | Required if create option is Import. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk. |
 | `tags` | object | `{object}` |  | Tags of the availability set resource. |
@@ -165,44 +165,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-image-001"
-        },
-        "sku": {
-            "value": "Standard_LRS"
-        },
-        "createOption": {
-            "value": "FromImage"
-        },
-        "imageReferenceId": {
-            "value": "/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Image</h3>
 
 <details>
 
@@ -212,16 +179,18 @@ tags: {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-disk-image-001'
     sku: 'Standard_LRS'
+    // Non-required parameters
     createOption: 'FromImage'
     imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }
@@ -231,47 +200,47 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-import-001"
-        },
-        "sku": {
-            "value": "Standard_LRS"
-        },
-        "createOption": {
-            "value": "Import"
-        },
-        "sourceUri": {
-            "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
-        },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-disk-image-001"
+    },
+    "sku": {
+      "value": "Standard_LRS"
+    },
+    // Non-required parameters
+    "createOption": {
+      "value": "FromImage"
+    },
+    "imageReferenceId": {
+      "value": "/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Import</h3>
 
 <details>
 
@@ -281,19 +250,21 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-disk-import-001'
     sku: 'Standard_LRS'
+    // Non-required parameters
     createOption: 'Import'
-    sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
-    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
+    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 }
 ```
@@ -301,41 +272,50 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-min-001"
-        },
-        "sku": {
-            "value": "Standard_LRS"
-        },
-        "diskSizeGB": {
-            "value": 1
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-disk-import-001"
+    },
+    "sku": {
+      "value": "Standard_LRS"
+    },
+    // Non-required parameters
+    "createOption": {
+      "value": "Import"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
+    },
+    "sourceUri": {
+      "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
+    },
+    "storageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Min</h3>
 
 <details>
 
@@ -345,15 +325,17 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-disk-min-001'
     sku: 'Standard_LRS'
+    // Non-required parameters
     diskSizeGB: 1
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }
@@ -363,59 +345,44 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "sku": {
-            "value": "UltraSSD_LRS"
-        },
-        "diskSizeGB": {
-            "value": 128
-        },
-        "logicalSectorSize": {
-            "value": 512
-        },
-        "diskIOPSReadWrite": {
-            "value": 500
-        },
-        "diskMBpsReadWrite": {
-            "value": 60
-        },
-        "osType": {
-            "value": "Windows"
-        },
-        "publicNetworkAccess": {
-            "value": "Enabled"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-disk-min-001"
+    },
+    "sku": {
+      "value": "Standard_LRS"
+    },
+    // Non-required parameters
+    "diskSizeGB": {
+      "value": 1
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
         }
+      ]
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 4: Parameters</h3>
 
 <details>
 
@@ -425,23 +392,80 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-disk-x-001'
-    lock: 'CanNotDelete'
     sku: 'UltraSSD_LRS'
-    diskSizeGB: 128
-    logicalSectorSize: 512
+    // Non-required parameters
     diskIOPSReadWrite: 500
     diskMBpsReadWrite: 60
+    diskSizeGB: 128
+    lock: 'CanNotDelete'
+    logicalSectorSize: 512
     osType: 'Windows'
     publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-disk-x-001"
+    },
+    "sku": {
+      "value": "UltraSSD_LRS"
+    },
+    // Non-required parameters
+    "diskIOPSReadWrite": {
+      "value": 500
+    },
+    "diskMBpsReadWrite": {
+      "value": 60
+    },
+    "diskSizeGB": {
+      "value": 128
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "logicalSectorSize": {
+      "value": 512
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    }
   }
 }
 ```

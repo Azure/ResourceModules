@@ -8,6 +8,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 - [Upstream workloads](#upstream-workloads)
 - [Orchestration overview](#orchestration-overview)
+  - [Publish-location considerations](#publish-location-considerations)
 - [Template-orchestration](#template-orchestration)
   - [How to start](#how-to-start)
   - [Examples](#examples)
@@ -42,6 +43,55 @@ When it comes to deploying multi-module solutions (applications/workloads/enviro
 Both the _template-orchestration_, as well as _pipeline-orchestration_ may run a validation and subsequent deployment in the same _Azure_ subscription. This subscription should be the subscription where you want to host your production solution. However, you can extend the concept and for example, deploy the solution first to an integration and then a production subscription.
 
    <img src="./media/SolutionCreation/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
+
+## Publish-location considerations
+
+For your solution, it is recommended to reference modules from a published location, to leverage versioning and avoid the risk of breaking changes.
+
+CARML supports publishing to different locations, either through the use of the CI environment or by locally running the same scripts leveraged by the publishing step of the CI environment pipeline, as explained next.
+
+In either case, you may effectively decide to configure only a subset of publishing locations as per your requirements.
+
+To help you with the decision, the following content provides you with an overview of the possibilities of each target location.
+
+### Outline
+- **Template Specs**<p>
+  A [Template Spec](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell) is an Azure resource with the purpose of storing & referencing Azure Resource Manager (ARM) templates. <p>
+  When publishing Bicep modules as Template Specs, the module is compiled - and the resulting ARM template is uploaded as a Template Spec resource version to a Resource Group of your choice.
+  For deployment, it is recommended to apply a [template-orchestrated](#Orchestration-overview) approach. As Bicep supports the Template-Specs as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
+  > **Note:** Even though the published resource is an ARM template, you can reference it in you Bicep template as a remote module like it would be native Bicep.
+  > **Note:** Template Spec names have a maximum of 90 characters
+
+- **Bicep Registry**<p>
+  A [Bicep Registry](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry) is an Azure Container Registry that can be used to store & reference Bicep modules.<p>
+  For deployment, it is recommended to apply a [template-orchestrated](#Orchestration-overview) approach. As Bicep supports the Bicep registry as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
+
+- **Azure DevOps Universal Packages**<p>
+  A [Universal Package](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages) is a packaged folder in an Azure DevOps artifact feed.<p>
+  As such, it contains the content of a CARML module 'as-is', including the template file(s), ReadMe file(s) and test file(s). <p>
+  For deployment, it is recommended to use Universal Packages only for a [pipeline-orchestrated](#Orchestration-overview) approach - i.e., each job would download a single package and deploy it. <p>
+  Technically, it would be possible to also use Universal Packages for the template-orchestrated approach, by downloading all packages into a specific location first, and then reference them. Given the indirect nature of this approach, this is however not recommended. (:large_orange_diamond:)
+  > **Note:** Azure DevOps Universal Packages enforce _semver_. As such, it is not possible to overwrite an existing version.
+
+### Comparison
+
+The following table provides you with a comparison of the locations described above:
+
+| Category | Feature | Template Specs | Bicep Registry | Universal Packages |
+| - | - | - | - | - |
+| Portal/UI |
+| | Template can be viewed |:white_check_mark: | | |
+| | Template can be downloaded | | | |
+| |
+| Deployment |
+| | Supports [template-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :large_orange_diamond: |
+| | Supports [pipeline-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :white_check_mark:  |
+| | Supports single endpoint | | :white_check_mark: | :white_check_mark: |
+| |
+| Other |
+| | Template can be downloaded/restored via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| | Allows referencing latest [minor](./The%20CI%20environment%20-%20Publishing#how-it-works) | :white_check_mark: | :white_check_mark: | |
+| | Allows referencing latest [major](./The%20CI%20environment%20-%20Publishing#how-it-works) | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 # Template-orchestration
 
@@ -85,39 +135,12 @@ param resourceGroupName string = 'validation-rg'
 @description('Optional. The location to deploy into')
 param location string = deployment().location
 
-// NSG parameters
-@description('Optional. The name of the vnet to deploy')
-param networkSecurityGroupName string = 'LocalFilesDemoNsg'
-
-// VNET parameters
-@description('Optional. The name of the vnet to deploy')
-param vnetName string = 'LocalFilesDemoVnet'
-
-@description('Optional. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
-param vNetAddressPrefixes array = [
-  '10.0.0.0/16'
-]
-
-@description('Optional. An Array of subnets to deploy to the Virual Network.')
-param subnets array = [
-  {
-    name: 'PrimarySubnet'
-    addressPrefix: '10.0.0.0/24'
-    networkSecurityGroupName: networkSecurityGroupName
-  }
-  {
-    name: 'SecondarySubnet'
-    addressPrefix: '10.0.1.0/24'
-    networkSecurityGroupName: networkSecurityGroupName
-  }
-]
-
 // =========== //
 // Deployments //
 // =========== //
 
 // Resource Group
-module rg '../modules/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module rg 'modules/Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -126,11 +149,11 @@ module rg '../modules/Microsoft.Resources/resourceGroups/deploy.bicep' = {
 }
 
 // Network Security Group
-module nsg '../modules/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
+module nsg 'modules/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name: networkSecurityGroupName
+    name: 'defaultNsg'
   }
   dependsOn: [
     rg
@@ -138,18 +161,27 @@ module nsg '../modules/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
 }
 
 // Virtual Network
-module vnet '../modules/Microsoft.Network/virtualNetworks/deploy.bicep' = {
+module vnet 'modules/Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name: vnetName
-    addressPrefixes: vNetAddressPrefixes
-    subnets: subnets
+    name: 'defaultVNET'
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    subnets: [
+      {
+        name: 'PrimarySubnet'
+        addressPrefix: '10.0.0.0/24'
+        networkSecurityGroupName: nsg.name
+      }
+      {
+        name: 'SecondarySubnet'
+        addressPrefix: '10.0.1.0/24'
+        networkSecurityGroupName: nsg.name
+      }
+    ]
   }
-  dependsOn: [
-    nsg
-    rg
-  ]
 }
 ```
 
@@ -176,39 +208,12 @@ param resourceGroupName string = 'validation-rg'
 @description('Optional. The location to deploy into')
 param location string = deployment().location
 
-// NSG parameters
-@description('Optional. The name of the vnet to deploy')
-param networkSecurityGroupName string = 'BicepRegistryDemoNsg'
-
-// VNET parameters
-@description('Optional. The name of the vnet to deploy')
-param vnetName string = 'BicepRegistryDemoVnet'
-
-@description('Optional. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
-param vNetAddressPrefixes array = [
-  '10.0.0.0/16'
-]
-
-@description('Optional. An Array of subnets to deploy to the Virual Network.')
-param subnets array = [
-  {
-    name: 'PrimarySubnet'
-    addressPrefix: '10.0.0.0/24'
-    networkSecurityGroupName: networkSecurityGroupName
-  }
-  {
-    name: 'SecondarySubnet'
-    addressPrefix: '10.0.1.0/24'
-    networkSecurityGroupName: networkSecurityGroupName
-  }
-]
-
 // =========== //
 // Deployments //
 // =========== //
 
 // Resource Group
-module rg 'br/modules:microsoft.resources.resourcegroups:0.4.735' = {
+module rg 'br/modules:microsoft.resources.resourcegroups:1.0.0' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -217,11 +222,11 @@ module rg 'br/modules:microsoft.resources.resourcegroups:0.4.735' = {
 }
 
 // Network Security Group
-module nsg 'br/modules:microsoft.network.networksecuritygroups:0.4.735' = {
+module nsg 'br/modules:microsoft.network.networksecuritygroups:1.0.0' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name: networkSecurityGroupName
+    name: 'defaultNsg'
   }
   dependsOn: [
     rg
@@ -229,18 +234,27 @@ module nsg 'br/modules:microsoft.network.networksecuritygroups:0.4.735' = {
 }
 
 // Virtual Network
-module vnet 'br/modules:microsoft.network.virtualnetworks:0.4.735' = {
+module vnet 'br/modules:microsoft.network.virtualnetworks:1.0.0' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name: vnetName
-    addressPrefixes: vNetAddressPrefixes
-    subnets: subnets
+    name: 'defaultVNET'
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    subnets: [
+      {
+        name: 'PrimarySubnet'
+        addressPrefix: '10.0.0.0/24'
+        networkSecurityGroupName: nsg.name
+      }
+      {
+        name: 'SecondarySubnet'
+        addressPrefix: '10.0.1.0/24'
+        networkSecurityGroupName: nsg.name
+      }
+    ]
   }
-  dependsOn: [
-    nsg
-    rg
-  ]
 }
 ```
 
@@ -282,40 +296,13 @@ param resourceGroupName string = 'validation-rg'
 @description('Optional. The location to deploy into')
 param location string = deployment().location
 
-// Network Security Group parameters
-@description('Optional. The name of the vnet to deploy')
-param networkSecurityGroupName string = 'TemplateSpecDemoNsg'
-
-// Virtual Network parameters
-@description('Optional. The name of the vnet to deploy')
-param vnetName string = 'TemplateSpecDemoVnet'
-
-@description('Optional. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
-param vNetAddressPrefixes array = [
-  '10.0.0.0/16'
-]
-
-@description('Optional. An Array of subnets to deploy to the Virual Network.')
-param subnets array = [
-  {
-    name: 'PrimarySubnet'
-    addressPrefix: '10.0.0.0/24'
-    networkSecurityGroupName: networkSecurityGroupName
-  }
-  {
-    name: 'SecondarySubnet'
-    addressPrefix: '10.0.1.0/24'
-    networkSecurityGroupName: networkSecurityGroupName
-  }
-]
-
 // =========== //
 // Deployments //
 // =========== //
 
 // Resource Group
-module rg 'ts/modules:microsoft.resources.resourcegroups:0.4.735' = {
-  name: 'rgDeployment'
+module rg 'ts/modules:microsoft.resources.resourcegroups:1.0.0' = {
+  name: 'registry-rg'
   params: {
     name: resourceGroupName
     location: location
@@ -323,30 +310,39 @@ module rg 'ts/modules:microsoft.resources.resourcegroups:0.4.735' = {
 }
 
 // Network Security Group
-module nsg 'ts/modules:microsoft.network.networksecuritygroups:0.4.735' = {
-  name: 'nsgDeployment'
+module nsg 'ts/modules:microsoft.network.networksecuritygroups:1.0.0' = {
+  name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name:  networkSecurityGroupName
+    name: 'defaultNsg'
   }
-    dependsOn: [
+  dependsOn: [
     rg
   ]
 }
 
 // Virtual Network
-module vnet 'ts/modules:microsoft.network.virtualnetworks:0.4.735' = {
-  name: 'vnetDeployment'
+module vnet 'ts/modules:microsoft.network.virtualnetworks:1.0.0' = {
+  name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
-    name:  vnetName
-    addressPrefixes: vNetAddressPrefixes
-    subnets : subnets
+    name: 'defaultVNET'
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    subnets: [
+      {
+        name: 'PrimarySubnet'
+        addressPrefix: '10.0.0.0/24'
+        networkSecurityGroupName: nsg.name
+      }
+      {
+        name: 'SecondarySubnet'
+        addressPrefix: '10.0.1.0/24'
+        networkSecurityGroupName: nsg.name
+      }
+    ]
   }
-  dependsOn: [
-    rg
-    nsg
-  ]
 }
 ```
 

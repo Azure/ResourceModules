@@ -51,12 +51,12 @@ For the modules you copy over, a `version.json` file will already be available. 
 
 ## General pipeline updates
 General updates can be migrated by copying/replacing any code outside of the `arm` folder (i.e., `.github`, `.azuredevops`, `utilities`, `docs`). If you modified the CI environment in the meantime, make sure to carefully merge any conflicting code. Noteworthy changes include:
--	renamed composite actions / templates,
--	extended placeholder handling,
--	extended pipeline functionality (e.g., management group level removal),
--	publishing of child modules and
--	overall extended publishing using `version.json` files
--	additional deployments in the dependencies pipeline
+- renamed composite actions / templates,
+- extended placeholder handling,
+- extended pipeline functionality (e.g., management group level removal),
+- publishing of child modules and
+- overall extended publishing using `version.json` files
+- additional deployments in the dependencies pipeline
 
 ## NamePrefix in settings.json
 A change that affects all modules, is the introduction of the `namePrefix` property in the local `settings.json` file.

@@ -14,7 +14,7 @@ This template deploys a virtual network gateway connection.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Network/connections` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/connections) |
+| `Microsoft.Network/connections` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/connections) |
 
 ## Parameters
 
@@ -32,13 +32,13 @@ This template deploys a virtual network gateway connection.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec]. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `peer` | object | `{object}` |  | The remote peer. Used for connection type [ExpressRoute]. |
 | `routingWeight` | int | `-1` |  | The weight added to routes learned from this BGP speaker. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
 | `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet]. |
-| `virtualNetworkGatewayConnectionType` | string | `'IPsec'` | `[IPsec, Vnet2Vnet, ExpressRoute, VPNClient]` | Gateway connection type. |
+| `virtualNetworkGatewayConnectionType` | string | `'IPsec'` | `[ExpressRoute, IPsec, Vnet2Vnet, VPNClient]` | Gateway connection type. |
 | `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
 
 
@@ -304,55 +304,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vnetgwc-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "virtualNetworkGateway1": {
-            "value": {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
-            }
-        },
-        "virtualNetworkGateway2": {
-            "value": {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002"
-            }
-        },
-        "vpnSharedKey": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "vpnSharedKey"
-            }
-        },
-        "virtualNetworkGatewayConnectionType": {
-            "value": "Vnet2Vnet"
-        },
-        "enableBgp": {
-            "value": false
-        },
-        "location": {
-            "value": "eastus"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Vnet2vnet</h3>
 
 <details>
 
@@ -367,18 +323,71 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module connections './Microsoft.Network/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-vnetgwc-x-001'
-    lock: 'CanNotDelete'
     virtualNetworkGateway1: {
       id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
     }
+    // Non-required parameters
+    enableBgp: false
+    location: 'eastus'
+    lock: 'CanNotDelete'
     virtualNetworkGateway2: {
       id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
     }
-    vpnSharedKey: kv1.getSecret('vpnSharedKey')
     virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
-    enableBgp: false
-    location: 'eastus'
+    vpnSharedKey: kv1.getSecret('vpnSharedKey')
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-vnetgwc-x-001"
+    },
+    "virtualNetworkGateway1": {
+      "value": {
+        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
+      }
+    },
+    // Non-required parameters
+    "enableBgp": {
+      "value": false
+    },
+    "location": {
+      "value": "eastus"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "virtualNetworkGateway2": {
+      "value": {
+        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002"
+      }
+    },
+    "virtualNetworkGatewayConnectionType": {
+      "value": "Vnet2Vnet"
+    },
+    "vpnSharedKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+        },
+        "secretName": "vpnSharedKey"
+      }
+    }
   }
 }
 ```

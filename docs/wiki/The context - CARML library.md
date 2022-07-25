@@ -38,7 +38,7 @@ A CARML module should comply with the following characteristics:
   > For example, a virtual machine module also deploys related OS disks and network interfaces.
 - **Reusable**: Several modules can be combined together to create & orchestrate more complex architectures (i.e., multi-module solutions) like workloads/applications or single services.
   > For example, the resource group, the network security group and the virtual network modules can be combined to create a resource group hosting a virtual network with multiple subnets associated to specific NSGs.
-- **Multi-purpose**: Each module aims to cover most of the main resource's capabilities, without the need to maintain multiple module instances for different use cases. Instead, a generalized module can be consumed through parameter files​.
+- **Multi-purpose**: Each module aims to cover most of the main resource's capabilities, without the need to maintain multiple module instances for different use cases. Instead, a generalized module can be consumed through parameter files.
   > For example, the same virtual machine module can deploy a Windows OS VM or a Linux-based VM depending on input parameters.
 - **Integrates child resources**: Each module can deploy **_one_** instance of a resource and optionally **_n_** instances of its child resources.
   > For example, the Key Vault module can deploy **_one_** Key Vault and optionally **_n_** Key Vault access policies.

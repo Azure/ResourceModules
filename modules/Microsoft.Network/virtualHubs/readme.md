@@ -37,9 +37,9 @@ This module deploys a Virtual Hub.
 | `hubRouteTables` | _[hubRouteTables](hubRouteTables/readme.md)_ array | `[]` |  | Route tables to create for the virtual hub. |
 | `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hubVirtualNetworkConnections/readme.md)_ array | `[]` |  | Virtual network connections to create for the virtual hub. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `p2SVpnGatewayId` | string | `''` |  | Resource ID of the Point-to-Site VPN Gateway to link to. |
-| `preferredRoutingGateway` | string | `''` | `[ExpressRoute, None, VpnGateway, ]` | The preferred routing gateway types. |
+| `preferredRoutingGateway` | string | `''` | `['', ExpressRoute, None, VpnGateway]` | The preferred routing gateway types. |
 | `routeTableRoutes` | array | `[]` |  | VirtualHub route tables. |
 | `securityPartnerProviderId` | string | `''` |  | ID of the Security Partner Provider to link to. |
 | `securityProviderName` | string | `''` |  | The Security Provider name. |
@@ -103,31 +103,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vhub-min-001"
-        },
-        "addressPrefix": {
-            "value": "10.0.0.0/16"
-        },
-        "virtualWanId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -137,8 +117,9 @@ tags: {
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
-    name: '<<namePrefix>>-az-vhub-min-001'
+    // Required parameters
     addressPrefix: '10.0.0.0/16'
+    name: '<<namePrefix>>-az-vhub-min-001'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
   }
 }
@@ -147,64 +128,33 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vhub-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "addressPrefix": {
-            "value": "10.1.0.0/16"
-        },
-        "virtualWanId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
-        },
-        "hubRouteTables": {
-            "value": [
-                {
-                    "name": "routeTable1"
-                }
-            ]
-        },
-        "hubVirtualNetworkConnections": {
-            "value": [
-                {
-                    "name": "connection1",
-                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub",
-                    "routingConfiguration": {
-                        "associatedRouteTable": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1"
-                        },
-                        "propagatedRouteTables": {
-                            "ids": [
-                                {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1"
-                                }
-                            ],
-                            "labels": [
-                                "none"
-                            ]
-                        }
-                    }
-                }
-            ]
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "addressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-vhub-min-001"
+    },
+    "virtualWanId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -214,10 +164,11 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
-    name: '<<namePrefix>>-az-vhub-x-001'
-    lock: 'CanNotDelete'
+    // Required parameters
     addressPrefix: '10.1.0.0/16'
+    name: '<<namePrefix>>-az-vhub-x-001'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
+    // Non-required parameters
     hubRouteTables: [
       {
         name: 'routeTable1'
@@ -244,6 +195,67 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
         }
       }
     ]
+    lock: 'CanNotDelete'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "addressPrefix": {
+      "value": "10.1.0.0/16"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-vhub-x-001"
+    },
+    "virtualWanId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
+    },
+    // Non-required parameters
+    "hubRouteTables": {
+      "value": [
+        {
+          "name": "routeTable1"
+        }
+      ]
+    },
+    "hubVirtualNetworkConnections": {
+      "value": [
+        {
+          "name": "connection1",
+          "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub",
+          "routingConfiguration": {
+            "associatedRouteTable": {
+              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1"
+            },
+            "propagatedRouteTables": {
+              "ids": [
+                {
+                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1"
+                }
+              ],
+              "labels": [
+                "none"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    }
   }
 }
 ```

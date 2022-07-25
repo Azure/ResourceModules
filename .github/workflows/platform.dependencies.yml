@@ -288,7 +288,13 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
+          [
+            'fa.parameters.json',
+            'law.parameters.json',
+            'parameters.json',
+            'synapse01.parameters.json',
+            'synapse02.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1251,7 +1257,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -1399,13 +1405,37 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths:
+          [
+            'automation.parameters.json',
+            'azconfig.parameters.json',
+            'azurecr.parameters.json',
+            'azureml.parameters.json',
+            'azurestaticapps.parameters.json',
+            'azuresynapse.plh.parameters.json',
+            'azuresynapse.workspace.parameters.json',
+            'azurewebsites.parameters.json',
+            'batch.parameters.json',
+            'blob.parameters.json',
+            'cognitiveservices.parameters.json',
+            'database.parameters.json',
+            'datafactory.parameters.json',
+            'eventgrid.parameters.json',
+            'file.parameters.json',
+            'monitor.parameters.json',
+            'queue.parameters.json',
+            'redis.parameters.json',
+            'servicebus.parameters.json',
+            'siterecovery.parameters.json',
+            'table.parameters.json',
+            'vaultcore.parameters.json',
+            'webpubsub.parameters.json'
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:

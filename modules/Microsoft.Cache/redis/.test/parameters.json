@@ -1,0 +1,63 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-redis-full-001"
+    },
+    "capacity": {
+      "value": 2
+    },
+    "diagnosticLogCategoriesToEnable": {
+      "value": [
+        "ApplicationGatewayAccessLog",
+        "ApplicationGatewayFirewallLog"
+      ]
+    },
+    "diagnosticMetricsToEnable": {
+      "value": [
+        "AllMetrics"
+      ]
+    },
+    "enableNonSslPort": {
+      "value": true
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "minimumTlsVersion": {
+      "value": "1.2"
+    },
+    "diagnosticSettingsName": {
+      "value": "redisdiagnostics"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "redisVersion": {
+      "value": "6"
+    },
+    "skuName": {
+      "value": "Premium"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "shardCount": {
+      "value": 1
+    },
+    "tags": {
+      "value": {
+        "resourceType": "Redis Cache"
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+          "service": "redisCache"
+        }
+      ]
+    }
+  }
+}

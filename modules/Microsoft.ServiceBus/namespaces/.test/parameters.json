@@ -30,24 +30,27 @@
         "migrationConfigurations": {
             "value": {}
         },
-        "virtualNetworkRules": {
-            "value": [
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003"
-            ]
-        },
-        "ipFilterRules": {
-            "value": [
-                {
-                    "filterName": "ipFilter1",
-                    "ipMask": "10.0.1.0/32",
-                    "action": "Accept"
-                },
-                {
-                    "filterName": "ipFilter2",
-                    "ipMask": "10.0.2.0/32",
-                    "action": "Accept"
-                }
-            ]
+        "networkRuleSets": {
+            "value": {
+                "defaultAction": "Deny",
+                "trustedServiceAccessEnabled": true,
+                "virtualNetworkRules": [
+                    {
+                        "ignoreMissingVnetServiceEndpoint": true,
+                        "subnet": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003"
+                    }
+                ],
+                "ipRules": [
+                    {
+                        "ipMask": "10.0.1.0/32",
+                        "action": "Allow"
+                    },
+                    {
+                        "ipMask": "10.0.2.0/32",
+                        "action": "Allow"
+                    }
+                ]
+            }
         },
         "authorizationRules": {
             "value": [
@@ -159,9 +162,23 @@
             "value": [
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "namespace"
+                    "service": "namespace",
+                    "privateDnsZoneGroups": {
+                        "privateDNSResourceIds": [
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
+                        ]
+                    }
                 }
             ]
+        },
+        "cMKUserAssignedIdentityResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        },
+        "cMKKeyName": {
+            "value": "keyEncryptionKey"
+        },
+        "cMKKeyVaultResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
         }
     }
 }

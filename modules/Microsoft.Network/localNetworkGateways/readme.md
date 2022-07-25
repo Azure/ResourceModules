@@ -35,7 +35,7 @@ This module deploys a local network gateway.
 | `localBgpPeeringAddress` | string | `''` |  | The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
 | `localPeerWeight` | string | `''` |  | The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
@@ -151,52 +151,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-lng-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "localAddressPrefixes": {
-            "value": [
-                "192.168.1.0/24"
-            ]
-        },
-        "localGatewayPublicIpAddress": {
-            "value": "8.8.8.8"
-        },
-        "localAsn": {
-            "value": "65123"
-        },
-        "localBgpPeeringAddress": {
-            "value": "192.168.1.5"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -206,22 +165,72 @@ tags: {
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-localNetworkGateways'
   params: {
-    name: '<<namePrefix>>-az-lng-x-001'
-    lock: 'CanNotDelete'
+    // Required parameters
     localAddressPrefixes: [
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
+    name: '<<namePrefix>>-az-lng-x-001'
+    // Non-required parameters
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "localAddressPrefixes": {
+      "value": [
+        "192.168.1.0/24"
+      ]
+    },
+    "localGatewayPublicIpAddress": {
+      "value": "8.8.8.8"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-lng-x-001"
+    },
+    // Non-required parameters
+    "localAsn": {
+      "value": "65123"
+    },
+    "localBgpPeeringAddress": {
+      "value": "192.168.1.5"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    }
   }
 }
 ```

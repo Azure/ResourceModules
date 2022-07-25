@@ -232,61 +232,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ag-x-001"
-        },
-        "groupShortName": {
-            "value": "azagweux001"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "emailReceivers": {
-            "value": [
-                {
-                    "name": "TestUser_-EmailAction-",
-                    "emailAddress": "test.user@testcompany.com",
-                    "useCommonAlertSchema": true
-                },
-                {
-                    "name": "TestUser2",
-                    "emailAddress": "test.user2@testcompany.com",
-                    "useCommonAlertSchema": true
-                }
-            ]
-        },
-        "smsReceivers": {
-            "value": [
-                {
-                    "name": "TestUser_-SMSAction-",
-                    "countryCode": "1",
-                    "phoneNumber": "2345678901"
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -296,35 +246,94 @@ tags: {
 module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-actionGroups'
   params: {
-    name: '<<namePrefix>>-az-ag-x-001'
+    // Required parameters
     groupShortName: 'azagweux001'
+    name: '<<namePrefix>>-az-ag-x-001'
+    // Non-required parameters
+    emailReceivers: [
+      {
+        emailAddress: 'test.user@testcompany.com'
+        name: 'TestUser_-EmailAction-'
+        useCommonAlertSchema: true
+      }
+      {
+        emailAddress: 'test.user2@testcompany.com'
+        name: 'TestUser2'
+        useCommonAlertSchema: true
+      }
+    ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
         ]
-      }
-    ]
-    emailReceivers: [
-      {
-        name: 'TestUser_-EmailAction-'
-        emailAddress: 'test.user@testcompany.com'
-        useCommonAlertSchema: true
-      }
-      {
-        name: 'TestUser2'
-        emailAddress: 'test.user2@testcompany.com'
-        useCommonAlertSchema: true
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
     smsReceivers: [
       {
-        name: 'TestUser_-SMSAction-'
         countryCode: '1'
+        name: 'TestUser_-SMSAction-'
         phoneNumber: '2345678901'
       }
     ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupShortName": {
+      "value": "azagweux001"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-ag-x-001"
+    },
+    // Non-required parameters
+    "emailReceivers": {
+      "value": [
+        {
+          "emailAddress": "test.user@testcompany.com",
+          "name": "TestUser_-EmailAction-",
+          "useCommonAlertSchema": true
+        },
+        {
+          "emailAddress": "test.user2@testcompany.com",
+          "name": "TestUser2",
+          "useCommonAlertSchema": true
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "smsReceivers": {
+      "value": [
+        {
+          "countryCode": "1",
+          "name": "TestUser_-SMSAction-",
+          "phoneNumber": "2345678901"
+        }
+      ]
+    }
   }
 }
 ```

@@ -57,6 +57,14 @@ function Invoke-ResourceRemoval {
             Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
             break
         }
+        'Microsoft.ServiceBus/namespaces/authorizationRules' {
+            if ((Split-Path $ResourceId '/')[-1] -eq 'RootManageSharedAccessKey') {
+                Write-Verbose ('Skip resource removal for type [{0}]. Reason: The Service Bus''s default authorization key [RootManageSharedAccessKey] cannot be removed.' -f $type) -Verbose
+            } else {
+                $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
+            }
+            break
+        }
         'Microsoft.Compute/diskEncryptionSets' {
             # Pre-Removal
             # -----------

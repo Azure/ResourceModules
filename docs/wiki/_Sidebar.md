@@ -14,6 +14,7 @@
   - [**Scenario 1:** Module library only](./Fetching%20latest%20changes%20-%20Scenario%201%20Module%20library%20only)
   - [**Scenario 2:** Module library and CI environment](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20and%20CI%20environment)
 - [The library](./The%20library)
+  - [Module overview](./The%20library%20-%20Module%20overview)
   - [Module design](./The%20library%20-%20Module%20design)
   - [Module usage](./The%20library%20-%20Module%20usage)
 - [The CI environment](./The%20CI%20environment)

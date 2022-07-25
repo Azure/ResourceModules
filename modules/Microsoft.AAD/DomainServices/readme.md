@@ -43,25 +43,25 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `domainConfigurationType` | string | `'FullySynced'` | `[FullySynced, ResourceTrusting]` | The value is to provide domain configuration type. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `externalAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable the Secure LDAP for external services of Azure ADDS Services. |
-| `filteredSync` | string | `'Enabled'` |  | The value is to synchronise scoped users and groups. |
-| `kerberosArmoring` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable to provide a protected channel between the Kerberos client and the KDC. |
-| `kerberosRc4Encryption` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable Kerberos requests that use RC4 encryption. |
-| `ldaps` | string | `'Enabled'` | `[Enabled, Disabled]` | A flag to determine whether or not Secure LDAP is enabled or disabled. |
+| `externalAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable the Secure LDAP for external services of Azure ADDS Services. |
+| `filteredSync` | string | `'Enabled'` |  | The value is to synchronize scoped users and groups. |
+| `kerberosArmoring` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable to provide a protected channel between the Kerberos client and the KDC. |
+| `kerberosRc4Encryption` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable Kerberos requests that use RC4 encryption. |
+| `ldaps` | string | `'Enabled'` | `[Disabled, Enabled]` | A flag to determine whether or not Secure LDAP is enabled or disabled. |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Azure ADDS Services. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `logsToEnable` | array | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | The name of logs that will be streamed. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `logsToEnable` | array | `[AccountLogon, AccountManagement, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]` | `[AccountLogon, AccountManagement, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]` | The name of logs that will be streamed. |
 | `name` | string | `[parameters('domainName')]` |  | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |
-| `notifyDcAdmins` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to notify the DC Admins. |
-| `notifyGlobalAdmins` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to notify the Global Admins. |
-| `ntlmV1` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable clients making request using NTLM v1. |
+| `notifyDcAdmins` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to notify the DC Admins. |
+| `notifyGlobalAdmins` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to notify the Global Admins. |
+| `ntlmV1` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable clients making request using NTLM v1. |
 | `replicaSets` | array | `[]` |  | Additional replica set for the managed domain. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'Standard'` | `[Standard, Enterprise, Premium]` | The name of the SKU specific to Azure ADDS Services. |
-| `syncNtlmPasswords` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable synchronized users to use NTLM authentication. |
-| `syncOnPremPasswords` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable on-premises users to authenticate against managed domain. |
+| `sku` | string | `'Standard'` | `[Enterprise, Premium, Standard]` | The name of the SKU specific to Azure ADDS Services. |
+| `syncNtlmPasswords` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable synchronized users to use NTLM authentication. |
+| `syncOnPremPasswords` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable on-premises users to authenticate against managed domain. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `tlsV1` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable clients making request using TLSv1. |
+| `tlsV1` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable clients making request using TLSv1. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -207,72 +207,11 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "domainName": {
-            "value": "<<namePrefix>>.onmicrosoft.com"
-        },
-        "sku": {
-            "value": "Standard"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "replicaSets": {
-            "value": [
-                {
-                    "location": "WestEurope",
-                    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-aadds-001/subnets/AADDSSubnet"
-                }
-            ]
-        },
-        "pfxCertificate": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "pfxBase64Certificate"
-            }
-        },
-        "pfxCertificatePassword": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "pfxCertificatePassword"
-            }
-        },
-        "additionalRecipients": {
-            "value": [
-                "<<namePrefix>>@noreply.github.com"
-            ]
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Parameters</h3>
 
 <details>
 
@@ -287,24 +226,94 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-DomainServices'
   params: {
+    // Required parameters
     domainName: '<<namePrefix>>.onmicrosoft.com'
-    sku: 'Standard'
+    // Non-required parameters
+    additionalRecipients: [
+      '<<namePrefix>>@noreply.github.com'
+    ]
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     lock: 'CanNotDelete'
+    pfxCertificate: kv1.getSecret('pfxBase64Certificate')
+    pfxCertificatePassword: kv1.getSecret('pfxCertificatePassword')
     replicaSets: [
       {
         location: 'WestEurope'
         subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-aadds-001/subnets/AADDSSubnet'
       }
     ]
-    pfxCertificate: kv1.getSecret('pfxBase64Certificate')
-    pfxCertificatePassword: kv1.getSecret('pfxCertificatePassword')
-    additionalRecipients: [
-      '<<namePrefix>>@noreply.github.com'
-    ]
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    sku: 'Standard'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "domainName": {
+      "value": "<<namePrefix>>.onmicrosoft.com"
+    },
+    // Non-required parameters
+    "additionalRecipients": {
+      "value": [
+        "<<namePrefix>>@noreply.github.com"
+      ]
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "pfxCertificate": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+        },
+        "secretName": "pfxBase64Certificate"
+      }
+    },
+    "pfxCertificatePassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+        },
+        "secretName": "pfxCertificatePassword"
+      }
+    },
+    "replicaSets": {
+      "value": [
+        {
+          "location": "WestEurope",
+          "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-aadds-001/subnets/AADDSSubnet"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Standard"
+    }
   }
 }
 ```

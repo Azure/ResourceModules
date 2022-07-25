@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-appcs-min-001"
+            "value": "<<namePrefix>>-az-appc-min-001"
         }
     }
 }
