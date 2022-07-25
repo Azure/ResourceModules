@@ -97,7 +97,8 @@ jobs:
             # Define PS modules to install on the runner
             $Modules = @(
                 @{ Name = 'Az.Accounts' },
-                @{ Name = 'Az.Resources' }
+                @{ Name = 'Az.Resources' },
+                @{ Name = 'powershell-yaml'; Version = '0.4.2'}
             )
 
             # Additional PS modules need to be installed for the removal step in case it is enabled
