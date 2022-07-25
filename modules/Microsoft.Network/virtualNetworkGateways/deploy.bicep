@@ -337,7 +337,7 @@ resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/di
 
 // VNET Gateway
 // ============
-resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
+resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = {
   name: name
   location: location
   tags: tags
