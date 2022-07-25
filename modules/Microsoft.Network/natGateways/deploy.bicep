@@ -173,7 +173,7 @@ resource publicIP_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
 
 // NAT GATEWAY
 // ===========
-resource natGateway 'Microsoft.Network/natGateways@2021-05-01' = {
+resource natGateway 'Microsoft.Network/natGateways@2021-08-01' = {
   name: name
   location: location
   tags: tags
