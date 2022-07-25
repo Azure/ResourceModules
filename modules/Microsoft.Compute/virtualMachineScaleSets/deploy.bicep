@@ -86,7 +86,7 @@ param licenseType string = ''
 @description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
 param enableServerSideEncryption bool = false
 
-@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter.')
+@description('Optional. Required if name is specified. Password of the user specified in user parameter.')
 @secure()
 param extensionDomainJoinPassword string = ''
 

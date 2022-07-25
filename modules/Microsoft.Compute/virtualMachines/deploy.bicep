@@ -166,7 +166,7 @@ param enableServerSideEncryption bool = false
 @description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
 param allowExtensionOperations bool = true
 
-@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter.')
+@description('Optional. Required if name is specified. Password of the user specified in user parameter.')
 @secure()
 param extensionDomainJoinPassword string = ''
 
