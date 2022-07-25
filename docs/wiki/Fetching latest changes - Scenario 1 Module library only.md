@@ -1,4 +1,4 @@
-In this scenario you have onboarded only the module library as described in [Getting started Scenario 1- Consume library](./Getting%20started%20-%20Scenario%201%20Consume%20library) and therefore you fetch lastest changes for the modules.
+In this scenario you have onboarded only the module library as described in [Getting started Scenario 1- Consume library](./Getting%20started%20-%20Scenario%201%20Consume%20library) and you would therefore need to fetch latest changes for the modules.
 
 Modules can be stored in an accessible location like local, Template Specs, Bicep Registry or ADO universal packages.
 
