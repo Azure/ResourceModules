@@ -1,6 +1,6 @@
 In this scenario you have onboarded both the module library and the CI environment, as described in [Getting started Scenario 2 - Onboard module library and CI environment](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment) and you would therefore need to fetch latest changes for both.
 
-Depending on the DevOps environment you have chosen (GitHub or DevOps) you may have a different situation.
+Depending on the DevOps environment you are using (GitHub or Azure DevOps) the number and implementation of the required steps may vary. 
 
 The update process is the following:
 

@@ -1,4 +1,4 @@
-In this scenario you have onboarded only the module library as described in [Getting started Scenario 1- Consume library](./Getting%20started%20-%20Scenario%201%20Consume%20library) and therefore you fetch lastest changes for the modules.
+In this scenario you have onboarded only the module library as described in [Getting started Scenario 1- Consume library](./Getting%20started%20-%20Scenario%201%20Consume%20library) and you would therefore need to fetch latest changes for the modules.
 
 Modules can be stored in an accessible location like local, Template Specs, Bicep Registry or ADO universal packages.
 
@@ -11,6 +11,7 @@ The update process is the following:
 - [3. (Optional) Convert library to ARM](#3-optional-convert-library-to-arm)
 - [4. (Optional) Customize modules](#4-optional-customize-modules)
 - [5. Test and publish modules](#5-test-and-publish-modules)
+
 # 1. Backup your local copy of the library
 
 Rename your local repository. Assuming the local repository location is `'D:\ResourcesModules'` rename it in `'D:\ResourcesModules_Backup'`.
@@ -39,6 +40,7 @@ In some cases, you might need to add to the library company/organization' specif
 In this scenario every time you'll fetch updates from the public CARML repository merge conflicts are expected. You'll have to compare the new public code with your customized one and re-apply your customizations to the updated code.
 
 This process can be automated, by script or CI, if customization tasks are repeatable.
+
 # 5. Test and publish modules
 
 If you have customized your library without contributing on the public CARML repository, public modules are not tested with your customization, so you'll need to manage the test of your updated and customized modules.
