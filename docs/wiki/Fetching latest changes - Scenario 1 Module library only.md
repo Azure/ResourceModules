@@ -11,6 +11,7 @@ The update process is the following:
 - [3. (Optional) Convert library to ARM](#3-optional-convert-library-to-arm)
 - [4. (Optional) Customize modules](#4-optional-customize-modules)
 - [5. Test and publish modules](#5-test-and-publish-modules)
+
 # 1. Backup your local copy of the library
 
 Rename your local repository. Assuming the local repository location is `'D:\ResourcesModules'` rename it in `'D:\ResourcesModules_Backup'`.
