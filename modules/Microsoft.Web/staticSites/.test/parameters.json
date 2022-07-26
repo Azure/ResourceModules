@@ -23,6 +23,18 @@
         "systemAssignedIdentity": {
             "value": true
         },
+        "appSettings": {
+            "value": {
+                "foo": "bar",
+                "setting": 1
+            }
+        },
+        "functionAppSettings": {
+            "value": {
+                "foo": "bar",
+                "setting": 1
+            }
+        },
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
@@ -45,6 +57,11 @@
                     "service": "staticSites"
                 }
             ]
+        },
+        "linkedBackend": {
+            "value": {
+                "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/adp-<<namePrefix>>-az-fa-001"
+            }
         }
     }
 }
