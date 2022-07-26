@@ -344,14 +344,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
       {
         contentType: 'contentType'
         name: 'keyName'
-        roleAssignments: [
-          {
-            principalIds: [
-              '<<deploymentSpId>>'
-            ]
-            roleDefinitionIdOrName: 'Reader'
-          }
-        ]
         value: 'valueName'
       }
     ]
@@ -427,14 +419,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         {
           "contentType": "contentType",
           "name": "keyName",
-          "roleAssignments": [
-            {
-              "principalIds": [
-                "<<deploymentSpId>>"
-              ],
-              "roleDefinitionIdOrName": "Reader"
-            }
-          ],
           "value": "valueName"
         }
       ]

@@ -32,14 +32,14 @@
                     "name": "keyName",
                     "value": "valueName",
                     "contentType": "contentType",
-                    "roleAssignments": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
+                    // "roleAssignments": [
+                    //     {
+                    //         "roleDefinitionIdOrName": "Reader",
+                    //         "principalIds": [
+                    //             "<<deploymentSpId>>"
+                    //         ]
+                    //     }
+                    // ]
                 }
             ]
         },
