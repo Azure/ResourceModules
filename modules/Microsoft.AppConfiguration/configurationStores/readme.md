@@ -340,18 +340,22 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     disableLocalAuth: false
     enablePurgeProtection: false
-    lock: 'CanNotDelete'
-    privateEndpoints: [
+    keyValues: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io'
-          ]
-        }
-        service: 'configurationStores'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        contentType: 'contentType'
+        name: 'keyName'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        value: 'valueName'
       }
     ]
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
@@ -407,21 +411,25 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     "enablePurgeProtection": {
       "value": false
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "privateEndpoints": {
+    "keyValues": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io"
-            ]
-          },
-          "service": "configurationStores",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "contentType": "contentType",
+          "name": "keyName",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<<deploymentSpId>>"
+              ],
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "value": "valueName"
         }
       ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
     },
     "roleAssignments": {
       "value": [
@@ -438,6 +446,87 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     },
     "systemAssignedIdentity": {
       "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Pe</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-configurationStores'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-az-appc-pe-001'
+    // Non-required parameters
+    createMode: 'Default'
+    disableLocalAuth: false
+    enablePurgeProtection: false
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io'
+          ]
+        }
+        service: 'configurationStores'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    softDeleteRetentionInDays: 1
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-appc-pe-001"
+    },
+    // Non-required parameters
+    "createMode": {
+      "value": "Default"
+    },
+    "disableLocalAuth": {
+      "value": false
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io"
+            ]
+          },
+          "service": "configurationStores",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
+    },
+    "softDeleteRetentionInDays": {
+      "value": 1
     }
   }
 }

@@ -26,23 +26,23 @@
         "systemAssignedIdentity": {
             "value": true
         },
-        // "keyValues": {
-        //     "value": [
-        //         {
-        //             "name": "keyName",
-        //             "value": "valueName",
-        //             "contentType": "contentType",
-        //             // "roleAssignments": [
-        //             //     {
-        //             //         "roleDefinitionIdOrName": "Reader",
-        //             //         "principalIds": [
-        //             //             "<<deploymentSpId>>"
-        //             //         ]
-        //             //     }
-        //             // ]
-        //         }
-        //     ]
-        // },
+        "keyValues": {
+            "value": [
+                {
+                    "name": "keyName",
+                    "value": "valueName",
+                    "contentType": "contentType",
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -64,19 +64,6 @@
         },
         "softDeleteRetentionInDays": {
             "value": 1
-        },
-        "privateEndpoints": {
-            "value": [
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "configurationStores",
-                    "privateDnsZoneGroup": {
-                        "privateDNSResourceIds": [
-                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io"
-                        ]
-                    }
-                }
-            ]
         }
     }
 }
