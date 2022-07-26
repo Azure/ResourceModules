@@ -97,7 +97,8 @@ jobs:
             # Define PS modules to install on the runner
             $Modules = @(
                 @{ Name = 'Az.Accounts' },
-                @{ Name = 'Az.Resources' }
+                @{ Name = 'Az.Resources' },
+                @{ Name = 'powershell-yaml'; Version = '0.4.2'}
             )
 
             # Additional PS modules need to be installed for the removal step in case it is enabled
@@ -129,25 +130,15 @@ jobs:
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
-            # Load Settings File
-            $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
-
-            if((Split-Path '$(moduleTestFilePath)' -Extension) -ne '.json') {
-              Write-Verbose 'Skipping token replacement as the deployment test file is no JSON-Parameter file' -Verbose
-              return
-            }
-
-            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
-
             # Construct Token Function Input
             $ConvertTokensInputs = @{
                 Tokens      = @{}
-                FilePath    = $moduleTestFilePath
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
+                TokenPrefix = '$(tokenPrefix)'
+                TokenSuffix = '$(tokenSuffix)'
             }
 
-            # Add defaults
+            # Add enforced tokens
             $ConvertTokensInputs.Tokens += @{
               resourceGroupName = '${{ parameters.resourceGroupName }}'
               subscriptionId    = '${{ parameters.subscriptionId }}'
@@ -156,14 +147,18 @@ jobs:
               deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
             }
 
-            # Add local tokens
-            if ($Settings.parameterFileTokens.localTokens) {
-              $tokenMap = @{}
-              foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                $tokenMap += @{ $token.name = $token.value }
-              }
-              Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-              $ConvertTokensInputs.Tokens += $tokenMap
+            # Add local (source control) tokens
+            $tokenMap = @{}
+            foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+              $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+            }
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens += $tokenMap
+
+            # Swap 'namePrefix' token if provided as a Azure DevOps variable
+            if(-not [String]::IsNullOrEmpty("$env:TOKEN_NAMEPREFIX")){
+              Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
+              $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
             }
 
             # Add custom tokens (passed in via the pipeline)
@@ -172,6 +167,8 @@ jobs:
               Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
               $ConvertTokensInputs.Tokens += $customTokens
             }
+
+            Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
             # Invoke Token Replacement Functionality
             $null = Convert-TokensInFile @ConvertTokensInputs
@@ -189,10 +186,6 @@ jobs:
           inline: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
-
-            # Prepare general parameters
-            # --------------------------
-            $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
 
             # Fetching parameters
             $location = '${{ parameters.location }}'
@@ -227,9 +220,9 @@ jobs:
 
             # Handle additional parameters
             # ----------------------------
-            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
+            if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
                 $functionInput['additionalParameters'] += @{
-                    enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                    enableDefaultTelemetry = [System.Convert]::ToBoolean('$(enableDefaultTelemetry)')
                 }
             }
 
@@ -252,10 +245,6 @@ jobs:
           inline: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
-
-            # Prepare general parameters
-            # --------------------------
-            $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
 
             $location = '${{ parameters.location }}'
             $resourceGroupName = '${{ parameters.resourceGroupName }}'
@@ -290,9 +279,9 @@ jobs:
 
             # Handle additional parameters
             # ----------------------------
-            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
+            if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
                 $functionInput['additionalParameters'] += @{
-                    enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                    enableDefaultTelemetry = [System.Convert]::ToBoolean('$(enableDefaultTelemetry)')
                 }
             }
 

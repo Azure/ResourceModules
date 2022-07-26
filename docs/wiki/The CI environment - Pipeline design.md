@@ -72,7 +72,7 @@ In addition, workflows leverage the following composite actions:
 | Composite Action | Description |
 | - | - |
 | **getWorkflowInput** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it, we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example, the removal switch `removeDeployment`. |
-| **setEnvironmentVariables** | This action parses the variables file ([`global.variables.yml`](https://github.com/Azure/ResourceModules/blob/main/global.variables.yml)) and sets the key-value pairs in the `variables` list as environment variables. |
+| **setEnvironmentVariables** | This action parses the settings file ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) and sets the key-value pairs in the `variables` list as environment variables. |
 
 Technical documentation for each composite action, such as required input and output variables, is included in each `action.yml` file located in path `.github/actions/templates`.
 

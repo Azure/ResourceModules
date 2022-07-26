@@ -65,28 +65,24 @@ function Test-NamePrefixAvailability {
             Tokens = $Tokens
         }
 
-        # Tokens in settings.json
-        $settingsFilePath = Join-Path $root 'settings.json'
-        if (Test-Path $settingsFilePath) {
-            $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json -AsHashtable
-            $ConvertTokensInputs += @{
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-            }
+        # Tokens in settings.yml
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
 
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
-            }
+        # Construct Token Configuration Input
+        $tokenConfiguration = @{
+            Tokens      = @{}
+            TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+            TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+        }
+
+        # Add local (source control) tokens
+        foreach ($localToken in ($GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } })) {
+            $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
         }
 
         try {
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
+            $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ }
 
 
             # Extract Parameter Names
@@ -178,7 +174,7 @@ function Test-NamePrefixAvailability {
             # Restore parameter files
             # -----------------------
             Write-Verbose 'Restoring Tokens'
-            $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
+            $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ -SwapValueWithName $true }
         }
     }
 

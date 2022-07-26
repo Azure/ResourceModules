@@ -404,7 +404,7 @@ on:
 env:
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   removeDeployment: false
-  variablesPath: 'global.variables.yml'
+  variablesPath: 'settings.yml'
 
 jobs:
   job_deploy_multi_repo_solution:
