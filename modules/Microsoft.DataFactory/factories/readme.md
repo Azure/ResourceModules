@@ -16,7 +16,10 @@
 | `Microsoft.DataFactory/factories` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories) |
 | `Microsoft.DataFactory/factories/integrationRuntimes` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/integrationRuntimes) |
 | `Microsoft.DataFactory/factories/managedVirtualNetworks` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks) |
+| `Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks/managedPrivateEndpoints) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -51,6 +54,7 @@
 | `integrationRuntime` | _[integrationRuntime](integrationRuntime/readme.md)_ object | `{object}` |  | The object for the configuration of a Integration Runtime. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `managedPrivateEndpoints` | array | `[]` |  | Configuration Details for managed private endpoints in the managed virtual network. |
 | `managedVirtualNetworkName` | string | `''` |  | The name of the Managed Virtual Network. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
@@ -270,6 +274,56 @@ privateEndpoints:  [
 </details>
 <p>
 
+### Parameter Usage: `managedPrivateEndpoints`
+
+To use Managed Private Endpoints the following dependencies must be deployed:
+
+- The `managedVirtualNetworkName` property must be set to allow provisioning of a managed virtual network in Azure Data Factory.
+- Destination private link resource must be created before and permissions allow requesting a private link connection to that resource.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"managedPrivateEndpoints": {
+    "value": [
+        {
+            "name": "mystorageaccount-managed-privateEndpoint", // Required: The managed privated endpoint resource name
+            "groupId": "blob", // Required: The groupId to which the managed private endpoint is created
+            "fqdns": [
+                "mystorageaccount.blob.core.windows.net" // Required: Fully qualified domain names
+            ],
+            "privateLinkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/mystorageaccount"
+            // Required: The ARM resource ID of the resource to which the managed private endpoint is created.
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+managedPrivateEndpoints:  [
+    // Example showing all available fields
+    {
+        name: 'mystorageaccount-managed-privateEndpoint' // Required: The managed privated endpoint resource name
+        groupId: 'blob' // Required: The groupId to which the managed private endpoint is created
+        fqdns: [
+          'mystorageaccount.blob.core.windows.net' // Required: Fully qualified domain names
+        ]
+        privateLinkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/mystorageaccount'
+    } // Required: The ARM resource ID of the resource to which the managed private endpoint is created.
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -286,7 +340,44 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-factories'
+  params: {
+    name: '<<namePrefix>>-adf-001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-adf-001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -319,10 +410,34 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
       }
     }
     lock: 'CanNotDelete'
+    managedPrivateEndpoints: [
+      {
+        fqdns: [
+          'adp<<namePrefix>>azsax001.blob.core.windows.net'
+        ]
+        groupId: 'blob'
+        name: 'adp<<namePrefix>>azsax001-managed-privateEndpoint'
+        privateLinkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      }
+    ]
     managedVirtualNetworkName: 'default'
     privateEndpoints: [
       {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net'
+          ]
+        }
         service: 'dataFactory'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+      {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.adf.azure.com'
+          ]
+        }
+        service: 'portal'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
     ]
@@ -402,13 +517,39 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
+    "managedPrivateEndpoints": {
+      "value": [
+        {
+          "fqdns": [
+            "adp<<namePrefix>>azsax001.blob.core.windows.net"
+          ],
+          "groupId": "blob",
+          "name": "adp<<namePrefix>>azsax001-managed-privateEndpoint",
+          "privateLinkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        }
+      ]
+    },
     "managedVirtualNetworkName": {
       "value": "default"
     },
     "privateEndpoints": {
       "value": [
         {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
+            ]
+          },
           "service": "dataFactory",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        },
+        {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.adf.azure.com"
+            ]
+          },
+          "service": "portal",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
       ]

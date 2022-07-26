@@ -11,6 +11,18 @@
         "managedVirtualNetworkName": {
             "value": "default"
         },
+        "managedPrivateEndpoints": {
+            "value": [
+                {
+                    "name": "adp<<namePrefix>>azsax001-managed-privateEndpoint",
+                    "groupId": "blob",
+                    "fqdns": [
+                        "adp<<namePrefix>>azsax001.blob.core.windows.net"
+                    ],
+                    "privateLinkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+                }
+            ]
+        },
         "integrationRuntime": {
             "value": {
                 "name": "AutoResolveIntegrationRuntime",
@@ -66,7 +78,21 @@
             "value": [
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "dataFactory"
+                    "service": "dataFactory",
+                    "privateDnsZoneGroups": {
+                        "privateDNSResourceIds": [
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
+                        ]
+                    }
+                },
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "portal",
+                    "privateDnsZoneGroups": {
+                        "privateDNSResourceIds": [
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.adf.azure.com"
+                        ]
+                    }
                 }
             ]
         },

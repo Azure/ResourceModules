@@ -5,6 +5,9 @@ param dataFactoryName string
 param name string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param managedPrivateEndpoints array = []
+
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -28,6 +31,19 @@ resource managedVirtualNetwork 'Microsoft.DataFactory/factories/managedVirtualNe
   parent: dataFactory
   properties: {}
 }
+
+module managedVirtualNetwork_managedPrivateEndpoint 'managedPrivateEndpoints/deploy.bicep' = [for (managedPrivateEndpoint, index) in managedPrivateEndpoints: {
+  name: '${deployment().name}-managedPrivateEndpoint-${index}'
+  params: {
+    dataFactoryName: dataFactoryName
+    managedVirtualNetworkName: name
+    name: managedPrivateEndpoint.name
+    fqdns: managedPrivateEndpoint.fqdns
+    groupId: managedPrivateEndpoint.groupId
+    privateLinkResourceId: managedPrivateEndpoint.privateLinkResourceId
+    enableDefaultTelemetry: enableDefaultTelemetry
+  }
+}]
 
 @description('The name of the Resource Group the Managed Virtual Network was created in.')
 output resourceGroupName string = resourceGroup().name
