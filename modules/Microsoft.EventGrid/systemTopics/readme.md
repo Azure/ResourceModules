@@ -7,6 +7,7 @@ This module deploys an Event Grid System Topic.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -266,6 +267,10 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The name of the resource group the event grid system topic was deployed into. |
 | `resourceId` | string | The resource ID of the event grid system topic. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

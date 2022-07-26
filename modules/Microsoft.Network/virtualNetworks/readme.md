@@ -8,6 +8,7 @@ This template deploys a virtual network (vNet).
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -345,6 +346,10 @@ The network security group and route table resources must reside in the same res
 | `resourceId` | string | The resource ID of the virtual network. |
 | `subnetNames` | array | The names of the deployed subnets. |
 | `subnetResourceIds` | array | The resource IDs of the deployed subnets. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

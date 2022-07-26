@@ -7,6 +7,7 @@ This module deploys recovery services vault backup config.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -42,3 +43,7 @@ This module deploys recovery services vault backup config.
 | `name` | string | The name of the backup config. |
 | `resourceGroupName` | string | The name of the resource group the backup config was created in. |
 | `resourceId` | string | The resource ID of the backup config. |
+
+## Cross-referenced modules
+
+_None_

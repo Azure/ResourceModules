@@ -7,6 +7,7 @@ This module deploys a blob container
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -105,3 +106,7 @@ roleAssignments: [
 | `name` | string | The name of the deployed container. |
 | `resourceGroupName` | string | The resource group of the deployed container. |
 | `resourceId` | string | The resource ID of the deployed container. |
+
+## Cross-referenced modules
+
+_None_

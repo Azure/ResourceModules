@@ -7,6 +7,7 @@ This template deploys a linked service for a Log Analytics workspace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -83,3 +84,7 @@ tags: {
 | `name` | string | The name of the deployed linked service. |
 | `resourceGroupName` | string | The resource group where the linked service is deployed. |
 | `resourceId` | string | The resource ID of the deployed linked service. |
+
+## Cross-referenced modules
+
+_None_

@@ -7,6 +7,7 @@ This module deploys API Management Service Portal Setting.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -40,3 +41,7 @@ This module deploys API Management Service Portal Setting.
 | `name` | string | The name of the API management service portal setting. |
 | `resourceGroupName` | string | The resource group the API management service portal setting was deployed into. |
 | `resourceId` | string | The resource ID of the API management service portal setting. |
+
+## Cross-referenced modules
+
+_None_

@@ -7,6 +7,7 @@ This module deploys private dns zone virtual network links.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -85,3 +86,7 @@ tags: {
 | `name` | string | The name of the deployed virtual network link. |
 | `resourceGroupName` | string | The resource group of the deployed virtual network link. |
 | `resourceId` | string | The resource ID of the deployed virtual network link. |
+
+## Cross-referenced modules
+
+_None_

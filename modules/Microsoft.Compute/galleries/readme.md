@@ -7,6 +7,7 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -145,6 +146,10 @@ tags: {
 | `name` | string | The name of the deployed image gallery. |
 | `resourceGroupName` | string | The resource group of the deployed image gallery. |
 | `resourceId` | string | The resource ID of the deployed image gallery. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

@@ -12,6 +12,7 @@ remote/managing tenant.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -162,6 +163,10 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 
 **More info on this topic:**
 
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

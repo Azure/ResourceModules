@@ -7,6 +7,7 @@ This module deploys Resources Tags on a subscription scope.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -74,3 +75,7 @@ tags: {
 | `name` | string | The name of the tags resource. |
 | `resourceId` | string | The resource ID of the applied tags. |
 | `tags` | object | The applied tags. |
+
+## Cross-referenced modules
+
+_None_

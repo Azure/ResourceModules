@@ -7,6 +7,7 @@ This module deploys VPN Gateways Connections.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -110,3 +111,7 @@ routingConfiguration: {
 | `name` | string | The name of the VPN connection. |
 | `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into. |
 | `resourceId` | string | The resource ID of the VPN connection. |
+
+## Cross-referenced modules
+
+_None_

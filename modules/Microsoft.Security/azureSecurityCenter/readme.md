@@ -7,6 +7,7 @@ This template enables Azure security center - Standard tier by default, could be
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -93,6 +94,10 @@ securityContactProperties: {
 | :-- | :-- | :-- |
 | `name` | string | The name of the security center. |
 | `workspaceId` | string | The resource ID of the used log analytics workspace. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

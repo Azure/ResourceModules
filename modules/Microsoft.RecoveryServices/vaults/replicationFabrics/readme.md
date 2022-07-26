@@ -9,6 +9,7 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -96,3 +97,7 @@ replicationContainers: [
 | `name` | string | The name of the replication fabric. |
 | `resourceGroupName` | string | The name of the resource group the replication fabric was created in. |
 | `resourceId` | string | The resource ID of the replication fabric. |
+
+## Cross-referenced modules
+
+_None_

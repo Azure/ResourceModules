@@ -7,6 +7,7 @@ This module deploys an Azure Health Bot.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -143,6 +144,10 @@ roleAssignments: [
 | `name` | string | The name of the health bot. |
 | `resourceGroupName` | string | The resource group the health bot was deployed into. |
 | `resourceId` | string | The resource ID of the health bot. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

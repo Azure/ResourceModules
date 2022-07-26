@@ -7,6 +7,7 @@ This module deploys an Azure virtual desktop workspace.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -153,6 +154,10 @@ tags: {
 | `name` | string | The name of the AVD workspace. |
 | `resourceGroupName` | string | The resource group the AVD workspace was deployed into. |
 | `resourceId` | string | The resource ID of the AVD workspace. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

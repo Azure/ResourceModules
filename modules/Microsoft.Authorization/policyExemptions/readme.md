@@ -9,6 +9,7 @@ With this module you can create policy exemptions across the management group, s
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -146,6 +147,10 @@ module policyexemption 'yourpath/modules/Microsoft.Authorization.policyExemption
 ## Considerations
 
 - Policy Exemptions have a dependency on Policy Assignments being applied before creating an exemption. You can use the Policy Assignment [Module](../policyAssignments/deploy.bicep) to deploy a Policy Assignment and then create the exemption for it on the required scope.
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

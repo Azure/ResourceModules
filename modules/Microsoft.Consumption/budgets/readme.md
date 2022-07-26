@@ -7,6 +7,7 @@ This module deploys budgets for subscriptions.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -45,6 +46,10 @@ This module deploys budgets for subscriptions.
 | `name` | string | The name of the budget. |
 | `resourceId` | string | The resource ID of the budget. |
 | `subscriptionName` | string | The subscription the budget was deployed into. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

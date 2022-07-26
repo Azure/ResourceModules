@@ -1,4 +1,4 @@
-The `'Get-LinkedLocalModuleList'` function helps you with discovering cross-modules dependencies. It checks for any local module references in a given path. This can be useful to determine which modules' folder you'd need to keep in case you'd only want to cherry-pick certain modules from the library.
+The `'Get-LinkedModuleList'` function helps you with discovering cross-modules dependencies. It checks for any module references in a given path. This can be useful to determine which modules' folder you'd need to keep in case you'd only want to cherry-pick certain modules from the library.
 
 ---
 
@@ -13,15 +13,20 @@ The `'Get-LinkedLocalModuleList'` function helps you with discovering cross-modu
 ---
 # Location
 
-You can find the script under `'utilities/tools/Get-LinkedLocalModuleList.ps1'`.
+You can find the script under `'utilities/tools/Get-LinkedModuleList.ps1'`.
 
 # How it works
 
 When invoking the script:
 
-1. The function leverages the utility [Get-LinkedModuleList](#related-function-get-linkedmodulelist) to fetch all references implemented in the modules in a given path.
-1. The function filters these references down to only local references (i.e., cross-module references) and formats them to show a consistent '\<ProviderNameSpace\>/\<ResourceType\>' format.
-1. Finally, it prints the references to the invoking terminal, group by ResourceType.
+1. The function fetches all references implemented in the modules in a given path.
+1. The function formats them to show a consistent '\<ProviderNameSpace\>/\<ResourceType\>' format.
+1. Finally, depending on whether you provided the `PrintLocalReferencesOnly` switch statement, the function either
+   - Only prints all local module references to the terminal, or
+   - Returns all references:
+     - Resource deployments
+     - Cross-Module references
+     - Remove-Module references (e.g., Bicep Registry)
 
 # How to use it
 
@@ -90,14 +95,3 @@ VERBOSE:
 VERBOSE: Resource: Microsoft.KeyVault/vaults
 VERBOSE: - Microsoft.Network/privateEndpoints
 ```
-
-# Related function: _Get-LinkedModuleList_
-
-The function `'Get-LinkedModuleList'` (also in path `'utilities/tools'`) is leveraged by the `'Get-LinkedLocalModuleList'` function, but can also be invoked on its own. You can use it to get an overview of all references implemented in any module in a given path. This includes:
-- Resource deployments
-- Cross-Module references
-- Remove-Module references (e.g., Bicep Registry)
-
-> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.
-
-For details on how to use the function, please refer to the script's local documentation.

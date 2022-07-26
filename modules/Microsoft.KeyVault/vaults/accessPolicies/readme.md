@@ -7,6 +7,7 @@ This module deploys key vault access policies.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -95,3 +96,7 @@ accessPolicies: [
 | `name` | string | The name of the access policies assignment. |
 | `resourceGroupName` | string | The name of the resource group the access policies assignment was created in. |
 | `resourceId` | string | The resource ID of the access policies assignment. |
+
+## Cross-referenced modules
+
+_None_

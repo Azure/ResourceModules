@@ -7,6 +7,7 @@ This module deploys an alert based on metrics.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -372,6 +373,10 @@ tags: {
 | `name` | string | The name of the metric alert. |
 | `resourceGroupName` | string | The resource group the metric alert was deployed into. |
 | `resourceId` | string | The resource ID of the metric alert. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

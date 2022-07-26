@@ -7,6 +7,7 @@ This module deploys an SQL Server Firewall rule.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -41,3 +42,7 @@ This module deploys an SQL Server Firewall rule.
 | `name` | string | The name of the deployed firewall rule. |
 | `resourceGroupName` | string | The resource group of the deployed firewall rule. |
 | `resourceId` | string | The resource ID of the deployed firewall rule. |
+
+## Cross-referenced modules
+
+_None_

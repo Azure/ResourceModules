@@ -8,6 +8,7 @@ This module controls the Network Security Group Flow Logs and analytics settings
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -87,3 +88,7 @@ tags: {
 | `name` | string | The name of the flow log. |
 | `resourceGroupName` | string | The resource group the flow log was deployed into. |
 | `resourceId` | string | The resource ID of the flow log. |
+
+## Cross-referenced modules
+
+_None_

@@ -7,6 +7,7 @@ This module deploys a virtual network gateway.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -237,6 +238,10 @@ tags: {
 | `name` | string | The name of the virtual network gateway. |
 | `resourceGroupName` | string | The resource group the virtual network gateway was deployed. |
 | `resourceId` | string | The resource ID of the virtual network gateway. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

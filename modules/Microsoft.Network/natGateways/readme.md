@@ -7,6 +7,7 @@ This module deploys a NAT gateway.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -160,6 +161,10 @@ tags: {
 | `name` | string | The name of the NAT Gateway. |
 | `resourceGroupName` | string | The resource group the NAT Gateway was deployed into. |
 | `resourceId` | string | The resource ID of the NAT Gateway. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

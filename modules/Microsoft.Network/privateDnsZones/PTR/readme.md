@@ -7,6 +7,7 @@ This module deploys a Private DNS Zone PTR record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -103,3 +104,7 @@ roleAssignments: [
 | `name` | string | The name of the deployed PTR record. |
 | `resourceGroupName` | string | The resource group of the deployed PTR record. |
 | `resourceId` | string | The resource ID of the deployed PTR record. |
+
+## Cross-referenced modules
+
+_None_

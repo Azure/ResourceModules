@@ -7,6 +7,7 @@ This template deploys a proximity placement group.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -143,6 +144,10 @@ tags: {
 | `name` | string | The name of the proximity placement group. |
 | `resourceGroupName` | string | The resource group the proximity placement group was deployed into. |
 | `resourceId` | string | The resourceId the proximity placement group. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

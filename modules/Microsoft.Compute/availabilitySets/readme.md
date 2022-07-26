@@ -7,6 +7,7 @@ This template deploys an availability set
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -146,6 +147,10 @@ tags: {
 | `name` | string | The name of the availability set. |
 | `resourceGroupName` | string | The resource group the availability set was deployed into. |
 | `resourceId` | string | The resource ID of the availability set. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

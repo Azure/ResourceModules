@@ -139,7 +139,7 @@ function Test-ModuleLocally {
     begin {
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
         $ModuleName = Split-Path (Split-Path $TemplateFilePath -Parent) -Leaf
-        Write-Verbose "Running Local Tests for $($ModuleName)"
+        Write-Verbose "Running local tests for [$ModuleName]"
         # Load Tokens Converter Scripts
         . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFile.ps1')
         # Load Modules Validation / Deployment Scripts
@@ -152,7 +152,7 @@ function Test-ModuleLocally {
         # PESTER Tests #
         ################
         if ($PesterTest) {
-            Write-Verbose "Pester Testing Module: $ModuleName"
+            Write-Verbose "Pester-test module: $ModuleName"
             try {
                 $enforcedTokenList = @{}
                 if ($ValidateOrDeployParameters.ContainsKey('subscriptionId')) {
@@ -252,7 +252,7 @@ function Test-ModuleLocally {
                 if ($ValidationTest) {
                     # Loop through test parameter files
                     foreach ($moduleTestFile in $moduleTestFiles) {
-                        Write-Verbose ('Validating Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
                         Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                     }
                 }
@@ -264,7 +264,7 @@ function Test-ModuleLocally {
                     $functionInput['retryLimit'] = 1 # Overwrite default of 3
                     # Loop through test parameter files
                     foreach ($moduleTestFile in $moduleTestFiles) {
-                        Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        Write-Verbose ('Deploy module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
                         if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
                             New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                         }
@@ -277,7 +277,7 @@ function Test-ModuleLocally {
                 # -----------------------
                 if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
                     # Replace Values with Tokens For Repo Updates
-                    Write-Verbose 'Restoring Tokens'
+                    Write-Verbose 'Restoring tokens'
                     $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
                 }
             }

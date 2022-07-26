@@ -7,6 +7,7 @@ This module deploys Network Interfaces.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -176,6 +177,10 @@ tags: {
 | `name` | string | The name of the deployed resource. |
 | `resourceGroupName` | string | The resource group of the deployed resource. |
 | `resourceId` | string | The resource ID of the deployed resource. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 
