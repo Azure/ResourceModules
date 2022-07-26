@@ -350,7 +350,7 @@ The following module usage examples are retrieved from the content of the files 
 module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-factories'
   params: {
-    name: '<<namePrefix>>-adf-001'
+    name: '<<namePrefix>>-adf-min-001'
   }
 }
 ```
@@ -368,7 +368,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>-adf-001"
+      "value": "<<namePrefix>>-adf-min-001"
     }
   }
 }
