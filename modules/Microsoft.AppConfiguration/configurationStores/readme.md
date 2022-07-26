@@ -340,13 +340,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     disableLocalAuth: false
     enablePurgeProtection: false
-    keyValues: [
-      {
-        contentType: 'contentType'
-        name: 'keyName'
-        value: 'valueName'
-      }
-    ]
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
@@ -413,15 +406,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     },
     "enablePurgeProtection": {
       "value": false
-    },
-    "keyValues": {
-      "value": [
-        {
-          "contentType": "contentType",
-          "name": "keyName",
-          "value": "valueName"
-        }
-      ]
     },
     "lock": {
       "value": "CanNotDelete"
