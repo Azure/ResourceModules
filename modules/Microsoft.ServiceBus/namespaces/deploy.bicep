@@ -240,11 +240,11 @@ module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!
   name: '${uniqueString(deployment().name, location)}-NetworkRuleSet'
   params: {
     namespaceName: serviceBusNamespace.name
-    defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
     publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) && empty(networkRuleSets) ? 'Disabled' : 'Enabled')
+    defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : 'Allow'
     trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
-    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? networkRuleSets.virtualNetworkRules : []
     ipRules: contains(networkRuleSets, 'ipRules') ? networkRuleSets.ipRules : []
+    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? networkRuleSets.virtualNetworkRules : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
