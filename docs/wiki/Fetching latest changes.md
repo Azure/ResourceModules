@@ -30,12 +30,6 @@ In addition, you'll need to manage the validation of your updated and customized
 
 We recommend to adopt module library with the CI environment in this case, to automate the import of new code and speed up the validation process.
 
-## Update procedure
-
-The update procedure depends on which scenario you adopted when onboarding CARML:
-- [**Scenario 1:** Module library only](./Fetching%20latest%20changes%20-%20Scenario%201%20Module%20library%20only). In this case we refer to the update of your copy of module templates.
-- [**Scenario 2:** Module library and CI environment](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20and%20CI%20environment). In this case we refer to the update of both your internalized library's repository and the related CI environment.
-
 ## CARML updates' impact on your copy of the library
 
 CARML updates can have different impacts on your version of the library:
@@ -45,3 +39,9 @@ CARML updates can have different impacts on your version of the library:
 - Impacts on all the modules when design changes are implemented
 
 Before to proceed with the updates it's always recommended to check the new release's highlights on the [releases](https://github.com/Azure/ResourceModules/releases) page, and the [closed pull requests](https://github.com/Azure/ResourceModules/pulls?q=is%3Apr+is%3Aclosed) to have an overview of what has been changed and the possible impact on your library.
+
+## Update procedure
+
+The update procedure depends on which scenario you adopted when onboarding CARML:
+- [**Scenario 1:** Consume library](./Fetching%20latest%20changes%20-%20Scenario%201%20Consume%20library). In this case we refer to the update of your copy of module templates.
+- [**Scenario 2:** Module library and CI environment](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20and%20CI%20environment). In this case we refer to the update of both your internalized library's repository and the related CI environment.

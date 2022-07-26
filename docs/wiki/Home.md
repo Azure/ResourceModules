@@ -19,7 +19,7 @@ If you're unfamiliar with Infrastructure as Code or wonder how you can use the c
     - [Check namePrefix availability](./Getting%20started%20-%20Check%20NamePrefix%20availability)
   - [**Scenario 3:** Contribute](./Getting%20started%20-%20Scenario%203%20Contribute)
 - [Fetching latest changes](./Fetching%20latest%20changes)
-  - [**Scenario 1:** Module library only](./Fetching%20latest%20changes%20-%20Scenario%201%20Module%20library%20only)
+  - [**Scenario 1:** Consume library only](./Fetching%20latest%20changes%20-%20Scenario%201%20Consume%20library)
   - [**Scenario 2:** Module library and CI environment](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20and%20CI%20environment)
 - [The library](./The%20library)
   - [Module overview](./The%20library%20-%20Module%20overview)

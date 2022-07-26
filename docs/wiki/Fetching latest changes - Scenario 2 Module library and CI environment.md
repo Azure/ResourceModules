@@ -1,6 +1,6 @@
 In this scenario you have onboarded both the module library and the CI environment, as described in [Getting started Scenario 2 - Onboard module library and CI environment](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment) and you would therefore need to fetch latest changes for both.
 
-Depending on the DevOps environment you are using (GitHub or Azure DevOps) the number and implementation of the required steps may vary. 
+Depending on the DevOps environment you are using (GitHub or Azure DevOps) the number and implementation of the required steps may vary.
 
 The update process is the following:
 
@@ -13,6 +13,7 @@ The update process is the following:
 - [5. Update module parameter files](#5-update-module-parameter-files)
 - [6. (Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
 - [7. Push updated code](#7-push-updated-code)
+- [8. Test and publish modules](#8-test-and-publish-modules)
 
 # 1. Sync your copy of the library
 
@@ -83,4 +84,6 @@ Follow istructions in [(Optional) Convert library to ARM](./Fetching%20latest%20
 
 Push the updated local code to your remote public fork (for GitHub public repository scenario) or on your remote target repository for GitHub private repository and Azure DevOps private git scenarios.
 
-If actions/ pipelines are enabled test and publishing of modules starts automatically.
+# 8. Test and publish modules
+
+If actions/ pipelines are enabled test and publishing of modules starts automatically. In some cases triggers for the pipelines are not enabled, in these cases start actions/pipelines to run tests and publish modules.
