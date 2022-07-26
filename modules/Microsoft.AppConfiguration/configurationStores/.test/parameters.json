@@ -62,9 +62,6 @@
         "enablePurgeProtection": {
             "value": false
         },
-        "publicNetworkAccess": {
-            "value": "Enabled"
-        },
         "softDeleteRetentionInDays": {
             "value": 1
         },
