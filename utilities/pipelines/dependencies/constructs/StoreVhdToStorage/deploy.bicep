@@ -71,8 +71,7 @@ module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deployment
     ]
     scriptContent: '''
       Write-Verbose "Retrieving parameters from previous module" -Verbose
-      $output = \'The imageTemplateName is {0}, the imageTemplateName2 is {1}.\' -f \${Env:imageTemplateName},\${Env:imageTemplateName2}
-      Write-Verbose $output -Verbose
+      Write-Verbose "The imageTemplateName is ${Env:imageTemplateName}" -Verbose
     '''
     timeout: 'PT30M'
     // userAssignedIdentities: {
