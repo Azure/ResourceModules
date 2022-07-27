@@ -70,6 +70,7 @@ module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deployment
       }
     ]
     scriptContent: '''
+      Install-Module -Name Az.ImageBuilder -Force
       Write-Verbose "Retrieving parameters from previous module" -Verbose
       Write-Verbose "The imageTemplateName is ${Env:imageTemplateName}" -Verbose
       $output = "Hello"
