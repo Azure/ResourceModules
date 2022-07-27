@@ -27,25 +27,25 @@ module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/ima
   }
 }
 
-module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-deploymentScripts'
-  params: {
-    // Required parameters
-    name: 'adp-<<namePrefix>>-az-ds-rke-001'
-    // Non-required parameters
-    azPowerShellVersion: '3.0'
-    cleanupPreference: 'Always'
-    kind: 'AzurePowerShell'
-    lock: 'CanNotDelete'
-    retentionInterval: 'P1D'
-    runOnce: false
-    scriptContent: imageTemplates.outputs.runThisCommandNew
-    timeout: 'PT30M'
-    // userAssignedIdentities: {
-    //   '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    // }
-  }
-}
+// module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+//   name: '${uniqueString(deployment().name)}-deploymentScripts'
+//   params: {
+//     // Required parameters
+//     name: 'adp-<<namePrefix>>-az-ds-rke-001'
+//     // Non-required parameters
+//     azPowerShellVersion: '3.0'
+//     cleanupPreference: 'Always'
+//     kind: 'AzurePowerShell'
+//     lock: 'CanNotDelete'
+//     retentionInterval: 'P1D'
+//     runOnce: false
+//     scriptContent: imageTemplates.outputs.runThisCommandNew
+//     timeout: 'PT30M'
+//     // userAssignedIdentities: {
+//     //   '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+//     // }
+//   }
+// }
 
 module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-deploymentScripts'
