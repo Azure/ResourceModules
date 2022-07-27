@@ -48,7 +48,7 @@ module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentS
 }
 
 module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  name: '${uniqueString(deployment().name)}-deploymentScripts2'
   params: {
     // Required parameters
     name: 'adp-<<namePrefix>>-az-ds-rke2-001'
@@ -72,7 +72,7 @@ module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deployment
     scriptContent: '''
       Write-Verbose "Retrieving parameters from previous module" -Verbose
       Write-Verbose "The imageTemplateName is ${Env:imageTemplateName}" -Verbose
-      $output = \'Hello {0}\' -f 'example'
+      $output = "Hello"
       Write-Output $output
       $DeploymentScriptOutputs = @{}
       $DeploymentScriptOutputs[\'text\'] = $output
