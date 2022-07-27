@@ -1,5 +1,5 @@
 // Image template
-module imageTemplate '../../../../../modules/Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
+module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-imageTemplates'
   params: {
     // Required parameters
@@ -24,5 +24,25 @@ module imageTemplate '../../../../../modules/Microsoft.VirtualMachineImages/imag
     unManagedImageName: 'adp-<<namePrefix>>-az-umi-x-001'
     userMsiResourceGroup: 'validation-rg'
     vmSize: 'Standard_D2s_v3'
+  }
+}
+
+module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  params: {
+    // Required parameters
+    name: 'adp-<<namePrefix>>-az-ds-rke-001'
+    // Non-required parameters
+    azPowerShellVersion: '3.0'
+    cleanupPreference: 'Always'
+    kind: 'AzurePowerShell'
+    lock: 'CanNotDelete'
+    retentionInterval: 'P1D'
+    runOnce: false
+    scriptContent: imageTemplates.outputs.runThisCommandNew
+    timeout: 'PT30M'
+    // userAssignedIdentities: {
+    //   '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    // }
   }
 }
