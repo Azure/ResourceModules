@@ -61,7 +61,7 @@ jobs:
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ env.removeDeployment }}'
 
-  job_deploy_rg:
+  job_deploy_img2:
       runs-on: ubuntu-20.04
       name: 'Deploy imageTemplate'
       # env:
@@ -74,8 +74,8 @@ jobs:
         - name: 'Deploy module'
           uses: ./.github/actions/templates/validateModuleDeployment
           with:
-            # templateFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
-            parameterFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
+            templateFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
+            # parameterFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
             location: '${{ env.location }}'
             resourceGroupName: '${{ env.defaultResourceGroupName }}'
             subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

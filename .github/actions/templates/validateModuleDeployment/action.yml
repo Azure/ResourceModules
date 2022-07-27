@@ -118,13 +118,15 @@ runs:
 
     # [Token replacement] task(s)
     # ---------------------------
-    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
+    # - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace Parameter File Tokens [${{ inputs.templateFilePath }}] '
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]"
+          # Write-Output "::group::Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]"
+          Write-Output "::group::Replace Parameter File Tokens [${{ inputs.templateFilePath }}]"
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
@@ -135,7 +137,8 @@ runs:
           # Construct Token Function Input
           $ConvertTokensInputs = @{
             Tokens       = @{}
-            FilePath     = '${{ inputs.parameterFilePath }}'
+            # FilePath     = '${{ inputs.parameterFilePath }}'
+            FilePath     = '${{ inputs.templateFilePath }}'
             TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
           }
