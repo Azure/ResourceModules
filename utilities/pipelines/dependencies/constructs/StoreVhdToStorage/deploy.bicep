@@ -51,7 +51,7 @@ module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deployment
   name: '${uniqueString(deployment().name)}-deploymentScripts2'
   params: {
     // Required parameters
-    name: 'adp-<<namePrefix>>-az-ds-rke2-001'
+    name: 'adp-<<namePrefix>>-az-ds-rke2-002'
     // Non-required parameters
     azPowerShellVersion: '3.0'
     cleanupPreference: 'Always'
