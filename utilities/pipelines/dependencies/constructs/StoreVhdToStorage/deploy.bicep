@@ -51,7 +51,7 @@ module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deployment
   name: '${uniqueString(deployment().name)}-deploymentScripts2'
   params: {
     // Required parameters
-    name: 'adp-<<namePrefix>>-az-ds-rke2-002'
+    name: 'adp-<<namePrefix>>-az-ds-rke2-004'
     // Non-required parameters
     azPowerShellVersion: '3.0'
     cleanupPreference: 'Always'
@@ -76,9 +76,9 @@ module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deployment
       $output = "Hello"
       Write-Output $output
       // Invoke-AzResourceAction -ResourceName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force
-      // $DeploymentScriptOutputs = @{}
-      // $DeploymentScriptOutputs["text"] = $output
-      Start-AzImageBuilderTemplate -ImageTemplateName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName}
+      $DeploymentScriptOutputs = @{}
+      $DeploymentScriptOutputs["text"] = $output
+      // Start-AzImageBuilderTemplate -ImageTemplateName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName}
     '''
     timeout: 'PT30M'
     // userAssignedIdentities: {
