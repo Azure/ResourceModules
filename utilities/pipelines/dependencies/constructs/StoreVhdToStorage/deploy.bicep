@@ -74,9 +74,10 @@ module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deployment
       Write-Verbose "The imageTemplateName is ${Env:imageTemplateName}" -Verbose
       $output = "Hello"
       Write-Output $output
-      Invoke-AzResourceAction -ResourceName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force
-      $DeploymentScriptOutputs = @{}
-      $DeploymentScriptOutputs["text"] = $output
+      // Invoke-AzResourceAction -ResourceName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force
+      // $DeploymentScriptOutputs = @{}
+      // $DeploymentScriptOutputs["text"] = $output
+      Start-AzImageBuilderTemplate -ImageTemplateName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName}
     '''
     timeout: 'PT30M'
     // userAssignedIdentities: {
