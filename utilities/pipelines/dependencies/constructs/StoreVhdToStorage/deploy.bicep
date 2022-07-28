@@ -32,7 +32,7 @@
 param location string = resourceGroup().location
 
 resource runPowerShellInline 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-  name: 'runPowerShellInlineOutput'
+  name: 'runPowerShellInlineOutputQuotes'
   location: location
   kind: 'AzurePowerShell'
   identity: {
