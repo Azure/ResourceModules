@@ -1,3 +1,5 @@
+var vhdName = 'adp-<<namePrefix>>-vhd-imgt-001'
+
 // Destination storage account
 module destinationStorageAccount '../../../../../modules/Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-storageAccounts'
@@ -32,7 +34,7 @@ module imageTemplate '../../../../../modules/Microsoft.VirtualMachineImages/imag
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: 'adp-<<namePrefix>>-vhd-imgt-001'
+    name: vhdName
     userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
     // Non-required parameters
     buildTimeoutInMinutes: 0
@@ -75,7 +77,7 @@ module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deplo
     // Required parameters
     name: 'adp-<<namePrefix>>-vhd-ds-copyVhdToStorage'
     // Non-required parameters
-    arguments: '-imageTemplateName \\"${imageTemplate.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\" -destinationStorageAccountName \\"${destinationStorageAccount.outputs.name}\\"'
+    arguments: '-imageTemplateName \\"${imageTemplate.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\" -destinationStorageAccountName \\"${destinationStorageAccount.outputs.name}\\" -vhdName \\${vhdName}\\'
     azPowerShellVersion: '6.4'
     cleanupPreference: 'OnSuccess'
     kind: 'AzurePowerShell'
