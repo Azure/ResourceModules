@@ -27,7 +27,7 @@ module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/ima
   }
 }
 
-param location string = resourceGroup().location
+// param location string = resourceGroup().location
 
 // resource runPowerShellInline 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
 //   name: 'runPowerShellInlineOutputQuotesImg'
@@ -71,67 +71,47 @@ param location string = resourceGroup().location
 //   }
 // }
 
-resource runPowerShellScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-  name: 'runPowerShellScriptLoadTextContent'
-  location: location
-  kind: 'AzurePowerShell'
-  identity: {
-    type: 'UserAssigned'
+// resource runPowerShellScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+//   name: 'runPowerShellScriptLoadTextContent'
+//   location: location
+//   kind: 'AzurePowerShell'
+//   identity: {
+//     type: 'UserAssigned'
+//     userAssignedIdentities: {
+//       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+//     }
+//   }
+//   properties: {
+//     forceUpdateTag: '1'
+//     azPowerShellVersion: '6.4'
+//     arguments: '-imageTemplateName \\"${imageTemplates.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplates.outputs.resourceGroupName}\\" -destinationStorageAccountName \\"testStorage\\"'
+//     scriptContent: loadTextContent('deploymentScripts/Copy-VhdToStorageAccount.ps1')
+//     supportingScriptUris: []
+//     timeout: 'PT30M'
+//     cleanupPreference: 'OnSuccess'
+//     retentionInterval: 'P1D'
+//   }
+// }
+
+module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  params: {
+    // Required parameters
+    name: 'adp-<<namePrefix>>-az-ds-rke555-001'
+    // Non-required parameters
+    arguments: '-imageTemplateName \\"${imageTemplates.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplates.outputs.resourceGroupName}\\" -destinationStorageAccountName \\"testStorage\\"'
+    azPowerShellVersion: '6.4'
+    cleanupPreference: 'OnSuccess'
+    kind: 'AzurePowerShell'
+    retentionInterval: 'P1D'
+    runOnce: false
+    scriptContent: loadTextContent('deploymentScripts/Copy-VhdToStorageAccount.ps1')
+    timeout: 'PT30M'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
-  properties: {
-    forceUpdateTag: '1'
-    azPowerShellVersion: '6.4'
-    arguments: '-imageTemplateName \\"${imageTemplates.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplates.outputs.resourceGroupName}\\" -destinationStorageAccountName \\"testStorage\\"'
-    scriptContent: loadTextContent('deploymentScripts/Copy-VhdToStorageAccount.ps1')
-    supportingScriptUris: []
-    timeout: 'PT30M'
-    cleanupPreference: 'OnSuccess'
-    retentionInterval: 'P1D'
-  }
 }
-
-// module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-//   name: '${uniqueString(deployment().name)}-deploymentScripts5'
-//   params: {
-//     // Required parameters
-//     name: 'adp-<<namePrefix>>-az-ds-rke2-005'
-//     // Non-required parameters
-//     azPowerShellVersion: '3.0'
-//     cleanupPreference: 'Always'
-//     kind: 'AzurePowerShell'
-//     lock: 'CanNotDelete'
-//     retentionInterval: 'P1D'
-//     runOnce: false
-//     environmentVariables: [
-//       {
-//         name: 'imageTemplateName'
-//         value: imageTemplates.outputs.name
-//       }
-//       {
-//         name: 'resourceGroupName'
-//         value: imageTemplates.outputs.resourceGroupName
-//       }
-//     ]
-//     scriptContent: '''
-//       Install-Module -Name Az.ImageBuilder -Force
-//       Write-Verbose "Retrieving parameters from previous module" -Verbose
-//       Write-Verbose "The imageTemplateName is ${Env:imageTemplateName}" -Verbose
-//       $output = "Hello"
-//       Write-Output $output
-//       // Invoke-AzResourceAction -ResourceName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force
-//       // $DeploymentScriptOutputs = @{}
-//       // $DeploymentScriptOutputs["text"] = $output
-//       Start-AzImageBuilderTemplate -ImageTemplateName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName}
-//     '''
-//     timeout: 'PT30M'
-//     // userAssignedIdentities: {
-//     //   '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-//     // }
-//   }
-// }
 
 // // // EXAMPLE OUTPUT
 // param name string = '\\"John Dole\\"'
