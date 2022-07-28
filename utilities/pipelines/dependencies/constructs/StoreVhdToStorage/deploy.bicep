@@ -93,11 +93,38 @@ module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/ima
 //   }
 // }
 
-module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+module deploymentScripts01 '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
     // Required parameters
-    name: 'adp-<<namePrefix>>-az-ds-rke555-001'
+    name: 'adp-<<namePrefix>>-ds-triggerImage'
+    // Non-required parameters
+    arguments: '-imageTemplateName \\"${imageTemplates.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplates.outputs.resourceGroupName}\\"'
+    azPowerShellVersion: '6.4'
+    cleanupPreference: 'OnSuccess'
+    kind: 'AzurePowerShell'
+    retentionInterval: 'P1D'
+    runOnce: false
+    scriptContent: '''
+      param(
+        [string] $imageTemplateName,
+        [string] $imageTemplateResourceGroup
+      )
+      Install-Module -Name Az.ImageBuilder -Force
+      Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
+    '''
+    timeout: 'PT30M'
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+  }
+}
+
+module deploymentScripts02 '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  params: {
+    // Required parameters
+    name: 'adp-<<namePrefix>>-ds-copyVhdToStorage'
     // Non-required parameters
     arguments: '-imageTemplateName \\"${imageTemplates.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplates.outputs.resourceGroupName}\\" -destinationStorageAccountName \\"testStorage\\"'
     azPowerShellVersion: '6.4'
@@ -111,6 +138,7 @@ module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentS
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
+  dependsOn: [ deploymentScripts01 ]
 }
 
 // // // EXAMPLE OUTPUT
