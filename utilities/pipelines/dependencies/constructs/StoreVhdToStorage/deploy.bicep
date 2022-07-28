@@ -32,18 +32,28 @@ param utcValue string = utcNow()
 param location string = resourceGroup().location
 
 resource runPowerShellInlineWithOutput 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-  name: '${uniqueString(deployment().name)}-runPowerShellInlineWithOutput'
+  name: 'runPowerShellInlineWithOutputAndEnv'
   location: location
   kind: 'AzurePowerShell'
   properties: {
     forceUpdateTag: utcValue
     azPowerShellVersion: '6.4'
+    environmentVariables: [
+      {
+        name: 'imageTemplateName'
+        value: imageTemplates.outputs.name
+      }
+      {
+        name: 'resourceGroupName'
+        value: imageTemplates.outputs.resourceGroupName
+      }
+    ]
     scriptContent: '''
       param([string] $name)
-      $output = "Hello {0}" -f $name
+      $output = \'Hello {0}. The imageTemplateName is {1}, the resourceGroupName is {2}.\' -f $name,\${Env:imageTemplateName},\${Env:resourceGroupName}
       Write-Output $output
       $DeploymentScriptOutputs = @{}
-      $DeploymentScriptOutputs["text"] = $output
+      $DeploymentScriptOutputs[\'text\'] = $output
     '''
     arguments: '-name ${name}'
     timeout: 'PT1H'
