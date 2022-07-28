@@ -77,7 +77,7 @@ module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deplo
     // Required parameters
     name: 'adp-<<namePrefix>>-vhd-ds-copyVhdToStorage'
     // Non-required parameters
-    arguments: '-imageTemplateName \\"${imageTemplate.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\" -destinationStorageAccountName \\"${destinationStorageAccount.outputs.name}\\" -vhdName \\${vhdName}\\'
+    arguments: '-imageTemplateName \\"${imageTemplate.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\" -destinationStorageAccountName \\"${destinationStorageAccount.outputs.name}\\" -vhdName \\"${vhdName}\\"'
     azPowerShellVersion: '6.4'
     cleanupPreference: 'OnSuccess'
     kind: 'AzurePowerShell'
