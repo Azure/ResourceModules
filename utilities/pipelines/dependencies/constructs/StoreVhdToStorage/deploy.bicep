@@ -32,7 +32,7 @@ module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/ima
 param location string = resourceGroup().location
 
 resource runPowerShellInline 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-  name: 'runPowerShellInline'
+  name: 'runPowerShellInlineOutput'
   location: location
   kind: 'AzurePowerShell'
   identity: {
@@ -67,7 +67,7 @@ resource runPowerShellInline 'Microsoft.Resources/deploymentScripts@2020-10-01' 
       $output = \'Hello {0}. The username is {1}, the password is {2}.\' -f $name,\${Env:UserName},\${Env:Password}
       Write-Output $output
       $DeploymentScriptOutputs = @{}
-      $DeploymentScriptOutputs[\'text\'] = $output
+      $DeploymentScriptOutputs["text"] = $output
     ''' // or primaryScriptUri: 'https://raw.githubusercontent.com/Azure/azure-docs-bicep-samples/main/samples/deployment-script/inlineScript.ps1'
     supportingScriptUris: []
     timeout: 'PT30M'
