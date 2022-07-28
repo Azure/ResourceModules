@@ -1,31 +1,31 @@
-// Image template
-module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-imageTemplates'
-  params: {
-    // Required parameters
-    customizationSteps: [
-      {
-        restartTimeout: '30m'
-        type: 'WindowsRestart'
-      }
-    ]
-    imageSource: {
-      offer: 'Windows-10'
-      publisher: 'MicrosoftWindowsDesktop'
-      sku: '19h2-evd'
-      type: 'PlatformImage'
-      version: 'latest'
-    }
-    name: 'adp-<<namePrefix>>-az-imgt-rke-001'
-    userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
-    // Non-required parameters
-    buildTimeoutInMinutes: 0
-    osDiskSizeGB: 127
-    unManagedImageName: 'adp-<<namePrefix>>-az-umi-x-001'
-    userMsiResourceGroup: 'validation-rg'
-    vmSize: 'Standard_D2s_v3'
-  }
-}
+// // Image template
+// module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
+//   name: '${uniqueString(deployment().name)}-imageTemplates'
+//   params: {
+//     // Required parameters
+//     customizationSteps: [
+//       {
+//         restartTimeout: '30m'
+//         type: 'WindowsRestart'
+//       }
+//     ]
+//     imageSource: {
+//       offer: 'Windows-10'
+//       publisher: 'MicrosoftWindowsDesktop'
+//       sku: '19h2-evd'
+//       type: 'PlatformImage'
+//       version: 'latest'
+//     }
+//     name: 'adp-<<namePrefix>>-az-imgt-rke-001'
+//     userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
+//     // Non-required parameters
+//     buildTimeoutInMinutes: 0
+//     osDiskSizeGB: 127
+//     unManagedImageName: 'adp-<<namePrefix>>-az-umi-x-001'
+//     userMsiResourceGroup: 'validation-rg'
+//     vmSize: 'Standard_D2s_v3'
+//   }
+// }
 
 // param name string = '\\"John Dole\\"'
 // param utcValue string = utcNow()
@@ -64,7 +64,9 @@ resource runPowerShellInline 'Microsoft.Resources/deploymentScripts@2020-10-01' 
     ]
     scriptContent: '''
       param([string] $name)
-      $output = \'Hello {0}. The username is {1}, the password is {2}.\' -f $name,\${Env:UserName},\${Env:Password}
+      $UserName=${Env:UserName}
+      $Password=${Env:Password}
+      $output = "Hello {0}. The username is {1}, the password is {2}." -f $name,$UserName,$Password
       Write-Output $output
       $DeploymentScriptOutputs = @{}
       $DeploymentScriptOutputs["text"] = $output
