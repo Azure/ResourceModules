@@ -66,7 +66,7 @@ resource runPowerShellInline 'Microsoft.Resources/deploymentScripts@2020-10-01' 
       param([string] $name)
       $UserName=${Env:UserName}
       $Password=${Env:Password}
-      $output = "Hello {0}. The username is {1}, the password is {2}." -f $name,$UserName,$Password
+      $output = "Hello {0}. The username is {1}, the password is {2}." -f $name, $UserName, $Password
       Write-Output $output
       $DeploymentScriptOutputs = @{}
       $DeploymentScriptOutputs["text"] = $output
