@@ -90,7 +90,7 @@ module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deplo
   dependsOn: [ triggerImageDeploymentScript ]
 }
 
-// TODO Add deployment script to cleanup
+// TODO Add deployment script to cleanup. remove deployment scripts and image templates
 
 // // // EXAMPLE OUTPUT
 // param name string = '\\"John Dole\\"'
