@@ -2,7 +2,7 @@
 module destinationStorageAccount '../../../../../modules/Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-storageAccounts'
   params: {
-    name: 'adp-<<namePrefix>>-az-sa-vhd-001'
+    name: 'adp<<namePrefix>>azsavhd001'
     allowBlobPublicAccess: false
     blobServices: {
       containers: [
@@ -32,7 +32,7 @@ module imageTemplate '../../../../../modules/Microsoft.VirtualMachineImages/imag
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: 'adp-<<namePrefix>>-az-imgt-rke-001'
+    name: 'adp-<<namePrefix>>-vhd-imgt-001'
     userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
     // Non-required parameters
     buildTimeoutInMinutes: 0
@@ -46,7 +46,7 @@ module triggerImageDeploymentScript '../../../../../modules/Microsoft.Resources/
   name: '${uniqueString(deployment().name)}-triggerImageDeploymentScript'
   params: {
     // Required parameters
-    name: 'adp-<<namePrefix>>-ds-triggerImage'
+    name: 'adp-<<namePrefix>>-vhd-ds-triggerImage'
     // Non-required parameters
     arguments: '-imageTemplateName \\"${imageTemplate.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\"'
     azPowerShellVersion: '6.4'
@@ -73,7 +73,7 @@ module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deplo
   name: '${uniqueString(deployment().name)}-copyVhdDeploymentScript'
   params: {
     // Required parameters
-    name: 'adp-<<namePrefix>>-ds-copyVhdToStorage'
+    name: 'adp-<<namePrefix>>-vhd-ds-copyVhdToStorage'
     // Non-required parameters
     arguments: '-imageTemplateName \\"${imageTemplate.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\" -destinationStorageAccountName \\"${destinationStorageAccount.outputs.name}\\"'
     azPowerShellVersion: '6.4'
