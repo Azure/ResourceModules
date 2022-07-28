@@ -66,6 +66,8 @@ resource runPowerShellInline 'Microsoft.Resources/deploymentScripts@2020-10-01' 
       param([string] $name)
       $UserName=${Env:UserName}
       $Password=${Env:Password}
+      Install-Module -Name Az.ImageBuilder -Force
+      Start-AzImageBuilderTemplate -ImageTemplateName $UserName -ResourceGroupName $Password
       $output = "Hello {0}. The username is {1}, the password is {2}." -f $name, $UserName, $Password
       Write-Output $output
       $DeploymentScriptOutputs = @{}
