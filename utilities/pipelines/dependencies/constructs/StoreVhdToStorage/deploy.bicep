@@ -94,7 +94,7 @@ module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/ima
 // }
 
 module deploymentScripts01 '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  name: '${uniqueString(deployment().name)}-deploymentScripts01'
   params: {
     // Required parameters
     name: 'adp-<<namePrefix>>-ds-triggerImage'
@@ -121,7 +121,7 @@ module deploymentScripts01 '../../../../../modules/Microsoft.Resources/deploymen
 }
 
 module deploymentScripts02 '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  name: '${uniqueString(deployment().name)}-deploymentScripts02'
   params: {
     // Required parameters
     name: 'adp-<<namePrefix>>-ds-copyVhdToStorage'
