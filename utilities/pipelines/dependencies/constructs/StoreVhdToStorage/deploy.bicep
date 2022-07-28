@@ -27,6 +27,33 @@ module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/ima
   }
 }
 
+param name string = '\\"John Dole\\"'
+param utcValue string = utcNow()
+param location string = resourceGroup().location
+
+resource runPowerShellInlineWithOutput 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+  name: '${uniqueString(deployment().name)}-runPowerShellInlineWithOutput'
+  location: location
+  kind: 'AzurePowerShell'
+  properties: {
+    forceUpdateTag: utcValue
+    azPowerShellVersion: '6.4'
+    scriptContent: '''
+      param([string] $name)
+      $output = "Hello {0}" -f $name
+      Write-Output $output
+      $DeploymentScriptOutputs = @{}
+      $DeploymentScriptOutputs["text"] = $output
+    '''
+    arguments: '-name ${name}'
+    timeout: 'PT1H'
+    cleanupPreference: 'OnSuccess'
+    retentionInterval: 'P1D'
+  }
+}
+
+output result string = runPowerShellInlineWithOutput.properties.outputs.text
+
 // module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
 //   name: '${uniqueString(deployment().name)}-deploymentScripts'
 //   params: {
@@ -47,45 +74,45 @@ module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/ima
 //   }
 // }
 
-module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-deploymentScripts5'
-  params: {
-    // Required parameters
-    name: 'adp-<<namePrefix>>-az-ds-rke2-005'
-    // Non-required parameters
-    azPowerShellVersion: '3.0'
-    cleanupPreference: 'Always'
-    kind: 'AzurePowerShell'
-    lock: 'CanNotDelete'
-    retentionInterval: 'P1D'
-    runOnce: false
-    environmentVariables: [
-      {
-        name: 'imageTemplateName'
-        value: imageTemplates.outputs.name
-      }
-      {
-        name: 'resourceGroupName'
-        value: imageTemplates.outputs.resourceGroupName
-      }
-    ]
-    scriptContent: '''
-      Install-Module -Name Az.ImageBuilder -Force
-      Write-Verbose "Retrieving parameters from previous module" -Verbose
-      Write-Verbose "The imageTemplateName is ${Env:imageTemplateName}" -Verbose
-      $output = "Hello"
-      Write-Output $output
-      // Invoke-AzResourceAction -ResourceName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force
-      // $DeploymentScriptOutputs = @{}
-      // $DeploymentScriptOutputs["text"] = $output
-      Start-AzImageBuilderTemplate -ImageTemplateName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName}
-    '''
-    timeout: 'PT30M'
-    // userAssignedIdentities: {
-    //   '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    // }
-  }
-}
+// module deploymentScripts2 '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+//   name: '${uniqueString(deployment().name)}-deploymentScripts5'
+//   params: {
+//     // Required parameters
+//     name: 'adp-<<namePrefix>>-az-ds-rke2-005'
+//     // Non-required parameters
+//     azPowerShellVersion: '3.0'
+//     cleanupPreference: 'Always'
+//     kind: 'AzurePowerShell'
+//     lock: 'CanNotDelete'
+//     retentionInterval: 'P1D'
+//     runOnce: false
+//     environmentVariables: [
+//       {
+//         name: 'imageTemplateName'
+//         value: imageTemplates.outputs.name
+//       }
+//       {
+//         name: 'resourceGroupName'
+//         value: imageTemplates.outputs.resourceGroupName
+//       }
+//     ]
+//     scriptContent: '''
+//       Install-Module -Name Az.ImageBuilder -Force
+//       Write-Verbose "Retrieving parameters from previous module" -Verbose
+//       Write-Verbose "The imageTemplateName is ${Env:imageTemplateName}" -Verbose
+//       $output = "Hello"
+//       Write-Output $output
+//       // Invoke-AzResourceAction -ResourceName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force
+//       // $DeploymentScriptOutputs = @{}
+//       // $DeploymentScriptOutputs["text"] = $output
+//       Start-AzImageBuilderTemplate -ImageTemplateName ${Env:imageTemplateName} -ResourceGroupName ${Env:resourceGroupName}
+//     '''
+//     timeout: 'PT30M'
+//     // userAssignedIdentities: {
+//     //   '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+//     // }
+//   }
+// }
 
 // Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
 //   #           $imageTemplateName = '${{ needs.job_deploy_imgt.outputs.imageTemplateName }}'
