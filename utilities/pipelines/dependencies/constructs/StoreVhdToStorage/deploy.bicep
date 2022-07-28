@@ -32,7 +32,7 @@ param utcValue string = utcNow()
 param location string = resourceGroup().location
 
 resource runPowerShellInlineWithOutput 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-  name: 'runPowerShellInlineWithOutputAndEnv'
+  name: 'runPowerShellInlineWithOutputAndEnvQuotes'
   location: location
   kind: 'AzurePowerShell'
   properties: {
@@ -50,10 +50,10 @@ resource runPowerShellInlineWithOutput 'Microsoft.Resources/deploymentScripts@20
     ]
     scriptContent: '''
       param([string] $name)
-      $output = \'Hello {0}. The imageTemplateName is {1}, the resourceGroupName is {2}.\' -f $name,\${Env:imageTemplateName},\${Env:resourceGroupName}
+      $output = "Hello {0}. The imageTemplateName is {1}, the resourceGroupName is {2}." -f $name,\${Env:imageTemplateName},\${Env:resourceGroupName}
       Write-Output $output
       $DeploymentScriptOutputs = @{}
-      $DeploymentScriptOutputs[\'text\'] = $output
+      $DeploymentScriptOutputs["text"] = $output
     '''
     arguments: '-name ${name}'
     timeout: 'PT1H'
@@ -63,6 +63,40 @@ resource runPowerShellInlineWithOutput 'Microsoft.Resources/deploymentScripts@20
 }
 
 output result string = runPowerShellInlineWithOutput.properties.outputs.text
+
+// module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+//   name: '${uniqueString(deployment().name)}-deploymentScripts'
+//   params: {
+//     // Required parameters
+//     name: 'adp-<<namePrefix>>-az-ds-inline-env-001'
+//     // Non-required parameters
+//     azPowerShellVersion: '6.4'
+//     cleanupPreference: 'Always'
+//     kind: 'AzurePowerShell'
+//     retentionInterval: 'P1D'
+//     runOnce: false
+//     environmentVariables: [
+//       {
+//         name: 'imageTemplateName'
+//         value: imageTemplates.outputs.name
+//       }
+//       {
+//         name: 'resourceGroupName'
+//         value: imageTemplates.outputs.resourceGroupName
+//       }
+//     ]
+//     scriptContent: '''
+//       $output = \'Hello. The imageTemplateName is {0}, the resourceGroupName is {1}.\' -f \${Env:imageTemplateName},\${Env:resourceGroupName}
+//       Write-Output $output
+//       $DeploymentScriptOutputs = @{}
+//       $DeploymentScriptOutputs[\'text\'] = $output
+//     '''
+//     timeout: 'PT30M'
+//     // userAssignedIdentities: {
+//     //   '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+//     // }
+//   }
+// }
 
 // module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
 //   name: '${uniqueString(deployment().name)}-deploymentScripts'
