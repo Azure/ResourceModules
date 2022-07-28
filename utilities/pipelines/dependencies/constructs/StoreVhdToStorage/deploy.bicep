@@ -27,42 +27,91 @@ module imageTemplates '../../../../../modules/Microsoft.VirtualMachineImages/ima
   }
 }
 
-param name string = '\\"John Dole\\"'
-param utcValue string = utcNow()
+// param name string = '\\"John Dole\\"'
+// param utcValue string = utcNow()
 param location string = resourceGroup().location
 
-resource runPowerShellInlineWithOutput 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-  name: 'runPowerShellInlineWithOutputAndEnvQuotes'
+resource runPowerShellInline 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+  name: 'runPowerShellInline'
   location: location
   kind: 'AzurePowerShell'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+  }
   properties: {
-    forceUpdateTag: utcValue
-    azPowerShellVersion: '6.4'
+    forceUpdateTag: '1'
+    // containerSettings: {
+    //   containerGroupName: 'mycustomaci'
+    // }
+    // storageAccountSettings: {
+    //   storageAccountName: 'myStorageAccount'
+    //   storageAccountKey: 'myKey'
+    // }
+    azPowerShellVersion: '6.4' // or azCliVersion: '2.28.0'
+    arguments: '-name \\"John Dole\\"'
     environmentVariables: [
       {
-        name: 'imageTemplateName'
-        value: imageTemplates.outputs.name
+        name: 'UserName'
+        value: 'jdole'
       }
       {
-        name: 'resourceGroupName'
-        value: imageTemplates.outputs.resourceGroupName
+        name: 'Password'
+        secureValue: 'jDolePassword'
       }
     ]
     scriptContent: '''
       param([string] $name)
-      $output = "Hello {0}. The imageTemplateName is {1}, the resourceGroupName is {2}." -f $name,\${Env:imageTemplateName},\${Env:resourceGroupName}
+      $output = \'Hello {0}. The username is {1}, the password is {2}.\' -f $name,\${Env:UserName},\${Env:Password}
       Write-Output $output
       $DeploymentScriptOutputs = @{}
-      $DeploymentScriptOutputs["text"] = $output
-    '''
-    arguments: '-name ${name}'
-    timeout: 'PT1H'
+      $DeploymentScriptOutputs[\'text\'] = $output
+    ''' // or primaryScriptUri: 'https://raw.githubusercontent.com/Azure/azure-docs-bicep-samples/main/samples/deployment-script/inlineScript.ps1'
+    supportingScriptUris: []
+    timeout: 'PT30M'
     cleanupPreference: 'OnSuccess'
     retentionInterval: 'P1D'
   }
 }
 
-output result string = runPowerShellInlineWithOutput.properties.outputs.text
+// param name string = '\\"John Dole\\"'
+// param utcValue string = utcNow()
+// param location string = resourceGroup().location
+
+// resource runPowerShellInlineWithOutput 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+//   name: 'runPowerShellInlineWithOutputAndEnvQuotes'
+//   location: location
+//   kind: 'AzurePowerShell'
+//   properties: {
+//     forceUpdateTag: utcValue
+//     azPowerShellVersion: '6.4'
+//     environmentVariables: [
+//       {
+//         name: 'imageTemplateName'
+//         value: imageTemplates.outputs.name
+//       }
+//       {
+//         name: 'resourceGroupName'
+//         value: imageTemplates.outputs.resourceGroupName
+//       }
+//     ]
+//     scriptContent: '''
+//       param([string] $name)
+//       $output = "Hello {0}. The imageTemplateName is {1}, the resourceGroupName is {2}." -f $name,\${Env:imageTemplateName},\${Env:resourceGroupName}
+//       Write-Output $output
+//       $DeploymentScriptOutputs = @{}
+//       $DeploymentScriptOutputs["text"] = $output
+//     '''
+//     arguments: '-name ${name}'
+//     timeout: 'PT1H'
+//     cleanupPreference: 'OnSuccess'
+//     retentionInterval: 'P1D'
+//   }
+// }
+
+// output result string = runPowerShellInlineWithOutput.properties.outputs.text
 
 // module deploymentScripts '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
 //   name: '${uniqueString(deployment().name)}-deploymentScripts'
