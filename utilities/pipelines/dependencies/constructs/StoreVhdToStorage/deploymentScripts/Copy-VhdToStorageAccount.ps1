@@ -40,17 +40,6 @@ function Copy-VhdToStorageAccount {
     )
 
     # [CmdletBinding(SupportsShouldProcess)]
-    # Write-Verbose 'Retrieving parameters from previous job outputs' -Verbose
-    # $imageTemplateName = '${{ needs.job_deploy_imgt.outputs.imageTemplateName }}'
-    # $imageTemplateResourceGroup = '${{ needs.job_deploy_imgt.outputs.imageTemplateResourceGroup }}'
-    # Write-Verbose 'Retrieving parameters from storage account parameter files' -Verbose
-    # $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.saNamespace }}' 'parameters' 'parameters.json'
-    # $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-    # $storageAccountParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
-    # Write-Verbose 'Retrieving parameters from image template parameter files' -Verbose
-    # $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.imgtNamespace }}' 'parameters' 'parameters.json'
-    # $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-    # $imageTemplateParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
 
     # Install required modules
     Install-Module -Name Az.ImageBuilder -Force
