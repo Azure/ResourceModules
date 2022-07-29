@@ -120,7 +120,7 @@ runs:
     # ---------------------------
     ${{ if ne(inputs.parameterFilePath, '') }}:
       - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
-    ${{ if eq(inputs.parameterFilePath, '', '') }}:
+    ${{ if eq(inputs.parameterFilePath, '') }}:
       - name: 'Replace Parameter File Tokens [${{ inputs.templateFilePath }}] '
     # - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
     # - name: 'Replace Parameter File Tokens [${{ inputs.templateFilePath }}] '
