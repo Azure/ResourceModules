@@ -35,32 +35,31 @@ env:
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
-  # job_deploy_rg:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Deploy resource group'
-  #   env:
-  #     namespace: 'Microsoft.Resources\resourceGroups'
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       parameterFilePaths:
-  #         ['validation.parameters.json', 'locks.parameters.json']
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: 'Deploy module'
-  #       uses: ./.github/actions/templates/validateModuleDeployment
-  #       with:
-  #         templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
-  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-  #         location: '${{ env.location }}'
-  #         resourceGroupName: '${{ env.defaultResourceGroupName }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  #         removeDeployment: '${{ env.removeDeployment }}'
-
+  job_deploy_rg:
+    runs-on: ubuntu-20.04
+    name: 'Deploy resource group'
+    env:
+      namespace: 'Microsoft.Resources\resourceGroups'
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths:
+          ['validation.parameters.json', 'locks.parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   # job_deploy_ppg:
   #   runs-on: ubuntu-20.04
@@ -78,7 +77,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -90,47 +88,45 @@ jobs:
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ env.removeDeployment }}'
 
-  # job_deploy_msi:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Deploy user assigned identity'
-  #   env:
-  #     namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
-  #   needs:
-  #     - job_deploy_rg
-  #   outputs:
-  #     msiPrincipalId: ${{ steps.print_msi_prinId.outputs.msiPrincipalId }}
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       parameterFilePaths: ['parameters.json']
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-
-  #     - name: 'Deploy module'
-  #       id: deploy_msi
-  #       uses: ./.github/actions/templates/validateModuleDeployment
-  #       with:
-  #         templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
-  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-  #         location: '${{ env.location }}'
-  #         resourceGroupName: '${{ env.defaultResourceGroupName }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  #         removeDeployment: '${{ env.removeDeployment }}'
-
-  #     - name: Set msi principal ID output
-  #       id: print_msi_prinId
-  #       uses: azure/powershell@v1
-  #       with:
-  #         inlineScript: |
-  #           $deploymentOutput = '${{ steps.deploy_msi.outputs.deploymentOutput }}'
-  #           $msiPrincipalId = (ConvertFrom-Json $deploymentOutput).principalId
-  #           Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
-  #           Write-Output ('::set-output name={0}::{1}' -f 'msiPrincipalId', $msiPrincipalId)
-  #         azPSVersion: 'latest'
+  job_deploy_msi:
+    runs-on: ubuntu-20.04
+    name: 'Deploy user assigned identity'
+    env:
+      namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
+    needs:
+      - job_deploy_rg
+    outputs:
+      msiPrincipalId: ${{ steps.print_msi_prinId.outputs.msiPrincipalId }}
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        id: deploy_msi
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+      - name: Set msi principal ID output
+        id: print_msi_prinId
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            $deploymentOutput = '${{ steps.deploy_msi.outputs.deploymentOutput }}'
+            $msiPrincipalId = (ConvertFrom-Json $deploymentOutput).principalId
+            Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
+            Write-Output ('::set-output name={0}::{1}' -f 'msiPrincipalId', $msiPrincipalId)
+          azPSVersion: 'latest'
 
   # job_deploy_sf:
   #   runs-on: ubuntu-20.04
@@ -148,7 +144,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -176,7 +171,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -204,7 +198,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -232,7 +225,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -266,7 +258,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -301,7 +292,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -325,7 +315,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Setup agent'
   #       shell: pwsh
   #       run: |
@@ -409,7 +398,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -442,7 +430,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       id: deploy_imgt
   #       uses: ./.github/actions/templates/validateModuleDeployment
@@ -484,7 +471,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Setup agent'
   #       shell: pwsh
   #       run: |
@@ -606,7 +592,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -634,7 +619,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -662,7 +646,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -691,7 +674,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -728,7 +710,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -759,7 +740,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -798,7 +778,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -828,7 +807,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -858,7 +836,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -888,7 +865,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -919,7 +895,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -952,7 +927,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -978,7 +952,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Setup agent'
   #       shell: pwsh
   #       run: |
@@ -1132,7 +1105,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -1158,7 +1130,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Setup agent'
   #       shell: pwsh
   #       run: |
@@ -1254,7 +1225,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -1282,7 +1252,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -1294,41 +1263,40 @@ jobs:
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ env.removeDeployment }}'
 
-  # job_deploy_rolea:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Deploy role assignments'
-  #   env:
-  #     namespace: 'Microsoft.Authorization\roleAssignments'
-  #   needs:
-  #     - job_deploy_msi
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       parameterFilePaths: ['parameters.json']
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-
-  #     - name: 'Deploy module'
-  #       uses: ./.github/actions/templates/validateModuleDeployment
-  #       with:
-  #         templateFilePath: 'modules/${{ env.namespace }}/subscription/deploy.bicep'
-  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-  #         location: '${{ env.location }}'
-  #         resourceGroupName: '${{ env.defaultResourceGroupName }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  #         removeDeployment: '${{ env.removeDeployment }}'
-  #         customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
+  job_deploy_rolea:
+    runs-on: ubuntu-20.04
+    name: 'Deploy role assignments'
+    env:
+      namespace: 'Microsoft.Authorization\roleAssignments'
+    needs:
+      - job_deploy_msi
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'modules/${{ env.namespace }}/subscription/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+          customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_vhd:
       runs-on: ubuntu-20.04
       name: 'Store VHD to Storage Account'
       if: github.event.inputs.deployVhdDependencies == 'true'
-      # needs:
-      #   - job_deploy_rolea
+      needs:
+        - job_deploy_rolea
       steps:
         - name: 'Checkout'
           uses: actions/checkout@v2
@@ -1375,7 +1343,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -1405,7 +1372,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -1487,7 +1453,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
@@ -1515,7 +1480,6 @@ jobs:
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-
   #     - name: 'Deploy module'
   #       uses: ./.github/actions/templates/validateModuleDeployment
   #       with:
