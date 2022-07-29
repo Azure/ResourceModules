@@ -47,7 +47,7 @@ begin {
     $currentVerbosePreference = $VerbosePreference
     $VerbosePreference = 'SilentlyContinue'
     $requiredModules = @(
-        'Az.Resources'
+        'Az.ImageBuilder'
     )
     foreach ($moduleName in $requiredModules) {
         if (-not ($installedModule = Get-Module $moduleName -ListAvailable)) {
