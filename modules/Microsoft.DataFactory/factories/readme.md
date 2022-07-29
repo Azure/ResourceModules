@@ -431,15 +431,6 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
         service: 'dataFactory'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
-      {
-        privateDnsZoneGroups: {
-          privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.adf.azure.com'
-          ]
-        }
-        service: 'portal'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-      }
     ]
     publicNetworkAccess: 'Disabled'
     roleAssignments: [
@@ -541,15 +532,6 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
             ]
           },
           "service": "dataFactory",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
-        },
-        {
-          "privateDnsZoneGroups": {
-            "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.adf.azure.com"
-            ]
-          },
-          "service": "portal",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
       ]
