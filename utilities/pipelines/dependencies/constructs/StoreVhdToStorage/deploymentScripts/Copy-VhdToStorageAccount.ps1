@@ -76,16 +76,15 @@ process {
     $sourceStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $sourceStorageAccountName
     $sourceStorageAccountContext = $sourceStorageAccount.Context
     $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
-    Write-Verbose ('Retrieving artifact uri {0} stored in resource group {1}' -f $sourceUri, $sourceStorageAccountRGName) -Verbose
+    Write-Verbose ('Retrieving artifact uri [{0}] stored in resource group [{1}]' -f $sourceUri, $sourceStorageAccountRGName) -Verbose
 
     Write-Verbose 'Initializing destination storage account parameters before the blob copy' -Verbose
     $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
     $destinationStorageAccountContext = $destinationStorageAccount.Context
     $destinationBlobName = "$vhdName.vhd"
-    Write-Verbose ('Planning for destination blob name {0} in container {1} and storage account {2}' -f $destinationBlobName, $destinationContainerName, $destinationStorageAccountName) -Verbose
+    Write-Verbose ('Planning for destination blob name [{0}] in container [{1}] and storage account [{2}]' -f $destinationBlobName, $destinationContainerName, $destinationStorageAccountName) -Verbose
 
     # Copying the VHD to a destination blob container
-    Write-Verbose 'Copying the VHD to a destination blob container' -Verbose
     $resourceActionInputObject = @{
         AbsoluteUri   = $sourceUri
         Context       = $sourceStorageAccountContext
@@ -99,7 +98,6 @@ process {
     if ($WaitForComplete){
         $destBlob | Get-AzStorageBlobCopyState -WaitForComplete
     }
-
 }
 
 end {
