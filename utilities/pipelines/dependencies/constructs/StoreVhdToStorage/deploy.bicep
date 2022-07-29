@@ -87,7 +87,7 @@ module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deplo
   dependsOn: [ triggerImageDeploymentScript ]
 }
 
-// Copy VHD to destination storage account
+// Remove image template
 module removeImageTemplate '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-removeImageTemplate'
   params: {
@@ -106,43 +106,3 @@ module removeImageTemplate '../../../../../modules/Microsoft.Resources/deploymen
   }
   dependsOn: [ copyVhdDeploymentScript ]
 }
-
-// TODO: cleanup - deployment scripts?
-
-// // // EXAMPLE OUTPUT
-// param name string = '\\"John Dole\\"'
-// param utcValue string = utcNow()
-// param location string = resourceGroup().location
-
-// resource runPowerShellInlineWithOutput 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-//   name: 'runPowerShellInlineWithOutputAndEnvQuotes'
-//   location: location
-//   kind: 'AzurePowerShell'
-//   properties: {
-//     forceUpdateTag: utcValue
-//     azPowerShellVersion: '6.4'
-//     environmentVariables: [
-//       {
-//         name: 'imageTemplateName'
-//         value: imageTemplates.outputs.name
-//       }
-//       {
-//         name: 'resourceGroupName'
-//         value: imageTemplates.outputs.resourceGroupName
-//       }
-//     ]
-//     scriptContent: '''
-//       param([string] $name)
-//       $output = "Hello {0}. The imageTemplateName is {1}, the resourceGroupName is {2}." -f $name,\${Env:imageTemplateName},\${Env:resourceGroupName}
-//       Write-Output $output
-//       $DeploymentScriptOutputs = @{}
-//       $DeploymentScriptOutputs["text"] = $output
-//     '''
-//     arguments: '-name ${name}'
-//     timeout: 'PT1H'
-//     cleanupPreference: 'OnSuccess'
-//     retentionInterval: 'P1D'
-//   }
-// }
-
-// output result string = runPowerShellInlineWithOutput.properties.outputs.text

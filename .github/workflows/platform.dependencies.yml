@@ -1326,6 +1326,7 @@ jobs:
   job_deploy_vhd:
       runs-on: ubuntu-20.04
       name: 'Store VHD to Storage Account'
+      if: github.event.inputs.deployVhdDependencies == 'true'
       # needs:
       #   - job_deploy_rolea
       steps:
