@@ -118,10 +118,6 @@ runs:
 
     # [Token replacement] task(s)
     # ---------------------------
-    # ${{ if ne(inputs.parameterFilePath, '') }}:
-    #   name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
-    # ${{ if eq(inputs.parameterFilePath, '') }}:
-    #   name: 'Replace Parameter File Tokens [${{ inputs.templateFilePath }}] '
     - name: 'Replace Parameter File Tokens'
       uses: azure/powershell@v1
       with:
