@@ -101,7 +101,7 @@ jobs:
           # [Agent] Replace tokens
           #-----------------------
           - task: AzurePowerShell@5
-            displayName: 'Replace Tokens [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
+            displayName: 'Replace Parameter File Tokens via connection [${{ parameters.serviceConnection }}]'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -116,9 +116,15 @@ jobs:
                 $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
 
                 # Construct Token Function Input
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
+                  $targetFile = '${{ deploymentBlock.path }}'
+                }
+                else {
+                  $targetFile = '${{ deploymentBlock.templateFilePath }}'
+                }
                 $ConvertTokensInputs = @{
                     Tokens      = @{}
-                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' '${{ deploymentBlock.path }}'
+                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '$targetFile'
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
@@ -171,12 +177,15 @@ jobs:
                 # ----------- #
                 $functionInput = @{
                   templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.templateFilePath }}'
-                  parameterFilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.path }}'
                   location             = '${{ parameters.location }}'
                   resourceGroupName    = '${{ parameters.resourceGroupName }}'
                   subscriptionId       = '${{ parameters.subscriptionId }}'
                   managementGroupId    = '${{ parameters.managementGroupId }}'
                   additionalParameters = @{}
+                }
+
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
+                  $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.path }}'
                 }
 
                 $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
@@ -211,13 +220,16 @@ jobs:
                 # ----------------- #
                 $functionInput = @{
                   templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.templateFilePath }}'
-                  parameterFilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.path }}'
                   location             = '${{ parameters.location }}'
                   resourceGroupName    = '${{ parameters.resourceGroupName }}'
                   subscriptionId       = '${{ parameters.subscriptionId }}'
                   managementGroupId    = '${{ parameters.managementGroupId }}'
                   doNotThrow           = $true
                   additionalParameters = @{}
+                }
+
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
+                  $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.path }}'
                 }
 
                 $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
