@@ -123,64 +123,64 @@ runs:
     # ${{ if eq(inputs.parameterFilePath, '') }}:
     #   name: 'Replace Parameter File Tokens [${{ inputs.templateFilePath }}] '
     - name: 'Replace Parameter File Tokens'
-        uses: azure/powershell@v1
-        with:
-          azPSVersion: 'latest'
-          inlineScript: |
-            # Grouping task logs
-            Write-Output "::group::Replace Parameter File Tokens"
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output "::group::Replace Parameter File Tokens"
 
-            # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
-            # Load Settings File
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
+          # Load Settings File
+          $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
 
-            # Construct Token Function Input
-            if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
-              $targetFile = '${{ inputs.parameterFilePath }}'
+          # Construct Token Function Input
+          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+            $targetFile = '${{ inputs.parameterFilePath }}'
+          }
+          else {
+            $targetFile = '${{ inputs.templateFilePath }}'
+          }
+
+          $ConvertTokensInputs = @{
+            Tokens       = @{}
+            FilePath     = $targetFile
+            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+          }
+
+          # Local tokens
+          $ConvertTokensInputs.Tokens += @{
+            resourceGroupName = '${{ inputs.resourceGroupName }}'
+            subscriptionId    = '${{ inputs.subscriptionId }}'
+            managementGroupId = '${{ inputs.managementGroupId }}'
+            tenantId          = '${{ env.ARM_TENANT_ID }}'
+            deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
+          }
+
+          # Add local tokens
+          if ($Settings.parameterFileTokens.localTokens) {
+            $tokenMap = @{}
+            foreach ($token in $Settings.parameterFileTokens.localTokens) {
+              $tokenMap += @{ $token.name = $token.value }
             }
-            else {
-              $targetFile = '${{ inputs.templateFilePath }}'
-            }
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens += $tokenMap
+          }
 
-            $ConvertTokensInputs = @{
-              Tokens       = @{}
-              FilePath     = $targetFile
-              TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-              TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
-            }
+          # Add custom tokens (passed in via the pipeline)
+          if(-not [String]::IsNullOrEmpty('${{  inputs.customParameterFileTokens }}')) {
+            $customTokens = '${{ inputs.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+            Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens += $customTokens
+          }
 
-            # Local tokens
-            $ConvertTokensInputs.Tokens += @{
-              resourceGroupName = '${{ inputs.resourceGroupName }}'
-              subscriptionId    = '${{ inputs.subscriptionId }}'
-              managementGroupId = '${{ inputs.managementGroupId }}'
-              tenantId          = '${{ env.ARM_TENANT_ID }}'
-              deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
-            }
+          # Invoke Token Replacement Functionality
+          $null = Convert-TokensInFile @ConvertTokensInputs
 
-            # Add local tokens
-            if ($Settings.parameterFileTokens.localTokens) {
-              $tokenMap = @{}
-              foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                $tokenMap += @{ $token.name = $token.value }
-              }
-              Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-              $ConvertTokensInputs.Tokens += $tokenMap
-            }
-
-            # Add custom tokens (passed in via the pipeline)
-            if(-not [String]::IsNullOrEmpty('${{  inputs.customParameterFileTokens }}')) {
-              $customTokens = '${{ inputs.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
-              Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
-              $ConvertTokensInputs.Tokens += $customTokens
-            }
-
-            # Invoke Token Replacement Functionality
-            $null = Convert-TokensInFile @ConvertTokensInputs
-
-            Write-Output "::endgroup::"
+          Write-Output "::endgroup::"
 
     # [Deployment validation] task(s)
     # -------------------------------
