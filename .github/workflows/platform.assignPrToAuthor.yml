@@ -1,0 +1,12 @@
+name: '.Platform: Assign Pull Request to Author'
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  autoassign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: kentaro-m/auto-assign-action@v1.2.1
+        with:
+          configuration-path: '.github/platform.assignPrToAuthor.configuration.yml'

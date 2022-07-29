@@ -18,9 +18,9 @@ Optional. The name of the resource group the deployment was happening in. Releva
 Optional. The ID of the management group to fetch deployments from. Relevant for management-group level deployments.
 
 .EXAMPLE
-Initialize-DeploymentRemoval -DeploymentName 'virtualWans-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
+Initialize-DeploymentRemoval -DeploymentName 'virtualWans-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/modules/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
 
-Remove the deployment 'virtualWans-20211204T1812029146Z' from resource group 'test-virtualWan-parameters.json-rg' that was executed using template in path "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep"
+Remove the deployment 'virtualWans-20211204T1812029146Z' from resource group 'test-virtualWan-parameters.json-rg' that was executed using template in path "$home/ResourceModules/modules/Microsoft.Network/virtualWans/deploy.bicep"
 #>
 function Initialize-DeploymentRemoval {
 
@@ -60,11 +60,13 @@ function Initialize-DeploymentRemoval {
 
         # The initial sequence is a general order-recommendation
         $removalSequence = @(
+            'Microsoft.Authorization/locks',
             'Microsoft.Insights/diagnosticSettings',
             'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
             'Microsoft.Network/privateEndpoints',
             'Microsoft.OperationsManagement/solutions',
             'Microsoft.OperationalInsights/workspaces/linkedServices',
+            'Microsoft.OperationalInsights/workspaces',
             'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )
@@ -73,17 +75,19 @@ function Initialize-DeploymentRemoval {
 
         foreach ($deploymentName in $deploymentNames) {
             Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
-            switch ($moduleName) {
-                'virtualWans' {
-                    $removalSequence += @(
-                        'Microsoft.Network/vpnGateways',
-                        'Microsoft.Network/virtualHubs',
-                        'Microsoft.Network/vpnSites'
-                    )
-                    break
-                }
-                ### CODE LOCATION: Add custom removal sequence here
-            }
+
+            ### CODE LOCATION: Add custom removal sequence here
+            ## Add custom module-specific removal sequence following the example below
+            # switch ($moduleName) {
+            #     '<moduleName01>' {                # For example: 'virtualWans', 'automationAccounts'
+            #         $removalSequence += @(
+            #             '<resourceType01>',       # For example: 'Microsoft.Network/vpnSites', 'Microsoft.OperationalInsights/workspaces/linkedServices'
+            #             '<resourceType02>',
+            #             '<resourceType03>'
+            #         )
+            #         break
+            #     }
+            # }
 
             # Invoke removal
             $inputObject = @{

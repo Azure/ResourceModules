@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-vnet-custompip-azfw"
+        },
+        "addressPrefixes": {
+            "value": [
+                "10.4.0.0/16"
+            ]
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "AzureFirewallSubnet",
+                    "addressPrefix": "10.4.4.0/24"
+                }
+            ]
+        }
+    }
+}

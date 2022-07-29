@@ -8,7 +8,6 @@ This section provides a guideline on how to use the CARML Bicep modules.
   - [PowerShell](#powershell)
   - [Azure CLI](#azure-cli)
 - [Orchestrate deployment](#orchestrate-deployment)
-  - [Template-orchestration](#template-orchestration)
 ---
 
 # Deploy template
@@ -34,14 +33,14 @@ $inputObject = @{
   ResourceGroupName     = 'ExampleGroup'
   TemplateParameterFile = 'parameters.json'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\arm\Microsoft.KeyVault\vault\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\Microsoft.KeyVault\vault\deploy.bicep"
   # Using a remote reference
-  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.KeyVault/vaults/deploy.bicep'
 }
 New-AzResourceGroupDeployment @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment).
 
 </details>
 
@@ -58,14 +57,14 @@ $inputObject = @{
   TemplateParameterFile = 'parameters.json'
   Location              = 'EastUS2'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\Microsoft.Resources\resourceGroups\deploy.bicep"
   # Using a remote reference
-  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Resources/resourceGroups/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
 }
 New-AzDeployment @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azdeployment).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azdeployment).
 
 </details>
 
@@ -83,14 +82,14 @@ $inputObject = @{
   Location              = 'EastUS2'
   TemplateParameterFile = 'parameters.json'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
   # Using a remote reference
-  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep'
 }
 New-AzManagementGroupDeployment @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azmanagementgroupdeployment).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azmanagementgroupdeployment).
 
 </details>
 
@@ -107,14 +106,14 @@ $inputObject = @{
   TemplateParameterFile = 'parameters.json'
   Location              = 'EastUS2'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\Microsoft.Subscription\aliases\deploy.bicep"
   # Using a remote reference
-  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Subscription/aliases/deploy.bicep'
 }
 New-AzTenantDeployment @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-aztenantdeployment).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-aztenantdeployment).
 
 </details>
 
@@ -134,14 +133,14 @@ $inputObject = @(
   '--resource-group', 'ExampleGroup',
   '--parameters',     '@parameters.json',
   # Using a local reference
-  '--template-file',  "$home\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep",
+  '--template-file',  "$home\ResourceModules\modules\Microsoft.Storage\storageAccounts\deploy.bicep",
   # Using a remote reference
-  # '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Storage/storageAccounts/deploy.bicep'
+  # '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Storage/storageAccounts/deploy.bicep'
 )
 az deployment group create @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest#az-deployment-group-create).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest#az-deployment-group-create).
 
 </details>
 
@@ -158,14 +157,14 @@ $inputObject = @(
   '--parameters',     '@parameters.json',
   '--location',       'EastUS2',
   # Using a local reference
-  '--template-file',  "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep"
+  '--template-file',  "$home\ResourceModules\modules\Microsoft.Resources\resourceGroups\deploy.bicep"
   # Using a remote reference
-  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Resources/resourceGroups/deploy.bicep'
+  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
 )
 az deployment sub create @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/sub?view=azure-cli-latest#az-deployment-sub-create).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/sub?view=azure-cli-latest#az-deployment-sub-create).
 
 </details>
 
@@ -183,14 +182,14 @@ $inputObject = @(
   '--location',            'EastUS2',
   '--management-group-id', 'myManagementGroup',
   # Using a local reference
-  '--template-file',       "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
+  '--template-file',       "$home\ResourceModules\modules\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
   # Using a remote reference
-  # '--template-uri',      'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep'
+  # '--template-uri',      'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep'
 )
 az deployment mg create @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/mg?view=azure-cli-latest#az-deployment-mg-create).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/mg?view=azure-cli-latest#az-deployment-mg-create).
 
 </details>
 
@@ -207,14 +206,14 @@ $inputObject = @(
   '--parameters',     '@parameters.json',
   '--location',       'EastUS2',
   # Using a local reference
-  '--template-file',  "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep"
+  '--template-file',  "$home\ResourceModules\modules\Microsoft.Subscription\aliases\deploy.bicep"
   # Using a remote reference
-  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep'
+  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Subscription/aliases/deploy.bicep'
 )
 az deployment tenant create @inputObject
 ```
 
-For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/tenant?view=azure-cli-latest#az-deployment-tenant-create).
+For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/tenant?view=azure-cli-latest#az-deployment-tenant-create).
 
 </details>
 
