@@ -124,7 +124,7 @@ jobs:
                 }
                 $ConvertTokensInputs = @{
                     Tokens      = @{}
-                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '$targetFile'
+                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' $targetFile
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
