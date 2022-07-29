@@ -61,24 +61,7 @@ jobs:
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ env.removeDeployment }}'
 
-  job_deploy_vhd:
-      runs-on: ubuntu-20.04
-      name: 'Store VHD to Storage Account'
-      steps:
-        - name: 'Checkout'
-          uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
-        - name: 'Deploy module'
-          uses: ./.github/actions/templates/validateModuleDeployment
-          with:
-            templateFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
-            # parameterFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
-            location: '${{ env.location }}'
-            resourceGroupName: '${{ env.defaultResourceGroupName }}'
-            subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-            managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-            removeDeployment: '${{ env.removeDeployment }}'
+
   # job_deploy_ppg:
   #   runs-on: ubuntu-20.04
   #   name: 'Deploy proximity placement group'
@@ -1339,6 +1322,26 @@ jobs:
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ env.removeDeployment }}'
   #         customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
+
+  job_deploy_vhd:
+      runs-on: ubuntu-20.04
+      name: 'Store VHD to Storage Account'
+      # needs:
+      #   - job_deploy_rolea
+      steps:
+        - name: 'Checkout'
+          uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
+        - name: 'Deploy module'
+          uses: ./.github/actions/templates/validateModuleDeployment
+          with:
+            templateFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
+            location: '${{ env.location }}'
+            resourceGroupName: '${{ env.defaultResourceGroupName }}'
+            subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+            managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+            removeDeployment: '${{ env.removeDeployment }}'
 
   # job_deploy_vnet:
   #   runs-on: ubuntu-20.04

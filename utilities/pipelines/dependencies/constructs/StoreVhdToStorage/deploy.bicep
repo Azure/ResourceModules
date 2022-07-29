@@ -59,10 +59,9 @@ module triggerImageDeploymentScript '../../../../../modules/Microsoft.Resources/
     kind: 'AzurePowerShell'
     retentionInterval: 'P1D'
     runOnce: false
-    scriptContent: loadTextContent('deploymentScripts/Start-AzImageBuilderTemplate.ps1')
+    scriptContent: loadTextContent('deploymentScripts/Start-ImageTemplate.ps1')
     timeout: 'PT30M'
     userAssignedIdentities: {
-      // '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       '${userMsi.id}': {}
     }
   }
@@ -88,9 +87,27 @@ module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deplo
   dependsOn: [ triggerImageDeploymentScript ]
 }
 
-// TODO: cleanup - remove image template
+// Copy VHD to destination storage account
+module removeImageTemplate '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-removeImageTemplate'
+  params: {
+    name: 'adp-<<namePrefix>>-vhd-ds-removeImageTemplate'
+    arguments: '-ImageTemplateName \\"${imageTemplate.outputs.name}\\" -ImageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\"'
+    azPowerShellVersion: '6.4'
+    cleanupPreference: 'OnSuccess'
+    kind: 'AzurePowerShell'
+    retentionInterval: 'P1D'
+    runOnce: false
+    scriptContent: loadTextContent('deploymentScripts/Remove-ImageTemplate.ps1')
+    timeout: 'PT30M'
+    userAssignedIdentities: {
+      '${userMsi.id}': {}
+    }
+  }
+  dependsOn: [ copyVhdDeploymentScript ]
+}
 
-// TODO Add deployment script to cleanup. remove deployment scripts and image templates
+// TODO: cleanup - deployment scripts?
 
 // // // EXAMPLE OUTPUT
 // param name string = '\\"John Dole\\"'

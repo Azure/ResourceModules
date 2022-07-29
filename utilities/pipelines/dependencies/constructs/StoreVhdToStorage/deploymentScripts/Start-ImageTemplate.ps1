@@ -60,8 +60,7 @@ begin {
 }
 
 process {
-    # Creating artifacts from existing image template
-    Write-Verbose 'Creating artifacts from a image template $imageTemplateName in $imageTemplateResourceGroup' -Verbose
+    # Create artifacts from existing image template
     $resourceActionInputObject = @{
         ImageTemplateName   = $imageTemplateName
         ResourceGroupName   = $imageTemplateResourceGroup
@@ -69,12 +68,12 @@ process {
     if ($NoWait) {
         $resourceActionInputObject['NoWait'] = $true
     }
-
-    Start-AzImageBuilderTemplate @resourceActionInputObject
-
+    if ($PSCmdlet.ShouldProcess('Image template [{0}]' -f $imageTemplateName, 'Start')) {
+        $null = Start-AzImageBuilderTemplate @resourceActionInputObject
+        Write-Verbose ('Create artifacts from image template {0} in resource group {1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose
+    }
 }
 
 end {
     Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
 }
-
