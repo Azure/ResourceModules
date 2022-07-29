@@ -119,9 +119,9 @@ runs:
     # [Token replacement] task(s)
     # ---------------------------
     ${{ if ne(inputs.parameterFilePath, '') }}:
-      - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
+      name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
     ${{ if eq(inputs.parameterFilePath, '') }}:
-      - name: 'Replace Parameter File Tokens [${{ inputs.templateFilePath }}] '
+      name: 'Replace Parameter File Tokens [${{ inputs.templateFilePath }}] '
     # - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
     # - name: 'Replace Parameter File Tokens [${{ inputs.templateFilePath }}] '
         uses: azure/powershell@v1
@@ -129,6 +129,7 @@ runs:
           azPSVersion: 'latest'
           inlineScript: |
             # Grouping task logs
+
             Write-Output "::group::Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]"
             # Write-Output "::group::Replace Parameter File Tokens [${{ inputs.templateFilePath }}]"
 
