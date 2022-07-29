@@ -1,6 +1,12 @@
 var vhdName = 'adp-<<namePrefix>>-vhd-imgt-001'
+var userMsiName = 'adp-<<namePrefix>>-az-msi-x-001'
 
-// Destination storage account
+// Retrieve existing MSI
+resource userMsi 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
+  name: userMsiName
+}
+
+// Deploy destination storage account
 module destinationStorageAccount '../../../../../modules/Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-storageAccounts'
   params: {
@@ -16,11 +22,10 @@ module destinationStorageAccount '../../../../../modules/Microsoft.Storage/stora
   }
 }
 
-// Image template
+// Deploy image template
 module imageTemplate '../../../../../modules/Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-imageTemplates'
   params: {
-    // Required parameters
     customizationSteps: [
       {
         restartTimeout: '30m'
@@ -35,8 +40,7 @@ module imageTemplate '../../../../../modules/Microsoft.VirtualMachineImages/imag
       version: 'latest'
     }
     name: vhdName
-    userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
-    // Non-required parameters
+    userMsiName: userMsi.name
     buildTimeoutInMinutes: 0
     osDiskSizeGB: 127
     unManagedImageName: 'adp-<<namePrefix>>-az-umi-x-001'
@@ -44,12 +48,11 @@ module imageTemplate '../../../../../modules/Microsoft.VirtualMachineImages/imag
   }
 }
 
+// Trigger VHD creation
 module triggerImageDeploymentScript '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-triggerImageDeploymentScript'
   params: {
-    // Required parameters
     name: 'adp-<<namePrefix>>-vhd-ds-triggerImage'
-    // Non-required parameters
     arguments: '-imageTemplateName \\"${imageTemplate.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\"'
     azPowerShellVersion: '6.4'
     cleanupPreference: 'OnSuccess'
@@ -57,28 +60,20 @@ module triggerImageDeploymentScript '../../../../../modules/Microsoft.Resources/
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: loadTextContent('deploymentScripts/Start-AzImageBuilderTemplate.ps1')
-    // scriptContent: '''
-    //   param(
-    //     [string] $imageTemplateName,
-    //     [string] $imageTemplateResourceGroup
-    //   )
-    //   Install-Module -Name Az.ImageBuilder -Force
-    //   Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
-    // '''
     timeout: 'PT30M'
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      // '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '${userMsi.id}': {}
     }
   }
 }
 
+// Copy VHD to destination storage account
 module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-copyVhdDeploymentScript'
   params: {
-    // Required parameters
     name: 'adp-<<namePrefix>>-vhd-ds-copyVhdToStorage'
-    // Non-required parameters
-    arguments: '-imageTemplateName \\"${imageTemplate.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\" -destinationStorageAccountName \\"${destinationStorageAccount.outputs.name}\\" -vhdName \\"${vhdName}\\"'
+    arguments: '-ImageTemplateName \\"${imageTemplate.outputs.name}\\" -ImageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\" -DestinationStorageAccountName \\"${destinationStorageAccount.outputs.name}\\" -VhdName \\"${vhdName}\\" -WaitForComplete'
     azPowerShellVersion: '6.4'
     cleanupPreference: 'OnSuccess'
     kind: 'AzurePowerShell'
@@ -87,11 +82,13 @@ module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deplo
     scriptContent: loadTextContent('deploymentScripts/Copy-VhdToStorageAccount.ps1')
     timeout: 'PT30M'
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '${userMsi.id}': {}
     }
   }
   dependsOn: [ triggerImageDeploymentScript ]
 }
+
+// TODO: cleanup - remove image template
 
 // TODO Add deployment script to cleanup. remove deployment scripts and image templates
 

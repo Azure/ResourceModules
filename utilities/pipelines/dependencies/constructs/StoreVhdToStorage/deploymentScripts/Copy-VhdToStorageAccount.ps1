@@ -5,16 +5,16 @@
     .DESCRIPTION
     Copy a VHD baked from a given image template to a given destination storage account blob container
 
-    .PARAMETER imageTemplateName
+    .PARAMETER ImageTemplateName
     Mandatory. The name of the image template
 
-    .PARAMETER imageTemplateResourceGroup
+    .PARAMETER ImageTemplateResourceGroup
     Mandatory. The resource group name of the image template
 
-    .PARAMETER destinationStorageAccountName
+    .PARAMETER DestinationStorageAccountName
     Mandatory. The name of the destination storage account
 
-    .PARAMETER destinationContainerName
+    .PARAMETER DestinationContainerName
     Optional. The name of the existing destination blob container
 
     .EXAMPLE
@@ -26,19 +26,22 @@
 [CmdletBinding(SupportsShouldProcess)]
 param (
     [Parameter(Mandatory = $true)]
-    [string] $imageTemplateName,
+    [string] $ImageTemplateName,
 
     [Parameter(Mandatory = $true)]
-    [string] $imageTemplateResourceGroup,
+    [string] $ImageTemplateResourceGroup,
 
     [Parameter(Mandatory = $true)]
-    [string] $destinationStorageAccountName,
+    [string] $DestinationStorageAccountName,
 
     [Parameter(Mandatory = $false)]
-    [string] $destinationContainerName = 'vhds',
+    [string] $DestinationContainerName = 'vhds',
 
     [Parameter(Mandatory = $false)]
-    [string] $vhdName = $imageTemplateName
+    [string] $VhdName = $ImageTemplateName,
+
+    [Parameter(Mandatory = $false)]
+    [switch] $WaitForComplete
 )
 
 begin {
@@ -92,7 +95,12 @@ process {
         DestContainer = $destinationContainerName
         Force         = $true
     }
-    Start-AzStorageBlobCopy @resourceActionInputObject
+    $destBlob = Start-AzStorageBlobCopy @resourceActionInputObject
+
+    if ($WaitForComplete){
+        $destBlob | Get-AzStorageBlobCopyState -WaitForComplete
+    }
+
 }
 
 end {
