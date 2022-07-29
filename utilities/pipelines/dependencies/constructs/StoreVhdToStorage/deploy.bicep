@@ -56,14 +56,15 @@ module triggerImageDeploymentScript '../../../../../modules/Microsoft.Resources/
     kind: 'AzurePowerShell'
     retentionInterval: 'P1D'
     runOnce: false
-    scriptContent: '''
-      param(
-        [string] $imageTemplateName,
-        [string] $imageTemplateResourceGroup
-      )
-      Install-Module -Name Az.ImageBuilder -Force
-      Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
-    '''
+    scriptContent: loadTextContent('deploymentScripts/Start-AzImageBuilderTemplate.ps1')
+    // scriptContent: '''
+    //   param(
+    //     [string] $imageTemplateName,
+    //     [string] $imageTemplateResourceGroup
+    //   )
+    //   Install-Module -Name Az.ImageBuilder -Force
+    //   Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
+    // '''
     timeout: 'PT30M'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
