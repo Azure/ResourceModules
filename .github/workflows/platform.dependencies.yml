@@ -73,7 +73,7 @@ jobs:
           uses: ./.github/actions/templates/validateModuleDeployment
           with:
             templateFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
-            parameterFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
+            # parameterFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
             location: '${{ env.location }}'
             resourceGroupName: '${{ env.defaultResourceGroupName }}'
             subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
