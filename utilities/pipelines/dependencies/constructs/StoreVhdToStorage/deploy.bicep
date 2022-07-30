@@ -1,4 +1,4 @@
-var vhdName = 'adp-<<namePrefix>>-vhd-imgt-001'
+var vhdName = 'adp-<<namePrefix>>-az-imgt-vhd-001'
 var userMsiName = 'adp-<<namePrefix>>-az-msi-x-001'
 
 // Retrieve existing MSI
@@ -52,7 +52,7 @@ module imageTemplate '../../../../../modules/Microsoft.VirtualMachineImages/imag
 module triggerImageDeploymentScript '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-triggerImageDeploymentScript'
   params: {
-    name: 'adp-<<namePrefix>>-vhd-ds-triggerImage'
+    name: 'adp-<<namePrefix>>-az-ds-vhd-triggerImageTemplate'
     arguments: '-imageTemplateName \\"${imageTemplate.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\"'
     azPowerShellVersion: '6.4'
     cleanupPreference: 'OnSuccess'
@@ -71,7 +71,7 @@ module triggerImageDeploymentScript '../../../../../modules/Microsoft.Resources/
 module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-copyVhdDeploymentScript'
   params: {
-    name: 'adp-<<namePrefix>>-vhd-ds-copyVhdToStorage'
+    name: 'adp-<<namePrefix>>-az-ds-vhd-copyVhdToStorage'
     arguments: '-ImageTemplateName \\"${imageTemplate.outputs.name}\\" -ImageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\" -DestinationStorageAccountName \\"${destinationStorageAccount.outputs.name}\\" -VhdName \\"${vhdName}\\" -WaitForComplete'
     azPowerShellVersion: '6.4'
     cleanupPreference: 'OnSuccess'
@@ -91,7 +91,7 @@ module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deplo
 module removeImageTemplate '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-removeImageTemplate'
   params: {
-    name: 'adp-<<namePrefix>>-vhd-ds-removeImageTemplate'
+    name: 'adp-<<namePrefix>>-az-ds-vhd-removeImageTemplate'
     arguments: '-ImageTemplateName \\"${imageTemplate.outputs.name}\\" -ImageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\"'
     azPowerShellVersion: '6.4'
     cleanupPreference: 'OnSuccess'
