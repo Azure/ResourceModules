@@ -1,31 +1,28 @@
 <#
-.SYNOPSIS
-Remove the image templates and their temporary generated resource groups
+    .SYNOPSIS
+    Delete a virtual machine image template
 
-.DESCRIPTION
-Remove the image templates and their temporary generated resource groups
+    .DESCRIPTION
+    Delete a virtual machine image template and its temporary generated resource group
 
-.PARAMETER resourcegroupName
-Required. The resource group name the image template is deployed into
+    .PARAMETER ImageTemplateName
+    Mandatory. The name of the image template
 
-.PARAMETER imageTemplateName
-Optional. The name of the image template. Defaults to '*'.
+    .PARAMETER ImageTemplateResourceGroup
+    Mandatory. The resource group name of the image template
 
-.PARAMETER Confirm
-Request the user to confirm whether to actually execute any should process
+    .PARAMETER NoWait
+    Optional. Run the command asynchronously
 
-.PARAMETER WhatIf
-Perform a dry run of the script. Runs everything but the content of any should process
+    .EXAMPLE
+    Remove-ImageTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg'
 
-.EXAMPLE
-Remove-ImageTemplate -resourcegroupName 'My-RG'
+    Delete the image template 'vhd-img-template-001-2022-07-29-15-54-01' from resource group 'validation-rg' and wait for its completion
 
-Search and remove the image template '*' and its generated resource group 'IT_My-RG_*'
+    .EXAMPLE
+    Remove-ImageTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -NoWait
 
-.EXAMPLE
-Remove-ImageTemplate -resourcegroupName 'My-RG' -imageTemplateName '19h2NoOffice'
-
-Search and remove the image template '19h2NoOffice' and its generated resource group 'IT_My-RG_19h2NoOffice*'
+    Start the deletion of the image template 'vhd-img-template-001-2022-07-29-15-54-01' from resource group 'validation-rg' and do not wait for its completion
 #>
 
 [CmdletBinding(SupportsShouldProcess)]

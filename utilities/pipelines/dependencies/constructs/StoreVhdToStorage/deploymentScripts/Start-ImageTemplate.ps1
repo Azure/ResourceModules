@@ -15,14 +15,14 @@
     Optional. Run the command asynchronously
 
     .EXAMPLE
-    Start-AzImageBuilderTemplate -ImageTemplateName '' -ImageTemplateResourceGroup ''
+    Start-AzImageBuilderTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg'
 
-    Create artifacts from a given image template and wait for its completion
+    Create artifacts from image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' and wait for their completion
 
     .EXAMPLE
-    Start-AzImageBuilderTemplate -ImageTemplateName '' -ImageTemplateResourceGroup '' -NoWait
+    Start-AzImageBuilderTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -NoWait
 
-    Start the creation of artifacts from a given image template and do not wait for its completion
+    Start the creation of artifacts from image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' and do not wait for their completion
 #>
 
 [CmdletBinding(SupportsShouldProcess)]
