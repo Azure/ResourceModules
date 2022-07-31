@@ -1,4 +1,4 @@
-@description('Required. Name of the Network Watcher resource (hidden).')
+@description('Optional. Name of the Network Watcher resource (hidden).')
 @minLength(1)
 param name string = 'NetworkWatcher_${location}'
 
@@ -42,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkWatcher 'Microsoft.Network/networkWatchers@2021-05-01' = {
+resource networkWatcher 'Microsoft.Network/networkWatchers@2021-08-01' = {
   name: name
   location: location
   tags: tags
