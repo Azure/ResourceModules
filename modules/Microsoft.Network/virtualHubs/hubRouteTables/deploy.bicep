@@ -29,7 +29,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-08-01' existing = {
   name: virtualHubName
 }
 
-resource hubRouteTable 'Microsoft.Network/virtualHubs/hubRouteTables@2021-05-01' = {
+resource hubRouteTable 'Microsoft.Network/virtualHubs/hubRouteTables@2021-08-01' = {
   name: name
   parent: virtualHub
   properties: {

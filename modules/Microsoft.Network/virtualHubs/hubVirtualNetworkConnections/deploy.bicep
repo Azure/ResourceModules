@@ -32,7 +32,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-08-01' existing = {
   name: virtualHubName
 }
 
-resource hubVirtualNetworkConnection 'Microsoft.Network/virtualHubs/hubVirtualNetworkConnections@2021-05-01' = {
+resource hubVirtualNetworkConnection 'Microsoft.Network/virtualHubs/hubVirtualNetworkConnections@2021-08-01' = {
   name: name
   parent: virtualHub
   properties: {
