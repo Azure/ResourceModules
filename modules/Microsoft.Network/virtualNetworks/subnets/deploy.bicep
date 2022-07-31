@@ -72,7 +72,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-08-01' existing 
   name: virtualNetworkName
 }
 
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' = {
   name: name
   parent: virtualNetwork
   properties: {
