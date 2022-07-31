@@ -53,7 +53,7 @@ module triggerImageDeploymentScript '../../../../../modules/Microsoft.Resources/
   name: '${uniqueString(deployment().name)}-triggerImageDeploymentScript'
   params: {
     name: 'adp-<<namePrefix>>-az-ds-vhd-triggerImageTemplate'
-    arguments: '-imageTemplateName \\"${imageTemplate.outputs.name}\\" -imageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\"'
+    arguments: '-ImageTemplateName \\"${imageTemplate.outputs.name}\\" -ImageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\"'
     azPowerShellVersion: '6.4'
     cleanupPreference: 'OnSuccess'
     kind: 'AzurePowerShell'
