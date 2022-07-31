@@ -12,7 +12,7 @@ This template deploys Virtual Network Peering.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/virtualNetworkPeerings) |
+| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/virtualNetworkPeerings) |
 
 ### Resource dependency
 
