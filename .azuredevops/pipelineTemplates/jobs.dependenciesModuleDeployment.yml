@@ -101,7 +101,7 @@ jobs:
           # [Agent] Replace tokens
           #-----------------------
           - task: AzurePowerShell@5
-            displayName: 'Replace Parameter File Tokens via connection [${{ parameters.serviceConnection }}]'
+            displayName: 'Replace tokens in target file via connection [${{ parameters.serviceConnection }}]'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}

@@ -118,13 +118,13 @@ runs:
 
     # [Token replacement] task(s)
     # ---------------------------
-    - name: 'Replace Parameter File Tokens'
+    - name: 'Replace tokens in target file'
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Replace Parameter File Tokens"
+          Write-Output "::group::Replace tokens in target file"
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
