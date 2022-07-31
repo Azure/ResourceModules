@@ -37,7 +37,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource ipGroup 'Microsoft.Network/ipGroups@2021-05-01' = {
+resource ipGroup 'Microsoft.Network/ipGroups@2021-08-01' = {
   name: name
   location: location
   tags: tags
