@@ -58,7 +58,7 @@ jobs:
           modulePath: '${{ env.modulePath }}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-      moduleTestFilePaths: ${{ stepsget-module-test-file-pathss.outputs.moduleTestFilePaths }}
+      moduleTestFilePaths: ${{ steps.get-module-test-file-pathss.outputs.moduleTestFilePaths }}
 
   #########################
   #   Static validation   #
