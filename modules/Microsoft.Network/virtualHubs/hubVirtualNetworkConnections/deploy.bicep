@@ -28,7 +28,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' existing = {
+resource virtualHub 'Microsoft.Network/virtualHubs@2021-08-01' existing = {
   name: virtualHubName
 }
 
