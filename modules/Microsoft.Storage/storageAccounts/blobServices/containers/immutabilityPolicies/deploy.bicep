@@ -38,13 +38,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
   resource blobServices 'blobServices@2021-09-01' existing = {
     name: blobServicesName
 
-    resource container 'containers@2019-06-01' existing = {
+    resource container 'containers@2021-09-01' existing = {
       name: containerName
     }
   }
 }
 
-resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2019-06-01' = {
+resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2021-09-01' = {
   name: name
   parent: storageAccount::blobServices::container
   properties: {

@@ -47,7 +47,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
   name: storageAccountName
 
-  resource fileService 'fileServices@2021-04-01' existing = {
+  resource fileService 'fileServices@2021-09-01' existing = {
     name: fileServicesName
   }
 }
