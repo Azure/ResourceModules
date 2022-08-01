@@ -44,7 +44,7 @@ variables:
 
   vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
   poolName: '' # Use this for self-hosted agents
-  serviceConnection: 'graefio'
+  serviceConnection: 'graef.io'
 
   ######################################
   # Source
