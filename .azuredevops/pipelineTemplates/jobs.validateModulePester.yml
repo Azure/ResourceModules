@@ -91,7 +91,7 @@ jobs:
         displayName: 'Setup agent'
         inputs:
           targetType: inline
-          pwsh: true
+          pwsh: false
           script: |
             Invoke-Expression "& { $(Invoke-RestMethod 'https://aka.ms/install-powershell.ps1') } –useMSI -EnablePSRemoting -Quiet"
             # Load used functions
