@@ -85,27 +85,6 @@ jobs:
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
                 path: 's/${{ checkoutRepository }}'
 
-      # [Agent] Prepare environment
-      #----------------------------
-      - task: PowerShell@2
-        displayName: 'Setup agent'
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Load used functions
-            . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-            # Define PS modules to install on the runner
-            $Modules = @(
-                # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
-                # @{ Name = 'Pester'; Version = '5.3.1' }
-                @{ Name = 'Az.Resources' }
-            )
-
-            # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
-
       # [Multi Repo] Support task
       #--------------------------
       - task: PowerShell@2
@@ -126,6 +105,27 @@ jobs:
             }
             Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
             Write-Output "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
+
+      # [Agent] Prepare environment
+      #----------------------------
+      - task: PowerShell@2
+        displayName: 'Setup agent'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+            # Define PS modules to install on the runner
+            $Modules = @(
+                # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
+                # @{ Name = 'Pester'; Version = '5.3.1' }
+                @{ Name = 'Az.Resources' }
+            )
+
+            # Set agent up
+            Set-EnvironmentOnAgent -PSModules $Modules
 
       # [Module Pester Test] task(s)
       #-----------------------------
