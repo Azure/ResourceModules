@@ -85,27 +85,6 @@ jobs:
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
                 path: 's/${{ checkoutRepository }}'
 
-      # [Multi Repo] Support task
-      #--------------------------
-      - task: PowerShell@2
-        displayName: Handle Multi-Repo Invocation
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
-              Write-Verbose "Multi-Repo Checkout" -Verbose
-              $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
-              $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
-            } else {
-              Write-Verbose "No Multi-Repo Checkout" -Verbose
-              $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
-              $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
-            }
-            Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-            Write-Output "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
-
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
@@ -126,6 +105,27 @@ jobs:
 
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
+
+      # [Multi Repo] Support task
+      #--------------------------
+      - task: PowerShell@2
+        displayName: Handle Multi-Repo Invocation
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Handle multiple-repositories
+            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
+              Write-Verbose "Multi-Repo Checkout" -Verbose
+              $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
+              $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
+            } else {
+              Write-Verbose "No Multi-Repo Checkout" -Verbose
+              $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
+              $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
+            }
+            Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+            Write-Output "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
 
       # [Module Pester Test] task(s)
       #-----------------------------
