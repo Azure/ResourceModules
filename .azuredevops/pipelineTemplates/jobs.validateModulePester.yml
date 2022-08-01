@@ -91,7 +91,7 @@ jobs:
         displayName: Handle Multi-Repo Invocation
         inputs:
           targetType: inline
-          pwsh: true
+          pwsh: false
           script: |
             # Handle multiple-repositories
             if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
@@ -112,7 +112,7 @@ jobs:
         displayName: 'Setup agent'
         inputs:
           targetType: inline
-          pwsh: true
+          pwsh: false
           script: |
             # Load used functions
             . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -136,7 +136,7 @@ jobs:
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
           preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
           ScriptType: InlineScript
-          pwsh: true
+          pwsh: false
           inline: |
             # Set repo root path
             $repoRootPath = '$(moduleRepoRoot)'
