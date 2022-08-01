@@ -93,6 +93,7 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
+            Invoke-Expression "& { $(Invoke-RestMethod 'https://aka.ms/install-powershell.ps1') } –useMSI -EnablePSRemoting -Quiet"
             # Load used functions
             . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
