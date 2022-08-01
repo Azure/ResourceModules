@@ -726,6 +726,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           action: 'Allow'
           id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
         }
+        {
+          action: 'Allow'
+          id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002'
+        }
       ]
     }
     privateEndpoints: [
@@ -927,6 +931,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           {
             "action": "Allow",
             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+          },
+          {
+            "action": "Allow",
+            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
           }
         ]
       }
