@@ -42,7 +42,7 @@ variables:
   # Agent settings
   ######################################
 
-  vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
+  vmImage: '' # Use this for Microsoft-hosted agents
   poolName: 'Default' # Use this for self-hosted agents
   serviceConnection: 'graef.io'
 
