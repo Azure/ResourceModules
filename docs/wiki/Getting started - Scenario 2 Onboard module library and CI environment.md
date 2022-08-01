@@ -30,7 +30,7 @@ In this first step, make sure you
 
 ```
 az ad sp create-for-rbac --name '<spName>' --role contributor --scopes /subscriptions/<subscriptionID>
-az role assignment create --assignee '<appId> or <objectID>' --role 'User Access Administrator'
+az role assignment create --assignee '<appId> or <objectID>' --role 'User Access Administrator' --scope 'subscriptions/<subscriptionID>'
 ```
 
 # 2. Fork/clone the repository into your DevOps environment
