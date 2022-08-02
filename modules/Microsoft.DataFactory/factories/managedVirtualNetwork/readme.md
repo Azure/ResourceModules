@@ -31,7 +31,7 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `managedPrivateEndpoints` | _[managedPrivateEndpoints](managedPrivateEndpoints/readme.md)_ array | `[]` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `managedPrivateEndpoints` | _[managedPrivateEndpoints](managedPrivateEndpoints/readme.md)_ array | `[]` | An array of managed private endpoints objects created in the Data Factory managed virtual network. |
 
 
 ### Parameter Usage: `managedPrivateEndpoints`

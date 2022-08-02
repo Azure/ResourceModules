@@ -4,11 +4,13 @@ param dataFactoryName string
 @description('Required. The name of the Managed Virtual Network.')
 param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. An array of managed private endpoints objects created in the Data Factory managed virtual network.')
 param managedPrivateEndpoints array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -41,7 +43,7 @@ module managedVirtualNetwork_managedPrivateEndpoint 'managedPrivateEndpoints/dep
     fqdns: managedPrivateEndpoint.fqdns
     groupId: managedPrivateEndpoint.groupId
     privateLinkResourceId: managedPrivateEndpoint.privateLinkResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

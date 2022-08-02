@@ -54,7 +54,7 @@
 | `integrationRuntime` | _[integrationRuntime](integrationRuntime/readme.md)_ object | `{object}` |  | The object for the configuration of a Integration Runtime. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `managedPrivateEndpoints` | array | `[]` |  | Configuration Details for managed private endpoints in the managed virtual network. |
+| `managedPrivateEndpoints` | array | `[]` |  | An array of managed private endpoints objects created in the Data Factory managed virtual network. |
 | `managedVirtualNetworkName` | string | `''` |  | The name of the Managed Virtual Network. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |

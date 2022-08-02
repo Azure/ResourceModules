@@ -4,7 +4,7 @@ param name string
 @description('Optional. The name of the Managed Virtual Network.')
 param managedVirtualNetworkName string = ''
 
-@description('Optional. Configuration Details for managed private endpoints in the managed virtual network.')
+@description('Optional. An array of managed private endpoints objects created in the Data Factory managed virtual network.')
 param managedPrivateEndpoints array = []
 
 @description('Optional. The object for the configuration of a Integration Runtime.')
