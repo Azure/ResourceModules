@@ -1,4 +1,4 @@
-The `'Get-LinkedModuleList'` function helps you with discovering cross-modules dependencies. It checks for any module references in a given path. This can be useful to determine which modules' folder you'd need to keep in case you'd only want to cherry-pick certain modules from the library.
+The `'Get-LinkedModuleList'` function helps you with discovering cross-modules references. It checks for any module references in a given path. This can be useful to determine which modules' folder you'd need to keep in case you'd only want to cherry-pick certain modules from the library.
 
 ---
 
@@ -37,7 +37,7 @@ For details on how to use the function, please refer to the script's local docum
 ## Example output
 
 ```PowerShell
-VERBOSE: The modules in path [ResourceModules\modules] have the following local folder dependencies:
+VERBOSE: The modules in path [ResourceModules\modules] have the following local folder references:
 VERBOSE:
 VERBOSE: Resource: Microsoft.ApiManagement/service
 VERBOSE: - Microsoft.ApiManagement/authorizationServers

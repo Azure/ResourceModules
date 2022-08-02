@@ -446,7 +446,7 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ('list of excess template outputs defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Dependencies section should contain all dependencies defined in the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Dependencies section should contain all cross-references defined in the template file' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
