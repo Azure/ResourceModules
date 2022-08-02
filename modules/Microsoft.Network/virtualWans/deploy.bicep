@@ -49,7 +49,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
+resource virtualWan 'Microsoft.Network/virtualWans@2021-08-01' = {
   name: name
   location: location
   tags: tags
