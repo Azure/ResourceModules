@@ -107,7 +107,7 @@ jobs:
       # ------------------- #
       ##  Deploy & Remove  ##
       # ------------------- #
-      - name: 'Using parameter file [${{ matrix.moduleTestFilePaths }}]'
+      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'

@@ -135,7 +135,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 // PUBLIC IP
 // =========
-resource publicIP 'Microsoft.Network/publicIPAddresses@2021-05-01' = if (natGatewayPublicIpAddress) {
+resource publicIP 'Microsoft.Network/publicIPAddresses@2021-08-01' = if (natGatewayPublicIpAddress) {
   name: natGatewayPipName_var
   location: location
   tags: tags
@@ -173,7 +173,7 @@ resource publicIP_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
 
 // NAT GATEWAY
 // ===========
-resource natGateway 'Microsoft.Network/natGateways@2021-05-01' = {
+resource natGateway 'Microsoft.Network/natGateways@2021-08-01' = {
   name: name
   location: location
   tags: tags
