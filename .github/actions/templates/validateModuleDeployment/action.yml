@@ -204,7 +204,7 @@ runs:
           }
 
           if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
-            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
             $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
           } else {
             $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
@@ -240,7 +240,7 @@ runs:
             # Handle test template parameters
             # -------------------------------
             if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-              $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
+              $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable).parameters.Keys
             } else {
               $testTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
             }
@@ -300,7 +300,7 @@ runs:
           }
 
           if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
-            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
             $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
           } else {
             $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
@@ -336,7 +336,7 @@ runs:
             # Handle test template parameters
             # -------------------------------
             if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-              $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
+              $testTemplatePossibleParameters = (az bicep build --file $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable).parameters.Keys
             } else {
               $testTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
             }
