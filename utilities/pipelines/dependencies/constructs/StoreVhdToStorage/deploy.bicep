@@ -1,4 +1,3 @@
-var vhdName = 'adp-<<namePrefix>>-az-imgt-vhd-001'
 var userMsiName = 'adp-<<namePrefix>>-az-msi-x-001'
 
 // Retrieve existing MSI
@@ -39,7 +38,7 @@ module imageTemplate '../../../../../modules/Microsoft.VirtualMachineImages/imag
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: vhdName
+    name: 'adp-<<namePrefix>>-az-imgt-vhd-001'
     userMsiName: userMsi.name
     buildTimeoutInMinutes: 0
     osDiskSizeGB: 127
@@ -72,7 +71,7 @@ module copyVhdDeploymentScript '../../../../../modules/Microsoft.Resources/deplo
   name: '${uniqueString(deployment().name)}-copyVhdDeploymentScript'
   params: {
     name: 'adp-<<namePrefix>>-az-ds-vhd-copyVhdToStorage'
-    arguments: '-ImageTemplateName \\"${imageTemplate.outputs.name}\\" -ImageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\" -DestinationStorageAccountName \\"${destinationStorageAccount.outputs.name}\\" -VhdName \\"${vhdName}\\" -WaitForComplete'
+    arguments: '-ImageTemplateName \\"${imageTemplate.outputs.name}\\" -ImageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\" -DestinationStorageAccountName \\"${destinationStorageAccount.outputs.name}\\" -VhdName \\"${imageTemplate.outputs.namePrefix}\\" -WaitForComplete'
     azPowerShellVersion: '6.4'
     cleanupPreference: 'OnSuccess'
     kind: 'AzurePowerShell'
