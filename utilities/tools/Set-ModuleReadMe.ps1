@@ -303,7 +303,28 @@ function Set-OutputsSection {
     return $updatedFileContent
 }
 
-function Set-DependenciesSection {
+<#
+.SYNOPSIS
+Add module references (cross-references) to the module's readme
+
+.DESCRIPTION
+Add module references (cross-references) to the module's readme. This includes both local (i.e., file path), as well as remote references (e.g., ACR)
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.PARAMETER ReadMeFileContent
+Mandatory. The readme file content array to update
+
+.PARAMETER SectionStartIdentifier
+Optional. The identifier of the 'outputs' section. Defaults to '## Cross-referenced modules'
+
+.EXAMPLE
+Set-ReferencesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+
+Update the given readme file's 'Cross-referenced modules' section based on the given template file content
+#>
+function Set-ReferencesSection {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
@@ -326,7 +347,7 @@ function Set-DependenciesSection {
     $SectionContent = [System.Collections.ArrayList]@(
         'This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).',
         '',
-        '| Dependency | Type |',
+        '| Reference | Type |',
         '| :-- | :-- |'
     )
 
@@ -921,7 +942,7 @@ function Set-ModuleReadMe {
             ReadMeFileContent   = $readMeFileContent
             TemplateFileContent = $templateFileContent
         }
-        $readMeFileContent = Set-DependenciesSection @inputObject
+        $readMeFileContent = Set-ReferencesSection @inputObject
     }
 
     if ($SectionsToRefresh -contains 'Deployment examples') {
