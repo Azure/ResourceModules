@@ -71,7 +71,7 @@ The following resources are required to be able to deploy this resource.
 | `extensionDependencyAgentConfig` | object | `{object}` |  | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinConfig` | object | `{object}` |  | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionDomainJoinPassword` | secureString | `''` |  | Required if domainName is specified. Password of the user specified in domainJoinUser parameter. |
+| `extensionDomainJoinPassword` | secureString | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
 | `extensionDSCConfig` | object | `{object}` |  | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionMonitoringAgentConfig` | object | `{object}` |  | The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionNetworkWatcherAgentConfig` | object | `{object}` |  | The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -387,11 +387,11 @@ nicConfigurations: [
   "value": {
     "enabled": true,
     "settings": {
-      "domainName": "contoso.com",
-      "domainJoinUser": "test.user@testcompany.com",
-      "domainJoinOU": "OU=testOU; DC=contoso; DC=com",
-      "domainJoinRestart": true,
-      "domainJoinOptions": 3
+      "name": "contoso.com",
+      "user": "test.user@testcompany.com",
+      "ouPath": "OU=testOU; DC=contoso; DC=com",
+      "restart": true,
+      "options": 3
     }
   }
 },
@@ -413,11 +413,11 @@ nicConfigurations: [
 extensionDomainJoinConfig: {
     enabled: true
     settings: {
-      domainName: 'contoso.com'
-      domainJoinUser: 'test.user@testcompany.com'
-      domainJoinOU: 'OU=testOU; DC=contoso; DC=com'
-      domainJoinRestart: true
-      domainJoinOptions: 3
+      name: 'contoso.com'
+      user: 'test.user@testcompany.com'
+      ouPath: 'OU=testOU; DC=contoso; DC=com'
+      restart: true
+      options: 3
     }
 }
 

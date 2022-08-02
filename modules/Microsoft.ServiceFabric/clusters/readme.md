@@ -22,12 +22,10 @@ This module deploys a Service Fabric Cluster.
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `managementEndpoint` | string |  | The http management endpoint of the cluster. |
-| `maxUnusedVersionsToKeep` | int | `3` | Number of unused versions per application type to keep. |
-| `name` | string | `''` | Name of the Service Fabric cluster. |
-| `nodeTypes` | array | `[]` | The list of node types in the cluster. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `managementEndpoint` | string | The http management endpoint of the cluster. |
+| `name` | string | Name of the Service Fabric cluster. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -47,6 +45,8 @@ This module deploys a Service Fabric Cluster.
 | `infrastructureServiceManager` | bool | `False` |  | Indicates if infrastructure service manager is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `maxUnusedVersionsToKeep` | int | `3` |  | Number of unused versions per application type to keep. |
+| `nodeTypes` | array | `[]` |  | The list of node types in the cluster. |
 | `notifications` | array | `[]` |  | Indicates a list of notification channels for cluster events. |
 | `reliabilityLevel` | string |  | `[Bronze, Gold, None, Platinum, Silver]` | The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
 | `reverseProxyCertificate` | object | `{object}` |  | Describes the certificate details. |
@@ -249,13 +249,13 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080'
+    name: '<<namePrefix>>-az-sfc-cert-001'
     reliabilityLevel: 'None'
     // Non-required parameters
     certificate: {
       thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
       x509StoreName: 'My'
     }
-    name: '<<namePrefix>>-az-sfc-cert-001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -293,6 +293,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     "managementEndpoint": {
       "value": "https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080"
     },
+    "name": {
+      "value": "<<namePrefix>>-az-sfc-cert-001"
+    },
     "reliabilityLevel": {
       "value": "None"
     },
@@ -302,9 +305,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
         "x509StoreName": "My"
       }
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-sfc-cert-001"
     },
     "nodeTypes": {
       "value": [
@@ -344,6 +344,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
+    name: '<<namePrefix>>-az-sfc-full-001'
     reliabilityLevel: 'Silver'
     // Non-required parameters
     addOnFeatures: [
@@ -422,7 +423,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     ]
     lock: 'CanNotDelete'
     maxUnusedVersionsToKeep: 2
-    name: '<<namePrefix>>-az-sfc-full-001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -528,6 +528,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     "managementEndpoint": {
       "value": "https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080"
     },
+    "name": {
+      "value": "<<namePrefix>>-az-sfc-full-001"
+    },
     "reliabilityLevel": {
       "value": "Silver"
     },
@@ -627,9 +630,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "maxUnusedVersionsToKeep": {
       "value": 2
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-sfc-full-001"
     },
     "nodeTypes": {
       "value": [
@@ -747,9 +747,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080'
+    name: '<<namePrefix>>-az-sfc-min-001'
     reliabilityLevel: 'None'
     // Non-required parameters
-    name: '<<namePrefix>>-az-sfc-min-001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -787,13 +787,13 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     "managementEndpoint": {
       "value": "https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080"
     },
+    "name": {
+      "value": "<<namePrefix>>-az-sfc-min-001"
+    },
     "reliabilityLevel": {
       "value": "None"
     },
     // Non-required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-sfc-min-001"
-    },
     "nodeTypes": {
       "value": [
         {

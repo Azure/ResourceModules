@@ -14,7 +14,7 @@ param userAssignedIdentities object = {}
   'Free'
   'Standard'
 ])
-@description('Required. Pricing tier of App Configuration.')
+@description('Optional. Pricing tier of App Configuration.')
 param sku string = 'Standard'
 
 @allowed([
