@@ -51,6 +51,20 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Locks Resource Group
 
+  - ${{ if eq( parameters.deployVhdDependencies, true) }}:
+    - stage: deploy_vhd
+      displayName: Store VHD to Storage Account
+      dependsOn:
+        - deploy_rg
+      variables:
+        templateFilePath: $(dependencyPath)/constructs/StoreVhdToStorage/deploy.bicep
+      jobs:
+        - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
+          parameters:
+            deploymentBlocks:
+              - templateFilePath: $(templateFilePath)
+                displayName: Deploy module
+
   - stage: deploy_ppg
     displayName: Deploy proximity placement group
     dependsOn:
@@ -304,20 +318,6 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default SIG and SID
-
-  - ${{ if eq( parameters.deployVhdDependencies, true) }}:
-    - stage: deploy_vhd
-      displayName: Store VHD to Storage Account
-      dependsOn:
-        - deploy_rolea
-      variables:
-        templateFilePath: $(dependencyPath)/constructs/StoreVhdToStorage/deploy.bicep
-      jobs:
-        - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
-          parameters:
-            deploymentBlocks:
-              - templateFilePath: $(templateFilePath)
-                displayName: Deploy module
 
   - stage: deploy_ag
     displayName: Deploy action groups
