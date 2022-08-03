@@ -13,7 +13,7 @@ variables:
   # Validation deployment settings
   ######################################
 
-  location: 'Australia East' # The default location to test deploy resources to
+  location: 'West Europe' # The default location to test deploy resources to
   resourceGroupName: 'validation-rg' # The default resource group to test deployment resources into
 
   ######################################
@@ -22,7 +22,7 @@ variables:
 
   templateSpecsDoPublish: true # Set to true, if you would like to publish module templates as template specs
   templateSpecsRGName: 'artifacts-rg' # The name of the resource group to publish to. If the resource group does not exist, it will be created.
-  templateSpecsRGLocation: 'Australia East' # The location of the resource group to publish to
+  templateSpecsRGLocation: 'West Europe' # The location of the resource group to publish to
   templateSpecsDescription: components # The description to add to template specs published by this platform
 
   ######################################
@@ -30,9 +30,9 @@ variables:
   ######################################
 
   bicepRegistryDoPublish: true # Set to true, if you would like to publish module templates to a bicep registry
-  bicepRegistryName: adpsxxazacrx009 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
+  bicepRegistryName: adpsxxazacrx001 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
   bicepRegistryRGName: 'artifacts-rg' # The resource group that hosts the private bicep registry (ACR)
-  bicepRegistryRgLocation: 'Australia East' # The location of the resource group to publish to
+  bicepRegistryRgLocation: 'West Europe' # The location of the resource group to publish to
 
   ###########################################################################################################################
   ################################################## Azure DevOps Only ######################################################
@@ -42,9 +42,9 @@ variables:
   # Agent settings
   ######################################
 
-  vmImage: '' # Use this for Microsoft-hosted agents
-  poolName: 'Default' # Use this for self-hosted agents
-  serviceConnection: 'graef.io'
+  vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
+  poolName: '' # Use this for self-hosted agents
+  serviceConnection: 'CARML-CSU-Tenant-Connection'
 
   ######################################
   # Source
