@@ -67,7 +67,7 @@ module imageTemplate '../../../../../modules/Microsoft.VirtualMachineImages/imag
       version: 'latest'
     }
     name: 'adp-<<namePrefix>>-az-imgt-vhd-001'
-    userMsiName: userMsi.name
+    userMsiName: userMsi.outputs.name
     buildTimeoutInMinutes: 0
     osDiskSizeGB: 127
     unManagedImageName: 'adp-<<namePrefix>>-az-umi-x-001'
