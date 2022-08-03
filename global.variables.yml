@@ -83,4 +83,3 @@ variables:
 #     value: 'OtherVersion'
 #   - name: preferredAzurePowerShellVersion
 #     value: '4.4.0'
-#
