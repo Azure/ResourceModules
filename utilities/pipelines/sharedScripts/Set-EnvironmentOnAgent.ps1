@@ -127,18 +127,6 @@ function Set-EnvironmentOnAgent {
         [Hashtable[]] $PSModules = @()
     )
 
-    ################################
-    ##   Install PowerShell Core  ##
-    ################################
-
-    # Write-Verbose ('Install PowerShell Core') -Verbose
-    # Invoke-Expression "& { $(Invoke-RestMethod 'https://aka.ms/install-powershell.ps1') } –useMSI -EnablePSRemoting -Quiet"
-    # Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    # choco install pwsh -fy
-    ## Restart Service (self-hosted vsts agents need to be restarted after PowerShell Setup to get the PATH env vars in)
-    # Get-Service -Name vsts* | Stop-Service
-    # Get-Service -Name vsts* | Start-Service
-
     ###########################
     ##   Install Azure CLI   ##
     ###########################
