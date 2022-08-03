@@ -4,14 +4,22 @@ param name string
 @description('Optional. The name of the Managed Virtual Network.')
 param managedVirtualNetworkName string = ''
 
+@description('Optional. An array of managed private endpoints objects created in the Data Factory managed virtual network.')
+param managedPrivateEndpoints array = []
+
 @description('Optional. The object for the configuration of a Integration Runtime.')
 param integrationRuntime object = {}
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Enable or disable public network access.')
-param publicNetworkAccess bool = true
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = ''
 
 @description('Optional. Boolean to define whether or not to configure git during template deployment.')
 param gitConfigureLater bool = true
@@ -64,6 +72,21 @@ param systemAssignedIdentity bool = false
 
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
+
+@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
+
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
+
+@description('Optional. User assigned identity to use when fetching the customer managed key.')
+param cMKUserAssignedIdentityResourceId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -137,6 +160,11 @@ var identity = identityType != 'None' ? {
 
 var enableReferencedModulesTelemetry = false
 
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -155,8 +183,24 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   tags: tags
   identity: identity
   properties: {
-    repoConfiguration: bool(gitConfigureLater) ? null : json('{"type": "${gitRepoType}","accountName": "${gitAccountName}","repositoryName": "${gitRepositoryName}",${((gitRepoType == 'FactoryVSTSConfiguration') ? '"projectName": "${gitProjectName}",' : '')}"collaborationBranch": "${gitCollaborationBranch}","rootFolder": "${gitRootFolder}"}')
-    publicNetworkAccess: bool(publicNetworkAccess) ? 'Enabled' : 'Disabled'
+    repoConfiguration: bool(gitConfigureLater) ? null : union({
+        type: gitRepoType
+        accountName: gitAccountName
+        repositoryName: gitRepositoryName
+        collaborationBranch: gitCollaborationBranch
+        rootFolder: gitRootFolder
+      }, (gitRepoType == 'FactoryVSTSConfiguration' ? {
+        projectName: gitProjectName
+      } : {}), {})
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    encryption: !empty(cMKKeyName) ? {
+      identity: {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      }
+      keyName: cMKKeyName
+      keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
+      vaultBaseUrl: cMKKeyVault.properties.vaultUri
+    } : null
   }
 }
 
@@ -165,6 +209,7 @@ module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = 
   params: {
     name: managedVirtualNetworkName
     dataFactoryName: dataFactory.name
+    managedPrivateEndpoints: managedPrivateEndpoints
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -214,6 +259,26 @@ module dataFactory_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for 
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: dataFactory.id
+  }
+}]
+
+module dataFactory_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-DataFactory-PrivateEndpoint-${index}'
+  params: {
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(dataFactory.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: dataFactory.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
 

@@ -30,13 +30,13 @@ This module deploys a deployment script.
 | `arguments` | string | `''` |  | Command-line arguments to pass to the script. Arguments are separated by spaces. |
 | `azCliVersion` | string | `''` |  | Azure CLI module version to be used. |
 | `azPowerShellVersion` | string | `'3.0'` |  | Azure PowerShell module version to be used. |
-| `cleanupPreference` | string | `'Always'` | `[Always, OnSuccess, OnExpiration]` | The clean up preference when the script execution gets in a terminal state. Specify the preference on when to delete the deployment script resources. The default value is Always, which means the deployment script resources are deleted despite the terminal state (Succeeded, Failed, canceled). |
+| `cleanupPreference` | string | `'Always'` | `[Always, OnExpiration, OnSuccess]` | The clean up preference when the script execution gets in a terminal state. Specify the preference on when to delete the deployment script resources. The default value is Always, which means the deployment script resources are deleted despite the terminal state (Succeeded, Failed, canceled). |
 | `containerGroupName` | string | `''` |  | Container group name, if not specified then the name will get auto-generated. Not specifying a 'containerGroupName' indicates the system to generate a unique name which might end up flagging an Azure Policy as non-compliant. Use 'containerGroupName' when you have an Azure Policy that expects a specific naming convention or when you want to fully control the name. 'containerGroupName' property must be between 1 and 63 characters long, must contain only lowercase letters, numbers, and dashes and it cannot start or end with a dash and consecutive dashes are not allowed. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `environmentVariables` | array | `[]` |  | The environment variables to pass over to the script. Must have a 'name' and a 'value' or a 'secretValue' property. |
-| `kind` | string | `'AzurePowerShell'` | `[AzurePowerShell, AzureCLI]` | Type of the script. AzurePowerShell, AzureCLI. |
+| `kind` | string | `'AzurePowerShell'` | `[AzureCLI, AzurePowerShell]` | Type of the script. AzurePowerShell, AzureCLI. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `primaryScriptUri` | string | `''` |  | Uri for the external script. This is the entry point for the external script. To run an internal script, use the scriptContent instead. |
 | `retentionInterval` | string | `'P1D'` |  | Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week). |
 | `runOnce` | bool | `False` |  | When set to false, script will run every time the template is deployed. When set to true, the script will only run once. |
@@ -141,51 +141,11 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ds-cli-001"
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "kind": {
-            "value": "AzureCLI"
-        },
-        "azCliVersion": {
-            "value": "2.15.0"
-        },
-        "scriptContent": {
-            "value": "echo \"Hello from inside the script\""
-        },
-        "retentionInterval": {
-            "value": "P1D"
-        },
-        "runOnce": {
-            "value": false
-        },
-        "cleanupPreference": {
-            "value": "Always"
-        },
-        "timeout": {
-            "value": "PT30M"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Cli</h3>
 
 <details>
 
@@ -195,17 +155,19 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-ds-cli-001'
+    // Non-required parameters
+    azCliVersion: '2.15.0'
+    cleanupPreference: 'Always'
+    kind: 'AzureCLI'
+    retentionInterval: 'P1D'
+    runOnce: false
+    scriptContent: 'echo \'Hello from inside the script\''
+    timeout: 'PT30M'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
-    kind: 'AzureCLI'
-    azCliVersion: '2.15.0'
-    scriptContent: 'echo \'Hello from inside the script\''
-    retentionInterval: 'P1D'
-    runOnce: false
-    cleanupPreference: 'Always'
-    timeout: 'PT30M'
   }
 }
 ```
@@ -213,54 +175,54 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ds-ps-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "userAssignedIdentities": {
-            "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-            }
-        },
-        "kind": {
-            "value": "AzurePowerShell"
-        },
-        "azPowerShellVersion": {
-            "value": "3.0"
-        },
-        "scriptContent": {
-            "value": "Write-Host 'Running PowerShell from template'"
-        },
-        "retentionInterval": {
-            "value": "P1D"
-        },
-        "runOnce": {
-            "value": false
-        },
-        "cleanupPreference": {
-            "value": "Always"
-        },
-        "timeout": {
-            "value": "PT30M"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-ds-cli-001"
+    },
+    // Non-required parameters
+    "azCliVersion": {
+      "value": "2.15.0"
+    },
+    "cleanupPreference": {
+      "value": "Always"
+    },
+    "kind": {
+      "value": "AzureCLI"
+    },
+    "retentionInterval": {
+      "value": "P1D"
+    },
+    "runOnce": {
+      "value": false
+    },
+    "scriptContent": {
+      "value": "echo \"Hello from inside the script\""
+    },
+    "timeout": {
+      "value": "PT30M"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Ps</h3>
 
 <details>
 
@@ -270,18 +232,70 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-ds-ps-001'
+    // Non-required parameters
+    azPowerShellVersion: '3.0'
+    cleanupPreference: 'Always'
+    kind: 'AzurePowerShell'
     lock: 'CanNotDelete'
+    retentionInterval: 'P1D'
+    runOnce: false
+    scriptContent: 'Write-Host 'Running PowerShell from template''
+    timeout: 'PT30M'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
-    kind: 'AzurePowerShell'
-    azPowerShellVersion: '3.0'
-    scriptContent: 'Write-Host 'Running PowerShell from template''
-    retentionInterval: 'P1D'
-    runOnce: false
-    cleanupPreference: 'Always'
-    timeout: 'PT30M'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-ds-ps-001"
+    },
+    // Non-required parameters
+    "azPowerShellVersion": {
+      "value": "3.0"
+    },
+    "cleanupPreference": {
+      "value": "Always"
+    },
+    "kind": {
+      "value": "AzurePowerShell"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "retentionInterval": {
+      "value": "P1D"
+    },
+    "runOnce": {
+      "value": false
+    },
+    "scriptContent": {
+      "value": "Write-Host 'Running PowerShell from template'"
+    },
+    "timeout": {
+      "value": "PT30M"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
+    }
   }
 }
 ```

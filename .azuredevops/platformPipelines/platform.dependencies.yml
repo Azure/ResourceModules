@@ -20,7 +20,7 @@ trigger: none
 #       - main
 #   paths:
 #     include:
-#       - '.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml'
+#       - '.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml'
 #       - '.azuredevops/platformPipelines/platform.dependencies.yml'
 #       - 'utilities/pipelines/dependencies/**'
 
@@ -41,7 +41,7 @@ stages:
       resourceType: 'Microsoft.Resources/resourceGroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
@@ -59,7 +59,7 @@ stages:
       resourceType: 'Microsoft.Compute/proximityPlacementGroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -74,7 +74,7 @@ stages:
       resourceType: 'Microsoft.ManagedIdentity/userAssignedIdentities'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -112,7 +112,7 @@ stages:
       resourceType: 'Microsoft.Web/serverfarms'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -127,7 +127,7 @@ stages:
       resourceType: 'Microsoft.Web/sites'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -142,7 +142,7 @@ stages:
       resourceType: 'Microsoft.Authorization/policyAssignments'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/mg.parameters.json
@@ -160,7 +160,7 @@ stages:
       resourceType: 'Microsoft.EventHub/namespaces'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -175,7 +175,7 @@ stages:
       resourceType: 'Microsoft.OperationalInsights/workspaces'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -196,7 +196,7 @@ stages:
       resourceType: 'Microsoft.Storage/storageAccounts'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -209,6 +209,12 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: FunctionApp storage account
+            - path: $(dependencyPath)/$(resourceType)/parameters/synapse01.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Synapse storage account without network ACLs
+            - path: $(dependencyPath)/$(resourceType)/parameters/synapse02.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Synapse storage account with network ACLs
       - job:
         displayName: Upload files to storage account
         dependsOn:
@@ -292,7 +298,7 @@ stages:
       resourceType: 'Microsoft.Compute/galleries'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -311,7 +317,7 @@ stages:
           saResourceType: 'Microsoft.Storage\storageAccounts'
           templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
         jobs:
-          - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+          - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
             parameters:
               deploymentBlocks:
                 - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -445,7 +451,7 @@ stages:
       resourceType: 'Microsoft.Insights/actionGroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -460,7 +466,7 @@ stages:
       resourceType: 'Microsoft.Network/applicationSecurityGroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -475,7 +481,7 @@ stages:
       resourceType: 'Microsoft.Network/routeTables'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -496,7 +502,7 @@ stages:
       resourceType: 'Microsoft.Network/networkSecurityGroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -529,7 +535,7 @@ stages:
       resourceType: 'Microsoft.Network\publicIPAddresses'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
@@ -553,6 +559,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/bas.additional.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Additional Public IP
+
   - stage: deploy_appi
     displayName: Deploy application insight
     dependsOn:
@@ -563,7 +570,7 @@ stages:
       resourceType: 'Microsoft.Insights/components'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -580,7 +587,7 @@ stages:
       resourceType: 'Microsoft.Automation/automationAccounts'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -597,7 +604,7 @@ stages:
       resourceType: 'Microsoft.DesktopVirtualization/hostpools'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -616,7 +623,7 @@ stages:
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -636,7 +643,7 @@ stages:
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -881,6 +888,21 @@ stages:
                   azurePowerShellVersion: 'LatestVersion'
                   pwsh: true
 
+  - stage: deploy_des
+    displayName: Deploy Disk Encryption Set
+    dependsOn:
+      - deploy_kv
+    variables:
+      resourceType: 'Microsoft.Compute/diskEncryptionSets'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Application Group
+
   - stage: deploy_avdag
     displayName: Deploy AVD application group
     dependsOn:
@@ -889,7 +911,7 @@ stages:
       resourceType: 'Microsoft.DesktopVirtualization/applicationgroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -905,7 +927,7 @@ stages:
       templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -923,7 +945,7 @@ stages:
       resourceType: 'Microsoft.Network/virtualNetworks'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -979,12 +1001,78 @@ stages:
       resourceType: 'Microsoft.Network/privateDnsZones'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/automation.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Private DNS Zones
+              displayName: Automation Account Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/azconfig.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: App Configuration Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/azurecr.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: ACR Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/azureml.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Machine Learning Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/azurestaticapps.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Static Apps Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/azuresynapse.plh.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Synapse Private Link Hub Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/azuresynapse.workspace.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Synapse Workspace Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/azurewebsites.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Web Sites Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/batch.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Batch Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/blob.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Storage Blob Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/cognitiveservices.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Cognitive Services Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/database.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Database Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/datafactory.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Data Factory Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/eventgrid.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Event Grid Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/file.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Storage Files Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/monitor.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Monitoring Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/queue.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Storage Queue Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/redis.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Redis Cache Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/servicebus.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Service Bus Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/siterecovery.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Recovery Services Vault Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/table.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Storage Table Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/vaultcore.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Key Vault Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/webpubsub.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Web PubSub Private DNS Zone
 
   - stage: deploy_vm
     displayName: Deploy virtual machines
@@ -996,7 +1084,7 @@ stages:
       resourceType: 'Microsoft.Compute/virtualMachines'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -1011,7 +1099,7 @@ stages:
       resourceType: 'Microsoft.Network/loadBalancers'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/internal.parameters.json

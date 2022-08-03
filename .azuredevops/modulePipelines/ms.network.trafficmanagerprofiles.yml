@@ -22,8 +22,9 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.network.trafficmanagerprofiles.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Network/trafficmanagerprofiles/*'
-      - '/modules/.global/global.module.tests.ps1'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
@@ -33,22 +34,7 @@ variables:
     value: '/modules/Microsoft.Network/trafficmanagerprofiles'
 
 stages:
-  - stage: Validation
-    displayName: Static validation
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
-
-  - stage: Deployment
-    displayName: Deployment validation
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
-
-  - stage: Publishing
-    displayName: Publishing
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+  - template: /.azuredevops/pipelineTemplates/stages.module.yml
+    parameters:
+      removeDeployment: '${{ parameters.removeDeployment }}'
+      prerelease: '${{ parameters.prerelease }}'

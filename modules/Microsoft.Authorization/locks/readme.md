@@ -42,31 +42,11 @@ This module deploys Authorization Locks.
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "level": {
-            "value": "CanNotDelete"
-        },
-        "resourceGroupName": {
-            "value": "adp-<<namePrefix>>-az-locks-rg-001"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Rg</h3>
 
 <details>
 
@@ -76,9 +56,38 @@ This module deploys Authorization Locks.
 module locks './Microsoft.Authorization/locks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-locks'
   params: {
+    // Required parameters
     level: 'CanNotDelete'
+    // Non-required parameters
     resourceGroupName: 'adp-<<namePrefix>>-az-locks-rg-001'
     subscriptionId: '<<subscriptionId>>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "level": {
+      "value": "CanNotDelete"
+    },
+    // Non-required parameters
+    "resourceGroupName": {
+      "value": "adp-<<namePrefix>>-az-locks-rg-001"
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
+    }
   }
 }
 ```

@@ -32,7 +32,7 @@ The purpose of each module pipeline is twofold:
 1. **Validation**: To ensure the modules hosted by the CARML library are valid and can perform the intended deployments.
 1. **Publishing**: To publish _versioned_ and already validated modules to one or multiple target locations, from where they can be referenced by solutions consuming them.
 
-As such, each pipeline can be mapped to `Phases 1 and 2` described in the [Deployment flow](./The%20context%20-%20CARML%20CI%20environment.md#deployment-flow) section.
+As such, each pipeline can be mapped to `Phases 1 and 2` described in the [Deployment flow](./The%20context%20-%20CARML%20CI%20environment#deployment-flow) section.
 
 <img src="./media/CIEnvironment/pipelineDesign.png" alt="Pipeline phases" height="500">
 
@@ -84,7 +84,7 @@ Technical documentation for each composite action, such as required input and ou
 <img src="./media/CIEnvironment/pipelinePhasesADO.png" alt="Pipeline phases ADO" height="300">
 
 Azure DevOps pipelines map each pipeline phase to a dedicated pipeline template, to maximize code reusability.
-The mapping to the specific yaml template file is provided below:
+The mapping to the specific YAML template file is provided below:
 
 | Template Name | Pipeline phase |
 | - | - |
@@ -118,7 +118,7 @@ In addition to module pipelines, the repository includes several platform pipeli
 
 ## Dependencies pipeline
 
-In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources need to be deployed beforehand.
+In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources may need to be deployed beforehand.
 
 For example, any instance of the \[Virtual Machine] module needs an existing virtual network to be connected to and a Key Vault hosting its required local admin credentials to be referenced.
 
@@ -157,7 +157,13 @@ Since also dependency resources are in turn subject to dependencies with each ot
 This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
 
   1. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
-      >**Note**: This resource has a global scope name.
+      >**Note**: This resource needs a global scope name.
+    Multiple instances are deployed:
+      - '_adp\<<namePrefix\>>azsax001_' : Default Storage.
+      - '_adp\<<namePrefix\>>azsafa001_' : Function App Data Storage.
+      - '_adp\<<namePrefix\>>azsalaw001_' : Diagnostic Storage.
+      - '_adp\<<namePrefix\>>azsasynapse001_' : Synapse DataLake Gen2 #1.
+      - '_adp\<<namePrefix\>>azsasynapse002_' : Synapse DataLake Gen2 #2.
   1. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
       >**Note**: This resource has a global scope name.
   1. Log analytics workspaces: These resources are leveraged by all resources supporting diagnostic settings on LAW. Multiple instances are deployed:
@@ -169,7 +175,7 @@ This group of resources has a dependency only on the resource group which will h
       > **Note**: The object ID of the \[user assigned identity] is needed by several dependency parameter files. However, before running the dependencies pipeline for the first time, the \[user assigned identity] resource does not exist yet, thus its object ID is unknown. For this reason, instead of the object ID value, some dependency parameter files contain the `"<<msiPrincipalId>>"` token, for which the correct value is retrieved and replaced by the pipeline at runtime.
   1. Shared image gallery and definition: These resources are leveraged by the \[image template] resource.
   1. Route table: This resource is leveraged by the virtual network subnet dedicated to test \[SQL managed instance].
-      >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
+      >**Note**: This resource is deployed and configured only if SQL-MI dependency resources are enabled.
   1. Route table: This resource is leveraged by a test subnet deployment of the \[Virtual Network] module.
   1. Action group: This resource is leveraged by \[activity log alert] and \[metric alert] resources.
   1. Application security group: This resource is leveraged by the \[network security group] resource.
@@ -186,7 +192,7 @@ This group of resources has a dependency on one or more resources in the group a
       - '_adp-\<<namePrefix\>>-az-nsg-x-apgw_': NSG with required network security rules to be leveraged by the \[application gateway] subnet.
       - '_adp-\<<namePrefix\>>-az-nsg-x-ase_': NSG with required network security rules to be leveraged by the \[app service environment] subnet.
       - '_adp-\<<namePrefix\>>-az-nsg-x-bastion_': NSG with required network security rules to be leveraged by the \[bastion host] subnet.
-      - '_adp-\<<namePrefix\>>-az-nsg-x-sqlmi_': NSG with required network security rules to be leveraged by the \[sql managed instance] subnet.
+      - '_adp-\<<namePrefix\>>-az-nsg-x-sqlmi_': NSG with required network security rules to be leveraged by the \[SQL managed instance] subnet.
         >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       - '_adp-\<<namePrefix\>>-az-nsg-x-001_': default NSG leveraged by all other subnets.
   1. Application insight: This resource supports monitoring, hence it has a dependency on the \[storage account], \[log analytics workspace] and \[event hub] deployed in the group above. This resource is leveraged by the \[machine learning service] resource.
@@ -202,7 +208,7 @@ This group of resources has a dependency on one or more resources in the group a
       - '_adp-\<<namePrefix\>>-az-kv-x-001_': KV with required secrets, keys, certificates and access policies to be leveraged by all resources requiring access to a Key Vault key, secret and/or certificate, i.e., \[application gateway], \[azure NetApp file], \[azure SQL server], \[disk encryption set], \[machine learning service], \[virtual machine], \[virtual machine scale set], \[virtual network gateway connection].
       - '_adp-\<<namePrefix\>>-az-kv-x-pe_': KV to be leveraged by the \[private endpoint] resource.
       - '_adp-\<<namePrefix\>>-az-kv-x-sqlmi_': KV with required secrets, keys and access policies to be leveraged by the \[SQL managed instance] resource.
-        >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
+        >**Note**: This resource is deployed and configured only if SQL-MI dependency resources are enabled.
       >**Note**: This resource has a global scope name.
   1. Recovery services vault: This resource supports monitoring, hence it has a dependency on the \[storage account], \[log analytics workspace] and \[event hub] deployed in the group above. This resource is leveraged by the \[virtual machine] resource when backup is enabled.
 
@@ -216,18 +222,42 @@ This group of resources has a dependency on one or more resources in the groups 
       - '_adp-\<<namePrefix\>>-az-vnet-x-peer02_': Leveraged by the \[virtual network peering] resource.
       - '_adp-\<<namePrefix\>>-az-vnet-x-azfw_': Leveraged by the \[azure firewall] resource.
       - '_adp-\<<namePrefix\>>-az-vnet-x-aks_': Leveraged by the \[azure kubernetes service] resource.
-      - '_adp-\<<namePrefix\>>-az-vnet-x-sqlmi_': Leveraged by the \[sql managed instance] resource.
+      - '_adp-\<<namePrefix\>>-az-vnet-x-sqlmi_': Leveraged by the \[SQL managed instance] resource.
         >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       - '_adp-\<<namePrefix\>>-az-vnet-x-001_': Hosting multiple subnets to be leveraged by \[virtual machine], \[virtual machine scale set], \[service bus], \[azure NetApp files], \[azure bastion], \[private endpoints], \[app service environment] and \[application gateway] resources.
   1. Azure Image Builder template: This resource triggers the build and distribution of a VHD in a storage account. The VHD file is copied to a known storage account blob container and leveraged by \[compute disks] and \[compute images] resources.
-    >**Note**: This resource is deployed and configured only if the 'Enable deployment of a vhd stored in a blob container' option is selected.
+    >**Note**: This resource is deployed and configured only if the 'Enable deployment of a VHD stored in a blob container' option is selected.
+  1. Disk Encryption Set: This resource is leveraged by the \[Managed Cluster] resource.
 
 #### **5th level resources**
 
 This group of resources has a dependency on one or more resources in the groups above.
 
   1. Virtual Machine: This resource is depending on the \[virtual networks] and \[Key Vault] deployed above. This resource is leveraged by the \[network watcher] resource.
-  1. Private DNS zone: This resource is depending on the \[virtual networks] deployed above. This resource is leveraged by the \[private endpoint] resource.
+  1. Private DNS zones: This resource is depending on the \[virtual networks] deployed above. This resource is leveraged by the \[private endpoint] resource which is cross-referenced from all modules providing a private endpoint connection. Multiple instances are deployed:
+      - '_privatelink.azconfig.io_': Leveraged by the \[configuration store] resource.
+      - '_privatelink.azure-automation.net_': Leveraged by the \[automation account] resource.
+      - '_privatelink.batch.azure.com_': Leveraged by the \[batch account] resource.
+      - '_privatelink.redis.cache.windows.net_': Leveraged by the \[redis cache] resource.
+      - '_privatelink.cognitiveservices.azure.com_': Leveraged by the \[cognitive services account] resource.
+      - '_privatelink.azurecr.io_': Leveraged by the \[azure container registry] resource.
+      - '_privatelink.datafactory.azure.net_': Leveraged by the \[data factory] resource.
+      - '_privatelink.eventgrid.azure.net_': Leveraged by the \[event grid topic] resource.
+      - '_privatelink.servicebus.windows.net_': Leveraged by the \[service bus and event hub] resources.
+      - '_privatelink.monitor.azure.com_': Leveraged by the \[private link scope] resource.
+      - '_privatelink.api.azureml.ms_': Leveraged by the \[machine learning workspace] resource.
+      - '_privatelink.siterecovery.windowsazure.com_': Leveraged by the \[recovery services vault] resource.
+      - '_privatelink.azuresynapse.net_': Leveraged by the \[synapse private link hub] resource.
+      - '_privatelink.sql.azuresynapse.net_': Leveraged by the \[synapse workspace] resource.
+      - '_privatelink.database.windows.net_': Leveraged by the \[sql server] resource.
+      - '_privatelink.azurewebsites.net_': Leveraged by the \[web site] resource.
+      - '_privatelink.azurestaticapps.net_': Leveraged by the \[web static site] resource.
+      - '_privatelink.blob.azure.com_': Leveraged by the \[storage account (blob)] resource.
+      - '_privatelink.file.azure.com_': Leveraged by the \[storage account (file)] resource.
+      - '_privatelink.queue.azure.com_': Leveraged by the \[storage account (queue)] resource.
+      - '_privatelink.table.azure.com_': Leveraged by the \[storage account (table)] resource.
+      - '_privatelink.vaultcore.azure.net_': Leveraged by the \[key vault] resource.
+      - '_privatelink.webpubsub.azure.net_': Leveraged by the \[web pubsub] resource.
 
 ### Required secrets and keys
 
@@ -258,7 +288,7 @@ The repository includes two major ReadMe files that should stay in sync with the
 
 The first can be found in the repository root (`README.md`) and the second in the modules folder (`modules/README.md`).
 
-The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `modules` folder is being altered. The pipeline leverages the script documented in the [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update) page.
+The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `modules` folder is being altered. The pipeline leverages the script documented on the [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update) page.
 
 Once triggered, the pipeline crawls through the library and updates the tables in each corresponding ReadMe file, creating links to the corresponding pipeline runs and updating the list of entries.
 

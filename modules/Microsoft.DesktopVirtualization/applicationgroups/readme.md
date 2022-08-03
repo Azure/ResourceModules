@@ -24,7 +24,7 @@ This module deploys an Azure virtual desktop application group.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `applicationGroupType` | string | `[RemoteApp, Desktop]` | The type of the Application Group to be created. Allowed values: RemoteApp or Desktop. |
+| `applicationGroupType` | string | `[Desktop, RemoteApp]` | The type of the Application Group to be created. Allowed values: RemoteApp or Desktop. |
 | `hostpoolName` | string |  | Name of the Host Pool to be linked to this Application Group. |
 | `name` | string |  | Name of the Application Group to create this application in. |
 
@@ -43,7 +43,7 @@ This module deploys an Azure virtual desktop application group.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `friendlyName` | string | `''` |  | The friendly name of the Application Group to be created. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
@@ -159,31 +159,11 @@ tags: {
 
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-avdag-min-001"
-        },
-        "applicationGroupType": {
-            "value": "RemoteApp"
-        },
-        "hostpoolName": {
-            "value": "adp-<<namePrefix>>-az-avdhp-x-001"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -193,9 +173,10 @@ tags: {
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-applicationgroups'
   params: {
-    name: '<<namePrefix>>-az-avdag-min-001'
+    // Required parameters
     applicationGroupType: 'RemoteApp'
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
+    name: '<<namePrefix>>-az-avdag-min-001'
   }
 }
 ```
@@ -203,88 +184,33 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-avdag-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "location": {
-            "value": "westeurope"
-        },
-        "applicationGroupType": {
-            "value": "RemoteApp"
-        },
-        "hostpoolName": {
-            "value": "adp-<<namePrefix>>-az-avdhp-x-001"
-        },
-        "friendlyName": {
-            "value": "Remote Applications 1"
-        },
-        "description": {
-            "value": "This is my first Remote Applications bundle"
-        },
-        "applications": {
-            "value": [
-                {
-                    "name": "notepad",
-                    "description": "Notepad by ARM template",
-                    "friendlyName": "Notepad",
-                    "filePath": "C:\\Windows\\System32\\notepad.exe",
-                    "commandLineSetting": "DoNotAllow",
-                    "commandLineArguments": "",
-                    "showInPortal": true,
-                    "iconPath": "C:\\Windows\\System32\\notepad.exe",
-                    "iconIndex": 0
-                },
-                {
-                    "name": "wordpad",
-                    "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
-                    "friendlyName": "Wordpad"
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "applicationGroupType": {
+      "value": "RemoteApp"
+    },
+    "hostpoolName": {
+      "value": "adp-<<namePrefix>>-az-avdhp-x-001"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-avdag-min-001"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Parameters</h3>
 
 <details>
 
@@ -294,44 +220,130 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-applicationgroups'
   params: {
-    name: '<<namePrefix>>-az-avdag-x-001'
-    lock: 'CanNotDelete'
-    location: 'westeurope'
+    // Required parameters
     applicationGroupType: 'RemoteApp'
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
-    friendlyName: 'Remote Applications 1'
-    description: 'This is my first Remote Applications bundle'
+    name: '<<namePrefix>>-az-avdag-x-001'
+    // Non-required parameters
     applications: [
       {
-        name: 'notepad'
-        description: 'Notepad by ARM template'
-        friendlyName: 'Notepad'
-        filePath: 'C:\\Windows\\System32\\notepad.exe'
-        commandLineSetting: 'DoNotAllow'
         commandLineArguments: ''
-        showInPortal: true
-        iconPath: 'C:\\Windows\\System32\\notepad.exe'
+        commandLineSetting: 'DoNotAllow'
+        description: 'Notepad by ARM template'
+        filePath: 'C:\\Windows\\System32\\notepad.exe'
+        friendlyName: 'Notepad'
         iconIndex: 0
+        iconPath: 'C:\\Windows\\System32\\notepad.exe'
+        name: 'notepad'
+        showInPortal: true
       }
       {
-        name: 'wordpad'
         filePath: 'C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe'
         friendlyName: 'Wordpad'
+        name: 'wordpad'
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+    description: 'This is my first Remote Applications bundle'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    friendlyName: 'Remote Applications 1'
+    location: 'westeurope'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "applicationGroupType": {
+      "value": "RemoteApp"
+    },
+    "hostpoolName": {
+      "value": "adp-<<namePrefix>>-az-avdhp-x-001"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-avdag-x-001"
+    },
+    // Non-required parameters
+    "applications": {
+      "value": [
+        {
+          "commandLineArguments": "",
+          "commandLineSetting": "DoNotAllow",
+          "description": "Notepad by ARM template",
+          "filePath": "C:\\Windows\\System32\\notepad.exe",
+          "friendlyName": "Notepad",
+          "iconIndex": 0,
+          "iconPath": "C:\\Windows\\System32\\notepad.exe",
+          "name": "notepad",
+          "showInPortal": true
+        },
+        {
+          "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
+          "friendlyName": "Wordpad",
+          "name": "wordpad"
+        }
+      ]
+    },
+    "description": {
+      "value": "This is my first Remote Applications bundle"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "friendlyName": {
+      "value": "Remote Applications 1"
+    },
+    "location": {
+      "value": "westeurope"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    }
   }
 }
 ```

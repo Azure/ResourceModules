@@ -14,7 +14,7 @@ param userAssignedIdentities object = {}
   'Free'
   'Standard'
 ])
-@description('Required. Pricing tier of App Configuration.')
+@description('Optional. Pricing tier of App Configuration.')
 param sku string = 'Standard'
 
 @allowed([
@@ -30,12 +30,13 @@ param disableLocalAuth bool = false
 @description('Optional. Property specifying whether protection against purge is enabled for this configuration store.')
 param enablePurgeProtection bool = false
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
-  'Disabled'
+  ''
   'Enabled'
+  'Disabled'
 ])
-@description('Optional. Control permission for data plane traffic coming from public networks while private endpoint is enabled.')
-param publicNetworkAccess string = 'Enabled'
+param publicNetworkAccess string = ''
 
 @description('Optional. The amount of time in days that the configuration store will be retained when it is soft deleted.')
 @minValue(1)
@@ -100,7 +101,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 var enableReferencedModulesTelemetry = false
@@ -155,13 +156,13 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
     createMode: createMode
     disableLocalAuth: disableLocalAuth
     enablePurgeProtection: sku == 'Free' ? false : enablePurgeProtection
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     softDeleteRetentionInDays: sku == 'Free' ? 0 : softDeleteRetentionInDays
   }
 }
 
 module configurationStore_keyValues 'keyValues/deploy.bicep' = [for (keyValue, index) in keyValues: {
-  name: '${uniqueString(deployment().name, location)}-appConfig-KeyValues-${index}'
+  name: '${uniqueString(deployment().name, location)}-AppConfig-KeyValues-${index}'
   params: {
     appConfigurationName: configurationStore.name
     name: keyValue.name
@@ -206,7 +207,7 @@ module configurationStore_roleAssignments '.bicep/nested_roleAssignments.bicep' 
 }]
 
 module configurationStore_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-configurationStore-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-AppConfig-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
@@ -217,7 +218,7 @@ module configurationStore_privateEndpoints '../../Microsoft.Network/privateEndpo
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []

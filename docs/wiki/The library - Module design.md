@@ -60,7 +60,7 @@ They can be deployed in different configurations just by changing the input para
 A **CARML module** consists of
 
 - The Bicep template deployment file (`deploy.bicep`).
-- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.parameters` subfolder.
+- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.test` subfolder.
 - A `readme.md` file which describes the module itself.
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `modules` folder.
@@ -109,7 +109,7 @@ Use the following naming standard for module files and folders:
   └─ <service>
       ├─ .bicep
       |  ├─ nested_extensionResource1.bicep
-      ├─ .parameters
+      ├─ .test
       |  └─ parameters.json
       ├─ deploy.bicep
       └─ readme.md
@@ -121,7 +121,7 @@ Use the following naming standard for module files and folders:
   >└─ sites
   >    ├─ .bicep
   >    |  └─ nested_roleAssignments.bicep
-  >    ├─ .parameters
+  >    ├─ .test
   >    |  └─ parameters.json
   >    ├─ deploy.bicep
   >    └─ readme.md
@@ -331,7 +331,7 @@ The Private Endpoint deployment has 2 elements. A module that contains the imple
 #### 1st element in main resource
 
 ```bicep
-@description('Optional. Configuration Details for private endpoints.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 module <mainResource>_privateEndpoints 'https://github.com/Azure/ResourceModules/blob/main/Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
@@ -346,7 +346,7 @@ module <mainResource>_privateEndpoints 'https://github.com/Azure/ResourceModules
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []

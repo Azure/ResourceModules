@@ -32,7 +32,7 @@ param enableFips bool = false
 @description('Optional. Whether HTTP2 is enabled on the application gateway resource.')
 param enableHttp2 bool = false
 
-@description('Optional. The resource ID of an associated firewall policy.')
+@description('Optional. The resource ID of an associated firewall policy. Should be configured for security reasons.')
 param firewallPolicyId string = ''
 
 @description('Optional. Frontend IP addresses of the application gateway resource.')
@@ -68,7 +68,7 @@ param redirectConfigurations array = []
 @description('Optional. Request routing rules of the application gateway resource.')
 param requestRoutingRules array = []
 
-@description('Optional. Rewrite rules for the application gateway resource.	.')
+@description('Optional. Rewrite rules for the application gateway resource.')
 param rewriteRuleSets array = []
 
 @description('Optional. The name of the SKU for the Application Gateway.')
@@ -163,7 +163,7 @@ param trustedRootCertificates array = []
 @description('Optional. URL path map of the application gateway resource.')
 param urlPathMaps array = []
 
-@description('Optional. Application gateway web application firewall configuration.')
+@description('Optional. Application gateway web application firewall configuration. Should be configured for security reasons.')
 param webApplicationFirewallConfiguration object = {}
 
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')
@@ -264,7 +264,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' = {
   name: name
   location: location
   tags: tags

@@ -30,7 +30,7 @@ With this module you can perform role assignments on a resource group level
 | `delegatedManagedIdentityResourceId` | string | `''` |  | ID of the delegated managed identity resource. |
 | `description` | string | `''` |  | The description of the role assignment. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `principalType` | string | `''` | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | The principal type of the assigned principal ID. |
+| `principalType` | string | `''` | `['', Device, ForeignGroup, Group, ServicePrincipal, User]` | The principal type of the assigned principal ID. |
 | `resourceGroupName` | string | `[resourceGroup().name]` |  | Name of the Resource Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | Subscription ID of the subscription to assign the RBAC role to. If not provided, will use the current scope for deployment. |
 
@@ -41,5 +41,5 @@ With this module you can perform role assignments on a resource group level
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Assignment. |
 | `resourceGroupName` | string | The name of the resource group the role assignment was applied at. |
-| `resourceId` | string | The scope this Role Assignment applies to. |
-| `scope` | string | The resource ID of the Role Assignment. |
+| `resourceId` | string | The resource ID of the Role Assignment. |
+| `scope` | string | The scope this Role Assignment applies to. |

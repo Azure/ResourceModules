@@ -1,5 +1,5 @@
 @description('Required. Name of the Service Fabric cluster.')
-param name string = ''
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -27,7 +27,7 @@ param enableDefaultTelemetry bool = true
 @description('Optional. The list of add-on features to enable in the cluster.')
 param addOnFeatures array = []
 
-@description('Required. Number of unused versions per application type to keep.')
+@description('Optional. Number of unused versions per application type to keep.')
 param maxUnusedVersionsToKeep int = 3
 
 @description('Optional. The settings to enable AAD authentication on the cluster.')
@@ -63,7 +63,7 @@ param infrastructureServiceManager bool = false
 @description('Required. The http management endpoint of the cluster.')
 param managementEndpoint string
 
-@description('Required. The list of node types in the cluster.')
+@description('Optional. The list of node types in the cluster.')
 param nodeTypes array = []
 
 @description('Optional. Indicates a list of notification channels for cluster events.')
