@@ -231,7 +231,6 @@ roleAssignments: [
                 {
                     "name": "halloworldapp",
                     "allowUpdates": true,
-                    "defaultVersion": "0.1.0",
                     "displayName": "Hallo World App"
                 }
             ]
@@ -257,7 +256,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
       {
         name: 'halloworldapp'
         allowUpdates: true
-        defaultVersion: '0.1.0'
         displayName: 'Hallo World App'
       }
     ]
