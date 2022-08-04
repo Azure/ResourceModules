@@ -27,7 +27,8 @@ function Get-DependencyResourceNameList {
     . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
     $parameterFolders = Get-ChildItem -Path $dependencyParameterPath -Recurse -Filter 'parameters' -Directory
-    $parameterFilePaths = [System.Collections.ArrayList]@()
+    $parameterFilePaths = @()
+    # $parameterFilePaths = [System.Collections.ArrayList]@()
     foreach ($parameterFolderPath in $parameterFolders.FullName) {
         $parameterFilePaths += Get-ChildItem -Path $parameterFolderPath -Recurse -Filter '*.json'
     }
