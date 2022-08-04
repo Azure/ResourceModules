@@ -50,7 +50,7 @@ function Get-DependencyResourceNameList {
             TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             Verbose     = $false
         }
-        $parameterFilePaths | $null = Convert-TokensInFileList @ConvertTokensInputs
+        $null = $parameterFilePaths | Convert-TokensInFileList @ConvertTokensInputs
     }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
@@ -63,7 +63,10 @@ function Get-DependencyResourceNameList {
 
     if ($Settings.parameterFileTokens.localTokens) {
         Write-Verbose 'Restoring Tokens'
-        $parameterFilePaths | $null = Convert-TokensInFileList @ConvertTokensInputs -SwapValueWithName $true
+        $ConvertTokensInputs += @{
+            SwapValueWithName = $true
+        }
+        $null = $parameterFilePaths | Convert-TokensInFileList @ConvertTokensInputs
     }
 
     return $dependencyResourceNames
