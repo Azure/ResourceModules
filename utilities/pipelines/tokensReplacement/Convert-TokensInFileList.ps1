@@ -36,7 +36,9 @@ Optional. A string for a custom output directory of the modified parameter file
 function Convert-TokensInFileList {
     [CmdletBinding()]
     param (
-        [parameter(Mandatory = $true)]
+        [parameter(
+            Mandatory         = $true,
+            ValueFromPipeline = $true)]
         [String[]] $FilePathList,
 
         [parameter(Mandatory = $true)]
