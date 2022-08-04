@@ -180,13 +180,13 @@ runs:
 
     # [Deployment validation] task(s)
     # -------------------------------
-    - name: 'Validate [${{ inputs.templateFilePath }}]'
+    - name: 'Validate module'
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Validate [${{ inputs.templateFilePath }}]"
+          Write-Output "::group::Validate module"
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
@@ -223,14 +223,14 @@ runs:
 
     # [Deployment execution] task(s)
     # ------------------------------
-    - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
+    - name: 'Deploy module'
       id: deploy_step
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]"
+          Write-Output "::group::Deploy module"
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
