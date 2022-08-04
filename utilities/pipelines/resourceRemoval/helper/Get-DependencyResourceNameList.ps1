@@ -24,7 +24,7 @@ function Get-DependencyResourceNameList {
 
     # Load used function
     $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
-    . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+    . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
     $parameterFolders = Get-ChildItem -Path $dependencyParameterPath -Recurse -Filter 'parameters' -Directory
     $parameterFilePaths = [System.Collections.ArrayList]@()
@@ -49,7 +49,7 @@ function Get-DependencyResourceNameList {
             TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             Verbose     = $false
         }
-        $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
+        $parameterFilePaths | $null = Convert-TokensInFileList @ConvertTokensInputs
     }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
@@ -62,7 +62,7 @@ function Get-DependencyResourceNameList {
 
     if ($Settings.parameterFileTokens.localTokens) {
         Write-Verbose 'Restoring Tokens'
-        $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
+        $parameterFilePaths | $null = Convert-TokensInFileList @ConvertTokensInputs -SwapValueWithName $true
     }
 
     return $dependencyResourceNames
