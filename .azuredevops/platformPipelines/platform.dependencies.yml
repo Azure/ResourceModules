@@ -262,14 +262,14 @@ stages:
               ScriptType: 'InlineScript'
               Inline: |
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                $parameterFilePaths = @($parameterFilePath)
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
-                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
                 # Replace tokens in parameter file
                 $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                 $ConvertTokensInputs = @{
-                    FilePath     = $parameterFilePath
                     TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
                 }
@@ -284,7 +284,7 @@ stages:
                     $ConvertTokensInputs.Tokens = $tokenMap
                 }
 
-                $null = Convert-TokensInFile @ConvertTokensInputs
+                $null = $parameterFilePaths | Convert-TokensInFileList @ConvertTokensInputs
 
                 # Get storage account name
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
@@ -575,19 +575,13 @@ stages:
               Inline: |
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 $noprParameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'nopr.parameters.json'
-
+                $parameterFilePaths = @($parameterFilePath, $noprParameterFilePath)
                 # Load used functions
-                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
                 # Replace tokens in parameter file
                 $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                 $ConvertTokensInputs = @{
-                    FilePath    = $parameterFilePath
-                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-                }
-                $NoprConvertTokensInputs = @{
-                    FilePath    = $noprParameterFilePath
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
@@ -598,10 +592,8 @@ stages:
                     }
                     Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                     $ConvertTokensInputs.Tokens = $tokenMap
-                    $NoprConvertTokensInputs.Tokens = $tokenMap
                 }
-                $null = Convert-TokensInFile @ConvertTokensInputs
-                $null = Convert-TokensInFile @NoprConvertTokensInputs
+                $null = $parameterFilePaths | Convert-TokensInFileList @ConvertTokensInputs
 
                 # Get key vault name
                 $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
@@ -711,15 +703,14 @@ stages:
                   azureSubscription: $(serviceConnection)
                   ScriptType: 'InlineScript'
                   Inline: |
-
                     $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
+                    $parameterFilePaths = @($parameterFilePath)
                     # Load used functions
-                    . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+                    . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
                     # Replace tokens in parameter file
                     $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                     $ConvertTokensInputs = @{
-                        FilePath    = $parameterFilePath
                         TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                         TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                     }
@@ -731,7 +722,7 @@ stages:
                         Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                         $ConvertTokensInputs.Tokens = $tokenMap
                     }
-                    $null = Convert-TokensInFile @ConvertTokensInputs
+                    $null = $parameterFilePaths | Convert-TokensInFileList @ConvertTokensInputs
 
                     # Get key vault name
                     $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
