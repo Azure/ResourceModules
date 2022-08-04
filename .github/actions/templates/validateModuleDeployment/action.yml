@@ -135,7 +135,6 @@ runs:
           # Construct Token Function Input
           $ConvertTokensInputs = @{
             Tokens       = @{}
-            # FilePath     = $targetFile
             TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
           }
@@ -190,9 +189,9 @@ runs:
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
-          # ----------- #
-          # INVOKE TEST #
-          # ----------- #
+          # ----------------- #
+          # Invoke validation #
+          # ----------------- #
           $functionInput = @{
             templateFilePath     = '${{ inputs.templateFilePath }}'
             location             = '${{ inputs.location }}'
@@ -234,6 +233,9 @@ runs:
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
+          # ----------------- #
+          # Invoke deployment #
+          # ----------------- #
           $functionInput = @{
             templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             location             = '${{ inputs.location }}'

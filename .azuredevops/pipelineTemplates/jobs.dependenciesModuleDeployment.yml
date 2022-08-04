@@ -116,20 +116,13 @@ jobs:
                 $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
 
                 # Construct Token Function Input
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
-                  $targetFile = '${{ deploymentBlock.path }}'
-                }
-                else {
-                  $targetFile = '${{ deploymentBlock.templateFilePath }}'
-                }
                 $ConvertTokensInputs = @{
                     Tokens      = @{}
-                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' $targetFile
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
 
-                # Add defaults
+                # Local tokens
                 $ConvertTokensInputs.Tokens += @{
                   resourceGroupName = '${{ parameters.resourceGroupName }}'
                   subscriptionId    = '${{ parameters.subscriptionId }}'
@@ -151,17 +144,23 @@ jobs:
                 # Add custom tokens (passed in via the pipeline)
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.customParameterFileTokens }}')) {
                   $customTokens = '${{ deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
-                  Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
+                  Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
                   $ConvertTokensInputs.Tokens += $customTokens
                 }
 
+                # Target files
+                [string[]]$targetFileList = '${{ deploymentBlock.templateFilePath }}'
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
+                  $targetFileList = '${{ deploymentBlock.path }}'
+                }
+
                 # Invoke Token Replacement Functionality
-                $null = Convert-TokensInFile @ConvertTokensInputs
+                $null = $targetFileList | Convert-TokensInFileList @ConvertTokensInputs
 
           # [Validation] task(s)
           #---------------------
           - task: AzurePowerShell@5
-            displayName: 'Validate [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
+            displayName: 'Validate module via connection [${{ parameters.serviceConnection }}]'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -172,9 +171,9 @@ jobs:
                 # Load used functions
                 . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
-                # ----------- #
-                # INVOKE TEST #
-                # ----------- #
+                # ----------------- #
+                # Invoke validation #
+                # ----------------- #
                 $functionInput = @{
                   templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.templateFilePath }}'
                   location             = '${{ parameters.location }}'
@@ -203,7 +202,7 @@ jobs:
           # [Deployment] task(s)
           #---------------------
           - task: AzurePowerShell@5
-            displayName: 'Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
+            displayName: 'Deploy module via connection [${{ parameters.serviceConnection }}]'
             name: 'DeployModule'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
@@ -216,7 +215,7 @@ jobs:
                 . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
                 # ----------------- #
-                # INVOKE DEPLOYMENT #
+                # Invoke deployment #
                 # ----------------- #
                 $functionInput = @{
                   templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.templateFilePath }}'
@@ -246,7 +245,7 @@ jobs:
                 $res = New-TemplateDeployment @functionInput -Verbose
 
                 # Get deployment name
-                Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
+                Write-Output ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
 
                 # Populate further outputs
                 $deploymentOutputHash=@{}
