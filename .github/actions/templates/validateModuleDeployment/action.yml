@@ -127,7 +127,7 @@ runs:
           Write-Output "::group::Replace tokens in target file"
 
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
           # Load Settings File
           $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
@@ -173,7 +173,7 @@ runs:
           }
 
           # Invoke Token Replacement Functionality
-          $null = $targetFileList | Convert-TokensInFile @ConvertTokensInputs
+          $null = $targetFileList | Convert-TokensInFileList @ConvertTokensInputs
 
           Write-Output "::endgroup::"
 
