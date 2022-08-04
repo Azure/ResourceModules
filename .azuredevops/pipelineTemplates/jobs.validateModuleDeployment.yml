@@ -169,7 +169,7 @@ jobs:
             # Add custom tokens (passed in via the pipeline)
             if(-not [String]::IsNullOrEmpty('${{ parameters.customParameterFileTokens }}')) {
               $customTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
-              Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
+              Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
               $ConvertTokensInputs.Tokens += $customTokens
             }
 

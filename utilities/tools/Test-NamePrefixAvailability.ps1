@@ -42,7 +42,7 @@ function Test-NamePrefixAvailability {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFile.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFileList.ps1')
         $root = (Get-Item $PSScriptRoot).Parent.Parent.FullName
     }
     process {
@@ -86,7 +86,7 @@ function Test-NamePrefixAvailability {
 
         try {
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
+            $null = $parameterFiles | Convert-TokensInFileList @ConvertTokensInputs
 
 
             # Extract Parameter Names
@@ -178,7 +178,10 @@ function Test-NamePrefixAvailability {
             # Restore parameter files
             # -----------------------
             Write-Verbose 'Restoring Tokens'
-            $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
+            $ConvertTokensInputs += @{
+                SwapValueWithName = $true
+            }
+            $null = $parameterFiles | Convert-TokensInFileList @ConvertTokensInputs
         }
     }
 
