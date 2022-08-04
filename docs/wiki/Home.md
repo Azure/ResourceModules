@@ -56,7 +56,7 @@ In next section, you can find an overview of what is in scope and what is out of
 
 - **Module library** is a collection of comprehensive, reusable, Bicep-based building blocks to deploy Azure resources. It can also be combined to create & orchestrate more complex, multi-module Azure solutions.
 - **CI environment** is DevOps pipelines. It can be used to validate modules and to publish modules which are successfully validated to a target location. It uses semantic versioning and it can be used with both GitHub workflows and Azure DevOps pipelines.
-- **Documentation** including design principles, usage of [The library](./The%20library) and [The CI environment](./The%20CI%20environment). It also includes step-by-step guidelines on how to start utilizing CARML Library. For more details, please refer to [Getting started](./Getting%20started) section.
+- **Documentation:** it includes design principles, usage of [The library](./The%20library) and [The CI environment](./The%20CI%20environment). It also includes step-by-step guidelines on how to start utilizing the CARML Library. For more details, please refer to [Getting started](./Getting%20started) section.
 
 ## Out of Scope
 
