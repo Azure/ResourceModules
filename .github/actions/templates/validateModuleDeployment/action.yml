@@ -133,16 +133,9 @@ runs:
           $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
 
           # Construct Token Function Input
-          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
-            $targetFile = '${{ inputs.parameterFilePath }}'
-          }
-          else {
-            $targetFile = '${{ inputs.templateFilePath }}'
-          }
-
           $ConvertTokensInputs = @{
             Tokens       = @{}
-            FilePath     = $targetFile
+            # FilePath     = $targetFile
             TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
           }
@@ -173,8 +166,14 @@ runs:
             $ConvertTokensInputs.Tokens += $customTokens
           }
 
+          # Target files
+          [string[]]$targetFileList = '${{ inputs.templateFilePath }}'
+          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+            $targetFileList = '${{ inputs.parameterFilePath }}'
+          }
+
           # Invoke Token Replacement Functionality
-          $null = Convert-TokensInFile @ConvertTokensInputs
+          $null = $targetFileList | Convert-TokensInFile @ConvertTokensInputs
 
           Write-Output "::endgroup::"
 
@@ -221,96 +220,96 @@ runs:
 
           Write-Output "::endgroup::"
 
-    # [Deployment execution] task(s)
-    # ------------------------------
-    - name: 'Deploy module'
-      id: deploy_step
-      uses: azure/powershell@v1
-      with:
-        azPSVersion: 'latest'
-        inlineScript: |
-          # Grouping task logs
-          Write-Output "::group::Deploy module"
+    # # [Deployment execution] task(s)
+    # # ------------------------------
+    # - name: 'Deploy module'
+    #   id: deploy_step
+    #   uses: azure/powershell@v1
+    #   with:
+    #     azPSVersion: 'latest'
+    #     inlineScript: |
+    #       # Grouping task logs
+    #       Write-Output "::group::Deploy module"
 
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+    #       # Load used functions
+    #       . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
-          $functionInput = @{
-            templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-            location             = '${{ inputs.location }}'
-            resourceGroupName    = '${{ inputs.resourceGroupName }}'
-            subscriptionId       = '${{ inputs.subscriptionId }}'
-            managementGroupId    = '${{ inputs.managementGroupId }}'
-            doNotThrow           = $true
-            additionalParameters = @{}
-          }
+    #       $functionInput = @{
+    #         templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+    #         location             = '${{ inputs.location }}'
+    #         resourceGroupName    = '${{ inputs.resourceGroupName }}'
+    #         subscriptionId       = '${{ inputs.subscriptionId }}'
+    #         managementGroupId    = '${{ inputs.managementGroupId }}'
+    #         doNotThrow           = $true
+    #         additionalParameters = @{}
+    #       }
 
-          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
-            $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
-          }
+    #       if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+    #         $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+    #       }
 
-          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
-              $functionInput['additionalParameters'] += @{
-                  enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
-              }
-          }
+    #       $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+    #       if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+    #           $functionInput['additionalParameters'] += @{
+    #               enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+    #           }
+    #       }
 
-          Write-Verbose "Invoke task with" -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+    #       Write-Verbose "Invoke task with" -Verbose
+    #       Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          # Invoke deployment
-          $res = New-TemplateDeployment @functionInput -Verbose
+    #       # Invoke deployment
+    #       $res = New-TemplateDeployment @functionInput -Verbose
 
-          # Get deployment name
-          Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
+    #       # Get deployment name
+    #       Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
 
-          # Populate further outputs
-          $deploymentOutputHash=@{}
+    #       # Populate further outputs
+    #       $deploymentOutputHash=@{}
 
-          foreach ($outputKey in $res.deploymentOutput.Keys) {
-            Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-            $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
-          }
+    #       foreach ($outputKey in $res.deploymentOutput.Keys) {
+    #         Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+    #         $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
+    #       }
 
-          $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
-          Write-Verbose "Deployment output: $deploymentOutput" -Verbose
-          Write-Output ('::set-output name={0}::{1}' -f 'deploymentOutput', $deploymentOutput)
+    #       $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+    #       Write-Verbose "Deployment output: $deploymentOutput" -Verbose
+    #       Write-Output ('::set-output name={0}::{1}' -f 'deploymentOutput', $deploymentOutput)
 
-          if ($res.ContainsKey('exception')) {
-            # Happens only if there is an exception
-            throw $res.exception
-          }
+    #       if ($res.ContainsKey('exception')) {
+    #         # Happens only if there is an exception
+    #         throw $res.exception
+    #       }
 
-          Write-Output "::endgroup::"
+    #       Write-Output "::endgroup::"
 
-    # [Deployment removal] task(s)
-    # ----------------------------
-    - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
-      if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
-      uses: azure/powershell@v1
-      with:
-        azPSVersion: 'latest'
-        inlineScript: |
-          # Grouping task logs
-          Write-Output "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
+    # # [Deployment removal] task(s)
+    # # ----------------------------
+    # - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
+    #   if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
+    #   uses: azure/powershell@v1
+    #   with:
+    #     azPSVersion: 'latest'
+    #     inlineScript: |
+    #       # Grouping task logs
+    #       Write-Output "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
 
-          # Load used function
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+    #       # Load used function
+    #       . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
-          if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
-            $functionInput = @{
-              DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
-              TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-              ResourceGroupName = '${{ inputs.resourceGroupName }}'
-              ManagementGroupId = '${{ inputs.managementGroupId }}'
-              Verbose           = $true
-            }
+    #       if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
+    #         $functionInput = @{
+    #           DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
+    #           TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+    #           ResourceGroupName = '${{ inputs.resourceGroupName }}'
+    #           ManagementGroupId = '${{ inputs.managementGroupId }}'
+    #           Verbose           = $true
+    #         }
 
-            Write-Verbose 'Invoke task with' -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+    #         Write-Verbose 'Invoke task with' -Verbose
+    #         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Initialize-DeploymentRemoval @functionInput
-          }
+    #         Initialize-DeploymentRemoval @functionInput
+    #       }
 
-          Write-Output "::endgroup::"
+    #       Write-Output "::endgroup::"

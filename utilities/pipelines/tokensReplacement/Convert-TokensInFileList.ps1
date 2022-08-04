@@ -5,8 +5,8 @@ This Function Helps with Testing A Module Locally
 .DESCRIPTION
 This Function aggregates all the different token types (Default and Local) and then passes them to the Convert Tokens Script to replace tokens in a parameter file
 
-.PARAMETER FilePath
-Mandatory. The Path to the file that contains tokens to be replaced.
+.PARAMETER FilePathList
+Mandatory. The list of file paths that contain tokens to be replaced.
 
 .PARAMETER Tokens
 Mandatory. An object containing the parameter file tokens to set
@@ -33,11 +33,11 @@ Optional. A string for a custom output directory of the modified parameter file
 - If providing TokenKeyVaultName parameter, ensure you have read access to secrets in the key vault to be able to retrieve the tokens.
 #>
 
-function Convert-TokensInFile {
+function Convert-TokensInFileList {
     [CmdletBinding()]
     param (
         [parameter(Mandatory = $true)]
-        [string] $FilePath,
+        [String[]] $FilePathList,
 
         [parameter(Mandatory = $true)]
         [hashtable] $Tokens,
@@ -79,18 +79,20 @@ function Convert-TokensInFile {
         }
         # Convert Tokens in Parameter Files
         try {
-            # Prepare Input to Token Converter Function
-            $ConvertTokenListFunctionInput = @{
-                FilePath             = $FilePath
-                TokenNameValueObject = $FilteredTokens
-                SwapValueWithName    = $SwapValueWithName
+            foreach ($FilePath in $FilePathList) {
+                # Prepare Input to Token Converter Function
+                $ConvertTokenListFunctionInput = @{
+                    FilePath             = $FilePath
+                    TokenNameValueObject = $FilteredTokens
+                    SwapValueWithName    = $SwapValueWithName
+                }
+                if ($OutputDirectory) {
+                    $ConvertTokenListFunctionInput += @{OutputDirectory = $OutputDirectory }
+                }
+                # Convert Tokens in the File
+                Convert-TokenInFile @ConvertTokenListFunctionInput
+                $ConversionStatus = $true
             }
-            if ($OutputDirectory) {
-                $ConvertTokenListFunctionInput += @{OutputDirectory = $OutputDirectory }
-            }
-            # Convert Tokens in the File
-            Convert-TokenInFile @ConvertTokenListFunctionInput
-            $ConversionStatus = $true
         } catch {
             $ConversionStatus = $false
             Write-Verbose $_.Exception.Message -Verbose
