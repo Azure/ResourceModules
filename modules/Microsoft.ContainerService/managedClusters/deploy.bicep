@@ -296,6 +296,8 @@ param diskEncryptionSetID string = ''
   'kube-controller-manager'
   'kube-scheduler'
   'cluster-autoscaler'
+  'kube-audit-admin'
+  'guard'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'kube-apiserver'
@@ -303,6 +305,8 @@ param diagnosticLogCategoriesToEnable array = [
   'kube-controller-manager'
   'kube-scheduler'
   'cluster-autoscaler'
+  'kube-audit-admin'
+  'guard'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
