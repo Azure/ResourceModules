@@ -1,0 +1,29 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "ahmad-test-pros"
+        },
+        "skuName": {
+            "value": "Standard_D2s_v3"
+        },
+        "tier": {
+            "value": "GeneralPurpose"
+        },
+        "administratorLogin": {
+            "value": "adminUserName"
+        },
+        "administratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "administratorLoginPassword"
+            }
+        },
+        "location": {
+            "value": "westeurope"
+        }
+    }
+}
