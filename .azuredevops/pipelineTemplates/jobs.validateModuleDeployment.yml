@@ -221,13 +221,13 @@ jobs:
             }
 
             # Handle template file
-            if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
+            if((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+                # Test template files
+                $functionInput['templateFilePath'] = $moduleTestFilePath
+            } else {
                 # Original JSON parameter files
                 $functionInput['templateFilePath'] = $moduleTemplateFilePath
                 $functionInput['moduleTestFilePath'] = $moduleTestFilePath
-            } else {
-                # Test template files
-                $functionInput['templateFilePath'] = $moduleTestFilePath
             }
 
             # Handle additional parameters
@@ -292,14 +292,13 @@ jobs:
             }
 
             # Handle template file
-            if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
+            if((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+                # Test template files
+                $functionInput['templateFilePath'] = $moduleTestFilePath
+            } else {
                 # Original JSON parameter files
                 $functionInput['templateFilePath'] = $moduleTemplateFilePath
                 $functionInput['moduleTestFilePath'] = $moduleTestFilePath
-
-            } else {
-                # Test template files
-                $functionInput['templateFilePath'] = $moduleTestFilePath
             }
 
             # Handle additional parameters
@@ -364,11 +363,11 @@ jobs:
             }
 
             if((Split-Path '$(moduleTestFilePath)' -Extension) -eq '.bicep') {
-              # MODULE USES NEW TEST FILES
-              $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
+                # Test template files
+                $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
             } else {
-              # MODULE USES ORIGINAL JSON PARAMETER FILES
-              $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+                # Original JSON parameter files
+                $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             }
 
             Write-Verbose 'Invoke task with' -Verbose

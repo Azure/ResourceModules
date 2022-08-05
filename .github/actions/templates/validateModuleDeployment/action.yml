@@ -227,13 +227,13 @@ runs:
           }
 
           # Handle template file
-          if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
+          if((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+            # Test template files
+            $functionInput['templateFilePath'] = $moduleTestFilePath
+          } else {
             # Original JSON parameter files
             $functionInput['templateFilePath'] = $moduleTemplateFilePath
             $functionInput['parameterFilePath'] = $moduleTestFilePath
-          } else {
-            # Test template files
-            $functionInput['templateFilePath'] = $moduleTestFilePath
           }
 
           # Handle additional parameters
@@ -302,14 +302,13 @@ runs:
           }
 
           # Handle template file
-          if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
+          if((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+            # Test template files
+            $functionInput['templateFilePath'] = $moduleTestFilePath
+          } else {
             # Original JSON parameter files
             $functionInput['templateFilePath'] = $moduleTemplateFilePath
             $functionInput['parameterFilePath'] = $moduleTestFilePath
-
-          } else {
-            # Test template files
-            $functionInput['templateFilePath'] = $moduleTestFilePath
           }
 
           # Handle additional parameters
