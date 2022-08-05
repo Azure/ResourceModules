@@ -74,7 +74,7 @@ runs:
         $servicePrincipalAppId = $context.Account.Id
         $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
         $servicePrincipalObjectId = $servicePrincipal.Id
-        Write-Output "DEPLOYMENT_SPN_ENTAPP_OBJID=$servicePrincipalObjectId" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
+        echo "DEPLOYMENT_SPN_ENTAPP_OBJID=$servicePrincipalObjectId" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
         Write-Output ('::set-output name={0}::{1}' -f 'DEPLOYMENT_SPN_ENTAPP_OBJID', $servicePrincipalObjectId)
 
         Write-Output "::endgroup::"
