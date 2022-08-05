@@ -12,7 +12,7 @@ This module deploys load balancers inbound NAT rules.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/loadBalancers/inboundNatRules` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/inboundNatRules) |
+| `Microsoft.Network/loadBalancers/inboundNatRules` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/loadBalancers/inboundNatRules) |
 
 ## Parameters
 

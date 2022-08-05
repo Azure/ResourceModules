@@ -64,7 +64,7 @@ var builtInRoleNames = {
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
   name: last(split(resourceId, '/'))
 }
 

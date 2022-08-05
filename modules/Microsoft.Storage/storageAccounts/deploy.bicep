@@ -195,7 +195,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: !empty(name) ? name : uniqueStorageName
   location: location
   kind: storageAccountKind

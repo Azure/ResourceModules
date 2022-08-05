@@ -113,7 +113,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -134,15 +134,15 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
         ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
         natGateway: contains(subnet, 'natGatewayId') ? {
           'id': subnet.natGatewayId
-        } : json('null')
+        } : null
         networkSecurityGroup: contains(subnet, 'networkSecurityGroupId') ? {
           'id': subnet.networkSecurityGroupId
-        } : json('null')
+        } : null
         privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : null
         privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : null
         routeTable: contains(subnet, 'routeTableId') ? {
           'id': subnet.routeTableId
-        } : json('null')
+        } : null
         serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
         serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
       }

@@ -200,7 +200,7 @@ jobs:
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
 
             if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
-                $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
             } else {
                 $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
@@ -263,7 +263,7 @@ jobs:
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
 
             if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
-                $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
+                $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
             } else {
                 $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys

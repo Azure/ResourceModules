@@ -38,8 +38,4 @@ stages:
     parameters:
       removeDeployment: '${{ parameters.removeDeployment }}'
       prerelease: '${{ parameters.prerelease }}'
-
-
-
-
-          defaultJobTimeoutInMinutes: 180
+      defaultJobTimeoutInMinutes: 180
