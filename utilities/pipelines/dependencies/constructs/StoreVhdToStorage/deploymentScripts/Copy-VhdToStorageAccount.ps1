@@ -84,13 +84,14 @@ process {
     $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
     $sourceUri = $imgtRunOutput.ArtifactUri
     $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
-    $sourceStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $sourceStorageAccountName
+    $storageAccountList = Get-AzStorageAccount
+    $sourceStorageAccount = $storageAccountList | Where-Object StorageAccountName -EQ $sourceStorageAccountName
     $sourceStorageAccountContext = $sourceStorageAccount.Context
     $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
     Write-Verbose ('Retrieving artifact uri [{0}] stored in resource group [{1}]' -f $sourceUri, $sourceStorageAccountRGName) -Verbose
 
     Write-Verbose 'Initializing destination storage account parameters before the blob copy' -Verbose
-    $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
+    $destinationStorageAccount = $storageAccountList | Where-Object StorageAccountName -EQ $destinationStorageAccountName
     $destinationStorageAccountContext = $destinationStorageAccount.Context
     $destinationBlobName = "$vhdName.vhd"
     Write-Verbose ('Planning for destination blob name [{0}] in container [{1}] and storage account [{2}]' -f $destinationBlobName, $destinationContainerName, $destinationStorageAccountName) -Verbose
