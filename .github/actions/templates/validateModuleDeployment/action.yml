@@ -122,14 +122,13 @@ runs:
         # Grouping task logs
         Write-Output "::group::Setup additional env values"
 
-        Write-Verbose 'Context' -Verbose
         $context = Get-AzContext
-        Write-Verbose ($context | fl | Out-String) -Verbose
 
         ## Service Principal Object ID
         $servicePrincipalAppId = $context.Account.Id
         $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
         $servicePrincipalObjectId = $servicePrincipal.Id
+        $env:DEPLOYMENT_SPN_ENTAPP_OBJID = $servicePrincipalObjectId
         Write-Output ('::set-output name={0}::{1}' -f 'DEPLOYMENT_SPN_ENTAPP_OBJID', $servicePrincipalObjectId)
 
         Write-Output "::endgroup::"
