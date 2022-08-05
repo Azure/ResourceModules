@@ -1,4 +1,4 @@
-@description('Required. Name of the Image Template to be built by the Azure Image Builder service.')
+@description('Required. Name prefix of the Image Template to be built by the Azure Image Builder service.')
 param name string
 
 @description('Required. Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder.')
@@ -181,8 +181,11 @@ output resourceId string = imageTemplate.id
 @description('The resource group the image template was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the image template.')
+@description('The full name of the deployed image template.')
 output name string = imageTemplate.name
+
+@description('The prefix of the image template name provided as input.')
+output namePrefix string = name
 
 @description('The command to run in order to trigger the image build.')
 output runThisCommand string = 'Invoke-AzResourceAction -ResourceName ${imageTemplate.name} -ResourceGroupName ${resourceGroup().name} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force'
