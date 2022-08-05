@@ -113,7 +113,6 @@ runs:
         $context = Get-AzContext
 
         ## Service Principal Object ID
-        $context | fl | Out-String
         $servicePrincipalAppId = $Context.Account.Id
         $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
         $servicePrincipalObjectId = $servicePrincipal.Id
