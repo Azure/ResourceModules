@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-    Create artifacts from a given image template
+    Create image artifacts from a given image template
 
     .DESCRIPTION
-    Create artifacts from a given image template
+    Create image artifacts from a given image template
 
     .PARAMETER ImageTemplateName
     Mandatory. The name of the image template
@@ -17,7 +17,7 @@
     .EXAMPLE
     Start-AzImageBuilderTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg'
 
-    Create artifacts from image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' and wait for their completion
+    Create image artifacts from image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' and wait for their completion
 
     .EXAMPLE
     Start-AzImageBuilderTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -NoWait
@@ -60,7 +60,7 @@ begin {
 }
 
 process {
-    # Create artifacts from existing image template
+    # Create image artifacts from existing image template
     $resourceActionInputObject = @{
         ImageTemplateName   = $imageTemplateName
         ResourceGroupName   = $imageTemplateResourceGroup
@@ -70,7 +70,7 @@ process {
     }
     if ($PSCmdlet.ShouldProcess('Image template [{0}]' -f $imageTemplateName, 'Start')) {
         $null = Start-AzImageBuilderTemplate @resourceActionInputObject
-        Write-Verbose ('Create artifacts from image template [{0}] in resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose
+        Write-Verbose ('Create image artifacts from image template [{0}] in resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose
     }
 }
 
