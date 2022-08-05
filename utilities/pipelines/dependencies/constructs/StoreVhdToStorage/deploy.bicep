@@ -27,7 +27,7 @@ module roleAssignment '../../../../../modules/Microsoft.Authorization/roleAssign
   params: {
     roleDefinitionIdOrName: 'Contributor'
     principalId: userMsi.outputs.principalId
-    subscriptionId: '<<subscriptionId>>'
+    subscriptionId: subscription().id
   }
 }
 
