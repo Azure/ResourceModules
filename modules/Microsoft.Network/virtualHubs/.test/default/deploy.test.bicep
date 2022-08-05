@@ -4,6 +4,9 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 
+@description('Optional. The name prefix to inject into all resource names')
+param namePrefix string = '<<namePrefix>>'
+
 @description('Optional. The name of the resource group to deploy for a testing purposes')
 @maxLength(90)
 param resourceGroupName string = '${serviceShort}-ms.network-virtualHub-rg'
@@ -29,8 +32,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}-001'
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-001'
+    virtualWANName: 'dep-${namePrefix}-vw-${serviceShort}-001'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}-001'
   }
 }
 
@@ -42,7 +45,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-virtualHub-${serviceShort}'
   params: {
-    name: '<<namePrefix>>-${serviceShort}-001'
+    name: '${namePrefix}-${serviceShort}-001'
     lock: 'CanNotDelete'
     addressPrefix: '10.1.0.0/16'
     virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
@@ -57,12 +60,12 @@ module testDeployment '../../deploy.bicep' = {
         remoteVirtualNetworkId: resourceGroupResources.outputs.virtualNetworkResourceId
         routingConfiguration: {
           associatedRouteTable: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-${serviceShort}-001/hubRouteTables/routeTable1'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/${namePrefix}-${serviceShort}-001/hubRouteTables/routeTable1'
           }
           propagatedRouteTables: {
             ids: [
               {
-                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-${serviceShort}-001/hubRouteTables/routeTable1'
+                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/${namePrefix}-${serviceShort}-001/hubRouteTables/routeTable1'
               }
             ]
             labels: [

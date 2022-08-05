@@ -4,6 +4,9 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 
+@description('Optional. The name prefix to inject into all resource names')
+param namePrefix string = '<<namePrefix>>'
+
 @description('Optional. The name of the resource group to deploy for a testing purposes')
 @maxLength(90)
 param resourceGroupName string = '${serviceShort}-ms.network-vpnSites-rg'
@@ -29,8 +32,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}-01'
-    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}-001'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}-01'
+    virtualWANName: 'dep-${namePrefix}-vw-${serviceShort}-001'
   }
 }
 
@@ -42,7 +45,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-vpnSites-${serviceShort}'
   params: {
-    name: '<<namePrefix>>-${serviceShort}-001'
+    name: '${namePrefix}-${serviceShort}-001'
     virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
     lock: 'CanNotDelete'
     tags: {
@@ -54,7 +57,7 @@ module testDeployment '../../deploy.bicep' = {
     }
     vpnSiteLinks: [
       {
-        name: '<<namePrefix>>-vSite-${serviceShort}-001'
+        name: '${namePrefix}-vSite-${serviceShort}-001'
         properties: {
           bgpProperties: {
             asn: 65010
