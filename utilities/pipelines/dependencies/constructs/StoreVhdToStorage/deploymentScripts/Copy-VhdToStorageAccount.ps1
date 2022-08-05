@@ -104,7 +104,11 @@ process {
         DestContainer = $destinationContainerName
         Force         = $true
     }
-    $destBlob = Start-AzStorageBlobCopy @resourceActionInputObject
+
+    if ($PSCmdlet.ShouldProcess('Storage blob copy of VHD [{0}]' -f $destinationBlobName, 'Start')) {
+        $destBlob = Start-AzStorageBlobCopy @resourceActionInputObject
+        Write-Verbose ('Copied/initialized copy of VHD from URI [{0}] to container [{1}] in storage account [{2}]' -f $sourceUri, $destinationContainerName, $destinationStorageAccountName) -Verbose
+    }
 
     if ($WaitForComplete){
         $destBlob | Get-AzStorageBlobCopyState -WaitForComplete
