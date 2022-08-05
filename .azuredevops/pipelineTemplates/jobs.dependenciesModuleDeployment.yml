@@ -122,7 +122,7 @@ jobs:
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
 
-                # Local tokens
+                # Add defaults
                 $ConvertTokensInputs.Tokens += @{
                   resourceGroupName = '${{ parameters.resourceGroupName }}'
                   subscriptionId    = '${{ parameters.subscriptionId }}'

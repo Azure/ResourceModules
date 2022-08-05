@@ -127,22 +127,14 @@ jobs:
           pwsh: true
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
             # Load Settings File
             $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
 
-            if((Split-Path '$(moduleTestFilePath)' -Extension) -ne '.json') {
-              Write-Verbose 'Skipping token replacement as the deployment test file is no JSON-Parameter file' -Verbose
-              return
-            }
-
-            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
-
             # Construct Token Function Input
             $ConvertTokensInputs = @{
                 Tokens      = @{}
-                FilePath    = $moduleTestFilePath
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
@@ -173,8 +165,12 @@ jobs:
               $ConvertTokensInputs.Tokens += $customTokens
             }
 
+            # Target files
+            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
+            $targetFileList = @($moduleTestFilePath)
+
             # Invoke Token Replacement Functionality
-            $null = Convert-TokensInFile @ConvertTokensInputs
+            $null = $targetFileList | Convert-TokensInFileList @ConvertTokensInputs
 
       # [Validation] task(s)
       #---------------------

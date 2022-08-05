@@ -134,12 +134,12 @@ runs:
 
           # Construct Token Function Input
           $ConvertTokensInputs = @{
-            Tokens       = @{}
-            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+            Tokens      = @{}
+            TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
           }
 
-          # Local tokens
+          # Add defaults
           $ConvertTokensInputs.Tokens += @{
             resourceGroupName = '${{ inputs.resourceGroupName }}'
             subscriptionId    = '${{ inputs.subscriptionId }}'
@@ -166,9 +166,9 @@ runs:
           }
 
           # Target files
-          [string[]]$targetFileList = '${{ inputs.templateFilePath }}'
+          $targetFileList = @('${{ inputs.templateFilePath }}')
           if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
-            $targetFileList = '${{ inputs.parameterFilePath }}'
+            $targetFileList += '${{ inputs.parameterFilePath }}'
           }
 
           # Invoke Token Replacement Functionality
