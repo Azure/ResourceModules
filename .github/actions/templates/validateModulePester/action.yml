@@ -57,6 +57,7 @@ runs:
         # Set additional environment variables
         # ------------------------------------
         $context = Get-AzContext
+        Write-Verbose 'Context' -Verbose
         Write-Verbose ($context | fl | Out-String) -Verbose
 
         ## Service Principal Object ID
