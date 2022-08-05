@@ -1,7 +1,7 @@
-@description('Required. The name of the flexible server.')
+@description('Required. The name of the PostgreSQL flexible server.')
 param name string
 
-@description('Required. The administrator login name of a server. Can only be specified when the server is being created.')
+@description('Required. The administrator login name of a server. Can only be specified when the PostgreSQL server is being created.')
 param administratorLogin string
 
 @description('Required. The administrator login password.')
@@ -93,8 +93,11 @@ param pointInTimeUTC string = ''
 @description('Conditional. Property required if "createMode" is set to "PointInTimeRestore".')
 param sourceServerResourceId string = ''
 
-@description('Optional. Properties for the network object. If provided, must contain "delegatedSubnetResourceId" property.')
-param network object = {}
+@description('Optional. Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration.')
+param delegatedSubnetResourceId string = ''
+
+@description('Conditional. Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used.')
+param privateDnsZoneArmResourceId string = ''
 
 @allowed([
   ''
@@ -111,21 +114,21 @@ param roleAssignments array = []
 param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = true
+param enableDefaultTelemetry bool = false
 
 var enableReferencedModulesTelemetry = false
 
-//resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-//  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
-//  properties: {
-//    mode: 'Incremental'
-//    template: {
-//      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
-//      contentVersion: '1.0.0.0'
-//      resources: []
-//    }
-//  }
-//}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
 
 resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-preview' = {
   name: name
@@ -154,9 +157,9 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
       startHour: maintenanceWindow.customWindow == 'Enabled' ? maintenanceWindow.startHour : 0
       startMinute: maintenanceWindow.customWindow == 'Enabled' ? maintenanceWindow.startMinute : 0
     } : null
-    network: !empty(network) ? {
-      delegatedSubnetResourceId: 'string'
-      privateDnsZoneArmResourceId: 'string'
+    network: !empty(delegatedSubnetResourceId) ? {
+      delegatedSubnetResourceId: delegatedSubnetResourceId
+      privateDnsZoneArmResourceId: privateDnsZoneArmResourceId
     } : null
     pointInTimeUTC: createMode == 'PointInTimeRestore' ? pointInTimeUTC : null
     sourceServerResourceId: createMode == 'PointInTimeRestore' ? sourceServerResourceId : null
@@ -167,26 +170,26 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
   }
 }
 
-//resource server_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
-//  name: '${server.name}-${lock}-lock'
-//  properties: {
-//    level: any(lock)
-//    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-//  }
-//  scope: server
-//}
-//
-//module server_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-//  name: '${uniqueString(deployment().name, location)}-Sql-Rbac-${index}'
-//  params: {
-//    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-//    principalIds: roleAssignment.principalIds
-//    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-//    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-//    resourceId: server.id
-//  }
-//}]
-//
+resource flexibleServer_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+  name: '${flexibleServer.name}-${lock}-lock'
+  properties: {
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: flexibleServer
+}
+
+module flexibleServer_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-PostgreSQL-Rbac-${index}'
+  params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
+    principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: flexibleServer.id
+  }
+}]
+
 //module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
 //  name: '${uniqueString(deployment().name, location)}-Sql-DB-${index}'
 //  params: {
@@ -222,25 +225,7 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
 //  }
 //}]
 //
-//module server_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-//  name: '${uniqueString(deployment().name, location)}-SQLServer-PrivateEndpoint-${index}'
-//  params: {
-//    groupIds: [
-//      privateEndpoint.service
-//    ]
-//    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(server.id, '/'))}-${privateEndpoint.service}-${index}'
-//    serviceResourceId: server.id
-//    subnetResourceId: privateEndpoint.subnetResourceId
-//    enableDefaultTelemetry: enableReferencedModulesTelemetry
-//    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-//    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-//    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
-//    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
-//    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
-//    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
-//    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
-//  }
-//}]
+
 //
 //module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
 //  name: '${uniqueString(deployment().name, location)}-Sql-FirewallRules-${index}'
@@ -268,30 +253,14 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
 //    enableDefaultTelemetry: enableReferencedModulesTelemetry
 //  }
 //}]
-//
-//module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
-//  name: '${uniqueString(deployment().name, location)}-Sql-VulnAssessm'
-//  params: {
-//    serverName: server.name
-//    name: vulnerabilityAssessmentsObj.name
-//    recurringScansEmails: contains(vulnerabilityAssessmentsObj, 'recurringScansEmails') ? vulnerabilityAssessmentsObj.recurringScansEmails : []
-//    recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
-//    recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
-//    vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
-//    enableDefaultTelemetry: enableReferencedModulesTelemetry
-//  }
-//  dependsOn: [
-//    server_securityAlertPolicies
-//  ]
-//}
-//
-@description('The name of the deployed Flexible PostgreSQL server.')
+
+@description('The name of the deployed PostgreSQL Flexible server.')
 output name string = flexibleServer.name
 
-@description('The resource ID of the deployed Flexible PostgreSQL server.')
+@description('The resource ID of the deployed PostgreSQL Flexible server.')
 output resourceId string = flexibleServer.id
 
-@description('The resource group of the deployed Flexible PostgreSQL server.')
+@description('The resource group of the deployed PostgreSQL Flexible server.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
