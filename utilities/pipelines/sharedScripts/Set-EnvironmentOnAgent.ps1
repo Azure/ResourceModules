@@ -123,7 +123,7 @@ function Set-EnvironmentOnAgent {
 
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $false, ValueFromPipeline = $true)]
+        [Parameter(Mandatory = $false)]
         [Hashtable[]] $PSModules = @()
     )
 
