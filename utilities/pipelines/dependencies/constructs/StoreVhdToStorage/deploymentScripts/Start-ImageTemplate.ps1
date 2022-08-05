@@ -70,7 +70,7 @@ process {
     }
     if ($PSCmdlet.ShouldProcess('Image template [{0}]' -f $imageTemplateName, 'Start')) {
         $null = Start-AzImageBuilderTemplate @resourceActionInputObject
-        Write-Verbose ('Create image artifacts from image template [{0}] in resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose
+        Write-Verbose ('Created/initialized creation of image artifacts from image template [{0}] in resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose
     }
 }
 
