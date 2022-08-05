@@ -38,7 +38,8 @@ function Convert-TokensInFileList {
     param (
         [parameter(
             Mandatory         = $true,
-            ValueFromPipeline = $true)]
+            ValueFromPipeline = $true
+        )]
         [String[]] $FilePathList,
 
         [parameter(Mandatory = $true)]
