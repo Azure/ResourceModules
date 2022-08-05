@@ -149,9 +149,9 @@ jobs:
                 }
 
                 # Target files
-                [string[]]$targetFileList = '${{ deploymentBlock.templateFilePath }}'
+                $targetFileList = @('${{ deploymentBlock.templateFilePath }}')
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
-                  $targetFileList = '${{ deploymentBlock.path }}'
+                  $targetFileList += '${{ deploymentBlock.path }}'
                 }
 
                 # Invoke Token Replacement Functionality
