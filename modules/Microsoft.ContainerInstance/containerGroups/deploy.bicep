@@ -10,8 +10,8 @@ param image string
 @description('Optional. Port to open on the container and the public IP address.')
 param ports array = [
   {
-    name: 'Tcp'
-    value: '443'
+    protocol:'TCP'
+    port: '443'
   }
 ]
 

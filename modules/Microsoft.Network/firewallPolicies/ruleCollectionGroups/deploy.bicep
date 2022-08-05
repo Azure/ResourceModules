@@ -29,7 +29,7 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-08-01' existing
   name: firewallPolicyName
 }
 
-resource ruleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2021-05-01' = {
+resource ruleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2021-08-01' = {
   name: name
   parent: firewallPolicy
   properties: {

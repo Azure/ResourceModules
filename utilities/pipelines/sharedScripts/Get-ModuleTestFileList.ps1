@@ -1,9 +1,9 @@
 ﻿<#
 .SYNOPSIS
-Get the relative file paths of all parameter files in the given module.
+Get the relative file paths of all test files in the given module.
 
 .DESCRIPTION
-Get the relative file paths of all parameter files in the given module.
+Get the relative file paths of all test files (*.json / deploy.test.bicep) in the given module.
 The relative path is returned instead of the full one to make paths easier to read in the pipeline.
 
 .PARAMETER ModulePath
@@ -11,6 +11,9 @@ Mandatory. The module path to search in.
 
 .PARAMETER SearchFolder
 Optional. The folder to search for files in
+
+.PARAMETER TestFilePattern
+Optional. The pattern of test files to search for. For example '*.json'
 
 .EXAMPLE
 Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\arm\Microsoft.Compute\virtualMachines'
@@ -30,12 +33,15 @@ function Get-ModuleTestFileList {
         [string] $ModulePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $SearchFolder = '.test'
+        [string] $SearchFolder = '.test',
+
+        [Parameter(Mandatory = $false)]
+        [string[]] $TestFilePattern = @('*.json', 'deploy.test.bicep')
     )
 
     $deploymentTests = @()
     if (Test-Path (Join-Path $ModulePath $SearchFolder)) {
-        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath $SearchFolder) -Depth 0 -Include ('*.json', '*.bicep') -File).FullName
+        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath $SearchFolder) -Recurse -Include $TestFilePattern -File).FullName
     }
 
     if (-not $deploymentTests) {
