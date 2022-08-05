@@ -132,11 +132,16 @@ jobs:
             # Load Settings File
             $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
 
+            # Get target files
+            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
+            $targetFileList = @($moduleTestFilePath)
+
             # Construct Token Function Input
             $ConvertTokensInputs = @{
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+              FilePathList = $targetFileList
+              Tokens       = @{}
+              TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+              TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
             }
 
             # Add defaults
@@ -165,12 +170,8 @@ jobs:
               $ConvertTokensInputs.Tokens += $customTokens
             }
 
-            # Target files
-            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
-            $targetFileList = @($moduleTestFilePath)
-
             # Invoke Token Replacement Functionality
-            $null = $targetFileList | Convert-TokensInFileList @ConvertTokensInputs
+            $null = Convert-TokensInFileList @ConvertTokensInputs
 
       # [Validation] task(s)
       #---------------------

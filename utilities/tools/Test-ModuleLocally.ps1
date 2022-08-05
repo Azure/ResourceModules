@@ -203,13 +203,14 @@ function Test-ModuleLocally {
 
             # Default Tokens
             $ConvertTokensInputs = @{
-                Tokens = @{
+                FilePathList = $moduleTestFiles
+                Tokens       = @{
                     subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
                     managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
                 }
             }
 
-            #Add Other Parameter File Tokens (For Testing)
+            # Add Other Parameter File Tokens (For Testing)
             if ($AdditionalTokens) {
                 $ConvertTokensInputs.Tokens += $AdditionalTokens
             }
@@ -219,8 +220,8 @@ function Test-ModuleLocally {
             if (Test-Path $settingsFilePath) {
                 $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json -AsHashtable
                 $ConvertTokensInputs += @{
-                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                    TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
                 }
 
                 if ($Settings.parameterFileTokens.localTokens) {
@@ -234,7 +235,7 @@ function Test-ModuleLocally {
             }
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $moduleTestFiles | Convert-TokensInFileList @ConvertTokensInputs
+            $null = Convert-TokensInFileList @ConvertTokensInputs
 
             # Deployment & Validation Testing
             # -------------------------------
@@ -281,7 +282,7 @@ function Test-ModuleLocally {
                     $ConvertTokensInputs += @{
                         SwapValueWithName = $true
                     }
-                    $null = $moduleTestFiles | Convert-TokensInFileList @ConvertTokensInputs
+                    $null = Convert-TokensInFileList @ConvertTokensInputs
                 }
             }
         }

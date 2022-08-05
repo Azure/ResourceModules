@@ -62,7 +62,8 @@ function Test-NamePrefixAvailability {
         # Replace parameter file tokens
         # -----------------------------
         $ConvertTokensInputs = @{
-            Tokens = $Tokens
+            FilePathList = $parameterFiles
+            Tokens       = $Tokens
         }
 
         # Tokens in settings.json
@@ -86,7 +87,7 @@ function Test-NamePrefixAvailability {
 
         try {
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $null = $parameterFiles | Convert-TokensInFileList @ConvertTokensInputs
+            $null = Convert-TokensInFileList @ConvertTokensInputs
 
 
             # Extract Parameter Names
@@ -181,7 +182,7 @@ function Test-NamePrefixAvailability {
             $ConvertTokensInputs += @{
                 SwapValueWithName = $true
             }
-            $null = $parameterFiles | Convert-TokensInFileList @ConvertTokensInputs
+            $null = Convert-TokensInFileList @ConvertTokensInputs
         }
     }
 

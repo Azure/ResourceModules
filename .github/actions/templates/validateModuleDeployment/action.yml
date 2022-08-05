@@ -132,11 +132,18 @@ runs:
           # Load Settings File
           $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
 
+          # Get target files
+          $targetFileList = @('${{ inputs.templateFilePath }}')
+          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+            $targetFileList += '${{ inputs.parameterFilePath }}'
+          }
+
           # Construct Token Function Input
           $ConvertTokensInputs = @{
-            Tokens      = @{}
-            TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+            FilePathList = $targetFileList
+            Tokens       = @{}
+            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
           }
 
           # Add defaults
@@ -165,14 +172,8 @@ runs:
             $ConvertTokensInputs.Tokens += $customTokens
           }
 
-          # Target files
-          $targetFileList = @('${{ inputs.templateFilePath }}')
-          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
-            $targetFileList += '${{ inputs.parameterFilePath }}'
-          }
-
           # Invoke Token Replacement Functionality
-          $null = $targetFileList | Convert-TokensInFileList @ConvertTokensInputs
+          $null = Convert-TokensInFileList @ConvertTokensInputs
 
           Write-Output "::endgroup::"
 

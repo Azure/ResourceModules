@@ -26,8 +26,8 @@ function Get-DependencyResourceNameList {
     $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
     . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
+    # Get target files
     $parameterFolders = Get-ChildItem -Path $dependencyParameterPath -Recurse -Filter 'parameters' -Directory
-    # $parameterFilePaths = @()
     $parameterFilePaths = [System.Collections.ArrayList]@()
     foreach ($parameterFolderPath in $parameterFolders.FullName) {
         $parameterFilePaths += Get-ChildItem -Path $parameterFolderPath -Recurse -Filter '*.json'
@@ -45,12 +45,13 @@ function Get-DependencyResourceNameList {
         Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', '))
 
         $ConvertTokensInputs = @{
-            Tokens      = $tokenMap
-            TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-            Verbose     = $false
+            FilePathList = $parameterFilePaths
+            Tokens       = $tokenMap
+            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+            Verbose      = $false
         }
-        $null = $parameterFilePaths | Convert-TokensInFileList @ConvertTokensInputs
+        $null = Convert-TokensInFileList @ConvertTokensInputs
     }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
@@ -66,7 +67,7 @@ function Get-DependencyResourceNameList {
         $ConvertTokensInputs += @{
             SwapValueWithName = $true
         }
-        $null = $parameterFilePaths | Convert-TokensInFileList @ConvertTokensInputs
+        $null = Convert-TokensInFileList @ConvertTokensInputs
     }
 
     return $dependencyResourceNames

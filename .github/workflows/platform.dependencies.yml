@@ -360,31 +360,34 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
-            $parameterFilePaths = @($parameterFilePath)
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
+            # Get target files
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
+            $parameterFilePaths = @($parameterFilePath)
+
             # Replace tokens in parameter file
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+              FilePathList = $parameterFilePaths
+              Tokens       = @{}
+              TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+              TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
             }
 
             # Add local tokens
             if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
+              $tokenMap = @{}
+              foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                  $tokenMap += @{ $token.name = $token.value }
+              }
+              Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+              $ConvertTokensInputs.Tokens += $tokenMap
             }
 
-            $null = $parameterFilePaths | Convert-TokensInFileList @ConvertTokensInputs
+            $null = Convert-TokensInFileList @ConvertTokensInputs
 
             # Get storage account name
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
@@ -830,28 +833,31 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+            # Get target files
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'parameters.json'
             $noprParameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'nopr.parameters.json'
             $parameterFilePaths = @($parameterFilePath, $noprParameterFilePath)
-            # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
             # Replace tokens in parameter file
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+              FilePathList = $parameterFilePaths
+              Tokens      = @{}
+              TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+              TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
             if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
+              $tokenMap = @{}
+              foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                  $tokenMap += @{ $token.name = $token.value }
+              }
+              Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+              $ConvertTokensInputs.Tokens += $tokenMap
             }
-            $null = $parameterFilePaths | Convert-TokensInFileList @ConvertTokensInputs
+            $null = Convert-TokensInFileList @ConvertTokensInputs
 
             # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
@@ -999,30 +1005,33 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'sqlmi.parameters.json'
-            $parameterFilePaths = @($parameterFilePath)
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+            # Get target files
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'sqlmi.parameters.json'
+            $parameterFilePaths = @($parameterFilePath)
 
             # Replace tokens in parameter file
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+              FilePathList = $parameterFilePaths
+              Tokens       = @{}
+              TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+              TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
             }
 
             # Add local tokens
             if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
+              $tokenMap = @{}
+              foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                  $tokenMap += @{ $token.name = $token.value }
+              }
+              Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+              $ConvertTokensInputs.Tokens += $tokenMap
             }
 
-            $null = $parameterFilePaths | Convert-TokensInFileList @ConvertTokensInputs
+            $null = Convert-TokensInFileList @ConvertTokensInputs
 
             # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
