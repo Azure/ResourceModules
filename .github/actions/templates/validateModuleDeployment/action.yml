@@ -113,7 +113,7 @@ runs:
         $context = Get-AzContext
 
         ## Service Principal Object ID
-        $servicePrincipalAppId = $Context.Account.Id
+        $servicePrincipalAppId = $context.Account.Id
         $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
         $servicePrincipalObjectId = $servicePrincipal.Id
         Write-Output ('::set-output name={0}::{1}' -f 'DEPLOYMENT_SPN_ENTAPP_OBJID', $servicePrincipalObjectId)
