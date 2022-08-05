@@ -118,13 +118,13 @@ runs:
 
     # [Token replacement] task(s)
     # ---------------------------
-    - name: 'Replace tokens in target file'
+    - name: 'Replace tokens in template file'
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Replace tokens in target file"
+          Write-Output "::group::Replace tokens in template file"
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
@@ -178,13 +178,13 @@ runs:
 
     # [Deployment validation] task(s)
     # -------------------------------
-    - name: 'Validate module'
+    - name: 'Validate template file'
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Validate module"
+          Write-Output "::group::Validate template file"
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
@@ -221,14 +221,14 @@ runs:
 
     # [Deployment execution] task(s)
     # ------------------------------
-    - name: 'Deploy module'
+    - name: 'Deploy template file'
       id: deploy_step
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Deploy module"
+          Write-Output "::group::Deploy template file"
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
@@ -287,14 +287,14 @@ runs:
 
     # [Deployment removal] task(s)
     # ----------------------------
-    - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
+    - name: 'Remove deployed resources'
       if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
+          Write-Output "::group::Remove deployed resources"
 
           # Load used function
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
