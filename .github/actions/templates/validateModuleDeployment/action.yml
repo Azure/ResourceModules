@@ -76,12 +76,6 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - name: Azure Login
-      uses: Azure/login@v1
-      with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
-
     # [Setup] task(s)
     # ---------------
     - name: 'Setup agent'
@@ -115,6 +109,12 @@ runs:
         Set-EnvironmentOnAgent -PSModules $Modules
 
         Write-Output "::endgroup::"
+
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
 
     # [Token replacement] task(s)
     # ---------------------------
