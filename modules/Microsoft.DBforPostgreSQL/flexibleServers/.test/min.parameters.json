@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "ahmad-test-pros"
+            "value": "<<namePrefix>>-az-postgresqlflexserver-min-001"
         },
         "skuName": {
-            "value": "Standard_D2s_v3"
+            "value": "Standard_B2s"
         },
         "tier": {
-            "value": "GeneralPurpose"
+            "value": "Burstable"
         },
         "administratorLogin": {
             "value": "adminUserName"
@@ -21,9 +21,6 @@
                 },
                 "secretName": "administratorLoginPassword"
             }
-        },
-        "location": {
-            "value": "westeurope"
         }
     }
 }

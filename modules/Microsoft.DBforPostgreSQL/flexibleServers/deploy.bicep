@@ -96,7 +96,7 @@ param sourceServerResourceId string = ''
 @description('Optional. Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration.')
 param delegatedSubnetResourceId string = ''
 
-@description('Conditional. Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used.')
+@description('Conditional. Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId".')
 param privateDnsZoneArmResourceId string = ''
 
 @description('Optional. The firewall rules to create in the PostgreSQL flexible server.')
@@ -142,13 +142,9 @@ param diagnosticEventHubName string = ''
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'PostgreSQLLogs'
-  'QueryStoreRuntimeStatistics'
-  'QueryStoreWaitStatistics'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'PostgreSQLLogs'
-  'QueryStoreRuntimeStatistics'
-  'QueryStoreWaitStatistics'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
