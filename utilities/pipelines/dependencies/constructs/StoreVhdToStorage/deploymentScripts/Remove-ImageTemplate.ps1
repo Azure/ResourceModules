@@ -70,7 +70,7 @@ process {
     }
     if ($PSCmdlet.ShouldProcess('Image template [{0}]' -f $imageTemplateName, 'Remove')) {
         $null = Remove-AzImageBuilderTemplate @resourceActionInputObject
-        Write-Verbose ('Remove image template [{0}] from resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose
+        Write-Verbose ('Removed image template [{0}] from resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose
     }
 }
 
