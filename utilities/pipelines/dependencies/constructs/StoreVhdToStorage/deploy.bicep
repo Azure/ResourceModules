@@ -6,7 +6,7 @@ targetScope = 'subscription'
 
 // RG parameters
 @description('Optional. The name of the resource group to deploy')
-param resourceGroupName string = 'validation-rg'
+param resourceGroupName string = '<<resourceGroupName>>'
 
 // =========== //
 // Deployments //
