@@ -66,7 +66,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' existing = {
   name: loadBalancerName
 }
 
-resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-05-01' = {
+resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-08-01' = {
   name: name
   properties: {
     frontendPort: frontendPort

@@ -13,6 +13,7 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DataFactory/factories/managedVirtualNetworks` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks) |
+| `Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks/managedPrivateEndpoints) |
 
 ## Parameters
 
@@ -30,7 +31,57 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `managedPrivateEndpoints` | _[managedPrivateEndpoints](managedPrivateEndpoints/readme.md)_ array | `[]` | An array of managed private endpoints objects created in the Data Factory managed virtual network. |
 
+
+### Parameter Usage: `managedPrivateEndpoints`
+
+To use Managed Private Endpoints the following dependencies must be deployed:
+
+- Destination private link resource must be created before and permissions allow requesting a private link connection to that resource.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"managedPrivateEndpoints": {
+    "value": [
+        {
+            "name": "mystorageaccount-managed-privateEndpoint", // Required: The managed privated endpoint resource name
+            "groupId": "blob", // Required: The groupId to which the managed private endpoint is created
+            "fqdns": [
+                "mystorageaccount.blob.core.windows.net" // Required: Fully qualified domain names
+            ],
+            "privateLinkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/mystorageaccount"
+            // Required: The ARM resource ID of the resource to which the managed private endpoint is created.
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+managedPrivateEndpoints:  [
+    // Example showing all available fields
+    {
+        name: 'mystorageaccount-managed-privateEndpoint' // Required: The managed privated endpoint resource name
+        groupId: 'blob' // Required: The groupId to which the managed private endpoint is created
+        fqdns: [
+          'mystorageaccount.blob.core.windows.net' // Required: Fully qualified domain names
+        ]
+        privateLinkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/mystorageaccount'
+    } // Required: The ARM resource ID of the resource to which the managed private endpoint is created.
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

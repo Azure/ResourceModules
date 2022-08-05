@@ -168,7 +168,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(azureBast
   }
 }
 
-resource azureBastion 'Microsoft.Network/bastionHosts@2021-05-01' = {
+resource azureBastion 'Microsoft.Network/bastionHosts@2021-08-01' = {
   name: name
   location: location
   tags: tags
