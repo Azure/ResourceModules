@@ -157,7 +157,6 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
     disableLocalAuth: disableLocalAuth
     enablePurgeProtection: sku == 'Free' ? false : enablePurgeProtection
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : null
-    // publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     softDeleteRetentionInDays: sku == 'Free' ? 0 : softDeleteRetentionInDays
   }
 }
