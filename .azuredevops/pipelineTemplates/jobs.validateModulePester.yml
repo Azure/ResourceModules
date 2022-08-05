@@ -127,8 +127,15 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
-            # Set additional environment variables
-            # ------------------------------------
+      - task: AzurePowerShell@5
+        displayName: 'Set additional environment values'
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+          ScriptType: InlineScript
+          pwsh: true
+          inline: |
             $context = Get-AzContext
 
             ## Service Principal Object ID

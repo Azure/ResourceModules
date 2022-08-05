@@ -54,8 +54,20 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        # Set additional environment variables
-        # ------------------------------------
+        Write-Output "::endgroup::"
+
+    - name: 'Azure Login'
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
+    - name: 'Set additional environment values'
+      shell: pwsh
+      run: |
+        # Grouping task logs
+        Write-Output "::group::Setup additional env values"
+
         Write-Verbose 'Context' -Verbose
         $context = Get-AzContext
         Write-Verbose ($context | fl | Out-String) -Verbose
@@ -67,12 +79,6 @@ runs:
         Write-Output ('::set-output name={0}::{1}' -f 'DEPLOYMENT_SPN_ENTAPP_OBJID', $servicePrincipalObjectId)
 
         Write-Output "::endgroup::"
-
-    - name: 'Azure Login'
-      uses: Azure/login@v1
-      with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
 
     # [Module Pester Test] task(s)
     #-----------------------------
