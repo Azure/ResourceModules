@@ -115,25 +115,6 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
-      - task: AzurePowerShell@5
-        displayName: 'Set additional environment values'
-        inputs:
-          azureSubscription: ${{ parameters.serviceConnection }}
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          ScriptType: InlineScript
-          pwsh: true
-          inline: |
-            $context = Get-AzContext
-
-            ## Service Principal Object ID
-            $servicePrincipalAppId = $context.Account.Id
-            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-            $servicePrincipalObjectId = $servicePrincipal.Id
-
-            Write-Host "##vso[task.setvariable variable=DEPLOYMENT_SPN_ENTAPP_OBJID]$servicePrincipalObjectId"
-            Write-Host "##vso[task.setvariable variable=DEPLOYMENT_SPN_ENTAPP_OBJID;isOutput=true]$servicePrincipalObjectId"
-
       # [Agent] Replace tokens
       #-----------------------
       - task: AzurePowerShell@5
@@ -151,6 +132,14 @@ jobs:
             # Load Settings File
             $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
 
+            # Collection additional information
+            ## Service Principal Object ID
+            $context = Get-AzContext
+            $servicePrincipalAppId = $context.Account.Id
+            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+            $servicePrincipalObjectId = $servicePrincipal.Id
+
+            # Build path
             if((Split-Path '$(moduleTestFilePath)' -Extension) -ne '.json') {
               Write-Verbose 'Skipping token replacement as the deployment test file is no JSON-Parameter file' -Verbose
               return
@@ -172,7 +161,7 @@ jobs:
               subscriptionId    = '${{ parameters.subscriptionId }}'
               managementGroupId = '${{ parameters.managementGroupId }}'
               tenantId          = '$(ARM_TENANT_ID)'
-              deploymentSpId    = '$(DEPLOYMENT_SPN_ENTAPP_OBJID)'
+              deploymentSpId    = $servicePrincipalObjectId
             }
 
             # Add local tokens

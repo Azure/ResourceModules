@@ -35,6 +35,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: 'Azure Login'
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
     - name: 'Setup agent'
       shell: pwsh
       run: |
@@ -56,28 +62,6 @@ runs:
 
         Write-Output "::endgroup::"
 
-    - name: 'Azure Login'
-      uses: Azure/login@v1
-      with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
-
-    - name: 'Set additional environment values'
-      shell: pwsh
-      run: |
-        # Grouping task logs
-        Write-Output "::group::Setup additional env values"
-
-        $context = Get-AzContext
-
-        ## Service Principal Object ID
-        $servicePrincipalAppId = $context.Account.Id
-        $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-        $servicePrincipalObjectId = $servicePrincipal.Id
-        ("{0}={1}" -f 'DEPLOYMENT_SPN_ENTAPP_OBJID', $servicePrincipalObjectId) >> $Env:GITHUB_ENV
-
-        Write-Output "::endgroup::"
-
     # [Module Pester Test] task(s)
     #-----------------------------
     - name: 'Run Pester tests'
@@ -90,6 +74,13 @@ runs:
         # Set repo root path
         $repoRootPath = $env:GITHUB_WORKSPACE
 
+        # Collect additional information
+        ## Service Principal Object ID
+        $context = Get-AzContext
+        $servicePrincipalAppId = $context.Account.Id
+        $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+        $servicePrincipalObjectId = $servicePrincipal.Id
+
         # Set test input module path
         $moduleFolderPaths = @(Join-Path $repoRootPath "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
@@ -101,15 +92,14 @@ runs:
         }
 
         # Set enforced token list
-        $enforcedTokenList = @{}
+        $enforcedTokenList = @{
+          deploymentSpId = $servicePrincipalObjectId
+        }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
             $enforcedTokenList['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
             $enforcedTokenList['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
-        }
-        if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SPN_ENTAPP_OBJID }}')) {
-            $enforcedTokenList['deploymentSpId'] = '${{ env.DEPLOYMENT_SPN_ENTAPP_OBJID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
             $enforcedTokenList['tenantId'] = '${{ env.ARM_TENANT_ID }}'

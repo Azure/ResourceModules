@@ -127,25 +127,6 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
-      - task: AzurePowerShell@5
-        displayName: 'Set additional environment values'
-        inputs:
-          azureSubscription: ${{ parameters.serviceConnection }}
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          ScriptType: InlineScript
-          pwsh: true
-          inline: |
-            $context = Get-AzContext
-
-            ## Service Principal Object ID
-            $servicePrincipalAppId = $context.Account.Id
-            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-            $servicePrincipalObjectId = $servicePrincipal.Id
-
-            Write-Host "##vso[task.setvariable variable=DEPLOYMENT_SPN_ENTAPP_OBJID]$servicePrincipalObjectId"
-            Write-Host "##vso[task.setvariable variable=DEPLOYMENT_SPN_ENTAPP_OBJID;isOutput=true]$servicePrincipalObjectId"
-
       # [Module Pester Test] task(s)
       #-----------------------------
       - task: AzurePowerShell@5
@@ -160,6 +141,14 @@ jobs:
             # Set repo root path
             $repoRootPath = '$(moduleRepoRoot)'
 
+            # Collection additional information
+            ## Service Principal Object ID
+            $context = Get-AzContext
+            $servicePrincipalAppId = $context.Account.Id
+            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+            $servicePrincipalObjectId = $servicePrincipal.Id
+
+            # Build path
             # Set test input module path
             $moduleFolderPaths = @(Join-Path $repoRootPath '${{ parameters.modulePath }}')
             $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
@@ -171,15 +160,14 @@ jobs:
             }
 
             # Set enforced token list
-            $enforcedTokenList = @{}
+            $enforcedTokenList = @{
+              deploymentSpId = $servicePrincipalObjectId
+            }
             if (-not [String]::IsNullOrEmpty('${{ parameters.subscriptionId }}')) {
                 $enforcedTokenList['subscriptionId'] = '${{ parameters.subscriptionId }}'
             }
             if (-not [String]::IsNullOrEmpty('${{ parameters.managementGroupId }}')) {
                 $enforcedTokenList['managementGroupId'] = '${{ parameters.managementGroupId }}'
-            }
-            if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SPN_ENTAPP_OBJID)')) {
-                $enforcedTokenList['deploymentSpId'] = '$(DEPLOYMENT_SPN_ENTAPP_OBJID)'
             }
             if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
                 $enforcedTokenList['tenantId'] =  '$(ARM_TENANT_ID)'

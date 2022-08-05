@@ -76,6 +76,12 @@ outputs:
 runs:
   using: 'composite'
   steps:
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
     # [Setup] task(s)
     # ---------------
     - name: 'Setup agent'
@@ -110,28 +116,6 @@ runs:
 
         Write-Output "::endgroup::"
 
-    - name: Azure Login
-      uses: Azure/login@v1
-      with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
-
-    - name: 'Set additional environment values'
-      shell: pwsh
-      run: |
-        # Grouping task logs
-        Write-Output "::group::Setup additional env values"
-
-        $context = Get-AzContext
-
-        ## Service Principal Object ID
-        $servicePrincipalAppId = $context.Account.Id
-        $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-        $servicePrincipalObjectId = $servicePrincipal.Id
-        ("{0}={1}" -f 'DEPLOYMENT_SPN_ENTAPP_OBJID', $servicePrincipalObjectId) >> $Env:GITHUB_ENV
-
-        Write-Output "::endgroup::"
-
     # [Token replacement] task(s)
     # ---------------------------
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
@@ -148,6 +132,13 @@ runs:
           # Load Settings File
           $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
 
+          # Collect additional information
+          ## Service Principal Object ID
+          $context = Get-AzContext
+          $servicePrincipalAppId = $context.Account.Id
+          $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+          $servicePrincipalObjectId = $servicePrincipal.Id
+
           # Construct Token Function Input
           $ConvertTokensInputs = @{
             Tokens       = @{}
@@ -162,7 +153,7 @@ runs:
             subscriptionId    = '${{ inputs.subscriptionId }}'
             managementGroupId = '${{ inputs.managementGroupId }}'
             tenantId          = '${{ env.ARM_TENANT_ID }}'
-            deploymentSpId    = '${{ env.DEPLOYMENT_SPN_ENTAPP_OBJID }}'
+            deploymentSpId    = $servicePrincipalObjectId
           }
 
           # Add local tokens
