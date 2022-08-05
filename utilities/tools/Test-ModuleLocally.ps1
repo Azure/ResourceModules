@@ -252,23 +252,6 @@ function Test-ModuleLocally {
                 Verbose           = $true
             }
 
-            if (-not $moduleTestFiles) {
-                # Using new testing templates - adding special parameters
-                if ((Split-Path $TemplateFilePath -Extension) -eq '.bicep') {
-                    $testTemplatePossibleParameters = (az bicep build --file $TemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable).parameters.Keys
-                } else {
-                    $testTemplatePossibleParameters = ((Get-Content $TemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
-                }
-
-                if (Test-Path $settingsFilePath) {
-                    if ($testTemplatePossibleParameters -contains 'namePrefix') {
-                        $functionInput['additionalParameters'] += @{
-                            namePrefix = ($Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }).value
-                        }
-                    }
-                }
-            }
-
             try {
                 # Validate template
                 # -----------------
