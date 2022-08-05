@@ -4,10 +4,6 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 
-// Resource Group
-@description('Required. The name prefix to inject into all resource names')
-param namePrefix string
-
 @description('Optional. The name of the resource group to deploy for a testing purposes')
 @maxLength(90)
 param resourceGroupName string = '${serviceShort}-ms.sql-servers-rg'
@@ -33,17 +29,17 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}-01'
-    virtualNetworkName: 'adp-${namePrefix}-vnet-${serviceShort}-01'
-    deploymentScriptName: 'adp-${namePrefix}-ds-kv-${serviceShort}-01'
-    keyVaultName: 'adp-${namePrefix}-kv-${serviceShort}-01'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}-01'
+    virtualNetworkName: 'adp-<<namePrefix>>-vnet-${serviceShort}-01'
+    deploymentScriptName: 'adp-<<namePrefix>>-ds-kv-${serviceShort}-01'
+    keyVaultName: 'adp-<<namePrefix>>-kv-${serviceShort}-01'
     passwordSecretName: 'adminPassword'
     location: location
   }
 }
 
 resource keyVaultReference 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
-  name: 'adp-${namePrefix}-kv-${serviceShort}-01'
+  name: 'adp-<<namePrefix>>-kv-${serviceShort}-01'
   scope: resourceGroup
 }
 
@@ -53,10 +49,10 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
-    storageAccountName: 'dep${namePrefix}azsa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}-01'
-    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}-01'
-    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}-01'
+    storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}-01'
+    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}-01'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}-01'
     location: location
   }
 }
@@ -69,7 +65,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
   params: {
-    name: '${namePrefix}-${serviceShort}-001'
+    name: '<<namePrefix>>-${serviceShort}-001'
     lock: 'CanNotDelete'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: keyVaultReference.getSecret(resourceGroupResources.outputs.secretName)
@@ -95,7 +91,7 @@ module testDeployment '../../deploy.bicep' = {
     }
     databases: [
       {
-        name: '${namePrefix}-${serviceShort}db-001'
+        name: '<<namePrefix>>-${serviceShort}db-001'
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         skuTier: 'BusinessCritical'
         skuName: 'BC_Gen5'
