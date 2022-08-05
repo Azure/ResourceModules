@@ -128,8 +128,7 @@ runs:
         $servicePrincipalAppId = $context.Account.Id
         $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
         $servicePrincipalObjectId = $servicePrincipal.Id
-        $env:DEPLOYMENT_SPN_ENTAPP_OBJID = $servicePrincipalObjectId
-        Write-Verbose ("T: [{0}]" -f $env:DEPLOYMENT_SPN_ENTAPP_OBJID) -Verbose
+        Write-Output ('::set-env name={0}::{1}' -f 'DEPLOYMENT_SPN_ENTAPP_OBJID', $servicePrincipalObjectId)
         Write-Output ('::set-output name={0}::{1}' -f 'DEPLOYMENT_SPN_ENTAPP_OBJID', $servicePrincipalObjectId)
 
         Write-Output "::endgroup::"
