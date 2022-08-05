@@ -127,6 +127,18 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
+            # Set additional environment variables
+            # ------------------------------------
+            $Context = Get-AzContext
+
+            ## Service Principal Object ID
+            $servicePrincipalAppId = $Context.Account.Id
+            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+            $servicePrincipalObjectId = $servicePrincipal.Id
+
+            Write-Host "##vso[task.setvariable variable=DEPLOYMENT_SPN_ENTAPP_OBJID]$servicePrincipalObjectId"
+            Write-Host "##vso[task.setvariable variable=DEPLOYMENT_SPN_ENTAPP_OBJID;isOutput=true]$servicePrincipalObjectId"
+
       # [Module Pester Test] task(s)
       #-----------------------------
       - task: AzurePowerShell@5
@@ -159,8 +171,8 @@ jobs:
             if (-not [String]::IsNullOrEmpty('${{ parameters.managementGroupId }}')) {
                 $enforcedTokenList['managementGroupId'] = '${{ parameters.managementGroupId }}'
             }
-            if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SP_ID)')) {
-                $enforcedTokenList['deploymentSpId'] = '$(DEPLOYMENT_SP_ID)'
+            if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SPN_ENTAPP_OBJID)')) {
+                $enforcedTokenList['deploymentSpId'] = '$(DEPLOYMENT_SPN_ENTAPP_OBJID)'
             }
             if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
                 $enforcedTokenList['tenantId'] =  '$(ARM_TENANT_ID)'

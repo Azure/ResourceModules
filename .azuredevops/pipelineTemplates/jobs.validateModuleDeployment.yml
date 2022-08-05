@@ -115,6 +115,18 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
+            # Set additional environment variables
+            # ------------------------------------
+            $Context = Get-AzContext
+
+            ## Service Principal Object ID
+            $servicePrincipalAppId = $Context.Account.Id
+            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+            $servicePrincipalObjectId = $servicePrincipal.Id
+
+            Write-Host "##vso[task.setvariable variable=DEPLOYMENT_SPN_ENTAPP_OBJID]$servicePrincipalObjectId"
+            Write-Host "##vso[task.setvariable variable=DEPLOYMENT_SPN_ENTAPP_OBJID;isOutput=true]$servicePrincipalObjectId"
+
       # [Agent] Replace tokens
       #-----------------------
       - task: AzurePowerShell@5
@@ -153,7 +165,7 @@ jobs:
               subscriptionId    = '${{ parameters.subscriptionId }}'
               managementGroupId = '${{ parameters.managementGroupId }}'
               tenantId          = '$(ARM_TENANT_ID)'
-              deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
+              deploymentSpId    = '$(DEPLOYMENT_SPN_ENTAPP_OBJID)'
             }
 
             # Add local tokens

@@ -28,7 +28,7 @@ inputs:
     required: true
     default: ''
   moduleTestFilePath:
-    description: "The path to the test file"
+    description: 'The path to the test file'
     required: true
     default: ''
 
@@ -53,6 +53,16 @@ runs:
 
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
+
+        # Set additional environment variables
+        # ------------------------------------
+        $Context = Get-AzContext
+
+        ## Service Principal Object ID
+        $servicePrincipalAppId = $Context.Account.Id
+        $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+        $servicePrincipalObjectId = $servicePrincipal.Id
+        Write-Output ('::set-output name={0}::{1}' -f 'DEPLOYMENT_SPN_ENTAPP_OBJID', $servicePrincipalObjectId)
 
         Write-Output "::endgroup::"
 
@@ -92,8 +102,8 @@ runs:
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
             $enforcedTokenList['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
         }
-        if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
-            $enforcedTokenList['deploymentSpId'] = '${{ env.DEPLOYMENT_SP_ID }}'
+        if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SPN_ENTAPP_OBJID }}')) {
+            $enforcedTokenList['deploymentSpId'] = '${{ env.DEPLOYMENT_SPN_ENTAPP_OBJID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
             $enforcedTokenList['tenantId'] = '${{ env.ARM_TENANT_ID }}'
