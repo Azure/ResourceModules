@@ -99,6 +99,12 @@ param delegatedSubnetResourceId string = ''
 @description('Conditional. Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used.')
 param privateDnsZoneArmResourceId string = ''
 
+@description('Optional. The firewall rules to create in the PostgreSQL flexible server.')
+param firewallRules array = []
+
+@description('Optional. The databases to create in the server.')
+param databases array = []
+
 @allowed([
   ''
   'CanNotDelete'
@@ -115,6 +121,65 @@ param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = false
+
+@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@minValue(0)
+@maxValue(365)
+param diagnosticLogsRetentionInDays int = 365
+
+@description('Optional. Resource ID of the diagnostic storage account.')
+param diagnosticStorageAccountId string = ''
+
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
+
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
+
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'PostgreSQLLogs'
+  'QueryStoreRuntimeStatistics'
+  'QueryStoreWaitStatistics'
+])
+param diagnosticLogCategoriesToEnable array = [
+  'PostgreSQLLogs'
+  'QueryStoreRuntimeStatistics'
+  'QueryStoreWaitStatistics'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param diagnosticMetricsToEnable array = [
+  'AllMetrics'
+]
+
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 var enableReferencedModulesTelemetry = false
 
@@ -157,7 +222,7 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
       startHour: maintenanceWindow.customWindow == 'Enabled' ? maintenanceWindow.startHour : 0
       startMinute: maintenanceWindow.customWindow == 'Enabled' ? maintenanceWindow.startMinute : 0
     } : null
-    network: !empty(delegatedSubnetResourceId) ? {
+    network: !empty(delegatedSubnetResourceId) && empty(firewallRules) ? {
       delegatedSubnetResourceId: delegatedSubnetResourceId
       privateDnsZoneArmResourceId: privateDnsZoneArmResourceId
     } : null
@@ -190,69 +255,40 @@ module flexibleServer_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
   }
 }]
 
-//module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
-//  name: '${uniqueString(deployment().name, location)}-Sql-DB-${index}'
-//  params: {
-//    name: database.name
-//    serverName: server.name
-//    skuTier: contains(database, 'skuTier') ? database.skuTier : 'GeneralPurpose'
-//    skuName: contains(database, 'skuName') ? database.skuName : 'GP_Gen5_2'
-//    skuCapacity: contains(database, 'skuCapacity') ? database.skuCapacity : -1
-//    skuFamily: contains(database, 'skuFamily') ? database.skuFamily : ''
-//    skuSize: contains(database, 'skuSize') ? database.skuSize : ''
-//    collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
-//    maxSizeBytes: contains(database, 'maxSizeBytes') ? database.maxSizeBytes : 34359738368
-//    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
-//    diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
-//    diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
-//    diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
-//    diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''
-//    isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
-//    location: contains(database, 'location') ? database.location : server.location
-//    diagnosticLogCategoriesToEnable: contains(database, 'diagnosticLogCategoriesToEnable') ? database.diagnosticLogCategoriesToEnable : []
-//    licenseType: contains(database, 'licenseType') ? database.licenseType : ''
-//    maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
-//    minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''
-//    diagnosticMetricsToEnable: contains(database, 'diagnosticMetricsToEnable') ? database.diagnosticMetricsToEnable : []
-//    highAvailabilityReplicaCount: contains(database, 'highAvailabilityReplicaCount') ? database.highAvailabilityReplicaCount : 0
-//    readScale: contains(database, 'readScale') ? database.readScale : 'Disabled'
-//    requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''
-//    sampleName: contains(database, 'sampleName') ? database.sampleName : ''
-//    tags: contains(database, 'tags') ? database.tags : {}
-//    diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
-//    zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
-//    enableDefaultTelemetry: enableReferencedModulesTelemetry
-//  }
-//}]
-//
+module flexibleServer_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+  name: '${uniqueString(deployment().name, location)}-PostgreSQL-DB-${index}'
+  params: {
+    name: database.name
+    flexibleServerName: flexibleServer.name
+    collation: contains(database, 'collation') ? database.collation : ''
+    charset: contains(database, 'charset') ? database.charset : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
-//
-//module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
-//  name: '${uniqueString(deployment().name, location)}-Sql-FirewallRules-${index}'
-//  params: {
-//    name: firewallRule.name
-//    serverName: server.name
-//    endIpAddress: contains(firewallRule, 'endIpAddress') ? firewallRule.endIpAddress : '0.0.0.0'
-//    startIpAddress: contains(firewallRule, 'startIpAddress') ? firewallRule.startIpAddress : '0.0.0.0'
-//    enableDefaultTelemetry: enableReferencedModulesTelemetry
-//  }
-//}]
-//
-//module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for (securityAlertPolicy, index) in securityAlertPolicies: {
-//  name: '${uniqueString(deployment().name, location)}-Sql-SecAlertPolicy-${index}'
-//  params: {
-//    name: securityAlertPolicy.name
-//    serverName: server.name
-//    disabledAlerts: contains(securityAlertPolicy, 'disabledAlerts') ? securityAlertPolicy.disabledAlerts : []
-//    emailAccountAdmins: contains(securityAlertPolicy, 'emailAccountAdmins') ? securityAlertPolicy.emailAccountAdmins : false
-//    emailAddresses: contains(securityAlertPolicy, 'emailAddresses') ? securityAlertPolicy.emailAddresses : []
-//    retentionDays: contains(securityAlertPolicy, 'retentionDays') ? securityAlertPolicy.retentionDays : 0
-//    state: contains(securityAlertPolicy, 'state') ? securityAlertPolicy.state : 'Disabled'
-//    storageAccountAccessKey: contains(securityAlertPolicy, 'storageAccountAccessKey') ? securityAlertPolicy.storageAccountAccessKey : ''
-//    storageEndpoint: contains(securityAlertPolicy, 'storageEndpoint') ? securityAlertPolicy.storageEndpoint : ''
-//    enableDefaultTelemetry: enableReferencedModulesTelemetry
-//  }
-//}]
+module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
+  name: '${uniqueString(deployment().name, location)}-PostgreSQL-FirewallRules-${index}'
+  params: {
+    name: firewallRule.name
+    flexibleServerName: flexibleServer.name
+    startIpAddress: firewallRule.startIpAddress
+    endIpAddress: firewallRule.endIpAddress
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+resource flexibleServer_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+  name: diagnosticSettingsName
+  properties: {
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
+  }
+  scope: flexibleServer
+}
 
 @description('The name of the deployed PostgreSQL Flexible server.')
 output name string = flexibleServer.name
