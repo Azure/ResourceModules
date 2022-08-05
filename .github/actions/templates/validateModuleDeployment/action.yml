@@ -110,7 +110,7 @@ runs:
 
         # Set additional environment variables
         # ------------------------------------
-        $Context = Get-AzContext
+        $context = Get-AzContext
 
         ## Service Principal Object ID
         $servicePrincipalAppId = $Context.Account.Id
