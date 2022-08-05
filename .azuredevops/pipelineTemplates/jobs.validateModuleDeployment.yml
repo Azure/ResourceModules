@@ -222,17 +222,11 @@ jobs:
 
             # Handle template file
             if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
-
-                # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
-                # ===============================================
-
+                # Original JSON parameter files
                 $functionInput['templateFilePath'] = $moduleTemplateFilePath
                 $functionInput['moduleTestFilePath'] = $moduleTestFilePath
             } else {
-
-                # CASE: MODULE USES NEW TEST FILES
-                # ================================
-
+                # Test template files
                 $functionInput['templateFilePath'] = $moduleTestFilePath
             }
 
@@ -299,18 +293,12 @@ jobs:
 
             # Handle template file
             if ((Split-Path $moduleTestFilePath -Leaf) -like '*parameters.*') {
-
-                # CASE: MODULE USES ORIGINAL JSON PARAMETER FILES
-                # ===============================================
-
+                # Original JSON parameter files
                 $functionInput['templateFilePath'] = $moduleTemplateFilePath
                 $functionInput['moduleTestFilePath'] = $moduleTestFilePath
 
             } else {
-
-                # CASE: MODULE USES NEW TEST FILES
-                # ================================
-
+                # Test template files
                 $functionInput['templateFilePath'] = $moduleTestFilePath
             }
 
