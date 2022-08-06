@@ -1,9 +1,9 @@
 // ================ //
 // Parameters       //
 // ================ //
-@description('Optional. Name of the Key Vault. If no name is provided, then unique name will be created.')
+@description('Required. Name of the Key Vault. Must be globally unique.')
 @maxLength(24)
-param name string = ''
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -109,9 +109,6 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
-param baseTime string = utcNow('u')
-
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'AuditEvent'
@@ -155,11 +152,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var maxNameLength = 24
-var uniquenameUntrim = uniqueString('Key Vault${baseTime}')
-var uniquename = (length(uniquenameUntrim) > maxNameLength ? substring(uniquenameUntrim, 0, maxNameLength) : uniquenameUntrim)
-var name_var = !empty(name) ? name : uniquename
-
 var networkAcls_var = {
   bypass: !empty(networkAcls) ? networkAcls.bypass : null
   defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
@@ -194,7 +186,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
-  name: name_var
+  name: name
   location: location
   tags: tags
   properties: {

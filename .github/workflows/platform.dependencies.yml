@@ -32,7 +32,6 @@ env:
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
   job_deploy_rg:
@@ -932,7 +931,6 @@ jobs:
             ) | ForEach-Object {
                 $null = Add-AzKeyVaultKey -VaultName $noprKeyVaultName -Name $_.name -Destination $_.Destination
                 Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $noprKeyVaultName) -Verbose
-
             }
           azPSVersion: 'latest'
 
@@ -1169,7 +1167,7 @@ jobs:
             '11.azfw.parameters.json',
             '12.bastion.parameters.json',
             '13.bastion.parameters.json',
-            'parameters.json',
+            'parameters.json'
           ]
     steps:
       - name: 'Checkout'
