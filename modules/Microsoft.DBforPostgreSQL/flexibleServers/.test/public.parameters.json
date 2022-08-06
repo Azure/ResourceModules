@@ -46,16 +46,40 @@
         "firewallRules": {
             "value": [
                 {
+                    "name": "AllowAllWindowsAzureIps",
+                    "endIpAddress": "0.0.0.0",
+                    "startIpAddress": "0.0.0.0"
+                },
+                {
                     "name": "test-rule1",
-                    "endIpAddress": "10.10.10.1",
-                    "startIpAddress": "10.10.10.10"
+                    "startIpAddress": "10.10.10.1",
+                    "endIpAddress": "10.10.10.10"
+                },
+                {
+                    "name": "test-rule2",
+                    "startIpAddress": "100.100.100.1",
+                    "endIpAddress": "100.100.100.10"
                 }
             ]
         },
         "databases": {
             "value": [
                 {
-                    "name": "testdb"
+                    "name": "testdb1",
+                    "collation": "en_US.utf8",
+                    "charset": "UTF8"
+                },
+                {
+                    "name": "testdb2"
+                }
+            ]
+        },
+        "configurations": {
+            "value": [
+                {
+                    "name": "log_min_messages",
+                    "source": "user-override",
+                    "value": "INFO"
                 }
             ]
         },

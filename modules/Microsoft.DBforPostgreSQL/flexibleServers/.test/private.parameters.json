@@ -26,15 +26,34 @@
             "value": "Enabled"
         },
         "delegatedSubnetResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<namePrefix>>-rg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-postgres/subnets/<<namePrefix>>-az-subnet-x-postgres"
         },
         "privateDnsZoneArmResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<namePrefix>>-rg/providers/Microsoft.Network/privateDnsZones/test.postgres.database.azure.com"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<<namePrefix>>.postgres.database.azure.com"
         },
         "databases": {
             "value": [
                 {
-                    "name": "testdb"
+                    "name": "testdb1",
+                    "collation": "en_US.utf8",
+                    "charset": "UTF8"
+                },
+                {
+                    "name": "testdb2"
+                }
+            ]
+        },
+        "configurations": {
+            "value": [
+                {
+                    "name": "log_min_messages",
+                    "source": "user-override",
+                    "value": "INFO"
+                },
+                {
+                    "name": "autovacuum_naptime",
+                    "source": "user-override",
+                    "value": "80"
                 }
             ]
         },

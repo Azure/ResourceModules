@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-vnet-x-postgres"
+        },
+        "addressPrefixes": {
+            "value": [
+                "10.6.0.0/16"
+            ]
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-subnet-x-postgres", // PostGresSQL subnet
+                    "addressPrefix": "10.6.0.0/24",
+                    "delegations": [
+                        {
+                            "name": "Microsoft.DBforPostgreSQL.flexibleServers",
+                            "properties": {
+                                "serviceName": "Microsoft.DBforPostgreSQL/flexibleServers"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -105,6 +105,9 @@ param firewallRules array = []
 @description('Optional. The databases to create in the server.')
 param databases array = []
 
+@description('Optional. The configurations to create in the server.')
+param configurations array = []
+
 @allowed([
   ''
   'CanNotDelete'
@@ -269,6 +272,17 @@ module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewal
     flexibleServerName: flexibleServer.name
     startIpAddress: firewallRule.startIpAddress
     endIpAddress: firewallRule.endIpAddress
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module flexibleServer_configurations 'configurations/deploy.bicep' = [for (configuration, index) in configurations: {
+  name: '${uniqueString(deployment().name, location)}-PostgreSQL-Configurations-${index}'
+  params: {
+    name: configuration.name
+    flexibleServerName: flexibleServer.name
+    source: contains(configuration, 'source') ? configuration.source : ''
+    value: contains(configuration, 'value') ? configuration.value : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
