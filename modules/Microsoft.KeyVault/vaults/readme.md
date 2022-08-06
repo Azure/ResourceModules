@@ -25,6 +25,11 @@ This module deploys a key vault and its child resources.
 
 ## Parameters
 
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the Key Vault. Must be globally unique. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
@@ -48,7 +53,6 @@ This module deploys a key vault and its child resources.
 | `keys` | _[keys](keys/readme.md)_ array | `[]` |  | All keys to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `name` | string | `''` |  | Name of the Key Vault. If no name is provided, then unique name will be created. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
@@ -57,11 +61,6 @@ This module deploys a key vault and its child resources.
 | `softDeleteRetentionInDays` | int | `90` |  | softDelete data retention days. It accepts >=7 and <=90. |
 | `tags` | object | `{object}` |  | Resource tags. |
 | `vaultSku` | string | `'premium'` | `[premium, standard]` | Specifies the SKU for the vault. |
-
-**Generated parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a SAS token to access the modules. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -394,7 +393,7 @@ The following module usage examples are retrieved from the content of the files 
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
-
+    name: '<<namePrefix>>-az-kv-min-001'
   }
 }
 ```
@@ -410,7 +409,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {}
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-kv-min-001"
+    }
+  }
 }
 ```
 
@@ -427,6 +430,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
+    name: '<<namePrefix>>-az-kv-x-002'
     accessPolicies: [
       {
         objectId: '<<deploymentSpId>>'
@@ -478,7 +482,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>-az-kv-x-002'
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
@@ -545,6 +548,9 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-kv-x-002"
+    },
     "accessPolicies": {
       "value": [
         {
@@ -613,9 +619,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-kv-x-002"
     },
     "networkAcls": {
       "value": {
