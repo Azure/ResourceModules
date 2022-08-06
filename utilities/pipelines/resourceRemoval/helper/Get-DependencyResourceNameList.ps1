@@ -24,8 +24,9 @@ function Get-DependencyResourceNameList {
 
     # Load used function
     $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
-    . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+    . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
+    # Get target files
     $parameterFolders = Get-ChildItem -Path $dependencyParameterPath -Recurse -Filter 'parameters' -Directory
     $parameterFilePaths = [System.Collections.ArrayList]@()
     foreach ($parameterFolderPath in $parameterFolders.FullName) {
@@ -44,12 +45,13 @@ function Get-DependencyResourceNameList {
         Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', '))
 
         $ConvertTokensInputs = @{
-            Tokens      = $tokenMap
-            TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-            Verbose     = $false
+            FilePathList = $parameterFilePaths
+            Tokens       = $tokenMap
+            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+            Verbose      = $false
         }
-        $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
+        $null = Convert-TokensInFileList @ConvertTokensInputs
     }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
@@ -62,7 +64,10 @@ function Get-DependencyResourceNameList {
 
     if ($Settings.parameterFileTokens.localTokens) {
         Write-Verbose 'Restoring Tokens'
-        $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
+        $ConvertTokensInputs += @{
+            SwapValueWithName = $true
+        }
+        $null = Convert-TokensInFileList @ConvertTokensInputs
     }
 
     return $dependencyResourceNames
