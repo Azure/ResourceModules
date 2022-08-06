@@ -214,7 +214,7 @@ runs:
             $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
           }
 
-          Write-Verbose "Processing: [$moduleTemplatePossibleParameters]"
+          Write-Verbose "Processing: [$moduleTemplatePossibleParameters]" -Verbose
           if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
             $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
             $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
