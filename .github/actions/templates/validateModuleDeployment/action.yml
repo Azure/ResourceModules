@@ -138,8 +138,7 @@ runs:
             $targetFileList += '${{ inputs.parameterFilePath }}'
           }
 
-          # Collect additional information
-          ## Service Principal Object ID
+          # Get Service Principal Object ID
           $context = Get-AzContext
           $servicePrincipalAppId = $context.Account.Id
           $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
