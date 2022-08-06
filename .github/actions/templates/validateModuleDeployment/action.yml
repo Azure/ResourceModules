@@ -207,7 +207,7 @@ runs:
           $managementGroupId = '${{ inputs.managementGroupId }}'
 
           # Determine template & test file path
-          if ('${{ inputs.templateFilePath }}' -like '*/.test/*') {
+          if ('${{ inputs.templateFilePath }}' -like '*.test*') {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
           } else {
@@ -284,7 +284,7 @@ runs:
           $managementGroupId = '${{ inputs.managementGroupId }}'
 
           # Determine template & test file path
-          if ('${{ inputs.templateFilePath }}' -like '*/.test/*') {
+          if ('${{ inputs.templateFilePath }}' -like '*.test*') {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
           } else {
