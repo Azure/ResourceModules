@@ -1,0 +1,34 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-appc-pe-001"
+        },
+        "createMode": {
+            "value": "Default"
+        },
+        "disableLocalAuth": {
+            "value": false
+        },
+        "enablePurgeProtection": {
+            "value": false
+        },
+        "softDeleteRetentionInDays": {
+            "value": 1
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "configurationStores",
+                    "privateDnsZoneGroup": {
+                        "privateDNSResourceIds": [
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io"
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}
