@@ -211,6 +211,7 @@ runs:
             Write-Verbose 'Using template test file [${{ inputs.templateFilePath }}]' -Verbose
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
+            Write-Verbose $moduleTestFilePath -Verbose
           } else {
             Write-Verbose 'Using parameter test file [${{ inputs.parameterFilePath }}]' -Verbose
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
