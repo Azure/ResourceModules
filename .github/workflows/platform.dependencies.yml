@@ -1248,7 +1248,7 @@ jobs:
             'siterecovery.parameters.json',
             'table.parameters.json',
             'vaultcore.parameters.json',
-            'webpubsub.parameters.json',
+            'webpubsub.parameters.json'
           ]
     steps:
       - name: 'Checkout'
