@@ -210,8 +210,10 @@ runs:
           if ('${{ inputs.templateFilePath }}' -like '*.test*') {
             Write-Verbose 'Using template test file [${{ inputs.templateFilePath }}]' -Verbose
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-            $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
-            Write-Verbose $moduleTestFilePath -Verbose
+            $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Get-Item $moduleTestFilePath).Parent.Parent.Parent)
+            Write-Verbose "one: $moduleTestFilePath" -Verbose
+            Write-Verbose "two: $moduleTemplateFilePath" -Verbose
+            Write-Verbose ("three: {0}" -f (Get-Item $moduleTestFilePath).Parent.Parent.Parent) -Verbose
           } else {
             Write-Verbose 'Using parameter test file [${{ inputs.parameterFilePath }}]' -Verbose
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
@@ -289,7 +291,7 @@ runs:
           # Determine template & test file path
           if ('${{ inputs.templateFilePath }}' -like '*.test*') {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-            $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
+            $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Get-Item $moduleTestFilePath).Parent.Parent.Parent)
           } else {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
             $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
