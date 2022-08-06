@@ -82,7 +82,7 @@ runs:
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Setup agent"
+        Write-Output '::group::Setup agent'
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -108,7 +108,7 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output "::endgroup::"
+        Write-Output '::endgroup::'
 
     - name: Azure Login
       uses: Azure/login@v1
@@ -181,7 +181,7 @@ runs:
           # Invoke Token Replacement Functionality
           $null = Convert-TokensInFileList @ConvertTokensInputs
 
-          Write-Output "::endgroup::"
+          Write-Output '::endgroup::'
 
     # [Deployment validation] task(s)
     # -------------------------------
@@ -205,24 +205,28 @@ runs:
           $resourceGroupName = '${{ inputs.resourceGroupName }}'
           $subscriptionId = '${{ inputs.subscriptionId }}'
           $managementGroupId = '${{ inputs.managementGroupId }}'
-          $usesDependencyTemplate = '${{ inputs.templateFilePath }}' -like '*/.test/*'
 
-          if ($usesDependencyTemplate) {
+          # Determine template & test file path
+          if ('${{ inputs.templateFilePath }}' -like '*/.test/*') {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
-            $moduleTemplateFileContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
-            $moduleTemplateFilePossibleParameters = $moduleTemplateFileContent.parameters.Keys
           } else {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
             $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-            $moduleTemplateFilePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+          }
+
+          # Determine possible parameters depending on file type
+          if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
+            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+          } else {
+            $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
           }
 
           # ----------------- #
           # Invoke validation #
           # ----------------- #
           $functionInput = @{
-            templateFilePath     = $usesDependencyTemplate ? $moduleTestFilePath : $moduleTemplateFilePath
             location             = $location
             resourceGroupName    = $resourceGroupName
             subscriptionId       = $subscriptionId
@@ -230,14 +234,19 @@ runs:
             additionalParameters = @{}
           }
 
-          # Handle parameter file
-          if ((Split-Path $moduleTestFilePath -Extension) -eq '.json') {
+          # Handle template file
+          if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+            # Test template files
+            $functionInput['templateFilePath'] = $moduleTestFilePath
+          } else {
+            # Original JSON parameter files
+            $functionInput['templateFilePath'] = $moduleTemplateFilePath
             $functionInput['parameterFilePath'] = $moduleTestFilePath
           }
 
           # Handle additional parameters
           # ----------------------------
-          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplateFilePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
+          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
             $functionInput['additionalParameters'] += @{
               enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
             }
@@ -273,24 +282,28 @@ runs:
           $resourceGroupName = '${{ inputs.resourceGroupName }}'
           $subscriptionId = '${{ inputs.subscriptionId }}'
           $managementGroupId = '${{ inputs.managementGroupId }}'
-          $usesDependencyTemplate = '${{ inputs.templateFilePath }}' -like '*/.test/*'
 
-          if ($usesDependencyTemplate) {
+          # Determine template & test file path
+          if ('${{ inputs.templateFilePath }}' -like '*/.test/*') {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f (Split-Path (Split-Path $moduleTestFilePath -Parent) -Parent))
-            $moduleTemplateFileContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
-            $moduleTemplateFilePossibleParameters = $moduleTemplateFileContent.parameters.Keys
           } else {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
             $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-            $moduleTemplateFilePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+          }
+
+          # Determine possible parameters depending on file type
+          if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
+            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+          } else {
+            $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
           }
 
           # ----------------- #
           # Invoke deployment #
           # ----------------- #
           $functionInput = @{
-            templateFilePath     = $usesDependencyTemplate ? $moduleTestFilePath : $moduleTemplateFilePath
             location             = $location
             resourceGroupName    = $resourceGroupName
             subscriptionId       = $subscriptionId
@@ -298,14 +311,19 @@ runs:
             additionalParameters = @{}
           }
 
-          # Handle parameter file
-          if ((Split-Path $moduleTestFilePath -Extension) -eq '.json') {
+          # Handle template file
+          if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+            # Test template files
+            $functionInput['templateFilePath'] = $moduleTestFilePath
+          } else {
+            # Original JSON parameter files
+            $functionInput['templateFilePath'] = $moduleTemplateFilePath
             $functionInput['parameterFilePath'] = $moduleTestFilePath
           }
 
           # Handle additional parameters
           # ----------------------------
-          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplateFilePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
+          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
             $functionInput['additionalParameters'] += @{
               enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
             }
@@ -348,7 +366,7 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Remove deployed resources"
+          Write-Output '::group::Remove deployed resources'
 
           # Load used function
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
@@ -368,4 +386,4 @@ runs:
             Initialize-DeploymentRemoval @functionInput
           }
 
-          Write-Output "::endgroup::"
+          Write-Output '::endgroup::'
