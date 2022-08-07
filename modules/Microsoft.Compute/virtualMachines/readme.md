@@ -43,7 +43,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `additionalUnattendContent` | array | `[]` |  | Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object. |
 | `adminPassword` | secureString | `''` |  | When specifying a Windows Virtual Machine, this value should be passed. |
 | `allowExtensionOperations` | bool | `True` |  | Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine. |
-| `availabilitySetResourceId` | string | `''` |  | Resource name of an availability set. Cannot be used in combination with availability zone nor scale set. |
+| `availabilitySetResourceId` | string | `''` |  | Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set. |
 | `availabilityZone` | int | `0` | `[0, 1, 2, 3]` | If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set. |
 | `backupPolicyName` | string | `'DefaultPolicy'` |  | Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault. |
 | `backupVaultName` | string | `''` |  | Recovery service vault name to add VMs to backup. |
