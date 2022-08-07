@@ -97,7 +97,7 @@ param bootDiagnosticStorageAccountName string = ''
 @description('Optional. Storage account boot diagnostic base URI.')
 param bootDiagnosticStorageAccountUri string = '.blob.${environment().suffixes.storage}/'
 
-@description('Optional. Resource name of a proximity placement group.')
+@description('Optional. Resource ID of a proximity placement group.')
 param proximityPlacementGroupResourceId string = ''
 
 @description('Optional. Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set.')
