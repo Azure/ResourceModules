@@ -82,6 +82,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/vm.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: VM Proximity Placement Group
+            - path: $(dependencyPath)/$(resourceType)/parameters/vmss.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: VMSS Proximity Placement Group
 
   - stage: deploy_msi
     displayName: Deploy user assigned identity
