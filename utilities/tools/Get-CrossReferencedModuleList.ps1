@@ -58,7 +58,7 @@ Note, any local references will only be searched within this path too.
 Optional. Print all local dependencies to the terminal only
 
 .EXAMPLE
-Get-LinkedModuleList
+Get-CrossReferencedModuleList
 
 Invoke the function with the default path. Returns an object such as:
 {
@@ -81,16 +81,16 @@ Invoke the function with the default path. Returns an object such as:
 }
 
 .EXAMPLE
-Get-LinkedModuleList -Path './Microsoft.Sql'
+Get-CrossReferencedModuleList -Path './Microsoft.Sql'
 
 Get only the references of the modules in folder path './Microsoft.Sql'
 
 .EXAMPLE
-Get-LinkedModuleList -Path './Microsoft.Sql' -PrintLocalReferencesOnly
+Get-CrossReferencedModuleList -Path './Microsoft.Sql' -PrintLocalReferencesOnly
 
 Print only the local references of the modules in folder path './Microsoft.Sql' to the terminal
 #>
-function Get-LinkedModuleList {
+function Get-CrossReferencedModuleList {
 
     [CmdletBinding()]
     param (

@@ -33,7 +33,7 @@ Next, you'll want to create your own copy of the code. Depending on the reposito
 
 > **Note:** Whether you chose GitHub or Azure DevOps as your repository's environment, it does not affect your options when registering the pipelines.
 
-> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-LinkedModuleList`](./Getting%20started%20-%20Get%20module%20cross-references) with the switch parameter `PrintLocalReferencesOnly` to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example, 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidentally delete required references.
+> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-CrossReferencedModuleList`](./Getting%20started%20-%20Get%20module%20cross-references) with the switch parameter `PrintLocalReferencesOnly` to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example, 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidentally delete required references.
 
 <details>
 <summary>GitHub Repository</summary>

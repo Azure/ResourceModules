@@ -338,7 +338,7 @@ function Set-ReferencesSection {
         [string] $SectionStartIdentifier = '## Cross-referenced modules'
     )
 
-    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'tools' 'Get-LinkedModuleList.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'tools' 'Get-CrossReferencedModuleList.ps1')
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
@@ -351,7 +351,7 @@ function Set-ReferencesSection {
         '| :-- | :-- |'
     )
 
-    $dependencies = (Get-LinkedModuleList)[$resourceTypeIdentifier]
+    $dependencies = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
 
     if ($dependencies.Keys -contains 'localPathReferences' -and $dependencies['localPathReferences']) {
         foreach ($reference in ($dependencies['localPathReferences'] | Sort-Object)) {

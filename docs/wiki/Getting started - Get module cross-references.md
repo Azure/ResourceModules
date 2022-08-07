@@ -1,4 +1,4 @@
-The `'Get-LinkedModuleList'` function helps you with discovering cross-modules references. It checks for any module references in a given path. This can be useful to determine which modules' folder you'd need to keep in case you'd only want to cherry-pick certain modules from the library.
+The `'Get-CrossReferencedModuleList'` function helps you with discovering cross-modules references. It checks for any module references in a given path. This can be useful to determine which modules' folder you'd need to keep in case you'd only want to cherry-pick certain modules from the library.
 
 ---
 
@@ -8,12 +8,12 @@ The `'Get-LinkedModuleList'` function helps you with discovering cross-modules r
 - [How it works](#how-it-works)
 - [How to use it](#how-to-use-it)
   - [Example output](#example-output)
-- [Related function: _Get-LinkedModuleList_](#related-function-get-linkedmodulelist)
+- [Related function: _Get-CrossReferencedModuleList_](#related-function-Get-CrossReferencedModuleList)
 
 ---
 # Location
 
-You can find the script under `'utilities/tools/Get-LinkedModuleList.ps1'`.
+You can find the script under `'utilities/tools/Get-CrossReferencedModuleList.ps1'`.
 
 # How it works
 

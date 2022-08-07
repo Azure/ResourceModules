@@ -206,7 +206,7 @@ Describe 'Readme tests' -Tag Readme {
                 readMeContent          = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
                 isTopLevelModule       = $resourceTypeIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
                 resourceTypeIdentifier = $resourceTypeIdentifier
-                templateReferences     = (Get-LinkedModuleList)[$resourceTypeIdentifier]
+                templateReferences     = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
             }
         }
 
@@ -479,7 +479,7 @@ Describe 'Readme tests' -Tag Readme {
             }
 
             # Template data
-            $expectedDependencies = (Get-LinkedModuleList)[$resourceTypeIdentifier]
+            $expectedDependencies = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
 
             # Test
             if ($expectedDependencies.localPathReferences) {
