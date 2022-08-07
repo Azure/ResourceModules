@@ -54,9 +54,6 @@ As an output you will receive a hashtable that (for each provider namespace) lis
 Optional. The path to search in. Defaults to the 'modules' folder.
 Note, any local references will only be searched within this path too.
 
-.PARAMETER PrintLocalReferencesOnly
-Optional. Print all local dependencies to the terminal only
-
 .EXAMPLE
 Get-CrossReferencedModuleList
 
@@ -84,21 +81,13 @@ Invoke the function with the default path. Returns an object such as:
 Get-CrossReferencedModuleList -Path './Microsoft.Sql'
 
 Get only the references of the modules in folder path './Microsoft.Sql'
-
-.EXAMPLE
-Get-CrossReferencedModuleList -Path './Microsoft.Sql' -PrintLocalReferencesOnly
-
-Print only the local references of the modules in folder path './Microsoft.Sql' to the terminal
 #>
 function Get-CrossReferencedModuleList {
 
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $Path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules'),
-
-        [Parameter(Mandatory = $false)]
-        [switch] $PrintLocalReferencesOnly
+        [string] $Path = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules')
     )
 
     $resultSet = [ordered]@{}
@@ -173,16 +162,13 @@ function Get-CrossReferencedModuleList {
         $resultSet[$resourceType].localPathReferences = $resolvedlocalReferencesResultSet[$resourceType]
     }
 
-    if ($PrintLocalReferencesOnly) {
-        Write-Verbose "The modules in path [$path] have the following local folder dependencies:" -Verbose
-        foreach ($resourceType in $resolvedlocalReferencesResultSet.Keys) {
-            Write-Verbose '' -Verbose
-            Write-Verbose "Resource: $resourceType" -Verbose
-            $resolvedlocalReferencesResultSet[$resourceType] | ForEach-Object {
-                Write-Verbose "- $_" -Verbose
-            }
+    Write-Verbose "The modules in path [$path] have the following local folder dependencies:"
+    foreach ($resourceType in $resolvedlocalReferencesResultSet.Keys) {
+        Write-Verbose ''
+        Write-Verbose "Resource: $resourceType"
+        $resolvedlocalReferencesResultSet[$resourceType] | ForEach-Object {
+            Write-Verbose "- $_"
         }
-    } else {
-        return $resultSet
     }
+    return $resultSet
 }
