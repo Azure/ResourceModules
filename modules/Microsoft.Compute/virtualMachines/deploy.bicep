@@ -100,7 +100,7 @@ param bootDiagnosticStorageAccountUri string = '.blob.${environment().suffixes.s
 @description('Optional. Resource name of a proximity placement group.')
 param proximityPlacementGroupResourceId string = ''
 
-@description('Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set.')
+@description('Optional. Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set.')
 param availabilitySetResourceId string = ''
 
 @description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set.')
