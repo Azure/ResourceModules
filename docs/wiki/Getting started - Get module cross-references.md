@@ -25,8 +25,8 @@ When invoking the script:
    - Only prints all local module references to the terminal, or
    - Returns all references:
      - Resource deployments
-     - Cross-Module references
-     - Remove-Module references (e.g., Bicep Registry)
+     - Local module (file) references
+     - Remote module references (e.g., Bicep Registry / Template Specs)
 
 # How to use it
 
