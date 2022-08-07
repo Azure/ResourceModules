@@ -103,9 +103,9 @@ function Find-TemplateFile {
     }
 
     #Prioritizing the bicep file
-    $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.bicep'
+    $TemplateFilePath = Join-Path $FolderPath 'deploy.bicep'
     if (-not (Test-Path $TemplateFilePath)) {
-        $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
+        $TemplateFilePath = Join-Path $FolderPath 'deploy.json'
     }
 
     if (-not (Test-Path $TemplateFilePath)) {
@@ -211,9 +211,9 @@ function Get-ParentModuleTemplateFile {
     $ParentFolderPath = Split-Path $ModuleFolderPath -Parent
 
     #Prioritizing the bicep file
-    $ParentTemplateFilePath = Join-Path -Path $ParentFolderPath -ChildPath 'deploy.bicep'
+    $ParentTemplateFilePath = Join-Path $ParentFolderPath 'deploy.bicep'
     if (-not (Test-Path $TemplateFilePath)) {
-        $ParentTemplateFilePath = Join-Path -Path $ParentFolderPath -ChildPath 'deploy.json'
+        $ParentTemplateFilePath = Join-Path $ParentFolderPath 'deploy.json'
     }
 
     if (-not (Test-Path -Path $ParentTemplateFilePath)) {
@@ -283,7 +283,7 @@ function Get-ModuleVersionFromFile {
     )
 
     $ModuleFolder = Split-Path -Path $TemplateFilePath -Parent
-    $VersionFilePath = Join-Path -Path $ModuleFolder -ChildPath 'version.json'
+    $VersionFilePath = Join-Path $ModuleFolder 'version.json'
 
     if (-not (Test-Path -Path $VersionFilePath)) {
         throw "No version file found at: [$VersionFilePath]"
