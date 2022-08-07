@@ -139,12 +139,13 @@ function Test-ModuleLocally {
     begin {
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
         $ModuleName = Split-Path (Split-Path $TemplateFilePath -Parent) -Leaf
-        Write-Verbose "Running Local Tests for $($ModuleName)"
+        $utilitiesFolderPath = Split-Path $PSScriptRoot -Parent
+        Write-Verbose "Running Local Tests for [$ModuleName]"
         # Load Tokens Converter Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFileList.ps1')
+        . (Join-Path $utilitiesFolderPath 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
         # Load Modules Validation / Deployment Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/New-TemplateDeployment.ps1')
-        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-TemplateDeployment.ps1')
+        . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+        . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
     }
     process {
 
@@ -152,7 +153,7 @@ function Test-ModuleLocally {
         # PESTER Tests #
         ################
         if ($PesterTest) {
-            Write-Verbose "Pester Testing Module: $ModuleName"
+            Write-Verbose "Pester Testing Module [$ModuleName]"
             try {
                 $enforcedTokenList = @{}
                 if ($ValidateOrDeployParameters.ContainsKey('subscriptionId')) {
@@ -220,8 +221,8 @@ function Test-ModuleLocally {
             if (Test-Path $settingsFilePath) {
                 $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json -AsHashtable
                 $ConvertTokensInputs += @{
-                    TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
 
                 if ($Settings.parameterFileTokens.localTokens) {
