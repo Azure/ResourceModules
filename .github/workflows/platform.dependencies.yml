@@ -1167,7 +1167,7 @@ jobs:
             '11.azfw.parameters.json',
             '12.bastion.parameters.json',
             '13.bastion.parameters.json',
-            'parameters.json',
+            'parameters.json'
           ]
     steps:
       - name: 'Checkout'
