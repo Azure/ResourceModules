@@ -13,7 +13,7 @@ This module deploys load balancer backend address pools.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/loadBalancers/backendAddressPools` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/backendAddressPools) |
+| `Microsoft.Network/loadBalancers/backendAddressPools` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/loadBalancers/backendAddressPools) |
 
 ## Parameters
 

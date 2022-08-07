@@ -1125,7 +1125,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
                     }
                     break
                 }
-                { $PSItem -like '*privateEndpoints' } {
+                { $PSItem -like '*privateEndpoints' -and ($PSItem -notlike '*managedPrivateEndpoints') } {
                     $testCases += @{
                         moduleName           = $moduleFolderName
                         resourceType         = 'privateEndpoints'

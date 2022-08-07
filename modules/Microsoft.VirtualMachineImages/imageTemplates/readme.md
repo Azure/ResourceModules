@@ -25,7 +25,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | :-- | :-- | :-- |
 | `customizationSteps` | array | Customization steps to be run when building the VM image. |
 | `imageSource` | object | Image source definition in object format. |
-| `name` | string | Name of the Image Template to be built by the Azure Image Builder service. |
+| `name` | string | Name prefix of the Image Template to be built by the Azure Image Builder service. |
 | `userMsiName` | string | Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder. |
 
 **Optional parameters**
@@ -254,7 +254,8 @@ roleAssignments: [
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the image template. |
+| `name` | string | The full name of the deployed image template. |
+| `namePrefix` | string | The prefix of the image template name provided as input. |
 | `resourceGroupName` | string | The resource group the image template was deployed into. |
 | `resourceId` | string | The resource ID of the image template. |
 | `runThisCommand` | string | The command to run in order to trigger the image build. |

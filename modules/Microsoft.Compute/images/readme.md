@@ -171,7 +171,7 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>-az-img-x-001'
     osAccountType: 'Premium_LRS'
-    osDiskBlobUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
+    osDiskBlobUri: 'https://adp<<namePrefix>>azsavhd001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-vhd-001.vhd'
     osDiskCaching: 'ReadWrite'
     osType: 'Windows'
     // Non-required parameters
@@ -209,7 +209,7 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
       "value": "Premium_LRS"
     },
     "osDiskBlobUri": {
-      "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
+      "value": "https://adp<<namePrefix>>azsavhd001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-vhd-001.vhd"
     },
     "osDiskCaching": {
       "value": "ReadWrite"

@@ -13,7 +13,7 @@ This module deploys Network Security Group Security Rules.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkSecurityGroups/securityRules` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkSecurityGroups/securityRules) |
+| `Microsoft.Network/networkSecurityGroups/securityRules` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkSecurityGroups/securityRules) |
 
 ## Parameters
 

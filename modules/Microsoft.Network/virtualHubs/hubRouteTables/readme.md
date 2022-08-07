@@ -13,7 +13,7 @@ This module deploys virtual hub route tables.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualHubs/hubRouteTables` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubRouteTables) |
+| `Microsoft.Network/virtualHubs/hubRouteTables` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualHubs/hubRouteTables) |
 
 ## Parameters
 
