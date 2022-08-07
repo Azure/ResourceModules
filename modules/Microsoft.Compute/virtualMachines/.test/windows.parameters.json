@@ -149,6 +149,9 @@
         "diagnosticEventHubName": {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
         },
+        "proximityPlacementGroupResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-x-001"
+        },
         "systemAssignedIdentity": {
             "value": true
         },
