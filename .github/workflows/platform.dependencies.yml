@@ -91,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['parameters.json', 'vm.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1167,7 +1167,7 @@ jobs:
             '11.azfw.parameters.json',
             '12.bastion.parameters.json',
             '13.bastion.parameters.json',
-            'parameters.json'
+            'parameters.json',
           ]
     steps:
       - name: 'Checkout'
@@ -1248,7 +1248,7 @@ jobs:
             'siterecovery.parameters.json',
             'table.parameters.json',
             'vaultcore.parameters.json',
-            'webpubsub.parameters.json'
+            'webpubsub.parameters.json',
           ]
     steps:
       - name: 'Checkout'
