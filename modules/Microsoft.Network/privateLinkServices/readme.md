@@ -192,6 +192,14 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
       }
     ]
     lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
   }
 }
 ```
@@ -236,6 +244,16 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     }
   }
 }
