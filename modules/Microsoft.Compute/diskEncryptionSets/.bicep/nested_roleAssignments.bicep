@@ -67,7 +67,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
     principalId: principalId
     principalType: !empty(principalType) ? any(principalType) : null
     condition: !empty(condition) ? condition : null
-    conditionVersion: !empty(conditionVersion) ? conditionVersion : null
+    conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
   }
   scope: diskEncryptionSet
