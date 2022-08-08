@@ -16,13 +16,17 @@ This template deploys Connection Monitors.
 
 ## Parameters
 
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the resource. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `endpoints` | array | `[]` | List of connection monitor endpoints. |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `name` | string |  | Name of the resource. |
 | `networkWatcherName` | string | `[format('NetworkWatcher_{0}', resourceGroup().location)]` | Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG. |
 | `tags` | object | `{object}` | Tags of the resource. |
 | `testConfigurations` | array | `[]` | List of connection monitor test configurations. |

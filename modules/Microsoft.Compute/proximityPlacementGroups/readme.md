@@ -20,9 +20,9 @@ This template deploys a proximity placement group.
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string | `''` | The name of the proximity placement group that is being created. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the proximity placement group that is being created. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -160,8 +160,10 @@ The following module usage examples are retrieved from the content of the files 
 module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-proximityPlacementGroups'
   params: {
-    lock: 'CanNotDelete'
+    // Required parameters
     name: '<<namePrefix>>-az-ppg-x-001'
+    // Non-required parameters
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
@@ -186,11 +188,13 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "lock": {
-      "value": "CanNotDelete"
-    },
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-ppg-x-001"
+    },
+    // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
     },
     "roleAssignments": {
       "value": [

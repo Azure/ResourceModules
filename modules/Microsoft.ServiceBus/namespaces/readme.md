@@ -30,6 +30,11 @@ This module deploys a service bus namespace resource.
 
 ## Parameters
 
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the Service Bus Namespace. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
@@ -51,7 +56,6 @@ This module deploys a service bus namespace resource.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/readme.md)_ object | `{object}` |  | The migration configuration. |
-| `name` | string | `''` |  | Name of the Service Bus Namespace. If no name is provided, then unique name will be created. |
 | `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | The queues to create in the service bus namespace. |
@@ -342,7 +346,7 @@ The following module usage examples are retrieved from the content of the files 
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
-
+    name: '<<namePrefix>>-az-sbn-min-001'
   }
 }
 ```
@@ -358,7 +362,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {}
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-sbn-min-001"
+    }
+  }
 }
 ```
 
@@ -375,6 +383,9 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
+    // Required parameters
+    name: '<<namePrefix>>-az-sbn-x-002'
+    // Non-required parameters
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'
@@ -403,7 +414,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     disasterRecoveryConfigs: {}
     lock: 'CanNotDelete'
     migrationConfigurations: {}
-    name: '<<namePrefix>>-az-sbn-x-002'
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -525,6 +535,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-sbn-x-002"
+    },
+    // Non-required parameters
     "authorizationRules": {
       "value": [
         {
@@ -576,9 +591,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     },
     "migrationConfigurations": {
       "value": {}
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-sbn-x-002"
     },
     "networkRuleSets": {
       "value": {
@@ -720,7 +732,9 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-sbn-pe-001'
+    // Non-required parameters
     privateEndpoints: [
       {
         privateDnsZoneGroups: {
@@ -749,9 +763,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-sbn-pe-001"
     },
+    // Non-required parameters
     "privateEndpoints": {
       "value": [
         {

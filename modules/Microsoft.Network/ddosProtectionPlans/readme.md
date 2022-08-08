@@ -20,9 +20,9 @@ This template deploys a DDoS protection plan.
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string | `''` | Name of the DDoS protection plan to assign the VNET to. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the DDoS protection plan to assign the VNET to. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -159,8 +159,10 @@ The following module usage examples are retrieved from the content of the files 
 module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-ddosProtectionPlans'
   params: {
-    lock: 'CanNotDelete'
+    // Required parameters
     name: '<<namePrefix>>-az-ddos-x-001'
+    // Non-required parameters
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
@@ -185,11 +187,13 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "lock": {
-      "value": "CanNotDelete"
-    },
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-ddos-x-001"
+    },
+    // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
     },
     "roleAssignments": {
       "value": [
