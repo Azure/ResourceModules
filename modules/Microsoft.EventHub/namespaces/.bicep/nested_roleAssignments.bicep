@@ -58,7 +58,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' existing =
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(eventHubNamespace.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

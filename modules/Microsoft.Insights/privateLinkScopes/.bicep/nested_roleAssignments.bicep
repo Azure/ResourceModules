@@ -53,7 +53,7 @@ resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2019-10-17-previ
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(privateLinkScope.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

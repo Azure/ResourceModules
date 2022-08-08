@@ -71,7 +71,7 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}/${split(resourceId, '/')[12]}'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(container.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

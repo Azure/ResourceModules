@@ -24,7 +24,7 @@ Invoke the function with the default path. Returns an object such as:
             "Microsoft.Compute/availabilitySets@2021-07-01",
             "Microsoft.Authorization/locks@2017-04-01",
             "Microsoft.Compute/availabilitySets@2021-04-01",
-            "Microsoft.Authorization/roleAssignments@2020-10-01-preview"
+            "Microsoft.Authorization/roleAssignments@2022-04-01"
         ]
     },
     (...)

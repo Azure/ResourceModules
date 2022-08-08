@@ -56,7 +56,7 @@ resource topic 'Microsoft.ServiceBus/namespaces/topics@2021-06-01-preview' exist
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 
-resource roleAssigment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssigment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(topic.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

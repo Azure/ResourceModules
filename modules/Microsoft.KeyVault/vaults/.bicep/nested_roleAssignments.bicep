@@ -62,7 +62,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(keyVault.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

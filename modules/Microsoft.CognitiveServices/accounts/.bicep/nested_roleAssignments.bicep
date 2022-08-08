@@ -70,7 +70,7 @@ resource account 'Microsoft.CognitiveServices/accounts@2017-04-18' existing = {
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(account.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

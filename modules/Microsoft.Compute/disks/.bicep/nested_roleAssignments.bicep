@@ -60,7 +60,7 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(disk.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

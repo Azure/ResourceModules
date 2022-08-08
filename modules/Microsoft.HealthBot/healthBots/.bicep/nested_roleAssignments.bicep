@@ -53,7 +53,7 @@ resource healthBot 'Microsoft.HealthBot/healthBots@2021-06-10' existing = {
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(healthBot.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
