@@ -20,13 +20,15 @@ You can find the script under `'utilities/tools/Get-CrossReferencedModuleList.ps
 When invoking the script:
 
 1. The function fetches all references implemented in the modules in a given path.
-1. The function formats them to show a consistent '\<ProviderNameSpace\>/\<ResourceType\>' format.
-1. Finally, depending on whether you provided the `PrintLocalReferencesOnly` switch statement, the function either
-   - Only prints all local module references to the terminal, or
-   - Returns all references:
-     - Resource deployments
-     - Local module (file) references
-     - Remote module references (e.g., Bicep Registry / Template Specs)
+1. The function groups them into the '\<ProviderNameSpace\>/\<ResourceType\>' hierarchy by type:
+  - Resource (API) deployments
+  - Local module (file) references
+  - Remote module references (e.g., Bicep Registry / Template Specs)
+
+> Note: The function collects the information recursively. That means, if module `A` has a dependency on module `B`, and Module B a dependency on module `C`, than A will show a dependency on both `B` & `C` (i.e., it is transitive).
+
+
+> Note: If you provide the `-Verbose` switch, the function further prints all local module references to the terminal
 
 # How to use it
 
