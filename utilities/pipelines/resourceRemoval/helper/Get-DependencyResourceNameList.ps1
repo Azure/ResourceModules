@@ -24,8 +24,9 @@ function Get-DependencyResourceNameList {
 
     # Load used function
     $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
-    . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+    . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
+    # Get target files
     $parameterFolders = Get-ChildItem -Path $dependencyParameterPath -Recurse -Filter 'parameters' -Directory
     $parameterFilePaths = [System.Collections.ArrayList]@()
     foreach ($parameterFolderPath in $parameterFolders.FullName) {
@@ -37,16 +38,14 @@ function Get-DependencyResourceNameList {
 
     # Construct Token Configuration Input
     $tokenConfiguration = @{
-        Tokens      = @{}
-        TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
-        TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+        FilePathList = $parameterFilePaths
+        Tokens       = @{}
+        TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+        TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+        Verbose      = $false
     }
 
-    ## Local Tokens from settings.yml
-    foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
-        $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
-    }
-    $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ }
+    $null = Convert-TokensInFileList @tokenConfiguration
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
     foreach ($parameterFilePath in $parameterFilePaths) {
@@ -56,8 +55,10 @@ function Get-DependencyResourceNameList {
         }
     }
 
-    Write-Verbose 'Restoring Tokens'
-    $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ -SwapValueWithName $true }
+    if ($Settings.parameterFileTokens.localTokens) {
+        Write-Verbose 'Restoring Tokens'
+        $null = Convert-TokensInFileList @tokenConfiguration -SwapValueWithName $true
+    }
 
     return $dependencyResourceNames
 }

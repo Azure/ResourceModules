@@ -140,7 +140,7 @@ function Test-ModuleLocally {
         $ModuleName = Split-Path (Split-Path $TemplateFilePath -Parent) -Leaf
         Write-Verbose "Running Local Tests for $($ModuleName)"
         # Load Tokens Converter Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFile.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFileList.ps1')
         # Load Modules Validation / Deployment Scripts
         . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/New-TemplateDeployment.ps1')
         . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-TemplateDeployment.ps1')
@@ -150,9 +150,8 @@ function Test-ModuleLocally {
         # TOKENS Replacement #
         ######################
 
-        $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
-
         # Construct Token Configuration Input
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
         $tokenConfiguration = @{
             Tokens      = @{}
             TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
@@ -231,7 +230,7 @@ function Test-ModuleLocally {
             }
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ }
+            $null = Convert-TokensInFileList @tokenConfiguration
 
             # Deployment & Validation Testing
             # -------------------------------
@@ -274,7 +273,7 @@ function Test-ModuleLocally {
                 if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
-                    $moduleTestFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ -SwapValueWithName $true }
+                    $null = Convert-TokensInFileList @tokenConfiguration -SwapValueWithName $true
                 }
             }
         }

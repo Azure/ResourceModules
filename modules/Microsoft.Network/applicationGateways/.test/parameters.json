@@ -273,6 +273,7 @@
                     "name": "public443-appServiceBackendHttpsSetting-appServiceBackendHttpsSetting",
                     "properties": {
                         "ruleType": "Basic",
+                        "priority": 200,
                         "httpListener": {
                             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/public443"
                         },
@@ -288,6 +289,7 @@
                     "name": "private4433-privateVmHttpSetting-privateVmHttpSetting",
                     "properties": {
                         "ruleType": "Basic",
+                        "priority": 250,
                         "httpListener": {
                             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/private4433"
                         },
@@ -303,6 +305,7 @@
                     "name": "httpRedirect80-public443",
                     "properties": {
                         "ruleType": "Basic",
+                        "priority": 300,
                         "httpListener": {
                             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/httpRedirect80"
                         },
@@ -315,6 +318,7 @@
                     "name": "httpRedirect8080-private4433",
                     "properties": {
                         "ruleType": "Basic",
+                        "priority": 350,
                         "httpListener": {
                             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/httpRedirect8080"
                         },

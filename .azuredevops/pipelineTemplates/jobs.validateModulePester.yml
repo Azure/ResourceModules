@@ -142,6 +142,13 @@ jobs:
             # Set repo root path
             $repoRootPath = '$(moduleRepoRoot)'
 
+            # Get Service Principal Object ID
+            $context = Get-AzContext
+            $servicePrincipalAppId = $context.Account.Id
+            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+            $servicePrincipalObjectId = $servicePrincipal.Id
+
+            # Build path
             # Set test input module path
             $moduleFolderPaths = @(Join-Path $repoRootPath '${{ parameters.modulePath }}')
             $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
@@ -152,14 +159,15 @@ jobs:
               Write-Verbose "- [($moduleFolderPath]" -Verbose
             }
 
-            $GlobalVariablesObject = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.yml') | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
             # Construct Token Configuration Input
+            $GlobalVariablesObject = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.yml') | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
             $tokenConfiguration = @{
                 Tokens      = @{}
                 TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
                 TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
             }
 
+            # Set token configuration and enforced tokens list
             if (-not [String]::IsNullOrEmpty('${{ parameters.subscriptionId }}')) {
                 $tokenConfiguration.Tokens['subscriptionId'] = '${{ parameters.subscriptionId }}'
             }
@@ -167,10 +175,10 @@ jobs:
                 $tokenConfiguration.Tokens['managementGroupId'] = '${{ parameters.managementGroupId }}'
             }
             if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SP_ID)')) {
-                $tokenConfiguration.Tokens['deploymentSpId'] = '$(DEPLOYMENT_SP_ID)'
+                $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
             }
             if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
-                $tokenConfiguration.Tokens['tenantId'] =  '$(ARM_TENANT_ID)'
+                $tokenConfiguration.Tokens['tenantId'] = '$(ARM_TENANT_ID)'
             }
 
             # Set and print test output path

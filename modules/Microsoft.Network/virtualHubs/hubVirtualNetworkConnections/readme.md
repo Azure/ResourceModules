@@ -12,7 +12,7 @@ This module deploys virtual hub virtual network connections.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubVirtualNetworkConnections) |
+| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualHubs/hubVirtualNetworkConnections) |
 
 ## Parameters
 

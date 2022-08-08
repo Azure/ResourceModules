@@ -33,7 +33,6 @@ env:
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
   TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
 
 jobs:
@@ -67,6 +66,31 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
+  job_deploy_vhd:
+    runs-on: ubuntu-20.04
+    name: 'Store VHD to Storage Account'
+    if: github.event.inputs.deployVhdDependencies == 'true'
+    needs:
+      - job_deploy_rg
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'utilities/pipelines/dependencies/constructs/StoreVhdToStorage/deploy.bicep'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
   job_deploy_ppg:
     runs-on: ubuntu-20.04
     name: 'Deploy proximity placement group'
@@ -77,7 +101,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths:
+          ['parameters.json', 'vm.parameters.json', 'vmss.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -131,7 +156,6 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-
       - name: Set msi principal ID output
         id: print_msi_prinId
         uses: azure/powershell@v1
@@ -354,7 +378,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Setup agent'
         shell: pwsh
         run: |
@@ -385,15 +408,18 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+            # Get target files
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
+            $parameterFilePaths = @($parameterFilePath)
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{
               Tokens       = @{}
-              FilePath     = $parameterFilePath
+              FilePath     = $parameterFilePaths
               TokenPrefix  = '${{ env.tokenPrefix }}'
               TokenSuffix  = '${{ env.tokenSuffix }}'
             }
@@ -412,7 +438,7 @@ jobs:
               $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
             }
 
-            $null = Convert-TokensInFile @ConvertTokensInputs
+            $null = Convert-TokensInFileList @ConvertTokensInputs
 
             # Get storage account name
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
@@ -461,190 +487,6 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_imgt:
-    runs-on: ubuntu-20.04
-    name: 'Deploy image template'
-    if: github.event.inputs.deployVhdDependencies == 'true'
-    env:
-      namespace: 'Microsoft.VirtualMachineImages\imageTemplates'
-    needs:
-      - job_deploy_rolea
-      - job_deploy_sig
-    outputs:
-      imageTemplateName: ${{ steps.print_imgt_output.outputs.imageTemplateName }}
-      imageTemplateResourceGroup: ${{ steps.print_imgt_output.outputs.imageTemplateResourceGroup }}
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-      - name: 'Deploy module'
-        id: deploy_imgt
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: 'modules/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.location }}'
-          resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
-
-      - name: 'Set image template output'
-        id: print_imgt_output
-        uses: azure/powershell@v1
-        with:
-          inlineScript: |
-            $deploymentOutput = '${{ steps.deploy_imgt.outputs.deploymentOutput }}'
-            $imageTemplateName = (ConvertFrom-Json $deploymentOutput).name
-            $imageTemplateResourceGroup = (ConvertFrom-Json $deploymentOutput).resourceGroupName
-            Write-Verbose "imageTemplateName: $imageTemplateName" -Verbose
-            Write-Verbose "imageTemplateResourceGroup: $imageTemplateResourceGroup" -Verbose
-            Write-Output ('::set-output name={0}::{1}' -f 'imageTemplateName', $imageTemplateName)
-            Write-Output ('::set-output name={0}::{1}' -f 'imageTemplateResourceGroup', $imageTemplateResourceGroup)
-          azPSVersion: 'latest'
-
-  job_deploy_vhd_to_sa:
-    runs-on: ubuntu-20.04
-    name: 'Trigger vhd build and store it to a storage account blob container'
-    if: github.event.inputs.deployVhdDependencies == 'true'
-    env:
-      imgtNamespace: 'Microsoft.VirtualMachineImages\imageTemplates'
-      saNamespace: 'Microsoft.Storage\storageAccounts'
-    needs:
-      - job_deploy_imgt
-      - job_deploy_sa
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-      - name: 'Setup agent'
-        shell: pwsh
-        run: |
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-          # Define PS modules to install on the runner
-          $Modules = @(
-              @{ Name = 'Az.ImageBuilder' },
-              @{ Name = 'Az.Storage' },
-              @{ Name = 'powershell-yaml'; Version = '0.4.2'}
-          )
-
-          # Set agent up
-          Set-EnvironmentOnAgent -PSModules $Modules
-
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
-
-      - name: 'Trigger building new image'
-        uses: azure/powershell@v1
-        with:
-          inlineScript: |
-            Write-Verbose "Retrieving output from previous job" -Verbose
-            $imageTemplateName = '${{ needs.job_deploy_imgt.outputs.imageTemplateName }}'
-            $imageTemplateResourceGroup = '${{ needs.job_deploy_imgt.outputs.imageTemplateResourceGroup }}'
-
-            Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
-            Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
-          azPSVersion: 'latest'
-
-      - name: 'Copy baked vhd to a storage account'
-        uses: azure/powershell@v1
-        with:
-          inlineScript: |
-            # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
-
-            # Construct Token Function Input
-            $ConvertTokensInputs = @{
-              Tokens       = @{}
-              TokenPrefix  = '${{ env.tokenPrefix }}'
-              TokenSuffix  = '${{ env.tokenSuffix }}'
-            }
-
-            # Add local (source control) tokens
-            $tokenMap = @{}
-            foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
-              $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
-            }
-            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-            $ConvertTokensInputs.Tokens += $tokenMap
-
-            # Swap 'namePrefix' token if provided as a GitHub secret
-            if(-not [String]::IsNullOrEmpty('${{ env.TOKEN_NAMEPREFIX }}')){
-              Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
-              $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
-            }
-
-            # Retrieving parameters from previous job outputs and parameter files
-            Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
-            $imageTemplateName = '${{ needs.job_deploy_imgt.outputs.imageTemplateName }}'
-            $imageTemplateResourceGroup = '${{ needs.job_deploy_imgt.outputs.imageTemplateResourceGroup }}'
-
-            Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.saNamespace }}' 'parameters' 'parameters.json'
-            $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
-
-            Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.imgtNamespace }}' 'parameters' 'parameters.json'
-            $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-            $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
-
-            # Initializing parameters before the blob copy
-            Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
-            $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
-            $sourceUri = $imgtRunOutput.ArtifactUri
-            $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
-            $sourceStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $sourceStorageAccountName
-            $sourceStorageAccountContext = $sourceStorageAccount.Context
-            $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
-            Write-Verbose "Retrieving artifact uri $sourceUri stored in resource group $sourceStorageAccountRGName" -Verbose
-
-            Write-Verbose "Initializing destination storage account parameters before the blob copy" -Verbose
-            $destinationStorageAccountName = $storageAccountParameters.name.value
-            $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
-            $destinationStorageAccountContext = $destinationStorageAccount.Context
-            $destinationContainerName = 'vhds'
-            $destinationBlobName = $imageTemplateParameters.name.value
-            $destinationBlobName = "$destinationBlobName.vhd"
-            Write-Verbose "Planning for destination blob name $destinationBlobName in container $destinationContainerName and storage account $destinationStorageAccountName" -Verbose
-
-            # Copying the vhd to a destination blob container
-            Write-Verbose "Copying the vhd to a destination blob container" -Verbose
-            $resourceActionInputObject = @{
-                AbsoluteUri   = $sourceUri
-                Context       = $sourceStorageAccountContext
-                DestContext   = $destinationStorageAccountContext
-                DestBlob      = $destinationBlobName
-                DestContainer = $destinationContainerName
-                Force         = $true
-            }
-            Start-AzStorageBlobCopy @resourceActionInputObject
-          azPSVersion: 'latest'
 
   job_deploy_ag:
     runs-on: ubuntu-20.04
@@ -1070,7 +912,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Setup agent'
         shell: pwsh
         run: |
@@ -1101,13 +942,17 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+            # Get target files
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'parameters.json'
             $noprParameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'nopr.parameters.json'
-            # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+            $parameterFilePaths = @($parameterFilePath, $noprParameterFilePath)
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{
+              FilePathList = $parameterFilePaths
               Tokens       = @{}
               TokenPrefix  = '${{ env.tokenPrefix }}'
               TokenSuffix  = '${{ env.tokenSuffix }}'
@@ -1126,9 +971,7 @@ jobs:
               Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
               $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
             }
-
-            $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath
-            $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $noprParameterFilePath
+            $null = Convert-TokensInFileList @ConvertTokensInputs
 
             # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
@@ -1204,7 +1047,6 @@ jobs:
             ) | ForEach-Object {
                 $null = Add-AzKeyVaultKey -VaultName $noprKeyVaultName -Name $_.name -Destination $_.Destination
                 Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $noprKeyVaultName) -Verbose
-
             }
           azPSVersion: 'latest'
 
@@ -1257,7 +1099,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Setup agent'
         shell: pwsh
         run: |
@@ -1288,17 +1129,22 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'sqlmi.parameters.json'
             # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+            # Get target files
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'sqlmi.parameters.json'
+            $parameterFilePaths = @($parameterFilePath)
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{
               Tokens       = @{}
-              FilePath     = $parameterFilePath
+              FilePath     = $parameterFilePaths
               TokenPrefix  = '${{ env.tokenPrefix }}'
               TokenSuffix  = '${{ env.tokenSuffix }}'
             }
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens += $tokenMap
 
             # Add local (source control) tokens
             $tokenMap = @{}
@@ -1314,7 +1160,7 @@ jobs:
               $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
             }
 
-            $null = Convert-TokensInFile @ConvertTokensInputs
+            $null = Convert-TokensInFileList @ConvertTokensInputs
 
             # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters

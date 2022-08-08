@@ -42,7 +42,7 @@ function Test-NamePrefixAvailability {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFile.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFileList.ps1')
         $root = (Get-Item $PSScriptRoot).Parent.Parent.FullName
     }
     process {
@@ -61,18 +61,16 @@ function Test-NamePrefixAvailability {
 
         # Replace parameter file tokens
         # -----------------------------
-        $ConvertTokensInputs = @{
-            Tokens = $Tokens
-        }
 
         # Tokens in settings.yml
         $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
 
         # Construct Token Configuration Input
         $tokenConfiguration = @{
-            Tokens      = @{}
-            TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
-            TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+            FilePathList = $parameterFiles
+            Tokens       = @{}
+            TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+            TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
         # Add local (source control) tokens
@@ -82,7 +80,7 @@ function Test-NamePrefixAvailability {
 
         try {
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ }
+            $null = Convert-TokensInFileList @tokenConfiguration
 
 
             # Extract Parameter Names
@@ -174,7 +172,7 @@ function Test-NamePrefixAvailability {
             # Restore parameter files
             # -----------------------
             Write-Verbose 'Restoring Tokens'
-            $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ -SwapValueWithName $true }
+            $null = Convert-TokensInFileList @tokenConfiguration -SwapValueWithName $true
         }
     }
 

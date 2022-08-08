@@ -57,7 +57,7 @@ runs:
 
         Write-Output "::endgroup::"
 
-    - name: 'Azure Login'
+    - name: Azure Login
       uses: Azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
@@ -75,6 +75,12 @@ runs:
         # Set repo root path
         $repoRootPath = $env:GITHUB_WORKSPACE
 
+        # Get Service Principal Object ID
+        $context = Get-AzContext
+        $servicePrincipalAppId = $context.Account.Id
+        $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+        $servicePrincipalObjectId = $servicePrincipal.Id
+
         # Set test input module path
         $moduleFolderPaths = @(Join-Path $repoRootPath "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
@@ -85,16 +91,14 @@ runs:
           Write-Verbose "- [($moduleFolderPath]" -Verbose
         }
 
+        # Construct Token Configuration Input and enforced tokens list
         $GlobalVariablesObject = Get-Content -Path 'settings.yml' | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
-
-        # Construct Token Configuration Input
         $tokenConfiguration = @{
             Tokens      = @{}
             TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
             TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
-        ## Enforced Tokens
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
             $tokenConfiguration.Tokens['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
         }
@@ -102,7 +106,7 @@ runs:
             $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
-            $tokenConfiguration.Tokens['deploymentSpId'] = '${{ env.DEPLOYMENT_SP_ID }}'
+            $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
             $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'

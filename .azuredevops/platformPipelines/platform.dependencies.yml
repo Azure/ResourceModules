@@ -51,6 +51,20 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Locks Resource Group
 
+  - ${{ if eq( parameters.deployVhdDependencies, true) }}:
+      - stage: deploy_vhd
+        displayName: Store VHD to Storage Account
+        dependsOn:
+          - deploy_rg
+        variables:
+          templateFilePath: $(dependencyPath)/constructs/StoreVhdToStorage/deploy.bicep
+        jobs:
+          - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
+            parameters:
+              deploymentBlocks:
+                - templateFilePath: $(templateFilePath)
+                  displayName: Deploy module
+
   - stage: deploy_ppg
     displayName: Deploy proximity placement group
     dependsOn:
@@ -65,6 +79,12 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Proximity Placement Group
+            - path: $(dependencyPath)/$(resourceType)/parameters/vm.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: VM Proximity Placement Group
+            - path: $(dependencyPath)/$(resourceType)/parameters/vmss.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: VMSS Proximity Placement Group
 
   - stage: deploy_msi
     displayName: Deploy user assigned identity
@@ -247,17 +267,20 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
-                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
-                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+                # Get target files
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                $parameterFilePaths = @($parameterFilePath)
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
-                    Tokens      = @{}
-                    FilePath    = $parameterFilePath
-                    TokenPrefix = '$(tokenPrefix)'
-                    TokenSuffix = '$(tokenSuffix)'
+                  Tokens      = @{}
+                  FilePathList= $parameterFilePaths
+                  TokenPrefix = '$(tokenPrefix)'
+                  TokenSuffix = '$(tokenSuffix)'
                 }
 
                 # Add local (source control) tokens
@@ -274,7 +297,7 @@ stages:
                   $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
                 }
 
-                $null = Convert-TokensInFile @ConvertTokensInputs
+                $null = Convert-TokensInFileList @ConvertTokensInputs
 
                 # Get storage account name
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
@@ -308,150 +331,6 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default SIG and SID
-
-  - ${{ if eq( parameters.deployVhdDependencies, true) }}:
-      - stage: deploy_imgt
-        displayName: Deploy image template
-        dependsOn:
-          - deploy_rolea
-          - deploy_sig
-          - deploy_sa
-        variables:
-          resourceType: 'Microsoft.VirtualMachineImages\imageTemplates'
-          saResourceType: 'Microsoft.Storage\storageAccounts'
-          templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-        jobs:
-          - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
-            parameters:
-              deploymentBlocks:
-                - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-                  templateFilePath: $(templateFilePath)
-                  displayName: Image template
-                  jobName: job_deploy_imgt
-          - job:
-            displayName: Trigger vhd build and store it to a storage account blob container
-            dependsOn:
-              - job_deploy_imgt
-            pool:
-              ${{ if eq(variables['vmImage'], '') }}:
-                name: $(poolName)
-              ${{ if eq(variables['poolName'], '') }}:
-                vmImage: $(vmImage)
-            variables:
-              deploymentOutput: $[ dependencies.job_deploy_imgt.outputs['DeployModule.deploymentOutput'] ]
-            steps:
-              - task: PowerShell@2
-                displayName: 'Setup agent'
-                inputs:
-                  targetType: inline
-                  pwsh: true
-                  script: |
-                    # Load used functions
-                    . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-                    # Define PS modules to install on the runner
-                    $Modules = @(
-                        @{ Name = 'Az.ImageBuilder' },
-                        @{ Name = 'Az.Storage' }
-                    )
-
-                    # Set agent up
-                    Set-EnvironmentOnAgent -PSModules $Modules
-              - task: AzurePowerShell@5
-                displayName: Trigger building new image
-                inputs:
-                  azureSubscription: $(serviceConnection)
-                  ScriptType: 'InlineScript'
-                  Inline: |
-                    # Retrieving parameters from previous job outputs
-                    Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
-                    $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
-                    $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
-
-                    # Trigger new image creation
-                    Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
-                    Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
-                  azurePowerShellVersion: 'LatestVersion'
-                  pwsh: true
-              - task: AzurePowerShell@5
-                displayName: Copy baked vhd to a storage account
-                inputs:
-                  azureSubscription: $(serviceConnection)
-                  ScriptType: 'InlineScript'
-                  Inline: |
-
-                    # Load used functions
-                    . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
-
-                    # Construct Token Function Input
-                    $ConvertTokensInputs = @{
-                        Tokens      = @{}
-                        TokenPrefix = '$(tokenPrefix)'
-                        TokenSuffix = '$(tokenSuffix)'
-                    }
-
-                    # Add local (source control) tokens
-                    $tokenMap = @{}
-                    foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
-                      $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
-                    }
-                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                    $ConvertTokensInputs.Tokens += $tokenMap
-
-                    # Swap 'namePrefix' token if provided as a Azure DevOps variable
-                    if(-not [String]::IsNullOrEmpty("$env:TOKEN_NAMEPREFIX")){
-                      Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
-                      $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
-                    }
-
-                    # Retrieving parameters from previous job outputs and parameter files
-                    Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
-                    $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
-                    $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
-
-                    Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
-                    $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(saResourceType)' 'parameters' 'parameters.json'
-                    $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-                    $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
-
-                    Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
-                    $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
-                    $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-                    $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
-
-                    # Initializing parameters before the blob copy
-                    Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
-                    $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
-                    $sourceUri = $imgtRunOutput.ArtifactUri
-                    $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
-                    $sourceStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $sourceStorageAccountName
-                    $sourceStorageAccountContext = $sourceStorageAccount.Context
-                    $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
-                    Write-Verbose "Retrieving artifact uri $sourceUri stored in resource group $sourceStorageAccountRGName" -Verbose
-
-                    Write-Verbose "Initializing destination storage account parameters before the blob copy" -Verbose
-                    $destinationStorageAccountName = $storageAccountParameters.name.value
-                    $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
-                    $destinationStorageAccountContext = $destinationStorageAccount.Context
-                    $destinationContainerName = 'vhds'
-                    $destinationBlobName = $imageTemplateParameters.name.value
-                    $destinationBlobName = "$destinationBlobName.vhd"
-                    Write-Verbose "Planning for destination blob name $destinationBlobName in container $destinationContainerName and storage account $destinationStorageAccountName" -Verbose
-
-                    # Copying the vhd to a destination blob container
-                    Write-Verbose "Copying the vhd to a destination blob container" -Verbose
-                    $resourceActionInputObject = @{
-                        AbsoluteUri   = $sourceUri
-                        Context       = $sourceStorageAccountContext
-                        DestContext   = $destinationStorageAccountContext
-                        DestBlob      = $destinationBlobName
-                        DestContainer = $destinationContainerName
-                        Force         = $true
-                    }
-                    Start-AzStorageBlobCopy @resourceActionInputObject
-                  azPSVersion: 'latest'
-                  azurePowerShellVersion: 'LatestVersion'
-                  pwsh: true
 
   - stage: deploy_ag
     displayName: Deploy action groups
@@ -707,14 +586,17 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
+                # Load used functions
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+                # Get target files
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 $noprParameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'nopr.parameters.json'
-
-                # Load used functions
-                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+                $parameterFilePaths = @($parameterFilePath, $noprParameterFilePath)
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
+                    FilePathList = $parameterFilePaths
                     Tokens      = @{}
                     TokenPrefix = '$(tokenPrefix)'
                     TokenSuffix = '$(tokenSuffix)'
@@ -733,9 +615,7 @@ stages:
                   Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
                   $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
                 }
-
-                $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath
-                $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $noprParameterFilePath
+                $null = Convert-TokensInFileList @ConvertTokensInputs
 
                 # Get key vault name
                 $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
@@ -845,34 +725,29 @@ stages:
                   azureSubscription: $(serviceConnection)
                   ScriptType: 'InlineScript'
                   Inline: |
-
-                    $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
                     # Load used functions
-                    . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+                    . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+                    # Get target files
+                    $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
+                    $parameterFilePaths = @($parameterFilePath)
 
                     # Construct Token Function Input
                     $ConvertTokensInputs = @{
-                        Tokens      = @{}
-                        FilePath    = $parameterFilePath
-                        TokenPrefix = '$(tokenPrefix)'
-                        TokenSuffix = '$(tokenSuffix)'
+                      Tokens      = @{}
+                      FilePathList = $parameterFilePath
+                      TokenPrefix  = '$(tokenPrefix)'
+                      TokenSuffix  = '$(tokenSuffix)'
                     }
-
-                    # Add local (source control) tokens
-                    $tokenMap = @{}
-                    foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
-                      $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+                    if ($Settings.parameterFileTokens.localTokens) {
+                      $tokenMap = @{}
+                      foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                          $tokenMap += @{ $token.name = $token.value }
+                      }
+                      Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                      $ConvertTokensInputs.Tokens = $tokenMap
                     }
-                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                    $ConvertTokensInputs.Tokens += $tokenMap
-
-                    # Swap 'namePrefix' token if provided as a Azure DevOps variable
-                    if(-not [String]::IsNullOrEmpty("$env:TOKEN_NAMEPREFIX")){
-                      Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
-                      $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
-                    }
-
-                    $null = Convert-TokensInFile @ConvertTokensInputs
+                    $null = Convert-TokensInFileList @ConvertTokensInputs
 
                     # Get key vault name
                     $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
