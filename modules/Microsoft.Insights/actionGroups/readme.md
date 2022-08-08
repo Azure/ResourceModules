@@ -7,6 +7,7 @@ This module deploys an Action Group.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -229,6 +230,10 @@ tags: {
 | `name` | string | The name of the action group . |
 | `resourceGroupName` | string | The resource group the action group was deployed into. |
 | `resourceId` | string | The resource ID of the action group . |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

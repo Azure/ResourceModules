@@ -191,14 +191,18 @@ Describe 'Readme tests' -Tag Readme {
                 $templateFilePath = $convertedTemplates[$moduleFolderPathKey].templateFilePath
             }
 
+            $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+
             $readmeFolderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                moduleFolderPath = $moduleFolderPath
-                templateContent  = $templateContent
-                templateFilePath = $templateFilePath
-                readMeFilePath   = Join-Path -Path $moduleFolderPath 'readme.md'
-                readMeContent    = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
-                isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+                moduleFolderName       = $resourceTypeIdentifier
+                moduleFolderPath       = $moduleFolderPath
+                templateContent        = $templateContent
+                templateFilePath       = $templateFilePath
+                readMeFilePath         = Join-Path -Path $moduleFolderPath 'readme.md'
+                readMeContent          = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
+                isTopLevelModule       = $resourceTypeIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
+                resourceTypeIdentifier = $resourceTypeIdentifier
+                templateReferences     = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
             }
         }
 
@@ -211,7 +215,7 @@ Describe 'Readme tests' -Tag Readme {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] Readme.md file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Deployment examples' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Readme.md file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -219,7 +223,7 @@ Describe 'Readme tests' -Tag Readme {
                 [boolean] $isTopLevelModule
             )
 
-            $expectedHeadersInOrder = @('Navigation', 'Resource types', 'Parameters', 'Outputs')
+            $expectedHeadersInOrder = @('Navigation', 'Resource types', 'Parameters', 'Outputs', 'Cross-referenced modules')
 
             if ($isTopLevelModule) {
                 # Only top-level modules have parameter files and hence deployment examples
@@ -438,6 +442,61 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ('list of excess template outputs defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
+        It '[<moduleFolderName>] Dependencies section should contain all cross-references defined in the template file' -TestCases $readmeFolderTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                [hashtable] $templateContent,
+                [object[]] $readMeContent,
+                [string] $resourceTypeIdentifier
+            )
+
+            # Get ReadMe data
+            $tableStartIndex, $tableEndIndex = Get-TableStartAndEndIndex -ReadMeContent $readMeContent -MarkdownSectionIdentifier '*## Cross-referenced modules'
+
+            $ReadMeDependenciesList = @{
+                localPathReferences = @()
+                remoteReferences    = @()
+            }
+            for ($index = $tableStartIndex + 2; $index -lt $tableEndIndex; $index++) {
+                $type = $readMeContent[$index].Split('|')[2].Trim()
+
+                switch ($type) {
+                    'Local reference' {
+                        $ReadMeDependenciesList.localPathReferences += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+                    }
+                    'Remote reference' {
+                        $ReadMeDependenciesList.remoteReferences += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+                    }
+                    Default {
+                        throw "Unkown type reference [$type]. Only [Local reference] & [Remote reference] are known. Please update ReadMe or test script."
+                    }
+                }
+            }
+
+            # Template data
+            $expectedDependencies = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
+
+            # Test
+            if ($expectedDependencies.localPathReferences) {
+                $differentiatingItems = @() + $expectedDependencies.localPathReferences | Where-Object { $ReadMeDependenciesList.localPathReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of local template dependencies missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+
+
+                $differentiatingItems = @() + $ReadMeDependenciesList.localPathReferences | Where-Object { $expectedDependencies.localPathReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of excess local template references defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            }
+
+            if ($expectedDependencies.remoteReferences) {
+                $differentiatingItems = @() + $expectedDependencies.remoteReferences | Where-Object { $ReadMeDependenciesList.remoteReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of remote template dependencies missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+
+
+                $differentiatingItems = @() + $ReadMeDependenciesList.remoteReferences | Where-Object { $expectedDependencies.remoteReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of excess remote template references defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            }
+        }
+
         It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
 
             param(
@@ -462,8 +521,11 @@ Describe 'Readme tests' -Tag Readme {
             # Compare
             $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
             if (-not $filesAreTheSame) {
-                $diffReponse = git diff
+                $diffReponse = git diff $readMeFilePath
                 Write-Warning ($diffReponse | Out-String) -Verbose
+
+                # Reset readme file to original state
+                git checkout HEAD -- $readMeFilePath
             }
             $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
         }

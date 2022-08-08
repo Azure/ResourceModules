@@ -8,6 +8,7 @@ This module deploys a Synapse Workspaces Key.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -47,3 +48,7 @@ This module deploys a Synapse Workspaces Key.
 ## Template references
 
 - [Workspaces/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys)
+
+## Cross-referenced modules
+
+_None_

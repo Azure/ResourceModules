@@ -199,68 +199,68 @@ function Test-ModuleLocally {
             }
 
             try {
-                Invoke-Pester -Configuration @{
-                    Run    = @{
-                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
-                            repoRootPath       = $repoRootPath
-                            moduleFolderPaths  = Split-Path $TemplateFilePath -Parent
-                            tokenConfiguration = $PesterTokenConfiguration
+                # Validation & Deployment tests #
+                #################################
+                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
+
+                    # Find Test Parameter Files
+                    # -------------------------
+                    if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
+                        $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
+                    } else {
+                        $moduleTestFiles = @($testFilePath)
+                    }
+
+                    # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
+                    $null = Convert-TokensInFileList @tokenConfiguration
+
+                    # Deployment & Validation Testing
+                    # -------------------------------
+                    $functionInput = @{
+                        TemplateFilePath  = $TemplateFilePath
+                        location          = $ValidateOrDeployParameters.Location
+                        resourceGroupName = $ValidateOrDeployParameters.ResourceGroupName
+                        subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
+                        managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
+                        Verbose           = $true
+                    }
+                    try {
+                        # Validate template
+                        # -----------------
+                        if ($ValidationTest) {
+                            # Loop through test parameter files
+                            Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                         }
                     }
-                    Output = @{
-                        Verbosity = 'Detailed'
+
+                    # Deploy template
+                    # ---------------
+                    if ($DeploymentTest) {
+                        $functionInput['retryLimit'] = 1 # Overwrite default of 3
+                        # Loop through test parameter files
+                        foreach ($moduleTestFile in $moduleTestFiles) {
+                            Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
+                                New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+                            }
+                        }
+                    }
+                } catch {
+                    Write-Error $_
+                } finally {
+                    # Restore parameter files
+                    # -----------------------
+                    if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
+                        TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                        TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                        $null = Convert-TokensInFileList @tokenConfiguration -SwapValueWithName $true
                     }
                 }
-            } catch {
-                $PSItem.Exception.Message
             }
         }
-
-        #################################
-        # Validation & Deployment tests #
-        #################################
-        if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
-
-            # Find Test Parameter Files
-            # -------------------------
-            if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
-                $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
-            } else {
-                $moduleTestFiles = @($testFilePath)
-            }
-
-            # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $null = Convert-TokensInFileList @tokenConfiguration
-
-            # Deployment & Validation Testing
-            # -------------------------------
-            $functionInput = @{
-                TemplateFilePath  = $TemplateFilePath
-                location          = $ValidateOrDeployParameters.Location
-                resourceGroupName = $ValidateOrDeployParameters.ResourceGroupName
-                subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
-                managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
-                Verbose           = $true
-            }
-            try {
-                # Validate template
-                # -----------------
-                if ($ValidationTest) {
-                    # Loop through test parameter files
-                    foreach ($moduleTestFile in $moduleTestFiles) {
-                        Write-Verbose ('Validating Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                        Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
-                    }
-                }
-
-                # Deploy template
-                # ---------------
-                if ($DeploymentTest) {
-                    $functionInput['retryLimit'] = 1 # Overwrite default of 3
-                    # Loop through test parameter files
-                    foreach ($moduleTestFile in $moduleTestFiles) {
-                        Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                        if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
+        end {
+        }
+    }
                             New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                         }
                     }
