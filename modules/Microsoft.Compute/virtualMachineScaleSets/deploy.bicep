@@ -48,15 +48,8 @@ param roleAssignments array = []
 @description('Optional. Fault Domain count for each placement group.')
 param scaleSetFaultDomain int = 2
 
-@description('Optional. Creates an proximity placement group and adds the VMs to it.')
-param proximityPlacementGroupName string = ''
-
-@description('Optional. Specifies the type of the proximity placement group.')
-@allowed([
-  'Standard'
-  'Ultra'
-])
-param proximityPlacementGroupType string = 'Standard'
+@description('Optional. Resource ID of a proximity placement group.')
+param proximityPlacementGroupResourceId string = ''
 
 @description('Required. Configures NICs and PIPs.')
 param nicConfigurations array = []
@@ -355,15 +348,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2021-04-01' = if (!empty(proximityPlacementGroupName)) {
-  name: !empty(proximityPlacementGroupName) ? proximityPlacementGroupName : 'dummyProximityGroup'
-  location: location
-  tags: tags
-  properties: {
-    proximityPlacementGroupType: proximityPlacementGroupType
-  }
-}
-
 resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
   name: name
   location: location
@@ -371,8 +355,8 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
   identity: identity
   zones: availabilityZones
   properties: {
-    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? {
-      id: az.resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroup.name)
+    proximityPlacementGroup: !empty(proximityPlacementGroupResourceId) ? {
+      id: proximityPlacementGroupResourceId
     } : null
     upgradePolicy: {
       mode: upgradePolicyMode
