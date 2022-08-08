@@ -171,7 +171,21 @@ The following module usage examples are retrieved from the content of the files 
 module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateLinkServices'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-az-min-pls-001'
+    // Non-required parameters
+    ipConfigurations: [
+      {
+        name: 'pls01'
+        properties: {
+          primary: true
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          }
+        }
+      }
+    ]
   }
 }
 ```
@@ -188,8 +202,24 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-min-pls-001"
+    },
+    // Non-required parameters
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "pls01",
+          "properties": {
+            "primary": true,
+            "privateIPAllocationMethod": "Dynamic",
+            "subnet": {
+              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+            }
+          }
+        }
+      ]
     }
   }
 }

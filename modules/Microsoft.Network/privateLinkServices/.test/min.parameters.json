@@ -4,6 +4,20 @@
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-min-pls-001"
+        },
+        "ipConfigurations": {
+            "value": [
+                {
+                    "name": "pls01",
+                    "properties": {
+                        "primary": true,
+                        "privateIPAllocationMethod": "Dynamic",
+                        "subnet": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                        }
+                    }
+                }
+            ]
         }
     }
 }
