@@ -40,17 +40,17 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-08-01' existing = {
+resource privateLinkService 'Microsoft.Network/privateLinkServices@2022-01-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
-  name: guid(privateEndpoint.id, principalId, roleDefinitionIdOrName)
+  name: guid(privateLinkService.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
     principalType: !empty(principalType) ? any(principalType) : null
   }
-  scope: privateEndpoint
+  scope: privateLinkService
 }]
