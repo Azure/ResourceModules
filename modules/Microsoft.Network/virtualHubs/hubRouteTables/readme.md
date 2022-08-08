@@ -7,12 +7,13 @@ This module deploys virtual hub route tables.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualHubs/hubRouteTables` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubRouteTables) |
+| `Microsoft.Network/virtualHubs/hubRouteTables` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualHubs/hubRouteTables) |
 
 ## Parameters
 
@@ -41,3 +42,7 @@ This module deploys virtual hub route tables.
 | `name` | string | The name of the deployed virtual hub route table. |
 | `resourceGroupName` | string | The resource group the virtual hub route table was deployed into. |
 | `resourceId` | string | The resource ID of the deployed virtual hub route table. |
+
+## Cross-referenced modules
+
+_None_

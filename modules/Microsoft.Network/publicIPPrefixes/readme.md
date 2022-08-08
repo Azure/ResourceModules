@@ -7,6 +7,7 @@ This template deploys a public IP prefix.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -143,6 +144,10 @@ tags: {
 | `name` | string | The name of the public IP prefix. |
 | `resourceGroupName` | string | The resource group the public IP prefix was deployed into. |
 | `resourceId` | string | The resource ID of the public IP prefix. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

@@ -7,12 +7,13 @@ This module deploys Network Security Group Security Rules.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkSecurityGroups/securityRules` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkSecurityGroups/securityRules) |
+| `Microsoft.Network/networkSecurityGroups/securityRules` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkSecurityGroups/securityRules) |
 
 ## Parameters
 
@@ -54,3 +55,7 @@ This module deploys Network Security Group Security Rules.
 | `name` | string | The name of the security rule. |
 | `resourceGroupName` | string | The resource group the security rule was deployed into. |
 | `resourceId` | string | The resource ID of the security rule. |
+
+## Cross-referenced modules
+
+_None_

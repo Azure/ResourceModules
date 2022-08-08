@@ -15,7 +15,7 @@
 ##   | Parameter                 | Required | Default | Description                                           | Example                                                                    |
 ##   |---------------------------|----------|---------|-------------------------------------------------------|----------------------------------------------------------------------------|
 ##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'modules/Microsoft.ApiManagement/service/deploy.bicep'                     |
-##   | parameterFilePath         | true     | ''      | The path to the parameter file to use for deployment  | 'modules/Microsoft.ApiManagement/service/.test/parameters.json' |
+##   | parameterFilePath         | false    | ''      | The path to the parameter file to use for deployment  | 'modules/Microsoft.ApiManagement/service/.test/parameters.json'            |
 ##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                               |
 ##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                            |
 ##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
@@ -47,7 +47,7 @@ inputs:
     required: true
   parameterFilePath:
     description: 'The path to the parameter file to use for deployment'
-    required: true
+    required: false
   location:
     description: 'The location to use for deployment'
     required: true
@@ -55,10 +55,10 @@ inputs:
     description: 'The resource group to deploy to'
     required: false
   subscriptionId:
-    description: 'The subscriptionId to deploy to'
+    description: 'The subscription ID to deploy to'
     required: false
   managementGroupId:
-    description: 'The managementGroupId to deploy to'
+    description: 'The management group ID to deploy to'
     required: false
   customParameterFileTokens:
     description: 'Additional parameter file token pairs in json format. e.g. {"tokenName":"tokenValue"}'
@@ -118,35 +118,47 @@ runs:
 
     # [Token replacement] task(s)
     # ---------------------------
-    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace tokens in template file'
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]"
+          Write-Output "::group::Replace tokens in template file"
 
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
           # Load Settings File
           $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
 
+          # Get target files
+          $targetFileList = @('${{ inputs.templateFilePath }}')
+          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+            $targetFileList += '${{ inputs.parameterFilePath }}'
+          }
+
+          # Get Service Principal Object ID
+          $context = Get-AzContext
+          $servicePrincipalAppId = $context.Account.Id
+          $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+          $servicePrincipalObjectId = $servicePrincipal.Id
+
           # Construct Token Function Input
           $ConvertTokensInputs = @{
+            FilePathList = $targetFileList
             Tokens       = @{}
-            FilePath     = '${{ inputs.parameterFilePath }}'
             TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
           }
 
-          # Local tokens
+          # Add defaults
           $ConvertTokensInputs.Tokens += @{
             resourceGroupName = '${{ inputs.resourceGroupName }}'
             subscriptionId    = '${{ inputs.subscriptionId }}'
             managementGroupId = '${{ inputs.managementGroupId }}'
             tenantId          = '${{ env.ARM_TENANT_ID }}'
-            deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
+            deploymentSpId    = $servicePrincipalObjectId
           }
 
           # Add local tokens
@@ -167,26 +179,26 @@ runs:
           }
 
           # Invoke Token Replacement Functionality
-          $null = Convert-TokensInFile @ConvertTokensInputs
+          $null = Convert-TokensInFileList @ConvertTokensInputs
 
           Write-Output "::endgroup::"
 
     # [Deployment validation] task(s)
     # -------------------------------
-    - name: 'Validate [${{ inputs.templateFilePath }}]'
+    - name: 'Validate template file'
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Validate [${{ inputs.templateFilePath }}]"
+          Write-Output "::group::Validate template file"
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
-          # ----------- #
-          # INVOKE TEST #
-          # ----------- #
+          # ----------------- #
+          # Invoke validation #
+          # ----------------- #
           $functionInput = @{
             templateFilePath     = '${{ inputs.templateFilePath }}'
             location             = '${{ inputs.location }}'
@@ -216,18 +228,21 @@ runs:
 
     # [Deployment execution] task(s)
     # ------------------------------
-    - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
+    - name: 'Deploy template file'
       id: deploy_step
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]"
+          Write-Output "::group::Deploy template file"
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
+          # ----------------- #
+          # Invoke deployment #
+          # ----------------- #
           $functionInput = @{
             templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             location             = '${{ inputs.location }}'
@@ -279,14 +294,14 @@ runs:
 
     # [Deployment removal] task(s)
     # ----------------------------
-    - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
+    - name: 'Remove deployed resources'
       if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
+          Write-Output "::group::Remove deployed resources"
 
           # Load used function
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')

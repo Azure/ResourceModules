@@ -7,6 +7,7 @@ This module deploys an App Configuration Store.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -276,6 +277,14 @@ privateEndpoints:  [
 | `resourceId` | string | The resource ID of the app configuration. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -356,18 +365,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
       }
     ]
     lock: 'CanNotDelete'
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io'
-          ]
-        }
-        service: 'configurationStores'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-      }
-    ]
-    publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {
         principalIds: [
@@ -443,22 +440,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     "lock": {
       "value": "CanNotDelete"
     },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io"
-            ]
-          },
-          "service": "configurationStores",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
-        }
-      ]
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
-    },
     "roleAssignments": {
       "value": [
         {
@@ -474,6 +455,87 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     },
     "systemAssignedIdentity": {
       "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Pe</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-configurationStores'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-az-appc-pe-001'
+    // Non-required parameters
+    createMode: 'Default'
+    disableLocalAuth: false
+    enablePurgeProtection: false
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io'
+          ]
+        }
+        service: 'configurationStores'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+    softDeleteRetentionInDays: 1
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-appc-pe-001"
+    },
+    // Non-required parameters
+    "createMode": {
+      "value": "Default"
+    },
+    "disableLocalAuth": {
+      "value": false
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io"
+            ]
+          },
+          "service": "configurationStores",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
+    },
+    "softDeleteRetentionInDays": {
+      "value": 1
     }
   }
 }

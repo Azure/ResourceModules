@@ -8,13 +8,14 @@ This module deploys a virtual network subnet.
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/virtualNetworks/subnets` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/subnets) |
+| `Microsoft.Network/virtualNetworks/subnets` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/subnets) |
 
 ## Parameters
 
@@ -190,3 +191,7 @@ The `privateEndpointNetworkPolicies` property must be set to disabled for subnet
 | `resourceId` | string | The resource ID of the virtual network peering. |
 | `subnetAddressPrefix` | string | The address prefix for the subnet. |
 | `subnetAddressPrefixes` | array | List of address prefixes for the subnet. |
+
+## Cross-referenced modules
+
+_None_

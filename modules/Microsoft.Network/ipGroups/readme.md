@@ -7,6 +7,7 @@ This module deploys an IP group.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -15,7 +16,7 @@ This module deploys an IP group.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/ipGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/ipGroups) |
+| `Microsoft.Network/ipGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/ipGroups) |
 
 ## Parameters
 
@@ -143,6 +144,10 @@ tags: {
 | `name` | string | The name of the IP group. |
 | `resourceGroupName` | string | The resource group of the IP group was deployed into. |
 | `resourceId` | string | The resource ID of the IP group. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 
