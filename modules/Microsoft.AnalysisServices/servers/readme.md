@@ -7,6 +7,7 @@ This module deploys an Analysis Services Server.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -154,6 +155,10 @@ roleAssignments: [
 | `name` | string | The name of the analysis service. |
 | `resourceGroupName` | string | The resource group the analysis service was deployed into. |
 | `resourceId` | string | The resource ID of the analysis service. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

@@ -7,6 +7,7 @@ This module deploys a Private DNS Zone CNAME record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -103,3 +104,7 @@ roleAssignments: [
 | `name` | string | The name of the deployed CNAME record. |
 | `resourceGroupName` | string | The resource group of the deployed CNAME record. |
 | `resourceId` | string | The resource ID of the deployed CNAME record. |
+
+## Cross-referenced modules
+
+_None_

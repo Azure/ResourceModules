@@ -7,6 +7,7 @@ This module can be used to deploy a blob service into a storage account.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -51,3 +52,7 @@ This module can be used to deploy a blob service into a storage account.
 | `name` | string | The name of the deployed blob service. |
 | `resourceGroupName` | string | The name of the deployed blob service. |
 | `resourceId` | string | The resource ID of the deployed blob service. |
+
+## Cross-referenced modules
+
+_None_

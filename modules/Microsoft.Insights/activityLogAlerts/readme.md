@@ -7,6 +7,7 @@ This module deploys an Alert based on Activity Log.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -391,6 +392,10 @@ tags: {
 | `name` | string | The name of the activity log alert. |
 | `resourceGroupName` | string | The resource group the activity log alert was deployed into. |
 | `resourceId` | string | The resource ID of the activity log alert. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 
