@@ -7,6 +7,10 @@ $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
 . (Join-Path $repoRootPath 'utilities' 'pipelines' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
 . (Join-Path $repoRootPath 'utilities' 'pipelines' 'sharedScripts' 'Get-ModuleTestFileList.ps1')
 
+####################################
+#   Load test-specific functions   #
+####################################
+
 <#
 .SYNOPSIS
 Get the index of a header in a given markdown array
@@ -120,10 +124,6 @@ function Get-TableStartAndEndIndex {
     $tableEndIndex = $tableStartIndex + 2
     while ($readMeContent[$tableEndIndex] -like '|*' -and -not ($tableEndIndex -ge $readMeContent.count)) {
         $tableEndIndex++
-    }
-
-    return $tableStartIndex, $tableEndIndex
-}
     }
 
     return $tableStartIndex, $tableEndIndex
