@@ -7,6 +7,7 @@ This template deploys a DDoS protection plan.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -142,6 +143,10 @@ tags: {
 | `name` | string | The name of the DDOS protection plan. |
 | `resourceGroupName` | string | The resource group the DDOS protection plan was deployed into. |
 | `resourceId` | string | The resource ID of the DDOS protection plan. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

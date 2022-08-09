@@ -5,6 +5,7 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -333,6 +334,10 @@ managedPrivateEndpoints:  [
 | `resourceGroupName` | string | The name of the Resource Group with the Data factory. |
 | `resourceId` | string | The Resource ID of the Data factory. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

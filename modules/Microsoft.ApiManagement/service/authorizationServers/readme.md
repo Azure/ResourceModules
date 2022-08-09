@@ -7,6 +7,7 @@ This module deploys API Management Service Authorization Servers.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -60,3 +61,7 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | The name of the API management service authorization server. |
 | `resourceGroupName` | string | The resource group the API management service authorization server was deployed into. |
 | `resourceId` | string | The resource ID of the API management service authorization server. |
+
+## Cross-referenced modules
+
+_None_

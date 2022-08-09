@@ -7,6 +7,7 @@ This template deploys Connection Monitors.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -83,3 +84,7 @@ tags: {
 | `name` | string | The name of the deployed connection monitor. |
 | `resourceGroupName` | string | The resource group the connection monitor was deployed into. |
 | `resourceId` | string | The resource ID of the deployed connection monitor. |
+
+## Cross-referenced modules
+
+_None_

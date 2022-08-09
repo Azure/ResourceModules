@@ -7,6 +7,7 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -73,3 +74,7 @@ typeProperties: {
 | `name` | string | The name of the Integration Runtime. |
 | `resourceGroupName` | string | The name of the Resource Group the Integration Runtime was created in. |
 | `resourceId` | string | The resource ID of the Integration Runtime. |
+
+## Cross-referenced modules
+
+_None_

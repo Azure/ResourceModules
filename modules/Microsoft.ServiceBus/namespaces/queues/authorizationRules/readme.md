@@ -7,6 +7,7 @@ This module deploys an authorization rule for a service bus namespace queue.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -41,3 +42,7 @@ This module deploys an authorization rule for a service bus namespace queue.
 | `name` | string | The name of the authorization rule. |
 | `resourceGroupName` | string | The name of the Resource Group the authorization rule was created in. |
 | `resourceId` | string | The Resource ID of the authorization rule. |
+
+## Cross-referenced modules
+
+_None_
