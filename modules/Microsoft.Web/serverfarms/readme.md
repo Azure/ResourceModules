@@ -49,7 +49,7 @@ This module deploys an app service plan.
 | `targetWorkerCount` | int | `0` |  | Scaling worker count. |
 | `targetWorkerSize` | int | `0` | `[0, 1, 2]` | The instance size of the hosting plan (small, medium, or large). |
 | `workerTierName` | string | `''` |  | Target worker tier assigned to the App Service plan. |
-
+| `zoneRedundant` | bool | `false` |  | When true, this App Service Plan will perform availability zone balancing. |
 
 ### Parameter Usage: `sku`
 
@@ -241,6 +241,7 @@ module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    zoneRedundant: true
   }
 }
 ```
@@ -298,7 +299,8 @@ module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
-    }
+    },
+    "zoneRedundant": true
   }
 }
 ```
