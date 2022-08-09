@@ -17,6 +17,7 @@ param name string
 param namedValueTags array = []
 
 @description('Optional. Determines whether the value is a secret and should be encrypted or not. Default value is false.')
+#disable-next-line secure-secrets-in-params
 param secret bool = false
 
 @description('Optional. Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on \'GET\' operations! Use \'/listSecrets\' POST request to get the value.')

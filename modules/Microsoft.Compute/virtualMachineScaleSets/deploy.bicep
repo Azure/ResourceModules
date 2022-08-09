@@ -211,12 +211,14 @@ param additionalUnattendContent array = []
 param winRM object = {}
 
 @description('Optional. Specifies whether password authentication should be disabled.')
+#disable-next-line secure-secrets-in-params
 param disablePasswordAuthentication bool = false
 
 @description('Optional. The list of SSH public keys used to authenticate with linux based VMs.')
 param publicKeys array = []
 
 @description('Optional. Specifies set of certificates that should be installed onto the virtual machines in the scale set.')
+#disable-next-line secure-secrets-in-params
 param secrets array = []
 
 @description('Optional. Specifies Scheduled Event related configurations.')

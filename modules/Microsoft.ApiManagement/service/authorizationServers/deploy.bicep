@@ -46,6 +46,7 @@ param serverDescription string = ''
 param grantTypes array
 
 @description('Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.')
+#disable-next-line secure-secrets-in-params
 param resourceOwnerPassword string = ''
 
 @description('Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.')
