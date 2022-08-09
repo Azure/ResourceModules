@@ -112,6 +112,9 @@
         "diagnosticEventHubName": {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
         },
+        "proximityPlacementGroupResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-vmss-001"
+        },
         "extensionAntiMalwareConfig": {
             "value": {
                 "enabled": true,
