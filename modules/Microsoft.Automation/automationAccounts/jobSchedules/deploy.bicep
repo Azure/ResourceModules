@@ -1,5 +1,5 @@
 @description('Optional. Name of the Automation Account job schedule. Must be a GUID. If not provided, a new GUID is generated.')
-param name string = uniqueString(automationAccountName, subscription().id)
+param name string = newGuid()
 
 @description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string
@@ -36,6 +36,8 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
 }
 
 resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' = {
+  // For each job schedule deployed with an ARM template, the GUID must be unique. Even if you're rescheduling an existing schedule, you'll need to change the GUID. This applies even if you've previously deleted an existing job schedule that was created with the same template. Reusing the same GUID results in a failed deployment.
+  #disable-next-line use-stable-resource-identifiers
   name: name
   parent: automationAccount
   properties: {
