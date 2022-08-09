@@ -9,6 +9,7 @@ This module deploys Network PrivateLinkServices.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Deployment examples](#Deployment-examples)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -261,3 +262,8 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
 
 </details>
 <p>
+
+
+## Cross-referenced modules
+
+_None_
