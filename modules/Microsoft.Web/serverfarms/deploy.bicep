@@ -87,6 +87,9 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
+@description('Optional. When true, this App Service Plan will perform availability zone balancing.')
+param zoneRedundant bool = false
+
 // =========== //
 // Variables   //
 // =========== //
@@ -131,6 +134,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
     reserved: serverOS == 'Linux'
     targetWorkerCount: targetWorkerCount
     targetWorkerSizeId: targetWorkerSize
+    zoneRedundant: zoneRedundant
   }
 }
 
