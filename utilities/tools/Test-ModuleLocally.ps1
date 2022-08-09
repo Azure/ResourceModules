@@ -146,16 +146,22 @@ function Test-ModuleLocally {
         . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-TemplateDeployment.ps1')
     }
     process {
-        ######################
-        # TOKENS Replacement #
-        ######################
+
+        # Find Test Parameter Files
+        # -------------------------
+        if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
+            $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
+        } else {
+            $moduleTestFiles = @($testFilePath)
+        }
 
         # Construct Token Configuration Input
         $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
         $tokenConfiguration = @{
-            Tokens      = @{}
-            TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
-            TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+            FilePathList = $moduleTestFiles
+            Tokens       = @{}
+            TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+            TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
         # Add Enforced Tokens
@@ -185,6 +191,7 @@ function Test-ModuleLocally {
                 $tokenConfiguration.Tokens[$PSItem] = $AdditionalTokens.$PSItem
             }
         }
+
         ################
         # PESTER Tests #
         ################
@@ -193,78 +200,82 @@ function Test-ModuleLocally {
 
             # Construct Pester Token Configuration Input
             $PesterTokenConfiguration = @{
-                Tokens      = $enforcedTokenList
-                TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
-                TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+                FilePathList = $moduleTestFiles
+                Tokens       = $enforcedTokenList
+                TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+                TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
             }
 
             try {
-                # Validation & Deployment tests #
-                #################################
-                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
-
-                    # Find Test Parameter Files
-                    # -------------------------
-                    if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
-                        $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
-                    } else {
-                        $moduleTestFiles = @($testFilePath)
-                    }
-
-                    # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-                    $null = Convert-TokensInFileList @tokenConfiguration
-
-                    # Deployment & Validation Testing
-                    # -------------------------------
-                    $functionInput = @{
-                        TemplateFilePath  = $TemplateFilePath
-                        location          = $ValidateOrDeployParameters.Location
-                        resourceGroupName = $ValidateOrDeployParameters.ResourceGroupName
-                        subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
-                        managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
-                        Verbose           = $true
-                    }
-                    try {
-                        # Validate template
-                        # -----------------
-                        if ($ValidationTest) {
-                            # Loop through test parameter files
-                            Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+                Invoke-Pester -Configuration @{
+                    Run    = @{
+                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
+                            repoRootPath       = $repoRootPath
+                            moduleFolderPaths  = Split-Path $TemplateFilePath -Parent
+                            tokenConfiguration = $PesterTokenConfiguration
                         }
                     }
-
-                    # Deploy template
-                    # ---------------
-                    if ($DeploymentTest) {
-                        $functionInput['retryLimit'] = 1 # Overwrite default of 3
-                        # Loop through test parameter files
-                        foreach ($moduleTestFile in $moduleTestFiles) {
-                            Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
-                                New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
-                            }
-                        }
-                    }
-                } catch {
-                    Write-Error $_
-                } finally {
-                    # Restore parameter files
-                    # -----------------------
-                    if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
-                        TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                        TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-                        $null = Convert-TokensInFileList @tokenConfiguration -SwapValueWithName $true
+                    Output = @{
+                        Verbosity = 'Detailed'
                     }
                 }
+            } catch {
+                $PSItem.Exception.Message
             }
         }
-        end {
-        }
-    }
+
+        #################################
+        # Validation & Deployment tests #
+        #################################
+
+        # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
+        $null = Convert-TokensInFileList @tokenConfiguration
+
+        if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
+
+            # Find Test Parameter Files
+            # -------------------------
+            if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
+                $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
+            } else {
+                $moduleTestFiles = @($testFilePath)
+            }
+
+            # Deployment & Validation Testing
+            # -------------------------------
+            $functionInput = @{
+                TemplateFilePath  = $TemplateFilePath
+                location          = $ValidateOrDeployParameters.Location
+                resourceGroupName = $ValidateOrDeployParameters.ResourceGroupName
+                subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
+                managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
+                Verbose           = $true
+            }
+
+            try {
+                # Validate template
+                # -----------------
+                if ($ValidationTest) {
+                    # Loop through test parameter files
+                    foreach ($moduleTestFile in $moduleTestFiles) {
+                        Write-Verbose ('Validating Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+                    }
+                }
+
+                # Deploy template
+                # ---------------
+                if ($DeploymentTest) {
+                    $functionInput['retryLimit'] = 1 # Overwrite default of 3
+                    # Loop through test parameter files
+                    foreach ($moduleTestFile in $moduleTestFiles) {
+                        Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
                             New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                         }
                     }
                 }
+
             } catch {
                 Write-Error $_
             } finally {
