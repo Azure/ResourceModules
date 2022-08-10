@@ -632,10 +632,11 @@ stages:
                 $vpnSharedKeyString = (New-Guid).Guid.SubString(0, 32)
                 $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
 
-                $namePrefixToken = $Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }
+                $namePrefixToken = $ConvertTokensInputs.Tokens['namePrefix']
+
                 $certInputObject = @{
-                    Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken.value
-                    DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken.value
+                    Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken
+                    DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken
                     CertStoreLocation = 'cert:\LocalMachine\My'
                     KeyExportPolicy   = 'Exportable'
                     Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
@@ -734,19 +735,26 @@ stages:
 
                     # Construct Token Function Input
                     $ConvertTokensInputs = @{
-                      Tokens       = @{}
                       FilePathList = $parameterFilePath
+                      Tokens       = @{}
                       TokenPrefix  = '$(tokenPrefix)'
                       TokenSuffix  = '$(tokenSuffix)'
                     }
-                    if ($Settings.parameterFileTokens.localTokens) {
-                      $tokenMap = @{}
-                      foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                          $tokenMap += @{ $token.name = $token.value }
-                      }
-                      Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                      $ConvertTokensInputs.Tokens = $tokenMap
+
+                    # Add local (source control) tokens
+                    $tokenMap = @{}
+                    foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+                      $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
                     }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens += $tokenMap
+
+                    # Swap 'namePrefix' token if provided as a Azure DevOps variable
+                    if(-not [String]::IsNullOrEmpty("$env:TOKEN_NAMEPREFIX")){
+                      Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
+                      $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
+                    }
+
                     $null = Convert-TokensInFileList @ConvertTokensInputs
 
                     # Get key vault name
