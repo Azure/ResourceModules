@@ -146,7 +146,6 @@ runs:
           $ConvertTokensInputs = @{
             FilePathList = $targetFileList
             Tokens       = @{}
-            FilePathList = $targetFileList
             TokenPrefix  = '${{ env.tokenPrefix }}'
             TokenSuffix  = '${{ env.tokenSuffix }}'
           }

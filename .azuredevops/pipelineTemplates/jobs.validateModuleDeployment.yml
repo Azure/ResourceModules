@@ -145,8 +145,8 @@ jobs:
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{
-                Tokens      = @{}
                 FilePathList = $targetFileList
+                Tokens      = @{}
                 TokenPrefix = '$(tokenPrefix)'
                 TokenSuffix = '$(tokenSuffix)'
             }
