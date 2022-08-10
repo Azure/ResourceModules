@@ -296,6 +296,7 @@ stages:
                 $null = Convert-TokensInFileList @ConvertTokensInputs
 
                 # Get storage account name
+                Set-AzContext -Subscription $(ARM_SUBSCRIPTION_ID)
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
                 # Upload files to storage account
