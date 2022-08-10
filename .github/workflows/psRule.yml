@@ -1,0 +1,27 @@
+name: PsRule - Analyze templates
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  analyze_arm:
+    name: Analyze templates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Analyze Azure resources using PSRule for Azure
+      - name: Analyze Azure template files
+        uses: microsoft/ps-rule@v2.2.0
+        with:
+          modules: PSRule.Rules.Azure,PSRule.Monitor
+          ## Publish Report to an Azure Log Analytics Workspace
+          conventions: Monitor.LogAnalytics.Import
+        env:
+          # Define environment variables using GitHub encrypted secrets
+          PSRULE_CONFIGURATION_MONITOR_WORKSPACE_ID: ${{ secrets.MONITOR_WORKSPACE_ID }}
+          PSRULE_CONFIGURATION_MONITOR_WORKSPACE_KEY: ${{ secrets.MONITOR_WORKSPACE_KEY }}

@@ -1,0 +1,36 @@
+#
+# PSRule configuration
+#
+
+# Please see the documentation for all configuration options:
+# https://microsoft.github.io/PSRule/
+configuration:
+  AZURE_BICEP_FILE_EXPANSION: true
+
+input:
+  pathIgnore:
+    - '.vscode/'
+    - '*.md'
+    - '*.Designer.cs'
+    - '*.resx'
+    - '*.sln'
+    - '*.txt'
+    - '*.html'
+    - '*.ico'
+
+    ## Exclude modules but not tests - because the main.bicep files
+    ## don't contain all the parameters to build and test the templates
+    - 'deployments/**/*.bicep'
+    - 'resources/**/*.bicep'
+    - 'resources/**/metadata.json'
+    - '!resources/**/*.tests.bicep'
+    - 'resources/**/template.json'
+
+rule:
+  exclude:
+    - Azure.Template.LocationDefault
+    - Azure.SQL.AAD
+
+output:
+  culture:
+    - en-US
