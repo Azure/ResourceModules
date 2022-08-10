@@ -68,20 +68,20 @@ function Test-NamePrefixAvailability {
         # Construct Token Configuration Input
         $tokenConfiguration = @{
             FilePathList = $parameterFiles
-            Tokens       = @{}
+            Tokens       = @{
+                'namePrefix' = $namePrefix
+            }
             TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
             TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
-        # Add local (source control) tokens
-        foreach ($localToken in ($GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } })) {
-            $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
-        }
+        # Add additional tokens provided by the user
+        $tokenConfiguration.Tokens += $Tokens
+
+        # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
+        $null = Convert-TokensInFileList @tokenConfiguration
 
         try {
-            # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $null = Convert-TokensInFileList @tokenConfiguration
-
 
             # Extract Parameter Names
             # -----------------------
