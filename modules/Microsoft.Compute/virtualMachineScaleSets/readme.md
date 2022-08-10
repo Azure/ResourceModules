@@ -323,6 +323,10 @@ dataDisks: [
 
 ### Parameter Usage: `nicConfigurations`
 
+Comments:
+- The field `nicSuffix` is mandatory.
+- If not disabled, `enableAcceleratedNetworking` is considered `true` by default and requires the VMSS to be deployed with a supported OS and VM size.
+
 <details>
 
 <summary>Parameter JSON format</summary>
