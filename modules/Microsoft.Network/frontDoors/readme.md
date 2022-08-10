@@ -8,6 +8,7 @@ This module deploys Front Doors.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -159,6 +160,10 @@ tags: {
 | `name` | string | The name of the front door. |
 | `resourceGroupName` | string | The resource group the front door was deployed into. |
 | `resourceId` | string | The resource ID of the front door. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

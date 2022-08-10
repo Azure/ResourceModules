@@ -7,6 +7,7 @@ This module deploys API Management Service Named Values.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -75,3 +76,7 @@ keyVault: {
 | `name` | string | The name of the named value. |
 | `resourceGroupName` | string | The resource group the named value was deployed into. |
 | `resourceId` | string | The resource ID of the named value. |
+
+## Cross-referenced modules
+
+_None_

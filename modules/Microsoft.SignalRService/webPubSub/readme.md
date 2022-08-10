@@ -7,6 +7,7 @@ This module deploys a Web PubSub Service resource.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -340,6 +341,14 @@ networkAcls: {
 | `resourceGroupName` | string | The Web PubSub resource group. |
 | `resourceId` | string | The Web PubSub resource ID. |
 | `serverPort` | int | The Web PubSub serverPort. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

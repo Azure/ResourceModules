@@ -7,6 +7,7 @@ This module deploys a disaster recovery config for a service bus Namespace
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -37,3 +38,7 @@ This module deploys a disaster recovery config for a service bus Namespace
 | `name` | string | The name of the disaster recovery config. |
 | `resourceGroupName` | string | The name of the Resource Group the disaster recovery config was created in. |
 | `resourceId` | string | The Resource ID of the disaster recovery config. |
+
+## Cross-referenced modules
+
+_None_

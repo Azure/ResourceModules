@@ -7,6 +7,7 @@ This template deploys Virtual Network Peering.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -52,3 +53,7 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | The name of the virtual network peering. |
 | `resourceGroupName` | string | The resource group the virtual network peering was deployed into. |
 | `resourceId` | string | The resource ID of the virtual network peering. |
+
+## Cross-referenced modules
+
+_None_

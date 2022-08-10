@@ -7,6 +7,7 @@ This module deploys an Azure Monitor Private Link Scope.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -224,6 +225,14 @@ tags: {
 | `name` | string | The name of the private link scope. |
 | `resourceGroupName` | string | The resource group the private link scope was deployed into. |
 | `resourceId` | string | The resource ID of the private link scope. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

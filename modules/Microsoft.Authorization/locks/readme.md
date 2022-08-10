@@ -7,6 +7,7 @@ This module deploys Authorization Locks.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -39,6 +40,10 @@ This module deploys Authorization Locks.
 | `name` | string | The name of the lock. |
 | `resourceId` | string | The resource ID of the lock. |
 | `scope` | string | The scope this lock applies to. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

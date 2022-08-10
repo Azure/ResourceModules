@@ -8,6 +8,7 @@ This module deploys an Azure SQL Server.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Deployment examples](#Deployment-examples)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -111,8 +112,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed database. |
 | `resourceId` | string | The resource ID of the deployed database. |
 
-## Deployment examples
+## Cross-referenced modules
 
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+_None_
