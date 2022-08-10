@@ -418,8 +418,8 @@ jobs:
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{
-              Tokens       = @{}
               FilePath     = $parameterFilePaths
+              Tokens       = @{}
               TokenPrefix  = '${{ env.tokenPrefix }}'
               TokenSuffix  = '${{ env.tokenSuffix }}'
             }
@@ -1143,8 +1143,6 @@ jobs:
               TokenPrefix  = '${{ env.tokenPrefix }}'
               TokenSuffix  = '${{ env.tokenSuffix }}'
             }
-            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-            $ConvertTokensInputs.Tokens += $tokenMap
 
             # Add local (source control) tokens
             $tokenMap = @{}

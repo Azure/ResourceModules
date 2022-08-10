@@ -277,10 +277,10 @@ stages:
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
-                  Tokens      = @{}
-                  FilePathList= $parameterFilePaths
-                  TokenPrefix = '$(tokenPrefix)'
-                  TokenSuffix = '$(tokenSuffix)'
+                  FilePathList = $parameterFilePaths
+                  Tokens       = @{}
+                  TokenPrefix  = '$(tokenPrefix)'
+                  TokenSuffix  = '$(tokenSuffix)'
                 }
 
                 # Add local (source control) tokens
@@ -596,10 +596,10 @@ stages:
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
-                    FilePathList = $parameterFilePaths
-                    Tokens      = @{}
-                    TokenPrefix = '$(tokenPrefix)'
-                    TokenSuffix = '$(tokenSuffix)'
+                  FilePathList = $parameterFilePaths
+                  Tokens       = @{}
+                  TokenPrefix  = '$(tokenPrefix)'
+                  TokenSuffix  = '$(tokenSuffix)'
                 }
 
                 # Add local (source control) tokens
@@ -734,7 +734,7 @@ stages:
 
                     # Construct Token Function Input
                     $ConvertTokensInputs = @{
-                      Tokens      = @{}
+                      Tokens       = @{}
                       FilePathList = $parameterFilePath
                       TokenPrefix  = '$(tokenPrefix)'
                       TokenSuffix  = '$(tokenSuffix)'
