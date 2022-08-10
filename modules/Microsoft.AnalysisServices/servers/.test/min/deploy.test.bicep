@@ -3,10 +3,6 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
-
-@description('Optional. The name prefix to inject into all resource names')
-param namePrefix string = '<<namePrefix>>'
-
 @description('Optional. The name of the resource group to deploy for a testing purposes')
 @maxLength(90)
 param resourceGroupName string = '${serviceShort}-ms.analysisservices-servers-rg'
@@ -36,6 +32,6 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
   params: {
-    name: '${namePrefix}az${serviceShort}001'
+    name: '<<namePrefix>>az${serviceShort}001'
   }
 }
