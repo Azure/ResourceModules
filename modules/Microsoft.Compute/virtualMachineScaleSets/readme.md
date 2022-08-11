@@ -911,7 +911,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Linux'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     disablePasswordAuthentication: true
     nicConfigurations: [
@@ -979,7 +979,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Linux"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "disablePasswordAuthentication": {
@@ -1044,7 +1044,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Linux'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     availabilityZones: [
       '2'
@@ -1192,7 +1192,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Linux"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "availabilityZones": {
