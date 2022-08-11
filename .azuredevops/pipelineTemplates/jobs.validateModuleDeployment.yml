@@ -130,9 +130,6 @@ jobs:
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
-            # Load Settings File
-            $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
-
             # Get Service Principal Object ID
             $context = Get-AzContext
             $servicePrincipalAppId = $context.Account.Id
