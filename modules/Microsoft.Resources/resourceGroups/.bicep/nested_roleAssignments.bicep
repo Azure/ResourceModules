@@ -21,6 +21,18 @@ param principalType string = ''
 @sys.description('Optional. The description of the role assignment.')
 param description string = ''
 
+@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"')
+param condition string = ''
+
+@sys.description('Optional. Version of the condition.')
+@allowed([
+  '2.0'
+])
+param conditionVersion string = '2.0'
+
+@sys.description('Optional. Id of the delegated managed identity resource.')
+param delegatedManagedIdentityResourceId string = ''
+
 var builtInRoleNames = {
   'AcrDelete': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c2f4ef07-c644-48eb-af81-4b1b4947fb11')
   'AcrImageSigner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '6cef56e8-d556-48e5-a04f-b8e64114680f')
@@ -197,12 +209,15 @@ var builtInRoleNames = {
   'Workbook Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b279062a-9be3-42a0-92ae-8b3cf002ec4d')
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(last(split(resourceId, '/')), principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
     principalType: !empty(principalType) ? any(principalType) : null
+    condition: !empty(condition) ? condition : null
+    conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
+    delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
   }
 }]
