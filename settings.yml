@@ -13,7 +13,7 @@ variables:
 
   # the 'localToken_' prefix will be removed from the key name when the pipelines run.
   # e.g. if you have a token in your parameter file as <<customKey>>, then the token defined in this file looks like "localToken_customKey": 'value'
-  localToken_namePrefix: 'leenz' # A 3-5 character length string, included in the resources names, is overridden if provided as GitHub Secret / ADO Variable
+  localToken_namePrefix: 'carml' # A 3-5 character length string, included in the resources names, is overridden if provided as GitHub Secret / ADO Variable
 
   ######################################
   # global tokens settings
@@ -50,7 +50,7 @@ variables:
   ######################################
 
   bicepRegistryDoPublish: true # Set to true, if you would like to publish module templates to a bicep registry
-  bicepRegistryName: adpzu3bxazacrx001 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
+  bicepRegistryName: adpsxxazacrx001 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
   bicepRegistryRGName: 'artifacts-rg' # The resource group that hosts the private bicep registry (ACR)
   bicepRegistryRgLocation: 'West Europe' # The location of the resource group to publish to
 
@@ -64,7 +64,7 @@ variables:
 
   vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
   poolName: '' # Use this for self-hosted agents
-  serviceConnection: 'AzureConnection'
+  serviceConnection: 'CARML-CSU-Tenant-Connection'
 
   ######################################
   # Source
