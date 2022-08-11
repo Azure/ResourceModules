@@ -5,6 +5,7 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -218,6 +219,14 @@ privateEndpoints:  [
 | `name` | string | The name of the batch account. |
 | `resourceGroupName` | string | The resource group the batch account was deployed into. |
 | `resourceId` | string | The resource ID of the batch account. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

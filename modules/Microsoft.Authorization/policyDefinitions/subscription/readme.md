@@ -7,6 +7,7 @@ With this module you can create policy definitions on a subscription level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -42,3 +43,7 @@ With this module you can create policy definitions on a subscription level.
 | `name` | string | Policy Definition Name. |
 | `resourceId` | string | Policy Definition resource ID. |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |
+
+## Cross-referenced modules
+
+_None_

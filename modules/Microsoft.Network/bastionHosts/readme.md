@@ -7,6 +7,7 @@ This module deploys a bastion host.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -280,6 +281,14 @@ roleAssignments: [
 | `name` | string | The name the Azure Bastion. |
 | `resourceGroupName` | string | The resource group the Azure Bastion was deployed into. |
 | `resourceId` | string | The resource ID the Azure Bastion. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/publicIPAddresses` | Local reference |
 
 ## Deployment examples
 

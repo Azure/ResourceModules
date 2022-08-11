@@ -7,6 +7,7 @@ This module deploys a compute image.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -146,6 +147,10 @@ tags: {
 | `name` | string | The name of the image. |
 | `resourceGroupName` | string | The resource group the image was deployed into. |
 | `resourceId` | string | The resource ID of the image. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

@@ -7,6 +7,7 @@ This module deploys a user assigned identity.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -139,6 +140,10 @@ tags: {
 | `principalId` | string | The principal ID of the user assigned identity. |
 | `resourceGroupName` | string | The resource group the user assigned identity was deployed into. |
 | `resourceId` | string | The resource ID of the user assigned identity. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

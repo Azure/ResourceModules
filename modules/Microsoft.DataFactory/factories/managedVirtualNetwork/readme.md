@@ -7,6 +7,7 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -90,3 +91,7 @@ managedPrivateEndpoints:  [
 | `name` | string | The name of the Managed Virtual Network. |
 | `resourceGroupName` | string | The name of the Resource Group the Managed Virtual Network was created in. |
 | `resourceId` | string | The resource ID of the Managed Virtual Network. |
+
+## Cross-referenced modules
+
+_None_

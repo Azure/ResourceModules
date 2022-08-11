@@ -8,6 +8,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -997,6 +998,16 @@ For further details on automanage please refer to [Automanage virtual machines](
 | `resourceGroupName` | string | The name of the resource group the VM was created in. |
 | `resourceId` | string | The resource ID of the VM. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/networkInterfaces` | Local reference |
+| `Microsoft.Network/publicIPAddresses` | Local reference |
+| `Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems` | Local reference |
 
 ## Deployment examples
 

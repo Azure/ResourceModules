@@ -7,6 +7,7 @@ This template deploys Azure NetApp Files.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -151,6 +152,10 @@ tags: {
 | `name` | string | The name of the NetApp account. |
 | `resourceGroupName` | string | The name of the Resource Group the NetApp account was created in. |
 | `resourceId` | string | The Resource ID of the NetApp account. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

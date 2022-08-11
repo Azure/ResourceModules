@@ -7,6 +7,7 @@ This module deploys an app service plan.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -48,6 +49,7 @@ This module deploys an app service plan.
 | `targetWorkerCount` | int | `0` |  | Scaling worker count. |
 | `targetWorkerSize` | int | `0` | `[0, 1, 2]` | The instance size of the hosting plan (small, medium, or large). |
 | `workerTierName` | string | `''` |  | Target worker tier assigned to the App Service plan. |
+| `zoneRedundant` | bool | `False` |  | When true, this App Service Plan will perform availability zone balancing. |
 
 
 ### Parameter Usage: `sku`
@@ -195,6 +197,10 @@ tags: {
 | `name` | string | The name of the app service plan. |
 | `resourceGroupName` | string | The resource group the app service plan was deployed into. |
 | `resourceId` | string | The resource ID of the app service plan. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

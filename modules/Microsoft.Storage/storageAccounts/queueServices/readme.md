@@ -7,6 +7,7 @@ This module can be used to deploy a file share service into a storage account.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -47,3 +48,7 @@ This module can be used to deploy a file share service into a storage account.
 | `name` | string | The name of the deployed file share service. |
 | `resourceGroupName` | string | The resource group of the deployed file share service. |
 | `resourceId` | string | The resource ID of the deployed file share service. |
+
+## Cross-referenced modules
+
+_None_

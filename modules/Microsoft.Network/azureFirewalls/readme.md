@@ -8,6 +8,7 @@ This module deploys a firewall.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -296,6 +297,14 @@ tags: {
 
 The `applicationRuleCollections` parameter accepts a JSON Array of AzureFirewallApplicationRule objects.
 The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetworkRuleCollection objects.
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/publicIPAddresses` | Local reference |
 
 ## Deployment examples
 

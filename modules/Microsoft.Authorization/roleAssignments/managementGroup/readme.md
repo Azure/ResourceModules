@@ -7,6 +7,7 @@ With this module you can perform role assignments on a management group level
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -42,3 +43,7 @@ With this module you can perform role assignments on a management group level
 | `name` | string | The GUID of the Role Assignment. |
 | `resourceId` | string | The resource ID of the Role Assignment. |
 | `scope` | string | The scope this Role Assignment applies to. |
+
+## Cross-referenced modules
+
+_None_
