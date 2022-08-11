@@ -1388,7 +1388,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Windows'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: kv1.getSecret('adminPassword')
     nicConfigurations: [
@@ -1455,7 +1455,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Windows"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "adminPassword": {
@@ -1522,7 +1522,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Windows'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: kv1.getSecret('adminPassword')
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
@@ -1668,7 +1668,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Windows"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "adminPassword": {
