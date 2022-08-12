@@ -1028,24 +1028,22 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        foreach ($parameterFileTokenTestCase in $parameterFileTokenTestCases) {
-            It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>]' -TestCases $parameterFileTokenTestCase {
-                param (
-                    [string] $parameterFilePath,
-                    [string] $parameterFileName,
-                    [string] $tokenPrefix,
-                    [string] $tokenSuffix,
-                    [string] $tokenName,
-                    [string] $tokenValue,
-                    [string] $moduleFolderName
-                )
-                $ParameterFileTokenName = -join ($tokenPrefix, $tokenName, $tokenSuffix)
-                $ParameterFileContent = Get-Content -Path $parameterFilePath
+        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>]' -TestCases $parameterFileTokenTestCases {
+            param (
+                [string] $parameterFilePath,
+                [string] $parameterFileName,
+                [string] $tokenPrefix,
+                [string] $tokenSuffix,
+                [string] $tokenName,
+                [string] $tokenValue,
+                [string] $moduleFolderName
+            )
+            $ParameterFileTokenName = -join ($tokenPrefix, $tokenName, $tokenSuffix)
+            $ParameterFileContent = Get-Content -Path $parameterFilePath
 
-                $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
-                if ($incorrectReferencesFound.Matches) {
-                    $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Parameter file should not contain the [{0}] value, instead should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
-                }
+            $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
+            if ($incorrectReferencesFound.Matches) {
+                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Parameter file should not contain the [{0}] value, instead should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
             }
         }
     }

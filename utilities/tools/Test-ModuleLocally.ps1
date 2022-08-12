@@ -138,7 +138,7 @@ function Test-ModuleLocally {
     begin {
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
         $ModuleName = Split-Path (Split-Path $TemplateFilePath -Parent) -Leaf
-        Write-Verbose "Running Local Tests for $($ModuleName)"
+        Write-Verbose "Running local tests for [$ModuleName]"
         # Load Tokens Converter Scripts
         . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFileList.ps1')
         # Load Modules Validation / Deployment Scripts
@@ -228,10 +228,10 @@ function Test-ModuleLocally {
         # Validation & Deployment tests #
         #################################
 
-        # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-        $null = Convert-TokensInFileList @tokenConfiguration
-
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
+
+            # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
+            $null = Convert-TokensInFileList @tokenConfiguration
 
             # Find Test Parameter Files
             # -------------------------
@@ -258,7 +258,7 @@ function Test-ModuleLocally {
                 if ($ValidationTest) {
                     # Loop through test parameter files
                     foreach ($moduleTestFile in $moduleTestFiles) {
-                        Write-Verbose ('Validating Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
                         Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                     }
                 }
