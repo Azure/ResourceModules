@@ -25,7 +25,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'global.variables.yml'
+  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Synapse/workspaces'
   workflowPath: '.github/workflows/ms.synapse.workspaces.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
