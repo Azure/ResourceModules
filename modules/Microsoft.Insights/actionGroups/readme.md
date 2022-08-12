@@ -14,7 +14,7 @@ This module deploys an Action Group.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `microsoft.insights/actionGroups` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups) |
 
 ## Parameters

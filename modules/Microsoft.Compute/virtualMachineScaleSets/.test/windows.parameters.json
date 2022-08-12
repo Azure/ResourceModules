@@ -12,7 +12,7 @@
             "value": "vmsswinvm"
         },
         "skuName": {
-            "value": "Standard_B2s"
+            "value": "Standard_B12ms"
         },
         "skuCapacity": {
             "value": 1
