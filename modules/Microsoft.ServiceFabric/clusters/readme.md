@@ -7,6 +7,7 @@ This module deploys a Service Fabric Cluster.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,7 +15,7 @@ This module deploys a Service Fabric Cluster.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.ServiceFabric/clusters` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters) |
 | `Microsoft.ServiceFabric/clusters/applicationTypes` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes) |
 
@@ -225,6 +226,10 @@ tags: {
 | `name` | string | The Service Fabric Cluster name. |
 | `resourceGroupName` | string | The Service Fabric Cluster resource group. |
 | `resourceId` | string | The Service Fabric Cluster resource ID. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

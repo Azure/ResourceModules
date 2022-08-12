@@ -132,6 +132,12 @@ jobs:
             # Load Settings File
             $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
 
+            # Get Service Principal Object ID
+            $context = Get-AzContext
+            $servicePrincipalAppId = $context.Account.Id
+            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+            $servicePrincipalObjectId = $servicePrincipal.Id
+
             # Get target files
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
             $targetFileList = @($moduleTestFilePath)
@@ -150,7 +156,7 @@ jobs:
               subscriptionId    = '${{ parameters.subscriptionId }}'
               managementGroupId = '${{ parameters.managementGroupId }}'
               tenantId          = '$(ARM_TENANT_ID)'
-              deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
+              deploymentSpId    = $servicePrincipalObjectId
             }
 
             # Add local tokens

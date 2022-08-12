@@ -7,12 +7,13 @@ This module deploys a key vault secret.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.KeyVault/vaults/secrets` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets) |
 
 ## Parameters
@@ -147,3 +148,7 @@ roleAssignments: [
 | `name` | string | The name of the secret. |
 | `resourceGroupName` | string | The name of the resource group the secret was created in. |
 | `resourceId` | string | The resource ID of the secret. |
+
+## Cross-referenced modules
+
+_None_

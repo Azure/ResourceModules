@@ -7,6 +7,7 @@ This module deploys a Managed Private Endpoint in a Managed Virtual Network for 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -47,3 +48,7 @@ This module deploys a Managed Private Endpoint in a Managed Virtual Network for 
 | `name` | string | The name of the deployed managed private endpoint. |
 | `resourceGroupName` | string | The resource group of the deployed managed private endpoint. |
 | `resourceId` | string | The resource ID of the deployed managed private endpoint. |
+
+## Cross-referenced modules
+
+_None_

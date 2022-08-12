@@ -25,13 +25,15 @@ In this first step, make sure you
   - Subscription ID
   - Parent Management Group ID
 
+> **Note:** The Service Principal must be able to query its own details in the Azure Active Directory (AAD). To that end, ensure it has at least the (default) role 'Cloud application administrator'.
+
 # 2. Fork/clone the repository into your DevOps environment
 
 Next, you'll want to create your own copy of the code. Depending on the repository environment you want to use (GitHub or Azure DevOps), the setup will be slightly different.
 
 > **Note:** Whether you chose GitHub or Azure DevOps as your repository's environment, it does not affect your options when registering the pipelines.
 
-> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-LinkedLocalModuleList`](./Getting%20started%20-%20Get%20module%20cross-references) to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example, 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidentally delete required references.
+> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-CrossReferencedModuleList`](./Getting%20started%20-%20Get%20module%20cross-references) with the switch parameter `PrintLocalReferencesOnly` to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example, 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidentally delete required references.
 
 <details>
 <summary>GitHub Repository</summary>
@@ -132,7 +134,6 @@ To use the environment's pipelines you should use the information you gathered d
 | `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
 | `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
 | `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
-| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The service principal ID (Object ID) of the principal used as the Azure service connection. Also used for test Role Assignments when modules are being deployed into Azure. |
 | `AZURE_CREDENTIALS` | `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the deployment principal used to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A private access token (PAT) with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date. |
 
@@ -265,7 +266,6 @@ Based on the information you gathered in the [Azure setup](#1-configure-your-azu
 | `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
 | `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
 | `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
-| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The service principal ID (Object ID) of the principal used as the Azure service connection. Also used for test Role Assignments when modules are being deployed into Azure. |
 
 Make sure its name matches the `group` reference used in the module pipelines. For example
 

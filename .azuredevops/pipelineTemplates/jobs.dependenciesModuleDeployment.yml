@@ -121,6 +121,12 @@ jobs:
                   $targetFileList += '${{ deploymentBlock.path }}'
                 }
 
+                # Get Service Principal Object ID
+                $context = Get-AzContext
+                $servicePrincipalAppId = $context.Account.Id
+                $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+                $servicePrincipalObjectId = $servicePrincipal.Id
+
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
                     FilePathList = $targetFileList
@@ -135,7 +141,7 @@ jobs:
                   subscriptionId    = '${{ parameters.subscriptionId }}'
                   managementGroupId = '${{ parameters.managementGroupId }}'
                   tenantId          = '$(ARM_TENANT_ID)'
-                  deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
+                  deploymentSpId    = $servicePrincipalObjectId
                 }
 
                 # Add local tokens

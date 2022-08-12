@@ -138,6 +138,12 @@ runs:
             $targetFileList += '${{ inputs.parameterFilePath }}'
           }
 
+          # Get Service Principal Object ID
+          $context = Get-AzContext
+          $servicePrincipalAppId = $context.Account.Id
+          $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+          $servicePrincipalObjectId = $servicePrincipal.Id
+
           # Construct Token Function Input
           $ConvertTokensInputs = @{
             FilePathList = $targetFileList
@@ -152,7 +158,7 @@ runs:
             subscriptionId    = '${{ inputs.subscriptionId }}'
             managementGroupId = '${{ inputs.managementGroupId }}'
             tenantId          = '${{ env.ARM_TENANT_ID }}'
-            deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
+            deploymentSpId    = $servicePrincipalObjectId
           }
 
           # Add local tokens

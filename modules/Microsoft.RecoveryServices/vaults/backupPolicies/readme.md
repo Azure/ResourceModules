@@ -7,6 +7,7 @@ This module deploys a Backup Policy for a Recovery Services Vault
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -222,3 +223,7 @@ backupPolicyProperties: {
 | `name` | string | The name of the backup policy. |
 | `resourceGroupName` | string | The name of the resource group the backup policy was created in. |
 | `resourceId` | string | The resource ID of the backup policy. |
+
+## Cross-referenced modules
+
+_None_

@@ -5,6 +5,7 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -12,7 +13,7 @@
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Databricks/workspaces` | [2018-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Databricks/2018-04-01/workspaces) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
@@ -216,6 +217,10 @@ tags: {
 | `name` | string | The name of the deployed databricks workspace. |
 | `resourceGroupName` | string | The resource group of the deployed databricks workspace. |
 | `resourceId` | string | The resource ID of the deployed databricks workspace. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

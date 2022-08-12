@@ -7,6 +7,7 @@ This module deploys a Machine Learning Services Workspace.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,7 +15,7 @@ This module deploys a Machine Learning Services Workspace.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.MachineLearningServices/workspaces` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2021-07-01/workspaces) |
 | `Microsoft.MachineLearningServices/workspaces/computes` | [2022-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-01-01-preview/workspaces/computes) |
@@ -395,6 +396,14 @@ userAssignedIdentities: {
 | `principalId` | string | The principal ID of the system assigned identity. |
 | `resourceGroupName` | string | The resource group the machine learning service was deployed into. |
 | `resourceId` | string | The resource ID of the machine learning service. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

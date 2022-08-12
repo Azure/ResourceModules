@@ -5,6 +5,7 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ### Container groups in Azure Container Instances
@@ -167,6 +168,10 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the container group was deployed into. |
 | `resourceId` | string | The resource ID of the container group. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

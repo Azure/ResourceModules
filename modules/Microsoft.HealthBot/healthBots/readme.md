@@ -7,6 +7,7 @@ This module deploys an Azure Health Bot.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,7 +15,7 @@ This module deploys an Azure Health Bot.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.HealthBot/healthBots` | [2020-12-08](https://docs.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2020-12-08/healthBots) |
 
 ## Parameters
@@ -143,6 +144,10 @@ roleAssignments: [
 | `name` | string | The name of the health bot. |
 | `resourceGroupName` | string | The resource group the health bot was deployed into. |
 | `resourceId` | string | The resource ID of the health bot. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

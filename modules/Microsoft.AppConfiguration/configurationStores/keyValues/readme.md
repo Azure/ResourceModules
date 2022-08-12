@@ -7,6 +7,7 @@ This module deploys an App Configuration Store.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -175,3 +176,7 @@ roleAssignments: [
 | `name` | string | The name of the key values. |
 | `resourceGroupName` | string | The resource group the batch account was deployed into. |
 | `resourceId` | string | The resource ID of the key values. |
+
+## Cross-referenced modules
+
+_None_
