@@ -47,7 +47,7 @@ localToken_tokenB: 'bar'
 
 ```
 
-> **Note:** The CI pipelines automatically removes `localToken_` section from the name when processing the tokens replacement. This means that your actual token name is `tokenA` and NOT `localToken_tokenA`.
+> **Note:** The CI pipelines automatically removes the `localToken_` prefix from the name when processing the tokens replacement. This means that your actual token name is `tokenA` and NOT `localToken_tokenA`.
 
 Let's say you'd want to use this token inside a Key Vault parameter file, to deploy the Key Vault with a name that contains this token:
 
