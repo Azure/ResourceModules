@@ -87,16 +87,16 @@ param createMode string = 'Default'
 @description('Optional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
 param maintenanceWindow object = {}
 
-@description('Conditional. Property required if "createMode" is set to "PointInTimeRestore".')
+@description('Optional. Property required if "createMode" is set to "PointInTimeRestore".')
 param pointInTimeUTC string = ''
 
-@description('Conditional. Property required if "createMode" is set to "PointInTimeRestore".')
+@description('Optional. Property required if "createMode" is set to "PointInTimeRestore".')
 param sourceServerResourceId string = ''
 
 @description('Optional. Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration.')
 param delegatedSubnetResourceId string = ''
 
-@description('Conditional. Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId".')
+@description('Optional. Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId".')
 param privateDnsZoneArmResourceId string = ''
 
 @description('Optional. The firewall rules to create in the PostgreSQL flexible server.')
