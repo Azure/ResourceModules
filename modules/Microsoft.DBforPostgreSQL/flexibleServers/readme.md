@@ -166,6 +166,149 @@ tags: {
 </details>
 <p>
 
+### Parameter Usage: `firewallRules`
+
+To enable firewall rules on the PostgreSQL flexible server:
+
+- Used when the desired connectivity mode is "Public Access" only.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"firewallRules": {
+    // Example showing all available fields
+    "value": [
+        {
+            "name": "AllowAllWindowsAzureIps", //Use this rule to allow Trusted Azure services to access the server
+            "endIpAddress": "0.0.0.0",
+            "startIpAddress": "0.0.0.0"
+        },
+        {
+            "name": "test-rule1",
+            "startIpAddress": "10.10.10.1", //Start IP address for the firewall rule. Must be IPv4 format
+            "endIpAddress": "10.10.10.10" //End IP address for the firewall rule. Must be IPv4 format
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+firewallRules:  [
+    // Example showing all available fields
+  {
+      name: 'AllowAllWindowsAzureIps', //Use this rule to allow Trusted Azure services to access the server
+      endIpAddress: '0.0.0.0'
+      startIpAddress: '0.0.0.0'
+  }
+  {
+      name: "test-rule1",
+      startIpAddress: '10.10.10.1' //Start IP address for the firewall rule. Must be IPv4 format
+      endIpAddress: '10.10.10.10' //End IP address for the firewall rule. Must be IPv4 format
+  }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `configurations`
+
+To override default server configurations on the PostgreSQL flexible server:
+
+- Use the following documentation as guidance for the available configurations: [PostgreSQL Server Configurations](https://docs.microsoft.com/en-us/azure/postgresql/single-server/how-to-configure-server-parameters-using-cli).
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"configurations": {
+  // Example showing all available fields
+  "value": [
+      {
+          "name": "log_min_messages", // Name of the configuration
+          "source": "user-override", // user-override, dynamic, system-default
+          "value": "INFO" // Value of the configuration
+      }
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+configurations:  [
+    // Example showing all available fields
+      {
+          name: 'log_min_messages' // Name of the configuration
+          source: 'user-override' // user-override, dynamic, system-default
+          value: 'INFO' // Value of the configuration
+      }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `databases`
+
+To create databases on the PostgreSQL flexible server:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"databases": {
+  // Example showing all available fields
+  "value": [
+      {
+          "name": "testdb1", // Name of the database
+          "collation": "en_US.utf8", // Collation of the database
+          "charset": "UTF8" // Character set of the database
+      },
+      {
+          "name": "testdb2" // Name of the database only which implements the default collation and charset
+      }
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+databases:  [
+    // Example showing all available fields
+      {
+          name: 'testdb1' // Name of the database
+          collation: 'en_US.utf8' // Collation of the database
+          charset: 'UTF8' // Character set of the database
+      }
+      {
+          name: 'testdb2' // Name of the database only which implements the default collation and charset
+      }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
