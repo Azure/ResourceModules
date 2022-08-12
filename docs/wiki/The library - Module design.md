@@ -26,7 +26,6 @@ This section details the design principles followed by the CARML Bicep modules.
   - [Outputs](#outputs)
 - [ReadMe](#readme)
 - [Parameter files](#parameter-files)
-- [Bicep Linter](#bicep-linter)
 - [Telemetry](#telemetry)
 
 ---
@@ -532,12 +531,6 @@ Parameter files in CARML leverage the common `deploymentParameters.json` schema 
 - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
 - A module should have as many parameter files as it needs to evaluate all parts of the module's functionality.
 - Sensitive data should not be stored inside the parameter file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
-
-# Bicep Linter
-
-The Bicep DL is continuously improved and extended with additional capabilities. Of of them, the Bicep Linter, provides guidance around template design & best practices - and surfaces any findings as warnings. However, while it is a great feature, there can be cases where rules show false-positives - or are not addressed by us immediately. For these cases, we occasionally apply ignore tags such as `#disable-next-line secure-secrets-in-params`.
-
-Note: As we want to follow best-practices whenever we can, the ignore tags should only be applied when absolutely necessary, on a case-by-case basis.
 
 # Telemetry
 
