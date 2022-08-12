@@ -10,8 +10,8 @@ param vNetId string
 @description('Optional. The public ip resource ID to associate to the azureBastionSubnet. If empty, then the public ip that is created as part of this module will be applied to the azureBastionSubnet.')
 param azureBastionSubnetPublicIpId string = ''
 
-@description('Optional. This is to add any additional public ip configurations on top of the public ip with subnet ip configuration.')
-param additionalPublicIpConfigurations array = []
+//@description('Optional. This is to add any additional public ip configurations on top of the public ip with subnet ip configuration.')
+//param additionalPublicIpConfigurations array = []
 
 @description('Optional. Specifies if a public ip should be created by default if one is not provided.')
 param isCreateDefaultPublicIP bool = true
