@@ -291,8 +291,8 @@ stages:
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                 $ConvertTokensInputs.Tokens += $tokenMap
 
-                # Swap 'namePrefix' token if provided as a Azure DevOps variable
-                if(-not [String]::IsNullOrEmpty("$env:TOKEN_NAMEPREFIX")){
+                # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+                if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
                   Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
                   $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
                 }
@@ -610,8 +610,8 @@ stages:
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                 $ConvertTokensInputs.Tokens += $tokenMap
 
-                # Swap 'namePrefix' token if provided as a Azure DevOps variable
-                if(-not [String]::IsNullOrEmpty("$env:TOKEN_NAMEPREFIX")){
+                # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+                if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
                   Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
                   $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
                 }
@@ -749,8 +749,8 @@ stages:
                     Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                     $ConvertTokensInputs.Tokens += $tokenMap
 
-                    # Swap 'namePrefix' token if provided as a Azure DevOps variable
-                    if(-not [String]::IsNullOrEmpty("$env:TOKEN_NAMEPREFIX")){
+                    # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+                    if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
                       Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
                       $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
                     }

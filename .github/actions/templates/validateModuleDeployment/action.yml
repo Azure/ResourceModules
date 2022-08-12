@@ -167,10 +167,10 @@ runs:
           Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
           $ConvertTokensInputs.Tokens += $tokenMap
 
-          # Swap 'namePrefix' token if provided as a GitHub secret
-          if(-not [String]::IsNullOrEmpty('${{ env.TOKEN_NAMEPREFIX }}')){
+          # Swap 'namePrefix' token if empty and provided as a GitHub secret
+          if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
             Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
-             $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
+            $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
           }
 
           # Add custom tokens (passed in via the pipeline)

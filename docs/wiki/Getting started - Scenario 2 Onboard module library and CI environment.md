@@ -118,7 +118,7 @@ To update the `namePrefix`, perform the following steps:
 
  For further information on the token replacement logic, please refer to the corresponding [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section.
 
- If you do not prefer to set the `namePrefix` locally for your CI environment. You can optionally set it as a GitHub Secret or add it to the ADO variable group as the key `TOKEN_NAMEPREFIX` with value `your name prefix value` and that will take precedence over the one specified in the `settings.yml`.
+ If you do not prefer to set the `namePrefix` locally for your CI environment. You can optionally set it as a GitHub Secret or add it to the ADO variable group as the key `TOKEN_NAMEPREFIX` with value `your name prefix value` and that will only take precedence if the `localToken_namePrefix` is left empty in the `settings.yml`.
 
 ## 3.2 Set up CI-environment-specific configuration
 
@@ -144,7 +144,7 @@ To use the environment's pipelines you should use the information you gathered d
 | `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
 | `AZURE_CREDENTIALS` | `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the deployment principal used to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A private access token (PAT) with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date. |
-| `TOKEN_NAMEPREFIX` | `<cntso>` | Optional. If you specify the name prefix token here, this will take precedence over the `localToken_namePrefix` specified in the `settings.yml`.  |
+| `TOKEN_NAMEPREFIX` | `cntso` | Optional. If you specify the name prefix token here, this will only take precedence when the `localToken_namePrefix` specified in the `settings.yml` is left empty.  |
 
 <p>
 
