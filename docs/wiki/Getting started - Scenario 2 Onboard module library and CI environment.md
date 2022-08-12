@@ -112,7 +112,7 @@ To update the `namePrefix`, perform the following steps:
 
     > **Note:** The value should be a 3-5 character long string like `cntso`. Longer strings are not recommended as they may conflict with Azure resource name length restrictions.
 
-    > **Note:** The CI pipelines automatically removes `localToken_` section from the name when processing the tokens replacement.
+    > **Note:** The CI pipelines automatically removes the `localToken_` prefix from the name when processing the tokens replacement.
 
     > **Note:** We highly encourage you to use the 'Check namePrefix availability' script ([see the documentation here](./Getting%20started%20-%20Check%20NamePrefix%20availability)) to check if the intended resource name will be available, based on the provided prefix.
 
