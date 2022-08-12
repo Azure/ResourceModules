@@ -85,14 +85,14 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
 
 var scaleUnits_var = skuType == 'Basic' ? 2 : scaleUnits
 
-var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPublicIpConfigurations: {
-  name: ipConfiguration.name
-  properties: {
-    publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? {
-      id: ipConfiguration.publicIPAddressResourceId
-    } : null
-  }
-}]
+//var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPublicIpConfigurations: {
+//  name: ipConfiguration.name
+ // properties: {
+ //   publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? {
+ //     id: ipConfiguration.publicIPAddressResourceId
+ //   } : null
+ // }
+//}]
 
 // ----------------------------------------------------------------------------
 // Prep ipConfigurations object AzureBastionSubnet for different uses cases:
@@ -115,13 +115,13 @@ var newPip = {
   } : null
 }
 
-var ipConfigurations = concat([
+var ipConfigurations = [
     {
       name: 'IpConfAzureBastionSubnet'
       //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
       properties: union(subnet_var, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
     }
-  ], additionalPublicIpConfigurations_var)
+  ]
 
 // ----------------------------------------------------------------------------
 
