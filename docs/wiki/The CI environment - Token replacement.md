@@ -67,7 +67,7 @@ The solution comes with one predefined local token `namePrefix`. This token is l
 
 1. By updating the value of `localToken_namePrefix` in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml), which then becomes `namePrefix` when the pipelines run.
 
-1. Creating a GitHub Secret / ADO variable called `TOKEN_NAMEPREFIX`, which then becomes `namePrefix` when the pipelines run. If created as a secret or ADO variable, it will only take precedence when the `localToken_namePrefix` in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) is left empty.
+1. Creating a GitHub Secret / ADO variable called `TOKEN_NAMEPREFIX`, which then becomes `namePrefix` when the pipelines run. If created as a secret or ADO variable, it is only applied if the `localToken_namePrefix` in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) is left empty.
 
 
 When validating modules through the CI environment, you must update it to a custom value as described in the [Update default nameprefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#31-update-default-nameprefix) paragraph. This is done to avoid conflicts with resources requiring a globally unique name, such as storage accounts or Key Vaults.
