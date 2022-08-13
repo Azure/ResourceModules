@@ -5,7 +5,7 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for a testing purposes')
 @maxLength(90)
-param resourceGroupName string = '${serviceShort}-ms.sql-servers-rg'
+param resourceGroupName string = '${serviceShort}-ms.sql.servers-rg'
 
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
@@ -38,7 +38,7 @@ module resourceGroupResources 'dependencies.bicep' = {
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
+  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>-${serviceShort}-001'
     administrators: {

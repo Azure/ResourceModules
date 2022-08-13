@@ -5,7 +5,7 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for a testing purposes')
 @maxLength(90)
-param resourceGroupName string = '${serviceShort}-ms.analysisservices-servers-rg'
+param resourceGroupName string = '${serviceShort}-ms.analysisservices.servers-rg'
 
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
@@ -52,7 +52,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-servers-${serviceShort}'
+  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>az${serviceShort}001'
     lock: 'CanNotDelete'

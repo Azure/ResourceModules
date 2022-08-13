@@ -198,6 +198,8 @@ function Test-ModuleLocally {
                 } else {
                     $moduleTestFiles = @($testFilePath)
                 }
+            } else {
+                $moduleTestFiles = @($TemplateFilePath)
             }
 
             # Replace parameter file tokens
