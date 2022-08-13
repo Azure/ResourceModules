@@ -296,6 +296,10 @@ stages:
                 $null = Convert-TokensInFileList @ConvertTokensInputs
 
                 # Get storage account name
+                if (-not [String]::IsNullOrEmpty('$(ARM_SUBSCRIPTION_ID)')) {
+                    Write-Verbose 'Setting context to subscription [$(ARM_SUBSCRIPTION_ID)]'
+                    $null = Set-AzContext -Subscription '$(ARM_SUBSCRIPTION_ID)'
+                }
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
                 # Upload files to storage account
