@@ -206,6 +206,7 @@ jobs:
             $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
 
+            # Determine possible parameters depending on file type
             if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
                 $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
@@ -268,15 +269,16 @@ jobs:
             # --------------------------
             $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
 
+            # Fetching parameters
             $location = '${{ parameters.location }}'
             $resourceGroupName = '${{ parameters.resourceGroupName }}'
             $subscriptionId = '${{ parameters.subscriptionId }}'
             $managementGroupId = '${{ parameters.managementGroupId }}'
 
             $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
 
+            # Determine possible parameters depending on file type
             if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
                 $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
@@ -304,7 +306,7 @@ jobs:
             } else {
                 # Original JSON parameter files
                 $functionInput['templateFilePath'] = $moduleTemplateFilePath
-                $functionInput['moduleTestFilePath'] = $moduleTestFilePath
+                $functionInput['parameterFilePath'] = $moduleTestFilePath
             }
 
             # Handle additional parameters
