@@ -112,9 +112,6 @@ jobs:
                 # Load used functions
                 . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
-                # Load Settings File
-                $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
-
                 # Get target files
                 $targetFileList = @('${{ deploymentBlock.templateFilePath }}')
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
@@ -131,11 +128,11 @@ jobs:
                 $ConvertTokensInputs = @{
                     FilePathList = $targetFileList
                     Tokens       = @{}
-                    TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                    TokenPrefix  = '$(tokenPrefix)'
+                    TokenSuffix  = '$(tokenSuffix)'
                 }
 
-                # Add defaults
+                # Add enforced tokens
                 $ConvertTokensInputs.Tokens += @{
                   resourceGroupName = '${{ parameters.resourceGroupName }}'
                   subscriptionId    = '${{ parameters.subscriptionId }}'
@@ -144,14 +141,18 @@ jobs:
                   deploymentSpId    = $servicePrincipalObjectId
                 }
 
-                # Add local tokens
-                if ($Settings.parameterFileTokens.localTokens) {
-                  $tokenMap = @{}
-                  foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                  }
-                  Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.Tokens += $tokenMap
+                # Add local (source control) tokens
+                $tokenMap = @{}
+                foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+                  $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+                }
+                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                $ConvertTokensInputs.Tokens += $tokenMap
+
+                # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+                if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+                  Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
+                  $ConvertTokensInputs.Tokens['namePrefix'] = "$(TOKEN_NAMEPREFIX)"
                 }
 
                 # Add custom tokens (passed in via the pipeline)
@@ -160,6 +161,8 @@ jobs:
                   Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
                   $ConvertTokensInputs.Tokens += $customTokens
                 }
+
+                Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
                 # Invoke Token Replacement Functionality
                 $null = Convert-TokensInFileList @ConvertTokensInputs
@@ -194,10 +197,9 @@ jobs:
                   $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.path }}'
                 }
 
-                $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-                if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+                if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
                     $functionInput['additionalParameters'] += @{
-                        enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                        enableDefaultTelemetry = [System.Convert]::ToBoolean('$(enableDefaultTelemetry)')
                     }
                 }
 
@@ -238,10 +240,9 @@ jobs:
                   $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ deploymentBlock.path }}'
                 }
 
-                $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-                if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+                if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
                     $functionInput['additionalParameters'] += @{
-                        enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                        enableDefaultTelemetry = [System.Convert]::ToBoolean('$(enableDefaultTelemetry)')
                     }
                 }
 

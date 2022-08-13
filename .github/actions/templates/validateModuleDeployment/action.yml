@@ -102,6 +102,7 @@ runs:
             @{ Name = 'Az.Monitor' },
             @{ Name = 'Az.OperationalInsights' },
             @{ Name = 'Az.RecoveryServices' }
+            @{ Name = 'powershell-yaml'; Version = '0.4.2'}
           )
         }
 
@@ -129,9 +130,6 @@ runs:
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
-          # Load Settings File
-          $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
-
           # Get target files
           $targetFileList = @('${{ inputs.templateFilePath }}')
           if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
@@ -148,11 +146,11 @@ runs:
           $ConvertTokensInputs = @{
             FilePathList = $targetFileList
             Tokens       = @{}
-            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+            TokenPrefix  = '${{ env.tokenPrefix }}'
+            TokenSuffix  = '${{ env.tokenSuffix }}'
           }
 
-          # Add defaults
+          # Add enforced tokens
           $ConvertTokensInputs.Tokens += @{
             resourceGroupName = '${{ inputs.resourceGroupName }}'
             subscriptionId    = '${{ inputs.subscriptionId }}'
@@ -161,14 +159,18 @@ runs:
             deploymentSpId    = $servicePrincipalObjectId
           }
 
-          # Add local tokens
-          if ($Settings.parameterFileTokens.localTokens) {
-            $tokenMap = @{}
-            foreach ($token in $Settings.parameterFileTokens.localTokens) {
-              $tokenMap += @{ $token.name = $token.value }
-            }
-            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-            $ConvertTokensInputs.Tokens += $tokenMap
+          # Add local (source control) tokens
+          $tokenMap = @{}
+          foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+            $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+          }
+          Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.Tokens += $tokenMap
+
+          # Swap 'namePrefix' token if empty and provided as a GitHub secret
+          if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+            Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+            $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
           }
 
           # Add custom tokens (passed in via the pipeline)
@@ -177,6 +179,8 @@ runs:
             Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
             $ConvertTokensInputs.Tokens += $customTokens
           }
+
+          Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
           # Invoke Token Replacement Functionality
           $null = Convert-TokensInFileList @ConvertTokensInputs
@@ -212,10 +216,9 @@ runs:
             $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
           }
 
-          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+          if (-not [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
               $functionInput['additionalParameters'] += @{
-                  enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                  enableDefaultTelemetry = [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}')
               }
           }
 
@@ -257,10 +260,9 @@ runs:
             $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
           }
 
-          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+          if (-not [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
               $functionInput['additionalParameters'] += @{
-                  enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                  enableDefaultTelemetry = [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}')
               }
           }
 
