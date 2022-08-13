@@ -9,7 +9,7 @@ subscription Id, principal Id, tenant ID and other parameters that need to be to
 .PARAMETER TemplateFilePath
 Mandatory. Path to the Bicep/ARM module that is being tested
 
-.PARAMETER TestFilePath
+.PARAMETER ParameterFilePath
 Optional. Path to the template file/folder that is to be tested with the template file. Defaults to the module's default '.parameter' folder. Will be used if the DeploymentTest/ValidationTest switches are set.
 
 .PARAMETER PesterTest
@@ -34,7 +34,7 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
-    TestFilePath               = 'C:\Microsoft.Network\routeTables\.test\parameters.json'
+    ParameterFilePath               = 'C:\Microsoft.Network\routeTables\.test\parameters.json'
     PesterTest                 = $false
     DeploymentTest             = $false
     ValidationTest             = $true
@@ -114,7 +114,7 @@ function Test-ModuleLocally {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $TestFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
+        [string] $ParameterFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
 
         [Parameter(Mandatory = $false)]
         [string] $moduleTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
@@ -149,10 +149,10 @@ function Test-ModuleLocally {
 
         # Find Test Parameter Files
         # -------------------------
-        if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
-            $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
+        if ((Get-Item -Path $ParameterFilePath) -is [System.IO.DirectoryInfo]) {
+            $moduleTestFiles = (Get-ChildItem -Path $ParameterFilePath).FullName
         } else {
-            $moduleTestFiles = @($testFilePath)
+            $moduleTestFiles = @($ParameterFilePath)
         }
 
         # Construct Token Configuration Input
@@ -235,10 +235,10 @@ function Test-ModuleLocally {
 
             # Find Test Parameter Files
             # -------------------------
-            if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
-                $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
+            if ((Get-Item -Path $ParameterFilePath) -is [System.IO.DirectoryInfo]) {
+                $moduleTestFiles = (Get-ChildItem -Path $ParameterFilePath).FullName
             } else {
-                $moduleTestFiles = @($testFilePath)
+                $moduleTestFiles = @($ParameterFilePath)
             }
 
             # Deployment & Validation Testing
