@@ -37,7 +37,7 @@ function Convert-TokensInFileList {
     [CmdletBinding()]
     param (
         [parameter(
-            Mandatory         = $true,
+            Mandatory = $true,
             ValueFromPipeline = $true
         )]
         [String[]] $FilePathList,
@@ -86,7 +86,7 @@ function Convert-TokensInFileList {
                 # Prepare Input to Token Converter Function
                 $ConvertTokenListFunctionInput = @{
                     FilePath             = $FilePath
-                    TokenNameValueObject = $FilteredTokens
+                    TokenNameValueObject = $FilteredTokens.Clone()
                     SwapValueWithName    = $SwapValueWithName
                 }
                 if ($OutputDirectory) {
