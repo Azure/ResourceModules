@@ -168,7 +168,7 @@ jobs:
             # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
             if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
               Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
-              $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
+              $ConvertTokensInputs.Tokens['namePrefix'] = "$(TOKEN_NAMEPREFIX)"
             }
 
             # Add custom tokens (passed in via the pipeline)

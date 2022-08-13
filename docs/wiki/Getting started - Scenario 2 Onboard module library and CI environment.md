@@ -118,7 +118,7 @@ To update the `namePrefix`, perform the following steps:
 
  For further information on the token replacement logic, please refer to the corresponding [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section.
 
- If you do not prefer to set the `namePrefix` locally for your CI environment. You can optionally set it as a GitHub Secret or add it to the ADO variable group as the key `TOKEN_NAMEPREFIX` with value `your name prefix value` and that will only take precedence if the `localToken_namePrefix` is left empty in the `settings.yml`.
+ If you do not prefer to set the `namePrefix` locally for your CI environment. You can optionally set it as a GitHub Secret or add it to the ADO variable group as the key `TOKEN_NAMEPREFIX` and its value `your name prefix value`, and this is only applied if the `localToken_namePrefix` in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) is left empty.
 
 ## 3.2 Set up CI-environment-specific configuration
 
