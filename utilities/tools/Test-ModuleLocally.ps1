@@ -150,7 +150,7 @@ function Test-ModuleLocally {
         # Find Test Parameter Files
         # -------------------------
         if ((Get-Item -Path $ParameterFilePath) -is [System.IO.DirectoryInfo]) {
-            $parameterFiles = (Get-ChildItem -Path $ParameterFilePath).FullName
+            $parameterFiles = (Get-ChildItem -Path $ParameterFilePath -File).FullName
         } else {
             $parameterFiles = @($ParameterFilePath)
         }
