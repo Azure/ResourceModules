@@ -98,7 +98,7 @@ function Get-CrossReferencedModuleList {
 
     foreach ($topLevelFolderPath in $topLevelFolderPaths) {
 
-        $moduleTemplatePaths = (Get-ChildItem -Path $topLevelFolderPath -Recurse -Depth 1 -Filter '*.bicep' -File).FullName
+        $moduleTemplatePaths = (Get-ChildItem -Path $topLevelFolderPath -Recurse -Filter '*.bicep' -File).FullName | Where-Object { $_ -notlike '*.test*' }
 
         $resourceReferences = [System.Collections.ArrayList]@()
         $localPathReferences = [System.Collections.ArrayList]@()
