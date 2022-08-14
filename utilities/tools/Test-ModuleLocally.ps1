@@ -147,26 +147,66 @@ function Test-ModuleLocally {
     }
     process {
 
+        # Find Test Parameter Files
+        # -------------------------
+        if ((Get-Item -Path $ParameterFilePath) -is [System.IO.DirectoryInfo]) {
+            $parameterFiles = (Get-ChildItem -Path $ParameterFilePath).FullName
+        } else {
+            $parameterFiles = @($ParameterFilePath)
+        }
+
+        # Construct Token Configuration Input
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
+        $tokenConfiguration = @{
+            FilePathList = $parameterFiles
+            Tokens       = @{}
+            TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+            TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+        }
+
+        # Add Enforced Tokens
+        $enforcedTokenList = @{}
+        if ($ValidateOrDeployParameters.ContainsKey('subscriptionId')) {
+            $enforcedTokenList['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
+        }
+        if ($ValidateOrDeployParameters.ContainsKey('managementGroupId')) {
+            $enforcedTokenList['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
+        }
+        if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
+            $enforcedTokenList['deploymentSpId'] = $AdditionalTokens['deploymentSpId']
+        }
+        if ($AdditionalTokens.ContainsKey('tenantId')) {
+            $enforcedTokenList['tenantId'] = $AdditionalTokens['tenantId']
+        }
+        $tokenConfiguration.Tokens += $enforcedTokenList
+
+        # Add local (source control) tokens
+        foreach ($localToken in ($GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } })) {
+            $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
+        }
+
+        # Add Other Parameter File Tokens (For Testing)
+        $AdditionalTokens.Keys | ForEach-Object {
+            if (-not $tokenConfiguration.Tokens.ContainsKey($PSItem)) {
+                $tokenConfiguration.Tokens[$PSItem] = $AdditionalTokens.$PSItem
+            }
+        }
+
         ################
         # PESTER Tests #
         ################
         if ($PesterTest) {
-            Write-Verbose "Pester-test module: $ModuleName"
-            try {
-                $enforcedTokenList = @{}
-                if ($ValidateOrDeployParameters.ContainsKey('subscriptionId')) {
-                    $enforcedTokenList['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
-                }
-                if ($ValidateOrDeployParameters.ContainsKey('managementGroupId')) {
-                    $enforcedTokenList['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
-                }
-                if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
-                    $enforcedTokenList['deploymentSpId'] = $AdditionalTokens['deploymentSpId']
-                }
-                if ($AdditionalTokens.ContainsKey('tenantId')) {
-                    $enforcedTokenList['tenantId'] = $AdditionalTokens['tenantId']
-                }
+            Write-Verbose "Pester Testing Module: $ModuleName"
 
+            # Construct Pester Token Configuration Input
+            $PesterTokenConfiguration = @{
+                FilePathList = $parameterFiles
+                Tokens       = $enforcedTokenList
+                TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+                TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+            }
+
+            try {
                 Invoke-Pester -Configuration @{
                     Run    = @{
                         Container = New-PesterContainer -Path (Join-Path $repoRootPath $PesterTestFilePath) -Data @{
@@ -220,13 +260,14 @@ function Test-ModuleLocally {
                 # Validate template
                 # -----------------
                 if ($ValidationTest) {
-                    # Loop through test parameter files
                     if ($parameterFiles) {
+                        # Loop through test parameter files
                         foreach ($parameterFile in $parameterFiles) {
                             Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $parameterFile -Leaf)) -Verbose
                             Test-TemplateDeployment @functionInput -ParameterFilePath $parameterFile
                         }
                     } else {
+                        Write-Verbose ('Validating module [{0}]' -f $ModuleName) -Verbose
                         Test-TemplateDeployment @functionInput
                     }
                 }
@@ -244,7 +285,10 @@ function Test-ModuleLocally {
                             }
                         }
                     } else {
-                        New-TemplateDeployment @functionInput
+                        Write-Verbose ('Deploy Module [{0}]' -f $ModuleName) -Verbose
+                        if ($PSCmdlet.ShouldProcess(('Module [{0}]' -f $ModuleName), 'Deploy')) {
+                            New-TemplateDeployment @functionInput
+                        }
                     }
                 }
 
