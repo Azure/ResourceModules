@@ -246,12 +246,10 @@ function Test-ModuleLocally {
                 # Validate template
                 # -----------------
                 if ($ValidationTest) {
-                    if ($moduleTestFiles) {
-                        # Loop through test files
-                        foreach ($moduleTestFile in $moduleTestFiles) {
-                            Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                            Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
-                        }
+                    # Loop through test files
+                    foreach ($moduleTestFile in $moduleTestFiles) {
+                        Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                     }
                 }
 
@@ -284,4 +282,3 @@ function Test-ModuleLocally {
     end {
     }
 }
-
