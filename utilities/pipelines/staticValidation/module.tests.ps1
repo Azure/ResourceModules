@@ -1011,7 +1011,7 @@ Describe 'Deployment template tests' -Tag Template {
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-                $TestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -Recurse -Force).FullName
+                $TestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -Recurse -Force -File).FullName
                 foreach ($TestFilePath in $TestFilePaths) {
                     foreach ($token in $tokenConfiguration.Tokens.Keys) {
                         $parameterFileTokenTestCases += @{
