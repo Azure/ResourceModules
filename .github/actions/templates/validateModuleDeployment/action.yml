@@ -379,19 +379,23 @@ runs:
           # Load used function
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
-          if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
-            $functionInput = @{
-              DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
-              TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-              ResourceGroupName = '${{ inputs.resourceGroupName }}'
-              ManagementGroupId = '${{ inputs.managementGroupId }}'
-              Verbose           = $true
-            }
-
-            Write-Verbose 'Invoke task with' -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-            Initialize-DeploymentRemoval @functionInput
+          $functionInput = @{
+            DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
+            ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            ManagementGroupId = '${{ inputs.managementGroupId }}'
+            Verbose           = $true
           }
+
+          # Determine template file path
+          if ('${{ inputs.templateFilePath }}' -like '*.test*') {
+            $functionInput['TemplateFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          } else {
+            $functionInput['TemplateFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+          }
+
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Initialize-DeploymentRemoval @functionInput
 
           Write-Output '::endgroup::'
