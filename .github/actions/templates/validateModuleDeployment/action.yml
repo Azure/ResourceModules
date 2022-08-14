@@ -213,8 +213,6 @@ runs:
 
           # Prepare general parameters
           # --------------------------
-          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-
           # Fetching parameters
           $location = '${{ inputs.location }}'
           $resourceGroupName = '${{ inputs.resourceGroupName }}'
@@ -290,9 +288,6 @@ runs:
 
           # Prepare general parameters
           # --------------------------
-          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-
-          # Fetching parameters
           $location = '${{ inputs.location }}'
           $resourceGroupName = '${{ inputs.resourceGroupName }}'
           $subscriptionId = '${{ inputs.subscriptionId }}'
