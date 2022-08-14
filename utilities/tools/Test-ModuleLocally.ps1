@@ -150,7 +150,7 @@ function Test-ModuleLocally {
         # Find Test Parameter Files
         # -------------------------
         if ((Get-Item -Path $ParameterFilePath -Force) -is [System.IO.DirectoryInfo]) {
-            $parameterFiles = (Get-ChildItem -Path $ParameterFilePath -File).FullName
+            $parameterFiles = (Get-ChildItem -Path $ParameterFilePath -File -Filter '*.json').FullName
         } else {
             $parameterFiles = @($ParameterFilePath)
         }
@@ -163,6 +163,9 @@ function Test-ModuleLocally {
             TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
             TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
+
+        # Add replacement for template itself
+        $tokenConfiguration['FilePathList'] += $TemplateFilePath
 
         # Add Enforced Tokens
         $enforcedTokenList = @{}
