@@ -34,7 +34,7 @@ module resourceGroupResources 'dependencies.bicep' = {
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-01'
     loadBalancerName: 'dep-<<namePrefix>>-lb-${serviceShort}-01'
     recoveryServicesVaultName: 'dep-<<namePrefix>>-rsv-${serviceShort}-01'
-    storageAccountName: 'dep-<<namePrefix>>-sa-${serviceShort}-01'
+    storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
     storageUploadDeploymentScriptName: 'dep-<<namePrefix>>-sads-${serviceShort}-01'
   }
 }
