@@ -164,6 +164,9 @@ function Test-ModuleLocally {
             TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
+        # Add replacement for template itself
+        $tokenConfiguration['FilePathList'] += $TemplateFilePath
+
         # Add Enforced Tokens
         $enforcedTokenList = @{}
         if ($ValidateOrDeployParameters.ContainsKey('subscriptionId')) {
@@ -232,14 +235,6 @@ function Test-ModuleLocally {
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
             $null = Convert-TokensInFileList @tokenConfiguration
-
-            # Find Test Parameter Files
-            # -------------------------
-            if ((Get-Item -Path $ParameterFilePath -Force) -is [System.IO.DirectoryInfo]) {
-                $parameterFiles = (Get-ChildItem -Path $ParameterFilePath).FullName
-            } else {
-                $parameterFiles = @($ParameterFilePath)
-            }
 
             # Deployment & Validation Testing
             # -------------------------------
