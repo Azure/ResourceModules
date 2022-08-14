@@ -182,7 +182,18 @@ runs:
 
           Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
-          # Invoke Token Replacement Functionality
+          # Invoke Token Replacement Functionality [For Module]
+          $null = Convert-TokensInFileList @ConvertTokensInputs
+
+          # Get target files for modules dependencies
+          $DependencyParameterFilePaths = [System.Collections.ArrayList]@()
+          $DependencyParameterFolders = Get-ChildItem -Path (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies') -Recurse -Filter 'parameters' -Directory
+          foreach ($FolderPath in $DependencyParameterFolders.FullName) {
+              $DependencyParameterFilePaths += Get-ChildItem -Path $FolderPath -Recurse -Filter '*.json'
+          }
+          $ConvertTokensInputs.FilePathList = $DependencyParameterFilePaths
+
+          # Invoke Token Replacement Functionality [For Dependencies]
           $null = Convert-TokensInFileList @ConvertTokensInputs
 
           Write-Output '::endgroup::'
