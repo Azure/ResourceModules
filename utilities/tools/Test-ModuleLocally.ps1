@@ -1,5 +1,4 @@
-﻿
-<#
+﻿<#
 .SYNOPSIS
 This function helps with testing a module locally
 
@@ -115,10 +114,10 @@ function Test-ModuleLocally {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $testFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
+        [string] $ParameterFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
 
         [Parameter(Mandatory = $false)]
-        [string] $moduleTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
+        [string] $pesterTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
 
         [Parameter(Mandatory = $false)]
         [Psobject] $ValidateOrDeployParameters = @{},
@@ -170,10 +169,10 @@ function Test-ModuleLocally {
 
                 Invoke-Pester -Configuration @{
                     Run    = @{
-                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
-                            repoRootPath      = $repoRootPath
-                            moduleFolderPaths = Split-Path $TemplateFilePath -Parent
-                            enforcedTokenList = $enforcedTokenList
+                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $pesterTestFilePath) -Data @{
+                            repoRootPath       = $repoRootPath
+                            moduleFolderPaths  = Split-Path $TemplateFilePath -Parent
+                            tokenConfiguration = $PesterTokenConfiguration
                         }
                     }
                     Output = @{
@@ -188,59 +187,22 @@ function Test-ModuleLocally {
         #################################
         # Validation & Deployment tests #
         #################################
+
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
+
+            # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
+            $null = Convert-TokensInFileList @tokenConfiguration
 
             # Find Test Parameter Files
             # -------------------------
-            if ($TemplateFilePath -notlike '*.test*') {
-                if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
-                    $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
-                } else {
-                    $moduleTestFiles = @($testFilePath)
-                }
+            if ($TemplateFilePath -like '*.test*') {
+                $parameterFiles = @($TemplateFilePath)
             } else {
-                $moduleTestFiles = @($TemplateFilePath)
-            }
-
-            # Replace parameter file tokens
-            # -----------------------------
-
-            # Default Tokens
-            $ConvertTokensInputs = @{
-                FilePathList = $moduleTestFiles
-                Tokens       = @{
-                    subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
-                    managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
+                if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
+                    $parameterFiles = (Get-ChildItem -Path $testFilePath).FullName
+                } else {
+                    $parameterFiles = @($testFilePath)
                 }
-            }
-
-            # Add Other Parameter File Tokens (For Testing)
-            if ($AdditionalTokens) {
-                $ConvertTokensInputs.Tokens += $AdditionalTokens
-            }
-
-            # Tokens in settings.json
-            $settingsFilePath = Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'settings.json'
-            if (Test-Path $settingsFilePath) {
-                $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json -AsHashtable
-                $ConvertTokensInputs += @{
-                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-                }
-
-                if ($Settings.parameterFileTokens.localTokens) {
-                    $tokenMap = @{}
-                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                        $tokenMap += @{ $token.name = $token.value }
-                    }
-                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                    $ConvertTokensInputs.Tokens += $tokenMap
-                }
-            }
-
-            # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            if ($moduleTestFiles) {
-                $null = Convert-TokensInFileList @ConvertTokensInputs
             }
 
             # Deployment & Validation Testing
@@ -259,45 +221,42 @@ function Test-ModuleLocally {
                 # -----------------
                 if ($ValidationTest) {
                     # Loop through test parameter files
-                    if ($moduleTestFiles) {
-                        foreach ($moduleTestFile in $moduleTestFiles) {
-                            Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                            Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+                    if ($parameterFiles) {
+                        foreach ($parameterFile in $parameterFiles) {
+                            Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $parameterFile -Leaf)) -Verbose
+                            Test-TemplateDeployment @functionInput -ParameterFilePath $parameterFile
                         }
                     } else {
                         Test-TemplateDeployment @functionInput
                     }
                 }
 
-
                 # Deploy template
                 # ---------------
                 if ($DeploymentTest) {
                     $functionInput['retryLimit'] = 1 # Overwrite default of 3
                     # Loop through test parameter files
-                    if ($moduleTestFiles) {
-                        foreach ($moduleTestFile in $moduleTestFiles) {
-                            Write-Verbose ('Deploy module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
-                                New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+                    if ($parameterFiles) {
+                        foreach ($parameterFile in $parameterFiles) {
+                            Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $parameterFile -Leaf)) -Verbose
+                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $parameterFile -Leaf)), 'Deploy')) {
+                                New-TemplateDeployment @functionInput -ParameterFilePath $parameterFile
                             }
                         }
                     } else {
                         New-TemplateDeployment @functionInput
                     }
                 }
+
             } catch {
                 Write-Error $_
             } finally {
                 # Restore parameter files
                 # -----------------------
-                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and $moduleTestFiles) {
+                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and $parameterFiles) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
-                    $ConvertTokensInputs += @{
-                        SwapValueWithName = $true
-                    }
-                    $null = Convert-TokensInFileList @ConvertTokensInputs
+                    $null = Convert-TokensInFileList @tokenConfiguration -SwapValueWithName $true
                 }
             }
         }

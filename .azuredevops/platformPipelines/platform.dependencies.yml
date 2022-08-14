@@ -25,7 +25,7 @@ trigger: none
 #       - 'utilities/pipelines/dependencies/**'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: dependencyPath
     value: 'utilities/pipelines/dependencies'
@@ -275,22 +275,26 @@ stages:
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 $parameterFilePaths = @($parameterFilePath)
 
-                # Replace tokens in parameter file
-                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                # Construct Token Function Input
                 $ConvertTokensInputs = @{
                   FilePathList = $parameterFilePaths
-                  TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-                  TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                  Tokens       = @{}
+                  TokenPrefix  = '$(tokenPrefix)'
+                  TokenSuffix  = '$(tokenSuffix)'
                 }
 
-                # Add local tokens
-                if ($Settings.parameterFileTokens.localTokens) {
-                  $tokenMap = @{}
-                  foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                      $tokenMap += @{ $token.name = $token.value }
-                  }
-                  Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.Tokens = $tokenMap
+                # Add local (source control) tokens
+                $tokenMap = @{}
+                foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+                  $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+                }
+                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                $ConvertTokensInputs.Tokens += $tokenMap
+
+                # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+                if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+                  Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
+                  $ConvertTokensInputs.Tokens['namePrefix'] = "$(TOKEN_NAMEPREFIX)"
                 }
 
                 $null = Convert-TokensInFileList @ConvertTokensInputs
@@ -594,20 +598,26 @@ stages:
                 $noprParameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'nopr.parameters.json'
                 $parameterFilePaths = @($parameterFilePath, $noprParameterFilePath)
 
-                # Replace tokens in parameter file
-                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                # Construct Token Function Input
                 $ConvertTokensInputs = @{
                   FilePathList = $parameterFilePaths
-                  TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-                  TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                  Tokens       = @{}
+                  TokenPrefix  = '$(tokenPrefix)'
+                  TokenSuffix  = '$(tokenSuffix)'
                 }
-                if ($Settings.parameterFileTokens.localTokens) {
-                  $tokenMap = @{}
-                  foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                      $tokenMap += @{ $token.name = $token.value }
-                  }
-                  Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.Tokens = $tokenMap
+
+                # Add local (source control) tokens
+                $tokenMap = @{}
+                foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+                  $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+                }
+                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                $ConvertTokensInputs.Tokens += $tokenMap
+
+                # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+                if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+                  Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
+                  $ConvertTokensInputs.Tokens['namePrefix'] = "$(TOKEN_NAMEPREFIX)"
                 }
                 $null = Convert-TokensInFileList @ConvertTokensInputs
 
@@ -626,10 +636,11 @@ stages:
                 $vpnSharedKeyString = (New-Guid).Guid.SubString(0, 32)
                 $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
 
-                $namePrefixToken = $Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }
+                $namePrefixToken = $ConvertTokensInputs.Tokens['namePrefix']
+
                 $certInputObject = @{
-                    Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken.value
-                    DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken.value
+                    Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken
+                    DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken
                     CertStoreLocation = 'cert:\LocalMachine\My'
                     KeyExportPolicy   = 'Exportable'
                     Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
@@ -726,21 +737,28 @@ stages:
                     $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
                     $parameterFilePaths = @($parameterFilePath)
 
-                    # Replace tokens in parameter file
-                    $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                    # Construct Token Function Input
                     $ConvertTokensInputs = @{
                       FilePathList = $parameterFilePath
-                      TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-                      TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                      Tokens       = @{}
+                      TokenPrefix  = '$(tokenPrefix)'
+                      TokenSuffix  = '$(tokenSuffix)'
                     }
-                    if ($Settings.parameterFileTokens.localTokens) {
-                      $tokenMap = @{}
-                      foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                          $tokenMap += @{ $token.name = $token.value }
-                      }
-                      Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                      $ConvertTokensInputs.Tokens = $tokenMap
+
+                    # Add local (source control) tokens
+                    $tokenMap = @{}
+                    foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+                      $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
                     }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens += $tokenMap
+
+                    # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+                    if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+                      Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
+                      $ConvertTokensInputs.Tokens['namePrefix'] = "$(TOKEN_NAMEPREFIX)"
+                    }
+
                     $null = Convert-TokensInFileList @ConvertTokensInputs
 
                     # Get key vault name
