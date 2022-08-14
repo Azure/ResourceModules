@@ -821,19 +821,19 @@ function Set-ModuleReadMe {
             'Resource Types',
             'Parameters',
             'Outputs',
+            'CrossReferences',
             'Template references',
             'Navigation',
-            'Deployment examples',
-            'Dependencies'
+            'Deployment examples'
         )]
         [string[]] $SectionsToRefresh = @(
             'Resource Types',
             'Parameters',
             'Outputs',
+            'CrossReferences',
             'Template references',
             'Navigation',
             'Deployment examples'
-            'Dependencies'
         )
     )
 
@@ -845,10 +845,14 @@ function Set-ModuleReadMe {
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
 
     if (-not $TemplateFileContent) {
-        if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
-            $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+        if (-not (Test-Path $TemplateFilePath -PathType 'Leaf')) {
+            throw "[$TemplateFilePath] is no valid file path."
         } else {
-            $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
+            if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
+                $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            } else {
+                $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
+            }
         }
     }
 
@@ -935,7 +939,7 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-OutputsSection @inputObject
     }
 
-    if ($SectionsToRefresh -contains 'Dependencies') {
+    if ($SectionsToRefresh -contains 'CrossReferences') {
         # Handle [Dependencies] section
         # ========================
         $inputObject = @{
