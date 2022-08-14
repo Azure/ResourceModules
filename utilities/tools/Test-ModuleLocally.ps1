@@ -246,20 +246,15 @@ function Test-ModuleLocally {
                 # Validate template
                 # -----------------
                 if ($ValidationTest) {
-                    if ($moduleTestFiles) {
-                        # Loop through test parameter files
-                        foreach ($moduleTestFile in $moduleTestFiles) {
-                            Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                            if ((Split-Path $moduleTestFile -LeafBase) -eq 'json') {
-                                Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
-                            } else {
-                                $functionInput['TemplateFilePath'] = $moduleTestFile
-                                Test-TemplateDeployment @functionInput
-                            }
+                    # Loop through test files
+                    foreach ($moduleTestFile in $moduleTestFiles) {
+                        Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        if ((Split-Path $moduleTestFile -LeafBase) -eq 'json') {
+                            Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+                        } else {
+                            $functionInput['TemplateFilePath'] = $moduleTestFile
+                            Test-TemplateDeployment @functionInput
                         }
-                    } else {
-                        Write-Verbose ('Validating module [{0}]' -f $ModuleName) -Verbose
-                        Test-TemplateDeployment @functionInput
                     }
                 }
 
@@ -267,25 +262,18 @@ function Test-ModuleLocally {
                 # ---------------
                 if ($DeploymentTest) {
                     $functionInput['retryLimit'] = 1 # Overwrite default of 3
-                    # Loop through test parameter files
-                    if ($moduleTestFile) {
-                        foreach ($moduleTestFile in $moduleTestFiles) {
-                            Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                            if ((Split-Path $moduleTestFile -LeafBase) -eq 'json') {
+                    # Loop through test files
+                    foreach ($moduleTestFile in $moduleTestFiles) {
+                        Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
+                        if ((Split-Path $moduleTestFile -LeafBase) -eq 'json') {
+                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
+                                New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
+                            } else {
+                                $functionInput['TemplateFilePath'] = $moduleTestFile
                                 if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
-                                    New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
-                                } else {
-                                    $functionInput['TemplateFilePath'] = $moduleTestFile
-                                    if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
-                                        New-TemplateDeployment @functionInput
-                                    }
+                                    New-TemplateDeployment @functionInput
                                 }
                             }
-                        }
-                    } else {
-                        Write-Verbose ('Deploy Module [{0}]' -f $ModuleName) -Verbose
-                        if ($PSCmdlet.ShouldProcess(('Module [{0}]' -f $ModuleName), 'Deploy')) {
-                            New-TemplateDeployment @functionInput
                         }
                     }
                 }
@@ -293,8 +281,8 @@ function Test-ModuleLocally {
             } catch {
                 Write-Error $_
             } finally {
-                # Restore parameter files
-                # -----------------------
+                # Restore test files
+                # ------------------
                 if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and $moduleTestFiles) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
@@ -306,4 +294,3 @@ function Test-ModuleLocally {
     end {
     }
 }
-
