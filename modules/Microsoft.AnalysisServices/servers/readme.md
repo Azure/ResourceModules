@@ -174,7 +174,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-servers-aspar'
+  name: '${uniqueString(deployment().name)}-test-aspar'
   params: {
     // Required parameters
     name: '<<namePrefix>>azaspar001'
@@ -261,7 +261,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-servers-asmax'
+  name: '${uniqueString(deployment().name)}-test-asmax'
   params: {
     // Required parameters
     name: '<<namePrefix>>azasmax001'
@@ -392,7 +392,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-servers-asmin'
+  name: '${uniqueString(deployment().name)}-test-asmin'
   params: {
     name: '<<namePrefix>>azasmin001'
   }
