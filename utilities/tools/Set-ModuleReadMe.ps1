@@ -1324,16 +1324,16 @@ function Set-ModuleReadMe {
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
 
+    if (-not (Test-Path $TemplateFilePath -PathType 'Leaf')) {
+        throw "[$TemplateFilePath] is no valid file path."
+    }
+
     if (-not $TemplateFileContent) {
 
-        if (-not (Test-Path $TemplateFilePath -PathType 'Leaf')) {
-            throw "[$TemplateFilePath] is no valid file path."
+        if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
+            $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
         } else {
-            if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
-                $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
-            } else {
-                $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
-            }
+            $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
         }
     }
 
