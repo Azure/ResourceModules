@@ -117,7 +117,7 @@ function Test-ModuleLocally {
         [string] $ParameterFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
 
         [Parameter(Mandatory = $false)]
-        [string] $pesterTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
+        [string] $PesterTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
 
         [Parameter(Mandatory = $false)]
         [Psobject] $ValidateOrDeployParameters = @{},
@@ -169,7 +169,7 @@ function Test-ModuleLocally {
 
                 Invoke-Pester -Configuration @{
                     Run    = @{
-                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $pesterTestFilePath) -Data @{
+                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $PesterTestFilePath) -Data @{
                             repoRootPath       = $repoRootPath
                             moduleFolderPaths  = Split-Path $TemplateFilePath -Parent
                             tokenConfiguration = $PesterTokenConfiguration
@@ -198,10 +198,10 @@ function Test-ModuleLocally {
             if ($TemplateFilePath -like '*.test*') {
                 $parameterFiles = @($TemplateFilePath)
             } else {
-                if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
-                    $parameterFiles = (Get-ChildItem -Path $testFilePath).FullName
+                if ((Get-Item -Path $ParameterFilePath) -is [System.IO.DirectoryInfo]) {
+                    $parameterFiles = (Get-ChildItem -Path $ParameterFilePath).FullName
                 } else {
-                    $parameterFiles = @($testFilePath)
+                    $parameterFiles = @($ParameterFilePath)
                 }
             }
 
