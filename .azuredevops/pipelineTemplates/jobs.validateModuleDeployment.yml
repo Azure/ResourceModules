@@ -377,7 +377,7 @@ jobs:
               Verbose           = $true
             }
 
-            if((Split-Path '$(moduleTestFilePath)' -Extension) -eq '.bicep') {
+            if((Split-Path '$(moduleTestFilePath)' -Extension) -eq '.bicep') { # TODO: Updated with non-bicep support
                 # Test template files
                 $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
             } else {
