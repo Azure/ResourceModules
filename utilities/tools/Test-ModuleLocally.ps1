@@ -198,7 +198,7 @@ function Test-ModuleLocally {
             if ($TemplateFilePath -like '*.test*') {
                 $parameterFiles = @($TemplateFilePath)
             } else {
-                if ((Get-Item -Path $ParameterFilePath) -is [System.IO.DirectoryInfo]) {
+                if ((Get-Item -Path $ParameterFilePath -Force) -is [System.IO.DirectoryInfo]) {
                     $parameterFiles = (Get-ChildItem -Path $ParameterFilePath).FullName
                 } else {
                     $parameterFiles = @($ParameterFilePath)
