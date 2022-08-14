@@ -10,7 +10,7 @@ subscription Id, principal Id, tenant ID and other parameters that need to be to
 Mandatory. Path to the Bicep/ARM module that is being tested
 
 .PARAMETER ModuleTestFilePath
-Optional. Path to the template file/folder that is to be tested with the template file. Defaults to the module's default '.parameter' folder. Will be used if the DeploymentTest/ValidationTest switches are set.
+Optional. Path to the template file/folder that is to be tested with the template file. Defaults to the module's default '.test' folder. Will be used if the DeploymentTest/ValidationTest switches are set.
 
 .PARAMETER PesterTest
 Optional. A switch parameter that triggers a Pester test for the module
