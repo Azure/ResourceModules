@@ -1329,7 +1329,6 @@ function Set-ModuleReadMe {
     }
 
     if (-not $TemplateFileContent) {
-
         if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
             $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
         } else {
@@ -1342,8 +1341,6 @@ function Set-ModuleReadMe {
     }
 
     $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/modules/')[1]
-
-    $root = (Get-Item $PSScriptRoot).Parent.Parent.FullName
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
