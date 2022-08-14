@@ -818,9 +818,6 @@ Optional. A switch to control whether or not to add a ARM-JSON-Parameter file ex
 .PARAMETER addBicep
 Optional. A switch to control whether or not to add a Bicep deployment example. Defaults to true.
 
-.PARAMETER ProjectSettings
-Optional. Projects settings to draw information from. For example the `namePrefix`.
-
 .EXAMPLE
 Set-DeploymentExamplesSection -TemplateFileContent @{ resource = @{}; ... } -TemplateFilePath 'C:/deploy.bicep' -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 
@@ -844,9 +841,6 @@ function Set-DeploymentExamplesSection {
 
         [Parameter(Mandatory = $false)]
         [bool] $addBicep = $true,
-
-        [Parameter(Mandatory = $false)]
-        [hashtable] $ProjectSettings = @{},
 
         [Parameter(Mandatory = $false)]
         [string] $SectionStartIdentifier = '## Deployment examples'
@@ -1350,13 +1344,6 @@ function Set-ModuleReadMe {
     $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/modules/')[1]
 
     $root = (Get-Item $PSScriptRoot).Parent.Parent.FullName
-    $projectSettingsPath = Join-Path $root 'settings.json'
-    if (Test-Path $projectSettingsPath) {
-        $projectSettings = Get-Content $projectSettingsPath | ConvertFrom-Json -AsHashtable
-    } else {
-        Write-Warning "No settings file found in path [$projectSettingsPath]"
-        $projectSettings = @{}
-    }
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
@@ -1453,7 +1440,6 @@ function Set-ModuleReadMe {
             ReadMeFileContent   = $readMeFileContent
             TemplateFilePath    = $TemplateFilePath
             TemplateFileContent = $templateFileContent
-            ProjectSettings     = $projectSettings
         }
         $readMeFileContent = Set-DeploymentExamplesSection @inputObject
     }

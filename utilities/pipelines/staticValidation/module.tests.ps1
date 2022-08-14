@@ -584,17 +584,6 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             $expectedNameFormat | Should -Be $true -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
         }
 
-        It '[<moduleFolderName>] Bicep test deployment should have parameter [namePrefix]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
-
-            param(
-                [object[]] $testFileContent
-            )
-
-            $hasExpectedParam = ($testFileContent | Out-String) -match '\s*param\s+namePrefix\s+string\s*'
-
-            $hasExpectedParam | Should -Be $true
-        }
-
         It '[<moduleFolderName>] Bicep test deployment should have parameter [serviceShort]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
