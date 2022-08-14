@@ -271,7 +271,7 @@ function Test-ModuleLocally {
             } finally {
                 # Restore test files
                 # ------------------
-                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and $moduleTestFiles) {
+                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
                     $null = Convert-TokensInFileList @tokenConfiguration -SwapValueWithName $true
