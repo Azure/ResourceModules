@@ -149,7 +149,7 @@ function Test-ModuleLocally {
 
         # Find Test Parameter Files
         # -------------------------
-        if ((Get-Item -Path $ParameterFilePath) -is [System.IO.DirectoryInfo]) {
+        if ((Get-Item -Path $ParameterFilePath -Force) -is [System.IO.DirectoryInfo]) {
             $parameterFiles = (Get-ChildItem -Path $ParameterFilePath -File).FullName
         } else {
             $parameterFiles = @($ParameterFilePath)
@@ -232,18 +232,6 @@ function Test-ModuleLocally {
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
             $null = Convert-TokensInFileList @tokenConfiguration
-
-            # Find Test Parameter Files
-            # -------------------------
-            if ($TemplateFilePath -like '*.test*') {
-                $parameterFiles = @($TemplateFilePath)
-            } else {
-                if ((Get-Item -Path $ParameterFilePath -Force) -is [System.IO.DirectoryInfo]) {
-                    $parameterFiles = (Get-ChildItem -Path $ParameterFilePath).FullName
-                } else {
-                    $parameterFiles = @($ParameterFilePath)
-                }
-            }
 
             # Deployment & Validation Testing
             # -------------------------------
