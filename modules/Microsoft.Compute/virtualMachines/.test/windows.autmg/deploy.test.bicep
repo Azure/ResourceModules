@@ -11,7 +11,7 @@ param resourceGroupName string = '${serviceShort}-ms.compute.virtualMachines-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'vmautmg'
+param serviceShort string = 'vmwinautmg'
 
 @description('Optional. The password to leverage for the login.')
 @secure()
