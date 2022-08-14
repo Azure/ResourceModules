@@ -125,7 +125,7 @@ function Get-CrossReferencedModuleList {
     # Expand local references recursively
     $localReferencesResultSet = [ordered]@{}
     foreach ($resourceType in ($resultSet.Keys | Sort-Object)) {
-        $relevantLocalReferences = $resultSet[$resourceType].localPathReferences | Where-Object { $_ -match '^\.\..*$' }
+        $relevantLocalReferences = $resultSet[$resourceType].localPathReferences | Where-Object { $_ -match '^\.\..*$' } # e.g. '../
         if ($relevantLocalReferences) {
             $relevantLocalReferences = $relevantLocalReferences | ForEach-Object {
                 # remove deploy.bicep
