@@ -1129,8 +1129,6 @@ Describe 'Deployment template tests' -Tag Template {
                 [hashtable[]] $testFileTestCases
             )
 
-            # TODO: Skip any non-parameter json files
-
             foreach ($parameterFileTestCase in $testFileTestCases) {
                 $TemplateFile_RequiredParametersNames = $parameterFileTestCase.TemplateFile_RequiredParametersNames
                 $testFile_AllParameterNames = $parameterFileTestCase.testFile_AllParameterNames

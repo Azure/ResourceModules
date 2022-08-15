@@ -358,6 +358,7 @@ runs:
           Write-Output '::endgroup::'
 
     # [Deployment removal] task(s)
+    # TODO: Fix that its not running if deployment failed
     # ----------------------------
     - name: 'Remove deployed resources'
       if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
