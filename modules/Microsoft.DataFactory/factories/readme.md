@@ -290,7 +290,7 @@ To use Managed Private Endpoints the following dependencies must be deployed:
 "managedPrivateEndpoints": {
     "value": [
         {
-            "name": "mystorageaccount-managed-privateEndpoint", // Required: The managed privated endpoint resource name
+            "name": "mystorageaccount-managed-privateEndpoint", // Required: The managed private endpoint resource name
             "groupId": "blob", // Required: The groupId to which the managed private endpoint is created
             "fqdns": [
                 "mystorageaccount.blob.core.windows.net" // Required: Fully qualified domain names
@@ -312,7 +312,7 @@ To use Managed Private Endpoints the following dependencies must be deployed:
 managedPrivateEndpoints:  [
     // Example showing all available fields
     {
-        name: 'mystorageaccount-managed-privateEndpoint' // Required: The managed privated endpoint resource name
+        name: 'mystorageaccount-managed-privateEndpoint' // Required: The managed private endpoint resource name
         groupId: 'blob' // Required: The groupId to which the managed private endpoint is created
         fqdns: [
           'mystorageaccount.blob.core.windows.net' // Required: Fully qualified domain names
