@@ -89,7 +89,7 @@ jobs:
     name: 'Deployment validation'
     needs:
       - job_initialize_pipeline
-      # - job_module_pester_validation
+      - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
