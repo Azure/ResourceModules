@@ -46,7 +46,7 @@ The following paragraphs provide an overview of the different phases and shared 
 This paragraph provides an overview of the three phases performed by each module pipeline. Further details about the implementation and design of each phase are provided on the dedicated pages linked below.
 
 1. **Static Validation**: Runs a set of static Pester tests on the module and its templates to ensure they comply with the design principles of CARML. Further details for this phase are provided on the corresponding wiki page - see the [Static validation](./The%20CI%20environment%20-%20Static%20validation) section.
-1. **Deployment Validation**: An actual Azure deployment is run in a sandbox subscription leveraging a predefined set of parameter files, each validating a different configuration of the same Azure resource in parallel. The test suite is cleaned up by default, removing all test resources post-deployment. Further details for this phase are provided on the corresponding wiki page - see the [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation) section.
+1. **Deployment Validation**: An actual Azure deployment is run in a sandbox subscription leveraging a predefined set of module test files, each validating a different configuration of the same Azure resource in parallel. The test suite is cleaned up by default, removing all test resources post-deployment. Further details for this phase are provided on the corresponding wiki page - see the [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation) section.
 1. **Publishing**: Runs only if the previous steps are successful. A new module version is published to all configured target locations such as template specs, private Bicep registry and Azure DevOps Universal Packages. Published module versions can then be referenced by solutions using them. Further details for this phase are provided on the corresponding wiki page - see the [Publishing](./The%20CI%20environment%20-%20Publishing) page.
 
    <img src="./media/CIEnvironment/pipelineDesignPhases.png" alt="Pipeline phases" height="200">
@@ -117,6 +117,8 @@ In addition to module pipelines, the repository includes several platform pipeli
 - [Wiki pipeline](#wiki-pipeline)
 
 ## Dependencies pipeline
+
+> NOTE: The dependencies deployed as part of this pipeline will be moved to the individual modules that depend on them once issue [1583](https://github.com/Azure/ResourceModules/issues/1583) is resolved. You can find further information about this effort [here](./The%20library%20-%20Module%20design#module-test-files).
 
 In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources may need to be deployed beforehand.
 

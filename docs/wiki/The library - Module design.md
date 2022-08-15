@@ -25,7 +25,7 @@ This section details the design principles followed by the CARML Bicep modules.
     - [Deployment names](#deployment-names)
   - [Outputs](#outputs)
 - [ReadMe](#readme)
-- [Parameter files](#parameter-files)
+- [Module test files](#module-test-files)
 - [Telemetry](#telemetry)
 
 ---
@@ -60,7 +60,7 @@ They can be deployed in different configurations just by changing the input para
 A **CARML module** consists of
 
 - The Bicep template deployment file (`deploy.bicep`).
-- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.test` subfolder.
+- One or multiple template parameters files (`*parameters.json`) or module test files (`deploy.test.bicep`) that will be used for testing, located in the `.test` folder and its subfolders.
 - A `readme.md` file which describes the module itself.
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `modules` folder.
@@ -110,7 +110,7 @@ Use the following naming standard for module files and folders:
       ├─ .bicep
       |  ├─ nested_extensionResource1.bicep
       ├─ .test
-      |  └─ parameters.json
+      |  └─ ...
       ├─ deploy.bicep
       └─ readme.md
   ```
@@ -122,7 +122,7 @@ Use the following naming standard for module files and folders:
   >    ├─ .bicep
   >    |  └─ nested_roleAssignments.bicep
   >    ├─ .test
-  >    |  └─ parameters.json
+  >    |  └─ ...
   >    ├─ deploy.bicep
   >    └─ readme.md
   >```
@@ -161,7 +161,7 @@ resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!e
 > - Child and extension resources
 >   - Locks are not automatically passed down, as they are inherited by default in Azure
 >   - The reference of the child/extension template should look similar to: `lock: contains(<childExtensionObject>, 'lock') ? <childExtensionObject>.lock : ''`
->   - Using this implementation, a lock is only deployed to the child/extension resource if explicitly specified in the module's parameter file
+>   - Using this implementation, a lock is only deployed to the child/extension resource if explicitly specified in the module's test file
 >   - For example, the lock of a Storage Account module is not automatically passed to a Storage Container child-deployment. Instead, the Storage Container resource is automatically locked by Azure together with a locked Storage Account
 > - Cross-referenced resources
 >   - All cross-referenced resources share the lock with the main resource to prevent depending resources to be changed or deleted
@@ -524,13 +524,110 @@ Note the following recommendations:
 - Refer to [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) for creating from scratch or updating the module ReadMe Markdown file.
 - It is not recommended to describe how to use child resources in the parent readme file (for example, 'How to define a \[container] entry for the \[storage account]'). Instead, it is recommended to reference the child resource's ReadMe (for example, 'container/readme.md').
 
-# Parameter files
+# Module test files
 
-Parameter files in CARML leverage the common `deploymentParameters.json` schema for ARM deployments. As parameters are usually specific to their corresponding template, we only have a few general recommendations:
-- Parameter filenames should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
-- Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
-- A module should have as many parameter files as it needs to evaluate all parts of the module's functionality.
-- Sensitive data should not be stored inside the parameter file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
+Module test files in CARML are implemented in
+- a classic way leveraging the common `deploymentParameters.json` schema for ARM deployments or
+- using comprehensive `.bicep` test files that not only test the module's template in a certain scenario, but also deploy any required dependency for it. All classic test files will be migrated to this module following the issue [1583](https://github.com/Azure/ResourceModules/issues/1583).
+
+As parameters are usually specific to their corresponding template, we only have a few general recommendations:
+- A module should have as many module test files as it needs to evaluate all parts of the module's functionality.
+- Sensitive data should not be stored inside the module test file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
+
+- JSON Parameter File specific
+  - Parameter file names should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
+  - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
+- Bicep File specific
+  - Each scenario should be setup in its own sub-folder (e.g. `.test/linux`)
+  - Each folder should contain at least a file `deploy.test.bicep` and optionally an additional `dependencies.bicep` file. The `deploy.test.bicep` file should deploy any immediate dependencies (e.g. a resource group, if required) and invoke the module's main template while providing all parameters for a given test scenario. The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed resource group).
+  - Parameters
+    - Each file should define a parameter `serviceShort`. This parameter should be unique to this file (i.e, no two test files should share the same) as it is injected into all resource deployments, making them unique too and account for corresponding requirements. As a reference you can create a identifier by combining a substring of the resource type and test scenario (e.g., in case of a Linux Virtual Machine Deployment: `vmlin`)
+    - If the module deploys a resource group level resource, the template should further have a `resourceGroupName` parameter and subsequent resource deployment. As a reference for the default name you can use `ms.<providerNamespace>.<resourceType>-${serviceShort}-test-rg`.
+    - Each file should also provide a `location` parameter that may default to the deployments default location
+  - It is recommended to define all major resource names in the `deploy.test.bicep` file as it makes later maintenance easier. To implement this, make sure to pass all resource names to any referenced module.
+  - References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `resourceGroupResources.outputs.managedIdentityPrincipalId`
+  - If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/dependencyConstructs/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
+
+    <details>
+    <summary>Example (for a resource group level resource)</summary>
+
+    ```Bicep
+    targetScope = 'subscription'
+
+    // ========== //
+    // Parameters //
+    // ========== //
+    @description('Optional. The name of the resource group to deploy for a testing purposes')
+    @maxLength(90)
+    param resourceGroupName string = 'ms.analysisservices.servers-${serviceShort}-test-rg'
+
+    @description('Optional. The location to deploy resources to')
+    param location string = deployment().location
+
+    @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
+    param serviceShort string = 'asdef'
+
+    // =========== //
+    // Deployments //
+    // =========== //
+
+    // General resources
+    // =================
+    resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+      name: resourceGroupName
+      location: location
+    }
+
+    module resourceGroupResources 'dependencies.bicep' = {
+      scope: resourceGroup
+      name: '${uniqueString(deployment().name, location)}-paramNested'
+      params: {
+        managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+      }
+    }
+
+    // Diagnostics
+    // ===========
+    module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+      scope: resourceGroup
+      name: '${uniqueString(deployment().name, location)}-diagDep'
+      params: {
+        storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
+        logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+        eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
+        eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+        location: location
+      }
+    }
+
+    // ============== //
+    // Test Execution //
+    // ============== //
+
+    module testDeployment '../../deploy.bicep' = {
+      scope: resourceGroup
+      name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+      params: {
+        name: '<<namePrefix>>az${serviceShort}'
+        lock: 'CanNotDelete'
+        skuName: 'S0'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              resourceGroupResources.outputs.managedIdentityPrincipalId
+            ]
+          }
+        ]
+        diagnosticLogsRetentionInDays: 7
+        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+      }
+    }
+    ```
+    </details>
 
 # Telemetry
 
