@@ -59,9 +59,20 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
+resource msiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: 'msi-${managedIdentityName}-Subscription-Contributor-RoleAssignment'
+  properties: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c' // Contributor
+  }
+}
+
 resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
   name: loadBalancerName
   location: location
+  sku: {
+    name: 'Standard'
+  }
   properties: {
     frontendIPConfigurations: [
       {
@@ -95,7 +106,7 @@ resource recoveryServicesVault 'Microsoft.RecoveryServices/vaults@2022-04-01' = 
       instantRPDetails: {}
       schedulePolicy: {
         schedulePolicyType: 'SimpleSchedulePolicy'
-        scheduleRunFrequency: 'Weekly'
+        scheduleRunFrequency: 'Daily'
         scheduleRunTimes: [
           '2019-11-07T07:00:00Z'
         ]
@@ -182,6 +193,8 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     tenantId: tenant().tenantId
     enabledForTemplateDeployment: true
     enablePurgeProtection: null
+    accessPolicies: [
+    ]
   }
 
   resource key 'keys@2022-07-01' = {
@@ -237,6 +250,9 @@ resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
           Set-AzStorageBlobContent -File $file.FullName -Container $ContainerName -Context $storageAccount.Context -Force -ErrorAction 'Stop' | Out-Null
         '''
   }
+  dependsOn: [
+    msiRoleAssignment
+  ]
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')
