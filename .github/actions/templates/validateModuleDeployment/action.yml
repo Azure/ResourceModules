@@ -373,9 +373,7 @@ runs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
           $functionInput = @{
-            TemplateFilePath  = ('${{ inputs.templateFilePath }}' -like '*.test*') ?
-                (Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}') :
-                (Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}')
+            TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
             ResourceGroupName = '${{ inputs.resourceGroupName }}'
             ManagementGroupId = '${{ inputs.managementGroupId }}'
