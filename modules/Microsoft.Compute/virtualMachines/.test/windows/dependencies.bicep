@@ -283,7 +283,7 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 output managedIdentityResourceId string = managedIdentity.id
 
 @description('The resource ID of the created Load Balancer Backend Pool.')
-output loadBalancerBackendPoolResourceId string = loadBalancer::backendPool.id
+output loadBalancerBackendPoolResourceId string = loadBalancer.properties.backendAddressPools[0].id
 
 @description('The resource ID of the created Recovery Services Vault.')
 output recoveryServicesVaultResourceId string = recoveryServicesVault.id
