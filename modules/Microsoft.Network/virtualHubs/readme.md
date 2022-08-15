@@ -120,11 +120,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vhpar'
+  name: '${uniqueString(deployment().name)}-test-vhdef'
   params: {
     // Required parameters
     addressPrefix: '10.1.0.0/16'
-    name: '<<namePrefix>>-vhpar'
+    name: '<<namePrefix>>-vhdef'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     hubRouteTables: [

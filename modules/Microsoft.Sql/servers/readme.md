@@ -396,10 +396,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-sqlpar'
+  name: '${uniqueString(deployment().name)}-test-sqldef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqlpar'
+    name: '<<namePrefix>>-sqldef'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'

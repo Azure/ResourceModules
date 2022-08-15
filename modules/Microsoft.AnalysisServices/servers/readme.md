@@ -174,10 +174,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-aspar'
+  name: '${uniqueString(deployment().name)}-test-asdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azaspar'
+    name: '<<namePrefix>>azasdef'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'

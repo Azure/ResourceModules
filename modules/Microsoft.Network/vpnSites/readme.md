@@ -339,10 +339,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vsipar'
+  name: '${uniqueString(deployment().name)}-test-vsidef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-vsipar'
+    name: '<<namePrefix>>-vsidef'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     deviceProperties: {
@@ -370,7 +370,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
     }
     vpnSiteLinks: [
       {
-        name: '<<namePrefix>>-vSite-vsipar'
+        name: '<<namePrefix>>-vSite-vsidef'
         properties: {
           bgpProperties: {
             asn: 65010
