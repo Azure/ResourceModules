@@ -402,7 +402,7 @@ The following module usage examples are retrieved from the content of the files 
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
-    name: '<<namePrefix>>-az-kv-min-001'
+    name: '<<namePrefix>>-az-kv-min-002'
   }
 }
 ```
@@ -420,7 +420,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>-az-kv-min-001"
+      "value": "<<namePrefix>>-az-kv-min-002"
     }
   }
 }
