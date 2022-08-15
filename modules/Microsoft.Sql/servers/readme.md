@@ -413,7 +413,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: '<<namePrefix>>-sqlpardb-001'
+        name: '<<namePrefix>>-sqldefdb-001'
         skuCapacity: 12
         skuFamily: 'Gen5'
         skuName: 'BC_Gen5'
@@ -483,7 +483,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqlpar"
+      "value": "<<namePrefix>>-sqldef"
     },
     // Non-required parameters
     "administratorLogin": {
@@ -503,7 +503,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "<<namePrefix>>-sqlpardb-001",
+          "name": "<<namePrefix>>-sqldefdb-001",
           "skuCapacity": 12,
           "skuFamily": "Gen5",
           "skuName": "BC_Gen5",
