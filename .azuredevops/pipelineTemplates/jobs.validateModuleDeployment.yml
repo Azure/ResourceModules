@@ -231,6 +231,7 @@ jobs:
 
             # Building input object
             $functionInput = @{
+                TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
                 location             = $location
                 resourceGroupName    = $resourceGroupName
                 subscriptionId       = $subscriptionId
@@ -239,13 +240,9 @@ jobs:
             }
 
             # Handle template file
-            if((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-                # Test template files
-                $functionInput['templateFilePath'] = $moduleTestFilePath
-            } else {
-                # Original JSON parameter files
-                $functionInput['templateFilePath'] = $moduleTemplateFilePath
-                $functionInput['moduleTestFilePath'] = $moduleTestFilePath
+            if ($moduleTestFilePath -like '*parameters.json') {
+                # Original paramter file
+                $functionInput['parameterFilePath'] = $moduleTestFilePath
             }
 
             # Handle additional parameters
@@ -299,20 +296,17 @@ jobs:
 
             # Building input object
             $functionInput = @{
-                location             = $location
-                resourceGroupName    = $resourceGroupName
-                subscriptionId       = $subscriptionId
-                managementGroupId    = $managementGroupId
-                additionalParameters = @{}
+                TemplateFilePath = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
+                Location = $location
+                ResourceGroupName = $resourceGroupName
+                SubscriptionId = $subscriptionId
+                ManagementGroupId = $managementGroupId
+                AdditionalParameters = @{}
             }
 
             # Handle template file
-            if((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-                # Test template files
-                $functionInput['templateFilePath'] = $moduleTestFilePath
-            } else {
-                # Original JSON parameter files
-                $functionInput['templateFilePath'] = $moduleTemplateFilePath
+            if ($moduleTestFilePath -like '*parameters.json') {
+                # Original paramter file
                 $functionInput['parameterFilePath'] = $moduleTestFilePath
             }
 
@@ -370,19 +364,14 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
             $functionInput = @{
+              TemplateFilePath  = ('$(moduleTestFilePath)' -like '*parameters.json') ?
+                  (Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}') :
+                  (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)')
               ResourceGroupName = '${{ parameters.resourceGroupName }}'
               subscriptionId    = '${{ parameters.subscriptionId }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'
               deploymentName    = '$(deploymentName)'
               Verbose           = $true
-            }
-
-            if((Split-Path '$(moduleTestFilePath)' -Extension) -eq '.bicep') { # TODO: Updated with non-bicep support
-                # Test template files
-                $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
-            } else {
-                # Original JSON parameter files
-                $functionInput['templateFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             }
 
             Write-Verbose 'Invoke task with' -Verbose

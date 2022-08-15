@@ -242,6 +242,7 @@ runs:
           # Invoke validation #
           # ----------------- #
           $functionInput = @{
+            TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
             location             = $location
             resourceGroupName    = $resourceGroupName
             subscriptionId       = $subscriptionId
@@ -250,12 +251,7 @@ runs:
           }
 
           # Handle template file
-          if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-            # Test template files
-            $functionInput['templateFilePath'] = $moduleTestFilePath
-          } else {
-            # Original JSON parameter files
-            $functionInput['templateFilePath'] = $moduleTemplateFilePath
+          if ($moduleTestFilePath -like '*parameters.json') {
             $functionInput['parameterFilePath'] = $moduleTestFilePath
           }
 
@@ -314,6 +310,7 @@ runs:
           # Invoke deployment #
           # ----------------- #
           $functionInput = @{
+            TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
             location             = $location
             resourceGroupName    = $resourceGroupName
             subscriptionId       = $subscriptionId
@@ -322,12 +319,7 @@ runs:
           }
 
           # Handle template file
-          if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-            # Test template files
-            $functionInput['templateFilePath'] = $moduleTestFilePath
-          } else {
-            # Original JSON parameter files
-            $functionInput['templateFilePath'] = $moduleTemplateFilePath
+          if ($moduleTestFilePath -like '*parameters.json') {
             $functionInput['parameterFilePath'] = $moduleTestFilePath
           }
 
@@ -380,17 +372,13 @@ runs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
           $functionInput = @{
+            TemplateFilePath  = ('${{ inputs.templateFilePath }}' -like '*.test*') ?
+                (Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}') :
+                (Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}')
             DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
             ResourceGroupName = '${{ inputs.resourceGroupName }}'
             ManagementGroupId = '${{ inputs.managementGroupId }}'
             Verbose           = $true
-          }
-
-          # Determine template file path
-          if ('${{ inputs.templateFilePath }}' -like '*.test*') {
-            $functionInput['TemplateFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-          } else {
-            $functionInput['TemplateFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
           }
 
           Write-Verbose 'Invoke task with' -Verbose
