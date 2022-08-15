@@ -1023,7 +1023,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vmlinmpar'
+  name: '${uniqueString(deployment().name)}-test-vmlinpar'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1156,7 +1156,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     }
     lock: 'CanNotDelete'
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
-    name: '<<namePrefix>>vmlinmpar001'
+    name: '<<namePrefix>>vmlinpar001'
     publicKeys: [
       {
         keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
@@ -1377,7 +1377,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": "<monitoringWorkspaceId>"
     },
     "name": {
-      "value": "<<namePrefix>>vmlinmpar001"
+      "value": "<<namePrefix>>vmlinpar001"
     },
     "publicKeys": {
       "value": [
@@ -1420,7 +1420,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-...'
+  name: '${uniqueString(deployment().name)}-test-vmlinautmg'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1455,7 +1455,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     // Non-required parameters
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
-    name: '<<namePrefix>>...001'
+    name: '<<namePrefix>>vmlinautmg001'
     publicKeys: [
       {
         keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
@@ -1528,7 +1528,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": true
     },
     "name": {
-      "value": "<<namePrefix>>...001"
+      "value": "<<namePrefix>>vmlinautmg001"
     },
     "publicKeys": {
       "value": [
@@ -1682,7 +1682,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vmpar'
+  name: '${uniqueString(deployment().name)}-test-vmwinpar'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1833,7 +1833,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     }
     lock: 'CanNotDelete'
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
-    name: '<<namePrefix>>vmpar001'
+    name: '<<namePrefix>>vmwinpar001'
     proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
     roleAssignments: [
       {
@@ -2069,7 +2069,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": "<monitoringWorkspaceId>"
     },
     "name": {
-      "value": "<<namePrefix>>vmpar001"
+      "value": "<<namePrefix>>vmwinpar001"
     },
     "proximityPlacementGroupResourceId": {
       "value": "<proximityPlacementGroupResourceId>"
@@ -2107,7 +2107,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vmautmg'
+  name: '${uniqueString(deployment().name)}-test-vmwinautmg'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -2139,7 +2139,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     // Non-required parameters
     adminPassword: '<adminPassword>'
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-    name: '<<namePrefix>>vmautmg001'
+    name: '<<namePrefix>>vmwinautmg001'
   }
 }
 ```
@@ -2203,7 +2203,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
     },
     "name": {
-      "value": "<<namePrefix>>vmautmg001"
+      "value": "<<namePrefix>>vmwinautmg001"
     }
   }
 }
@@ -2220,7 +2220,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vmmin'
+  name: '${uniqueString(deployment().name)}-test-vmwinmin'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -2251,7 +2251,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     vmSize: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: '<adminPassword>'
-    name: '<<namePrefix>>vmmin001'
+    name: '<<namePrefix>>vmwinmin001'
   }
 }
 ```
@@ -2312,7 +2312,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": "<adminPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>vmmin001"
+      "value": "<<namePrefix>>vmwinmin001"
     }
   }
 }
