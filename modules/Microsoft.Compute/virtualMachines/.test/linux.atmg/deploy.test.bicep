@@ -5,7 +5,7 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for a testing purposes')
 @maxLength(90)
-param resourceGroupName string = '${serviceShort}-ms.compute.virtualMachines-rg'
+param resourceGroupName string = 'ms.compute.virtualMachines-${serviceShort}-test-rg'
 
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location

@@ -5,7 +5,7 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for a testing purposes')
 @maxLength(90)
-param resourceGroupName string = '${serviceShort}-ms.analysisservices.servers-rg'
+param resourceGroupName string = 'ms.analysisservices.servers-${serviceShort}-test-rg'
 
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
