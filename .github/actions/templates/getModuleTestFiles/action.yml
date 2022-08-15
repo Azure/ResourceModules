@@ -20,15 +20,20 @@ runs:
       run: |
         # Grouping task logs
         Write-Output "::group::Get parameter files"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-ModuleTestFileList.ps1')
+
         $functionInput = @{
           ModulePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.modulePath }}'
         }
+
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
         # Get the list of parameter file paths
         $testFilePaths = Get-ModuleTestFileList @functionInput -Verbose
+
         # Output values to be accessed by next jobs
         $compressedOutput = $testFilePaths | ConvertTo-Json -Compress
         if($compressedOutput -notmatch "\[.*\]") {
