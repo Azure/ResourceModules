@@ -82,7 +82,7 @@ runs:
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Setup agent"
+        Write-Output '::group::Setup agent'
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -109,7 +109,7 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output "::endgroup::"
+        Write-Output '::endgroup::'
 
     - name: Azure Login
       uses: Azure/login@v1
@@ -125,7 +125,7 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Replace tokens in template file"
+          Write-Output '::group::Replace tokens in template file'
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
@@ -196,7 +196,7 @@ runs:
           # Invoke Token Replacement Functionality [For Dependencies]
           $null = Convert-TokensInFileList @ConvertTokensInputs
 
-          Write-Output "::endgroup::"
+          Write-Output '::endgroup::'
 
     # [Deployment validation] task(s)
     # -------------------------------
@@ -206,7 +206,7 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Validate template file"
+          Write-Output '::group::Validate template file'
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
@@ -238,7 +238,7 @@ runs:
 
           Test-TemplateDeployment @functionInput -Verbose
 
-          Write-Output "::endgroup::"
+          Write-Output '::endgroup::'
 
     # [Deployment execution] task(s)
     # ------------------------------
@@ -249,7 +249,7 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Deploy template file"
+          Write-Output '::group::Deploy template file'
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
@@ -303,7 +303,7 @@ runs:
             throw $res.exception
           }
 
-          Write-Output "::endgroup::"
+          Write-Output '::endgroup::'
 
     # [Deployment removal] task(s)
     # ----------------------------
@@ -314,7 +314,7 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Remove deployed resources"
+          Write-Output '::group::Remove deployed resources'
 
           # Load used function
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
@@ -334,4 +334,4 @@ runs:
             Initialize-DeploymentRemoval @functionInput
           }
 
-          Write-Output "::endgroup::"
+          Write-Output '::endgroup::'
