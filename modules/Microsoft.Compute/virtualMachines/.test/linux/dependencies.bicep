@@ -64,6 +64,7 @@ resource msiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
   properties: {
     principalId: managedIdentity.properties.principalId
     roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c' // Contributor
+    principalType: 'ServicePrincipal'
   }
 }
 
