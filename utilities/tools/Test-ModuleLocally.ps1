@@ -249,7 +249,7 @@ function Test-ModuleLocally {
                     # Loop through test files
                     foreach ($moduleTestFile in $moduleTestFiles) {
                         Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                        if ((Split-Path $moduleTestFile -LeafBase) -eq 'json') {
+                        if ((Split-Path $moduleTestFile -Extension) -eq '.json') {
                             Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                         } else {
                             $functionInput['TemplateFilePath'] = $moduleTestFile
@@ -265,7 +265,7 @@ function Test-ModuleLocally {
                     # Loop through test files
                     foreach ($moduleTestFile in $moduleTestFiles) {
                         Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                        if ((Split-Path $moduleTestFile -LeafBase) -eq 'json') {
+                        if ((Split-Path $moduleTestFile -Extension) -eq '.json') {
                             if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
                                 New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
                             }
