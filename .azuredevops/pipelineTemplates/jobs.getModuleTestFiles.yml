@@ -40,7 +40,11 @@ jobs:
 
             $testTable = @{}
             foreach ($deploymentTestPath in $deploymentTestPaths) {
-                $deploymentTestFileName = Split-Path (Split-Path $deploymentTestPath -Parent) -Leaf
+                if((Split-Path $deploymentTestPath -LeafBase) -eq 'bicep') {
+                  $deploymentTestFileName = Split-Path (Split-Path $deploymentTestPath -Parent) -Leaf
+                } else {
+                  $deploymentTestFileName = Split-Path $deploymentTestPath -Leaf
+                }
                 $testTable[$deploymentTestFileName] += @{
                     moduleTestFilePath = $deploymentTestPath
                 }
