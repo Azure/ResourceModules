@@ -212,7 +212,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azaspar"
+      "value": "<<namePrefix>>azasdef"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
