@@ -111,7 +111,7 @@ resource recoveryServicesVault 'Microsoft.RecoveryServices/vaults@2022-04-01' = 
       instantRPDetails: {}
       schedulePolicy: {
         schedulePolicyType: 'SimpleSchedulePolicy'
-        scheduleRunFrequency: 'Weekly'
+        scheduleRunFrequency: 'Daily'
         scheduleRunTimes: [
           '2019-11-07T07:00:00Z'
         ]
