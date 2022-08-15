@@ -821,19 +821,19 @@ function Set-ModuleReadMe {
             'Resource Types',
             'Parameters',
             'Outputs',
+            'CrossReferences',
             'Template references',
             'Navigation',
-            'Deployment examples',
-            'Dependencies'
+            'Deployment examples'
         )]
         [string[]] $SectionsToRefresh = @(
             'Resource Types',
             'Parameters',
             'Outputs',
+            'CrossReferences',
             'Template references',
             'Navigation',
             'Deployment examples'
-            'Dependencies'
         )
     )
 
@@ -843,6 +843,10 @@ function Set-ModuleReadMe {
 
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
+
+    if (-not (Test-Path $TemplateFilePath -PathType 'Leaf')) {
+        throw "[$TemplateFilePath] is not a valid file path."
+    }
 
     if (-not $TemplateFileContent) {
         if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
@@ -935,7 +939,7 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-OutputsSection @inputObject
     }
 
-    if ($SectionsToRefresh -contains 'Dependencies') {
+    if ($SectionsToRefresh -contains 'CrossReferences') {
         # Handle [Dependencies] section
         # ========================
         $inputObject = @{

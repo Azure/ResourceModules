@@ -98,7 +98,7 @@ function Get-CrossReferencedModuleList {
 
     foreach ($topLevelFolderPath in $topLevelFolderPaths) {
 
-        $moduleTemplatePaths = (Get-ChildItem -Path $topLevelFolderPath -Recurse -Depth 1 -Filter '*.bicep' -File).FullName
+        $moduleTemplatePaths = (Get-ChildItem -Path $topLevelFolderPath -Recurse -Filter '*.bicep' -File -Force).FullName | Where-Object { $_ -notlike '*.test*' }
 
         $resourceReferences = [System.Collections.ArrayList]@()
         $localPathReferences = [System.Collections.ArrayList]@()
@@ -125,7 +125,7 @@ function Get-CrossReferencedModuleList {
     # Expand local references recursively
     $localReferencesResultSet = [ordered]@{}
     foreach ($resourceType in ($resultSet.Keys | Sort-Object)) {
-        $relevantLocalReferences = $resultSet[$resourceType].localPathReferences | Where-Object { $_ -match '^\.\..*$' }
+        $relevantLocalReferences = $resultSet[$resourceType].localPathReferences | Where-Object { $_ -match '^\.\..*$' } # e.g. '../
         if ($relevantLocalReferences) {
             $relevantLocalReferences = $relevantLocalReferences | ForEach-Object {
                 # remove deploy.bicep

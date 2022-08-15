@@ -9,8 +9,8 @@ subscription Id, principal Id, tenant ID and other parameters that need to be to
 .PARAMETER TemplateFilePath
 Mandatory. Path to the Bicep/ARM module that is being tested
 
-.PARAMETER ParameterFilePath
-Optional. Path to the template file/folder that is to be tested with the template file. Defaults to the module's default '.parameter' folder. Will be used if the DeploymentTest/ValidationTest switches are set.
+.PARAMETER ModuleTestFilePath
+Optional. Path to the template file/folder that is to be tested with the template file. Defaults to the module's default '.test' folder. Will be used if the DeploymentTest/ValidationTest switches are set.
 
 .PARAMETER PesterTest
 Optional. A switch parameter that triggers a Pester test for the module
@@ -34,7 +34,7 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
-    ParameterFilePath          = 'C:\Microsoft.Network\routeTables\.test\parameters.json'
+    ModuleTestFilePath          = 'C:\Microsoft.Network\routeTables\.test\parameters.json'
     PesterTest                 = $false
     DeploymentTest             = $false
     ValidationTest             = $true
@@ -114,10 +114,10 @@ function Test-ModuleLocally {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $ParameterFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
+        [string] $ModuleTestFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
 
         [Parameter(Mandatory = $false)]
-        [string] $moduleTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
+        [string] $PesterTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
 
         [Parameter(Mandatory = $false)]
         [Psobject] $ValidateOrDeployParameters = @{},
@@ -149,10 +149,10 @@ function Test-ModuleLocally {
 
         # Find Test Parameter Files
         # -------------------------
-        if ((Get-Item -Path $ParameterFilePath) -is [System.IO.DirectoryInfo]) {
-            $moduleTestFiles = (Get-ChildItem -Path $ParameterFilePath).FullName
+        if ((Get-Item -Path $ModuleTestFilePath) -is [System.IO.DirectoryInfo]) {
+            $moduleTestFiles = (Get-ChildItem -Path $ModuleTestFilePath -File).FullName
         } else {
-            $moduleTestFiles = @($ParameterFilePath)
+            $moduleTestFiles = @($ModuleTestFilePath)
         }
 
         # Construct Token Configuration Input
@@ -187,9 +187,7 @@ function Test-ModuleLocally {
 
         # Add Other Parameter File Tokens (For Testing)
         $AdditionalTokens.Keys | ForEach-Object {
-            if (-not $tokenConfiguration.Tokens.ContainsKey($PSItem)) {
-                $tokenConfiguration.Tokens[$PSItem] = $AdditionalTokens.$PSItem
-            }
+            $tokenConfiguration.Tokens[$PSItem] = $AdditionalTokens.$PSItem
         }
 
         ################
@@ -209,7 +207,7 @@ function Test-ModuleLocally {
             try {
                 Invoke-Pester -Configuration @{
                     Run    = @{
-                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
+                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $PesterTestFilePath) -Data @{
                             repoRootPath       = $repoRootPath
                             moduleFolderPaths  = Split-Path $TemplateFilePath -Parent
                             tokenConfiguration = $PesterTokenConfiguration
@@ -233,14 +231,6 @@ function Test-ModuleLocally {
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
             $null = Convert-TokensInFileList @tokenConfiguration
 
-            # Find Test Parameter Files
-            # -------------------------
-            if ((Get-Item -Path $ParameterFilePath) -is [System.IO.DirectoryInfo]) {
-                $moduleTestFiles = (Get-ChildItem -Path $ParameterFilePath).FullName
-            } else {
-                $moduleTestFiles = @($ParameterFilePath)
-            }
-
             # Deployment & Validation Testing
             # -------------------------------
             $functionInput = @{
@@ -256,7 +246,7 @@ function Test-ModuleLocally {
                 # Validate template
                 # -----------------
                 if ($ValidationTest) {
-                    # Loop through test parameter files
+                    # Loop through test files
                     foreach ($moduleTestFile in $moduleTestFiles) {
                         Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
                         Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
@@ -267,7 +257,7 @@ function Test-ModuleLocally {
                 # ---------------
                 if ($DeploymentTest) {
                     $functionInput['retryLimit'] = 1 # Overwrite default of 3
-                    # Loop through test parameter files
+                    # Loop through test files
                     foreach ($moduleTestFile in $moduleTestFiles) {
                         Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
                         if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
@@ -279,8 +269,8 @@ function Test-ModuleLocally {
             } catch {
                 Write-Error $_
             } finally {
-                # Restore parameter files
-                # -----------------------
+                # Restore test files
+                # ------------------
                 if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
