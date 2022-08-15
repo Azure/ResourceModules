@@ -20,7 +20,7 @@ This module deploys DBforPostgreSQL FlexibleServers Configurations.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the database. |
+| `name` | string | The name of the configuration. |
 
 **Conditional parameters**
 | Parameter Name | Type | Description |

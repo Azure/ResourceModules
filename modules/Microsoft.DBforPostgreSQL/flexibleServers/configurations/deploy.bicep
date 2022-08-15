@@ -1,4 +1,4 @@
-@description('Required. The name of the database.')
+@description('Required. The name of the configuration.')
 param name string
 
 @description('Conditional. The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment.')
