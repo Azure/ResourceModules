@@ -120,11 +120,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-virtualHub-vhpar'
+  name: '${uniqueString(deployment().name)}-test-vhpar'
   params: {
     // Required parameters
     addressPrefix: '10.1.0.0/16'
-    name: '<<namePrefix>>-vhpar-001'
+    name: '<<namePrefix>>-vhpar'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     hubRouteTables: [
@@ -138,12 +138,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
         remoteVirtualNetworkId: '<remoteVirtualNetworkId>'
         routingConfiguration: {
           associatedRouteTable: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar-001/hubRouteTables/routeTable1'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar/hubRouteTables/routeTable1'
           }
           propagatedRouteTables: {
             ids: [
               {
-                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar-001/hubRouteTables/routeTable1'
+                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar/hubRouteTables/routeTable1'
               }
             ]
             labels: [
@@ -175,7 +175,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
       "value": "10.1.0.0/16"
     },
     "name": {
-      "value": "<<namePrefix>>-vhpar-001"
+      "value": "<<namePrefix>>-vhpar"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
@@ -195,12 +195,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
           "remoteVirtualNetworkId": "<remoteVirtualNetworkId>",
           "routingConfiguration": {
             "associatedRouteTable": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar-001/hubRouteTables/routeTable1"
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar/hubRouteTables/routeTable1"
             },
             "propagatedRouteTables": {
               "ids": [
                 {
-                  "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar-001/hubRouteTables/routeTable1"
+                  "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar/hubRouteTables/routeTable1"
                 }
               ],
               "labels": [
@@ -229,11 +229,11 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
 
 ```bicep
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-virtualHub-vhmin'
+  name: '${uniqueString(deployment().name)}-test-vhmin'
   params: {
     // Required parameters
     addressPrefix: '10.0.0.0/16'
-    name: '<<namePrefix>>-vhmin-001'
+    name: '<<namePrefix>>-vhmin'
     virtualWanId: '<virtualWanId>'
   }
 }
@@ -256,7 +256,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
       "value": "10.0.0.0/16"
     },
     "name": {
-      "value": "<<namePrefix>>-vhmin-001"
+      "value": "<<namePrefix>>-vhmin"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"

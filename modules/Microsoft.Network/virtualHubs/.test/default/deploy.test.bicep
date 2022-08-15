@@ -28,8 +28,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}-001'
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-001'
+    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
   }
 }
 
@@ -41,7 +41,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>-${serviceShort}-001'
+    name: '<<namePrefix>>-${serviceShort}'
     lock: 'CanNotDelete'
     addressPrefix: '10.1.0.0/16'
     virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
@@ -56,12 +56,12 @@ module testDeployment '../../deploy.bicep' = {
         remoteVirtualNetworkId: resourceGroupResources.outputs.virtualNetworkResourceId
         routingConfiguration: {
           associatedRouteTable: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-${serviceShort}-001/hubRouteTables/routeTable1'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-${serviceShort}/hubRouteTables/routeTable1'
           }
           propagatedRouteTables: {
             ids: [
               {
-                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-${serviceShort}-001/hubRouteTables/routeTable1'
+                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-${serviceShort}/hubRouteTables/routeTable1'
               }
             ]
             labels: [

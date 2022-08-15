@@ -28,17 +28,17 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}-01'
-    virtualNetworkName: 'adp-<<namePrefix>>-vnet-${serviceShort}-01'
-    deploymentScriptName: 'adp-<<namePrefix>>-ds-kv-${serviceShort}-01'
-    keyVaultName: 'adp-<<namePrefix>>-kv-${serviceShort}-01'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    virtualNetworkName: 'adp-<<namePrefix>>-vnet-${serviceShort}'
+    deploymentScriptName: 'adp-<<namePrefix>>-ds-kv-${serviceShort}'
+    keyVaultName: 'adp-<<namePrefix>>-kv-${serviceShort}'
     passwordSecretName: 'adminPassword'
     location: location
   }
 }
 
 resource keyVaultReference 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
-  name: 'adp-<<namePrefix>>-kv-${serviceShort}-01'
+  name: 'adp-<<namePrefix>>-kv-${serviceShort}'
   scope: resourceGroup
 }
 
@@ -49,9 +49,9 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
     storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}-01'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}-01'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}-01'
+    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
     location: location
   }
 }
@@ -64,7 +64,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>-${serviceShort}-001'
+    name: '<<namePrefix>>-${serviceShort}'
     lock: 'CanNotDelete'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: keyVaultReference.getSecret(resourceGroupResources.outputs.secretName)

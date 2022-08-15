@@ -28,7 +28,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}-01'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -40,7 +40,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>-${serviceShort}-001'
+    name: '<<namePrefix>>-${serviceShort}'
     administrators: {
       azureADOnlyAuthentication: true
       login: 'myspn'

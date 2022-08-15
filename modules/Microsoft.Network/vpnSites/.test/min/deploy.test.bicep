@@ -28,7 +28,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}-001'
+    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}'
   }
 }
 
@@ -40,7 +40,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>-${serviceShort}-001'
+    name: '<<namePrefix>>-${serviceShort}'
     virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
     addressPrefixes: [
       '10.0.0.0/16'

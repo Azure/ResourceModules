@@ -28,8 +28,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}-01'
-    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}-001'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}'
   }
 }
 
@@ -41,7 +41,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>-${serviceShort}-001'
+    name: '<<namePrefix>>-${serviceShort}'
     virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
     lock: 'CanNotDelete'
     tags: {
@@ -53,7 +53,7 @@ module testDeployment '../../deploy.bicep' = {
     }
     vpnSiteLinks: [
       {
-        name: '<<namePrefix>>-vSite-${serviceShort}-001'
+        name: '<<namePrefix>>-vSite-${serviceShort}'
         properties: {
           bgpProperties: {
             asn: 65010

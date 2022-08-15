@@ -28,14 +28,14 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-01'
-    applicationSecurityGroupName: 'adp-<<namePrefix>>-asg-${serviceShort}-01'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}-01'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-01'
-    loadBalancerName: 'dep-<<namePrefix>>-lb-${serviceShort}-01'
-    recoveryServicesVaultName: 'dep-<<namePrefix>>-rsv-${serviceShort}-01'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    applicationSecurityGroupName: 'adp-<<namePrefix>>-asg-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    loadBalancerName: 'dep-<<namePrefix>>-lb-${serviceShort}'
+    recoveryServicesVaultName: 'dep-<<namePrefix>>-rsv-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
-    storageUploadDeploymentScriptName: 'dep-<<namePrefix>>-sads-${serviceShort}-01'
+    storageUploadDeploymentScriptName: 'dep-<<namePrefix>>-sads-${serviceShort}'
   }
 }
 
@@ -46,9 +46,9 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
     storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}-01'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}-01'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}-01'
+    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
     location: location
   }
 }
@@ -61,7 +61,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}'
     adminUsername: 'localAdminUser'
     imageReference: {
       offer: 'UbuntuServer'

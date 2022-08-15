@@ -28,7 +28,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}-01'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -39,9 +39,9 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
     storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}-01'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}-01'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}-01'
+    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
     location: location
   }
 }
@@ -54,7 +54,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>az${serviceShort}001'
+    name: '<<namePrefix>>az${serviceShort}'
     lock: 'CanNotDelete'
     skuName: 'S0'
     roleAssignments: [

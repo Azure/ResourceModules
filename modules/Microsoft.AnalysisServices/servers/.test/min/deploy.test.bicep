@@ -32,6 +32,6 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>az${serviceShort}001'
+    name: '<<namePrefix>>az${serviceShort}'
   }
 }

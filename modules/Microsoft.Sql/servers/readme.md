@@ -339,10 +339,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-servers-sqladmin'
+  name: '${uniqueString(deployment().name)}-test-sqladmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqladmin-001'
+    name: '<<namePrefix>>-sqladmin'
     // Non-required parameters
     administrators: {
       azureADOnlyAuthentication: true
@@ -369,7 +369,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqladmin-001"
+      "value": "<<namePrefix>>-sqladmin"
     },
     // Non-required parameters
     "administrators": {
@@ -396,10 +396,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-servers-sqlpar'
+  name: '${uniqueString(deployment().name)}-test-sqlpar'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqlpar-001'
+    name: '<<namePrefix>>-sqlpar'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -453,7 +453,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentitResourceId}': '<${resourceGroupResources.outputs.managedIdentitResourceId}>'
+      '${resourceGroupResources.outputs.managedIdentitResourceId}': {}
     }
     vulnerabilityAssessmentsObj: {
       emailSubscriptionAdmins: true
@@ -483,7 +483,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqlpar-001"
+      "value": "<<namePrefix>>-sqlpar"
     },
     // Non-required parameters
     "administratorLogin": {
@@ -561,7 +561,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
     },
     "userAssignedIdentities": {
       "value": {
-        "${resourceGroupResources.outputs.managedIdentitResourceId}": "<${resourceGroupResources.outputs.managedIdentitResourceId}>"
+        "${resourceGroupResources.outputs.managedIdentitResourceId}": {}
       }
     },
     "vulnerabilityAssessmentsObj": {
