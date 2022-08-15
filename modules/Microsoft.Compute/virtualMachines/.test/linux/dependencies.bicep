@@ -51,6 +51,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 
 resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2022-01-01' = {
   name: applicationSecurityGroupName
+  location: location
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
@@ -60,6 +61,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 
 resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
   name: loadBalancerName
+  location: location
   properties: {
     frontendIPConfigurations: [
       {
@@ -90,6 +92,81 @@ resource recoveryServicesVault 'Microsoft.RecoveryServices/vaults@2022-04-01' = 
     name: backupPolicyName
     properties: {
       backupManagementType: 'AzureIaasVM'
+      instantRPDetails: {}
+      schedulePolicy: {
+        schedulePolicyType: 'SimpleSchedulePolicy'
+        scheduleRunFrequency: 'Weekly'
+        scheduleRunTimes: [
+          '2019-11-07T07:00:00Z'
+        ]
+        scheduleWeeklyFrequency: 0
+      }
+      retentionPolicy: {
+        retentionPolicyType: 'LongTermRetentionPolicy'
+        dailySchedule: {
+          retentionTimes: [
+            '2019-11-07T07:00:00Z'
+          ]
+          retentionDuration: {
+            count: 180
+            durationType: 'Days'
+          }
+        }
+        weeklySchedule: {
+          daysOfTheWeek: [
+            'Sunday'
+          ]
+          retentionTimes: [
+            '2019-11-07T07:00:00Z'
+          ]
+          retentionDuration: {
+            count: 12
+            durationType: 'Weeks'
+          }
+        }
+        monthlySchedule: {
+          retentionScheduleFormatType: 'Weekly'
+          retentionScheduleWeekly: {
+            daysOfTheWeek: [
+              'Sunday'
+            ]
+            weeksOfTheMonth: [
+              'First'
+            ]
+          }
+          retentionTimes: [
+            '2019-11-07T07:00:00Z'
+          ]
+          retentionDuration: {
+            count: 60
+            durationType: 'Months'
+          }
+        }
+        yearlySchedule: {
+          retentionScheduleFormatType: 'Weekly'
+          monthsOfYear: [
+            'January'
+          ]
+          retentionScheduleWeekly: {
+            daysOfTheWeek: [
+              'Sunday'
+            ]
+            weeksOfTheMonth: [
+              'First'
+            ]
+          }
+          retentionTimes: [
+            '2019-11-07T07:00:00Z'
+          ]
+          retentionDuration: {
+            count: 10
+            durationType: 'Years'
+          }
+        }
+      }
+      instantRpRetentionRangeInDays: 2
+      timeZone: 'UTC'
+      protectedItemsCount: 0
     }
   }
 }
@@ -104,7 +181,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
     tenantId: tenant().tenantId
     enabledForTemplateDeployment: true
-    enablePurgeProtection: false
+    enablePurgeProtection: null
   }
 
   resource key 'keys@2022-07-01' = {
@@ -135,6 +212,12 @@ resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: storageUploadDeploymentScriptName
   location: location
   kind: 'AzurePowerShell'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
+  }
   properties: {
     azPowerShellVersion: '3.0'
     retentionInterval: 'P1D'
