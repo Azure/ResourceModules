@@ -82,6 +82,12 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
 resource recoveryServicesVault 'Microsoft.RecoveryServices/vaults@2022-04-01' = {
   name: recoveryServicesVaultName
   location: location
+  sku: {
+    name: 'RS0'
+    tier: 'Standard'
+  }
+  properties: {
+  }
 
   resource backupPolicy 'backupPolicies@2022-03-01' = {
     name: backupPolicyName
