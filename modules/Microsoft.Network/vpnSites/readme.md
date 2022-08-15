@@ -416,7 +416,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-vsipar"
+      "value": "<<namePrefix>>-vsidef"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
@@ -458,7 +458,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
     "vpnSiteLinks": {
       "value": [
         {
-          "name": "<<namePrefix>>-vSite-vsipar",
+          "name": "<<namePrefix>>-vSite-vsidef",
           "properties": {
             "bgpProperties": {
               "asn": 65010,
