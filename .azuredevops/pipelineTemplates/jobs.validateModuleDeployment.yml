@@ -296,11 +296,11 @@ jobs:
 
             # Building input object
             $functionInput = @{
-                TemplateFilePath = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
-                Location = $location
-                ResourceGroupName = $resourceGroupName
-                SubscriptionId = $subscriptionId
-                ManagementGroupId = $managementGroupId
+                TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
+                Location             = $location
+                ResourceGroupName    = $resourceGroupName
+                SubscriptionId       = $subscriptionId
+                ManagementGroupId    = $managementGroupId
                 AdditionalParameters = @{}
             }
 
