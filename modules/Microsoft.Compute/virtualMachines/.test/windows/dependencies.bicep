@@ -63,7 +63,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 }
 
 resource msiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: 'msi-${managedIdentityName}-Subscription-Contributor-RoleAssignment'
+  name: guid('msi-${managedIdentityName}-Subscription-Contributor-RoleAssignment')
   properties: {
     principalId: managedIdentity.properties.principalId
     roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c' // Contributor
