@@ -268,11 +268,11 @@ function Test-ModuleLocally {
                         if ((Split-Path $moduleTestFile -LeafBase) -eq 'json') {
                             if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
                                 New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
-                            } else {
-                                $functionInput['TemplateFilePath'] = $moduleTestFile
-                                if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
-                                    New-TemplateDeployment @functionInput
-                                }
+                            }
+                        } else {
+                            $functionInput['TemplateFilePath'] = $moduleTestFile
+                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
+                                New-TemplateDeployment @functionInput
                             }
                         }
                     }
