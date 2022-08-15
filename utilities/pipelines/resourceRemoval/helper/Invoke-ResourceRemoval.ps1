@@ -27,8 +27,7 @@ function Invoke-ResourceRemoval {
         [string] $Type
     )
 
-    Write-Verbose ('Resource ID [{0}]' -f $resourceId) -Verbose
-    Write-Verbose ('Resource Type [{0}]' -f $type) -Verbose
+    Write-Verbose ('Removing resource [{0}]' -f $resourceId) -Verbose
 
     switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
