@@ -315,6 +315,7 @@ runs:
             resourceGroupName    = $resourceGroupName
             subscriptionId       = $subscriptionId
             managementGroupId    = $managementGroupId
+            doNotThrow           = $true
             additionalParameters = @{}
           }
 

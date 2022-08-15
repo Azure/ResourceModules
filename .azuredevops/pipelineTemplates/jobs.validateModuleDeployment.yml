@@ -301,6 +301,7 @@ jobs:
                 ResourceGroupName    = $resourceGroupName
                 SubscriptionId       = $subscriptionId
                 ManagementGroupId    = $managementGroupId
+                doNotThrow           = $true
                 AdditionalParameters = @{}
             }
 
