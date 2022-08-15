@@ -197,6 +197,8 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     tenantId: tenant().tenantId
     enabledForTemplateDeployment: true
     enablePurgeProtection: null
+    enableRbacAuthorization: true
+    accessPolicies: []
   }
 
   resource key 'keys@2022-07-01' = {
