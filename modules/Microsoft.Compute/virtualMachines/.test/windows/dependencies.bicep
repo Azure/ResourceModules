@@ -92,10 +92,6 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
       }
     ]
   }
-
-  // resource backendPool 'backendAddressPools@2022-01-01' = {
-  //   name: 'servers'
-  // }
 }
 
 resource recoveryServicesVault 'Microsoft.RecoveryServices/vaults@2022-04-01' = {
