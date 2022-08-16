@@ -26,15 +26,11 @@ This module deploys a VPN Site.
 | `name` | string | Name of the VPN Site. |
 | `virtualWanId` | string | Resource ID of the virtual WAN to link to. |
 
-**Conditional parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `addressPrefixes` | array | An array of IP address ranges that can be used by subnets of the virtual network. Required if no bgpProperties or VPNSiteLinks are configured. |
-| `bgpProperties` | object | BGP settings details. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. Required if no addressPrefixes or VPNSiteLinks are configured. |
-
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `addressPrefixes` | array | `[]` |  | An array of IP address ranges that can be used by subnets of the virtual network. Must be provided if no bgpProperties or VPNSiteLinks are configured. |
+| `bgpProperties` | object | `{object}` |  | BGP settings details. Must be provided if no addressPrefixes or VPNSiteLinks are configured. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
 | `deviceProperties` | object | `{object}` |  | List of properties of the device. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ipAddress` | string | `''` |  | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
@@ -331,19 +327,76 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Default</h3>
+<h3>Example 1: Min</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vsidef'
+module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-vsidef'
-    virtualWanId: '<virtualWanId>'
+    name: '<<namePrefix>>-az-vSite-min-001'
+    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
+    // Non-required parameters
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    ipAddress: '1.2.3.4'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-vSite-min-001"
+    },
+    "virtualWanId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
+    },
+    // Non-required parameters
+    "addressPrefixes": {
+      "value": [
+        "10.0.0.0/16"
+      ]
+    },
+    "ipAddress": {
+      "value": "1.2.3.4"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-vpnSites'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-az-vSite-x-001'
+    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
     // Non-required parameters
     deviceProperties: {
       linkSpeedInMbps: 0
@@ -359,7 +412,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
     roleAssignments: [
       {
         principalIds: [
-          '<managedIdentityPrincipalId>'
+          '<<deploymentSpId>>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -370,7 +423,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
     }
     vpnSiteLinks: [
       {
-        name: '<<namePrefix>>-vSite-vsidef'
+        name: '<<namePrefix>>-az-vSite-x-001'
         properties: {
           bgpProperties: {
             asn: 65010
@@ -416,10 +469,10 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-vsidef"
+      "value": "<<namePrefix>>-az-vSite-x-001"
     },
     "virtualWanId": {
-      "value": "<virtualWanId>"
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
     },
     // Non-required parameters
     "deviceProperties": {
@@ -443,7 +496,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
       "value": [
         {
           "principalIds": [
-            "<managedIdentityPrincipalId>"
+            "<<deploymentSpId>>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -458,7 +511,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
     "vpnSiteLinks": {
       "value": [
         {
-          "name": "<<namePrefix>>-vSite-vsidef",
+          "name": "<<namePrefix>>-az-vSite-x-001",
           "properties": {
             "bgpProperties": {
               "asn": 65010,
@@ -486,63 +539,6 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
           }
         }
       ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vsimin'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-vsimin'
-    virtualWanId: '<virtualWanId>'
-    // Non-required parameters
-    addressPrefixes: [
-      '10.0.0.0/16'
-    ]
-    ipAddress: '1.2.3.4'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-vsimin"
-    },
-    "virtualWanId": {
-      "value": "<virtualWanId>"
-    },
-    // Non-required parameters
-    "addressPrefixes": {
-      "value": [
-        "10.0.0.0/16"
-      ]
-    },
-    "ipAddress": {
-      "value": "1.2.3.4"
     }
   }
 }
