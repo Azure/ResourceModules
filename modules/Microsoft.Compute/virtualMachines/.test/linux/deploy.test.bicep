@@ -162,7 +162,7 @@ module testDeployment '../../deploy.bicep' = {
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'sudo apt-get update'
+      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command "& ./${last(split(resourceGroupResources.outputs.storageAccountCSEFileUrl, '/'))}"'
     }
     extensionDependencyAgentConfig: {
       enabled: true

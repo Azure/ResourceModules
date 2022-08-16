@@ -32,15 +32,15 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    applicationSecurityGroupName: 'adp-<<namePrefix>>-asg-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
-    loadBalancerName: 'dep-<<namePrefix>>-lb-${serviceShort}'
-    recoveryServicesVaultName: 'dep-<<namePrefix>>-rsv-${serviceShort}'
-    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
-    storageUploadDeploymentScriptName: 'dep-<<namePrefix>>-sads-${serviceShort}'
-    proximityPlacementGroupName: 'dep-<<namePrefix>>-ppg-${serviceShort}'
+    virtualNetworkName: 'dep-carml-vnet-${serviceShort}'
+    applicationSecurityGroupName: 'adp-carml-asg-${serviceShort}'
+    managedIdentityName: 'dep-carml-msi-${serviceShort}'
+    keyVaultName: 'dep-carml-kv-${serviceShort}'
+    loadBalancerName: 'dep-carml-lb-${serviceShort}'
+    recoveryServicesVaultName: 'dep-carml-rsv-${serviceShort}'
+    storageAccountName: 'depcarmlsa${serviceShort}01'
+    storageUploadDeploymentScriptName: 'dep-carml-sads-${serviceShort}'
+    proximityPlacementGroupName: 'dep-carml-ppg-${serviceShort}'
   }
 }
 
@@ -50,10 +50,10 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'depcarmldiasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-carml-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-carml-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-carml-evhns-${serviceShort}'
     location: location
   }
 }
@@ -66,7 +66,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}'
+    name: 'carml${serviceShort}'
     adminUsername: 'localAdminUser'
     imageReference: {
       offer: 'WindowsServer'
@@ -185,7 +185,7 @@ module testDeployment '../../deploy.bicep' = {
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command \'& .\\${last(split(resourceGroupResources.outputs.storageAccountCSEFileUrl, '/'))}\''
+      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command "& ./${last(split(resourceGroupResources.outputs.storageAccountCSEFileUrl, '/'))}"'
     }
     extensionDependencyAgentConfig: {
       enabled: true
