@@ -40,9 +40,11 @@ jobs:
 
             $testTable = @{}
             foreach ($deploymentTestPath in $deploymentTestPaths) {
-                if((Split-Path $deploymentTestPath -Extension) -eq '.bicep') {
+                if((Split-Path (Split-Path $deploymentTestPath) -Leaf) -ne '.test') {
+                  # Using test files in subfolders (e.g. '.test/deploy.test.json')
                   $deploymentTestFileName = Split-Path (Split-Path $deploymentTestPath -Parent) -Leaf
                 } else {
+                  # Using parameter files (e.g. '.test/parameters.json')
                   $deploymentTestFileName = Split-Path $deploymentTestPath -Leaf
                 }
                 $testTable[$deploymentTestFileName] += @{
