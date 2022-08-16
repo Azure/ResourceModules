@@ -393,6 +393,8 @@ For this reason, make sure to update the references in the following modules onc
 
 | File | Parameter | Notes |
 | - | - | - |
+| `modules\Microsoft.Compute\virtualMachines\.test\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `modules\Microsoft.Compute\virtualMachines\.test\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
 | `modules\Microsoft.Compute\virtualMachineScaleSets\.test\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
 | `modules\Microsoft.Compute\virtualMachineScaleSets\.test\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
 | `modules\Microsoft.Sql\managedInstances\.test\parameters.json` | `keys.value.uri` | |
