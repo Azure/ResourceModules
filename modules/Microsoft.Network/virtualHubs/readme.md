@@ -138,12 +138,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
         remoteVirtualNetworkId: '<remoteVirtualNetworkId>'
         routingConfiguration: {
           associatedRouteTable: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar/hubRouteTables/routeTable1'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhdef/hubRouteTables/routeTable1'
           }
           propagatedRouteTables: {
             ids: [
               {
-                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar/hubRouteTables/routeTable1'
+                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhdef/hubRouteTables/routeTable1'
               }
             ]
             labels: [
@@ -175,7 +175,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
       "value": "10.1.0.0/16"
     },
     "name": {
-      "value": "<<namePrefix>>-vhpar"
+      "value": "<<namePrefix>>-vhdef"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
@@ -195,12 +195,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
           "remoteVirtualNetworkId": "<remoteVirtualNetworkId>",
           "routingConfiguration": {
             "associatedRouteTable": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar/hubRouteTables/routeTable1"
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhdef/hubRouteTables/routeTable1"
             },
             "propagatedRouteTables": {
               "ids": [
                 {
-                  "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhpar/hubRouteTables/routeTable1"
+                  "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-vhdef/hubRouteTables/routeTable1"
                 }
               ],
               "labels": [
