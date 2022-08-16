@@ -187,56 +187,6 @@ resource recoveryServicesVault 'Microsoft.RecoveryServices/vaults@2022-04-01' = 
   }
 }
 
-// resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-//   name: keyVaultName
-//   location: location
-//   properties: {
-//     sku: {
-//       family: 'A'
-//       name: 'standard'
-//     }
-//     tenantId: tenant().tenantId
-//     enablePurgeProtection: null
-//     enabledForTemplateDeployment: true
-//     enabledForDiskEncryption: true
-//     enableRbacAuthorization: false
-//     enabledForDeployment: true
-//     accessPolicies: [
-//       {
-//         tenantId: tenant().tenantId
-//         objectId: managedIdentity.properties.principalId
-//         permissions: {
-//           keys: [
-//             'Get'
-//             'List'
-//             'WrapKey'
-//             'UnwrapKey'
-//           ]
-//         }
-//       }
-//       // {
-//       //   tenantId: tenant().tenantId
-//       //   objectId: 'e58511af-4da2-449c-a5cd-6a10271cfb83'
-//       //   permissions: {
-//       //     keys: [
-//       //       'Get'
-//       //       'List'
-//       //       'WrapKey'
-//       //       'UnwrapKey'
-//       //     ]
-//       //   }
-//       // }
-//     ]
-//   }
-
-//   resource key 'keys@2022-07-01' = {
-//     name: 'encryptionKey'
-//     properties: {
-//       kty: 'RSA'
-//     }
-//   }
-// }
-
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: keyVaultName
   location: location
