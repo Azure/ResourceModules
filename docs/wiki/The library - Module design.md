@@ -580,7 +580,7 @@ As parameters are usually specific to their corresponding template, we only have
 
     module resourceGroupResources 'dependencies.bicep' = {
       scope: resourceGroup
-      name: '${uniqueString(deployment().name, location)}-paramNested'
+      name: '${uniqueString(deployment().name, location)}-nestedDependencies'
       params: {
         managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
       }
