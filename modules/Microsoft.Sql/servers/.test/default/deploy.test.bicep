@@ -46,7 +46,7 @@ resource keyVaultReference 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
 // ===========
 module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-diagDep'
+  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
     storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'

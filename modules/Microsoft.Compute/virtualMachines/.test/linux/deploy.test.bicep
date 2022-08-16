@@ -43,7 +43,7 @@ module resourceGroupResources 'dependencies.bicep' = {
 // ===========
 module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-diagDep'
+  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
     storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
