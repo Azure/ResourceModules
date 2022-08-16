@@ -199,9 +199,34 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     enablePurgeProtection: null
     enabledForTemplateDeployment: true
     enabledForDiskEncryption: true
+    enableRbacAuthorization: false
     enabledForDeployment: true
-    enableRbacAuthorization: true
-    accessPolicies: []
+    accessPolicies: [
+      {
+        tenantId: tenant().tenantId
+        objectId: managedIdentity.properties.principalId
+        permissions: {
+          keys: [
+            'Get'
+            'List'
+            'WrapKey'
+            'UnwrapKey'
+          ]
+        }
+      }
+      {
+        tenantId: tenant().tenantId
+        objectId: 'e58511af-4da2-449c-a5cd-6a10271cfb83'
+        permissions: {
+          keys: [
+            'Get'
+            'List'
+            'WrapKey'
+            'UnwrapKey'
+          ]
+        }
+      }
+    ]
   }
 
   resource key 'keys@2022-07-01' = {
@@ -212,16 +237,30 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 }
 
-resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${managedIdentityName}-KeyVault-Key-Read-RoleAssignment')
-  scope: keyVault::key
-  properties: {
-    principalId: managedIdentity.properties.principalId
-    // Key Vault Crypto User
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
-    principalType: 'ServicePrincipal'
-  }
-}
+// resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid('msi-${managedIdentityName}-KeyVault-Key-Read-RoleAssignment')
+//   scope: keyVault::key
+//   properties: {
+//     principalId: ''
+//     // Key Vault Crypto Service Encryption User
+//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')
+//     // Key Vault Crypto User
+//     // roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
+//     principalType: 'ServicePrincipal'
+//   }
+// }
+// resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid('msi-${managedIdentityName}-KeyVault-Key-Read-RoleAssignment')
+//   scope: keyVault::key
+//   properties: {
+//     principalId: managedIdentity.properties.principalId
+//     // Key Vault Crypto Service Encryption User
+//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')
+//     // Key Vault Crypto User
+//     // roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
+//     principalType: 'ServicePrincipal'
+//   }
+// }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: storageAccountName
