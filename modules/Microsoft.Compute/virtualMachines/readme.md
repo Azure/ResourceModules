@@ -1127,7 +1127,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'sudo apt-get update'
+      commandToExecute: '<commandToExecute>'
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -1332,7 +1332,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     },
     "extensionCustomScriptProtectedSetting": {
       "value": {
-        "commandToExecute": "sudo apt-get update"
+        "commandToExecute": "<commandToExecute>"
       }
     },
     "extensionDependencyAgentConfig": {

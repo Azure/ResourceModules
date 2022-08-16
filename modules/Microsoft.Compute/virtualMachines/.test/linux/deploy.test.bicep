@@ -162,7 +162,7 @@ module testDeployment '../../deploy.bicep' = {
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command "& ./${last(split(resourceGroupResources.outputs.storageAccountCSEFileUrl, '/'))}"'
+      commandToExecute: 'value=$(./${last(split(resourceGroupResources.outputs.storageAccountCSEFileUrl, '/'))}); echo "$value"'
     }
     extensionDependencyAgentConfig: {
       enabled: true

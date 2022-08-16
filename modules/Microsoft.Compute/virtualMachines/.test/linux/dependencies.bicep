@@ -204,7 +204,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   resource key 'keys@2022-07-01' = {
     name: 'encryptionKey'
     properties: {
-      kty: 'EC'
+      kty: 'RSA'
     }
   }
 }
@@ -259,7 +259,7 @@ resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
             [string] $FileName
           )
           Write-Verbose "Create file [$FileName]" -Verbose
-          $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -Force
+          $file = New-Item -Value 'I am content' -Path $FileName -Force
           Write-Verbose "Getting storage account [$StorageAccountName|$ResourceGroupName] context." -Verbose
           $storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName -ErrorAction 'Stop'
           Write-Verbose 'Uploading file [$fileName]' -Verbose
