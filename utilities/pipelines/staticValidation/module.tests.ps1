@@ -1314,13 +1314,3 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
     }
 }
-            continue
-        }
-
-        # We allow the latest 5 including previews (in case somebody wants to use preview), or the latest 3 non-preview
-        $approvedApiVersions = @()
-        $approvedApiVersions += $resourceTypeApiVersions | Select-Object -First 5
-        $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -First 3
-        ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
-    }
-}
