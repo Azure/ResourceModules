@@ -229,14 +229,6 @@ function Test-ModuleLocally {
 
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
 
-            # Find Test Parameter Files
-            # -------------------------
-            if ((Get-Item -Path $testFilePath) -is [System.IO.DirectoryInfo]) {
-                $moduleTestFiles = (Get-ChildItem -Path $testFilePath).FullName
-            } else {
-                $moduleTestFiles = @($testFilePath)
-            }
-
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
             $null = Convert-TokensInFileList @tokenConfiguration
 
