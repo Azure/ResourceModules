@@ -53,6 +53,10 @@ parameters:
   defaultJobTimeoutInMinutes: 120
   modulesRepository: '$(modulesRepository)'
 
+  # Azure PowerShell Version parameters
+  azurePowerShellVersion: '$(azurePowerShellVersion)'
+  preferredAzurePowerShellVersion: '$(preferredAzurePowerShellVersion)'
+
   # Logic-related parameters
   ## Module-related
   modulePath: '$(modulePath)'
@@ -154,6 +158,8 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
+            az extension add --name azure-devops
+            az config set extension.use_dynamic_install=yes_without_prompt
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
@@ -208,11 +214,13 @@ jobs:
         enabled: true
         inputs:
           azureSubscription: '${{ parameters.serviceConnection }}'
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+          azurePowerShellVersion: '${{ parameters.azurePowerShellVersion }}'
+          preferredAzurePowerShellVersion: '${{ parameters.preferredAzurePowerShellVersion }}'
           pwsh: true
           ScriptType: InlineScript
           inline: |
+            az extension add --name azure-devops
+            az config set extension.use_dynamic_install=yes_without_prompt
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')

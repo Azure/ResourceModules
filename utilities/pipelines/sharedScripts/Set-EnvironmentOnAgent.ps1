@@ -171,7 +171,6 @@ function Set-EnvironmentOnAgent {
 
     az extension list | ConvertFrom-Json | Select-Object -Property name, version, preview, experimental
 
-    <#
     Write-Verbose ('Install cli exentions start') -Verbose
     $Extensions = @(
         'azure-devops'
@@ -180,10 +179,10 @@ function Set-EnvironmentOnAgent {
         if ((az extension list-available -o json | ConvertFrom-Json).Name -notcontains $extension) {
             Write-Verbose "Adding CLI extension '$extension'" -Verbose
             az extension add --name $extension
+            az config set extension.use_dynamic_install=yes_without_prompt
         }
     }
     Write-Verbose ('Install cli exentions end') -Verbose
-    #>
 
     ####################################
     ##   Install PowerShell Modules   ##
@@ -197,6 +196,10 @@ function Set-EnvironmentOnAgent {
     }
 
     # MS-hosted agents have pre-installed modules in a specific path. Let's make them discoverable if available.
+    # Always create the $profile if it does not exist (to avoid later need of case handling)
+    if (-not (Test-Path $profile)) {
+        $null = New-Item -Path $profile -Force
+    }
     if ((Test-Path '/usr/share/') -and ((Get-ChildItem -Path '/usr/share/az_*' -Directory).Count -gt 0)) {
         $preInstalledModulePaths = Get-ChildItem -Path '/usr/share/az_*' -Directory
         $maximumVersionPath = '/usr/share/az_{0}' -f (($preInstalledModulePaths | ForEach-Object { ($_ -split 'az_')[1] }) | ForEach-Object { [version]$_ } | Measure-Object -Maximum ).Maximum
@@ -208,9 +211,6 @@ function Set-EnvironmentOnAgent {
             # Set job module path (machine)
             [Environment]::SetEnvironmentVariable('PSModulePath', ('{0};{1}' -f ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')), $maximumVersionPath), 'Machine')
             # Set PS-Profile (for non-ps tasks)
-            if (-not (Test-Path $profile)) {
-                $null = New-Item -Path $profile -Force
-            }
             Add-Content -Path $profile -Value "`$env:PSModulePath += `";$maximumVersionPath`""
         } else {
             # Set step module path (process)
@@ -218,9 +218,6 @@ function Set-EnvironmentOnAgent {
             # Set job module path (machine)
             [Environment]::SetEnvironmentVariable('PSModulePath', ('{0}:{1}' -f ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')), $maximumVersionPath), 'Machine')
             # Set PS-Profile (for non-ps tasks)
-            if (-not (Test-Path $profile)) {
-                $null = New-Item -Path $profile -Force
-            }
             Add-Content -Path $profile -Value "`$env:PSModulePath += `":$maximumVersionPath`""
         }
     }
