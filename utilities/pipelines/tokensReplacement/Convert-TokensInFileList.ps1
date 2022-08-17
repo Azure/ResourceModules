@@ -25,7 +25,7 @@ Optional. A string for a custom output directory of the modified parameter file
 
 .NOTES
 - Make sure you provide the right information in the objects that contain tokens. This is in the form of
- @(
+@(
         @{ Name = 'deploymentSpId'; Value = '12345678-1234-1234-1234-123456789123' }
         @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
 
@@ -60,7 +60,7 @@ function Convert-TokensInFileList {
 
     begin {
         # Load used funtions
-        . (Join-Path $PSScriptRoot './helper/Convert-TokenInFile.ps1')
+        . (Join-Path $PSScriptRoot 'helper' 'Convert-TokenInFile.ps1')
     }
 
     process {
