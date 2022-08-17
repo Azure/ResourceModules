@@ -150,8 +150,7 @@ var newPip = {
 
 var ipConfigurations = concat([
     {
-      //name: !empty(existingPip) ? last(split(azureFirewallSubnetPublicIpId, '/')) : publicIPAddress.outputs.name
-      name: 'Test123'
+      name: !empty(azureFirewallSubnetPublicIpId) ? last(split(azureFirewallSubnetPublicIpId, '/')) : publicIPAddress.outputs.name
       //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
       properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
     }
@@ -295,7 +294,7 @@ output name string = azureFirewall.name
 output resourceGroupName string = resourceGroup().name
 
 @description('The private IP of the Azure firewall.')
-output privateIp string = publicIPAddress.outputs.name //azureFirewallSubnetPublicIpId //azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
+output privateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
 
 @description('The public ipconfiguration object for the AzureFirewallSubnet.')
 output ipConfAzureFirewallSubnet object = azureFirewall.properties.ipConfigurations[0]
