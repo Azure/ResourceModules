@@ -150,7 +150,7 @@ var newPip = {
 
 var ipConfigurations = concat([
     {
-      name: 'pip-${name}-default'
+      name: !empty(existingPip) ? split(existingPip.publicIPAddress.id, '/')[8] : publicIPAddress.outputs.name
       //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
       properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
     }
