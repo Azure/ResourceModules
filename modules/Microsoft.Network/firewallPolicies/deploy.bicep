@@ -73,7 +73,7 @@ param fqdns array = []
 param ipAddresses array = []
 
 @description('Optional. Secret ID of (base-64 encoded unencrypted PFX) Secret or Certificate object stored in KeyVault.')
-#disable-next-line secure-secrets-in-params
+#disable-next-line secure-secrets-in-params // Not a secret
 param keyVaultSecretId string = ''
 
 @description('Optional. Name of the CA certificate.')

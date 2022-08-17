@@ -75,7 +75,7 @@ param purviewResourceID string = ''
 param sqlAdministratorLogin string
 
 @description('Optional. Password for administrator access to the workspace\'s SQL pools. If you don\'t provide a password, one will be automatically generated. You can change the password later.')
-#disable-next-line secure-secrets-in-params
+#disable-next-line secure-secrets-in-params // Not a secret
 param sqlAdministratorLoginPassword string = ''
 
 @description('Optional. The ID(s) to assign to the resource.')

@@ -21,7 +21,7 @@ param identityProviderClientId string = ''
 param identityProviderClientSecret string = ''
 
 @description('Optional. Password Reset Policy Name. Only applies to AAD B2C Identity Provider.')
-#disable-next-line secure-secrets-in-params
+#disable-next-line secure-secrets-in-params // Not a secret
 param identityProviderPasswordResetPolicyName string = ''
 
 @description('Optional. Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.')

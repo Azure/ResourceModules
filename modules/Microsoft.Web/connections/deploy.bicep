@@ -20,7 +20,7 @@ param displayName string
 param location string = resourceGroup().location
 
 @description('Optional. Dictionary of nonsecret parameter values.')
-#disable-next-line secure-secrets-in-params
+#disable-next-line secure-secrets-in-params // Not a secret
 param nonSecretParameterValues object = {}
 
 @description('Optional. Connection strings or access keys for connection. Example: \'accountName\' and \'accessKey\' when using blobs.  It can change depending on the resource.')
