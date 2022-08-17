@@ -52,7 +52,7 @@ Clone/download CARML repository to create a local copy of it, as explained in Az
 
 Personalize files with your specific settings:
 1. [Update default name prefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#31-update-default-nameprefix)
-1. Update variables file ([`global.variables.yml`](https://github.com/Azure/ResourceModules/blob/main/global.variables.yml)) as explained in [Set up variables file](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#322-set-up-variables-file)
+1. Update settings file ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) as explained in [Set up variables file](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#322-set-up-variables-file)
 
 # 3. (Optional) Re-apply your customizations
 

@@ -7,13 +7,14 @@ This module deploys an AVD Scaling Plan.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DesktopVirtualization/scalingPlans` | [2021-09-03-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-09-03-preview/scalingPlans) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
@@ -254,6 +255,10 @@ roleAssignments: [
 | `name` | string | The name of the AVD scaling plan. |
 | `resourceGroupName` | string | The resource group the AVD scaling plan was deployed into. |
 | `resourceId` | string | The resource ID of the AVD scaling plan. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

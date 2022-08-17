@@ -7,6 +7,7 @@ This module deploys an Azure Automation Account Job Schedule.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -31,7 +32,7 @@ This module deploys an Azure Automation Account Job Schedule.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `[newGuid()]` | Name of the Automation Account job schedule. Must be a GUID. If not provided, a new GUID is generated. |
+| `name` | string | `[uniqueString(parameters('automationAccountName'), subscription().id)]` | Name of the Automation Account job schedule. Must be a GUID. If not provided, a new GUID is generated. |
 | `parameters` | object | `{object}` | List of job properties. |
 | `runOn` | string | `''` | The hybrid worker group that the scheduled job should run on. |
 
@@ -43,3 +44,7 @@ This module deploys an Azure Automation Account Job Schedule.
 | `name` | string | The name of the deployed job schedule. |
 | `resourceGroupName` | string | The resource group of the deployed job schedule. |
 | `resourceId` | string | The resource ID of the deployed job schedule. |
+
+## Cross-referenced modules
+
+_None_

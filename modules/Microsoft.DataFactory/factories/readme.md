@@ -5,6 +5,7 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -12,7 +13,7 @@
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DataFactory/factories` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories) |
 | `Microsoft.DataFactory/factories/integrationRuntimes` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/integrationRuntimes) |
 | `Microsoft.DataFactory/factories/managedVirtualNetworks` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks) |
@@ -289,7 +290,7 @@ To use Managed Private Endpoints the following dependencies must be deployed:
 "managedPrivateEndpoints": {
     "value": [
         {
-            "name": "mystorageaccount-managed-privateEndpoint", // Required: The managed privated endpoint resource name
+            "name": "mystorageaccount-managed-privateEndpoint", // Required: The managed private endpoint resource name
             "groupId": "blob", // Required: The groupId to which the managed private endpoint is created
             "fqdns": [
                 "mystorageaccount.blob.core.windows.net" // Required: Fully qualified domain names
@@ -311,7 +312,7 @@ To use Managed Private Endpoints the following dependencies must be deployed:
 managedPrivateEndpoints:  [
     // Example showing all available fields
     {
-        name: 'mystorageaccount-managed-privateEndpoint' // Required: The managed privated endpoint resource name
+        name: 'mystorageaccount-managed-privateEndpoint' // Required: The managed private endpoint resource name
         groupId: 'blob' // Required: The groupId to which the managed private endpoint is created
         fqdns: [
           'mystorageaccount.blob.core.windows.net' // Required: Fully qualified domain names
@@ -333,6 +334,14 @@ managedPrivateEndpoints:  [
 | `resourceGroupName` | string | The name of the Resource Group with the Data factory. |
 | `resourceId` | string | The Resource ID of the Data factory. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

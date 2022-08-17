@@ -7,6 +7,7 @@ This template deploys Azure NetApp Files.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,7 +15,7 @@ This template deploys Azure NetApp Files.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.NetApp/netAppAccounts` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-01-01/netAppAccounts) |
 | `Microsoft.NetApp/netAppAccounts/capacityPools` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools) |
 | `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes) |
@@ -151,6 +152,10 @@ tags: {
 | `name` | string | The name of the NetApp account. |
 | `resourceGroupName` | string | The name of the Resource Group the NetApp account was created in. |
 | `resourceId` | string | The Resource ID of the NetApp account. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

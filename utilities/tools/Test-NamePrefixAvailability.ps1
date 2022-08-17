@@ -61,34 +61,27 @@ function Test-NamePrefixAvailability {
 
         # Replace parameter file tokens
         # -----------------------------
-        $ConvertTokensInputs = @{
+
+        # Tokens in settings.yml
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRoot 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
+
+        # Construct Token Configuration Input
+        $tokenConfiguration = @{
             FilePathList = $parameterFiles
-            Tokens       = $Tokens
+            Tokens       = @{
+                'namePrefix' = $namePrefix
+            }
+            TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+            TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
-        # Tokens in settings.json
-        $settingsFilePath = Join-Path $repoRoot 'settings.json'
-        if (Test-Path $settingsFilePath) {
-            $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json -AsHashtable
-            $ConvertTokensInputs += @{
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-            }
+        # Add additional tokens provided by the user
+        $tokenConfiguration.Tokens += $Tokens
 
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
-            }
-        }
+        # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
+        $null = Convert-TokensInFileList @tokenConfiguration
 
         try {
-            # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $null = Convert-TokensInFileList @ConvertTokensInputs
-
 
             # Extract Parameter Names
             # -----------------------
@@ -179,10 +172,7 @@ function Test-NamePrefixAvailability {
             # Restore parameter files
             # -----------------------
             Write-Verbose 'Restoring Tokens'
-            $ConvertTokensInputs += @{
-                SwapValueWithName = $true
-            }
-            $null = Convert-TokensInFileList @ConvertTokensInputs
+            $null = Convert-TokensInFileList @tokenConfiguration -SwapValueWithName $true
         }
     }
 

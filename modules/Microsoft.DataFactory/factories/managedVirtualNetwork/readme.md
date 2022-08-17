@@ -7,6 +7,7 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -48,7 +49,7 @@ To use Managed Private Endpoints the following dependencies must be deployed:
 "managedPrivateEndpoints": {
     "value": [
         {
-            "name": "mystorageaccount-managed-privateEndpoint", // Required: The managed privated endpoint resource name
+            "name": "mystorageaccount-managed-privateEndpoint", // Required: The managed private endpoint resource name
             "groupId": "blob", // Required: The groupId to which the managed private endpoint is created
             "fqdns": [
                 "mystorageaccount.blob.core.windows.net" // Required: Fully qualified domain names
@@ -70,7 +71,7 @@ To use Managed Private Endpoints the following dependencies must be deployed:
 managedPrivateEndpoints:  [
     // Example showing all available fields
     {
-        name: 'mystorageaccount-managed-privateEndpoint' // Required: The managed privated endpoint resource name
+        name: 'mystorageaccount-managed-privateEndpoint' // Required: The managed private endpoint resource name
         groupId: 'blob' // Required: The groupId to which the managed private endpoint is created
         fqdns: [
           'mystorageaccount.blob.core.windows.net' // Required: Fully qualified domain names
@@ -90,3 +91,7 @@ managedPrivateEndpoints:  [
 | `name` | string | The name of the Managed Virtual Network. |
 | `resourceGroupName` | string | The name of the Resource Group the Managed Virtual Network was created in. |
 | `resourceId` | string | The resource ID of the Managed Virtual Network. |
+
+## Cross-referenced modules
+
+_None_

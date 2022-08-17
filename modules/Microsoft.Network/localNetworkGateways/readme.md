@@ -7,6 +7,7 @@ This module deploys a local network gateway.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,7 +15,7 @@ This module deploys a local network gateway.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/localNetworkGateways` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/localNetworkGateways) |
 
 ## Parameters
@@ -148,6 +149,10 @@ tags: {
 | `name` | string | The name of the local network gateway. |
 | `resourceGroupName` | string | The resource group the local network gateway was deployed into. |
 | `resourceId` | string | The resource ID of the local network gateway. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

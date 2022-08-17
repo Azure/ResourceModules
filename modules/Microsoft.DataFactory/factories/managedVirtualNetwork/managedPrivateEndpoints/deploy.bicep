@@ -4,7 +4,7 @@ param dataFactoryName string
 @description('Required. The name of the parent managed virtual network.')
 param managedVirtualNetworkName string
 
-@description('Required. The managed privated endpoint resource name.')
+@description('Required. The managed private endpoint resource name.')
 param name string
 
 @description('Required. The groupId to which the managed private endpoint is created.')

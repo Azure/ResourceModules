@@ -8,6 +8,7 @@ This module deploys different kinds of cognitive services resources
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -15,7 +16,7 @@ This module deploys different kinds of cognitive services resources
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.CognitiveServices/accounts` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2021-10-01/accounts) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
@@ -401,6 +402,14 @@ userAssignedIdentities: {
 
 - Not all combinations of parameters `kind` and `SKU` are valid and they may vary in different Azure Regions. Please use PowerShell cmdlet `Get-AzCognitiveServicesAccountSku` or another methods to determine valid values in your region.
 - Not all kinds of Cognitive Services support virtual networks. Please visit the link below to determine supported services.
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 

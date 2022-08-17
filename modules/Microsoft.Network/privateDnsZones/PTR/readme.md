@@ -7,12 +7,13 @@ This module deploys a Private DNS Zone PTR record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/privateDnsZones/PTR` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR) |
 
 ## Parameters
@@ -103,3 +104,7 @@ roleAssignments: [
 | `name` | string | The name of the deployed PTR record. |
 | `resourceGroupName` | string | The resource group of the deployed PTR record. |
 | `resourceId` | string | The resource ID of the deployed PTR record. |
+
+## Cross-referenced modules
+
+_None_

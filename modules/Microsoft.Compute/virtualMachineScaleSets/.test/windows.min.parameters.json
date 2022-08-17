@@ -6,7 +6,7 @@
             "value": "<<namePrefix>>-scaleset-win-min-001"
         },
         "skuName": {
-            "value": "Standard_B2s"
+            "value": "Standard_B12ms"
         },
         "osDisk": {
             "value": {

@@ -7,6 +7,7 @@ This module deploys API Management Subscriptions.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -45,3 +46,7 @@ This module deploys API Management Subscriptions.
 | `name` | string | The name of the API management service subscription. |
 | `resourceGroupName` | string | The resource group the API management service subscription was deployed into. |
 | `resourceId` | string | The resource ID of the API management service subscription. |
+
+## Cross-referenced modules
+
+_None_

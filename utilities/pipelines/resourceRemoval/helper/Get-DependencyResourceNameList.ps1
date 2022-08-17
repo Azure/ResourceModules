@@ -34,25 +34,18 @@ function Get-DependencyResourceNameList {
     }
 
     # Replace tokens in dependency parameter files
-    $Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json -AsHashtable
+    $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRootPath 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
 
-    # Add local tokens
-    if ($Settings.parameterFileTokens.localTokens) {
-        $tokenMap = @{}
-        foreach ($token in $Settings.parameterFileTokens.localTokens) {
-            $tokenMap += @{ $token.name = $token.value }
-        }
-        Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', '))
-
-        $ConvertTokensInputs = @{
-            FilePathList = $parameterFilePaths
-            Tokens       = $tokenMap
-            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
-            Verbose      = $false
-        }
-        $null = Convert-TokensInFileList @ConvertTokensInputs
+    # Construct Token Configuration Input
+    $tokenConfiguration = @{
+        FilePathList = $parameterFilePaths
+        Tokens       = @{}
+        TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+        TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+        Verbose      = $false
     }
+
+    $null = Convert-TokensInFileList @tokenConfiguration
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
     foreach ($parameterFilePath in $parameterFilePaths) {
@@ -64,10 +57,7 @@ function Get-DependencyResourceNameList {
 
     if ($Settings.parameterFileTokens.localTokens) {
         Write-Verbose 'Restoring Tokens'
-        $ConvertTokensInputs += @{
-            SwapValueWithName = $true
-        }
-        $null = Convert-TokensInFileList @ConvertTokensInputs
+        $null = Convert-TokensInFileList @tokenConfiguration -SwapValueWithName $true
     }
 
     return $dependencyResourceNames

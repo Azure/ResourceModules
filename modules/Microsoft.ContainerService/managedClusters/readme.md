@@ -7,6 +7,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,7 +15,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.ContainerService/managedClusters` | [2022-04-02-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-04-02-preview/managedClusters) |
 | `Microsoft.ContainerService/managedClusters/agentPools` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
@@ -356,6 +357,10 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the managed cluster was deployed into. |
 | `resourceId` | string | The resource ID of the managed cluster. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

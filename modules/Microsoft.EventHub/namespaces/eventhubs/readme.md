@@ -7,13 +7,14 @@ This module deploys an Event Hub.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.EventHub/namespaces/eventhubs` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/eventhubs) |
 | `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/eventhubs/authorizationRules) |
 | `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/eventhubs/consumergroups) |
@@ -119,3 +120,7 @@ roleAssignments: [
 | `name` | string | The name of the event hub. |
 | `resourceGroupName` | string | The resource group the event hub was deployed into. |
 | `resourceId` | string | The authentication rule resource ID of the event hub. |
+
+## Cross-referenced modules
+
+_None_
