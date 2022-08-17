@@ -22,7 +22,7 @@ resource staticSite 'Microsoft.Web/staticSites@2022-03-01' existing = {
 }
 
 resource config 'Microsoft.Web/staticSites/config@2022-03-01' = {
-  #disable-next-line BCP225
+  #disable-next-line BCP225 // Disables incorrect error that `name` cannot be determined at compile time.
   name: kind
   parent: staticSite
   properties: properties
