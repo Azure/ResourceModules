@@ -150,7 +150,8 @@ var newPip = {
 
 var ipConfigurations = concat([
     {
-      name: !empty(existingPip) ? last(split(azureFirewallSubnetPublicIpId, '/')) : publicIPAddress.outputs.name
+      //name: !empty(existingPip) ? last(split(azureFirewallSubnetPublicIpId, '/')) : publicIPAddress.outputs.name
+      name: 'Test123'
       //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
       properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
     }
@@ -309,4 +310,4 @@ output networkRuleCollections array = networkRuleCollections
 output natRuleCollections array = natRuleCollections
 
 @description('The location the resource was deployed into.')
-output location string = azureFirewall.location
+output location string = azureFirewallSubnetPublicIpId //azureFirewall.location
