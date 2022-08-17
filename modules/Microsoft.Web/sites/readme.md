@@ -390,6 +390,7 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the site was deployed into. |
 | `resourceId` | string | The resource ID of the site. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `defaultHostname` | string | Default hostname of the app. |
 
 ## Cross-referenced modules
 
