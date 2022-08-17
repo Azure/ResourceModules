@@ -23,6 +23,6 @@ The configuration applied in the CI environment can be found in the `bicepconfig
 
 # Module-level Bicep configuration
 
-The Bicep DL is continuously improved and extended with additional capabilities. Of of them, the Bicep Linter, provides guidance around template design & best practices - and surfaces any findings as warnings. However, while it is a great feature, there can be cases where rules show false-positives - or are not addressed by us immediately. For these cases, we occasionally apply ignore tags such as `#disable-next-line secure-secrets-in-params` on a module level.
+The Bicep DSL (Domain Specific Language) is continuously improved and extended with additional capabilities. Of of them, the Bicep Linter, provides guidance around template design & best practices - and surfaces any findings as warnings. However, while it is a great feature, there can be cases where rules show false-positives - or are not addressed by us immediately. For these cases, we occasionally apply ignore tags such as `#disable-next-line secure-secrets-in-params` on a module level.
 
 Note: As we want to follow best-practices whenever we can, the ignore tags should only be applied when absolutely necessary, on a case-by-case basis.
