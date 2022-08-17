@@ -29,7 +29,7 @@ variables:
   # Publish: Private Bicep Registry settings
   ######################################
 
-  bicepRegistryDoPublish: true # Set to true, if you would like to publish module templates to a bicep registry
+  bicepRegistryDoPublish: false # Set to true, if you would like to publish module templates to a bicep registry
   bicepRegistryName: adpsxxazacrx009 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
   bicepRegistryRGName: 'artifacts-rg' # The resource group that hosts the private bicep registry (ACR)
   bicepRegistryRgLocation: 'Australia East' # The location of the resource group to publish to
