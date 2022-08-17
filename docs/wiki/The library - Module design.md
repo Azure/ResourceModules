@@ -608,7 +608,7 @@ As parameters are usually specific to their corresponding template, we only have
       scope: resourceGroup
       name: '${uniqueString(deployment().name)}-test-${serviceShort}'
       params: {
-        name: '<<namePrefix>>az${serviceShort}'
+        name: '<<namePrefix>>${serviceShort}'
         lock: 'CanNotDelete'
         skuName: 'S0'
         roleAssignments: [
