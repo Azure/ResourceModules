@@ -1,0 +1,396 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Tags for the resource group. If not provided, removes existing tags."
+      }
+    },
+    "onlyUpdate": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Instead of overwriting the existing tags, combine them with the new tags."
+      }
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Name of the Resource Group to assign the tags to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription."
+      }
+    },
+    "subscriptionId": {
+      "type": "string",
+      "defaultValue": "[subscription().id]",
+      "metadata": {
+        "description": "Optional. Subscription ID of the subscription to assign the tags to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]",
+      "metadata": {
+        "description": "Optional. Location deployment metadata."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
+      }
+    }
+  },
+  "variables": {
+    "enableReferencedModulesTelemetry": false
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "condition": "[and(not(empty(parameters('subscriptionId'))), empty(parameters('resourceGroupName')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-Tags-Sub', deployment().name)]",
+      "location": "[deployment().location]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "onlyUpdate": {
+            "value": "[parameters('onlyUpdate')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "tags": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. Tags for the resource group. If not provided, removes existing tags."
+              }
+            },
+            "name": {
+              "type": "string",
+              "defaultValue": "default",
+              "metadata": {
+                "description": "Optional. The name of the tags resource."
+              }
+            },
+            "onlyUpdate": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. Instead of overwriting the existing tags, combine them with the new tags."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[deployment().location]",
+              "metadata": {
+                "description": "Optional. Location deployment metadata."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
+              }
+            }
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/tags",
+              "apiVersion": "2019-10-01",
+              "name": "[parameters('name')]",
+              "properties": {
+                "tags": "[if(parameters('onlyUpdate'), union(reference(subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name)), '2020-10-01').outputs.existingTags.value, parameters('tags')), parameters('tags'))]"
+              },
+              "dependsOn": [
+                "[subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name))]"
+              ]
+            },
+            {
+              "condition": "[parameters('onlyUpdate')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-10-01",
+              "name": "[format('{0}-ReadTags', deployment().name)]",
+              "location": "[deployment().location]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "parameters": {
+                    "name": {
+                      "type": "string",
+                      "defaultValue": "default",
+                      "metadata": {
+                        "description": "Optional. The name of the tags resource."
+                      }
+                    }
+                  },
+                  "resources": [],
+                  "outputs": {
+                    "existingTags": {
+                      "type": "object",
+                      "value": "[if(contains(reference(subscriptionResourceId('Microsoft.Resources/tags', parameters('name')), '2019-10-01'), 'tags'), reference(subscriptionResourceId('Microsoft.Resources/tags', parameters('name')), '2019-10-01').tags, createObject())]",
+                      "metadata": {
+                        "description": "Tags currently applied to the subscription level"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "value": "[parameters('name')]",
+              "metadata": {
+                "description": "The name of the tags resource."
+              }
+            },
+            "tags": {
+              "type": "object",
+              "value": "[if(parameters('onlyUpdate'), union(reference(subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name)), '2020-10-01').outputs.existingTags.value, parameters('tags')), parameters('tags'))]",
+              "metadata": {
+                "description": "The applied tags."
+              }
+            },
+            "resourceId": {
+              "type": "string",
+              "value": "[subscriptionResourceId('Microsoft.Resources/tags', parameters('name'))]",
+              "metadata": {
+                "description": "The resource ID of the applied tags."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "condition": "[and(not(empty(parameters('resourceGroupName'))), not(empty(parameters('subscriptionId'))))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-Tags-RG', deployment().name)]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "onlyUpdate": {
+            "value": "[parameters('onlyUpdate')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "tags": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. Tags for the resource group. If not provided, removes existing tags."
+              }
+            },
+            "name": {
+              "type": "string",
+              "defaultValue": "default",
+              "metadata": {
+                "description": "Optional. The name of the tags resource."
+              }
+            },
+            "onlyUpdate": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. Instead of overwriting the existing tags, combine them with the new tags."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
+              }
+            }
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/tags",
+              "apiVersion": "2019-10-01",
+              "name": "[parameters('name')]",
+              "properties": {
+                "tags": "[if(parameters('onlyUpdate'), union(reference(resourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name)), '2020-10-01').outputs.existingTags.value, parameters('tags')), parameters('tags'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name))]"
+              ]
+            },
+            {
+              "condition": "[parameters('onlyUpdate')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-10-01",
+              "name": "[format('{0}-ReadTags', deployment().name)]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "parameters": {
+                    "name": {
+                      "type": "string",
+                      "defaultValue": "default",
+                      "metadata": {
+                        "description": "Optional. The name of the tags resource."
+                      }
+                    }
+                  },
+                  "resources": [],
+                  "outputs": {
+                    "existingTags": {
+                      "type": "object",
+                      "value": "[if(contains(reference(resourceId('Microsoft.Resources/tags', parameters('name')), '2019-10-01'), 'tags'), reference(resourceId('Microsoft.Resources/tags', parameters('name')), '2019-10-01').tags, createObject())]",
+                      "metadata": {
+                        "description": "Tags currently applied to the subscription level"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "value": "[parameters('name')]",
+              "metadata": {
+                "description": "The name of the tags resource."
+              }
+            },
+            "resourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Resources/tags', parameters('name'))]",
+              "metadata": {
+                "description": "The resource ID of the applied tags."
+              }
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "value": "[resourceGroup().name]",
+              "metadata": {
+                "description": "The name of the resource group the tags were applied to."
+              }
+            },
+            "tags": {
+              "type": "object",
+              "value": "[if(parameters('onlyUpdate'), union(reference(resourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name)), '2020-10-01').outputs.existingTags.value, parameters('tags')), parameters('tags'))]",
+              "metadata": {
+                "description": "The applied tags."
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "value": "[if(and(not(empty(parameters('resourceGroupName'))), not(empty(parameters('subscriptionId')))), reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-Tags-RG', deployment().name)), '2020-10-01').outputs.name.value, reference(subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-Tags-Sub', deployment().name)), '2020-10-01').outputs.name.value)]",
+      "metadata": {
+        "description": "The name of the tags resource."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "value": "[if(and(not(empty(parameters('resourceGroupName'))), not(empty(parameters('subscriptionId')))), reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-Tags-RG', deployment().name)), '2020-10-01').outputs.tags.value, reference(subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-Tags-Sub', deployment().name)), '2020-10-01').outputs.tags.value)]",
+      "metadata": {
+        "description": "The applied tags."
+      }
+    },
+    "resourceId": {
+      "type": "string",
+      "value": "[if(and(not(empty(parameters('resourceGroupName'))), not(empty(parameters('subscriptionId')))), reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-Tags-RG', deployment().name)), '2020-10-01').outputs.resourceId.value, reference(subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-Tags-Sub', deployment().name)), '2020-10-01').outputs.resourceId.value)]",
+      "metadata": {
+        "description": "The resource ID of the applied tags."
+      }
+    }
+  }
+}

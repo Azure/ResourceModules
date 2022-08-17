@@ -1,0 +1,244 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Name for the container group."
+      }
+    },
+    "containername": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Name for the container."
+      }
+    },
+    "image": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Name of the image."
+      }
+    },
+    "ports": {
+      "type": "array",
+      "defaultValue": [
+        {
+          "protocol": "TCP",
+          "port": "443"
+        }
+      ],
+      "metadata": {
+        "description": "Optional. Port to open on the container and the public IP address."
+      }
+    },
+    "cpuCores": {
+      "type": "int",
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Optional. The number of CPU cores to allocate to the container."
+      }
+    },
+    "memoryInGB": {
+      "type": "int",
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Optional. The amount of memory to allocate to the container in gigabytes."
+      }
+    },
+    "osType": {
+      "type": "string",
+      "defaultValue": "Linux",
+      "metadata": {
+        "description": "Optional. The operating system type required by the containers in the container group. - Windows or Linux."
+      }
+    },
+    "restartPolicy": {
+      "type": "string",
+      "defaultValue": "Always",
+      "metadata": {
+        "description": "Optional. Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never."
+      }
+    },
+    "ipAddressType": {
+      "type": "string",
+      "defaultValue": "Public",
+      "metadata": {
+        "description": "Optional. Specifies if the IP is exposed to the public internet or private VNET. - Public or Private."
+      }
+    },
+    "imageRegistryCredentials": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. The image registry credentials by which the container group is created from."
+      }
+    },
+    "environmentVariables": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Environment variables of the container group."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all Resources."
+      }
+    },
+    "lock": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      },
+      "allowedValues": [
+        "",
+        "CanNotDelete",
+        "ReadOnly"
+      ]
+    },
+    "systemAssignedIdentity": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Enables system assigned managed identity on the resource."
+      }
+    },
+    "userAssignedIdentities": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. The ID(s) to assign to the resource."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Tags of the resource."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
+      }
+    }
+  },
+  "variables": {
+    "identityType": "[if(parameters('systemAssignedIdentity'), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
+    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDefaultTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2021-03-01",
+      "name": "[parameters('name')]",
+      "location": "[parameters('location')]",
+      "identity": "[variables('identity')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "containers": [
+          {
+            "name": "[parameters('containername')]",
+            "properties": {
+              "command": [],
+              "image": "[parameters('image')]",
+              "ports": "[parameters('ports')]",
+              "resources": {
+                "requests": {
+                  "cpu": "[parameters('cpuCores')]",
+                  "memoryInGB": "[parameters('memoryInGB')]"
+                }
+              },
+              "environmentVariables": "[parameters('environmentVariables')]"
+            }
+          }
+        ],
+        "imageRegistryCredentials": "[parameters('imageRegistryCredentials')]",
+        "restartPolicy": "[parameters('restartPolicy')]",
+        "osType": "[parameters('osType')]",
+        "ipAddress": {
+          "type": "[parameters('ipAddressType')]",
+          "ports": "[parameters('ports')]"
+        }
+      }
+    },
+    {
+      "condition": "[not(empty(parameters('lock')))]",
+      "type": "Microsoft.Authorization/locks",
+      "apiVersion": "2017-04-01",
+      "scope": "[format('Microsoft.ContainerInstance/containerGroups/{0}', parameters('name'))]",
+      "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+      "properties": {
+        "level": "[parameters('lock')]",
+        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "name": {
+      "type": "string",
+      "value": "[parameters('name')]",
+      "metadata": {
+        "description": "The name of the container group."
+      }
+    },
+    "resourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name'))]",
+      "metadata": {
+        "description": "The resource ID of the container group."
+      }
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "value": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The resource group the container group was deployed into."
+      }
+    },
+    "iPv4Address": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name'))).ipAddress.ip]",
+      "metadata": {
+        "description": "The IPv4 address of the container group."
+      }
+    },
+    "systemAssignedPrincipalId": {
+      "type": "string",
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name')), '2021-03-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name')), '2021-03-01', 'full').identity.principalId, '')]",
+      "metadata": {
+        "description": "The principal ID of the system assigned identity."
+      }
+    },
+    "location": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups', parameters('name')), '2021-03-01', 'full').location]",
+      "metadata": {
+        "description": "The location the resource was deployed into."
+      }
+    }
+  }
+}
