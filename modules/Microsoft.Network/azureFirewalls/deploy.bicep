@@ -295,7 +295,7 @@ output name string = azureFirewall.name
 output resourceGroupName string = resourceGroup().name
 
 @description('The private IP of the Azure firewall.')
-output privateIp string = azureFirewallSubnetPublicIpId //azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
+output privateIp string = publicIPAddress.outputs.name //azureFirewallSubnetPublicIpId //azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
 
 @description('The public ipconfiguration object for the AzureFirewallSubnet.')
 output ipConfAzureFirewallSubnet object = azureFirewall.properties.ipConfigurations[0]
