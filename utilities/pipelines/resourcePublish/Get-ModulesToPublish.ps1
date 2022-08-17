@@ -103,9 +103,9 @@ function Find-TemplateFile {
     }
 
     #Prioritizing the bicep file
-    $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.bicep'
+    $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
     if (-not (Test-Path $TemplateFilePath)) {
-        $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
+        $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.bicep'
     }
 
     if (-not (Test-Path $TemplateFilePath)) {
