@@ -481,7 +481,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    disableLocalAuth: false
+    disableLocalAuth: true
     gallerySolutions: [
       {
         name: 'Updates'
@@ -678,7 +678,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
     },
     "disableLocalAuth": {
-      "value": false
+      "value": true
     },
     "gallerySolutions": {
       "value": [

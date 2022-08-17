@@ -173,7 +173,7 @@
             ]
         },
         "disableLocalAuth": {
-            "value": false
+            "value": true
         },
         "systemAssignedIdentity": {
             "value": true
