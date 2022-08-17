@@ -7,6 +7,7 @@ This module deploys a Virtual Hub.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -100,6 +101,10 @@ tags: {
 | `name` | string | The name of the virtual hub. |
 | `resourceGroupName` | string | The resource group the virtual hub was deployed into. |
 | `resourceId` | string | The resource ID of the virtual hub. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

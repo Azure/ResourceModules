@@ -5,6 +5,7 @@
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -82,3 +83,7 @@ tags: {
 | `name` | string | The name of the SQL database. |
 | `resourceGroupName` | string | The name of the resource group the SQL database was created in. |
 | `resourceId` | string | The resource ID of the SQL database. |
+
+## Cross-referenced modules
+
+_None_

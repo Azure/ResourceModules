@@ -7,13 +7,14 @@ This module deploys an alert based on metrics.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/metricAlerts` | [2018-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-03-01/metricAlerts) |
 
 ## Parameters
@@ -372,6 +373,10 @@ tags: {
 | `name` | string | The name of the metric alert. |
 | `resourceGroupName` | string | The resource group the metric alert was deployed into. |
 | `resourceId` | string | The resource ID of the metric alert. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

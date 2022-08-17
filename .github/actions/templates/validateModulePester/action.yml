@@ -28,7 +28,7 @@ inputs:
     required: true
     default: ''
   moduleTestFilePath:
-    description: "The path to the test file"
+    description: 'The path to the test file'
     required: true
     default: ''
 
@@ -39,7 +39,7 @@ runs:
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Setup agent"
+        Write-Output '::group::Setup agent'
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -49,14 +49,15 @@ runs:
             # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
             # @{ Name = 'Pester'; Version = '5.3.1' }
             @{ Name = 'Az.Resources' }
+            @{ Name = 'powershell-yaml'; Version = '0.4.2'}
         )
 
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output "::endgroup::"
+        Write-Output '::endgroup::'
 
-    - name: 'Azure Login'
+    - name: Azure Login
       uses: Azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
@@ -69,10 +70,16 @@ runs:
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Run Pester tests"
+        Write-Output '::group::Run Pester tests'
 
         # Set repo root path
         $repoRootPath = $env:GITHUB_WORKSPACE
+
+        # Get Service Principal Object ID
+        $context = Get-AzContext
+        $servicePrincipalAppId = $context.Account.Id
+        $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+        $servicePrincipalObjectId = $servicePrincipal.Id
 
         # Set test input module path
         $moduleFolderPaths = @(Join-Path $repoRootPath "${{ inputs.modulePath }}")
@@ -84,19 +91,25 @@ runs:
           Write-Verbose "- [($moduleFolderPath]" -Verbose
         }
 
-        # Set enforced token list
-        $enforcedTokenList = @{}
+        # Construct Token Configuration Input and enforced tokens list
+        $GlobalVariablesObject = Get-Content -Path 'settings.yml' | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
+        $tokenConfiguration = @{
+            Tokens      = @{}
+            TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+            TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+        }
+
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
-            $enforcedTokenList['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
+            $tokenConfiguration.Tokens['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
-            $enforcedTokenList['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
+            $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
-            $enforcedTokenList['deploymentSpId'] = '${{ env.DEPLOYMENT_SP_ID }}'
+            $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
-            $enforcedTokenList['tenantId'] = '${{ env.ARM_TENANT_ID }}'
+            $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'
         }
 
         # Set and print test output path
@@ -112,10 +125,9 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
-              repoRootPath = $repoRootPath
-              moduleFolderPaths = $moduleFolderPaths
-              enforcedTokenList = $enforcedTokenList
+              Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
+              moduleFolderPaths  = $moduleFolderPaths
+              tokenConfiguration = $tokenConfiguration
             }
           }
           TestResult = @{

@@ -7,6 +7,7 @@ This module deploys a Managed Private Endpoint in a Managed Virtual Network for 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -22,7 +23,7 @@ This module deploys a Managed Private Endpoint in a Managed Virtual Network for 
 | `fqdns` | array | Fully qualified domain names. |
 | `groupId` | string | The groupId to which the managed private endpoint is created. |
 | `managedVirtualNetworkName` | string | The name of the parent managed virtual network. |
-| `name` | string | The managed privated endpoint resource name. |
+| `name` | string | The managed private endpoint resource name. |
 | `privateLinkResourceId` | string | The ARM resource ID of the resource to which the managed private endpoint is created. |
 
 **Conditional parameters**
@@ -35,11 +36,6 @@ This module deploys a Managed Private Endpoint in a Managed Virtual Network for 
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -47,3 +43,7 @@ This module deploys a Managed Private Endpoint in a Managed Virtual Network for 
 | `name` | string | The name of the deployed managed private endpoint. |
 | `resourceGroupName` | string | The resource group of the deployed managed private endpoint. |
 | `resourceId` | string | The resource ID of the deployed managed private endpoint. |
+
+## Cross-referenced modules
+
+_None_

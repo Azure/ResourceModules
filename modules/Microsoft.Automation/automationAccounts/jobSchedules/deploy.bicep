@@ -1,5 +1,5 @@
 @description('Optional. Name of the Automation Account job schedule. Must be a GUID. If not provided, a new GUID is generated.')
-param name string = newGuid()
+param name string = uniqueString(automationAccountName, subscription().id)
 
 @description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string

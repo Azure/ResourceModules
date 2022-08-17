@@ -7,6 +7,7 @@ With this module you can create role definitions on a resource group level
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -43,3 +44,7 @@ With this module you can create role definitions on a resource group level
 | `resourceGroupName` | string | The name of the resource group the role definition was created at. |
 | `resourceId` | string | The resource ID of the Role Definition. |
 | `scope` | string | The scope this Role Definition applies to. |
+
+## Cross-referenced modules
+
+_None_

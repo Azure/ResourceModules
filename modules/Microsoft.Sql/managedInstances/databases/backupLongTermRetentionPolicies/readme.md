@@ -7,6 +7,7 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -44,3 +45,7 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 | `name` | string | The name of the deployed database backup long-term retention policy. |
 | `resourceGroupName` | string | The resource group of the deployed database backup long-term retention policy. |
 | `resourceId` | string | The resource ID of the deployed database backup long-term retention policy. |
+
+## Cross-referenced modules
+
+_None_
