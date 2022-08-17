@@ -158,16 +158,13 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            az extension add --name azure-devops
-            az config set extension.use_dynamic_install=yes_without_prompt
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
 
-            #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path -Path '$(ENVMODULEPATH)' -ChildPath 'deploy.bicep'
+            $TemplateFilePath = Join-Path -Path '$(ENVMODULEPATH)' -ChildPath 'deploy.json'
             if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path -Path '$(ENVMODULEPATH)' -ChildPath 'deploy.json'
+              $TemplateFilePath = Join-Path -Path '$(ENVMODULEPATH)' -ChildPath 'deploy.bicep'
             }
 
             $functionInput = @{
