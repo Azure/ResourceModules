@@ -295,7 +295,7 @@ output name string = azureFirewall.name
 output resourceGroupName string = resourceGroup().name
 
 @description('The private IP of the Azure firewall.')
-output privateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
+output privateIp string = azureFirewallSubnetPublicIpId //azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
 
 @description('The public ipconfiguration object for the AzureFirewallSubnet.')
 output ipConfAzureFirewallSubnet object = azureFirewall.properties.ipConfigurations[0]
@@ -310,4 +310,4 @@ output networkRuleCollections array = networkRuleCollections
 output natRuleCollections array = natRuleCollections
 
 @description('The location the resource was deployed into.')
-output location string = azureFirewallSubnetPublicIpId //azureFirewall.location
+output location string = azureFirewall.location
