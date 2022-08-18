@@ -177,7 +177,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-asdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azasdef'
+    name: '<<namePrefix>>asdef'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -212,7 +212,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azasdef"
+      "value": "<<namePrefix>>asdef"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -264,7 +264,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-asmax'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azasmax'
+    name: '<<namePrefix>>asmax'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -317,7 +317,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azasmax"
+      "value": "<<namePrefix>>asmax"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -394,7 +394,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-asmin'
   params: {
-    name: '<<namePrefix>>azasmin'
+    name: '<<namePrefix>>asmin'
   }
 }
 ```
@@ -412,7 +412,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>azasmin"
+      "value": "<<namePrefix>>asmin"
     }
   }
 }
