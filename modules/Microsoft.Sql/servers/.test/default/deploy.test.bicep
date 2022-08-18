@@ -13,6 +13,10 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
 param serviceShort string = 'sqldef'
 
+@description('Optional. The password to leverage for the login.')
+@secure()
+param password string = newGuid()
+
 // =========== //
 // Deployments //
 // =========== //
@@ -30,16 +34,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     virtualNetworkName: 'adp-<<namePrefix>>-vnet-${serviceShort}'
-    deploymentScriptName: 'adp-<<namePrefix>>-ds-kv-${serviceShort}'
-    keyVaultName: 'adp-<<namePrefix>>-kv-${serviceShort}'
-    passwordSecretName: 'adminPassword'
     location: location
   }
-}
-
-resource keyVaultReference 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
-  name: 'adp-<<namePrefix>>-kv-${serviceShort}'
-  scope: resourceGroup
 }
 
 // Diagnostics
@@ -67,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>-${serviceShort}'
     lock: 'CanNotDelete'
     administratorLogin: 'adminUserName'
-    administratorLoginPassword: keyVaultReference.getSecret(resourceGroupResources.outputs.secretName)
+    administratorLoginPassword: password
     location: location
     minimalTlsVersion: '1.2'
     roleAssignments: [

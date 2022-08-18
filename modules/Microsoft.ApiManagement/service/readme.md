@@ -439,7 +439,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
       {
         authorizationEndpoint: '${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize'
         clientCredentialsKeyVaultId: '<clientCredentialsKeyVaultId>'
-        clientIdSecretName: 'apimclientid'
+        clientIdSecretName: '<clientIdSecretName>'
         clientRegistrationEndpoint: 'http://localhost'
         clientSecretSecretName: '<clientSecretSecretName>'
         grantTypes: [
@@ -592,7 +592,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
         {
           "authorizationEndpoint": "${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize",
           "clientCredentialsKeyVaultId": "<clientCredentialsKeyVaultId>",
-          "clientIdSecretName": "apimclientid",
+          "clientIdSecretName": "<clientIdSecretName>",
           "clientRegistrationEndpoint": "http://localhost",
           "clientSecretSecretName": "<clientSecretSecretName>",
           "grantTypes": [
