@@ -661,26 +661,43 @@ function ConvertTo-FormattedJSONParameterObject {
 
     for ($index = 0; $index -lt $paramInJSONFormatArray.Count; $index++) {
 
-        $lineValue = $paramInJSONFormatArray[$index]
+        $line = $paramInJSONFormatArray[$index]
 
         # [2.4] Syntax: Everything left of a leftest ':' should be wrapped in quotes (as a parameter name is always a string)
         [regex]$pattern = '\:{0}([0-9a-zA-Z]+):'
-        $lineValue = $pattern.replace($lineValue, '"$1":', 1)
+        $line = $pattern.replace($line, '"$1":', 1)
 
         # [2.5] Syntax: Replace Bicep resource ID references
-        if ($lineValue -like '*:*' -and $lineValue -notmatch '^.+:\s*{\s*}\s*$' -and ($lineValue -split ':')[1].Trim() -notmatch '".+"' -and $lineValue -like '*.*') {
+        $mayHaveValue = $line -like '*:*'
+        if ($mayHaveValue) {
+
+            # Individual checks
+            $lineValue = ($line -split ':')[1].Trim()
+            $isLineWithEmptyObjectValue = $line -match '^.+:\s*{\s*}\s*$' # e.g. test: {}
+            $isLineWithStringValue = $lineValue -match '".+"' # e.g. "value"
+            $isLineWithObjectPropertyReferenceValue = $line -like '*.*' # e.g. resourceGroupResources.outputs.virtualWWANResourceId`
+            $isLineWithFunction = $lineValue -match '[a-zA-Z]+\(.+\)' # e.g. (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4]
+            $isLineWithPlainValue = $lineValue -match '^\w+$' # e.g. adminPassword: password
+            $isLineWithPrimitiveValue = $lineValue -match '^\s*true|false|[0-9]+$' # e.g. isSecure: true
+
+            # Combined checks
             # In case of an output reference like '"virtualWanId": resourceGroupResources.outputs.virtualWWANResourceId' we'll only show "<virtualWanId>" (but NOT e.g. 'reference': {})
-            $paramInJSONFormatArray[$index] = '{0}: "<{1}>"' -f ($lineValue -split ':')[0], ([regex]::Match(($lineValue -split ':')[0], '"(.+)"')).Captures.Groups[1].Value
-        } elseif ($lineValue -like '*:*' -and ($lineValue -split ':')[1].Trim() -match '[a-zA-Z]+\(.+\)') {
-            # In case of a any contained function like '"backupVaultResourceGroup": (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4]' we'll only show "<backupVaultResourceGroup>"
-            $paramInJSONFormatArray[$index] = '{0}: "<{1}>"' -f ($lineValue -split ':')[0], ([regex]::Match(($lineValue -split ':')[0], '"(.+)"')).Captures.Groups[1].Value
-        } elseif ($lineValue -like '*:*' -and ($lineValue -split ':')[1].Trim() -match '^\w+$' -and ($lineValue -split ':')[1].Trim() -notmatch '^\s*true|false|[0-9]+$') {
+            $isLineWithObjectPropertyReference = -not $isLineWithEmptyObjectValue -and -not $isLineWithStringValue -and $isLineWithObjectPropertyReferenceValue
             # In case of a parameter/variable reference like 'adminPassword: password' we'll only show "<adminPassword>" (but NOT e.g. enableMe: true)
-            $paramInJSONFormatArray[$index] = '{0}: "<{1}>"' -f ($lineValue -split ':')[0], ([regex]::Match(($lineValue -split ':')[0], '"(.+)"')).Captures.Groups[1].Value
-        } elseif ($lineValue -notlike '*:*' -and $lineValue -notlike '*"*"*' -and $lineValue -like '*.*') {
-            # In case of a array value like '[ \n -> resourceGroupResources.outputs.managedIdentityPrincipalId <- \n ]' we'll only show "<managedIdentityPrincipalId>""
-            $paramInJSONFormatArray[$index] = '"<{0}>"' -f $lineValue.Split('.')[-1].Trim()
+            $isLineWithParameterOrVariableReferenceValue = $isLineWithPlainValue -and -not $isLineWithPrimitiveValue
+            # In case of a any contained function like '"backupVaultResourceGroup": (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4]' we'll only show "<backupVaultResourceGroup>"
+
+            if ($isLineWithObjectPropertyReference -or $isLineWithFunction -or $isLineWithParameterOrVariableReferenceValue) {
+                $line = '{0}: "<{1}>"' -f ($line -split ':')[0], ([regex]::Match(($line -split ':')[0], '"(.+)"')).Captures.Groups[1].Value
+            }
+        } else {
+            if ($line -notlike '*"*"*' -and $line -like '*.*') {
+                # In case of a array value like '[ \n -> resourceGroupResources.outputs.managedIdentityPrincipalId <- \n ]' we'll only show "<managedIdentityPrincipalId>""
+                $line = '"<{0}>"' -f $line.Split('.')[-1].Trim()
+            }
         }
+
+        $paramInJSONFormatArray[$index] = $line
     }
 
     # [2.6] Syntax: Add comma everywhere unless:
@@ -688,7 +705,7 @@ function ConvertTo-FormattedJSONParameterObject {
     # - the line after the current line has a closing 'object: {' or 'array: [' character
     # - it's the last closing bracket
     for ($index = 0; $index -lt $paramInJSONFormatArray.Count; $index++) {
-        if (($paramInJSONFormatArray[$index] -match '[\{|\[]') -or (($index -lt $paramInJSONFormatArray.Count - 1) -and $paramInJSONFormatArray[$index + 1] -match '[\]|\}]') -or ($index -eq $paramInJSONFormatArray.Count - 1)) {
+        if (($paramInJSONFormatArray[$index] -match '[\{|\[]\s*$') -or (($index -lt $paramInJSONFormatArray.Count - 1) -and $paramInJSONFormatArray[$index + 1] -match '^\s*[\]|\}]\s*$') -or ($index -eq $paramInJSONFormatArray.Count - 1)) {
             continue
         }
         $paramInJSONFormatArray[$index] = '{0},' -f $paramInJSONFormatArray[$index].Trim()
