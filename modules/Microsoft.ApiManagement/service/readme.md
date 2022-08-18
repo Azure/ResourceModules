@@ -289,10 +289,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-apidef'
+  name: '${uniqueString(deployment().name)}-test-apisdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apidef001'
+    name: '<<namePrefix>>apisdef001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     // Non-required parameters
@@ -347,7 +347,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apidef001"
+      "value": "<<namePrefix>>apisdef001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -412,10 +412,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-apimax'
+  name: '${uniqueString(deployment().name)}-test-apismax'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apimax001'
+    name: '<<namePrefix>>apismax001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     // Non-required parameters
@@ -560,7 +560,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apimax001"
+      "value": "<<namePrefix>>apismax001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -745,10 +745,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-apimin'
+  name: '${uniqueString(deployment().name)}-test-apismin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apimin001'
+    name: '<<namePrefix>>apismin001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
   }
@@ -769,7 +769,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apimin001"
+      "value": "<<namePrefix>>apismin001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"

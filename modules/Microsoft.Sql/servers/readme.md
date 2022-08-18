@@ -338,11 +338,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-sqladmin'
+module servers './Microsoft.sql/servers/deploy.bicep = {
+  name: '${uniqueString(deployment().name)}-test-sqlsadmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqladmin'
+    name: '<<namePrefix>>-sqlsadmin'
     // Non-required parameters
     administrators: {
       azureADOnlyAuthentication: true
@@ -369,7 +369,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqladmin"
+      "value": "<<namePrefix>>-sqlsadmin"
     },
     // Non-required parameters
     "administrators": {
@@ -395,11 +395,11 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-sqldef'
+module servers './Microsoft.sql/servers/deploy.bicep = {
+  name: '${uniqueString(deployment().name)}-test-sqlsdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqldef'
+    name: '<<namePrefix>>-sqlsdef'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -413,7 +413,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: '<<namePrefix>>-sqldefdb-001'
+        name: '<<namePrefix>>-sqlsdefdb-001'
         skuCapacity: 12
         skuFamily: 'Gen5'
         skuName: 'BC_Gen5'
@@ -483,7 +483,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqldef"
+      "value": "<<namePrefix>>-sqlsdef"
     },
     // Non-required parameters
     "administratorLogin": {
@@ -503,7 +503,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "<<namePrefix>>-sqldefdb-001",
+          "name": "<<namePrefix>>-sqlsdefdb-001",
           "skuCapacity": 12,
           "skuFamily": "Gen5",
           "skuName": "BC_Gen5",

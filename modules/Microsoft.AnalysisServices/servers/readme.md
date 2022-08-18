@@ -174,10 +174,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-asdef'
+  name: '${uniqueString(deployment().name)}-test-assdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>asdef'
+    name: '<<namePrefix>>assdef'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -212,7 +212,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>asdef"
+      "value": "<<namePrefix>>assdef"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -261,10 +261,10 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-asmax'
+  name: '${uniqueString(deployment().name)}-test-assmax'
   params: {
     // Required parameters
-    name: '<<namePrefix>>asmax'
+    name: '<<namePrefix>>assmax'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -317,7 +317,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>asmax"
+      "value": "<<namePrefix>>assmax"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -392,9 +392,9 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-asmin'
+  name: '${uniqueString(deployment().name)}-test-assmin'
   params: {
-    name: '<<namePrefix>>asmin'
+    name: '<<namePrefix>>assmin'
   }
 }
 ```
@@ -412,7 +412,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>asmin"
+      "value": "<<namePrefix>>assmin"
     }
   }
 }

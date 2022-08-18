@@ -1023,7 +1023,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vmlindef'
+  name: '${uniqueString(deployment().name)}-test-cvmlindef'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1156,7 +1156,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     }
     lock: 'CanNotDelete'
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
-    name: '<<namePrefix>>vmlindef'
+    name: '<<namePrefix>>cvmlindef'
     publicKeys: [
       {
         keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
@@ -1377,7 +1377,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": "<monitoringWorkspaceId>"
     },
     "name": {
-      "value": "<<namePrefix>>vmlindef"
+      "value": "<<namePrefix>>cvmlindef"
     },
     "publicKeys": {
       "value": [
@@ -1420,7 +1420,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vmlinatmg'
+  name: '${uniqueString(deployment().name)}-test-cvmlinatmg'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1455,7 +1455,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     // Non-required parameters
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
-    name: '<<namePrefix>>vmlinatmg'
+    name: '<<namePrefix>>cvmlinatmg'
     publicKeys: [
       {
         keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
@@ -1528,7 +1528,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": true
     },
     "name": {
-      "value": "<<namePrefix>>vmlinatmg"
+      "value": "<<namePrefix>>cvmlinatmg"
     },
     "publicKeys": {
       "value": [
@@ -1553,7 +1553,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vmlinmin'
+  name: '${uniqueString(deployment().name)}-test-cvmlinmin'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1587,7 +1587,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     vmSize: 'Standard_B12ms'
     // Non-required parameters
     disablePasswordAuthentication: true
-    name: '<<namePrefix>>vmlinmin'
+    name: '<<namePrefix>>cvmlinmin'
     publicKeys: [
       {
         keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
@@ -1657,7 +1657,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": true
     },
     "name": {
-      "value": "<<namePrefix>>vmlinmin"
+      "value": "<<namePrefix>>cvmlinmin"
     },
     "publicKeys": {
       "value": [
@@ -1682,7 +1682,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vmwindef'
+  name: '${uniqueString(deployment().name)}-test-cvmwindef'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1833,7 +1833,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     }
     lock: 'CanNotDelete'
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
-    name: '<<namePrefix>>vmwindef'
+    name: '<<namePrefix>>cvmwindef'
     proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
     roleAssignments: [
       {
@@ -2069,7 +2069,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": "<monitoringWorkspaceId>"
     },
     "name": {
-      "value": "<<namePrefix>>vmwindef"
+      "value": "<<namePrefix>>cvmwindef"
     },
     "proximityPlacementGroupResourceId": {
       "value": "<proximityPlacementGroupResourceId>"
@@ -2107,7 +2107,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vmwinautmg'
+  name: '${uniqueString(deployment().name)}-test-cvmwinautmg'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -2139,7 +2139,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     // Non-required parameters
     adminPassword: '<adminPassword>'
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-    name: '<<namePrefix>>vmwinautmg'
+    name: '<<namePrefix>>cvmwinautmg'
   }
 }
 ```
@@ -2203,7 +2203,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
     },
     "name": {
-      "value": "<<namePrefix>>vmwinautmg"
+      "value": "<<namePrefix>>cvmwinautmg"
     }
   }
 }
@@ -2220,7 +2220,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-vmwinmin'
+  name: '${uniqueString(deployment().name)}-test-cvmwinmin'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -2251,7 +2251,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     vmSize: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: '<adminPassword>'
-    name: '<<namePrefix>>vmwinmin'
+    name: '<<namePrefix>>cvmwinmin'
   }
 }
 ```
@@ -2312,7 +2312,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
       "value": "<adminPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>vmwinmin"
+      "value": "<<namePrefix>>cvmwinmin"
     }
   }
 }
