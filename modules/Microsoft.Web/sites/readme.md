@@ -385,12 +385,12 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `defaultHostname` | string | Default hostname of the app. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the site. |
 | `resourceGroupName` | string | The resource group the site was deployed into. |
 | `resourceId` | string | The resource ID of the site. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-| `defaultHostname` | string | Default hostname of the app. |
 
 ## Cross-referenced modules
 
