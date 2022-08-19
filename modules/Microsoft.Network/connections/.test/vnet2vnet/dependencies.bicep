@@ -70,14 +70,14 @@ resource secondaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' 
     properties: {
         addressSpace: {
             addressPrefixes: [
-                '10.0.0.1/24'
+                '10.0.1.0/24'
             ]
         }
         subnets: [
             {
                 name: 'GatewaySubnet'
                 properties: {
-                    addressPrefix: '10.0.0.1/24'
+                    addressPrefix: '10.0.1.0/24'
                 }
             }
         ]
