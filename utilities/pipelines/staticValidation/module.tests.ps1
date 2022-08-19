@@ -568,9 +568,9 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
                 [object[]] $testFileContent
             )
 
-            $expectedTestFormat = ($testFileContent | Out-String) -match "^\s*module testDeployment '..\/.*deploy.bicep' = {\s*$"
+            $testIndex = ($testFileContent | Select-String ("^module testDeployment '..\/.*deploy.bicep' = {$") | ForEach-Object { $_.LineNumber - 1 })[0]
 
-            $expectedTestFormat | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
+            $testIndex -ne -1 | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
         }
 
         It '[<moduleFolderName>] Bicep test deployment name should contain [-test-]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
