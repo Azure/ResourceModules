@@ -9,13 +9,14 @@ This module deploys Role Assignments across the management group, subscription o
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Parameters
 
@@ -164,6 +165,10 @@ module roleassignment 'yourpath/modules/Microsoft.Authorization.roleAssignments/
 ## Considerations
 
 This module can be deployed at the management group, subscription or resource group level
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

@@ -7,13 +7,14 @@ This module deploys an Action Group.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `microsoft.insights/actionGroups` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups) |
 
 ## Parameters
@@ -229,6 +230,10 @@ tags: {
 | `name` | string | The name of the action group . |
 | `resourceGroupName` | string | The resource group the action group was deployed into. |
 | `resourceId` | string | The resource ID of the action group . |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

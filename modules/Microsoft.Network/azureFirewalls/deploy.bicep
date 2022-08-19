@@ -225,7 +225,7 @@ module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' 
   }
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
   name: name
   location: location
   zones: length(zones) == 0 ? null : zones
@@ -275,6 +275,8 @@ module azureFirewall_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: azureFirewall.id
   }
 }]

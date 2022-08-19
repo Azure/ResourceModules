@@ -44,15 +44,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
   name: storageAccountName
 
-  resource fileService 'fileServices@2021-04-01' existing = {
+  resource fileService 'fileServices@2021-09-01' existing = {
     name: fileServicesName
   }
 }
 
-resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-08-01' = {
+resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-09-01' = {
   name: name
   parent: storageAccount::fileService
   properties: {
@@ -69,6 +69,8 @@ module fileShare_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (r
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: fileShare.id
   }
 }]

@@ -168,7 +168,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(azureBast
   }
 }
 
-resource azureBastion 'Microsoft.Network/bastionHosts@2021-05-01' = {
+resource azureBastion 'Microsoft.Network/bastionHosts@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -209,6 +209,8 @@ module azureBastion_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: azureBastion.id
   }
 }]

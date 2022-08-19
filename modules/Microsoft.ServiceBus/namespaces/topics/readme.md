@@ -7,13 +7,14 @@ This module deploys a topic for a service bus namespace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.ServiceBus/namespaces/topics` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics) |
 | `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics/authorizationRules) |
 
@@ -115,3 +116,7 @@ roleAssignments: [
 | `name` | string | The name of the deployed topic. |
 | `resourceGroupName` | string | The resource group of the deployed topic. |
 | `resourceId` | string | The resource ID of the deployed topic. |
+
+## Cross-referenced modules
+
+_None_

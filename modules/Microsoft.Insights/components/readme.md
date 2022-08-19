@@ -5,13 +5,14 @@
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/components` | [2020-02-02](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-02-02/components) |
 
 ## Parameters
@@ -147,6 +148,10 @@ tags: {
 | `name` | string | The name of the application insights component. |
 | `resourceGroupName` | string | The resource group the application insights component was deployed into. |
 | `resourceId` | string | The resource ID of the application insights component. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

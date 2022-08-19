@@ -97,11 +97,11 @@ param bootDiagnosticStorageAccountName string = ''
 @description('Optional. Storage account boot diagnostic base URI.')
 param bootDiagnosticStorageAccountUri string = '.blob.${environment().suffixes.storage}/'
 
-@description('Optional. Resource name of a proximity placement group.')
-param proximityPlacementGroupName string = ''
+@description('Optional. Resource ID of a proximity placement group.')
+param proximityPlacementGroupResourceId string = ''
 
-@description('Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set.')
-param availabilitySetName string = ''
+@description('Optional. Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set.')
+param availabilitySetResourceId string = ''
 
 @description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set.')
 @allowed([
@@ -166,7 +166,7 @@ param enableServerSideEncryption bool = false
 @description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
 param allowExtensionOperations bool = true
 
-@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter.')
+@description('Optional. Required if name is specified. Password of the user specified in user parameter.')
 @secure()
 param extensionDomainJoinPassword string = ''
 
@@ -451,12 +451,20 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         storageUri: !empty(bootDiagnosticStorageAccountName) ? 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}' : null
       }
     }
-    availabilitySet: !empty(availabilitySetName) ? json('{"id":"${az.resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}') : null
-    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? json('{"id":"${az.resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}') : null
+    availabilitySet: !empty(availabilitySetResourceId) ? {
+      id: availabilitySetResourceId
+    } : null
+    proximityPlacementGroup: !empty(proximityPlacementGroupResourceId) ? {
+      id: proximityPlacementGroupResourceId
+    } : null
     priority: vmPriority
     evictionPolicy: enableEvictionPolicy ? 'Deallocate' : null
-    billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : null
-    host: !empty(dedicatedHostId) ? json('{"id":"${dedicatedHostId}"}') : null
+    billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? {
+      maxPrice: maxPriceForLowPriorityVm
+    } : null
+    host: !empty(dedicatedHostId) ? {
+      id: dedicatedHostId
+    } : null
     licenseType: !empty(licenseType) ? licenseType : null
   }
   dependsOn: [
@@ -654,6 +662,8 @@ module vm_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssi
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: vm.id
   }
 }]

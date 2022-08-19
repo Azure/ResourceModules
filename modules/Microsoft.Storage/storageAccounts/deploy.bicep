@@ -195,7 +195,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: !empty(name) ? name : uniqueStorageName
   location: location
   kind: storageAccountKind
@@ -275,6 +275,8 @@ module storageAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: storageAccount.id
   }
 }]

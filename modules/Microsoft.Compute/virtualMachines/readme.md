@@ -8,6 +8,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -15,12 +16,12 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Automanage/configurationProfileAssignments` | [2021-04-30-preview](https://docs.microsoft.com/en-us/azure/templates) |
 | `Microsoft.Compute/virtualMachines` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines) |
 | `Microsoft.Compute/virtualMachines/extensions` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/networkInterfaces` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkInterfaces) |
+| `Microsoft.Network/networkInterfaces` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkInterfaces) |
 | `Microsoft.Network/publicIPAddresses` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/publicIPAddresses) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers/protectedItems) |
 
@@ -43,7 +44,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `additionalUnattendContent` | array | `[]` |  | Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object. |
 | `adminPassword` | secureString | `''` |  | When specifying a Windows Virtual Machine, this value should be passed. |
 | `allowExtensionOperations` | bool | `True` |  | Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine. |
-| `availabilitySetName` | string | `''` |  | Resource name of an availability set. Cannot be used in combination with availability zone nor scale set. |
+| `availabilitySetResourceId` | string | `''` |  | Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set. |
 | `availabilityZone` | int | `0` | `[0, 1, 2, 3]` | If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set. |
 | `backupPolicyName` | string | `'DefaultPolicy'` |  | Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault. |
 | `backupVaultName` | string | `''` |  | Recovery service vault name to add VMs to backup. |
@@ -72,7 +73,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `extensionDependencyAgentConfig` | object | `{object}` |  | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinConfig` | object | `{object}` |  | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionDomainJoinPassword` | secureString | `''` |  | Required if domainName is specified. Password of the user specified in domainJoinUser parameter. |
+| `extensionDomainJoinPassword` | secureString | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
 | `extensionDSCConfig` | object | `{object}` |  | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionMonitoringAgentConfig` | object | `{object}` |  | The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionNetworkWatcherAgentConfig` | object | `{object}` |  | The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -89,7 +90,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `pipDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the PIP diagnostic setting, if deployed. |
 | `plan` | object | `{object}` |  | Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use. |
 | `provisionVMAgent` | bool | `True` |  | Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later. |
-| `proximityPlacementGroupName` | string | `''` |  | Resource name of a proximity placement group. |
+| `proximityPlacementGroupResourceId` | string | `''` |  | Resource ID of a proximity placement group. |
 | `publicKeys` | array | `[]` |  | The list of SSH public keys used to authenticate with linux based VMs. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sasTokenValidityLength` | string | `'PT8H'` |  | SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
@@ -496,11 +497,11 @@ configurationProfileAssignments: [
   "value": {
     "enabled": true,
     "settings": {
-      "domainName": "contoso.com",
-      "domainJoinUser": "test.user@testcompany.com",
-      "domainJoinOU": "OU=testOU; DC=contoso; DC=com",
-      "domainJoinRestart": true,
-      "domainJoinOptions": 3
+      "name": "contoso.com",
+      "user": "test.user@testcompany.com",
+      "ouPath": "OU=testOU; DC=contoso; DC=com",
+      "restart": true,
+      "options": 3
     }
   }
 },
@@ -522,11 +523,11 @@ configurationProfileAssignments: [
 extensionDomainJoinConfig: {
     enabled: true
     settings: {
-      domainName: 'contoso.com'
-      domainJoinUser: 'test.user@testcompany.com'
-      domainJoinOU: 'OU=testOU; DC=contoso; DC=com'
-      domainJoinRestart: true
-      domainJoinOptions: 3
+      name: 'contoso.com'
+      user: 'test.user@testcompany.com'
+      ouPath: 'OU=testOU; DC=contoso; DC=com'
+      restart: true
+      options: 3
     }
 }
 
@@ -997,6 +998,16 @@ For further details on automanage please refer to [Automanage virtual machines](
 | `resourceGroupName` | string | The name of the resource group the VM was created in. |
 | `resourceId` | string | The resource ID of the VM. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/networkInterfaces` | Local reference |
+| `Microsoft.Network/publicIPAddresses` | Local reference |
+| `Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems` | Local reference |
 
 ## Deployment examples
 
@@ -2070,6 +2081,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     lock: 'CanNotDelete'
     monitoringWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     name: '<<namePrefix>>-vm-win-01'
+    proximityPlacementGroupResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-vm-001'
     roleAssignments: [
       {
         principalIds: [
@@ -2310,6 +2322,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>-vm-win-01"
+    },
+    "proximityPlacementGroupResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-vm-001"
     },
     "roleAssignments": {
       "value": [

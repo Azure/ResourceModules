@@ -339,7 +339,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(subscriptionId, resourceGroupName, roleDefinitionId_var, principalId)
   properties: {
     roleDefinitionId: roleDefinitionId_var

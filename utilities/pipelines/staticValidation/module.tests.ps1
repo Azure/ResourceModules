@@ -9,22 +9,19 @@ param (
     [Parameter(Mandatory = $false)]
     [string] $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName,
 
-    # Tokens to test for (i.e. their value should not be used in the parameter files, but their placeholder)
+    # Dedicated Tokens configuration hashtable containing the tokens and token prefix and suffix.
     [Parameter(Mandatory = $false)]
-    [hashtable] $enforcedTokenList = @{}
+    [hashtable] $tokenConfiguration = @{}
 )
 
 Write-Verbose ("repoRootPath: $repoRootPath") -Verbose
 Write-Verbose ("moduleFolderPaths: $($moduleFolderPaths.count)") -Verbose
 
-
-$script:Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json -AsHashtable
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
 $script:Tenantdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#'
 $script:moduleFolderPaths = $moduleFolderPaths
-$script:enforcedTokenList = $enforcedTokenList
 
 # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
 $script:convertedTemplates = @{}
@@ -35,7 +32,7 @@ $script:jsonTemplateLoadFailedException = "Unable to load the deploy.json templa
 $script:templateNotFoundException = 'No template file found in folder [{0}]' # -f $moduleFolderPath
 
 # Import any helper function used in this test script
-Import-Module (Join-Path $PSScriptRoot 'helper\helper.psm1') -Force
+Import-Module (Join-Path $PSScriptRoot 'helper' 'helper.psm1') -Force
 
 Describe 'File/folder tests' -Tag Modules {
 
@@ -127,7 +124,7 @@ Describe 'File/folder tests' -Tag Modules {
                 [string] $moduleFolderPath
             )
 
-            $moduleTestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+            $moduleTestFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
             $moduleTestFilePaths.Count | Should -BeGreaterThan 0
         }
 
@@ -135,7 +132,7 @@ Describe 'File/folder tests' -Tag Modules {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             $testFolderPath = Join-Path $moduleFolderPath '.test'
             if (Test-Path $testFolderPath) {
-                foreach ($testFilePath in ((Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' })) {
+                foreach ($testFilePath in (Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ })) {
                     $testFolderFilesTestCases += @{
                         moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                         testFilePath     = $testFilePath
@@ -158,7 +155,6 @@ Describe 'File/folder tests' -Tag Modules {
         }
     }
 }
-
 Describe 'Readme tests' -Tag Readme {
 
     Context 'Readme content tests' {
@@ -195,14 +191,18 @@ Describe 'Readme tests' -Tag Readme {
                 $templateFilePath = $convertedTemplates[$moduleFolderPathKey].templateFilePath
             }
 
+            $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+
             $readmeFolderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                moduleFolderPath = $moduleFolderPath
-                templateContent  = $templateContent
-                templateFilePath = $templateFilePath
-                readMeFilePath   = Join-Path -Path $moduleFolderPath 'readme.md'
-                readMeContent    = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
-                isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+                moduleFolderName       = $resourceTypeIdentifier
+                moduleFolderPath       = $moduleFolderPath
+                templateContent        = $templateContent
+                templateFilePath       = $templateFilePath
+                readMeFilePath         = Join-Path -Path $moduleFolderPath 'readme.md'
+                readMeContent          = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
+                isTopLevelModule       = $resourceTypeIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
+                resourceTypeIdentifier = $resourceTypeIdentifier
+                templateReferences     = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
             }
         }
 
@@ -215,7 +215,7 @@ Describe 'Readme tests' -Tag Readme {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] Readme.md file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Deployment examples' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Readme.md file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -223,7 +223,7 @@ Describe 'Readme tests' -Tag Readme {
                 [boolean] $isTopLevelModule
             )
 
-            $expectedHeadersInOrder = @('Navigation', 'Resource types', 'Parameters', 'Outputs')
+            $expectedHeadersInOrder = @('Navigation', 'Resource types', 'Parameters', 'Outputs', 'Cross-referenced modules')
 
             if ($isTopLevelModule) {
                 # Only top-level modules have parameter files and hence deployment examples
@@ -442,6 +442,61 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ('list of excess template outputs defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
+        It '[<moduleFolderName>] Dependencies section should contain all cross-references defined in the template file' -TestCases $readmeFolderTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                [hashtable] $templateContent,
+                [object[]] $readMeContent,
+                [string] $resourceTypeIdentifier
+            )
+
+            # Get ReadMe data
+            $tableStartIndex, $tableEndIndex = Get-TableStartAndEndIndex -ReadMeContent $readMeContent -MarkdownSectionIdentifier '*## Cross-referenced modules'
+
+            $ReadMeDependenciesList = @{
+                localPathReferences = @()
+                remoteReferences    = @()
+            }
+            for ($index = $tableStartIndex + 2; $index -lt $tableEndIndex; $index++) {
+                $type = $readMeContent[$index].Split('|')[2].Trim()
+
+                switch ($type) {
+                    'Local reference' {
+                        $ReadMeDependenciesList.localPathReferences += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+                    }
+                    'Remote reference' {
+                        $ReadMeDependenciesList.remoteReferences += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+                    }
+                    Default {
+                        throw "Unkown type reference [$type]. Only [Local reference] & [Remote reference] are known. Please update ReadMe or test script."
+                    }
+                }
+            }
+
+            # Template data
+            $expectedDependencies = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
+
+            # Test
+            if ($expectedDependencies.localPathReferences) {
+                $differentiatingItems = @() + $expectedDependencies.localPathReferences | Where-Object { $ReadMeDependenciesList.localPathReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of local template dependencies missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+
+
+                $differentiatingItems = @() + $ReadMeDependenciesList.localPathReferences | Where-Object { $expectedDependencies.localPathReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of excess local template references defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            }
+
+            if ($expectedDependencies.remoteReferences) {
+                $differentiatingItems = @() + $expectedDependencies.remoteReferences | Where-Object { $ReadMeDependenciesList.remoteReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of remote template dependencies missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+
+
+                $differentiatingItems = @() + $ReadMeDependenciesList.remoteReferences | Where-Object { $expectedDependencies.remoteReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of excess remote template references defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            }
+        }
+
         It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
 
             param(
@@ -466,8 +521,11 @@ Describe 'Readme tests' -Tag Readme {
             # Compare
             $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
             if (-not $filesAreTheSame) {
-                $diffReponse = git diff
+                $diffReponse = git diff $readMeFilePath
                 Write-Warning ($diffReponse | Out-String) -Verbose
+
+                # Reset readme file to original state
+                git checkout HEAD -- $readMeFilePath
             }
             $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
         }
@@ -519,7 +577,7 @@ Describe 'Deployment template tests' -Tag Template {
             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
 
                 # Can be removed after full migration to bicep test files
-                $moduleTestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -File).FullName | Where-Object { $_ -match '.+\.[bicep|json]' }
+                $moduleTestFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
 
                 foreach ($moduleTestFilePath in $moduleTestFilePaths) {
                     if ((Split-Path $moduleTestFilePath -Extension) -eq '.json') {
@@ -534,7 +592,7 @@ Describe 'Deployment template tests' -Tag Template {
                         testFile_AllParameterNames           = $deploymentTestFile_AllParameterNames
                         templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
                         templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
-                        tokenSettings                        = $Settings.parameterFileTokens
+                        tokenConfiguration                   = $tokenConfiguration
                     }
                 }
             }
@@ -953,15 +1011,16 @@ Describe 'Deployment template tests' -Tag Template {
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-                $testFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters.json') -Recurse -Force).FullName
-                foreach ($testFilePath in $testFilePaths) {
-                    foreach ($token in $enforcedTokenList.Keys) {
+                $TestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -Recurse -Force -File).FullName
+                foreach ($TestFilePath in $TestFilePaths) {
+                    foreach ($token in $tokenConfiguration.Tokens.Keys) {
                         $parameterFileTokenTestCases += @{
-                            parameterFilePath = $testFilePath
-                            parameterFileName = Split-Path $testFilePath -Leaf
-                            tokenSettings     = $Settings.parameterFileTokens
+                            parameterFilePath = $TestFilePath
+                            parameterFileName = Split-Path $TestFilePath -Leaf
+                            tokenPrefix       = $tokenConfiguration.TokenPrefix
+                            tokenSuffix       = $tokenConfiguration.TokenSuffix
                             tokenName         = $token
-                            tokenValue        = $enforcedTokenList[$token]
+                            tokenValue        = $tokenConfiguration.Tokens[$token]
                             moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                         }
                     }
@@ -969,17 +1028,18 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
+        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>]' -TestCases $parameterFileTokenTestCases {
             param (
-                [string] $testFilePath,
+                [string] $parameterFilePath,
                 [string] $parameterFileName,
-                [hashtable] $tokenSettings,
+                [string] $tokenPrefix,
+                [string] $tokenSuffix,
                 [string] $tokenName,
                 [string] $tokenValue,
                 [string] $moduleFolderName
             )
-            $ParameterFileTokenName = -join ($tokenSettings.tokenPrefix, $tokenName, $tokenSettings.tokenSuffix)
-            $ParameterFileContent = Get-Content -Path $testFilePath
+            $ParameterFileTokenName = -join ($tokenPrefix, $tokenName, $tokenSuffix)
+            $ParameterFileContent = Get-Content -Path $parameterFilePath
 
             $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
             if ($incorrectReferencesFound.Matches) {
@@ -1063,7 +1123,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
                     }
                     break
                 }
-                { $PSItem -like '*privateEndpoints' } {
+                { $PSItem -like '*privateEndpoints' -and ($PSItem -notlike '*managedPrivateEndpoints') } {
                     $testCases += @{
                         moduleName           = $moduleFolderName
                         resourceType         = 'privateEndpoints'

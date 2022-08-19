@@ -296,6 +296,8 @@ param diskEncryptionSetID string = ''
   'kube-controller-manager'
   'kube-scheduler'
   'cluster-autoscaler'
+  'kube-audit-admin'
+  'guard'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'kube-apiserver'
@@ -303,6 +305,8 @@ param diagnosticLogCategoriesToEnable array = [
   'kube-controller-manager'
   'kube-scheduler'
   'cluster-autoscaler'
+  'kube-audit-admin'
+  'guard'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -566,6 +570,8 @@ module managedCluster_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: managedCluster.id
   }
 }]

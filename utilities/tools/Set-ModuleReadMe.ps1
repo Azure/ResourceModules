@@ -305,6 +305,81 @@ function Set-OutputsSection {
 
 <#
 .SYNOPSIS
+Add module references (cross-references) to the module's readme
+
+.DESCRIPTION
+Add module references (cross-references) to the module's readme. This includes both local (i.e., file path), as well as remote references (e.g., ACR)
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.PARAMETER ReadMeFileContent
+Mandatory. The readme file content array to update
+
+.PARAMETER SectionStartIdentifier
+Optional. The identifier of the 'outputs' section. Defaults to '## Cross-referenced modules'
+
+.EXAMPLE
+Set-ReferencesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+
+Update the given readme file's 'Cross-referenced modules' section based on the given template file content
+#>
+function Set-ReferencesSection {
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory)]
+        [hashtable] $TemplateFileContent,
+
+        [Parameter(Mandatory)]
+        [object[]] $ReadMeFileContent,
+
+        [Parameter(Mandatory = $false)]
+        [string] $SectionStartIdentifier = '## Cross-referenced modules'
+    )
+
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'tools' 'Get-CrossReferencedModuleList.ps1')
+
+    $moduleRoot = Split-Path $TemplateFilePath -Parent
+    $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
+
+    # Process content
+    $SectionContent = [System.Collections.ArrayList]@(
+        'This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).',
+        '',
+        '| Reference | Type |',
+        '| :-- | :-- |'
+    )
+
+    $dependencies = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
+
+    if ($dependencies.Keys -contains 'localPathReferences' -and $dependencies['localPathReferences']) {
+        foreach ($reference in ($dependencies['localPathReferences'] | Sort-Object)) {
+            $SectionContent += ("| ``{0}`` | {1} |" -f $reference, 'Local reference')
+        }
+    }
+
+    if ($dependencies.Keys -contains 'remoteReferences' -and $dependencies['remoteReferences']) {
+        foreach ($reference in ($dependencies['remoteReferences'] | Sort-Object)) {
+            $SectionContent += ("| ``{0}`` | {1} |" -f $reference, 'Remote reference')
+        }
+    }
+
+    if ($SectionContent.Count -eq 4) {
+        # No content was added, adding placeholder
+        $SectionContent = @('_None_')
+
+    }
+
+    # Build result
+    if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+    }
+    return $updatedFileContent
+}
+
+<#
+.SYNOPSIS
 Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
 
 .DESCRIPTION
@@ -320,7 +395,7 @@ Mandatory. The template file content object to crawl data from
 Mandatory. The readme file content array to update
 
 .PARAMETER SectionStartIdentifier
-Optional. The identifier of the 'outputs' section. Defaults to '## Deployment examples'
+Optional. The identifier of the 'outputs' section. Defaults to '## Dependencies
 
 .PARAMETER addJson
 Optional. A switch to control whether or not to add a ARM-JSON-Parameter file example. Defaults to true.
@@ -746,6 +821,7 @@ function Set-ModuleReadMe {
             'Resource Types',
             'Parameters',
             'Outputs',
+            'CrossReferences',
             'Template references',
             'Navigation',
             'Deployment examples'
@@ -754,6 +830,7 @@ function Set-ModuleReadMe {
             'Resource Types',
             'Parameters',
             'Outputs',
+            'CrossReferences',
             'Template references',
             'Navigation',
             'Deployment examples'
@@ -761,11 +838,15 @@ function Set-ModuleReadMe {
     )
 
     # Load external functions
-    . (Join-Path $PSScriptRoot 'helper/Merge-FileWithNewContent.ps1')
+    . (Join-Path $PSScriptRoot 'helper' 'Merge-FileWithNewContent.ps1')
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
 
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
+
+    if (-not (Test-Path $TemplateFilePath -PathType 'Leaf')) {
+        throw "[$TemplateFilePath] is not a valid file path."
+    }
 
     if (-not $TemplateFileContent) {
         if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
@@ -858,16 +939,28 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-OutputsSection @inputObject
     }
 
-    $isTopLevelModule = $TemplateFilePath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 3 # <provider>/<resourceType>/deploy.*
-    if ($SectionsToRefresh -contains 'Deployment examples' -and $isTopLevelModule) {
-        # Handle [Deployment examples] section
-        # ===================================
+    if ($SectionsToRefresh -contains 'CrossReferences') {
+        # Handle [Dependencies] section
+        # ========================
         $inputObject = @{
             ReadMeFileContent   = $readMeFileContent
-            TemplateFilePath    = $TemplateFilePath
             TemplateFileContent = $templateFileContent
         }
-        $readMeFileContent = Set-DeploymentExamplesSection @inputObject
+        $readMeFileContent = Set-ReferencesSection @inputObject
+    }
+
+    if ($SectionsToRefresh -contains 'Deployment examples') {
+        $isTopLevelModule = $TemplateFilePath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 3 # <provider>/<resourceType>/deploy.*
+        if ($SectionsToRefresh -contains 'Deployment examples' -and $isTopLevelModule) {
+            # Handle [Deployment examples] section
+            # ===================================
+            $inputObject = @{
+                ReadMeFileContent   = $readMeFileContent
+                TemplateFilePath    = $TemplateFilePath
+                TemplateFileContent = $templateFileContent
+            }
+            $readMeFileContent = Set-DeploymentExamplesSection @inputObject
+        }
     }
 
     if ($SectionsToRefresh -contains 'Navigation') {

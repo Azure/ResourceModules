@@ -7,6 +7,7 @@ This module deploys Firewall Policies.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,7 +15,7 @@ This module deploys Firewall Policies.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Network/firewallPolicies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/firewallPolicies) |
-| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups) |
+| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/firewallPolicies/ruleCollectionGroups) |
 
 ## Parameters
 
@@ -133,6 +134,10 @@ userAssignedIdentities: {
 | `name` | string | The name of the deployed firewall policy. |
 | `resourceGroupName` | string | The resource group of the deployed firewall policy. |
 | `resourceId` | string | The resource ID of the deployed firewall policy. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 

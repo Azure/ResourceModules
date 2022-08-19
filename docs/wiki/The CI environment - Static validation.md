@@ -28,6 +28,8 @@ The following activities are performed by the [`utilities/pipelines/staticValida
   - is not empty
   - contains all the mandatory sections
   - describes all the parameters
+  - describes all outputs
+  - describes all cross-references
 - **Parameter Files**, e.g.:
   - at least one `*parameters.json` exists
   - files should be valid JSON

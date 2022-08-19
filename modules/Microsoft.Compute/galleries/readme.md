@@ -7,6 +7,7 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,7 +15,7 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/galleries` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-10-01/galleries) |
 | `Microsoft.Compute/galleries/images` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-10-01/galleries/images) |
 
@@ -145,6 +146,10 @@ tags: {
 | `name` | string | The name of the deployed image gallery. |
 | `resourceGroupName` | string | The resource group of the deployed image gallery. |
 | `resourceId` | string | The resource ID of the deployed image gallery. |
+
+## Cross-referenced modules
+
+_None_
 
 ## Deployment examples
 
