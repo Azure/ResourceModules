@@ -32,11 +32,11 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
     name: 'privatelink.azure-automation.net'
-    location: location
+    location: 'global'
 
     resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
         name: '${virtualNetworkName}-vnetlink'
-        location: location
+        location: 'global'
         properties: {
             virtualNetwork: {
                 id: virtualNetwork.id
