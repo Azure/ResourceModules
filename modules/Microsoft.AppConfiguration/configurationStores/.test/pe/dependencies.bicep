@@ -35,6 +35,7 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
       virtualNetwork: {
         id: virtualNetwork.id
       }
+      registrationEnabled: false
     }
   }
 }
