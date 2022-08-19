@@ -16,6 +16,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
                 '10.0.0.0/24'
             ]
         }
+        subnets: [
+            {
+                name: 'GatewaySubnet'
+                properties: {
+                    addressPrefix: '10.0.0.0/24'
+                }
+            }
+        ]
     }
 }
 
