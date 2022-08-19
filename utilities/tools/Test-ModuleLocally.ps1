@@ -138,12 +138,13 @@ function Test-ModuleLocally {
     begin {
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
         $ModuleName = Split-Path (Split-Path $TemplateFilePath -Parent) -Leaf
+        $utilitiesFolderPath = Split-Path $PSScriptRoot -Parent
         Write-Verbose "Running local tests for [$ModuleName]"
         # Load Tokens Converter Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFileList.ps1')
+        . (Join-Path $utilitiesFolderPath 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
         # Load Modules Validation / Deployment Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/New-TemplateDeployment.ps1')
-        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-TemplateDeployment.ps1')
+        . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+        . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
     }
     process {
 
@@ -156,7 +157,7 @@ function Test-ModuleLocally {
         }
 
         # Construct Token Configuration Input
-        $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRootPath 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
         $tokenConfiguration = @{
             FilePathList = $moduleTestFiles
             Tokens       = @{}

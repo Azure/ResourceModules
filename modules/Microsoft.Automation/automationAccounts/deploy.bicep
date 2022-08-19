@@ -55,6 +55,9 @@ param softwareUpdateConfigurations array = []
 ])
 param publicNetworkAccess string = ''
 
+@description('Optional. Disable local authentication profile used within the resource.')
+param disableLocalAuth bool = true
+
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
@@ -171,7 +174,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2021-06-22' = {
   name: name
   location: location
   tags: tags
@@ -192,6 +195,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       }
     } : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? (publicNetworkAccess == 'Disabled' ? false : true) : (!empty(privateEndpoints) ? false : null)
+    disableLocalAuth: disableLocalAuth
   }
 }
 
@@ -242,7 +246,6 @@ module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index
 module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
   params: {
-    name: contains(jobSchedule, 'name') ? jobSchedule.name : uniqueString(name, subscription().id)
     automationAccountName: automationAccount.name
     runbookName: jobSchedule.runbookName
     scheduleName: jobSchedule.scheduleName

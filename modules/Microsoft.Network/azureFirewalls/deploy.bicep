@@ -150,7 +150,7 @@ var newPip = {
 
 var ipConfigurations = concat([
     {
-      name: 'IpConfAzureFirewallSubnet'
+      name: !empty(azureFirewallSubnetPublicIpId) ? last(split(azureFirewallSubnetPublicIpId, '/')) : publicIPAddress.outputs.name
       //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
       properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
     }
@@ -244,6 +244,9 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
     natRuleCollections: natRuleCollections
     networkRuleCollections: networkRuleCollections
   }
+  dependsOn: [
+    publicIPAddress
+  ]
 }
 
 resource azureFirewall_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {

@@ -891,6 +891,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/13.bastion.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Virtual Network Custom
+            - path: $(dependencyPath)/$(resourceType)/parameters/14.postgres.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: PostgreSQL Virtual Network Custom
 
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
@@ -977,6 +980,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/webpubsub.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Web PubSub Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/postgres.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: PostgreSQL Private DNS Zone
 
   - stage: deploy_vm
     displayName: Deploy virtual machines

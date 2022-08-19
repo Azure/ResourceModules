@@ -1308,6 +1308,7 @@ jobs:
             '11.azfw.parameters.json',
             '12.bastion.parameters.json',
             '13.bastion.parameters.json',
+            '14.postgres.parameters.json',
             'parameters.json',
           ]
     steps:
@@ -1398,6 +1399,7 @@ jobs:
             'table.parameters.json',
             'vaultcore.parameters.json',
             'webpubsub.parameters.json',
+            'postgres.parameters.json',
           ]
     steps:
       - name: 'Checkout'

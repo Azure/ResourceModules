@@ -42,8 +42,8 @@ function Test-NamePrefixAvailability {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFileList.ps1')
-        $root = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+        $repoRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+        . (Join-Path $repoRoot 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
     }
     process {
 
@@ -56,14 +56,14 @@ function Test-NamePrefixAvailability {
             'Microsoft.ContainerRegistry/registries'
             'Microsoft.KeyVault/vaults'
         )
-        $parameterFiles = (Get-ChildItem -Path $root -Recurse -Filter '*.json').FullName | ForEach-Object { $_.Replace('\', '/') }
+        $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter '*.json').FullName | ForEach-Object { $_.Replace('\', '/') }
         $parameterFiles = $parameterFiles | Where-Object { $_ -match '(?:{0}).*parameters\.json' -f ($relevantResourceTypes -join '|' -replace '/', '\/+') }
 
         # Replace parameter file tokens
         # -----------------------------
 
         # Tokens in settings.yml
-        $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRoot 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
 
         # Construct Token Configuration Input
         $tokenConfiguration = @{

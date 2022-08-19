@@ -75,6 +75,7 @@ module testDeployment '../../deploy.bicep' = {
         scheduleName: 'TestSchedule'
       }
     ]
+    disableLocalAuth: true
     linkedWorkspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     lock: 'CanNotDelete'
     modules: [
