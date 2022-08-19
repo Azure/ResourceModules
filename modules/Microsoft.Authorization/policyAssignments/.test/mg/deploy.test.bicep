@@ -23,7 +23,7 @@ module testDeployment '../../deploy.bicep' = {
     enforcementMode: 'DoNotEnforce'
     identity: 'SystemAssigned'
     location: location
-    managementGroupId: managementGroup().id
+    managementGroupId: managementGroup().name
     metadata: {
       category: 'Security'
       version: '1.0'

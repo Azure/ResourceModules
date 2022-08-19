@@ -29,7 +29,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-`${serviceShort}'
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
   }
 }
 
