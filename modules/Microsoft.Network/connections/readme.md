@@ -330,7 +330,6 @@ module connections './Microsoft.Network/connections/deploy.bicep = {
     }
     // Non-required parameters
     enableBgp: false
-    location: '<location>'
     lock: 'CanNotDelete'
     virtualNetworkGateway2: {
       id: '<id>'
@@ -365,9 +364,6 @@ module connections './Microsoft.Network/connections/deploy.bicep = {
     // Non-required parameters
     "enableBgp": {
       "value": false
-    },
-    "location": {
-      "value": "<location>"
     },
     "lock": {
       "value": "CanNotDelete"
