@@ -672,10 +672,12 @@ function ConvertTo-FormattedJSONParameterObject {
         if ($mayHaveValue) {
 
             # Individual checks
-            $lineValue = ($line -split ':')[1].Trim()
             $isLineWithEmptyObjectValue = $line -match '^.+:\s*{\s*}\s*$' # e.g. test: {}
+            $isLineWithObjectPropertyReferenceValue = ($line -split ':')[1].Trim() -like '*.*' # e.g. resourceGroupResources.outputs.virtualWWANResourceId`
+            $isLineWithReferenceInLineKey = ($line -split ':')[0].Trim() -like '*.*'
+
+            $lineValue = ($line -split ':')[1].Trim()
             $isLineWithStringValue = $lineValue -match '".+"' # e.g. "value"
-            $isLineWithObjectPropertyReferenceValue = $line -like '*.*' # e.g. resourceGroupResources.outputs.virtualWWANResourceId`
             $isLineWithFunction = $lineValue -match '[a-zA-Z]+\(.+\)' # e.g. (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4]
             $isLineWithPlainValue = $lineValue -match '^\w+$' # e.g. adminPassword: password
             $isLineWithPrimitiveValue = $lineValue -match '^\s*true|false|[0-9]+$' # e.g. isSecure: true
@@ -685,10 +687,14 @@ function ConvertTo-FormattedJSONParameterObject {
             $isLineWithObjectPropertyReference = -not $isLineWithEmptyObjectValue -and -not $isLineWithStringValue -and $isLineWithObjectPropertyReferenceValue
             # In case of a parameter/variable reference like 'adminPassword: password' we'll only show "<adminPassword>" (but NOT e.g. enableMe: true)
             $isLineWithParameterOrVariableReferenceValue = $isLineWithPlainValue -and -not $isLineWithPrimitiveValue
-            # In case of a any contained function like '"backupVaultResourceGroup": (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4]' we'll only show "<backupVaultResourceGroup>"
+            # In case of any contained line like ''${resourceGroupResources.outputs.managedIdentityResourceId}': {}' we'll only show "managedIdentityResourceId: {}"
+            $isLineWithObjectReferenceKeyAndEmptyObjectValue = $isLineWithEmptyObjectValue -and $isLineWithReferenceInLineKey
+            # In case of any contained function like '"backupVaultResourceGroup": (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4]' we'll only show "<backupVaultResourceGroup>"
 
             if ($isLineWithObjectPropertyReference -or $isLineWithFunction -or $isLineWithParameterOrVariableReferenceValue) {
                 $line = '{0}: "<{1}>"' -f ($line -split ':')[0], ([regex]::Match(($line -split ':')[0], '"(.+)"')).Captures.Groups[1].Value
+            } elseif ($isLineWithObjectReferenceKeyAndEmptyObjectValue) {
+                $line = '"<{0}>": {1}' -f (($line -split ':')[0] -split '\.')[-1].TrimEnd('}"'), ($line -split ':')[1].Trim()
             }
         } else {
             if ($line -notlike '*"*"*' -and $line -like '*.*') {
@@ -696,6 +702,7 @@ function ConvertTo-FormattedJSONParameterObject {
                 $line = '"<{0}>"' -f $line.Split('.')[-1].Trim()
             }
         }
+
 
         $paramInJSONFormatArray[$index] = $line
     }

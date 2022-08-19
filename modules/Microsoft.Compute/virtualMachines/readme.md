@@ -1173,7 +1173,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -1402,7 +1402,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     },
     "userAssignedIdentities": {
       "value": {
-        "${resourceGroupResources.outputs.managedIdentityResourceId}": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -1845,7 +1845,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -2089,7 +2089,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
     },
     "userAssignedIdentities": {
       "value": {
-        "${resourceGroupResources.outputs.managedIdentityResourceId}": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }
