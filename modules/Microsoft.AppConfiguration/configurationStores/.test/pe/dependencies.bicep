@@ -30,7 +30,7 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 
   resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
     name: '${virtualNetworkName}-vnetlink'
-    location: location
+    location: 'global'
     properties: {
       virtualNetwork: {
         id: virtualNetwork.id
