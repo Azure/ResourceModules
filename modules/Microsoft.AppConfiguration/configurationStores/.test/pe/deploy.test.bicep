@@ -28,7 +28,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualNetworkName: 'dep-carml-vnet-${serviceShort}'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
   }
 }
 
@@ -40,7 +40,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: 'carml${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     createMode: 'Default'
     disableLocalAuth: false
     enablePurgeProtection: false
