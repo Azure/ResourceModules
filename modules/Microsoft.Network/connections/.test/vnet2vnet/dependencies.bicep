@@ -48,8 +48,10 @@ resource primaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01
     name: primaryVirtualNetworkGateway
     location: location
     properties: {
+        gatewayType: 'Vpn'
         ipConfigurations: [
             {
+                name: 'default'
                 properties: {
                     privateIPAllocationMethod: 'Dynamic'
                     subnet: {
@@ -61,6 +63,12 @@ resource primaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01
                 }
             }
         ]
+        vpnType: 'RouteBased'
+        vpnGatewayGeneration: 'Generation2'
+        sku: {
+            name: 'VpnGw2'
+            tier: 'VpnGw2'
+        }
     }
 }
 
@@ -93,9 +101,10 @@ resource secondaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-
     name: secondaryVirtualNetworkGateway
     location: location
     properties: {
+        gatewayType: 'Vpn'
         ipConfigurations: [
             {
-
+                name: 'default'
                 properties: {
                     privateIPAllocationMethod: 'Dynamic'
                     subnet: {
@@ -105,9 +114,14 @@ resource secondaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-
                         id: secondaryPublicIP.id
                     }
                 }
-
             }
         ]
+        vpnType: 'RouteBased'
+        vpnGatewayGeneration: 'Generation2'
+        sku: {
+            name: 'VpnGw2'
+            tier: 'VpnGw2'
+        }
     }
 }
 

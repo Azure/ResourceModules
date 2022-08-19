@@ -54,7 +54,6 @@ module testDeployment '../../deploy.bicep' = {
       id: resourceGroupResources.outputs.primaryVNETGatewayResourceID
     }
     enableBgp: false
-    location: location
     lock: 'CanNotDelete'
     virtualNetworkGateway2: {
       id: resourceGroupResources.outputs.secondaryVNETGatewayResourceID
