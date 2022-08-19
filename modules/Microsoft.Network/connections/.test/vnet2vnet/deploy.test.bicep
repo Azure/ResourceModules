@@ -32,10 +32,12 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualNetworkGateways: [
-      'dep-<<namePrefix>>-vpn-gw-${serviceShort}-1'
-      'dep-<<namePrefix>>-vpn-gw-${serviceShort}-2'
-    ]
+    primaryPublicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}-1'
+    primaryVirtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-1'
+    primaryVirtualNetworkGateway: 'dep-<<namePrefix>>-vpn-gw-${serviceShort}-1'
+    secondaryPublicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}-2'
+    secondaryVirtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-2'
+    secondaryVirtualNetworkGateway: 'dep-<<namePrefix>>-vpn-gw-${serviceShort}-2'
   }
 }
 
@@ -49,13 +51,13 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     virtualNetworkGateway1: {
-      id: resourceGroupResources.outputs.virtualNetworkGatewayResourceIds[0]
+      id: resourceGroupResources.outputs.primaryVNETGatewayResourceID
     }
     enableBgp: false
     location: location
     lock: 'CanNotDelete'
     virtualNetworkGateway2: {
-      id: resourceGroupResources.outputs.virtualNetworkGatewayResourceIds[1]
+      id: resourceGroupResources.outputs.secondaryVNETGatewayResourceID
     }
     virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
     vpnSharedKey: password

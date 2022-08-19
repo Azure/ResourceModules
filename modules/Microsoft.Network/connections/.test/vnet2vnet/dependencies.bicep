@@ -1,34 +1,118 @@
 @description('Optional. The location to deploy to')
 param location string = resourceGroup().location
 
-@description('Required. The names of the VNET Gateways to create.')
-param virtualNetworkGateways array
+@description('Required. The name of the primary Public IP to create.')
+param primaryPublicIPName string
 
-resource vnetGateways 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = [for (virtualNetworkGateway, index) in virtualNetworkGateways: {
-    name: virtualNetworkGateway
+@description('Required. The name of the primary VNET to create.')
+param primaryVirtualNetworkName string
+
+@description('Required. The name of the primary VNET Gateways to create.')
+param primaryVirtualNetworkGateway string
+
+@description('Required. The name of the secondary Public IP to create.')
+param secondaryPublicIPName string
+
+@description('Required. The name of the secondary VNET to create.')
+param secondaryVirtualNetworkName string
+
+@description('Required. The name of the secondary VNET Gateways to create.')
+param secondaryVirtualNetworkGateway string
+
+resource primaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+    name: primaryVirtualNetworkName
+    location: location
     properties: {
+        addressSpace: {
+            addressPrefixes: [
+                '10.0.0.0/24'
+            ]
+        }
+        subnets: [
+            {
+                name: 'GatewaySubnet'
+                properties: {
+                    addressPrefix: '10.0.0.0/24'
+                }
+            }
+        ]
     }
-}]
-//   name: name
-//   location: location
-//   tags: tags
-//   properties: {
-//     ipConfigurations: ipConfiguration
-//     activeActive: isActiveActiveValid
-//     enableBgp: isBgpValid
-//     bgpSettings: isBgpValid ? bgpSettings : null
-//     sku: {
-//       name: virtualNetworkGatewaySku
-//       tier: virtualNetworkGatewaySku
-//     }
-//     gatewayType: virtualNetworkGatewayType
-//     vpnType: vpnType_var
-//     vpnClientConfiguration: !empty(vpnClientAddressPoolPrefix) ? vpnClientConfiguration : null
-//   }
-//   dependsOn: [
-//     virtualGatewayPublicIP
-//   ]
-// }
+}
 
-@description('The resource ID of the created Virtual Network Gateways.')
-output virtualNetworkGatewayResourceIds array = [for gateway in virtualNetworkGateways: az.resourceId('Microsoft.Network/virtualNetworkGateways', gateway)]
+resource primaryPublicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
+    name: primaryPublicIPName
+    location: location
+}
+
+resource primaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = {
+    name: primaryVirtualNetworkGateway
+    location: location
+    properties: {
+        ipConfigurations: [
+            {
+                properties: {
+                    privateIPAllocationMethod: 'Dynamic'
+                    subnet: {
+                        id: primaryVirtualNetwork.properties.subnets[0].id
+                    }
+                    publicIPAddress: {
+                        id: primaryPublicIP.id
+                    }
+                }
+            }
+        ]
+    }
+}
+
+resource secondaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+    name: secondaryVirtualNetworkName
+    location: location
+    properties: {
+        addressSpace: {
+            addressPrefixes: [
+                '10.0.0.1/24'
+            ]
+        }
+        subnets: [
+            {
+                name: 'GatewaySubnet'
+                properties: {
+                    addressPrefix: '10.0.0.1/24'
+                }
+            }
+        ]
+    }
+}
+
+resource secondaryPublicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
+    name: secondaryPublicIPName
+    location: location
+}
+
+resource secondaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = {
+    name: secondaryVirtualNetworkGateway
+    location: location
+    properties: {
+        ipConfigurations: [
+            {
+
+                properties: {
+                    privateIPAllocationMethod: 'Dynamic'
+                    subnet: {
+                        id: secondaryVirtualNetwork.properties.subnets[0].id
+                    }
+                    publicIPAddress: {
+                        id: secondaryPublicIP.id
+                    }
+                }
+
+            }
+        ]
+    }
+}
+
+@description('The resource ID of the first created Virtual Network Gateways.')
+output primaryVNETGatewayResourceID string = primaryVNETGateway.id
+
+@description('The resource ID of the second created Virtual Network Gateways.')
+output secondaryVNETGatewayResourceID string = secondaryVNETGateway.id
