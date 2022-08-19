@@ -1,7 +1,4 @@
 name: 'Automation: AutomationAccounts'
-          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
-          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
-name: 'Automation: AutomationAccounts'
 
 on:
   workflow_dispatch:
