@@ -562,13 +562,13 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             }
         }
 
-        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [module testDeployment '../../deploy.bicep' = {]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [module testDeployment '../.*deploy.bicep' = {]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
             )
 
-            $expectedTestFormat = ($testFileContent | Out-String) -match "\s*module testDeployment '../../deploy.bicep' = {\s*"
+            $expectedTestFormat = ($testFileContent | Out-String) -match "^\s*module testDeployment '..\/.*deploy.bicep' = {\s*$"
 
             $expectedTestFormat | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
         }
