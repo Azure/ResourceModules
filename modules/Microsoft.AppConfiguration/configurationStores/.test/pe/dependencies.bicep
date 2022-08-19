@@ -26,7 +26,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'privatelink.azconfig.io'
-  location: location
 
   resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
     name: '${virtualNetworkName}-vnetlink'
