@@ -432,7 +432,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
         displayName: 'Echo API'
         name: 'echo-api'
         path: 'echo'
-        serviceUrl: '<serviceUrl>'
+        serviceUrl: 'http://echoapi.cloudapp.net/api'
       }
     ]
     authorizationServers: [
@@ -456,7 +456,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
           validateCertificateChain: false
           validateCertificateName: false
         }
-        url: '<url>'
+        url: 'http://echoapi.cloudapp.net/api'
       }
     ]
     caches: [
@@ -540,7 +540,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -583,7 +583,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
           "displayName": "Echo API",
           "name": "echo-api",
           "path": "echo",
-          "serviceUrl": "<serviceUrl>"
+          "serviceUrl": "http://echoapi.cloudapp.net/api"
         }
       ]
     },
@@ -611,7 +611,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
             "validateCertificateChain": false,
             "validateCertificateName": false
           },
-          "url": "<url>"
+          "url": "http://echoapi.cloudapp.net/api"
         }
       ]
     },
@@ -727,7 +727,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep = {
     },
     "userAssignedIdentities": {
       "value": {
-        "${resourceGroupResources.outputs.managedIdentityResourceId}": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }

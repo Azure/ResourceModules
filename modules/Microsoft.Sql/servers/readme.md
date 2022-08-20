@@ -338,7 +338,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.sql/servers/deploy.bicep = {
+module servers './Microsoft.Sql/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-sqlsadmin'
   params: {
     // Required parameters
@@ -395,7 +395,7 @@ module servers './Microsoft.sql/servers/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.sql/servers/deploy.bicep = {
+module servers './Microsoft.Sql/servers/deploy.bicep = {
   name: '${uniqueString(deployment().name)}-test-sqlsdef'
   params: {
     // Required parameters
@@ -453,7 +453,7 @@ module servers './Microsoft.sql/servers/deploy.bicep = {
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentitResourceId}': {}
+      '<managedIdentitResourceId>': {}
     }
     vulnerabilityAssessmentsObj: {
       emailSubscriptionAdmins: true
@@ -561,7 +561,7 @@ module servers './Microsoft.sql/servers/deploy.bicep = {
     },
     "userAssignedIdentities": {
       "value": {
-        "${resourceGroupResources.outputs.managedIdentitResourceId}": {}
+        "<managedIdentitResourceId>": {}
       }
     },
     "vulnerabilityAssessmentsObj": {
