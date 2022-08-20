@@ -4,14 +4,14 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 @description('Optional. The name of the resource group to deploy for a testing purposes')
-@maxLength(80)
-param resourceGroupName string = 'ms.kubernetesconfiguration.extensions-${serviceShort}-rg'
+@maxLength(90)
+param resourceGroupName string = 'ms.kubernetesconfiguration.fluxconfigurations-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'kcedef'
+param serviceShort string = 'kcfcmin'
 
 // =========== //
 // Deployments //
@@ -43,16 +43,17 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     clusterName: resourceGroupResources.outputs.clusterName
-    extensionType: 'microsoft.flux'
-    configurationSettings: {
-      'image-automation-controller.enabled': 'false'
-      'image-reflector-controller.enabled': 'false'
-      'kustomize-controller.enabled': 'true'
-      'notification-controller.enabled': 'false'
-      'source-controller.enabled': 'true'
+    namespace: 'flux-system'
+    scope: 'cluster'
+    sourceKind: 'GitRepository'
+    gitRepository: {
+      repositoryRef: {
+        branch: 'main'
+      }
+      sshKnownHosts: ''
+      syncIntervalInSeconds: 300
+      timeoutInSeconds: 180
+      url: 'https://github.com/mspnp/aks-baseline'
     }
-    releaseNamespace: 'flux-system'
-    releaseTrain: 'Stable'
-    version: '0.5.2'
   }
 }
