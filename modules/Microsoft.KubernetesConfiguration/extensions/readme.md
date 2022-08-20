@@ -83,12 +83,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep = {
-  name: '${uniqueString(deployment().name)}-test-...'
+  name: '${uniqueString(deployment().name)}-test-kcedef'
   params: {
     // Required parameters
     clusterName: '<clusterName>'
     extensionType: 'microsoft.flux'
-    name: '<<namePrefix>>...001'
+    name: '<<namePrefix>>kcedef001'
     // Non-required parameters
     configurationSettings: {
       'image-automation-controller.enabled': 'false'
@@ -124,7 +124,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep =
       "value": "microsoft.flux"
     },
     "name": {
-      "value": "<<namePrefix>>...001"
+      "value": "<<namePrefix>>kcedef001"
     },
     // Non-required parameters
     "configurationSettings": {
