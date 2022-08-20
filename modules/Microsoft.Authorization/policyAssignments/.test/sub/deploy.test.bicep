@@ -4,7 +4,7 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 @description('Optional. The name of the resource group to deploy for a testing purposes')
-@maxLength(90)
+@maxLength(80)
 param resourceGroupName string = 'ms.authorization.policyassignments-${serviceShort}-rg'
 
 @description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')

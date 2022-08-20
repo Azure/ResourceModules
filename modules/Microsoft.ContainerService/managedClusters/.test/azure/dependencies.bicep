@@ -92,6 +92,17 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
     }
 }
 
+resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid('msi-${managedIdentityName}-KeyVault-Key-Read-RoleAssignment')
+    scope: keyVault
+    properties: {
+        principalId: diskEncryptionSet.identity.principalId
+        // Key Vault Crypto Service Encryption User
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')
+        principalType: 'ServicePrincipal'
+    }
+}
+
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceIds array = [
     virtualNetwork.properties.subnets[0].id
