@@ -375,11 +375,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managedClusters'
+module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep = {
+  name: '${uniqueString(deployment().name)}-test-csma'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-aks-azure-001'
+    name: '<<namePrefix>>csma001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -398,7 +398,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Primary'
+        vnetSubnetID: '<vnetSubnetID>'
       }
     ]
     // Non-required parameters
@@ -426,7 +426,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Secondary'
+        vnetSubnetID: '<vnetSubnetID>'
       }
       {
         availabilityZones: [
@@ -451,21 +451,21 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Tertiary'
+        vnetSubnetID: '<vnetSubnetID>'
       }
     ]
     aksClusterNetworkPlugin: 'azure'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diskEncryptionSetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/diskEncryptionSets/adp-<<namePrefix>>-az-des-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diskEncryptionSetID: '<diskEncryptionSetID>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -489,7 +489,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-aks-azure-001"
+      "value": "<<namePrefix>>csma001"
     },
     "primaryAgentPoolProfile": {
       "value": [
@@ -510,7 +510,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "storageProfile": "ManagedDisks",
           "type": "VirtualMachineScaleSets",
           "vmSize": "Standard_DS2_v2",
-          "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Primary"
+          "vnetSubnetID": "<vnetSubnetID>"
         }
       ]
     },
@@ -540,7 +540,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "storageProfile": "ManagedDisks",
           "type": "VirtualMachineScaleSets",
           "vmSize": "Standard_DS2_v2",
-          "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Secondary"
+          "vnetSubnetID": "<vnetSubnetID>"
         },
         {
           "availabilityZones": [
@@ -565,7 +565,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "storageProfile": "ManagedDisks",
           "type": "VirtualMachineScaleSets",
           "vmSize": "Standard_DS2_v2",
-          "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Tertiary"
+          "vnetSubnetID": "<vnetSubnetID>"
         }
       ]
     },
@@ -573,22 +573,22 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       "value": "azure"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "diskEncryptionSetID": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/diskEncryptionSets/adp-<<namePrefix>>-az-des-x-001"
+      "value": "<diskEncryptionSetID>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -597,7 +597,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -620,11 +620,11 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managedClusters'
+module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep = {
+  name: '${uniqueString(deployment().name)}-test-csmk'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-aks-kubenet-001'
+    name: '<<namePrefix>>csmk001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -697,21 +697,21 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       }
     ]
     aksClusterNetworkPlugin: 'kubenet'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -731,7 +731,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-aks-kubenet-001"
+      "value": "<<namePrefix>>csmk001"
     },
     "primaryAgentPoolProfile": {
       "value": [
@@ -812,25 +812,25 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       "value": "kubenet"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -838,7 +838,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }
