@@ -23,7 +23,7 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
           }
           {
             exists: 'false'
-            field: '[concat(\'tags[\'parameters(\'tagName\')\']\')]'
+            field: '[concat(\'tags[\', parameters(\'tagName\'), \']\')]'
           }
         ]
       }
@@ -31,7 +31,7 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
         details: {
           operations: [
             {
-              field: '[concat(\'tags[\'parameters(\'tagName\')\']\')]'
+              field: '[concat(\'tags[\', parameters(\'tagName\'), \']\')]'
               operation: 'add'
               value: '[parameters(\'tagValue\')]'
             }
@@ -59,7 +59,7 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
       }
       tagValue: {
         metadata: {
-          description: 'Value of the tag such as \'production\''
+          description: 'Value of the tag such as \'environment\''
           displayName: 'Tag Value'
         }
         type: 'String'

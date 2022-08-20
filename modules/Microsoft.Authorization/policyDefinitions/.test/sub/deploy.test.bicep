@@ -23,7 +23,7 @@ module testDeployment '../..//subscription/deploy.bicep' = {
           }
           {
             exists: 'false'
-            field: '[concat(\'tags[\'parameters(\'tagName\')\']\')]'
+            field: '[concat(\'tags[\', parameters(\'tagName\'), \']\')]'
           }
         ]
       }
@@ -31,7 +31,7 @@ module testDeployment '../..//subscription/deploy.bicep' = {
         details: {
           operations: [
             {
-              field: '[concat(\'tags[\'parameters(\'tagName\')\']\')]'
+              field: '[concat(\'tags[\', parameters(\'tagName\'), \']\')]'
               operation: 'add'
               value: '[parameters(\'tagValue\')]'
             }

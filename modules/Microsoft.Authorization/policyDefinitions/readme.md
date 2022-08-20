@@ -193,7 +193,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
       tagValue: {
         metadata: {
-          description: 'Value of the tag such as \'production\''
+          description: 'Value of the tag such as \'environment\''
           displayName: 'Tag Value'
         }
         type: 'String'
@@ -276,7 +276,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         },
         "tagValue": {
           "metadata": {
-            "description": "Value of the tag such as \"production\"",
+            "description": "Value of the tag such as \"environment\"",
             "displayName": "Tag Value"
           },
           "type": "String"
