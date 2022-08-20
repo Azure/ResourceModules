@@ -16,8 +16,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2022-04-02-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-04-02-preview/managedClusters) |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools) |
+| `Microsoft.ContainerService/managedClusters` | [2022-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-06-01/managedClusters) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-06-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
@@ -89,7 +89,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAccounts` | bool | `False` |  | If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. |
 | `disableRunCommand` | bool | `False` |  | Whether to disable run command for the cluster or not. |
-| `diskEncryptionSetID` | string | `''` |  | The resource ID of the disc encryption set to apply to the clsuter. For security reasons, this value should be provided. |
+| `diskEncryptionSetID` | string | `''` |  | The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided. |
 | `enableAzureDefender` | bool | `False` |  | Whether to enable Azure Defender. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableKeyvaultSecretsProvider` | bool | `False` |  | Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
