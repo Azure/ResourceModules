@@ -111,7 +111,7 @@ function Get-FormattedGitHubRelease {
     $output = @()
     foreach ($category in $foundCategories) {
         $output += "***$category***"
-        $categoryItems = $correctlyFormatted | Where-Object { $_ -match ".+\[$category\].+" }
+        $categoryItems = $correctlyFormatted | Where-Object { $_ -imatch ".+\[$category\].+" }
         foreach ($categoryItem in $categoryItems) {
             $simplifiedItem = $categoryItem -replace "\* \[$category\]"
             $simplifiedItem = $simplifiedItem -replace 'by @.*', ''
