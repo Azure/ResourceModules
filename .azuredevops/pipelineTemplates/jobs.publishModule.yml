@@ -216,8 +216,6 @@ jobs:
           pwsh: true
           ScriptType: InlineScript
           inline: |
-            az extension add --name azure-devops
-            az config set extension.use_dynamic_install=yes_without_prompt
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')

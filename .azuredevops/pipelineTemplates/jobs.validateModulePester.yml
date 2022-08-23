@@ -41,7 +41,7 @@
 ##   | preferredAzurePowerShellVersion | '$(preferredAzurePowerShellVersion)' | Used for configuring the Azure PowerShellModules Version, either an empty string or the specific version. | '4.4.0'                                                        |
 ##   |=====================================================================================================================================================================================================================================================|
 ##
-##----------------------------------------------##
+##---------------------------------------------##
 
 parameters:
   # Pipeline-related parameters
