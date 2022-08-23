@@ -906,7 +906,7 @@ function Set-DeploymentExamplesSection {
         } else {
             $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
         }
-        $TextInfo = (Get-Culture).TextInfo
+        $TextInfo = (Get-Culture -Name 'en-US').TextInfo
         $exampleTitle = $TextInfo.ToTitleCase($exampleTitle)
         $SectionContent += @(
             '<h3>Example {0}: {1}</h3>' -f $pathIndex, $exampleTitle
@@ -941,7 +941,7 @@ function Set-DeploymentExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep = {"
+            $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # [4/6] Extract param block
