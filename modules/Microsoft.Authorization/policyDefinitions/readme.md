@@ -142,7 +142,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep = {
+module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdmg'
   params: {
     // Required parameters
@@ -297,7 +297,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep = {
+module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdmgmin'
   params: {
     // Required parameters
@@ -386,7 +386,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep = {
+module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdsub'
   params: {
     // Required parameters
@@ -541,7 +541,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep = {
+module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdsubmin'
   params: {
     // Required parameters

@@ -338,7 +338,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
+module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nvsidef'
   params: {
     // Required parameters
@@ -501,7 +501,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep = {
+module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nvsimin'
   params: {
     // Required parameters

@@ -82,7 +82,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep = {
+module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-kcedef'
   params: {
     // Required parameters
@@ -159,7 +159,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep =
 <summary>via Bicep module</summary>
 
 ```bicep
-module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep = {
+module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-kcemin'
   params: {
     // Required parameters

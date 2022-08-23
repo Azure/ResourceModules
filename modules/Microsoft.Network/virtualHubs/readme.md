@@ -119,7 +119,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
+module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nvhdef'
   params: {
     // Required parameters
@@ -228,7 +228,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep = {
+module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nvhmin'
   params: {
     // Required parameters

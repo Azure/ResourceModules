@@ -338,7 +338,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep = {
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-sqlsadmin'
   params: {
     // Required parameters
@@ -395,7 +395,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep = {
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-sqlsdef'
   params: {
     // Required parameters

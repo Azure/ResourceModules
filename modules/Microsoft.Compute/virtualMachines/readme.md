@@ -1022,7 +1022,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmlindef'
   params: {
     // Required parameters
@@ -1419,7 +1419,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmlinatmg'
   params: {
     // Required parameters
@@ -1552,7 +1552,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmlinmin'
   params: {
     // Required parameters
@@ -1681,7 +1681,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwindef'
   params: {
     // Required parameters
@@ -2106,7 +2106,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwinautmg'
   params: {
     // Required parameters
@@ -2219,7 +2219,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwinmin'
   params: {
     // Required parameters
