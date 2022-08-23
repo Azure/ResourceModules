@@ -906,7 +906,7 @@ function Set-DeploymentExamplesSection {
         } else {
             $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
         }
-        $TextInfo = (Get-Culture).TextInfo
+        $TextInfo = (Get-Culture -Name 'en-US').TextInfo
         $exampleTitle = $TextInfo.ToTitleCase($exampleTitle)
         $SectionContent += @(
             '<h3>Example {0}: {1}</h3>' -f $pathIndex, $exampleTitle
@@ -941,7 +941,7 @@ function Set-DeploymentExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep = {"
+            $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # [4/6] Extract param block
@@ -1024,7 +1024,7 @@ function Set-DeploymentExamplesSection {
             $isParameterFile = $rawContentHashtable.'$schema' -like '*deploymentParameters*'
             if (-not $isParameterFile) {
                 # Case 1: Uses deployment test file (instead of parameter file).
-                # [1/3]  Need to extract parameters. The taarget is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
+                # [1/3]  Need to extract parameters. The target is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
                 $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
 
                 # [2/3] Build the full ARM-JSON parameter file
