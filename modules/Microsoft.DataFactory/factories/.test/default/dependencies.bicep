@@ -128,3 +128,6 @@ output storageAccountResourceId string = storageAccount.id
 
 @description('The name of the created Storage Account.')
 output storageAccountName string = storageAccount.name
+
+@description('The Blob Endpoint of the created Storage Account.')
+output storageAccountBlobEndpoint string = storageAccount.properties.primaryEndpoints.blob
