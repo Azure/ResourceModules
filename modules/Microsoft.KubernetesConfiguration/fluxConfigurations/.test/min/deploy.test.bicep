@@ -29,6 +29,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     clusterName: 'dep-carml-aks-${serviceShort}'
+    clusterExtensionName: '<<namePrefix>>${serviceShort}001'
     clusterNodeResourceGroupName: 'nodes-${resourceGroupName}'
   }
 }

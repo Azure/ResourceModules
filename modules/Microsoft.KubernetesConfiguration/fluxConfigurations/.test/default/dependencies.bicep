@@ -4,6 +4,9 @@ param location string = resourceGroup().location
 @description('Required. The name of the AKS cluster to create.')
 param clusterName string
 
+@description('Required. The name of the AKS cluster extension to create.')
+param clusterExtensionName string
+
 @description('Required. The name of the AKS cluster nodes resource group to create.')
 param clusterNodeResourceGroupName string
 
@@ -26,16 +29,20 @@ resource cluster 'Microsoft.ContainerService/managedClusters@2022-06-01' = {
         mode: 'System'
       }
     ]
-    // linuxProfile: {
-    //   adminUsername: 'azureuser'
-    //   ssh: {
-    //     publicKeys: [
-    //       {
-    //         keyData: sshRSAPublicKey
-    //       }
-    //     ]
-    //   }
-    // }
+  }
+}
+
+resource extension 'Microsoft.KubernetesConfiguration/extensions@2022-03-01' = {
+  scope: cluster
+  name: clusterExtensionName
+  properties: {
+    extensionType: 'microsoft.flux'
+    releaseTrain: 'Stable'
+    scope: {
+      cluster: {
+        releaseNamespace: 'flux-system'
+      }
+    }
   }
 }
 
