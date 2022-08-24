@@ -179,7 +179,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -187,54 +187,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnGateways'
+  name: '${uniqueString(deployment().name)}-test-nvgdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-vpngw-min-001'
-    virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-vpngw-min-001"
-    },
-    "virtualHubResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnGateways'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-az-vpngw-x-001'
-    virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
+    name: '<<namePrefix>>nvgdef001'
+    virtualHubResourceId: '<virtualHubResourceId>'
     // Non-required parameters
     bgpSettings: {
       asn: 65515
@@ -245,15 +202,15 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         connectionBandwidth: 10
         enableBgp: true
         name: 'Connection-<<namePrefix>>-az-vsite-x-001'
-        remoteVpnSiteResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001'
+        remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
         routingConfiguration: {
           associatedRouteTable: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable'
+            id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
           }
           propagatedRouteTables: {
             ids: [
               {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable'
+                id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
               }
             ]
             labels: [
@@ -302,10 +259,10 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-vpngw-x-001"
+      "value": "<<namePrefix>>nvgdef001"
     },
     "virtualHubResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001"
+      "value": "<virtualHubResourceId>"
     },
     // Non-required parameters
     "bgpSettings": {
@@ -320,15 +277,15 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
           "connectionBandwidth": 10,
           "enableBgp": true,
           "name": "Connection-<<namePrefix>>-az-vsite-x-001",
-          "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001",
+          "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
           "routingConfiguration": {
             "associatedRouteTable": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable"
+              "id": "${vHubResourceId}/hubRouteTables/defaultRouteTable"
             },
             "propagatedRouteTables": {
               "ids": [
                 {
-                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable"
+                  "id": "${vHubResourceId}/hubRouteTables/defaultRouteTable"
                 }
               ],
               "labels": [
@@ -363,6 +320,49 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
           "type": "Static"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nvgmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nvgmin001'
+    virtualHubResourceId: '<virtualHubResourceId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nvgmin001"
+    },
+    "virtualHubResourceId": {
+      "value": "<virtualHubResourceId>"
     }
   }
 }
