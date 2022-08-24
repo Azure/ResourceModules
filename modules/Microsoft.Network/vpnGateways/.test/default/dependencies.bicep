@@ -19,7 +19,9 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2022-01-01' = {
   name: virtualHubName
   location: location
   properties: {
-    virtualWan: virtualWan
+    virtualWan: {
+      id: virtualWan.id
+    }
   }
 }
 
@@ -27,7 +29,9 @@ resource vpnSite 'Microsoft.Network/vpnSites@2022-01-01' = {
   name: vpnSiteName
   location: location
   properties: {
-    virtualWan: virtualWan
+    virtualWan: {
+      id: virtualWan.id
+    }
   }
 }
 
