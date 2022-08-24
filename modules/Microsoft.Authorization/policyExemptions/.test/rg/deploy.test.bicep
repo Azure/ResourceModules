@@ -25,7 +25,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 }
 
 resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-  name: 'dep-<<namePrefix>>-${serviceShort}-pass-loc-rg'
+  name: 'dep-<<namePrefix>>-${serviceShort}-rgloc'
   location: location
   properties: {
     displayName: '[Depedency] Audit resource location matches resource group location (management group scope)'
