@@ -31,7 +31,6 @@ This module deploys a bastion host.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `additionalPublicIpConfigurations` | array | `[]` |  | This is to add any additional public ip configurations on top of the public ip with subnet ip configuration. |
 | `azureBastionSubnetPublicIpId` | string | `''` |  | The public ip resource ID to associate to the azureBastionSubnet. If empty, then the public ip that is created as part of this module will be applied to the azureBastionSubnet. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -296,66 +295,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Addpip</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-bastionHosts'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-az-bas-add-001'
-    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-bas'
-    // Non-required parameters
-    additionalPublicIpConfigurations: [
-      {
-        name: 'ipConfig01'
-        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-bas'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-bas-add-001"
-    },
-    "vNetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-bas"
-    },
-    // Non-required parameters
-    "additionalPublicIpConfigurations": {
-      "value": [
-        {
-          "name": "ipConfig01",
-          "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-bas"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Custompip</h3>
+<h3>Example 1: Custompip</h3>
 
 <details>
 
@@ -448,7 +388,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Min</h3>
+<h3>Example 2: Min</h3>
 
 <details>
 
@@ -491,7 +431,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Parameters</h3>
+<h3>Example 3: Parameters</h3>
 
 <details>
 
