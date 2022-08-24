@@ -33,6 +33,12 @@ resource vpnSite 'Microsoft.Network/vpnSites@2022-01-01' = {
     virtualWan: {
       id: virtualWan.id
     }
+    ipAddress: '1.2.3.4'
+    addressSpace: {
+      addressPrefixes: [
+        '10.0.0.0/16'
+      ]
+    }
   }
 }
 
