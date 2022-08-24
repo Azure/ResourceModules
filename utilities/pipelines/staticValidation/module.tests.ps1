@@ -9,22 +9,19 @@ param (
     [Parameter(Mandatory = $false)]
     [string] $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName,
 
-    # Tokens to test for (i.e. their value should not be used in the parameter files, but their placeholder)
+    # Dedicated Tokens configuration hashtable containing the tokens and token prefix and suffix.
     [Parameter(Mandatory = $false)]
-    [hashtable] $enforcedTokenList = @{}
+    [hashtable] $tokenConfiguration = @{}
 )
 
 Write-Verbose ("repoRootPath: $repoRootPath") -Verbose
 Write-Verbose ("moduleFolderPaths: $($moduleFolderPaths.count)") -Verbose
 
-
-$script:Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json -AsHashtable
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
 $script:Tenantdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#'
 $script:moduleFolderPaths = $moduleFolderPaths
-$script:enforcedTokenList = $enforcedTokenList
 
 # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
 $script:convertedTemplates = @{}
@@ -35,7 +32,7 @@ $script:jsonTemplateLoadFailedException = "Unable to load the deploy.json templa
 $script:templateNotFoundException = 'No template file found in folder [{0}]' # -f $moduleFolderPath
 
 # Import any helper function used in this test script
-Import-Module (Join-Path $PSScriptRoot 'helper\helper.psm1') -Force
+Import-Module (Join-Path $PSScriptRoot 'helper' 'helper.psm1') -Force
 
 Describe 'File/folder tests' -Tag Modules {
 
@@ -158,7 +155,6 @@ Describe 'File/folder tests' -Tag Modules {
         }
     }
 }
-
 Describe 'Readme tests' -Tag Readme {
 
     Context 'Readme content tests' {
@@ -596,7 +592,7 @@ Describe 'Deployment template tests' -Tag Template {
                         testFile_AllParameterNames           = $deploymentTestFile_AllParameterNames
                         templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
                         templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
-                        tokenSettings                        = $Settings.parameterFileTokens
+                        tokenConfiguration                   = $tokenConfiguration
                     }
                 }
             }
@@ -1015,15 +1011,16 @@ Describe 'Deployment template tests' -Tag Template {
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-                $testFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters.json') -Recurse -Force).FullName
-                foreach ($testFilePath in $testFilePaths) {
-                    foreach ($token in $enforcedTokenList.Keys) {
+                $TestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -Recurse -Force -File).FullName
+                foreach ($TestFilePath in $TestFilePaths) {
+                    foreach ($token in $tokenConfiguration.Tokens.Keys) {
                         $parameterFileTokenTestCases += @{
-                            parameterFilePath = $testFilePath
-                            parameterFileName = Split-Path $testFilePath -Leaf
-                            tokenSettings     = $Settings.parameterFileTokens
+                            parameterFilePath = $TestFilePath
+                            parameterFileName = Split-Path $TestFilePath -Leaf
+                            tokenPrefix       = $tokenConfiguration.TokenPrefix
+                            tokenSuffix       = $tokenConfiguration.TokenSuffix
                             tokenName         = $token
-                            tokenValue        = $enforcedTokenList[$token]
+                            tokenValue        = $tokenConfiguration.Tokens[$token]
                             moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                         }
                     }
@@ -1031,17 +1028,18 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
+        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>]' -TestCases $parameterFileTokenTestCases {
             param (
-                [string] $testFilePath,
+                [string] $parameterFilePath,
                 [string] $parameterFileName,
-                [hashtable] $tokenSettings,
+                [string] $tokenPrefix,
+                [string] $tokenSuffix,
                 [string] $tokenName,
                 [string] $tokenValue,
                 [string] $moduleFolderName
             )
-            $ParameterFileTokenName = -join ($tokenSettings.tokenPrefix, $tokenName, $tokenSettings.tokenSuffix)
-            $ParameterFileContent = Get-Content -Path $testFilePath
+            $ParameterFileTokenName = -join ($tokenPrefix, $tokenName, $tokenSuffix)
+            $ParameterFileContent = Get-Content -Path $parameterFilePath
 
             $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
             if ($incorrectReferencesFound.Matches) {

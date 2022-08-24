@@ -23,7 +23,7 @@ If the switch for either the validation test (`-ValidationTest`) or deployment t
 1. Create a dictionary to replace all tokens in these parameter files with actual values. This dictionary will consist
    - of the subscriptionID & managementGroupID of the provided `ValidateOrDeployParameters` object,
    - add all key-value pairs of the `-AdditionalTokens` object to it,
-   - and optionally also add all key-value pairs specified in the `settings.json`'s `parameterFileTokens` object
+   - and optionally also add all key-value pairs specified in the `settings.yml`, under the 'local tokens settings'.
 1. If the `-ValidationTest` parameter was set, it runs a deployment validation using the `Test-TemplateDeployment` script.
 1. If the `-DeploymentTest` parameter was set, it runs a deployment using the `New-TemplateDeployment` script (with no retries).
 1. As a final step, it rolls the parameter files back to their original state if either the `-ValidationTest` or `-DeploymentTest` parameters were provided.

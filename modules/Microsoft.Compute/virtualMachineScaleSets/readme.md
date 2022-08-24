@@ -15,7 +15,7 @@ This module deploys a virtual machine scale set.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/virtualMachineScaleSets` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/virtualMachineScaleSets) |
 | `Microsoft.Compute/virtualMachineScaleSets/extensions` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachineScaleSets/extensions) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
@@ -322,6 +322,10 @@ dataDisks: [
 <p>
 
 ### Parameter Usage: `nicConfigurations`
+
+Comments:
+- The field `nicSuffix` is mandatory.
+- If not disabled, `enableAcceleratedNetworking` is considered `true` by default and requires the VMSS to be deployed with a supported OS and VM size.
 
 <details>
 
@@ -907,7 +911,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Linux'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     disablePasswordAuthentication: true
     nicConfigurations: [
@@ -975,7 +979,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Linux"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "disablePasswordAuthentication": {
@@ -1040,7 +1044,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Linux'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     availabilityZones: [
       '2'
@@ -1188,7 +1192,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Linux"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "availabilityZones": {
@@ -1384,7 +1388,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Windows'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: kv1.getSecret('adminPassword')
     nicConfigurations: [
@@ -1451,7 +1455,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Windows"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "adminPassword": {
@@ -1518,7 +1522,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Windows'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: kv1.getSecret('adminPassword')
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
@@ -1664,7 +1668,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Windows"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "adminPassword": {

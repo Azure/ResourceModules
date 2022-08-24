@@ -96,7 +96,7 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
   identity: identity_var
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for roleDefinitionId in roleDefinitionIds: if (!empty(roleDefinitionIds) && identity == 'SystemAssigned') {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for roleDefinitionId in roleDefinitionIds: if (!empty(roleDefinitionIds) && identity == 'SystemAssigned') {
   name: guid(subscriptionId, resourceGroupName, roleDefinitionId, location, name)
   properties: {
     roleDefinitionId: roleDefinitionId

@@ -28,7 +28,7 @@ trigger:
       - '/**/*.md'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/modules/Microsoft.Resources/deploymentScripts'

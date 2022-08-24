@@ -227,7 +227,7 @@ resource <mainResource> '<mainResourceProviderNamespace>/<resourceType>@<resourc
   // name: '${split(resourceId,'/')[8]}/${split(resourceId,'/')[10]}/${split(resourceId,'/')[12]'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(<mainResource>.id, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
@@ -542,7 +542,7 @@ Each module in CARML contains a `defaultTelemetry` deployment  `'pid-<GUID>-${un
 
 This resource enables the CARML product team to query the number of deployments of a given template from Azure - and as such, get insights into its adoption.
 
-When using CARML's CI environment you can enable/disable this deployment by switching the `enableDefaultTelemetry` setting in the `settings.json` file in the repository's root. This value is automatically injected into each individual deployment that is performed as part of the environment's pipeline.
+When using CARML's CI environment you can enable/disable this deployment by switching the `enableDefaultTelemetry` setting in the `settings.yml` file in the repository's root. This value is automatically injected into each individual deployment that is performed as part of the environment's pipeline.
 
 When consuming the modules outside of CARML's pipelines you can either
 - Set the parameter to a default value of `'false'`
