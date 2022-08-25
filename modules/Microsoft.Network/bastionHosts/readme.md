@@ -17,7 +17,7 @@ This module deploys a bastion host.
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/bastionHosts` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/bastionHosts) |
+| `Microsoft.Network/bastionHosts` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-01-01/bastionHosts) |
 | `Microsoft.Network/publicIPAddresses` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/publicIPAddresses) |
 
 ## Parameters
@@ -39,7 +39,11 @@ This module deploys a bastion host.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
+| `disableCopyPaste` | bool | `False` |  | Choose to disable or enable Copy Paste. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableFileCopy` | bool | `True` |  | Choose to disable or enable File Copy. |
+| `enableIpConnect` | bool | `False` |  | Choose to disable or enable IP Connect. |
+| `enableShareableLink` | bool | `False` |  | Choose to disable or enable Shareable Link. |
 | `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -451,6 +455,10 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    disableCopyPaste: true
+    enableFileCopy: false
+    enableIpConnect: false
+    enableShareableLink: false
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -503,6 +511,18 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "disableCopyPaste": {
+      "value": true
+    },
+    "enableFileCopy": {
+      "value": false
+    },
+    "enableIpConnect": {
+      "value": false
+    },
+    "enableShareableLink": {
+      "value": false
     },
     "lock": {
       "value": "CanNotDelete"
