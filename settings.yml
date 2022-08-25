@@ -13,7 +13,9 @@ variables:
 
   # the 'localToken_' prefix will be removed from the key name when the pipelines run.
   # e.g. if you have a token in your parameter file as <<customKey>>, then the token defined in this file looks like "localToken_customKey": 'value'
-  localToken_namePrefix: '' # A 3-5 character length unique string, included in the resources names (e.g. 'cntso'). Used for local module testing and pipelines.
+  localToken_namePrefix: 'kavi' # A 3-5 character length unique string, included in the resources names (e.g. 'cntso'). Used for local module testing and pipelines.
+  localToken_deploymentSpId: 'dde71301-d2b0-496f-af96-d4c8bfedb4f7'
+  localToken_subscriptionId: '62beb424-25dc-4b94-aee1-5742c4dbf8ad'
 
   ######################################
   # global tokens settings
