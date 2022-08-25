@@ -25,7 +25,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'global.variables.yml'
+  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Network/privateLinkServices'
   workflowPath: '.github/workflows/ms.network.privatelinkservices.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
