@@ -5,9 +5,6 @@
         "name": {
             "value": "<<namePrefix>>-az-pls-min-001"
         },
-        "lock": {
-            "value": "CanNotDelete"
-        },
         "ipConfigurations": {
             "value": [
                 {
@@ -26,16 +23,6 @@
             "value": [
                 {
                     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1"
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
                 }
             ]
         }
