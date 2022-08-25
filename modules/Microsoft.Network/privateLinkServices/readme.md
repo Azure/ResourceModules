@@ -5,13 +5,13 @@ This module deploys Network PrivateLinkServices.
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
+- [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Deployment examples](#Deployment-examples)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
-## Resource Types
+## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -156,13 +156,17 @@ tags: {
 | `resourceGroupName` | string | The resource group the private link service was deployed into. |
 | `resourceId` | string | The resource ID of the private link service. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -173,11 +177,11 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
   name: '${uniqueString(deployment().name)}-privateLinkServices'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-pls-001'
+    name: '<<namePrefix>>-az-pls-min-001'
     // Non-required parameters
     ipConfigurations: [
       {
-        name: 'pls01'
+        name: 'minpls01'
         properties: {
           primary: true
           privateIPAllocationMethod: 'Dynamic'
@@ -219,13 +223,13 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-pls-001"
+      "value": "<<namePrefix>>-az-pls-min-001"
     },
     // Non-required parameters
     "ipConfigurations": {
       "value": [
         {
-          "name": "pls01",
+          "name": "minpls01",
           "properties": {
             "primary": true,
             "privateIPAllocationMethod": "Dynamic",
@@ -263,7 +267,141 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
 </details>
 <p>
 
+<h3>Example 2: Parameters</h3>
 
-## Cross-referenced modules
+<details>
 
-_None_
+<summary>via Bicep module</summary>
+
+```bicep
+module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-privateLinkServices'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-az-pls-001'
+    // Non-required parameters
+    autoApproval: {
+      subscriptions: [
+        '*'
+      ]
+    }
+    enableProxyProtocol: true
+    fqdns: [
+      '<<namePrefix>>.plsfqdn01.azure.privatelinkservice'
+      '<<namePrefix>>.plsfqdn02.azure.privatelinkserivce'
+    ]
+    ipConfigurations: [
+      {
+        name: 'pls01'
+        properties: {
+          primary: true
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          }
+        }
+      }
+    ]
+    loadBalancerFrontendIpConfigurations: [
+      {
+        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig2'
+      }
+    ]
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    visibility: {
+      subscriptions: [
+        '<<subscriptionId>>'
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-pls-001"
+    },
+    // Non-required parameters
+    "autoApproval": {
+      "value": {
+        "subscriptions": [
+          "*"
+        ]
+      }
+    },
+    "enableProxyProtocol": {
+      "value": true
+    },
+    "fqdns": {
+      "value": [
+        "<<namePrefix>>.plsfqdn01.azure.privatelinkservice",
+        "<<namePrefix>>.plsfqdn02.azure.privatelinkserivce"
+      ]
+    },
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "pls01",
+          "properties": {
+            "primary": true,
+            "privateIPAllocationMethod": "Dynamic",
+            "subnet": {
+              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+            }
+          }
+        }
+      ]
+    },
+    "loadBalancerFrontendIpConfigurations": {
+      "value": [
+        {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig2"
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "visibility": {
+      "value": {
+        "subscriptions": [
+          "<<subscriptionId>>"
+        ]
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>

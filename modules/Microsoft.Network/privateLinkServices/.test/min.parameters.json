@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-pls-001"
+            "value": "<<namePrefix>>-az-pls-min-001"
         },
         "lock": {
             "value": "CanNotDelete"
@@ -11,7 +11,7 @@
         "ipConfigurations": {
             "value": [
                 {
-                    "name": "pls01",
+                    "name": "minpls01",
                     "properties": {
                         "primary": true,
                         "privateIPAllocationMethod": "Dynamic",
@@ -25,37 +25,8 @@
         "loadBalancerFrontendIpConfigurations": {
             "value": [
                 {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig2"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1"
                 }
-            ]
-        },
-        // "extendedLocation": {
-        //     "value": {
-        //         "name": "attdallas1",
-        //         "type": "EdgeZone"
-        //     }
-        // },
-        "autoApproval": {
-            "value": {
-                "subscriptions": [
-                    "*"
-                ]
-            }
-        },
-        "visibility": {
-            "value": {
-                "subscriptions": [
-                    "<<subscriptionId>>"
-                ]
-            }
-        },
-        "enableProxyProtocol": {
-            "value": true
-        },
-        "fqdns": {
-            "value": [
-                "<<namePrefix>>.plsfqdn01.azure.privatelinkservice",
-                "<<namePrefix>>.plsfqdn02.azure.privatelinkserivce"
             ]
         },
         "roleAssignments": {
