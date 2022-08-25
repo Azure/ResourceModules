@@ -1,7 +1,6 @@
 # Network PrivateLinkServices `[Microsoft.Network/privateLinkServices]`
 
 This module deploys Network PrivateLinkServices.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -42,10 +41,29 @@ This module deploys Network PrivateLinkServices.
 | `tags` | object | `{object}` |  | Tags to be applied on all resources/resource groups in this deployment. |
 | `visibility` | object | `{object}` |  | The visibility list of the private link service. |
 
+### Parameter Usage: `ipConfigurations`
 
-### Parameter Usage: `<ParameterPlaceholder>`
+This property refers to the NAT (Network Address Translation) IP configuration for the Private Link service. The NAT IP can be chosen from any subnet in a service provider's virtual network. Private Link service performs destination side NAT-ing on the Private Link traffic. This ensures that there is no IP conflict between source (consumer side) and destination (service provider) address space. On the destination side (service provider side), the NAT IP address will show up as Source IP for all packets received by your service and destination IP for all packets sent by your service.
 
-// TODO: Fill in Parameter usage
+### Parameter Usage: `loadBalancerFrontendIpConfigurations`
+
+Private Link service is tied to the frontend IP address of a Standard Load Balancer. All traffic destined for the service will reach the frontend of the SLB. You can configure SLB rules to direct this traffic to appropriate backend pools where your applications are running. Load balancer frontend IP configurations are different than NAT IP configurations.
+
+### Parameter Usage: `extendedLocation`
+
+This is the Edge Zone Id of the Edge Zone corresponding to the region in which the resource is deployed. More information is available here: [Azure Edge Zone ID](https://docs.microsoft.com/en-us/azure/public-multi-access-edge-compute-mec/key-concepts#azure-edge-zone-id).
+
+### Parameter Usage: `autoApproval`
+
+Auto-approval controls the automated access to the Private Link service. The subscriptions specified in the auto-approval list are approved automatically when a connection is requested from private endpoints in those subscriptions.
+
+### Parameter Usage: `visibility`
+
+Visibility is the property that controls the exposure settings for your Private Link service. Service providers can choose to limit the exposure to their service to subscriptions with Azure role-based access control (Azure RBAC) permissions, a restricted set of subscriptions, or all Azure subscriptions.
+
+### Parameter Usage: `enableProxyProtocol`
+
+This property lets the service provider use tcp proxy v2 to retrieve connection information about the service consumer. Service Provider is responsible for setting up receiver configs to be able to parse the proxy protocol v2 header.
 
 ### Parameter Usage: `roleAssignments`
 
