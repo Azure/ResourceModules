@@ -41,7 +41,6 @@ This module deploys Network PrivateLinkServices.
 | `tags` | object | `{object}` |  | Tags to be applied on all resources/resource groups in this deployment. |
 | `visibility` | object | `{object}` |  | The visibility list of the private link service. |
 
-
 ### Parameter Usage: `ipConfigurations`
 
 This property refers to the NAT (Network Address Translation) IP configuration for the Private Link service. The NAT IP can be chosen from any subnet in a service provider's virtual network. Private Link service performs destination side NAT-ing on the Private Link traffic. This ensures that there is no IP conflict between source (consumer side) and destination (service provider) address space. On the destination side (service provider side), the NAT IP address will show up as Source IP for all packets received by your service and destination IP for all packets sent by your service.
