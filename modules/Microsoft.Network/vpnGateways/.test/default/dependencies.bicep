@@ -39,6 +39,22 @@ resource vpnSite 'Microsoft.Network/vpnSites@2022-01-01' = {
         '10.0.0.0/16'
       ]
     }
+    vpnSiteLinks: [
+      {
+        name: '${vpnSiteName}-vSite-link'
+        properties: {
+          bgpProperties: {
+            asn: 65010
+            bgpPeeringAddress: '1.1.1.1'
+          }
+          ipAddress: '1.2.3.4'
+          linkProperties: {
+            linkProviderName: 'contoso'
+            linkSpeedInMbps: 5
+          }
+        }
+      }
+    ]
   }
 }
 
