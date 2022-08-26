@@ -48,6 +48,18 @@ param lock string = ''
 @description('Optional. The SKU of this Bastion Host.')
 param skuType string = 'Basic'
 
+@description('Optional. Choose to disable or enable Copy Paste.')
+param disableCopyPaste bool = false
+
+@description('Optional. Choose to disable or enable File Copy.')
+param enableFileCopy bool = true
+
+@description('Optional. Choose to disable or enable IP Connect.')
+param enableIpConnect bool = false
+
+@description('Optional. Choose to disable or enable Shareable Link.')
+param enableShareableLink bool = false
+
 @description('Optional. The scale units for the Bastion Host resource.')
 param scaleUnits int = 2
 
@@ -80,6 +92,8 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   }
 }]
 
+var enableTunneling = skuType == 'Standard' ? true : null
+
 var scaleUnits_var = skuType == 'Basic' ? 2 : scaleUnits
 
 // ----------------------------------------------------------------------------
@@ -104,12 +118,12 @@ var newPip = {
 }
 
 var ipConfigurations = [
-    {
-      name: 'IpConfAzureBastionSubnet'
-      //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
-      properties: union(subnet_var, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
-    }
-  ]
+  {
+    name: 'IpConfAzureBastionSubnet'
+    //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
+    properties: union(subnet_var, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+  }
+]
 
 // ----------------------------------------------------------------------------
 
@@ -156,17 +170,27 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(azureBast
   }
 }
 
-resource azureBastion 'Microsoft.Network/bastionHosts@2021-08-01' = {
+var bastionproperties_var = skuType == 'Standard' ? {
+  scaleUnits: scaleUnits_var
+  ipConfigurations: ipConfigurations
+  enableTunneling: enableTunneling
+  disableCopyPaste: disableCopyPaste
+  enableFileCopy: enableFileCopy
+  enableIpConnect: enableIpConnect
+  enableShareableLink: enableShareableLink
+} : {
+  scaleUnits: scaleUnits_var
+  ipConfigurations: ipConfigurations
+}
+
+resource azureBastion 'Microsoft.Network/bastionHosts@2022-01-01' = {
   name: name
   location: location
   tags: tags
   sku: {
     name: skuType
   }
-  properties: {
-    scaleUnits: scaleUnits_var
-    ipConfigurations: ipConfigurations
-  }
+  properties: bastionproperties_var
 }
 
 resource azureBastion_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
