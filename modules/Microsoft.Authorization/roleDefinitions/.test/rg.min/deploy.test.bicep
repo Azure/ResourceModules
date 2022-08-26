@@ -24,27 +24,18 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
-  params: {
-  }
-}
-
 // ============== //
 // Test Execution //
 // ============== //
 
-module testDeployment '../../deploy.bicep' = {
+module testDeployment '../../resourceGroup/deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    roleName: '<<namePrefix>>-az-testRole-rg-min'
+    roleName: '<<namePrefix>>-testRole-${serviceShort}'
     actions: [
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
     ]
-    resourceGroupName: '<<resourceGroupName>>'
-    subscriptionId: '<<subscriptionId>>'
   }
 }
