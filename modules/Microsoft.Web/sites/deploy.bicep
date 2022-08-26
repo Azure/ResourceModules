@@ -294,3 +294,6 @@ output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app
 
 @description('The location the resource was deployed into.')
 output location string = app.location
+
+@description('Default hostname of the app.')
+output defaultHostname string = app.properties.defaultHostName
