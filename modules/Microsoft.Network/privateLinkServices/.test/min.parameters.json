@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-pls-min-001"
+        },
+        "ipConfigurations": {
+            "value": [
+                {
+                    "name": "minpls01",
+                    "properties": {
+                        "subnet": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                        }
+                    }
+                }
+            ]
+        },
+        "loadBalancerFrontendIpConfigurations": {
+            "value": [
+                {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1"
+                }
+            ]
+        }
+    }
+}
