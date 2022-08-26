@@ -180,7 +180,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg Min</h3>
+<h3>Example 1: Mg</h3>
 
 <details>
 
@@ -188,81 +188,23 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-test-ardmg'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-az-testRole-mg-min'
-    // Non-required parameters
-    actions: [
-      'Microsoft.Compute/galleries/images/read'
-      'Microsoft.Compute/galleries/read'
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "roleName": {
-      "value": "<<namePrefix>>-az-testRole-mg-min"
-    },
-    // Non-required parameters
-    "actions": {
-      "value": [
-        "Microsoft.Compute/galleries/images/read",
-        "Microsoft.Compute/galleries/read"
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Mg</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
-  params: {
-    // Required parameters
-    roleName: '<<namePrefix>>-az-testRole-mg'
+    roleName: '<<namePrefix>>-testRole-ardmg'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
     ]
     assignableScopes: [
-      '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
-    ]
-    dataActions: [
-      'Microsoft.Storage/storageAccounts/blobServices/*/read'
+      '<id>'
     ]
     description: 'Test Custom Role Definition Standard (management group scope)'
-    managementGroupId: '<<managementGroupId>>'
     notActions: [
       'Microsoft.Compute/images/delete'
       'Microsoft.Compute/images/write'
       'Microsoft.Network/virtualNetworks/subnets/join/action'
-    ]
-    notDataActions: [
-      'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
     ]
   }
 }
@@ -282,7 +224,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-az-testRole-mg"
+      "value": "<<namePrefix>>-testRole-ardmg"
     },
     // Non-required parameters
     "actions": {
@@ -293,30 +235,17 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     },
     "assignableScopes": {
       "value": [
-        "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>"
-      ]
-    },
-    "dataActions": {
-      "value": [
-        "Microsoft.Storage/storageAccounts/blobServices/*/read"
+        "<id>"
       ]
     },
     "description": {
       "value": "Test Custom Role Definition Standard (management group scope)"
-    },
-    "managementGroupId": {
-      "value": "<<managementGroupId>>"
     },
     "notActions": {
       "value": [
         "Microsoft.Compute/images/delete",
         "Microsoft.Compute/images/write",
         "Microsoft.Network/virtualNetworks/subnets/join/action"
-      ]
-    },
-    "notDataActions": {
-      "value": [
-        "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
       ]
     }
   }
@@ -326,7 +255,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 3: Rg Min</h3>
+<h3>Example 2: Mg.Min</h3>
 
 <details>
 
@@ -334,17 +263,15 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-test-ardmgmin'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-az-testRole-rg-min'
+    roleName: '<<namePrefix>>-testRole-ardmgmin'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
     ]
-    resourceGroupName: '<<resourceGroupName>>'
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -363,7 +290,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-az-testRole-rg-min"
+      "value": "<<namePrefix>>-testRole-ardmgmin"
     },
     // Non-required parameters
     "actions": {
@@ -371,12 +298,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         "Microsoft.Compute/galleries/images/read",
         "Microsoft.Compute/galleries/read"
       ]
-    },
-    "resourceGroupName": {
-      "value": "<<resourceGroupName>>"
-    },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
     }
   }
 }
@@ -385,7 +306,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 4: Rg</h3>
+<h3>Example 3: Rg</h3>
 
 <details>
 
@@ -393,17 +314,17 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-test-ardrg'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-az-testRole-rg'
+    roleName: '<<namePrefix>>-testRole-ardrg'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
     ]
     assignableScopes: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>'
+      '<id>'
     ]
     dataActions: [
       'Microsoft.Storage/storageAccounts/blobServices/*/read'
@@ -417,8 +338,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     notDataActions: [
       'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
     ]
-    resourceGroupName: '<<resourceGroupName>>'
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -437,7 +356,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-az-testRole-rg"
+      "value": "<<namePrefix>>-testRole-ardrg"
     },
     // Non-required parameters
     "actions": {
@@ -448,7 +367,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     },
     "assignableScopes": {
       "value": [
-        "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>"
+        "<id>"
       ]
     },
     "dataActions": {
@@ -470,12 +389,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       "value": [
         "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
       ]
-    },
-    "resourceGroupName": {
-      "value": "<<resourceGroupName>>"
-    },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
     }
   }
 }
@@ -484,7 +397,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 5: Sub Min</h3>
+<h3>Example 4: Rg.Min</h3>
 
 <details>
 
@@ -492,16 +405,15 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-test-ardrgmin'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-az-testRole-sub-min'
+    roleName: '<<namePrefix>>-testRole-ardrgmin'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
     ]
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -520,7 +432,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-az-testRole-sub-min"
+      "value": "<<namePrefix>>-testRole-ardrgmin"
     },
     // Non-required parameters
     "actions": {
@@ -528,9 +440,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         "Microsoft.Compute/galleries/images/read",
         "Microsoft.Compute/galleries/read"
       ]
-    },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
     }
   }
 }
@@ -539,7 +448,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 6: Sub</h3>
+<h3>Example 5: Sub</h3>
 
 <details>
 
@@ -547,17 +456,17 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-test-ardsub'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-az-testRole-sub'
+    roleName: '<<namePrefix>>-testRole-ardsub'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
     ]
     assignableScopes: [
-      '/subscriptions/<<subscriptionId>>'
+      '<id>'
     ]
     dataActions: [
       'Microsoft.Storage/storageAccounts/blobServices/*/read'
@@ -571,7 +480,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     notDataActions: [
       'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
     ]
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -590,7 +498,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-az-testRole-sub"
+      "value": "<<namePrefix>>-testRole-ardsub"
     },
     // Non-required parameters
     "actions": {
@@ -601,7 +509,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     },
     "assignableScopes": {
       "value": [
-        "/subscriptions/<<subscriptionId>>"
+        "<id>"
       ]
     },
     "dataActions": {
@@ -623,9 +531,61 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       "value": [
         "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 6: Sub.Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-ardsubmin'
+  params: {
+    // Required parameters
+    roleName: '<<namePrefix>>-testRole-ardsubmin'
+    // Non-required parameters
+    actions: [
+      'Microsoft.Compute/galleries/images/read'
+      'Microsoft.Compute/galleries/read'
+    ]
+    subscriptionId: '<subscriptionId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "roleName": {
+      "value": "<<namePrefix>>-testRole-ardsubmin"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        "Microsoft.Compute/galleries/images/read",
+        "Microsoft.Compute/galleries/read"
+      ]
     },
     "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "<subscriptionId>"
     }
   }
 }
