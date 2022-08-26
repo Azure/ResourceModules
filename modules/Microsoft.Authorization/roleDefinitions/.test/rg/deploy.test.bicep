@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.authorization.roledefinitions-${serviceShor
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = '...'
+param serviceShort string = 'ardrg'
 
 // =========== //
 // Deployments //
@@ -39,6 +39,27 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    roleName: '<<namePrefix>>-az-testRole-rg'
+    actions: [
+      'Microsoft.Compute/galleries/*'
+      'Microsoft.Network/virtualNetworks/read'
+    ]
+    assignableScopes: [
+      '/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>'
+    ]
+    dataActions: [
+      'Microsoft.Storage/storageAccounts/blobServices/*/read'
+    ]
+    description: 'Test Custom Role Definition Standard (resource group scope)'
+    notActions: [
+      'Microsoft.Compute/images/delete'
+      'Microsoft.Compute/images/write'
+      'Microsoft.Network/virtualNetworks/subnets/join/action'
+    ]
+    notDataActions: [
+      'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
+    ]
+    resourceGroupName: '<<resourceGroupName>>'
+    subscriptionId: '<<subscriptionId>>'
   }
 }

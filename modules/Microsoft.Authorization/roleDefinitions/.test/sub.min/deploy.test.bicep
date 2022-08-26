@@ -44,6 +44,6 @@ module testDeployment '../../deploy.bicep' = {
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
     ]
-    subscriptionId: '<<subscriptionId>>'
+    subscriptionId: subscription().subscriptionId
   }
 }
