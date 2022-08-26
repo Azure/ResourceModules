@@ -26,7 +26,7 @@ param userAssignedIdentities object = {}
 param integrationAccount object = {}
 
 @description('Optional. The integration service environment Id.')
-param integrationServiceEnvironmentId string = ''
+param integrationServiceEnvironmentResourceId string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
