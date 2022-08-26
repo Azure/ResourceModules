@@ -29,12 +29,6 @@
                 }
             ]
         },
-        // "extendedLocation": {
-        //     "value": {
-        //         "name": "attdallas1",
-        //         "type": "EdgeZone"
-        //     }
-        // },
         "autoApproval": {
             "value": {
                 "subscriptions": [

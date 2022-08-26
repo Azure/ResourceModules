@@ -52,7 +52,36 @@ Private Link service is tied to the frontend IP address of a Standard Load Balan
 
 ### Parameter Usage: `extendedLocation`
 
-This is the Edge Zone ID of the Edge Zone corresponding to the region in which the resource is deployed. More information is available here: [Azure Edge Zone ID](https://docs.microsoft.com/en-us/azure/public-multi-access-edge-compute-mec/key-concepts#azure-edge-zone-id).
+This is the Edge Zone ID of the Edge Zone corresponding to the region in which the resource is deployed. More information is available here: [Azure Edge Zone ID](https://docs.microsoft.com/en-us/azure/public-multi-access-edge-compute-mec/key-concepts#azure-edge-zone-id). Note that this feature is in private preview at the time of publishing this module and hence, might not be available for all the users.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"extendedLocation": {
+  "value": {
+    "name": "attatlanta1", // Edge Zone ID for the parent East US 2 region is "attatlanta1"
+    "type": "EdgeZone" // Fixed value
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+extendedLocation: {
+  name: 'attdallas1' // Edge Zone ID for the parent South Central US region is "attdallas1".
+  type: 'EdgeZone'
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `autoApproval`
 
