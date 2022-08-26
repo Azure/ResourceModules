@@ -52,11 +52,11 @@ resource sshDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' 
     azPowerShellVersion: '3.0'
     retentionInterval: 'P1D'
     scriptContent: '''
-      ssh-keygen -f scratch -N (Get-Random -Maximum 99999)
+      ssh-keygen -f generated -N (Get-Random -Maximum 99999)
 
       $DeploymentScriptOutputs = @{
-        # privateKey = cat scratch | Out-String
-        publicKey = cat 'scratch.pub'
+        # privateKey = cat generated | Out-String
+        publicKey = cat 'generated.pub'
       }
     '''
   }
