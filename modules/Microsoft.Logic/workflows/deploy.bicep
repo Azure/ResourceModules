@@ -173,7 +173,7 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
     }
     integrationAccount: !empty(integrationAccount) ? integrationAccount : null
     integrationServiceEnvironment: !empty(integrationServiceEnvironmentId) ? {
-      id: integrationServiceEnvironmentId
+      id: integrationServiceEnvironmentResourceId
     } : null
 
     definition: {
