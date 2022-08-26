@@ -10,8 +10,6 @@
                 {
                     "name": "minpls01",
                     "properties": {
-                        "primary": true,
-                        "privateIPAllocationMethod": "Dynamic",
                         "subnet": {
                             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
                         }

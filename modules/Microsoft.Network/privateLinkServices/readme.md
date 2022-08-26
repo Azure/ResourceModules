@@ -15,7 +15,7 @@ This module deploys Network PrivateLinkServices.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/privateLinkServices` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-01-01/privateLinkServices) |
 
 ## Parameters
@@ -40,6 +40,7 @@ This module deploys Network PrivateLinkServices.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags to be applied on all resources/resource groups in this deployment. |
 | `visibility` | object | `{object}` |  | The visibility list of the private link service. |
+
 
 ### Parameter Usage: `ipConfigurations`
 
@@ -201,8 +202,6 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
       {
         name: 'minpls01'
         properties: {
-          primary: true
-          privateIPAllocationMethod: 'Dynamic'
           subnet: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           }
@@ -240,8 +239,6 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
         {
           "name": "minpls01",
           "properties": {
-            "primary": true,
-            "privateIPAllocationMethod": "Dynamic",
             "subnet": {
               "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
             }
