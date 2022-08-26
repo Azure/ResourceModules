@@ -20,7 +20,7 @@ param serviceShort string = 'aramg'
 // General resources
 // =================
 module resourceGroupResources 'interm.dependencies.bicep' = {
-  scope: subscription('<<subscriptinoId>>')
+  scope: subscription('<<subscriptionId>>')
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
