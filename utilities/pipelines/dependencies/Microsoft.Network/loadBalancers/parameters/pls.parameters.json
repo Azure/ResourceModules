@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-lb-pls-001"
+        },
+        "loadBalancerSku": {
+            "value": "Standard"
+        },
+        "frontendIPConfigurations": {
+            "value": [
+                {
+                    "name": "frontend-pls-min",
+                    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                },
+                {
+                    "name": "frontend-pls",
+                    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                }
+            ]
+        }
+    }
+}

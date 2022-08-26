@@ -1014,4 +1014,7 @@ stages:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/internal.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Deploy module
+              displayName: Deploy Internal LB
+            - path: $(dependencyPath)/$(resourceType)/parameters/pls.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Deploy PLS LB

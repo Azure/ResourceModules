@@ -1,6 +1,6 @@
 # Network PrivateLinkServices `[Microsoft.Network/privateLinkServices]`
 
-This module deploys Network PrivateLinkServices.
+This module deploys Network Private Link Services.
 
 ## Navigation
 
@@ -206,8 +206,8 @@ Auto-approval controls the automated access to the Private Link service. The sub
 // Example to auto-approve a specific set of subscriptions. This should always be a subset of the subscriptions provided under the "visibility" param
 "autoApproval": {
   "value": [
-    "b2ee16b1-3061-44d4-bc49-565e0f3c8021", // Subscription 1
-    "fa4d3ead-c7d5-4f1f-87bc-b06a30974542" // Subscription 2
+    "12345678-1234-1234-1234-123456781234", // Subscription 1
+    "87654321-1234-1234-1234-123456781234" // Subscription 2
   ]
 }
 ```
@@ -226,8 +226,8 @@ autoApproval: [
 
 // Example to auto-approve a specific set of subscriptions. This should always be a subset of the subscriptions provided under "visibility"
 autoApproval: [
-  'b2ee16b1-3061-44d4-bc49-565e0f3c8021' // Subscription 1
-  'fa4d3ead-c7d5-4f1f-87bc-b06a30974542' // Subscription 2
+  '12345678-1234-1234-1234-123456781234' // Subscription 1
+  '87654321-1234-1234-1234-123456781234' // Subscription 2
 ]
 ```
 
@@ -247,9 +247,9 @@ Visibility is the property that controls the exposure settings for your Private 
   "value"
   // Example showing usage of visibility param
   "subscriptions": [
-    "b2ee16b1-3061-44d4-bc49-565e0f3c8021", // Subscription 1
-    "fa4d3ead-c7d5-4f1f-87bc-b06a30974542", // Subscription 2
-    "5fab3dcc-4e5e-4d3f-8943-ed9e717bb310" // Subscription 3
+    "12345678-1234-1234-1234-123456781234", // Subscription 1
+    "87654321-1234-1234-1234-123456781234", // Subscription 2
+    "12341234-1234-1234-1234-123456781234" // Subscription 3
   ]
 }
 ```
@@ -263,9 +263,9 @@ Visibility is the property that controls the exposure settings for your Private 
 ```bicep
 visibility: {
   subscriptions: [
-    'b2ee16b1-3061-44d4-bc49-565e0f3c8021' // Subscription 1
-    'fa4d3ead-c7d5-4f1f-87bc-b06a30974542' // Subscription 2
-    '5fab3dcc-4e5e-4d3f-8943-ed9e717bb310' // Subscription 3
+    '12345678-1234-1234-1234-123456781234' // Subscription 1
+    '87654321-1234-1234-1234-123456781234' // Subscription 2
+    '12341234-1234-1234-1234-123456781234' // Subscription 3
   ]
 }
 ```
@@ -448,14 +448,14 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
         name: 'minpls01'
         properties: {
           subnet: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009'
           }
         }
       }
     ]
     loadBalancerFrontendIpConfigurations: [
       {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1'
+        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls-min'
       }
     ]
   }
@@ -485,7 +485,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
           "name": "minpls01",
           "properties": {
             "subnet": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009"
             }
           }
         }
@@ -494,7 +494,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     "loadBalancerFrontendIpConfigurations": {
       "value": [
         {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1"
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls-min"
         }
       ]
     }
@@ -535,14 +535,14 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
           primary: true
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009'
           }
         }
       }
     ]
     loadBalancerFrontendIpConfigurations: [
       {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig2'
+        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls'
       }
     ]
     lock: 'CanNotDelete'
@@ -604,7 +604,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
             "primary": true,
             "privateIPAllocationMethod": "Dynamic",
             "subnet": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009"
             }
           }
         }
@@ -613,7 +613,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     "loadBalancerFrontendIpConfigurations": {
       "value": [
         {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig2"
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls"
         }
       ]
     },
