@@ -25,8 +25,8 @@ param userAssignedIdentities object = {}
 @description('Optional. The integration account.')
 param integrationAccount object = {}
 
-@description('Optional. The integration service environment.')
-param integrationServiceEnvironment object = {}
+@description('Optional. The integration service environment Id.')
+param integrationServiceEnvironmentResourceId string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -172,7 +172,10 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
       workflowManagement: !empty(workflowManagementAccessControlConfiguration) ? workflowManagementAccessControlConfiguration : null
     }
     integrationAccount: !empty(integrationAccount) ? integrationAccount : null
-    integrationServiceEnvironment: !empty(integrationServiceEnvironment) ? integrationServiceEnvironment : null
+    integrationServiceEnvironment: !empty(integrationServiceEnvironmentResourceId) ? {
+      id: integrationServiceEnvironmentResourceId
+    } : null
+
     definition: {
       '$schema': 'https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#'
       actions: workflowActions
