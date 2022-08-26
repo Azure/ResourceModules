@@ -41,14 +41,115 @@ This module deploys Network PrivateLinkServices.
 | `tags` | object | `{object}` |  | Tags to be applied on all resources/resource groups in this deployment. |
 | `visibility` | object | `{object}` |  | The visibility list of the private link service. |
 
-
 ### Parameter Usage: `ipConfigurations`
 
 This property refers to the NAT (Network Address Translation) IP configuration for the Private Link service. The NAT IP can be chosen from any subnet in a service provider's virtual network. Private Link service performs destination side NAT-ing on the Private Link traffic. This ensures that there is no IP conflict between source (consumer side) and destination (service provider) address space. On the destination side (service provider side), the NAT IP address will show up as Source IP for all packets received by your service and destination IP for all packets sent by your service.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"ipConfigurations": {
+  "value": [
+    // Example showing only mandatory fields
+    {
+      "name": "minpls01", // Name of the IP configuration
+      "properties": {
+        "subnet": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001" // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
+        }
+      }
+    },
+    // Example showing commonly used fields
+    {
+      "name": "pls01", // Name of the IP configuration
+      "properties": {
+        "primary": false, // Whether the ip configuration is primary or not
+        "privateIPAddressVersion": "IPv4", // Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4
+        "privateIPAllocationMethod": "Static", // The private IP address allocation method
+        "privateIPAddress": "10.0.1.10", // If "privateIPAllocationMethod" is set to "Static" then this needs to be supplied
+        "subnet": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001" // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
+        }
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+ipConfigurations: [
+  // Example showing only mandatory fields
+  {
+    name: 'minpls01' // Name of the IP configuration
+    properties: {
+      subnet: {
+        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001' // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
+      }
+    }
+  }
+  // Example showing commonly used fields
+  {
+    name: 'pls01' // Name of the IP configuration
+    properties: {
+      primary: false // Whether the ip configuration is primary or not
+      privateIPAddressVersion: 'IPv4' // Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4
+      privateIPAllocationMethod: 'Static' // Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4
+      privateIPAddress: '10.0.1.10' // If "privateIPAllocationMethod" is set to "Static" then this needs to be supplied
+      subnet: {
+        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001' // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
+      }
+    }
+  }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `loadBalancerFrontendIpConfigurations`
 
 Private Link service is tied to the frontend IP address of a Standard Load Balancer. All traffic destined for the service will reach the frontend of the SLB. You can configure SLB rules to direct this traffic to appropriate backend pools where your applications are running. Load balancer frontend IP configurations are different than NAT IP configurations.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"loadBalancerFrontendIpConfigurations": {
+  "value": [
+    // Example showing reference to the font end IP configuration of the load balancer
+    {
+      "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1"
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+loadBalancerFrontendIpConfigurations: [
+  // Example showing reference to the font end IP configuration of the load balancer
+  {
+    id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1'
+  }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `extendedLocation`
 
@@ -60,6 +161,7 @@ This is the Edge Zone ID of the Edge Zone corresponding to the region in which t
 
 ```json
 "extendedLocation": {
+  // Example showing usage of the extendedLocation param
   "value": {
     "name": "attatlanta1", // Edge Zone ID for the parent East US 2 region is "attatlanta1"
     "type": "EdgeZone" // Fixed value
@@ -75,8 +177,9 @@ This is the Edge Zone ID of the Edge Zone corresponding to the region in which t
 
 ```bicep
 extendedLocation: {
+  // Example showing usage of the extendedLocation param
   name: 'attdallas1' // Edge Zone ID for the parent South Central US region is "attdallas1".
-  type: 'EdgeZone'
+  type: 'EdgeZone' // Fixed value
 }
 ```
 
@@ -87,13 +190,125 @@ extendedLocation: {
 
 Auto-approval controls the automated access to the Private Link service. The subscriptions specified in the auto-approval list are approved automatically when a connection is requested from private endpoints in those subscriptions.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+// Example to auto-approve for all the subscriptions present under the "visibility" param
+"autoApproval": {
+  "value": [
+    "*"
+  ]
+}
+
+// Example to auto-approve a specific set of subscriptions. This should always be a subset of the subscriptions provided under the "visibility" param
+"autoApproval": {
+  "value": [
+    "b2ee16b1-3061-44d4-bc49-565e0f3c8021", // Subscription 1
+    "fa4d3ead-c7d5-4f1f-87bc-b06a30974542" // Subscription 2
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+// Example to auto-approve for all the subscriptions present under the "visibility" param
+autoApproval: [
+  "*"
+]
+
+// Example to auto-approve a specific set of subscriptions. This should always be a subset of the subscriptions provided under "visibility"
+autoApproval: [
+  'b2ee16b1-3061-44d4-bc49-565e0f3c8021' // Subscription 1
+  'fa4d3ead-c7d5-4f1f-87bc-b06a30974542' // Subscription 2
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `visibility`
 
 Visibility is the property that controls the exposure settings for your Private Link service. Service providers can choose to limit the exposure to their service to subscriptions with Azure role-based access control (Azure RBAC) permissions, a restricted set of subscriptions, or all Azure subscriptions.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"visibility": {
+  "value"
+  // Example showing usage of visibility param
+  "subscriptions": [
+    "b2ee16b1-3061-44d4-bc49-565e0f3c8021", // Subscription 1
+    "fa4d3ead-c7d5-4f1f-87bc-b06a30974542", // Subscription 2
+    "5fab3dcc-4e5e-4d3f-8943-ed9e717bb310" // Subscription 3
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+visibility: {
+  subscriptions: [
+    'b2ee16b1-3061-44d4-bc49-565e0f3c8021' // Subscription 1
+    'fa4d3ead-c7d5-4f1f-87bc-b06a30974542' // Subscription 2
+    '5fab3dcc-4e5e-4d3f-8943-ed9e717bb310' // Subscription 3
+  ]
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `enableProxyProtocol`
 
 This property lets the service provider use tcp proxy v2 to retrieve connection information about the service consumer. Service Provider is responsible for setting up receiver configs to be able to parse the proxy protocol v2 header.
+
+### Parameter Usage: `fqdns`
+
+This property lets you set the fqdn(s) to access the Private Link service.
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"fqdns": {
+  // Example to set FQDNs for the Private Link service
+  "value": [
+    "pls01.azure.privatelinkservice", // FQDN 1
+    "pls01-duplicate.azure.privatelinkserivce" // FQDN 2
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+fqdns: [
+  // Example to set FQDNs for the Private Link service
+  'pls01.azure.privatelinkservice'
+  'pls01-duplicate.azure.privatelinkservice'
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 
