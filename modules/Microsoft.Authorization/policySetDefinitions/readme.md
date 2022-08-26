@@ -186,7 +186,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Non-required parameters
     description: '[Description] This policy set definition is deployed at management group scope'
     displayName: '[DisplayName] This policy set definition is deployed at management group scope'
-    managementGroupId: '<<managementGroupId>>'
+    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
       version: '1'
@@ -259,7 +259,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
       "value": "[DisplayName] This policy set definition is deployed at management group scope"
     },
     "managementGroupId": {
-      "value": "<<managementGroupId>>"
+      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {

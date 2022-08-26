@@ -45,7 +45,7 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
     }
     description: '[Description] This policy definition is deployed at the management group scope'
     displayName: '[DisplayName] This policy definition is deployed at the management group scope'
-    managementGroupId: '<<managementGroupId>>'
+    managementGroupId: last(split(managementGroup().id, '/'))
     metadata: {
       category: 'Security'
     }
