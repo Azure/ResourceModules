@@ -13,7 +13,7 @@ variables:
 
   # the 'localToken_' prefix will be removed from the key name when the pipelines run.
   # e.g. if you have a token in your parameter file as <<customKey>>, then the token defined in this file looks like "localToken_customKey": 'value'
-  localToken_namePrefix: 'milca' # A 3-5 character length unique string, included in the resources names (e.g. 'cntso'). Used for local module testing and pipelines.
+  localToken_namePrefix: '' # A 3-5 character length unique string, included in the resources names (e.g. 'cntso'). Used for local module testing and pipelines.
 
   ######################################
   # global tokens settings
@@ -33,14 +33,14 @@ variables:
   # Validation deployment settings
   ######################################
 
-  location: 'Australia East' # The default location to test deploy resources to
+  location: 'West Europe' # The default location to test deploy resources to
   resourceGroupName: 'validation-rg' # The default resource group to test deployment resources into
 
   ######################################
   # Publish: Template-Spec settings
   ######################################
 
-  templateSpecsDoPublish: false # Set to true, if you would like to publish module templates as template specs
+  templateSpecsDoPublish: true # Set to true, if you would like to publish module templates as template specs
   templateSpecsRGName: 'artifacts-rg' # The name of the resource group to publish to. If the resource group does not exist, it will be created.
   templateSpecsRGLocation: 'West Europe' # The location of the resource group to publish to
   templateSpecsDescription: components # The description to add to template specs published by this platform
@@ -49,7 +49,7 @@ variables:
   # Publish: Private Bicep Registry settings
   ######################################
 
-  bicepRegistryDoPublish: false # Set to true, if you would like to publish module templates to a bicep registry
+  bicepRegistryDoPublish: true # Set to true, if you would like to publish module templates to a bicep registry
   bicepRegistryName: adpsxxazacrx001 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
   bicepRegistryRGName: 'artifacts-rg' # The resource group that hosts the private bicep registry (ACR)
   bicepRegistryRgLocation: 'West Europe' # The location of the resource group to publish to
@@ -79,7 +79,7 @@ variables:
   # Publish: Universal packages settings
   ######################################
 
-  artifactsFeedDoPublish: false # Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
+  artifactsFeedDoPublish: true # Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
   vstsFeedName: 'ResourceModules' # The name of the Azure DevOps universal packages feed to publish to
   vstsFeedProject: '$(System.TeamProject)' # The project that hosts the feed
   vstsFeedToken: $(System.AccessToken) # The token used to publish universal packages into the feed above

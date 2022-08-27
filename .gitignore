@@ -388,3 +388,4 @@ FodyWeavers.xsd
 
 # MacOS
 .DS_Store
+settings.yml
