@@ -121,6 +121,12 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "<<namePrefix>>-az-subnet-x-009", // PLS subnet 1
+                    "addressPrefix": "10.0.10.0/24",
+                    "privateEndpointNetworkPolicies": "Disabled",
+                    "privateLinkServiceNetworkPolicies": "Disabled"
                 }
             ]
         }
