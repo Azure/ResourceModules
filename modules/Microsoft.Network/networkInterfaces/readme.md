@@ -4,11 +4,16 @@ This module deploys Network Interfaces.
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
+- [Network Interface `[Microsoft.Network/networkInterfaces]`](#network-interface-microsoftnetworknetworkinterfaces)
+  - [Navigation](#navigation)
+  - [Resource Types](#resource-types)
+  - [Parameters](#parameters)
+    - [Parameter Usage: `ipConfigurations`](#parameter-usage-ipconfigurations)
+    - [Parameter Usage: `roleAssignments`](#parameter-usage-roleassignments)
+    - [Parameter Usage: `tags`](#parameter-usage-tags)
+  - [Outputs](#outputs)
+  - [Cross-referenced modules](#cross-referenced-modules)
+  - [Deployment examples](#deployment-examples)
 
 ## Resource Types
 
@@ -46,7 +51,6 @@ This module deploys Network Interfaces.
 | `networkSecurityGroupResourceId` | string | `''` |  | The network security group (NSG) to attach to the network interface. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-
 
 ### Parameter Usage: `ipConfigurations`
 
