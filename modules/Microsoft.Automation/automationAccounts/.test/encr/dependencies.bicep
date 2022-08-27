@@ -7,6 +7,11 @@ param keyVaultName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+    name: managedIdentityName
+    location: location
+}
+
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     name: keyVaultName
     location: location
@@ -32,9 +37,15 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
 }
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid('msi-${managedIdentityName}-KeyVault-Key-Read-RoleAssignment')
+    scope: keyVault::key
+    properties: {
+        principalId: managedIdentity.properties.principalId
+        // Key Vault Crypto User
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
+        principalType: 'ServicePrincipal'
+    }
 }
 
 @description('The resource ID of the created Key Vault.')

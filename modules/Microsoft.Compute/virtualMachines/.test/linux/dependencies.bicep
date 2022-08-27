@@ -22,6 +22,12 @@ param storageAccountName string
 @description('Required. The name of the Deployment Script used to upload data to the Storage Account.')
 param storageUploadDeploymentScriptName string
 
+@description('Required. The name of the Deployment Script to create for the SSH Key generation.')
+param sshDeploymentScriptName string
+
+@description('Required. The name of the SSH Key to create.')
+param sshKeyName string
+
 @description('Optional. The location to deploy to.')
 param location string = resourceGroup().location
 
@@ -271,6 +277,38 @@ resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   ]
 }
 
+resource sshDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+  name: sshDeploymentScriptName
+  location: location
+  kind: 'AzurePowerShell'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
+  }
+  properties: {
+    azPowerShellVersion: '3.0'
+    retentionInterval: 'P1D'
+    scriptContent: '''
+      ssh-keygen -f generated -N (Get-Random -Maximum 99999)
+
+      $DeploymentScriptOutputs = @{
+        # privateKey = cat generated | Out-String
+        publicKey = cat 'generated.pub'
+      }
+    '''
+  }
+}
+
+resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' = {
+  name: sshKeyName
+  location: location
+  properties: {
+    publicKey: sshDeploymentScript.properties.outputs.publicKey
+  }
+}
+
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
@@ -306,3 +344,6 @@ output storageAccountResourceId string = storageAccount.id
 
 @description('The URL of the Custom Script Extension in the created Storage Account')
 output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageContainerName}/${storageAccountCSEFileName}'
+
+@description('The resource ID of the created SSH Key')
+output SSHKeyResourceID string = sshKey.id
