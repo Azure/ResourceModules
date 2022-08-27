@@ -886,7 +886,7 @@ function Set-DeploymentExamplesSection {
     $TextInfo = (Get-Culture -Name 'en-US').TextInfo
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $resourceTypeIdentifier = $TextInfo.ToTitleCase($moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/'))
-    $resourceType = $TextInfo.TextInfo.ToTitleCase($resourceTypeIdentifier.Split('/')[1])
+    $resourceType = $TextInfo.ToTitleCase($resourceTypeIdentifier.Split('/')[1])
     $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleRoot | ForEach-Object { Join-Path $moduleRoot $_ }
 
     $RequiredParametersList = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' } | Sort-Object
