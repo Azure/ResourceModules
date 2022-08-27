@@ -42,6 +42,11 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     }
 }
 
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+    name: managedIdentityName
+    location: location
+}
+
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     name: keyVaultName
     location: location
@@ -51,7 +56,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
             name: 'standard'
         }
         tenantId: tenant().tenantId
-        enablePurgeProtection: null
+        enablePurgeProtection: true // Required by batch account
         enabledForTemplateDeployment: true
         enabledForDiskEncryption: true
         enabledForDeployment: true
@@ -67,9 +72,15 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
 }
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid('msi-${managedIdentity.name}-KeyVault-${keyVault.name}-Key-${keyVault::key.name}-Read-RoleAssignment')
+    scope: keyVault::key
+    properties: {
+        principalId: managedIdentity.properties.principalId
+        // Key Vault Crypto User
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
+        principalType: 'ServicePrincipal'
+    }
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')
