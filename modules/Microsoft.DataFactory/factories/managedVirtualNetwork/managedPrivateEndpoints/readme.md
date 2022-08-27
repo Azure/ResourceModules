@@ -36,6 +36,7 @@ This module deploys a Managed Private Endpoint in a Managed Virtual Network for 
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
