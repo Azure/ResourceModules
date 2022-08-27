@@ -331,55 +331,18 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module redis './Microsoft.Cache/redis/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-redis'
-  params: {
-    name: '<<namePrefix>>-az-redis-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-redis-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module redis './Microsoft.Cache/redis/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-redis'
+module redis './Microsoft.cache/redis/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-crdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-redis-full-001'
+    name: '<<namePrefix>>crdef001'
     // Non-required parameters
     capacity: 2
     diagnosticLogCategoriesToEnable: [
@@ -396,7 +359,7 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     privateEndpoints: [
       {
         service: 'redisCache'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     publicNetworkAccess: 'Enabled'
@@ -425,7 +388,7 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-redis-full-001"
+      "value": "<<namePrefix>>crdef001"
     },
     // Non-required parameters
     "capacity": {
@@ -458,7 +421,7 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
       "value": [
         {
           "service": "redisCache",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -481,6 +444,43 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
       "value": {
         "resourceType": "Redis Cache"
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module redis './Microsoft.cache/redis/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-crmin'
+  params: {
+    name: '<<namePrefix>>crmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>crmin001"
     }
   }
 }
