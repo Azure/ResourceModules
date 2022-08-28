@@ -41,7 +41,6 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2022-01-01' = {
     name: applicationSecurityGroupName
     location: location
-    properties: {}
 }
 
 resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
@@ -50,7 +49,6 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
     sku: {
         name: 'Standard'
     }
-    properties: {}
 
     resource backendPoolName 'backendAddressPools@2022-01-01' = {
         name: 'default'
