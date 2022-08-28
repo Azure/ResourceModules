@@ -20,5 +20,8 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
+@description('The resource ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id
+
 @description('The resource ID of the created Proximity Placement Group.')
 output proximityPlacementGroupResourceId string = proximityPlacementGroup.id
