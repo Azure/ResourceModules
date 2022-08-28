@@ -38,6 +38,13 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 resource serverFarm 'Microsoft.Web/serverfarms@2022-03-01' = {
     name: serverFarmName
     location: location
+    sku: {
+        name: 'S1'
+        tier: 'Standard'
+        size: 'S1'
+        family: 'S'
+        capacity: 1
+    }
     properties: {}
 }
 

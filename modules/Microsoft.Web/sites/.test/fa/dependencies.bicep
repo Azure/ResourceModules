@@ -53,6 +53,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
 resource serverFarm 'Microsoft.Web/serverfarms@2022-03-01' = {
     name: serverFarmName
     location: location
+    sku: {
+        name: 'S1'
+        tier: 'Standard'
+        size: 'S1'
+        family: 'S'
+        capacity: 1
+    }
     properties: {}
 }
 
