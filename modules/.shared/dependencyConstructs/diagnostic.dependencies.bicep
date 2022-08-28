@@ -11,7 +11,7 @@ param logAnalyticsWorkspaceName string
 @description('Required. The name of the event hub namespace to be created')
 param eventHubNamespaceName string
 
-@description('Required. The name of the event hub to be created inside the event hub namespace')
+@description('Required. The name of the event hub to create inside the event hub namespace.')
 param eventHubNamespaceEventHubName string
 
 @description('Optional. The location to deploy to')
