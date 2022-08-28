@@ -313,7 +313,7 @@ module Networkinterfaces './Microsoft.Network/Networkinterfaces/deploy.bicep' = 
 
 ```bicep
 module Networkinterfaces './Microsoft.Network/Networkinterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-...'
+  name: '${uniqueString(deployment().name)}-test-nnimin'
   params: {
     // Required parameters
     ipConfigurations: [
@@ -322,7 +322,7 @@ module Networkinterfaces './Microsoft.Network/Networkinterfaces/deploy.bicep' = 
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
       }
     ]
-    name: '<<namePrefix>>...001'
+    name: '<<namePrefix>>nnimin001'
   }
 }
 ```
@@ -349,7 +349,7 @@ module Networkinterfaces './Microsoft.Network/Networkinterfaces/deploy.bicep' = 
       ]
     },
     "name": {
-      "value": "<<namePrefix>>...001"
+      "value": "<<namePrefix>>nnimin001"
     }
   }
 }
