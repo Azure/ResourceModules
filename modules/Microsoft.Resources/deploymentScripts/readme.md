@@ -235,10 +235,10 @@ module Deploymentscripts './Microsoft.Resources/Deploymentscripts/deploy.bicep' 
 
 ```bicep
 module Deploymentscripts './Microsoft.Resources/Deploymentscripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-...'
+  name: '${uniqueString(deployment().name)}-test-rdsps'
   params: {
     // Required parameters
-    name: '<<namePrefix>>...001'
+    name: '<<namePrefix>>rdsps001'
     // Non-required parameters
     azPowerShellVersion: '3.0'
     cleanupPreference: 'Always'
@@ -269,7 +269,7 @@ module Deploymentscripts './Microsoft.Resources/Deploymentscripts/deploy.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>...001"
+      "value": "<<namePrefix>>rdsps001"
     },
     // Non-required parameters
     "azPowerShellVersion": {
