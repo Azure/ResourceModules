@@ -14,7 +14,7 @@ param eventHubNamespaceName string
 @description('Required. The name of the event hub to create inside the event hub namespace.')
 param eventHubNamespaceEventHubName string
 
-@description('Optional. The location to deploy to')
+@description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
 // =========== //
