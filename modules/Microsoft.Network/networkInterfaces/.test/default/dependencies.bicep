@@ -46,6 +46,9 @@ resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2
 resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
     name: loadBalancerName
     location: location
+    sku: {
+        name: 'Standard'
+    }
 
     resource backendPoolName 'backendAddressPools@2022-01-01' = {
         name: 'default'
