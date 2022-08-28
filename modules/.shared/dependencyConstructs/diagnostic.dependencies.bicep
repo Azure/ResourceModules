@@ -5,7 +5,7 @@
 @description('Required. The name of the storage account to create.')
 param storageAccountName string
 
-@description('Required. The name of the log analytics workspace to create')
+@description('Required. The name of the log analytics workspace to create.')
 param logAnalyticsWorkspaceName string
 
 @description('Required. The name of the event hub namespace to be created')
