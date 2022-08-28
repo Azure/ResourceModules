@@ -43,7 +43,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     lock: 'CanNotDelete'
-    proximityPlacementGroupId: resourceGroupResources.outputs.managedIdentityPrincipalId
+    proximityPlacementGroupId: resourceGroupResources.outputs.proximityPlacementGroupResourceId
     roleAssignments: [
       {
         principalIds: [
