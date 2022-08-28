@@ -36,12 +36,12 @@ module resourceGroupResources 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-module testDeployment '../../deploy.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-  params: {
-    name: '<<namePrefix>>${serviceShort}001'
-    kind: 'app'
-    serverFarmResourceId: resourceGroupResources.outputs.serverFarmResourceId
-  }
-}
+// module testDeployment '../../deploy.bicep' = {
+//   scope: resourceGroup
+//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+//   params: {
+//     name: '<<namePrefix>>${serviceShort}001'
+//     kind: 'app'
+//     serverFarmResourceId: resourceGroupResources.outputs.serverFarmResourceId
+//   }
+// }

@@ -38,6 +38,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 resource serverFarm 'Microsoft.Web/serverfarms@2022-03-01' = {
     name: serverFarmName
     location: location
+    properties: {}
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')

@@ -53,6 +53,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
 resource serverFarm 'Microsoft.Web/serverfarms@2022-03-01' = {
     name: serverFarmName
     location: location
+    properties: {}
 }
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {

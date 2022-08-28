@@ -7,6 +7,7 @@ param serverFarmName string
 resource serverFarm 'Microsoft.Web/serverfarms@2022-03-01' = {
     name: serverFarmName
     location: location
+    properties: {}
 }
 
 @description('The resource ID of the created Server Farm.')
