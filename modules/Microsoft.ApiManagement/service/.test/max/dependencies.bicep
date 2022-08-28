@@ -1,10 +1,10 @@
-@description('Required. The name of the managed identity to create')
+@description('Required. The name of the managed identity to create.')
 param managedIdentityName string
 
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
-@description('Optional. The location to deploy to')
+@description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
 @description('Optional. The secret to store in the Key Vault. Is auto-generated if not provided.')

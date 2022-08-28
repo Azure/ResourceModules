@@ -1,7 +1,7 @@
-@description('Optional. The location to deploy to')
+@description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
-@description('Required. The name of the Virtual Network to create')
+@description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
 @description('Required. The name of the Key Vault to create.')
@@ -10,7 +10,7 @@ param keyVaultName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
-@description('Required. The name of the Storage Account to create')
+@description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {

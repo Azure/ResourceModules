@@ -1,13 +1,13 @@
-@description('Optional. The location to deploy to')
+@description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
-@description('Optional. The name of the Virtual Hub to create')
+@description('Optional. The name of the Virtual Hub to create.')
 param virtualHubName string
 
-@description('Optional. The name of the VPN Site to create')
+@description('Optional. The name of the VPN Site to create.')
 param vpnSiteName string
 
-@description('Required. The name of the virtual WAN to create')
+@description('Required. The name of the virtual WAN to create.')
 param virtualWANName string
 
 resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {

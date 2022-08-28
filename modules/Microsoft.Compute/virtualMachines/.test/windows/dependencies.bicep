@@ -1,4 +1,4 @@
-@description('Required. The name of the Virtual Network to create')
+@description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
 @description('Required. The name of the Application Security Group to create.')
@@ -25,7 +25,7 @@ param storageUploadDeploymentScriptName string
 @description('Required. The name of the Proximity Placement Group to create.')
 param proximityPlacementGroupName string
 
-@description('Optional. The location to deploy to')
+@description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
 var storageContainerName = 'scripts'

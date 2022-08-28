@@ -1,7 +1,7 @@
-@description('Required. The name of the managed identity to create')
+@description('Required. The name of the managed identity to create.')
 param managedIdentityName string
 
-@description('Optional. The location to deploy to')
+@description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {

@@ -1,4 +1,4 @@
-@description('Required. The name of the Virtual Network to create')
+@description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
 @description('Required. The name of the Managed Identity to create.')
@@ -10,7 +10,7 @@ param sshDeploymentScriptName string
 @description('Required. The name of the SSH Key to create.')
 param sshKeyName string
 
-@description('Optional. The location to deploy to')
+@description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {

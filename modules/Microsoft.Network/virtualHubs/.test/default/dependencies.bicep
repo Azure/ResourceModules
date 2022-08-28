@@ -1,10 +1,10 @@
-@description('Required. The name of the Virtual WAN to create')
+@description('Required. The name of the Virtual WAN to create.')
 param virtualWANName string
 
-@description('Required. The name of the Virtual Network to create')
+@description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
-@description('Optional. The location to deploy to')
+@description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
 resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {

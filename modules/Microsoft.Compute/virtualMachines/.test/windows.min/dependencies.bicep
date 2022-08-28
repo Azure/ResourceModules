@@ -1,4 +1,4 @@
-@description('Required. The name of the Virtual Network to create')
+@description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
 @description('Optional. The location to deploy to.')
