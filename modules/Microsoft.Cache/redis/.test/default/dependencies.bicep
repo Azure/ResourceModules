@@ -1,7 +1,7 @@
 @description('Optional. The location to deploy to')
 param location string = resourceGroup().location
 
-@description('Required. The name of the managed identity to create')
+@description('Required. The name of the Virtual Network to create')
 param virtualNetworkName string
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -10,7 +10,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     properties: {
         addressSpace: {
             addressPrefixes: [
-            '10.0.0.0/24'
+                '10.0.0.0/24'
             ]
         }
         subnets: [
@@ -26,4 +26,3 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
-

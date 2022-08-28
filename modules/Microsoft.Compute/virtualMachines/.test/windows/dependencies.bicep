@@ -1,4 +1,4 @@
-@description('Required. The name of the managed identity to create')
+@description('Required. The name of the Virtual Network to create')
 param virtualNetworkName string
 
 @description('Required. The name of the Application Security Group to create.')
