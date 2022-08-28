@@ -369,7 +369,7 @@ jobs:
                   (Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}') :
                   (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)')
               ResourceGroupName = '${{ parameters.resourceGroupName }}'
-              subscriptionId    = '${{ parameters.subscriptionId }}'
+              SubscriptionId    = '${{ parameters.subscriptionId }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'
               deploymentName    = '$(deploymentName)'
               Verbose           = $true
