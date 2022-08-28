@@ -241,7 +241,7 @@ jobs:
 
             # Handle template file
             if ($moduleTestFilePath -like '*parameters.json') {
-                # Original paramter file
+                # Original parameter file
                 $functionInput['parameterFilePath'] = $moduleTestFilePath
             }
 
