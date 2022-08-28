@@ -233,9 +233,9 @@ module Availabilitysets './Microsoft.Compute/Availabilitysets/deploy.bicep' = {
 
 ```bicep
 module Availabilitysets './Microsoft.Compute/Availabilitysets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-...'
+  name: '${uniqueString(deployment().name)}-test-casmin'
   params: {
-    name: '<<namePrefix>>...001'
+    name: '<<namePrefix>>casmin001'
   }
 }
 ```
@@ -253,7 +253,7 @@ module Availabilitysets './Microsoft.Compute/Availabilitysets/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>...001"
+      "value": "<<namePrefix>>casmin001"
     }
   }
 }
