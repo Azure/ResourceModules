@@ -17,11 +17,11 @@ You can find the script under [`utilities/tools/Test-NamePrefixAvailability.ps1`
 
 When invoked, the script
 
-1. Fetches all parameter files for modules that require unique names. For example
+1. Fetches all module test files for modules that require unique names. For example
    - `'Microsoft.Storage/storageAccounts'`
    - `'Microsoft.ContainerRegistry/registries'`
    - `'Microsoft.KeyVault/vaults'`
-1. Replace any tokens contained in the parameter files with the key-value pairs provided in the `Tokens` input parameter.
+1. Replace any tokens contained in the module test files with the key-value pairs provided in the `Tokens` input parameter.
 1. Search for each resource resource type if the final name would be taken.
 1. Return the result for each resource alongside a final recommendation to use / not use the chosen `'namePrefix'`.
 

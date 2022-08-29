@@ -39,13 +39,20 @@ jobs:
             $deploymentTestPaths = Get-ModuleTestFileList @functionInput -Verbose
 
             $testTable = @{}
-            foreach($deploymentTestPath in $deploymentTestPaths) {
-              $deploymentTestFileName = Split-Path $deploymentTestPath -Leaf
-              $testTable[$deploymentTestFileName] = @{
-                moduleTestFilePath = $deploymentTestPath
-              }
+            foreach ($deploymentTestPath in $deploymentTestPaths) {
+                if((Split-Path (Split-Path $deploymentTestPath) -Leaf) -ne '.test') {
+                  # Using test files in subfolders (e.g. '.test/deploy.test.json')
+                  $deploymentTestFileName = Split-Path (Split-Path $deploymentTestPath -Parent) -Leaf
+                } else {
+                  # Using parameter files (e.g. '.test/parameters.json')
+                  $deploymentTestFileName = Split-Path $deploymentTestPath -Leaf
+                }
+                $testTable[$deploymentTestFileName] += @{
+                    moduleTestFilePath = $deploymentTestPath
+                }
             }
 
             $deploymentTestPathsOutput = $testTable | ConvertTo-Json -Compress
+
             Write-Host ('##vso[task.setVariable variable=moduleTests;isOutput=true]{0}' -f ($testTable | ConvertTo-Json -Compress))
             Write-Verbose "Module test files: $deploymentTestPathsOutput" -Verbose

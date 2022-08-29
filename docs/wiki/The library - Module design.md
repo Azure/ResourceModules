@@ -25,7 +25,7 @@ This section details the design principles followed by the CARML Bicep modules.
     - [Deployment names](#deployment-names)
   - [Outputs](#outputs)
 - [ReadMe](#readme)
-- [Parameter files](#parameter-files)
+- [Module test files](#module-test-files)
 - [Telemetry](#telemetry)
 
 ---
@@ -60,12 +60,13 @@ They can be deployed in different configurations just by changing the input para
 A **CARML module** consists of
 
 - The Bicep template deployment file (`deploy.bicep`).
-- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.test` subfolder.
+- One or multiple template parameters files (`*parameters.json`) or module test files (`deploy.test.bicep`) that will be used for testing, located in the `.test` folder and its subfolders.
 - A `readme.md` file which describes the module itself.
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `modules` folder.
 
 Also, each module should be implemented with all capabilities it and its children support. This includes
+
 - `Locks`
 - `Role assignments (RBAC)`
 - `Diagnostic Settings`
@@ -104,28 +105,29 @@ Use the following naming standard for module files and folders:
 - Module folders are in camelCase and their name reflects the main resource type of the Bicep module they are hosting (e.g., `storageAccounts`, `virtualMachines`).
 - Extension resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
 
-  ``` txt
+  ```txt
   Microsoft.<Provider>
   └─ <service>
       ├─ .bicep
       |  ├─ nested_extensionResource1.bicep
       ├─ .test
-      |  └─ parameters.json
+      |  └─ ...
       ├─ deploy.bicep
       └─ readme.md
   ```
 
-  >**Example**: `nested_roleAssignments.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the `site` resource RBAC implementation.
-  >``` txt
-  >Microsoft.Web
-  >└─ sites
+  > **Example**: `nested_roleAssignments.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the `site` resource RBAC implementation.
+  >
+  > ```txt
+  > Microsoft.Web
+  > └─ sites
   >    ├─ .bicep
   >    |  └─ nested_roleAssignments.bicep
   >    ├─ .test
-  >    |  └─ parameters.json
+  >    |  └─ ...
   >    ├─ deploy.bicep
   >    └─ readme.md
-  >```
+  > ```
 
 ## Patterns
 
@@ -158,10 +160,11 @@ resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!e
 ```
 
 > **Note:** How locks are passed to other resource templates depends on the type of module relationship:
+>
 > - Child and extension resources
 >   - Locks are not automatically passed down, as they are inherited by default in Azure
 >   - The reference of the child/extension template should look similar to: `lock: contains(<childExtensionObject>, 'lock') ? <childExtensionObject>.lock : ''`
->   - Using this implementation, a lock is only deployed to the child/extension resource if explicitly specified in the module's parameter file
+>   - Using this implementation, a lock is only deployed to the child/extension resource if explicitly specified in the module's test file
 >   - For example, the lock of a Storage Account module is not automatically passed to a Storage Container child-deployment. Instead, the Storage Container resource is automatically locked by Azure together with a locked Storage Account
 > - Cross-referenced resources
 >   - All cross-referenced resources share the lock with the main resource to prevent depending resources to be changed or deleted
@@ -181,6 +184,7 @@ The RBAC deployment has 2 elements. A module that contains the implementation, a
 <summary>Details</summary>
 
 #### 1st Element in main resource
+
 ```bicep
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -200,7 +204,8 @@ module <mainResource>_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
 Here, you specify the platform roles available for the main resource.
 
 The `builtInRoleNames` variable contains the list of applicable roles for the specific resource which the `nested_roleAssignments.bicep` template applies.
->**Note**: You use the helper script [Get-FormattedRBACRoles.ps1](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
+
+> **Note**: You use the helper script [Get-FormattedRBACRoles.ps1](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
 
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child resource hierarchy.
 
@@ -318,11 +323,13 @@ resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
   scope: <mainResource>
 }
 ```
+
 </details>
 
 <p>
 
 ### Private Endpoints
+
 The Private Endpoint deployment has 2 elements. A module that contains the implementation, and a module reference in the parent resource. The first one loops through the endpoints we want to create, the second one processes them.
 
 <details>
@@ -390,9 +397,12 @@ Within a bicep file, use the following conventions:
   - `resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01'`
   - `resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01'`
 - Parent reference
+
   - If working on a child resource, refrain from string concatenation and instead, use the parent reference via the `existing` keyword.
   - The way this is implemented differs slightly the lower you go in the hierarchy. Note the following examples:
+
     - 1st level child resource (example _storageAccount/blobService_)
+
       ```bicep
       resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
         name: storageAccountName
@@ -404,7 +414,9 @@ Within a bicep file, use the following conventions:
         properties: {...}
       }
       ```
+
     - 2nd level child resource (example _storageAccount/blobService/container_)
+
       ```bicep
       resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
         name: storageAccountName
@@ -420,7 +432,9 @@ Within a bicep file, use the following conventions:
         properties: {...}
       }
       ```
+
     - 3rd level child resource (example _storageAccount/blobService/container/immutabilityPolicies_)
+
       ```bicep
       resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
         name: storageAccountName
@@ -440,11 +454,12 @@ Within a bicep file, use the following conventions:
         properties: {...}
       }
       ```
+
 ## Modules
 
-  - Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g., `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_roleAssignments`.
-  - Modules enable you to reuse code from a Bicep file in other Bicep files. As such, they're normally leveraged for deploying child resources (e.g., file services in a storage account), cross referenced resources (e.g., network interface in a virtual machine) or extension resources (e.g., role assignment in a resource group).
-  - When a module requires to deploy a resource whose resource type is outside of the main module's provider namespace, the module of this additional resource is referenced locally. For example, when extending the Key Vault module with Private Endpoints, instead of including in the Key Vault module an ad hoc implementation of a Private Endpoint, the Key Vault directly references the Private Endpoint module (i.e., `module privateEndpoint 'https://github.com/Azure/ResourceModules/blob/main/Microsoft.Network/privateEndpoints/deploy.bicep'`). Major benefits of this implementation are less code duplication, more consistency throughout the module library and allowing the consumer to leverage the full interface provided by the referenced module.
+- Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g., `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_roleAssignments`.
+- Modules enable you to reuse code from a Bicep file in other Bicep files. As such, they're normally leveraged for deploying child resources (e.g., file services in a storage account), cross referenced resources (e.g., network interface in a virtual machine) or extension resources (e.g., role assignment in a resource group).
+- When a module requires to deploy a resource whose resource type is outside of the main module's provider namespace, the module of this additional resource is referenced locally. For example, when extending the Key Vault module with Private Endpoints, instead of including in the Key Vault module an ad hoc implementation of a Private Endpoint, the Key Vault directly references the Private Endpoint module (i.e., `module privateEndpoint 'https://github.com/Azure/ResourceModules/blob/main/Microsoft.Network/privateEndpoints/deploy.bicep'`). Major benefits of this implementation are less code duplication, more consistency throughout the module library and allowing the consumer to leverage the full interface provided by the referenced module.
   > **Note**: Cross-referencing modules from the local repository creates a dependency for the modules applying this technique on the referenced modules being part of the local repository. Reusing the example from above, the Key Vault module has a dependency on the referenced Private Endpoint module, meaning that the repository from which the Key Vault module is deployed also requires the Private Endpoint module to be present. For this reason, we provide a utility to check for any local module references in a given path. This can be useful to determine which module folders you'd need if you don't want to keep the entire library. For further information on how to use the tool, please refer to the tool-specific [documentation](./Getting%20started%20-%20Get%20module%20cross-references).
 
 ### Deployment names
@@ -469,7 +484,9 @@ While exceptions might be needed, the following guidance should be followed as m
     ...
   }]
   ```
+
   > **Example**: for the `roleAssignment` deployment in the Key Vault `secrets` template
+  >
   > ```
   >   module secret_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   >     name: '${deployment().name}-Rbac-${index}'
@@ -480,7 +497,9 @@ While exceptions might be needed, the following guidance should be followed as m
   ```
   '${uniqueString(deployment().name, location)}-<topLevelResourceType>-<referencedResourceType>'
   ```
+
   > **Example**: for the `tableServices` deployment inside the `storageAccount` template
+  >
   > ```
   > name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
   > ```
@@ -490,7 +509,9 @@ While exceptions might be needed, the following guidance should be followed as m
   ```
   '${deployment().name}-<referencedResourceType>[-${index}]'
   ```
+
   > **Example**: for the `tables` deployment in the `tableServices` template
+  >
   > ```
   > name: '${deployment().name}-Table-${index}'
   > ```
@@ -512,6 +533,7 @@ While exceptions might be needed, the following guidance should be followed as m
 
 Each module must come with a ReadMe Markdown file that outlines what the module contains and 'how' it can be used.
 Its primary components are in order:
+
 - A title with a reference to the primary resource in Start Case followed by the primary resource namespace e.g., <code>Key Vaults `[Microsoft.KeyVault/vaults]`</code>.
 - A short description
 - A **Resource types** section with a table that outlines all resources that can be deployed as part of the module.
@@ -521,22 +543,127 @@ Its primary components are in order:
 - A **Template references** section listing relevant resources [Azure resource reference](https://docs.microsoft.com/en-us/azure/templates).
 
 Note the following recommendations:
+
 - Refer to [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) for creating from scratch or updating the module ReadMe Markdown file.
 - It is not recommended to describe how to use child resources in the parent readme file (for example, 'How to define a \[container] entry for the \[storage account]'). Instead, it is recommended to reference the child resource's ReadMe (for example, 'container/readme.md').
 
-# Parameter files
+# Module test files
 
-Parameter files in CARML leverage the common `deploymentParameters.json` schema for ARM deployments. As parameters are usually specific to their corresponding template, we only have a few general recommendations:
-- Parameter filenames should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
-- Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
-- A module should have as many parameter files as it needs to evaluate all parts of the module's functionality.
-- Sensitive data should not be stored inside the parameter file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
+Module test files in CARML are implemented in
+
+- a classic way leveraging the common `deploymentParameters.json` schema for ARM deployments or
+- using comprehensive `.bicep` test files that not only test the module's template in a certain scenario, but also deploy any required dependency for it. All classic test files will be migrated to this module following the issue [1583](https://github.com/Azure/ResourceModules/issues/1583).
+
+In either case, we follow the following, general guidelines:
+
+- A module should have as many module test files as it needs to evaluate all parts of the module's functionality.
+- Sensitive data should not be stored inside the module test file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
+
+In addition, we follow the following, file-type-specific guidelines:
+
+- JSON Parameter file specific
+  - Parameter file names should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
+  - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
+- Bicep file specific
+
+  - Each scenario should be setup in its own sub-folder (e.g. `.test/linux`)
+  - Each folder should contain at least a file `deploy.test.bicep` and optionally an additional `dependencies.bicep` file. The `deploy.test.bicep` file should deploy any immediate dependencies (e.g. a resource group, if required) and invoke the module's main template while providing all parameters for a given test scenario. The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed resource group).
+  - Parameters
+    - Each file should define a parameter `serviceShort`. This parameter should be unique to this file (i.e, no two test files should share the same) as it is injected into all resource deployments, making them unique too and account for corresponding requirements. As a reference you can create a identifier by combining a substring of the resource type and test scenario (e.g., in case of a Linux Virtual Machine Deployment: `vmlin`)
+    - If the module deploys a resource group level resource, the template should further have a `resourceGroupName` parameter and subsequent resource deployment. As a reference for the default name you can use `ms.<providerNamespace>.<resourceType>-${serviceShort}-test-rg`.
+    - Each file should also provide a `location` parameter that may default to the deployments default location
+  - It is recommended to define all major resource names in the `deploy.test.bicep` file as it makes later maintenance easier. To implement this, make sure to pass all resource names to any referenced module.
+  - References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `resourceGroupResources.outputs.managedIdentityPrincipalId`
+  - If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/dependencyConstructs/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
+
+    <details>
+    <summary>Example (for a resource group level resource)</summary>
+
+    ```Bicep
+    targetScope = 'subscription'
+
+    // ========== //
+    // Parameters //
+    // ========== //
+    @description('Optional. The name of the resource group to deploy for a testing purposes')
+    @maxLength(90)
+    param resourceGroupName string = 'ms.analysisservices.servers-${serviceShort}-test-rg'
+
+    @description('Optional. The location to deploy resources to')
+    param location string = deployment().location
+
+    @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
+    param serviceShort string = 'asdef'
+
+    // =========== //
+    // Deployments //
+    // =========== //
+
+    // General resources
+    // =================
+    resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+      name: resourceGroupName
+      location: location
+    }
+
+    module resourceGroupResources 'dependencies.bicep' = {
+      scope: resourceGroup
+      name: '${uniqueString(deployment().name, location)}-nestedDependencies'
+      params: {
+        managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+      }
+    }
+
+    // Diagnostics
+    // ===========
+    module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+      scope: resourceGroup
+      name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
+      params: {
+        storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
+        logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+        eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
+        eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+        location: location
+      }
+    }
+
+    // ============== //
+    // Test Execution //
+    // ============== //
+
+    module testDeployment '../../deploy.bicep' = {
+      scope: resourceGroup
+      name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+      params: {
+        name: '<<namePrefix>>az${serviceShort}'
+        lock: 'CanNotDelete'
+        skuName: 'S0'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              resourceGroupResources.outputs.managedIdentityPrincipalId
+            ]
+          }
+        ]
+        diagnosticLogsRetentionInDays: 7
+        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+      }
+    }
+    ```
+
+    </details>
 
 # Telemetry
 
-Each module in CARML contains a `defaultTelemetry` deployment  `'pid-<GUID>-${uniqueString(deployment().name)}'`, resulting in deployments such as `'pid-<GUID>-nx2c3rnlt2wru'`.
+Each module in CARML contains a `defaultTelemetry` deployment `'pid-<GUID>-${uniqueString(deployment().name)}'`, resulting in deployments such as `'pid-<GUID>-nx2c3rnlt2wru'`.
 
 > **Note:** Though implemented at each level in a module hierarchy (e.g., storage account & blobServices), the deployment will only happen for the top-level module in a deployment, but not for its children. To illustrate this better, see the following examples:
+>
 > - Deployment of the KeyVault module and 2 Secrets: Results in 1 `PID` deployment for the KeyVault (and none for the secrets)
 > - Deployment of the Secret module: Results in 1 `PID` deployment for the Secret
 
@@ -545,6 +672,7 @@ This resource enables the CARML product team to query the number of deployments 
 When using CARML's CI environment you can enable/disable this deployment by switching the `enableDefaultTelemetry` setting in the `settings.yml` file in the repository's root. This value is automatically injected into each individual deployment that is performed as part of the environment's pipeline.
 
 When consuming the modules outside of CARML's pipelines you can either
+
 - Set the parameter to a default value of `'false'`
 - Set the parameter to false when deploying a module
 

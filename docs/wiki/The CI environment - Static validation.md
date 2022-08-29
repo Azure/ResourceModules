@@ -30,11 +30,11 @@ The following activities are performed by the [`utilities/pipelines/staticValida
   - describes all the parameters
   - describes all outputs
   - describes all cross-references
-- **Parameter Files**, e.g.:
-  - at least one `*parameters.json` exists
-  - files should be valid JSON
-  - contains all required parameters
-  - (if tokens are used) Tests that no token values (e.g., `11111111-1111-1111-1111-11111111111`) from the specified token list (i.e., `deploymentSpId`, `subscriptionId`, `managementGroupId`, `tenantId`) are used in the parameter files. Instead, the token itself should be referenced.
+- **Module Test Files**, e.g.:
+  - at least one `*parameters.json`/`deploy.test.bicep` exists
+  - files should (optionally) be valid JSON
+  - must contain all required parameters
+  - (if tokens are used) Tests that no token values (e.g., `11111111-1111-1111-1111-11111111111`) from the specified token list (i.e., `deploymentSpId`, `subscriptionId`, `managementGroupId`, `tenantId`) are used in the module test files. Instead, the token itself should be referenced.
 
 ## Output example
 

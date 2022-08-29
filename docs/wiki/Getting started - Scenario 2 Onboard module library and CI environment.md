@@ -6,7 +6,7 @@ This requires several steps:
 1. [Fork/clone the repository into your DevOps environment](#2-forkclone-the-repository-into-your-devops-environment)
 1. [Configure the CI environment](#3-configure-the-ci-environment)
 1. [Deploy dependencies](#4-deploy-dependencies)
-1. [Update module parameter files](#5-update-module-parameter-files)
+1. [Update module test files](#5-update-module-module-test-files)
 1. [(Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
 
 Depending on the DevOps environment you choose (GitHub or Azure DevOps), make sure you also account for the specific requirements outlined below.
@@ -98,7 +98,7 @@ To lower the barrier to entry and allow users to easily define their own naming 
 
 > **Note:** This prefix is only used by the CI environment you validate your modules in, and doesn't affect the naming of any resources you deploy as part of any multi-module solutions (applications/workloads) based on the modules.
 
-Each pipeline in CARML deploying resources uses a logic that automatically replaces "tokens" (i.e., placeholders) in any parameter file. Tokens are stored in only a few central locations to facilitate maintenance (e.g., local `settings.yml`, repository secrets or variable groups).
+Each pipeline in CARML deploying resources uses a logic that automatically replaces "tokens" (i.e., placeholders) in any module test file. Tokens are stored in only a few central locations to facilitate maintenance (e.g., local `settings.yml`, repository secrets or variable groups).
 
 To update the `namePrefix`, perform the following steps:
 
@@ -185,7 +185,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `location` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying parameter file, this location is used. |
+| `location` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying module test file, this location is used. |
 | `resourceGroupName` | `"validation-rg"` | The resource group to deploy all resources for validation to. |
 
 </details>
@@ -295,7 +295,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `location` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used. |
+| `location` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying module test file, this location is used. |
 | `resourceGroupName` | `'validation-rg'` | The resource group to deploy all resources for validation into. |
 | `serviceConnection` | `'Contoso-Connection'` | The service connection that points to the subscription to test in and publish to. |
 
@@ -383,7 +383,7 @@ In special cases, manual actions may be required to provision certain resources 
 
 To successfully deploy the sites module using the `fa.parameters.json` parameter file, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
 
-# 5. Update module parameter files
+# 5. Update module test files
 
 Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
 

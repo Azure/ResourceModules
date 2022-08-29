@@ -217,6 +217,7 @@ jobs:
             $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
 
+            # Determine possible parameters depending on file type
             if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
                 $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
@@ -230,13 +231,18 @@ jobs:
 
             # Building input object
             $functionInput = @{
-                templateFilePath     = $moduleTemplateFilePath
-                parameterFilePath    = $moduleTestFilePath
-                location             = $location
-                resourceGroupName    = $resourceGroupName
-                subscriptionId       = $subscriptionId
-                managementGroupId    = $managementGroupId
-                additionalParameters = @{}
+                TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
+                Location             = $location
+                ResourceGroupName    = $resourceGroupName
+                SubscriptionId       = $subscriptionId
+                ManagementGroupId    = $managementGroupId
+                AdditionalParameters = @{}
+            }
+
+            # Handle template file
+            if ($moduleTestFilePath -like '*parameters.json') {
+                # Original parameter file
+                $functionInput['parameterFilePath'] = $moduleTestFilePath
             }
 
             # Handle additional parameters
@@ -267,15 +273,16 @@ jobs:
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
+            # Fetching parameters
             $location = '${{ parameters.location }}'
             $resourceGroupName = '${{ parameters.resourceGroupName }}'
             $subscriptionId = '${{ parameters.subscriptionId }}'
             $managementGroupId = '${{ parameters.managementGroupId }}'
 
             $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
 
+            # Determine possible parameters depending on file type
             if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
                 $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
@@ -289,13 +296,19 @@ jobs:
 
             # Building input object
             $functionInput = @{
-                templateFilePath     = $moduleTemplateFilePath
-                parameterFilePath    = $moduleTestFilePath
-                location             = $location
-                resourceGroupName    = $resourceGroupName
-                subscriptionId       = $subscriptionId
-                managementGroupId    = $managementGroupId
-                additionalParameters = @{}
+                TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
+                Location             = $location
+                ResourceGroupName    = $resourceGroupName
+                SubscriptionId       = $subscriptionId
+                ManagementGroupId    = $managementGroupId
+                doNotThrow           = $true
+                AdditionalParameters = @{}
+            }
+
+            # Handle template file
+            if ($moduleTestFilePath -like '*parameters.json') {
+                # Original paramter file
+                $functionInput['parameterFilePath'] = $moduleTestFilePath
             }
 
             # Handle additional parameters
@@ -352,9 +365,11 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
             $functionInput = @{
-              TemplateFilePath  = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+              TemplateFilePath  = ('$(moduleTestFilePath)' -like '*parameters.json') ?
+                  (Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}') :
+                  (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)')
               ResourceGroupName = '${{ parameters.resourceGroupName }}'
-              subscriptionId    = '${{ parameters.subscriptionId }}'
+              SubscriptionId    = '${{ parameters.subscriptionId }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'
               deploymentName    = '$(deploymentName)'
               Verbose           = $true

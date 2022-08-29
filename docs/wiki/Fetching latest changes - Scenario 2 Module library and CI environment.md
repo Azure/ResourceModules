@@ -10,7 +10,7 @@ The update process is the following:
 - [2. Apply specific settings to files](#2-apply-specific-settings-to-files)
 - [3. (Optional) Re-apply your customizations](#3-optional-re-apply-your-customizations)
 - [4. Run dependencies pipeline](#4-run-dependencies-pipeline)
-- [5. Update module parameter files](#5-update-module-parameter-files)
+- [5. Update module module test files](#5-update-module-module-test-files)
 - [6. (Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
 - [7. Push updated code](#7-push-updated-code)
 - [8. Test and publish modules](#8-test-and-publish-modules)
@@ -72,13 +72,13 @@ This process can be automated, by script or CI, if customization tasks are repea
 
 Run the '*dependencies pipeline*' to update dependencies configuration that can be updated on the downloaded CARML release. Follow [Deploy dependencies](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only#4-deploy-dependencies) section in Getting started - Scenario 2 Onboard module library and CI environment documentation to do this.
 
-# 5. Update module parameter files
+# 5. Update module module test files
 
-Follow the [Update module parameter files](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#5-update-module-parameter-files) procedure
+Follow the [Update module module test files](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#5-update-module-module-test-files) procedure
 
 # 6. (Optional) Convert library to ARM
 
-Follow istructions in [(Optional) Convert library to ARM](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only#6-optional-convert-library-to-arm)
+Follow instructions in [(Optional) Convert library to ARM](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only#6-optional-convert-library-to-arm)
 
 # 7. Push updated code
 
