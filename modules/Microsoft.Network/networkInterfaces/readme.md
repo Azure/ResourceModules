@@ -214,6 +214,14 @@ module Networkinterfaces './Microsoft.Network/Networkinterfaces/deploy.bicep' = 
         name: 'ipconfig01'
         subnetResourceId: '<subnetResourceId>'
       }
+      {
+        applicationSecurityGroups: [
+          {
+            id: '<id>'
+          }
+        ]
+        subnetResourceId: '<subnetResourceId>'
+      }
     ]
     name: '<<namePrefix>>nnidef001'
     // Non-required parameters
@@ -262,6 +270,14 @@ module Networkinterfaces './Microsoft.Network/Networkinterfaces/deploy.bicep' = 
             }
           ],
           "name": "ipconfig01",
+          "subnetResourceId": "<subnetResourceId>"
+        },
+        {
+          "applicationSecurityGroups": [
+            {
+              "id": "<id>"
+            }
+          ],
           "subnetResourceId": "<subnetResourceId>"
         }
       ]

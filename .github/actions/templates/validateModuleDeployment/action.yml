@@ -243,11 +243,11 @@ runs:
           # ----------------- #
           $functionInput = @{
             TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
-            location             = $location
-            resourceGroupName    = $resourceGroupName
-            subscriptionId       = $subscriptionId
-            managementGroupId    = $managementGroupId
-            additionalParameters = @{}
+            Location             = $location
+            ResourceGroupName    = $resourceGroupName
+            SubscriptionId       = $subscriptionId
+            ManagementGroupId    = $managementGroupId
+            AdditionalParameters = @{}
           }
 
           # Handle template file
@@ -311,12 +311,12 @@ runs:
           # ----------------- #
           $functionInput = @{
             TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
-            location             = $location
-            resourceGroupName    = $resourceGroupName
-            subscriptionId       = $subscriptionId
-            managementGroupId    = $managementGroupId
-            doNotThrow           = $true
-            additionalParameters = @{}
+            Location             = $location
+            ResourceGroupName    = $resourceGroupName
+            SubscriptionId       = $subscriptionId
+            ManagementGroupId    = $managementGroupId
+            DoNotThrow           = $true
+            AdditionalParameters = @{}
           }
 
           # Handle template file

@@ -232,16 +232,16 @@ jobs:
             # Building input object
             $functionInput = @{
                 TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
-                location             = $location
-                resourceGroupName    = $resourceGroupName
-                subscriptionId       = $subscriptionId
-                managementGroupId    = $managementGroupId
-                additionalParameters = @{}
+                Location             = $location
+                ResourceGroupName    = $resourceGroupName
+                SubscriptionId       = $subscriptionId
+                ManagementGroupId    = $managementGroupId
+                AdditionalParameters = @{}
             }
 
             # Handle template file
             if ($moduleTestFilePath -like '*parameters.json') {
-                # Original paramter file
+                # Original parameter file
                 $functionInput['parameterFilePath'] = $moduleTestFilePath
             }
 
@@ -369,7 +369,7 @@ jobs:
                   (Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}') :
                   (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)')
               ResourceGroupName = '${{ parameters.resourceGroupName }}'
-              subscriptionId    = '${{ parameters.subscriptionId }}'
+              SubscriptionId    = '${{ parameters.subscriptionId }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'
               deploymentName    = '$(deploymentName)'
               Verbose           = $true

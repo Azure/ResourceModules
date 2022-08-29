@@ -73,6 +73,14 @@ module testDeployment '../../deploy.bicep' = {
         name: 'ipconfig01'
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
       }
+      {
+        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        applicationSecurityGroups: [
+          {
+            id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
+          }
+        ]
+      }
     ]
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId

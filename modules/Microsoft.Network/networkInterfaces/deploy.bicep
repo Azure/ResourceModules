@@ -100,7 +100,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-08-01' = {
       id: networkSecurityGroupResourceId
     } : null
     ipConfigurations: [for (ipConfiguration, index) in ipConfigurations: {
-      name: !empty(ipConfiguration.name) ? ipConfiguration.name : null
+      name: contains(ipConfiguration, 'name') ? ipConfiguration.name : 'ipconfig0${index + 1}'
       properties: {
         primary: index == 0 ? true : false
         privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
