@@ -559,6 +559,8 @@ In either case, we follow the following, general guidelines:
 - A module should have as many module test files as it needs to evaluate all parts of the module's functionality.
 - Sensitive data should not be stored inside the module test file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
 
+In addition, we follow the following, file-type-specific guidelines:
+
 - JSON Parameter File specific
   - Parameter file names should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
   - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
