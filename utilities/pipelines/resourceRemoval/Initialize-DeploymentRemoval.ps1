@@ -72,6 +72,7 @@ function Initialize-DeploymentRemoval {
             'Microsoft.OperationsManagement/solutions',
             'Microsoft.OperationalInsights/workspaces/linkedServices',
             'Microsoft.OperationalInsights/workspaces',
+            'Microsoft.KeyVault/vaults',
             'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )
