@@ -2,19 +2,19 @@
 // Parameters //
 // ========== //
 
-@description('Required. The name of the storage account to create')
+@description('Required. The name of the storage account to create.')
 param storageAccountName string
 
-@description('Required. The name of the log analytics workspace to create')
+@description('Required. The name of the log analytics workspace to create.')
 param logAnalyticsWorkspaceName string
 
-@description('Required. The name of the event hub namespace to be created')
+@description('Required. The name of the event hub namespace to create.')
 param eventHubNamespaceName string
 
-@description('Required. The name of the event hub to be created inside the event hub namespace')
+@description('Required. The name of the event hub to create inside the event hub namespace.')
 param eventHubNamespaceEventHubName string
 
-@description('Optional. The location to deploy to')
+@description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
 // =========== //
