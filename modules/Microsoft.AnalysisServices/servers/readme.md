@@ -166,15 +166,15 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Max</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-asdef'
+module Servers './Microsoft.Analysisservices/Servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-assdef'
   params: {
     // Required parameters
     name: '<<namePrefix>>assdef'
@@ -212,7 +212,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azasdef"
+      "value": "<<namePrefix>>assdef"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -260,11 +260,11 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-asmax'
+module Servers './Microsoft.Analysisservices/Servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-assmax'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azasmax'
+    name: '<<namePrefix>>assmax'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -272,12 +272,12 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
       'Engine'
       'Service'
     ]
-    diagnosticLogsRetentionInDays: 365
+    diagnosticLogsRetentionInDays: 7
     diagnosticMetricsToEnable: [
       'AllMetrics'
     ]
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     firewallSettings: {
       enablePowerBIService: true
       firewallRules: [
@@ -292,7 +292,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -317,14 +317,14 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azasmax"
+      "value": "<<namePrefix>>assmax"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogCategoriesToEnable": {
       "value": [
@@ -333,7 +333,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
       ]
     },
     "diagnosticLogsRetentionInDays": {
-      "value": 365
+      "value": 7
     },
     "diagnosticMetricsToEnable": {
       "value": [
@@ -341,10 +341,10 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
       ]
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "firewallSettings": {
       "value": {
@@ -365,7 +365,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -391,27 +391,10 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-asmin'
+module Servers './Microsoft.Analysisservices/Servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-assmin'
   params: {
-    // Required parameters
-    name: '<<namePrefix>>azasweux001'
-    // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    skuName: 'S0'
+    name: '<<namePrefix>>assmin'
   }
 }
 ```
@@ -428,9 +411,8 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
-      "value": "<<namePrefix>>azasmin"
+      "value": "<<namePrefix>>assmin"
     }
   }
 }
