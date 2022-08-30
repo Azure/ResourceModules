@@ -286,7 +286,7 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. The resource ID of the disc encryption set to apply to the clsuter. For security reasons, this value should be provided.')
+@description('Optional. The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided.')
 param diskEncryptionSetID string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -378,7 +378,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-04-02-preview' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-06-01' = {
   name: name
   location: location
   tags: tags
