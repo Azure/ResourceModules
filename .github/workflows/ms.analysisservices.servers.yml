@@ -1,10 +1,4 @@
 name: 'AnalysisServices: Servers'
-          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
-          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
-name: 'AnalysisServices: Servers'
-          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
-          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
-name: 'AnalysisServices: Servers'
 
 on:
   workflow_dispatch:
