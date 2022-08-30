@@ -320,28 +320,22 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
-module connections './Microsoft.Network/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-connections'
+module Connections './Microsoft.Network/Connections/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-ncvtv'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-vnetgwc-x-001'
+    name: '<<namePrefix>>ncvtv001'
     virtualNetworkGateway1: {
-      id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
+      id: '<id>'
     }
     // Non-required parameters
     enableBgp: false
-    location: 'eastus'
     lock: 'CanNotDelete'
     virtualNetworkGateway2: {
-      id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
+      id: '<id>'
     }
     virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
-    vpnSharedKey: kv1.getSecret('vpnSharedKey')
+    vpnSharedKey: '<vpnSharedKey>'
   }
 }
 ```
@@ -360,38 +354,30 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-vnetgwc-x-001"
+      "value": "<<namePrefix>>ncvtv001"
     },
     "virtualNetworkGateway1": {
       "value": {
-        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
+        "id": "<id>"
       }
     },
     // Non-required parameters
     "enableBgp": {
       "value": false
     },
-    "location": {
-      "value": "eastus"
-    },
     "lock": {
       "value": "CanNotDelete"
     },
     "virtualNetworkGateway2": {
       "value": {
-        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002"
+        "id": "<id>"
       }
     },
     "virtualNetworkGatewayConnectionType": {
       "value": "Vnet2Vnet"
     },
     "vpnSharedKey": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "vpnSharedKey"
-      }
+      "value": "<vpnSharedKey>"
     }
   }
 }
