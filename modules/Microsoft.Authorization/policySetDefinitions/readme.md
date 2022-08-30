@@ -141,83 +141,18 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg Min</h3>
+<h3>Example 1: Mg</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policySetDefinitions'
+module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apsdmg'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-mg-min-policySet'
-    policyDefinitions: [
-      {
-        parameters: {
-          listOfAllowedLocations: {
-            value: [
-              'australiaeast'
-            ]
-          }
-        }
-        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-mg-min-policySet"
-    },
-    "policyDefinitions": {
-      "value": [
-        {
-          "parameters": {
-            "listOfAllowedLocations": {
-              "value": [
-                "australiaeast"
-              ]
-            }
-          },
-          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Mg</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policySetDefinitions'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-mg-policySet'
+    name: '<<namePrefix>>apsdmg001'
     policyDefinitions: [
       {
         groupNames: [
@@ -251,7 +186,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Non-required parameters
     description: '[Description] This policy set definition is deployed at management group scope'
     displayName: '[DisplayName] This policy set definition is deployed at management group scope'
-    managementGroupId: '<<managementGroupId>>'
+    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
       version: '1'
@@ -282,7 +217,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-mg-policySet"
+      "value": "<<namePrefix>>apsdmg001"
     },
     "policyDefinitions": {
       "value": [
@@ -324,7 +259,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
       "value": "[DisplayName] This policy set definition is deployed at management group scope"
     },
     "managementGroupId": {
-      "value": "<<managementGroupId>>"
+      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {
@@ -349,18 +284,18 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 </details>
 <p>
 
-<h3>Example 3: Sub Min</h3>
+<h3>Example 2: Mg.Min</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policySetDefinitions'
+module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apsdmgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sub-min-policySet'
+    name: '<<namePrefix>>apsdmgmin001'
     policyDefinitions: [
       {
         parameters: {
@@ -373,8 +308,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
       }
     ]
-    // Non-required parameters
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -393,7 +326,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sub-min-policySet"
+      "value": "<<namePrefix>>apsdmgmin001"
     },
     "policyDefinitions": {
       "value": [
@@ -408,10 +341,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
         }
       ]
-    },
-    // Non-required parameters
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
     }
   }
 }
@@ -420,18 +349,18 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 </details>
 <p>
 
-<h3>Example 4: Sub</h3>
+<h3>Example 3: Sub</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policySetDefinitions'
+module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apsdsub'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sub-policySet'
+    name: '<<namePrefix>>apsdsub001'
     policyDefinitions: [
       {
         groupNames: [
@@ -477,7 +406,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         name: 'ARM'
       }
     ]
-    subscriptionId: '<<subscriptionId>>'
+    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -496,7 +425,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sub-policySet"
+      "value": "<<namePrefix>>apsdsub001"
     },
     "policyDefinitions": {
       "value": [
@@ -553,6 +482,77 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         }
       ]
     },
+    "subscriptionId": {
+      "value": "<subscriptionId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Sub.Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apsdsubmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>apsdsubmin001'
+    policyDefinitions: [
+      {
+        parameters: {
+          listOfAllowedLocations: {
+            value: [
+              'australiaeast'
+            ]
+          }
+        }
+        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
+      }
+    ]
+    // Non-required parameters
+    subscriptionId: '<<subscriptionId>>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>apsdsubmin001"
+    },
+    "policyDefinitions": {
+      "value": [
+        {
+          "parameters": {
+            "listOfAllowedLocations": {
+              "value": [
+                "australiaeast"
+              ]
+            }
+          },
+          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
+        }
+      ]
+    },
+    // Non-required parameters
     "subscriptionId": {
       "value": "<<subscriptionId>>"
     }
