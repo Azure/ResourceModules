@@ -238,164 +238,34 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Encr</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-batchAccounts'
+module Batchaccounts './Microsoft.Batch/Batchaccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-bbadef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azbaweuencr001'
-    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    name: '<<namePrefix>>bbadef001'
+    storageAccountId: '<storageAccountId>'
     // Non-required parameters
-    cMKKeyName: 'keyEncryptionKey'
-    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
-    poolAllocationMode: 'BatchService'
-    privateEndpoints: [
-      {
-        service: 'batchAccount'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-      }
-    ]
-    storageAccessIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
-    storageAuthenticationMode: 'BatchAccountManagedIdentity'
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>azbaweuencr001"
-    },
-    "storageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-    },
-    // Non-required parameters
-    "cMKKeyName": {
-      "value": "keyEncryptionKey"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
-    },
-    "poolAllocationMode": {
-      "value": "BatchService"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "service": "batchAccount",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
-        }
-      ]
-    },
-    "storageAccessIdentity": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
-    },
-    "storageAuthenticationMode": {
-      "value": "BatchAccountManagedIdentity"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-batchAccounts'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>azbaweumin001'
-    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>azbaweumin001"
-    },
-    "storageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-batchAccounts'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>azbaweux001'
-    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     lock: 'CanNotDelete'
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
       {
         service: 'batchAccount'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
-    storageAccessIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    storageAccessIdentity: '<storageAccessIdentity>'
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     systemAssignedIdentity: true
   }
@@ -416,26 +286,26 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azbaweux001"
+      "value": "<<namePrefix>>bbadef001"
     },
     "storageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<storageAccountId>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -447,18 +317,148 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
       "value": [
         {
           "service": "batchAccount",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
     "storageAccessIdentity": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+      "value": "<storageAccessIdentity>"
     },
     "storageAuthenticationMode": {
       "value": "BatchAccountManagedIdentity"
     },
     "systemAssignedIdentity": {
       "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Encr</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module Batchaccounts './Microsoft.Batch/Batchaccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-bbaencr'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>bbaencr001'
+    storageAccountId: '<storageAccountId>'
+    // Non-required parameters
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    poolAllocationMode: 'BatchService'
+    privateEndpoints: [
+      {
+        service: 'batchAccount'
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    storageAccessIdentity: '<storageAccessIdentity>'
+    storageAuthenticationMode: 'BatchAccountManagedIdentity'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>bbaencr001"
+    },
+    "storageAccountId": {
+      "value": "<storageAccountId>"
+    },
+    // Non-required parameters
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "poolAllocationMode": {
+      "value": "BatchService"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "batchAccount",
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "storageAccessIdentity": {
+      "value": "<storageAccessIdentity>"
+    },
+    "storageAuthenticationMode": {
+      "value": "BatchAccountManagedIdentity"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module Batchaccounts './Microsoft.Batch/Batchaccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-bbamin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>bbamin001'
+    storageAccountId: '<storageAccountId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>bbamin001"
+    },
+    "storageAccountId": {
+      "value": "<storageAccountId>"
     }
   }
 }
