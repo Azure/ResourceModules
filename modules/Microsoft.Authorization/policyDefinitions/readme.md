@@ -143,7 +143,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-min-policyDef'
@@ -232,7 +232,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-policyDef'
@@ -387,7 +387,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-min-policyDef'
@@ -480,7 +480,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-policyDef'

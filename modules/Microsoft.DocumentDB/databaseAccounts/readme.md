@@ -549,7 +549,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-databaseAccounts'
+  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
   params: {
     // Required parameters
     locations: [
@@ -752,7 +752,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-databaseAccounts'
+  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
   params: {
     // Required parameters
     locations: [
@@ -1235,7 +1235,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-databaseAccounts'
+  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
   params: {
     // Required parameters
     locations: [
@@ -1344,7 +1344,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-databaseAccounts'
+  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
   params: {
     // Required parameters
     locations: [

@@ -65,7 +65,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-budgets'
+  name: '${uniqueString(deployment().name)}-Budgets'
   params: {
     // Required parameters
     amount: 500

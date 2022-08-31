@@ -16,7 +16,7 @@ This module deploys an app service plan.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/diagnosticSettings) |
 | `Microsoft.Web/serverfarms` | [2021-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/serverfarms) |
 
 ## Parameters
@@ -216,7 +216,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-serverfarms'
+  name: '${uniqueString(deployment().name)}-Serverfarms'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-asp-x-001'

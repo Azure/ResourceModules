@@ -163,7 +163,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-proximityPlacementGroups'
+  name: '${uniqueString(deployment().name)}-ProximityPlacementGroups'
   params: {
     lock: 'CanNotDelete'
     name: '<<namePrefix>>-az-ppg-x-001'
