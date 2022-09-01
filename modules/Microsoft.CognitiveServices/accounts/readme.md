@@ -428,7 +428,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Accounts './Microsoft.Cognitiveservices/Accounts/deploy.bicep' = {
+module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-csadef'
   params: {
     // Required parameters
@@ -555,7 +555,7 @@ module Accounts './Microsoft.Cognitiveservices/Accounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Accounts './Microsoft.Cognitiveservices/Accounts/deploy.bicep' = {
+module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-csaencr'
   params: {
     // Required parameters
@@ -636,7 +636,7 @@ module Accounts './Microsoft.Cognitiveservices/Accounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Accounts './Microsoft.Cognitiveservices/Accounts/deploy.bicep' = {
+module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-csamin'
   params: {
     // Required parameters
@@ -679,7 +679,7 @@ module Accounts './Microsoft.Cognitiveservices/Accounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Accounts './Microsoft.Cognitiveservices/Accounts/deploy.bicep' = {
+module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-csaspeech'
   params: {
     // Required parameters
