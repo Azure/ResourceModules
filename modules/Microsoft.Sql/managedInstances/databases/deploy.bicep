@@ -125,7 +125,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' exi
   name: managedInstanceName
 }
 
-resource database 'Microsoft.Sql/managedInstances/databases@2021-05-01-preview' = {
+resource database 'Microsoft.Sql/managedInstances/databases@2022-02-01-preview' = {
   name: name
   parent: managedInstance
   location: location

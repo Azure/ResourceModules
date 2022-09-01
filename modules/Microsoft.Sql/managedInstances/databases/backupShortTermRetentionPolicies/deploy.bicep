@@ -33,7 +33,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' exi
   }
 }
 
-resource backupShortTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies@2017-03-01-preview' = {
+resource backupShortTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies@2022-02-01-preview' = {
   name: name
   parent: managedInstance::managedInstaceDatabase
   properties: {

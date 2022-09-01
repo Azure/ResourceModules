@@ -42,7 +42,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' exi
   }
 }
 
-resource backupLongTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies@2021-02-01-preview' = {
+resource backupLongTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies@2022-02-01-preview' = {
   name: name
   parent: managedInstance::managedInstaceDatabase
   properties: {

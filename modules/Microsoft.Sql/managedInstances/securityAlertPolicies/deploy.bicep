@@ -33,7 +33,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' exi
   name: managedInstanceName
 }
 
-resource securityAlertPolicy 'Microsoft.Sql/managedInstances/securityAlertPolicies@2017-03-01-preview' = {
+resource securityAlertPolicy 'Microsoft.Sql/managedInstances/securityAlertPolicies@2022-02-01-preview' = {
   name: name
   parent: managedInstance
   properties: {

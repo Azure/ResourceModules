@@ -32,7 +32,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' exi
   name: managedInstanceName
 }
 
-resource administrator 'Microsoft.Sql/managedInstances/administrators@2021-02-01-preview' = {
+resource administrator 'Microsoft.Sql/managedInstances/administrators@2022-02-01-preview' = {
   name: name
   parent: managedInstance
   properties: {
