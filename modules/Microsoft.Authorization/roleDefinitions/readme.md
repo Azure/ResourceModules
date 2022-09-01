@@ -187,7 +187,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' = {
+module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardmg'
   params: {
     // Required parameters
@@ -262,7 +262,7 @@ module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' = {
+module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardmgmin'
   params: {
     // Required parameters
@@ -313,7 +313,7 @@ module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' = {
+module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardrg'
   params: {
     // Required parameters
@@ -404,7 +404,7 @@ module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' = {
+module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardrgmin'
   params: {
     // Required parameters
@@ -455,7 +455,7 @@ module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' = {
+module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardsub'
   params: {
     // Required parameters
@@ -546,7 +546,7 @@ module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roledefinitions './Microsoft.Authorization/Roledefinitions/deploy.bicep' = {
+module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardsubmin'
   params: {
     // Required parameters
