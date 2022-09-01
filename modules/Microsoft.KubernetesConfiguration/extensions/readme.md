@@ -82,8 +82,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Extensions './Microsoft.Kubernetesconfiguration/Extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kcedef'
+module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Extensions'
   params: {
     // Required parameters
     clusterName: '<clusterName>'
@@ -159,8 +159,8 @@ module Extensions './Microsoft.Kubernetesconfiguration/Extensions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Extensions './Microsoft.Kubernetesconfiguration/Extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kcemin'
+module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Extensions'
   params: {
     // Required parameters
     clusterName: '<clusterName>'

@@ -84,7 +84,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-fluxConfigurations'
+  name: '${uniqueString(deployment().name)}-FluxConfigurations'
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
@@ -161,7 +161,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 
 ```bicep
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-fluxConfigurations'
+  name: '${uniqueString(deployment().name)}-FluxConfigurations'
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
