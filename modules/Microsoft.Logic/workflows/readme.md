@@ -334,7 +334,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workflows'
+  name: '${uniqueString(deployment().name)}-Workflows'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-lga-x-001'

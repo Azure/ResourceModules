@@ -183,8 +183,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aramg'
+module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<principalId>'
@@ -240,8 +240,8 @@ module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aramgmin'
+module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<principalId>'
@@ -283,8 +283,8 @@ module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ararg'
+module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<principalId>'
@@ -344,8 +344,8 @@ module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-arargmin'
+module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<principalId>'
@@ -397,8 +397,8 @@ module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-arasub'
+module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<principalId>'
@@ -454,8 +454,8 @@ module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-arasubmin'
+module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<principalId>'

@@ -343,7 +343,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module redis './Microsoft.Cache/redis/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-redis'
+  name: '${uniqueString(deployment().name)}-Redis'
   params: {
     name: '<<namePrefix>>-az-redis-min-001'
   }
@@ -380,7 +380,7 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
 
 ```bicep
 module redis './Microsoft.Cache/redis/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-redis'
+  name: '${uniqueString(deployment().name)}-Redis'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-redis-full-001'
