@@ -184,7 +184,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bicep' = {
+module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apamgdef'
   params: {
     // Required parameters
@@ -309,7 +309,7 @@ module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bicep' = {
+module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apamgmin'
   params: {
     // Required parameters
@@ -352,7 +352,7 @@ module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bicep' = {
+module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apargdef'
   params: {
     // Required parameters
@@ -485,7 +485,7 @@ module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bicep' = {
+module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apargmin'
   params: {
     // Required parameters
@@ -534,7 +534,7 @@ module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bicep' = {
+module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apasubdef'
   params: {
     // Required parameters
@@ -663,7 +663,7 @@ module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module Policyassignments './Microsoft.Authorization/Policyassignments/deploy.bicep' = {
+module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apasubmin'
   params: {
     // Required parameters
