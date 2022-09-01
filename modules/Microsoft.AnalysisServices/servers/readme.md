@@ -173,7 +173,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Servers './Microsoft.Analysisservices/Servers/deploy.bicep' = {
+module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-assdef'
   params: {
     // Required parameters
@@ -260,7 +260,7 @@ module Servers './Microsoft.Analysisservices/Servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Servers './Microsoft.Analysisservices/Servers/deploy.bicep' = {
+module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-assmax'
   params: {
     // Required parameters
@@ -391,7 +391,7 @@ module Servers './Microsoft.Analysisservices/Servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Servers './Microsoft.Analysisservices/Servers/deploy.bicep' = {
+module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-assmin'
   params: {
     name: '<<namePrefix>>assmin'
