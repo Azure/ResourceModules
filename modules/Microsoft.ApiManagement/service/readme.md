@@ -288,7 +288,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Service './Microsoft.Apimanagement/Service/deploy.bicep' = {
+module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apisdef'
   params: {
     // Required parameters
@@ -411,7 +411,7 @@ module Service './Microsoft.Apimanagement/Service/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Service './Microsoft.Apimanagement/Service/deploy.bicep' = {
+module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apismax'
   params: {
     // Required parameters
@@ -744,7 +744,7 @@ module Service './Microsoft.Apimanagement/Service/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Service './Microsoft.Apimanagement/Service/deploy.bicep' = {
+module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apismin'
   params: {
     // Required parameters
