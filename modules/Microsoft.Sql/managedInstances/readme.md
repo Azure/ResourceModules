@@ -296,7 +296,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managedInstances'
+  name: '${uniqueString(deployment().name)}-ManagedInstances'
   params: {
     administratorLogin: kv1.getSecret('administratorLogin')
     administratorLoginPassword: kv1.getSecret('administratorLoginPassword')

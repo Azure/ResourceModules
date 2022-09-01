@@ -158,7 +158,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  name: '${uniqueString(deployment().name)}-DeploymentScripts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-ds-cli-001'
@@ -235,7 +235,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 
 ```bicep
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  name: '${uniqueString(deployment().name)}-DeploymentScripts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-ds-ps-001'

@@ -167,7 +167,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module components './Microsoft.Insights/components/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-components'
+  name: '${uniqueString(deployment().name)}-Components'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appi-x-001'
