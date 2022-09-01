@@ -307,7 +307,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-bastionHosts'
+  name: '${uniqueString(deployment().name)}-BastionHosts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-bas-custompip-001'
@@ -400,7 +400,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-bastionHosts'
+  name: '${uniqueString(deployment().name)}-BastionHosts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-bas-min-001'
@@ -443,7 +443,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-bastionHosts'
+  name: '${uniqueString(deployment().name)}-BastionHosts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-bas-x-001'

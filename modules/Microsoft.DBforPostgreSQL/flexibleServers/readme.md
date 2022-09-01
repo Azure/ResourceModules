@@ -341,7 +341,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-flexibleServers'
+  name: '${uniqueString(deployment().name)}-FlexibleServers'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
@@ -406,7 +406,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-flexibleServers'
+  name: '${uniqueString(deployment().name)}-FlexibleServers'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
@@ -553,7 +553,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-flexibleServers'
+  name: '${uniqueString(deployment().name)}-FlexibleServers'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'

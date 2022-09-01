@@ -188,7 +188,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
     roleName: '<<namePrefix>>-az-testRole-mg-min'
@@ -239,7 +239,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
     roleName: '<<namePrefix>>-az-testRole-mg'
@@ -334,7 +334,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
     roleName: '<<namePrefix>>-az-testRole-rg-min'
@@ -393,7 +393,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
     roleName: '<<namePrefix>>-az-testRole-rg'
@@ -492,7 +492,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
     roleName: '<<namePrefix>>-az-testRole-sub-min'
@@ -547,7 +547,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
     roleName: '<<namePrefix>>-az-testRole-sub'

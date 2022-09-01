@@ -174,7 +174,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-scheduledQueryRules'
+  name: '${uniqueString(deployment().name)}-ScheduledQueryRules'
   params: {
     // Required parameters
     name: 'myAlert01'
