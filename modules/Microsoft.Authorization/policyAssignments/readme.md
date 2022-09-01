@@ -185,53 +185,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
+  name: '${uniqueString(deployment().name)}-test-apamgdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-min-mg-polAss'
-    policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-min-mg-polAss"
-    },
-    "policyDefinitionID": {
-      "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Mg</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-mg-polAss'
+    name: '<<namePrefix>>apamgdef001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     // Non-required parameters
     description: '[Description] Policy Assignment at the management group scope'
@@ -353,7 +310,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
+  name: '${uniqueString(deployment().name)}-test-apamgmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>apamgmin001'
@@ -396,7 +353,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
+  name: '${uniqueString(deployment().name)}-test-apargdef'
   params: {
     // Required parameters
     name: '<<namePrefix>>apargdef001'
@@ -529,7 +486,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
+  name: '${uniqueString(deployment().name)}-test-apargmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>apargmin001'
@@ -578,7 +535,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
+  name: '${uniqueString(deployment().name)}-test-apasubdef'
   params: {
     // Required parameters
     name: '<<namePrefix>>apasubdef001'
