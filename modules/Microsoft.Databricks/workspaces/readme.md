@@ -236,7 +236,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.Databricks/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-adb-x-001'

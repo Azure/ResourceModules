@@ -429,7 +429,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-accounts'
+  name: '${uniqueString(deployment().name)}-Accounts'
   params: {
     // Required parameters
     kind: 'SpeechServices'
@@ -510,7 +510,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-accounts'
+  name: '${uniqueString(deployment().name)}-Accounts'
   params: {
     // Required parameters
     kind: 'SpeechServices'
@@ -553,7 +553,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-accounts'
+  name: '${uniqueString(deployment().name)}-Accounts'
   params: {
     // Required parameters
     kind: 'Face'
@@ -680,7 +680,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-accounts'
+  name: '${uniqueString(deployment().name)}-Accounts'
   params: {
     // Required parameters
     kind: 'SpeechServices'
