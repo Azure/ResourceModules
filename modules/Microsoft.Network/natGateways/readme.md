@@ -180,7 +180,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module natGateways './Microsoft.Network/natGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-natGateways'
+  name: '${uniqueString(deployment().name)}-NatGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-ngw-x-001'

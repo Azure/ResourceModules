@@ -297,7 +297,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-staticSites'
+  name: '${uniqueString(deployment().name)}-StaticSites'
   params: {
     name: '<<namePrefix>>-az-wss-min-001'
   }
@@ -334,7 +334,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 
 ```bicep
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-staticSites'
+  name: '${uniqueString(deployment().name)}-StaticSites'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-wss-x-001'

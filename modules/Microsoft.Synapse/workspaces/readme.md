@@ -307,7 +307,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
@@ -380,7 +380,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
@@ -449,7 +449,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse002'
@@ -518,7 +518,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
@@ -569,7 +569,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'

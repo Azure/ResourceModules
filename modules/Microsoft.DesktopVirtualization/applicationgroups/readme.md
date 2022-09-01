@@ -176,7 +176,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-applicationgroups'
+  name: '${uniqueString(deployment().name)}-Applicationgroups'
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
@@ -223,7 +223,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 
 ```bicep
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-applicationgroups'
+  name: '${uniqueString(deployment().name)}-Applicationgroups'
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
