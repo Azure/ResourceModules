@@ -58,8 +58,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module locks './Microsoft.Authorization/locks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Locks'
+module Locks './Microsoft.Authorization/Locks/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-aldef'
   params: {
     // Required parameters
     level: 'CanNotDelete'
