@@ -62,7 +62,6 @@ This module deploys a virtual network gateway.
 | `vpnClientAddressPoolPrefix` | string | `''` |  | The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
 | `vpnType` | string | `'RouteBased'` | `[PolicyBased, RouteBased]` | Specifies the VPN type. |
 
-
 ### Parameter Usage: `subnets`
 
 The `subnets` parameter accepts a JSON Array of `subnet` objects to deploy to the Virtual Network.

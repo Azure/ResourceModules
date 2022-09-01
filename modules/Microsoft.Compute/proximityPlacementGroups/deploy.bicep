@@ -1,5 +1,5 @@
 @description('Required. The name of the proximity placement group that is being created.')
-param name string = ''
+param name string
 
 @description('Optional. Specifies the type of the proximity placement group.')
 @allowed([

@@ -196,7 +196,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-networkInterfaces'
+  name: '${uniqueString(deployment().name)}-NetworkInterfaces'
   params: {
     // Required parameters
     ipConfigurations: [
@@ -249,7 +249,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
 
 ```bicep
 module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-networkInterfaces'
+  name: '${uniqueString(deployment().name)}-NetworkInterfaces'
   params: {
     // Required parameters
     ipConfigurations: [

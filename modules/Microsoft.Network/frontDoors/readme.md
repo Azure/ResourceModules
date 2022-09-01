@@ -179,7 +179,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-frontDoors'
+  name: '${uniqueString(deployment().name)}-FrontDoors'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-fd-x-001'

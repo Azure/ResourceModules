@@ -1023,7 +1023,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachines'
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1156,7 +1156,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachines'
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1285,7 +1285,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachines'
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1687,7 +1687,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachines'
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1810,7 +1810,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachines'
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1929,7 +1929,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachines'
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
