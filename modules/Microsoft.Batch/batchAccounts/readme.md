@@ -245,8 +245,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module BatchAccounts './Microsoft.Batch/BatchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-bbadef'
+module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>bbadef001'
@@ -344,8 +344,8 @@ module BatchAccounts './Microsoft.Batch/BatchAccounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module BatchAccounts './Microsoft.Batch/BatchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-bbaencr'
+module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>bbaencr001'
@@ -431,8 +431,8 @@ module BatchAccounts './Microsoft.Batch/BatchAccounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module BatchAccounts './Microsoft.Batch/BatchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-bbamin'
+module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>bbamin001'

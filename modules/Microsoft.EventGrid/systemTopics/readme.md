@@ -286,7 +286,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-systemTopics'
+  name: '${uniqueString(deployment().name)}-SystemTopics'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-egstn-x-002'
@@ -333,7 +333,7 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
 
 ```bicep
 module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-systemTopics'
+  name: '${uniqueString(deployment().name)}-SystemTopics'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-egstn-x-001'

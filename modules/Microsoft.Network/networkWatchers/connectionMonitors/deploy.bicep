@@ -1,7 +1,7 @@
 @description('Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG.')
 param networkWatcherName string = 'NetworkWatcher_${resourceGroup().location}'
 
-@description('Optional. Name of the resource.')
+@description('Required. Name of the resource.')
 param name string
 
 @description('Optional. Tags of the resource.')

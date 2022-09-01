@@ -253,7 +253,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-routeTables'
+  name: '${uniqueString(deployment().name)}-RouteTables'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-udr-x-001'
