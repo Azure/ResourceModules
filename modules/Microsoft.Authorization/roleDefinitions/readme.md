@@ -187,11 +187,62 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardmg'
+module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardmg'
+    roleName: '<<namePrefix>>-az-testRole-mg-min'
+    // Non-required parameters
+    actions: [
+      'Microsoft.Compute/galleries/images/read'
+      'Microsoft.Compute/galleries/read'
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "roleName": {
+      "value": "<<namePrefix>>-az-testRole-mg-min"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        "Microsoft.Compute/galleries/images/read",
+        "Microsoft.Compute/galleries/read"
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Mg</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
+  params: {
+    // Required parameters
+    roleName: '<<namePrefix>>-az-testRole-mg'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
@@ -262,8 +313,8 @@ module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardmgmin'
+module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
     roleName: '<<namePrefix>>-testRole-ardmgmin'
@@ -313,8 +364,8 @@ module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardrg'
+module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
     roleName: '<<namePrefix>>-testRole-ardrg'
@@ -404,8 +455,8 @@ module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardrgmin'
+module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
     roleName: '<<namePrefix>>-testRole-ardrgmin'
@@ -455,8 +506,8 @@ module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module RoleDefinitions './Microsoft.Authorization/RoleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardsub'
+module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
     roleName: '<<namePrefix>>-testRole-ardsub'

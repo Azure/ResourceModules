@@ -918,7 +918,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vaults'
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-rsv-dr-001'
@@ -1073,7 +1073,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 
 ```bicep
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vaults'
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
     name: '<<namePrefix>>-az-rsv-min-001'
   }
@@ -1110,7 +1110,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 
 ```bicep
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vaults'
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-rsv-x-001'

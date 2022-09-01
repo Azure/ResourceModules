@@ -303,7 +303,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-configurationStores'
+  name: '${uniqueString(deployment().name)}-ConfigurationStores'
   params: {
     name: '<<namePrefix>>-az-appc-min-001'
   }
@@ -340,7 +340,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
 
 ```bicep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-configurationStores'
+  name: '${uniqueString(deployment().name)}-ConfigurationStores'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appc-x-001'
@@ -475,7 +475,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
 
 ```bicep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-configurationStores'
+  name: '${uniqueString(deployment().name)}-ConfigurationStores'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appc-pe-001'

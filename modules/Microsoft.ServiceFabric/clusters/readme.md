@@ -245,7 +245,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-clusters'
+  name: '${uniqueString(deployment().name)}-Clusters'
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080'
@@ -340,7 +340,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-clusters'
+  name: '${uniqueString(deployment().name)}-Clusters'
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
@@ -743,7 +743,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-clusters'
+  name: '${uniqueString(deployment().name)}-Clusters'
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080'

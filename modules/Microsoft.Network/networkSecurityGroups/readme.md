@@ -172,7 +172,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-networkSecurityGroups'
+  name: '${uniqueString(deployment().name)}-NetworkSecurityGroups'
   params: {
     name: '<<namePrefix>>-az-nsg-min-001'
   }
@@ -209,7 +209,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 
 ```bicep
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-networkSecurityGroups'
+  name: '${uniqueString(deployment().name)}-NetworkSecurityGroups'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-nsg-x-001'

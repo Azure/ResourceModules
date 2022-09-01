@@ -58,7 +58,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module diagnosticSettings './Microsoft.Insights/diagnosticSettings/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-diagnosticSettings'
+  name: '${uniqueString(deployment().name)}-DiagnosticSettings'
   params: {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
