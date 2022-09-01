@@ -170,7 +170,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module connections './Microsoft.Web/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-connections'
+  name: '${uniqueString(deployment().name)}-Connections'
   params: {
     // Required parameters
     displayName: 'azuremonitorlogs'
