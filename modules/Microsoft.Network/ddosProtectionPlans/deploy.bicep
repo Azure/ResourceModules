@@ -1,6 +1,6 @@
 @description('Required. Name of the DDoS protection plan to assign the VNET to.')
 @minLength(1)
-param name string = ''
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location

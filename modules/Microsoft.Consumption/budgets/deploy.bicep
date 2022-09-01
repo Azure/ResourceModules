@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
-@description('Optional. The name of the budget.')
-param name string = ''
+@description('Required. The name of the budget.')
+param name string
 
 @allowed([
   'Cost'
@@ -55,7 +55,6 @@ param enableDefaultTelemetry bool = true
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-var budgetNameVar = empty(name) ? '${resetPeriod}-${category}-Budget' : name
 var notificationsArray = [for threshold in thresholds: {
   'Actual_GreaterThan_${threshold}_Percentage': {
     enabled: true
@@ -84,7 +83,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource budget 'Microsoft.Consumption/budgets@2019-05-01' = {
-  name: budgetNameVar
+  name: name
   properties: {
     category: category
     amount: amount

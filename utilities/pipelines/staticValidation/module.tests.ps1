@@ -27,7 +27,7 @@ $script:moduleFolderPaths = $moduleFolderPaths
 $script:convertedTemplates = @{}
 
 # Shared exception messages
-$script:bicepTemplateCompilationFailedException = "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `az bicep build --file {0} --stdout | ConvertFrom-Json -AsHashtable`." # -f $templateFilePath
+$script:bicepTemplateCompilationFailedException = "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command ``az bicep build --file {0} --stdout | ConvertFrom-Json -AsHashtable``." # -f $templateFilePath
 $script:jsonTemplateLoadFailedException = "Unable to load the deploy.json template's content. This can happen if there is an error in the template. Please check if you can run the command `Get-Content {0} -Raw | ConvertFrom-Json -AsHashtable`." # -f $templateFilePath
 $script:templateNotFoundException = 'No template file found in folder [{0}]' # -f $moduleFolderPath
 
@@ -608,16 +608,6 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
 
             $testResource | Should -Not -BeNullOrEmpty -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
-        }
-
-        It '[<moduleFolderName>] JSON test deployment should have parameter [namePrefix]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
-
-            param(
-                [object[]] $testFileContent
-            )
-
-            $rawContentHashtable = $testFileContent | ConvertFrom-Json -Depth 99 -AsHashtable
-            $rawContentHashtable.parameters.keys | Should -Contain 'namePrefix'
         }
 
         It '[<moduleFolderName>] JSON test deployment should have parameter [serviceShort]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
