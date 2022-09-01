@@ -32,6 +32,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    location: location
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
   }
 }
@@ -44,6 +45,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    location: location
     name: '<<namePrefix>>${serviceShort}'
     adminUsername: 'localAdminUser'
     imageReference: {

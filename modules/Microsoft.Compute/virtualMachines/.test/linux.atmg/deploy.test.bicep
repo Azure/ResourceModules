@@ -28,6 +28,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    location: location
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     sshDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
     sshKeyName: 'dep-<<namePrefix>>-ssh-${serviceShort}'
@@ -41,13 +42,14 @@ module resourceGroupResources 'dependencies.bicep' = {
 
 resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' existing = {
   name: last(split(resourceGroupResources.outputs.SSHKeyResourceID, '/'))
-  scope: az.resourceGroup(split(resourceGroupResources.outputs.SSHKeyResourceID, '/')[2], split(resourceGroupResources.outputs.SSHKeyResourceID, '/')[4])
+  scope: resourceGroup
 }
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    location: location
     name: '<<namePrefix>>${serviceShort}'
     adminUsername: 'localAdminUser'
     imageReference: {

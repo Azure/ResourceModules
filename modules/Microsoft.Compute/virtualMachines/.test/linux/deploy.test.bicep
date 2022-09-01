@@ -28,6 +28,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    location: location
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     applicationSecurityGroupName: 'adp-<<namePrefix>>-asg-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
@@ -61,7 +62,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 
 resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' existing = {
   name: last(split(resourceGroupResources.outputs.SSHKeyResourceID, '/'))
-  scope: az.resourceGroup(split(resourceGroupResources.outputs.SSHKeyResourceID, '/')[2], split(resourceGroupResources.outputs.SSHKeyResourceID, '/')[4])
+  scope: resourceGroup
 }
 
 module testDeployment '../../deploy.bicep' = {
@@ -69,6 +70,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}'
+    location: location
     adminUsername: 'localAdminUser'
     imageReference: {
       offer: 'UbuntuServer'

@@ -1022,7 +1022,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmlindef'
   params: {
     // Required parameters
@@ -1154,6 +1154,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
     extensionNetworkWatcherAgentConfig: {
       enabled: true
     }
+    location: '<location>'
     lock: 'CanNotDelete'
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     name: '<<namePrefix>>cvmlindef'
@@ -1370,6 +1371,9 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
         "enabled": true
       }
     },
+    "location": {
+      "value": "<location>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -1419,7 +1423,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmlinatmg'
   params: {
     // Required parameters
@@ -1455,6 +1459,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
     // Non-required parameters
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
+    location: '<location>'
     name: '<<namePrefix>>cvmlinatmg'
     publicKeys: [
       {
@@ -1527,6 +1532,9 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
     "disablePasswordAuthentication": {
       "value": true
     },
+    "location": {
+      "value": "<location>"
+    },
     "name": {
       "value": "<<namePrefix>>cvmlinatmg"
     },
@@ -1552,7 +1560,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmlinmin'
   params: {
     // Required parameters
@@ -1587,6 +1595,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
     vmSize: 'Standard_B12ms'
     // Non-required parameters
     disablePasswordAuthentication: true
+    location: '<location>'
     name: '<<namePrefix>>cvmlinmin'
     publicKeys: [
       {
@@ -1656,6 +1665,9 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
     "disablePasswordAuthentication": {
       "value": true
     },
+    "location": {
+      "value": "<location>"
+    },
     "name": {
       "value": "<<namePrefix>>cvmlinmin"
     },
@@ -1681,7 +1693,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwindef'
   params: {
     // Required parameters
@@ -1831,6 +1843,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
     extensionNetworkWatcherAgentConfig: {
       enabled: true
     }
+    location: '<location>'
     lock: 'CanNotDelete'
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
     name: '<<namePrefix>>cvmwindef'
@@ -2062,6 +2075,9 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
         "enabled": true
       }
     },
+    "location": {
+      "value": "<location>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -2106,7 +2122,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwinautmg'
   params: {
     // Required parameters
@@ -2139,6 +2155,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
     // Non-required parameters
     adminPassword: '<adminPassword>'
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+    location: '<location>'
     name: '<<namePrefix>>cvmwinautmg'
   }
 }
@@ -2202,6 +2219,9 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
     "configurationProfile": {
       "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
     },
+    "location": {
+      "value": "<location>"
+    },
     "name": {
       "value": "<<namePrefix>>cvmwinautmg"
     }
@@ -2219,7 +2239,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwinmin'
   params: {
     // Required parameters
@@ -2251,6 +2271,7 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
     vmSize: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: '<adminPassword>'
+    location: '<location>'
     name: '<<namePrefix>>cvmwinmin'
   }
 }
@@ -2310,6 +2331,9 @@ module VirtualMachines './Microsoft.Compute/VirtualMachines/deploy.bicep' = {
     // Non-required parameters
     "adminPassword": {
       "value": "<adminPassword>"
+    },
+    "location": {
+      "value": "<location>"
     },
     "name": {
       "value": "<<namePrefix>>cvmwinmin"
