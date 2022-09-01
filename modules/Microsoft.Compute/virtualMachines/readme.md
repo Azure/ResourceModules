@@ -2123,7 +2123,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmwinautmg'
+  name: '${uniqueString(deployment().name)}-test-cvmwinatmg'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -2156,7 +2156,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     adminPassword: '<adminPassword>'
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     location: '<location>'
-    name: '<<namePrefix>>cvmwinautmg'
+    name: '<<namePrefix>>cvmwinatmg'
   }
 }
 ```
@@ -2223,7 +2223,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmwinautmg"
+      "value": "<<namePrefix>>cvmwinatmg"
     }
   }
 }
