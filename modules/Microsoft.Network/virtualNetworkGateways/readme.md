@@ -58,6 +58,7 @@ This module deploys a virtual network gateway.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `virtualNetworkGatewaydiagnosticLogCategoriesToEnable` | array | `[GatewayDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog, RouteDiagnosticLog, TunnelDiagnosticLog]` | `[GatewayDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog, RouteDiagnosticLog, TunnelDiagnosticLog]` | The name of logs that will be streamed. |
 | `virtualNetworkGatewayDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `vpnClientAadConfiguration` | object | `{object}` |  | Configuration for AAD Authentication for P2S Tunnel Type. |
 | `vpnClientAddressPoolPrefix` | string | `''` |  | The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
 | `vpnType` | string | `'RouteBased'` | `[PolicyBased, RouteBased]` | Specifies the VPN type. |
 
@@ -249,15 +250,134 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Expressroute</h3>
+<h3>Example 1: Aadvpn</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
+module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Virtualnetworkgateways'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-az-gw-vpn-001'
+    virtualNetworkGatewaySku: 'VpnGw1AZ'
+    virtualNetworkGatewayType: 'Vpn'
+    vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+    // Non-required parameters
+    activeActive: true
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    domainNameLabel: [
+      '<<namePrefix>>-az-gw-vpn-dm-001'
+    ]
+    lock: 'CanNotDelete'
+    publicIpZones: [
+      '1'
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    vpnType: 'RouteBased'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-gw-vpn-001"
+    },
+    "virtualNetworkGatewaySku": {
+      "value": "VpnGw1AZ"
+    },
+    "virtualNetworkGatewayType": {
+      "value": "Vpn"
+    },
+    "vNetResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
+    },
+    // Non-required parameters
+    "activeActive": {
+      "value": true
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+    },
+    "diagnosticEventHubName": {
+      "value": "adp-<<namePrefix>>-az-evh-x-001"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+    },
+    "domainNameLabel": {
+      "value": [
+        "<<namePrefix>>-az-gw-vpn-dm-001"
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "publicIpZones": {
+      "value": [
+        "1"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "vpnType": {
+      "value": "RouteBased"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Expressroute</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Virtualnetworkgateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-gw-er-001'
@@ -370,15 +490,15 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 </details>
 <p>
 
-<h3>Example 2: Vpn</h3>
+<h3>Example 3: Vpn</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
+module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Virtualnetworkgateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-gw-vpn-001'

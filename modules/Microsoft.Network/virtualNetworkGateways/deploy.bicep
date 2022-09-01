@@ -134,6 +134,9 @@ param virtualNetworkGatewaydiagnosticLogCategoriesToEnable array = [
   'P2SDiagnosticLog'
 ]
 
+@description('Optional. Configuration for AAD Authentication for P2S Tunnel Type.')
+param vpnClientAadConfiguration object = {}
+
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
@@ -251,7 +254,7 @@ var ipConfiguration = isActiveActiveValid ? [
   }
 ]
 
-var vpnClientConfiguration = {
+var vpnClientConfiguration = !empty(clientRootCertData) ? {
   vpnClientAddressPool: {
     addressPrefixes: [
       vpnClientAddressPoolPrefix
@@ -273,7 +276,22 @@ var vpnClientConfiguration = {
       }
     }
   ] : null
-}
+} : !empty(vpnClientAadConfiguration) ? {
+  vpnClientAddressPool: {
+    addressPrefixes: [
+      vpnClientAddressPoolPrefix
+    ]
+  }
+  aadTenant: vpnClientAadConfiguration.aadTenant
+  aadAudience: vpnClientAadConfiguration.aadAudience
+  aadIssuer: vpnClientAadConfiguration.aadIssuer
+  vpnAuthenticationTypes: [
+    vpnClientAadConfiguration.vpnAuthenticationTypes
+  ]
+  vpnClientProtocols: [
+    vpnClientAadConfiguration.vpnClientProtocols
+  ]
+} : null
 
 // ================//
 // Deployments     //
