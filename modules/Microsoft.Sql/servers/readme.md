@@ -343,7 +343,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-servers'
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-sqlsrv-admin-001'
@@ -405,7 +405,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-servers'
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-sqlsrv-x-001'

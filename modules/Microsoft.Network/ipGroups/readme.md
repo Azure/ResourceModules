@@ -163,7 +163,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ipGroups'
+  name: '${uniqueString(deployment().name)}-IpGroups'
   params: {
     // Required parameters
     name: 'iacsGroup-servers'

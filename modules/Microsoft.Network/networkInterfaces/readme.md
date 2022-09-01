@@ -195,8 +195,61 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Networkinterfaces './Microsoft.Network/Networkinterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnidef'
+module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-NetworkInterfaces'
+  params: {
+    // Required parameters
+    ipConfigurations: [
+      {
+        name: 'ipconfig01'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+      }
+    ]
+    name: '<<namePrefix>>-az-nic-min-001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "ipconfig01",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-nic-min-001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-NetworkInterfaces'
   params: {
     // Required parameters
     ipConfigurations: [

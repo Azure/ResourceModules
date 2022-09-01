@@ -140,7 +140,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managementGroups'
+  name: '${uniqueString(deployment().name)}-ManagementGroups'
   params: {
     // Required parameters
     name: 'testMG'
