@@ -153,7 +153,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-firewallPolicies'
+  name: '${uniqueString(deployment().name)}-FirewallPolicies'
   params: {
     name: '<<namePrefix>>-az-fwpol-min-001'
   }
@@ -190,7 +190,7 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 
 ```bicep
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-firewallPolicies'
+  name: '${uniqueString(deployment().name)}-FirewallPolicies'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-fwpol-x-002'

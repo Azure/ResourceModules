@@ -182,7 +182,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-registrationDefinitions'
+  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
   params: {
     // Required parameters
     authorizations: [
@@ -265,7 +265,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-registrationDefinitions'
+  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
   params: {
     // Required parameters
     authorizations: [
