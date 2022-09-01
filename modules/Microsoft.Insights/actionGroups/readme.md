@@ -249,7 +249,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-actionGroups'
+  name: '${uniqueString(deployment().name)}-ActionGroups'
   params: {
     // Required parameters
     groupShortName: 'azagweux001'

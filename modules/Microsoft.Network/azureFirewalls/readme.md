@@ -320,7 +320,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-azureFirewalls'
+  name: '${uniqueString(deployment().name)}-AzureFirewalls'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-fw-add-001'
@@ -379,7 +379,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-azureFirewalls'
+  name: '${uniqueString(deployment().name)}-AzureFirewalls'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-fw-custompip-001'
@@ -472,7 +472,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-azureFirewalls'
+  name: '${uniqueString(deployment().name)}-AzureFirewalls'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-fw-min-001'
@@ -515,7 +515,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-azureFirewalls'
+  name: '${uniqueString(deployment().name)}-AzureFirewalls'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-fw-x-001'

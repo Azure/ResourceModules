@@ -174,7 +174,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-assdef'
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
     name: '<<namePrefix>>assdef'
@@ -392,9 +392,63 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-assmin'
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
-    name: '<<namePrefix>>assmin'
+    name: '<<namePrefix>>azasweumin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>azasweumin001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Servers'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>azasweux001'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuName: 'S0'
   }
 }
 ```
