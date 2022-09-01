@@ -165,7 +165,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Availabilitysets './Microsoft.Compute/Availabilitysets/deploy.bicep' = {
+module AvailabilitySets './Microsoft.Compute/AvailabilitySets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-casdef'
   params: {
     // Required parameters
@@ -232,7 +232,7 @@ module Availabilitysets './Microsoft.Compute/Availabilitysets/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Availabilitysets './Microsoft.Compute/Availabilitysets/deploy.bicep' = {
+module AvailabilitySets './Microsoft.Compute/AvailabilitySets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-casmin'
   params: {
     name: '<<namePrefix>>casmin001'
