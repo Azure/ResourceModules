@@ -182,7 +182,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-image-001'
@@ -253,7 +253,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-import-001'
@@ -328,7 +328,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-min-001'
@@ -395,7 +395,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-x-001'
