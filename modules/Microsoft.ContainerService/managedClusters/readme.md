@@ -375,8 +375,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ManagedClusters'
+module ManagedClusters './Microsoft.ContainerService/ManagedClusters/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-csma'
   params: {
     // Required parameters
     name: '<<namePrefix>>csma001'
@@ -620,8 +620,8 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ManagedClusters'
+module ManagedClusters './Microsoft.ContainerService/ManagedClusters/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-csmk'
   params: {
     // Required parameters
     name: '<<namePrefix>>csmk001'
