@@ -372,7 +372,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Automationaccounts './Microsoft.Automation/Automationaccounts/deploy.bicep' = {
+module AutomationAccounts './Microsoft.Automation/AutomationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aadef'
   params: {
     // Required parameters
@@ -781,7 +781,7 @@ module Automationaccounts './Microsoft.Automation/Automationaccounts/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module Automationaccounts './Microsoft.Automation/Automationaccounts/deploy.bicep' = {
+module AutomationAccounts './Microsoft.Automation/AutomationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aaencr'
   params: {
     // Required parameters
@@ -846,7 +846,7 @@ module Automationaccounts './Microsoft.Automation/Automationaccounts/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module Automationaccounts './Microsoft.Automation/Automationaccounts/deploy.bicep' = {
+module AutomationAccounts './Microsoft.Automation/AutomationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aamin'
   params: {
     name: '<<namePrefix>>aamin001'
