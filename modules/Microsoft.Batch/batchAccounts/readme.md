@@ -246,7 +246,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-batchAccounts'
+  name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>azbaweuencr001'
@@ -333,7 +333,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 
 ```bicep
 module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-batchAccounts'
+  name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>azbaweumin001'
@@ -376,7 +376,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 
 ```bicep
 module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-batchAccounts'
+  name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>azbaweux001'

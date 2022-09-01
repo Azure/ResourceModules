@@ -368,7 +368,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-webPubSub'
+  name: '${uniqueString(deployment().name)}-WebPubSub'
   params: {
     name: '<<namePrefix>>-az-pubsub-min-001'
   }
@@ -405,7 +405,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 
 ```bicep
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-webPubSub'
+  name: '${uniqueString(deployment().name)}-WebPubSub'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-pubsub-x-001'
@@ -578,7 +578,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 
 ```bicep
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-webPubSub'
+  name: '${uniqueString(deployment().name)}-WebPubSub'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-pubsub-pe-001'

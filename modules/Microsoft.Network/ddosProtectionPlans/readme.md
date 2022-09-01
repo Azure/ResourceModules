@@ -162,7 +162,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ddosProtectionPlans'
+  name: '${uniqueString(deployment().name)}-DdosProtectionPlans'
   params: {
     lock: 'CanNotDelete'
     name: '<<namePrefix>>-az-ddos-x-001'

@@ -389,7 +389,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-storageAccounts'
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
     allowBlobPublicAccess: false
     blobServices: {
@@ -504,7 +504,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-storageAccounts'
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
     allowBlobPublicAccess: false
   }
@@ -541,7 +541,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-storageAccounts'
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
     allowBlobPublicAccess: false
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
@@ -662,7 +662,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-storageAccounts'
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
     allowBlobPublicAccess: false
     blobServices: {
@@ -1063,7 +1063,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-storageAccounts'
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
     allowBlobPublicAccess: false
     name: '<<namePrefix>>azsav1001'

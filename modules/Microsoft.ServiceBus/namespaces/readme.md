@@ -353,7 +353,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-namespaces'
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
 
   }
@@ -386,7 +386,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-namespaces'
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
     authorizationRules: [
       {
@@ -731,7 +731,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-namespaces'
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
     name: '<<namePrefix>>-az-sbn-pe-001'
     privateEndpoints: [
