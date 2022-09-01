@@ -103,7 +103,7 @@ function Get-FormattedGitHubRelease {
     # =================== #
     $categories = @()
     foreach ($line in $correctlyFormatted) {
-        $match = [regex]::Match($line, '\[(.+)\].+')
+        $match = [regex]::Match($line, '\[(.+?)\].+')
         $categories += $match.Captures.Groups[1].Value
     }
     $foundCategories = $categories | Select-Object -Unique
@@ -111,14 +111,14 @@ function Get-FormattedGitHubRelease {
     $output = @()
     foreach ($category in $foundCategories) {
         $output += "***$category***"
-        $categoryItems = $correctlyFormatted | Where-Object { $_ -match ".+\[$category\].+" }
+        $categoryItems = $correctlyFormatted | Where-Object { $_ -imatch ".+\[$category\].+" }
         foreach ($categoryItem in $categoryItems) {
             $simplifiedItem = $categoryItem -replace "\* \[$category\]"
             $simplifiedItem = $simplifiedItem -replace 'by @.*', ''
             if ($simplifiedItem -like ':*') {
                 $simplifiedItem = $simplifiedItem.Substring(1, ($simplifiedItem.Length - 1))
             }
-            $output += "* $simplifiedItem".Trim()
+            $output += '* {0}' -f $simplifiedItem.Trim()
         }
         $output += ''
     }

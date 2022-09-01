@@ -373,7 +373,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-automationAccounts'
+  name: '${uniqueString(deployment().name)}-AutomationAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-aut-encr-001'
@@ -438,7 +438,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 
 ```bicep
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-automationAccounts'
+  name: '${uniqueString(deployment().name)}-AutomationAccounts'
   params: {
     name: '<<namePrefix>>-az-aut-min-001'
   }
@@ -475,7 +475,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 
 ```bicep
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-automationAccounts'
+  name: '${uniqueString(deployment().name)}-AutomationAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-aut-x-001'

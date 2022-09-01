@@ -179,7 +179,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-privateEndpoints'
+  name: '${uniqueString(deployment().name)}-PrivateEndpoints'
   params: {
     // Required parameters
     groupIds: [
@@ -234,7 +234,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
 
 ```bicep
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-privateEndpoints'
+  name: '${uniqueString(deployment().name)}-PrivateEndpoints'
   params: {
     // Required parameters
     groupIds: [

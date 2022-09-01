@@ -417,15 +417,72 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Sites './Microsoft.Web/Sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wsfa'
+module sites './Microsoft.Web/sites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'functionapp'
     name: '<<namePrefix>>wsfa001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
-    appInsightId: '<appInsightId>'
+    siteConfig: {
+      alwaysOn: true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "kind": {
+      "value": "functionapp"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-fa-min-001"
+    },
+    "serverFarmResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
+    },
+    // Non-required parameters
+    "siteConfig": {
+      "value": {
+        "alwaysOn": true
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Fa</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module sites './Microsoft.Web/sites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Sites'
+  params: {
+    // Required parameters
+    kind: 'functionapp'
+    name: '<<namePrefix>>-az-fa-x-001'
+    serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
+    // Non-required parameters
+    appInsightId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
       EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
@@ -696,8 +753,8 @@ module Sites './Microsoft.Web/Sites/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Sites './Microsoft.Web/Sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wsfamin'
+module sites './Microsoft.Web/sites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'functionapp'
@@ -753,8 +810,8 @@ module Sites './Microsoft.Web/Sites/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Sites './Microsoft.Web/Sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wswa'
+module sites './Microsoft.Web/sites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'app'

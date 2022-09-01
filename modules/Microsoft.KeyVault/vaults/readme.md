@@ -404,7 +404,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vaults'
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
     name: '<<namePrefix>>-az-kv-min-001'
   }
@@ -441,7 +441,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 
 ```bicep
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vaults'
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
     name: '<<namePrefix>>-az-kv-x-002'
     accessPolicies: [
