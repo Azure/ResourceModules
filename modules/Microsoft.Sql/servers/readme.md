@@ -342,8 +342,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Servers './Microsoft.Sql/Servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlsadmin'
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sqlsadmin'
@@ -399,8 +399,13 @@ module Servers './Microsoft.Sql/Servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Servers './Microsoft.Sql/Servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlsdef'
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','<<resourceGroupName>>')
+}
+
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sqlsdef'

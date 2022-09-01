@@ -418,7 +418,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-sites'
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'functionapp'
@@ -475,7 +475,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 
 ```bicep
 module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-sites'
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'functionapp'
@@ -754,7 +754,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 
 ```bicep
 module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-sites'
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'app'
@@ -801,7 +801,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 
 ```bicep
 module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-sites'
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'app'

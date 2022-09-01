@@ -216,7 +216,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-serverfarms'
+  name: '${uniqueString(deployment().name)}-Serverfarms'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-asp-x-001'

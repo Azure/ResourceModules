@@ -392,7 +392,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-metricAlerts'
+  name: '${uniqueString(deployment().name)}-MetricAlerts'
   params: {
     // Required parameters
     criterias: [

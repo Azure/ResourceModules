@@ -59,7 +59,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module locks './Microsoft.Authorization/locks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-locks'
+  name: '${uniqueString(deployment().name)}-Locks'
   params: {
     // Required parameters
     level: 'CanNotDelete'
