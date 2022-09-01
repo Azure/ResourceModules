@@ -274,7 +274,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-scalingplans'
+  name: '${uniqueString(deployment().name)}-Scalingplans'
   params: {
     name: '<<namePrefix>>-az-avdsp-x-001'
   }

@@ -239,7 +239,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-applicationGateways'
+  name: '${uniqueString(deployment().name)}-ApplicationGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-apgw-x-001'

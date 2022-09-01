@@ -267,7 +267,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-trafficmanagerprofiles'
+  name: '${uniqueString(deployment().name)}-Trafficmanagerprofiles'
   params: {
     // Required parameters
     name: 'tm-000001'
