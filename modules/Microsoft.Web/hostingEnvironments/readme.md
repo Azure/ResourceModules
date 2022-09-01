@@ -216,7 +216,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-hostingEnvironments'
+  name: '${uniqueString(deployment().name)}-HostingEnvironments'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appse-asev2-001'
@@ -325,7 +325,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
 
 ```bicep
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-hostingEnvironments'
+  name: '${uniqueString(deployment().name)}-HostingEnvironments'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appse-asev3-001'
