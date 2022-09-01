@@ -411,7 +411,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-activityLogAlerts'
+  name: '${uniqueString(deployment().name)}-ActivityLogAlerts'
   params: {
     // Required parameters
     conditions: [
