@@ -356,7 +356,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-registries'
+  name: '${uniqueString(deployment().name)}-Registries'
   params: {
     // Required parameters
     name: '<<namePrefix>>azacrencr001'
@@ -425,7 +425,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-registries'
+  name: '${uniqueString(deployment().name)}-Registries'
   params: {
     name: '<<namePrefix>>azacrmin001'
   }
@@ -462,7 +462,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-registries'
+  name: '${uniqueString(deployment().name)}-Registries'
   params: {
     // Required parameters
     name: '<<namePrefix>>azacrx001'

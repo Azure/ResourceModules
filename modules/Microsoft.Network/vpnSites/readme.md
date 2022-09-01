@@ -335,7 +335,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnSites'
+  name: '${uniqueString(deployment().name)}-VpnSites'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vSite-min-001'
@@ -392,7 +392,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
 
 ```bicep
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnSites'
+  name: '${uniqueString(deployment().name)}-VpnSites'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vSite-x-001'

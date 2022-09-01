@@ -261,7 +261,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-topics'
+  name: '${uniqueString(deployment().name)}-Topics'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-egtn-x-001'

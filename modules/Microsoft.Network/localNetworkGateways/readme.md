@@ -168,7 +168,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-localNetworkGateways'
+  name: '${uniqueString(deployment().name)}-LocalNetworkGateways'
   params: {
     // Required parameters
     localAddressPrefixes: [
