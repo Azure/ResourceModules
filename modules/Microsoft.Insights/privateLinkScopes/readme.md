@@ -252,7 +252,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-privateLinkScopes'
+  name: '${uniqueString(deployment().name)}-PrivateLinkScopes'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-pls-x-001'
