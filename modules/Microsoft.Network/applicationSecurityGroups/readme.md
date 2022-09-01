@@ -162,7 +162,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-applicationSecurityGroups'
+  name: '${uniqueString(deployment().name)}-ApplicationSecurityGroups'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-asg-x-001'

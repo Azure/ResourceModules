@@ -171,7 +171,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-netAppAccounts'
+  name: '${uniqueString(deployment().name)}-NetAppAccounts'
   params: {
     name: '<<namePrefix>>-az-anf-min-001'
   }
@@ -208,7 +208,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-netAppAccounts'
+  name: '${uniqueString(deployment().name)}-NetAppAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-anf-nfs3-001'
@@ -421,7 +421,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-netAppAccounts'
+  name: '${uniqueString(deployment().name)}-NetAppAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-anf-nfs41-001'

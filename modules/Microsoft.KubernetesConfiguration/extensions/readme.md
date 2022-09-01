@@ -82,7 +82,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-extensions'
+  name: '${uniqueString(deployment().name)}-Extensions'
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
@@ -139,7 +139,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 
 ```bicep
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-extensions'
+  name: '${uniqueString(deployment().name)}-Extensions'
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
