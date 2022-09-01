@@ -148,7 +148,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/deploy.bicep' = {
+module PolicySetDefinitions './Microsoft.Authorization/PolicySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdmg'
   params: {
     // Required parameters
@@ -291,7 +291,7 @@ module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/deploy.bicep' = {
+module PolicySetDefinitions './Microsoft.Authorization/PolicySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdmgmin'
   params: {
     // Required parameters
@@ -356,7 +356,7 @@ module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/deploy.bicep' = {
+module PolicySetDefinitions './Microsoft.Authorization/PolicySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdsub'
   params: {
     // Required parameters
@@ -499,7 +499,7 @@ module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module Policysetdefinitions './Microsoft.Authorization/Policysetdefinitions/deploy.bicep' = {
+module PolicySetDefinitions './Microsoft.Authorization/PolicySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdsubmin'
   params: {
     // Required parameters
