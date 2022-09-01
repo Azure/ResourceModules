@@ -51,7 +51,7 @@ function Set-ResourceTypesSection {
 
     $RelevantResourceTypeObjects = Get-NestedResourceList $TemplateFileContent | Where-Object {
         $_.type -notin $ResourceTypesToExclude -and $_
-    } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture en-US
+    } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture 'en-US'
 
     foreach ($resourceTypeObject in $RelevantResourceTypeObjects) {
         $ProviderNamespace, $ResourceType = $resourceTypeObject.Type -split '/', 2
@@ -280,7 +280,7 @@ function Set-OutputsSection {
             '| Output Name | Type | Description |',
             '| :-- | :-- | :-- |'
         )
-        foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture en-US)) {
+        foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture 'en-US')) {
             $output = $TemplateFileContent.outputs[$outputName]
             $description = $output.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
             $SectionContent += ("| ``{0}`` | {1} | {2} |" -f $outputName, $output.type, $description)
@@ -290,7 +290,7 @@ function Set-OutputsSection {
             '| Output Name | Type |',
             '| :-- | :-- |'
         )
-        foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture en-US)) {
+        foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture 'en-US')) {
             $output = $TemplateFileContent.outputs[$outputName]
             $SectionContent += ("| ``{0}`` | {1} |" -f $outputName, $output.type)
         }
@@ -885,8 +885,15 @@ function Set-DeploymentExamplesSection {
 
     $TextInfo = (Get-Culture -Name 'en-US').TextInfo
     $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $resourceTypeIdentifier = $TextInfo.ToTitleCase($moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/'))
-    $resourceType = $TextInfo.ToTitleCase($resourceTypeIdentifier.Split('/')[1])
+    $fullIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
+
+    # Get resource type and make first letter upper case. Requires manual handling as ToTitleCase lowercases everything but the first letter
+    $providerNamespace = ($fullIdentifier.Split('/')[0] -split '\.' | ForEach-Object { $_.Substring(0, 1).ToUpper() + $_.Substring(1) }) -join '.'
+    $resourceType = $fullIdentifier.Split('/')[1]
+    $resourceTypeUpper = $resourceType.Substring(0, 1).ToUpper() + $resourceType.Substring(1)
+
+    $resourceTypeIdentifier = "$providerNamespace/$resourceType"
+
     $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleRoot | ForEach-Object { Join-Path $moduleRoot $_ }
 
     $RequiredParametersList = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' } | Sort-Object
@@ -907,7 +914,8 @@ function Set-DeploymentExamplesSection {
         } else {
             $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
         }
-        $exampleTitle = $TextInfo.ToTitleCase($exampleTitle)
+        $textInfo = (Get-Culture -Name 'en-US').TextInfo
+        $exampleTitle = $textInfo.ToTitleCase($exampleTitle)
         $SectionContent += @(
             '<h3>Example {0}: {1}</h3>' -f $pathIndex, $exampleTitle
         )
@@ -1138,7 +1146,7 @@ function Set-DeploymentExamplesSection {
                     '```bicep',
                     $extendedKeyVaultReferences,
                     "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
-                    "  name: '`${uniqueString(deployment().name)}-$resourceType'"
+                    "  name: '`${uniqueString(deployment().name)}-$resourceTypeUpper'"
                     '  params: {'
                     $bicepExample.TrimEnd(),
                     '  }'

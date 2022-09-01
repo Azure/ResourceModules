@@ -166,7 +166,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-availabilitySets'
+  name: '${uniqueString(deployment().name)}-AvailabilitySets'
   params: {
     name: '<<namePrefix>>-az-avs-min-001'
   }
@@ -203,7 +203,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
 
 ```bicep
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-availabilitySets'
+  name: '${uniqueString(deployment().name)}-AvailabilitySets'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-avs-x-001'

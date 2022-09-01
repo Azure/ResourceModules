@@ -166,7 +166,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module images './Microsoft.Compute/images/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-images'
+  name: '${uniqueString(deployment().name)}-Images'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-img-x-001'
