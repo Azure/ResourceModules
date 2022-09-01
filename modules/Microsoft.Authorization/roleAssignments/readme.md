@@ -183,7 +183,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' = {
+module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aramg'
   params: {
     // Required parameters
@@ -240,7 +240,7 @@ module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' = {
+module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aramgmin'
   params: {
     // Required parameters
@@ -283,7 +283,7 @@ module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' = {
+module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ararg'
   params: {
     // Required parameters
@@ -344,7 +344,7 @@ module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' = {
+module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arargmin'
   params: {
     // Required parameters
@@ -397,7 +397,7 @@ module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' = {
+module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arasub'
   params: {
     // Required parameters
@@ -454,7 +454,7 @@ module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Roleassignments './Microsoft.Authorization/Roleassignments/deploy.bicep' = {
+module RoleAssignments './Microsoft.Authorization/RoleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arasubmin'
   params: {
     // Required parameters
