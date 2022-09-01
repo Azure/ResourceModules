@@ -349,7 +349,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-backupVaults'
+  name: '${uniqueString(deployment().name)}-BackupVaults'
   params: {
     name: '<<namePrefix>>-az-bv-min-001'
   }
@@ -386,7 +386,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
 
 ```bicep
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-backupVaults'
+  name: '${uniqueString(deployment().name)}-BackupVaults'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-bv-x-001'

@@ -289,7 +289,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apisdef'
+  name: '${uniqueString(deployment().name)}-Service'
   params: {
     // Required parameters
     name: '<<namePrefix>>apisdef001'
@@ -745,7 +745,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apismin'
+  name: '${uniqueString(deployment().name)}-Service'
   params: {
     // Required parameters
     name: '<<namePrefix>>apismin001'
@@ -776,6 +776,129 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     },
     "publisherName": {
       "value": "<<namePrefix>>-az-amorg-x-001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module service './Microsoft.ApiManagement/service/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Service'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-az-apim-x-001'
+    publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
+    publisherName: '<<namePrefix>>-az-amorg-x-001'
+    // Non-required parameters
+    lock: 'CanNotDelete'
+    policies: [
+      {
+        format: 'xml'
+        value: '<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
+      }
+    ]
+    portalSettings: [
+      {
+        name: 'signin'
+        properties: {
+          enabled: false
+        }
+      }
+      {
+        name: 'signup'
+        properties: {
+          enabled: false
+          termsOfService: {
+            consentRequired: false
+            enabled: false
+          }
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-az-apim-x-001"
+    },
+    "publisherEmail": {
+      "value": "apimgmt-noreply@mail.windowsazure.com"
+    },
+    "publisherName": {
+      "value": "<<namePrefix>>-az-amorg-x-001"
+    },
+    // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "policies": {
+      "value": [
+        {
+          "format": "xml",
+          "value": "<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
+        }
+      ]
+    },
+    "portalSettings": {
+      "value": [
+        {
+          "name": "signin",
+          "properties": {
+            "enabled": false
+          }
+        },
+        {
+          "name": "signup",
+          "properties": {
+            "enabled": false,
+            "termsOfService": {
+              "consentRequired": false,
+              "enabled": false
+            }
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     }
   }
 }

@@ -250,7 +250,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-privateLinkHubs'
+  name: '${uniqueString(deployment().name)}-PrivateLinkHubs'
   params: {
     name: 'synplhmin001'
   }
@@ -287,7 +287,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
 
 ```bicep
 module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-privateLinkHubs'
+  name: '${uniqueString(deployment().name)}-PrivateLinkHubs'
   params: {
     // Required parameters
     name: 'synplhstandard001'

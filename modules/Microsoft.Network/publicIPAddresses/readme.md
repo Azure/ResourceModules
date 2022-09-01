@@ -176,7 +176,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-publicIPAddresses'
+  name: '${uniqueString(deployment().name)}-PublicIPAddresses'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-pip-x-001'

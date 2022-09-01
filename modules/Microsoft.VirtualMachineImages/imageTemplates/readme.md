@@ -278,7 +278,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-imageTemplates'
+  name: '${uniqueString(deployment().name)}-ImageTemplates'
   params: {
     // Required parameters
     customizationSteps: [

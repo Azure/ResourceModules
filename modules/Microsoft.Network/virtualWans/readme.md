@@ -166,7 +166,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualWans'
+  name: '${uniqueString(deployment().name)}-VirtualWans'
   params: {
     name: '<<namePrefix>>-az-vw-min-001'
   }
@@ -203,7 +203,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 
 ```bicep
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualWans'
+  name: '${uniqueString(deployment().name)}-VirtualWans'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vw-x-001'

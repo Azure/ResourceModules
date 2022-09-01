@@ -162,7 +162,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-networkWatchers'
+  name: '${uniqueString(deployment().name)}-NetworkWatchers'
   params: {
     location: 'northeurope'
   }
@@ -199,7 +199,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
 
 ```bicep
 module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-networkWatchers'
+  name: '${uniqueString(deployment().name)}-NetworkWatchers'
   params: {
     connectionMonitors: [
       {

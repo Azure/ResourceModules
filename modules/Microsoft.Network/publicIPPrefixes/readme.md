@@ -163,7 +163,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-publicIPPrefixes'
+  name: '${uniqueString(deployment().name)}-PublicIPPrefixes'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-pippfx-x-001'
