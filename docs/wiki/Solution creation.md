@@ -9,14 +9,22 @@ This section shows you how you can orchestrate a deployment using multiple resou
 - [Upstream workloads](#upstream-workloads)
 - [Orchestration overview](#orchestration-overview)
   - [Publish-location considerations](#publish-location-considerations)
+    - [Outline](#outline)
+    - [Comparison](#comparison)
 - [Template-orchestration](#template-orchestration)
   - [How to start](#how-to-start)
   - [Examples](#examples)
 - [Pipeline-orchestration](#pipeline-orchestration)
+  - [GitHub sample](#github-sample)
     - [Summary](#summary)
     - [Repo structure](#repo-structure)
     - [YAML pipeline](#yaml-pipeline)
     - [Notes](#notes)
+  - [Azure DevOps sample](#azure-devops-sample)
+    - [Summary](#summary-1)
+    - [Repo structure](#repo-structure-1)
+    - [YAML pipeline](#yaml-pipeline-1)
+    - [Notes](#notes-1)
 
 ---
 
@@ -368,6 +376,8 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 
 The modules provided in this repo can be orchestrated to create more complex infrastructures, and as such, reusable solutions or products. To deploy resources, the pipeline-orchestration approach leverages the modules & pipeline templates of the 'ResourceModules' repository. Each pipeline job deploys one instance of a resource and the order of resources deployed in a multi-module solution is controlled by specifying dependencies in the pipeline itself.
 
+## GitHub sample
+
 <details>
 <summary>GitHub Sample solution for <b>multi-repository approach</b></summary>
 
@@ -386,7 +396,7 @@ The modules provided in this repo can be orchestrated to create more complex inf
 
 ### Repo structure
 
-   <img src="./media/MultiRepoTestFolderStructure.png" alt="Repository Structure" height="300">
+   <img src="./media/SolutionCreation/MultiRepoTestFolderStructure.png" alt="Repository Structure" height="300">
 
 ### YAML pipeline
 
@@ -461,6 +471,104 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: $(removeDeployment)
+```
+
+### Notes
+
+> 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because GitHub Actions expect the underlying utility scripts and variables at a specific location.
+> 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder, called  "MultiRepoTestParentFolder", to distinguish it from the folders of the other repo in the agent, but can also be downloaded at the root location if desired.
+
+</details>
+
+## Azure DevOps sample
+
+<details>
+<summary>Azure DevOps sample solution for <b>multi-repository approach</b></summary>
+
+### Summary
+
+1. Below, you can find an example which makes use of multiple repositories to orchestrate the deployment (also known as a _multi-repository_ approach) in Azure DevOps.
+2. It fetches the _public_ **Azure/ResourceModules** repo for consuming modules and uses the parameter files present in the _private_ **Litware/Platform** repo for deploying infrastructure.
+3. This example is creating a Resource group, an NSG and a VNet -
+    1. Job: **Deploy multi-repo solution**
+        1. Checkout 'Azure/ResourceModules' repo in a nested folder "ResourceModules" at root of the agent
+        2. Set environment variables for the agent
+        3. Checkout 'Litware/Platform' repo containing the parameter files in a nested folder - "Platform"
+        4. Deploy resource group in target Azure subscription
+        5. Deploy network security group
+        6. Deploy virtual network A
+
+### Repo structure
+
+   <img src="./media/SolutionCreation/MultiRepoTestFolderStructure.png" alt="Repository Structure" height="300">
+
+### YAML pipeline
+
+```YAML
+name: 'prfx-conn-ae-network-hub-rg'
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - root (b3b845c6-2a30-6f4c-62d3-a8b417cb9173)/prfx-connectivity-ae (3e51c849-d082-4b01-9385-455f253a5729)/prfx-conn-ae-network-hub-rg/*
+
+variables:
+  - template: /settings.yml
+  - template: pipeline.variables.yml
+
+resources:
+  repositories:
+  - repository: modules
+    name: $(modulesRepository)
+    ref: $(ref)
+    endpoint: segraef
+    type: github
+
+stages:
+  - stage:
+    displayName: Deploy
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Resource Group'
+          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/parameters.json'
+          checkoutRepositories:
+            - modules
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: networkSecurityGroups
+          displayName: 'Network Security Groups'
+          modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/networkSecurityGroups/parameters.json'
+          checkoutRepositories:
+            - modules
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: routeTables
+          displayName: 'Route Tables'
+          modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/routeTables/parameters.json'
+          checkoutRepositories:
+            - modules
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: virtualNetworks
+          displayName: 'Virtual Networks'
+          modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/virtualNetworks/parameters.json'
+          checkoutRepositories:
+            - modules
+          dependsOn:
+            - networkSecurityGroups
+            - routeTables
 ```
 
 ### Notes
