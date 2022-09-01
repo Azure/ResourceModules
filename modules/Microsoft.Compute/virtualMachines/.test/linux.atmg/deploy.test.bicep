@@ -24,6 +24,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+var sshKeyName = 'dep-<<namePrefix>>-ssh-${serviceShort}'
 module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
@@ -31,7 +32,7 @@ module resourceGroupResources 'dependencies.bicep' = {
     location: location
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     sshDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
-    sshKeyName: 'dep-<<namePrefix>>-ssh-${serviceShort}'
+    sshKeyName: sshKeyName
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
@@ -41,7 +42,7 @@ module resourceGroupResources 'dependencies.bicep' = {
 // ============== //
 
 resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' existing = {
-  name: last(split(resourceGroupResources.outputs.SSHKeyResourceID, '/'))
+  name: sshKeyName
   scope: resourceGroup
 }
 
