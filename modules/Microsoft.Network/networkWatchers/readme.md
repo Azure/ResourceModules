@@ -1,6 +1,7 @@
 # Network Watchers `[Microsoft.Network/networkWatchers]`
 
-This template deploys a network watcher.
+- This template deploys a network watcher.
+- Network Watcher is a default resource which will get created automatically in every region where a virtual network is present with in the network watcher resource group.
 
 ## Navigation
 
@@ -12,28 +13,27 @@ This template deploys a network watcher.
 
 ## Resource types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/networkWatchers` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers) |
+| Resource Type                                          | API Version                                                                                                                    |
+| :----------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Microsoft.Authorization/locks`                        | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)                        |
+| `Microsoft.Authorization/roleAssignments`              | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)              |
+| `Microsoft.Network/networkWatchers`                    | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers)                    |
 | `Microsoft.Network/networkWatchers/connectionMonitors` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers/connectionMonitors) |
-| `Microsoft.Network/networkWatchers/flowLogs` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers/flowLogs) |
+| `Microsoft.Network/networkWatchers/flowLogs`           | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers/flowLogs)           |
 
 ## Parameters
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `connectionMonitors` | _[connectionMonitors](connectionMonitors/readme.md)_ array | `[]` |  | Array that contains the Connection Monitors. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `flowLogs` | _[flowLogs](flowLogs/readme.md)_ array | `[]` |  | Array that contains the Flow Logs. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `connectionMonitors` | _[connectionMonitors](connectionMonitors/readme.md)_ array | `[]` | | Array that contains the Connection Monitors. |
+| `enableDefaultTelemetry` | bool | `True` | | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `flowLogs` | _[flowLogs](flowLogs/readme.md)_ array | `[]` | | Array that contains the Flow Logs. |
+| `location` | string | `[resourceGroup().location]` | | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` |  | Name of the Network Watcher resource (hidden). |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-
+| `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` | | Name of the Network Watcher resource (hidden). |
+| `roleAssignments` | array | `[]` | | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `tags` | object | `{object}` | | Tags of the resource. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -137,12 +137,12 @@ tags: {
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed network watcher. |
+| Output Name         | Type   | Description                                               |
+| :------------------ | :----- | :-------------------------------------------------------- |
+| `location`          | string | The location the resource was deployed into.              |
+| `name`              | string | The name of the deployed network watcher.                 |
 | `resourceGroupName` | string | The resource group the network watcher was deployed into. |
-| `resourceId` | string | The resource ID of the deployed network watcher. |
+| `resourceId`        | string | The resource ID of the deployed network watcher.          |
 
 ## Cross-referenced modules
 
@@ -151,8 +151,9 @@ _None_
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+> **Note**: The name of each example is based on the name of the file from which it is taken.
+> **Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Min</h3>
 
@@ -318,9 +319,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
                 "port": 80,
                 "preferHTTPS": false,
                 "requestHeaders": [],
-                "validStatusCodeRanges": [
-                  "200"
-                ]
+                "validStatusCodeRanges": ["200"]
               },
               "name": "HTTP Test",
               "protocol": "Http",
@@ -333,17 +332,11 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
           ],
           "testGroups": [
             {
-              "destinations": [
-                "Office Portal"
-              ],
+              "destinations": ["Office Portal"],
               "disable": false,
               "name": "TestHTTPBing",
-              "sources": [
-                "<<namePrefix>>-az-subnet-x-001(validation-rg)"
-              ],
-              "testConfigurations": [
-                "HTTP Test"
-              ]
+              "sources": ["<<namePrefix>>-az-subnet-x-001(validation-rg)"],
+              "testConfigurations": ["HTTP Test"]
             }
           ],
           "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
@@ -374,9 +367,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<<deploymentSpId>>"
-          ],
+          "principalIds": ["<<deploymentSpId>>"],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
