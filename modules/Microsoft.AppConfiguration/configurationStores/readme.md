@@ -303,44 +303,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ConfigurationStores'
-  params: {
-    name: '<<namePrefix>>-az-appc-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-appc-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ConfigurationStores'
+  name: '${uniqueString(deployment().name)}-test-accdef'
   params: {
     // Required parameters
     name: '<<namePrefix>>accdef001'
@@ -512,7 +475,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
 
 ```bicep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ConfigurationStores'
+  name: '${uniqueString(deployment().name)}-test-accpe'
   params: {
     // Required parameters
     name: '<<namePrefix>>accpe001'
