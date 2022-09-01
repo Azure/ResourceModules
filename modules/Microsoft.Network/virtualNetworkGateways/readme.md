@@ -257,7 +257,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
+  name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-gw-er-001'
@@ -378,7 +378,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 
 ```bicep
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
+  name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-gw-vpn-001'

@@ -892,7 +892,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1025,7 +1025,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1369,7 +1369,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: kv1.getSecret('adminUsername')
@@ -1503,7 +1503,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: kv1.getSecret('adminUsername')

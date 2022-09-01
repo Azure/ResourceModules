@@ -476,7 +476,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-loadBalancers'
+  name: '${uniqueString(deployment().name)}-LoadBalancers'
   params: {
     // Required parameters
     frontendIPConfigurations: [
@@ -677,7 +677,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 
 ```bicep
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-loadBalancers'
+  name: '${uniqueString(deployment().name)}-LoadBalancers'
   params: {
     // Required parameters
     frontendIPConfigurations: [
@@ -730,7 +730,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 
 ```bicep
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-loadBalancers'
+  name: '${uniqueString(deployment().name)}-LoadBalancers'
   params: {
     // Required parameters
     frontendIPConfigurations: [

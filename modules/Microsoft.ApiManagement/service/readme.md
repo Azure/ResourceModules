@@ -289,7 +289,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-service'
+  name: '${uniqueString(deployment().name)}-Service'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-apim-max-001'
@@ -624,7 +624,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-service'
+  name: '${uniqueString(deployment().name)}-Service'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-apim-min-001'
@@ -671,7 +671,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-service'
+  name: '${uniqueString(deployment().name)}-Service'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-apim-x-001'
