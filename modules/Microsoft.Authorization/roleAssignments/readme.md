@@ -184,7 +184,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
@@ -227,7 +227,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
@@ -284,7 +284,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
@@ -337,7 +337,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
@@ -398,7 +398,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
@@ -447,7 +447,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'

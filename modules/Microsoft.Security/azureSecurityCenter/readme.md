@@ -113,7 +113,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-azureSecurityCenter'
+  name: '${uniqueString(deployment().name)}-AzureSecurityCenter'
   params: {
     // Required parameters
     scope: '/subscriptions/<<subscriptionId>>'

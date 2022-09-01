@@ -365,7 +365,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualNetworks'
+  name: '${uniqueString(deployment().name)}-VirtualNetworks'
   params: {
     // Required parameters
     addressPrefixes: [
@@ -412,7 +412,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualNetworks'
+  name: '${uniqueString(deployment().name)}-VirtualNetworks'
   params: {
     // Required parameters
     addressPrefixes: [
@@ -607,7 +607,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualNetworks'
+  name: '${uniqueString(deployment().name)}-VirtualNetworks'
   params: {
     // Required parameters
     addressPrefixes: [

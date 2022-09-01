@@ -187,7 +187,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-containerGroups'
+  name: '${uniqueString(deployment().name)}-ContainerGroups'
   params: {
     // Required parameters
     containerName: '<<namePrefix>>-az-aci-x-001'

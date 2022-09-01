@@ -184,7 +184,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-expressRouteCircuits'
+  name: '${uniqueString(deployment().name)}-ExpressRouteCircuits'
   params: {
     // Required parameters
     bandwidthInMbps: 50

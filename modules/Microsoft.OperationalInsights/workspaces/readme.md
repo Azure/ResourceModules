@@ -468,7 +468,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     name: '<<namePrefix>>-az-law-min-001'
   }
@@ -505,7 +505,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-law-x-001'

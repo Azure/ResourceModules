@@ -376,7 +376,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managedClusters'
+  name: '${uniqueString(deployment().name)}-ManagedClusters'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-aks-azure-001'
@@ -621,7 +621,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managedClusters'
+  name: '${uniqueString(deployment().name)}-ManagedClusters'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-aks-kubenet-001'
