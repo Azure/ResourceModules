@@ -213,7 +213,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' = {
   name: name
   location: location
   identity: identity
