@@ -272,7 +272,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-hostpools'
+  name: '${uniqueString(deployment().name)}-Hostpools'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-avdhp-x-001'

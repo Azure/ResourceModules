@@ -326,7 +326,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module connections './Microsoft.Network/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-connections'
+  name: '${uniqueString(deployment().name)}-Connections'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vnetgwc-x-001'

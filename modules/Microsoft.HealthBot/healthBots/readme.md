@@ -163,7 +163,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-healthBots'
+  name: '${uniqueString(deployment().name)}-HealthBots'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-ahb-x-001'

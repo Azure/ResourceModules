@@ -165,12 +165,55 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apemg'
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apemg001'
-    policyAssignmentId: '<policyAssignmentId>'
+    name: '<<namePrefix>>-min-mg-polexem'
+    policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-min-mg-polexem"
+    },
+    "policyAssignmentId": {
+      "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Mg</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-mg-polexem'
+    policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
     // Non-required parameters
     displayName: '[Display Name] policy exempt (management group scope)'
     exemptionCategory: 'Waiver'
@@ -234,8 +277,8 @@ module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apemgmin'
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>apemgmin001'
@@ -277,8 +320,8 @@ module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aperg'
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>aperg001'
@@ -350,8 +393,8 @@ module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apergmin'
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>apergmin001'
@@ -403,8 +446,8 @@ module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apesub'
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>apesub001'
