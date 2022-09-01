@@ -60,8 +60,18 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
 // ======= //
 // Outputs //
 // ======= //
+
+@description('The resource ID of the created Storage Account.')
 output storageAccountResourceId string = storageAccount.id
+
+@description('The resource ID of the created Log Analytics Workspace.')
 output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id
+
+@description('The resource ID of the created Event Hub Namespace.')
 output eventHubNamespaceResourceId string = eventHubNamespace.id
+
+@description('The resource ID of the created Event Hub Namespace Authorization Rule.')
 output eventHubAuthorizationRuleId string = eventHubNamespace::authorizationRule.id
+
+@description('The name of the created Event Hub Namespace Event Hub.')
 output eventHubNamespaceEventHubName string = eventHubNamespace::eventHub.name

@@ -170,7 +170,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-resourceGroups'
+  name: '${uniqueString(deployment().name)}-ResourceGroups'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-rg-x-001'

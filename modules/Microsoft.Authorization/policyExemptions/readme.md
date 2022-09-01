@@ -166,7 +166,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-mg-polexem'
@@ -209,7 +209,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-polexem'
@@ -278,7 +278,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-rg-polexem'
@@ -331,7 +331,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-rg-polexem'
@@ -404,7 +404,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-sub-polexem'
@@ -453,7 +453,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-polexem'

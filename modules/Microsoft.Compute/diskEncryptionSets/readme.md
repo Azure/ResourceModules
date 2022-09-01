@@ -172,7 +172,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-diskEncryptionSets'
+  name: '${uniqueString(deployment().name)}-DiskEncryptionSets'
   params: {
     // Required parameters
     keyName: 'keyEncryptionKey'

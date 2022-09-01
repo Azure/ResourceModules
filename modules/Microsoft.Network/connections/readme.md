@@ -320,8 +320,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Connections './Microsoft.Network/Connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ncvtv'
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','validation-rg')
+}
+
+module connections './Microsoft.Network/connections/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Connections'
   params: {
     // Required parameters
     name: '<<namePrefix>>ncvtv001'
