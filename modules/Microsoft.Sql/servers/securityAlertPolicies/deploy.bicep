@@ -45,7 +45,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource server 'Microsoft.Sql/servers@2021-05-01-preview' existing = {
+resource server 'Microsoft.Sql/servers@2022-02-01-preview' existing = {
   name: serverName
 }
 
