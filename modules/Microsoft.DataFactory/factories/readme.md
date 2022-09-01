@@ -360,45 +360,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Factories'
-  params: {
-    name: '<<namePrefix>>-adf-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-adf-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Factories'
+module Factories './Microsoft.DataFactory/Factories/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-dffdef'
   params: {
     // Required parameters
     name: '<<namePrefix>>dffdef001'
@@ -584,7 +547,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Factories './Microsoft.Datafactory/Factories/deploy.bicep' = {
+module Factories './Microsoft.DataFactory/Factories/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-dffmin'
   params: {
     name: '<<namePrefix>>dffmin001'
