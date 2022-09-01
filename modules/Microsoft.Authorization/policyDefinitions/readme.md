@@ -142,100 +142,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
+module PolicyDefinitions './Microsoft.Authorization/PolicyDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apdmg'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-mg-min-policyDef'
-    policyRule: {
-      if: {
-        allOf: [
-          {
-            equals: 'Microsoft.KeyVault/vaults'
-            field: 'type'
-          }
-        ]
-      }
-      then: {
-        effect: '[parameters('effect')]'
-      }
-    }
-    // Non-required parameters
-    parameters: {
-      effect: {
-        allowedValues: [
-          'Audit'
-        ]
-        defaultValue: 'Audit'
-        type: 'String'
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-mg-min-policyDef"
-    },
-    "policyRule": {
-      "value": {
-        "if": {
-          "allOf": [
-            {
-              "equals": "Microsoft.KeyVault/vaults",
-              "field": "type"
-            }
-          ]
-        },
-        "then": {
-          "effect": "[parameters('effect')]"
-        }
-      }
-    },
-    // Non-required parameters
-    "parameters": {
-      "value": {
-        "effect": {
-          "allowedValues": [
-            "Audit"
-          ],
-          "defaultValue": "Audit",
-          "type": "String"
-        }
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Mg</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-mg-policyDef'
+    name: '<<namePrefix>>apdmg001'
     policyRule: {
       if: {
         allOf: [
@@ -386,8 +297,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
+module PolicyDefinitions './Microsoft.Authorization/PolicyDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apdmgmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>apdmgmin001'
@@ -475,8 +386,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
+module PolicyDefinitions './Microsoft.Authorization/PolicyDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apdsub'
   params: {
     // Required parameters
     name: '<<namePrefix>>apdsub001'
