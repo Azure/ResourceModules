@@ -148,76 +148,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
+module PolicySetDefinitions './Microsoft.Authorization/PolicySetDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apsdmg'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-mg-min-policySet'
-    policyDefinitions: [
-      {
-        parameters: {
-          listOfAllowedLocations: {
-            value: [
-              'australiaeast'
-            ]
-          }
-        }
-        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-mg-min-policySet"
-    },
-    "policyDefinitions": {
-      "value": [
-        {
-          "parameters": {
-            "listOfAllowedLocations": {
-              "value": [
-                "australiaeast"
-              ]
-            }
-          },
-          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Mg</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-mg-policySet'
+    name: '<<namePrefix>>apsdmg001'
     policyDefinitions: [
       {
         groupNames: [
@@ -356,8 +291,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
+module PolicySetDefinitions './Microsoft.Authorization/PolicySetDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apsdmgmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>apsdmgmin001'
@@ -421,8 +356,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
+module PolicySetDefinitions './Microsoft.Authorization/PolicySetDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apsdsub'
   params: {
     // Required parameters
     name: '<<namePrefix>>apsdsub001'
