@@ -262,11 +262,11 @@ module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-gw-vpn-001'
-    virtualNetworkGatewaySku: 'VpnGw1AZ'
+    virtualNetworkGatewaySku: 'VpnGw2AZ'
     virtualNetworkGatewayType: 'Vpn'
     vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
     // Non-required parameters
-    activeActive: true
+    activeActive: false
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     diagnosticLogsRetentionInDays: 7
@@ -287,6 +287,17 @@ module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    vpnClientAadConfiguration: {
+      aadAudience: '41b23e61-6c1e-4545-b367-cd054e0ed4b4'
+      aadIssuer: ''https://sts.windows.net/<<tenantId>>/'
+      aadTenant: 'https://login.microsoftonline.com/<<tenantId>>/'
+      vpnAuthenticationTypes: [
+        'AAD'
+      ]
+      vpnClientProtocols: [
+        'OpenVPN'
+      ]
+    }
     vpnType: 'RouteBased'
   }
 }
@@ -309,7 +320,7 @@ module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy
       "value": "<<namePrefix>>-az-gw-vpn-001"
     },
     "virtualNetworkGatewaySku": {
-      "value": "VpnGw1AZ"
+      "value": "VpnGw2AZ"
     },
     "virtualNetworkGatewayType": {
       "value": "Vpn"
@@ -319,7 +330,7 @@ module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy
     },
     // Non-required parameters
     "activeActive": {
-      "value": true
+      "value": false
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
@@ -358,6 +369,19 @@ module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "vpnClientAadConfiguration": {
+      "value": {
+        "aadAudience": "41b23e61-6c1e-4545-b367-cd054e0ed4b4",
+        "aadIssuer": "'https://sts.windows.net/<<tenantId>>/",
+        "aadTenant": "https://login.microsoftonline.com/<<tenantId>>/",
+        "vpnAuthenticationTypes": [
+          "AAD"
+        ],
+        "vpnClientProtocols": [
+          "OpenVPN"
+        ]
+      }
     },
     "vpnType": {
       "value": "RouteBased"
