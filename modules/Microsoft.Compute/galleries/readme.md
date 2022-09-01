@@ -165,7 +165,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-galleries'
+  name: '${uniqueString(deployment().name)}-Galleries'
   params: {
     // Required parameters
     name: '<<namePrefix>>azsigweuimages001'
@@ -286,7 +286,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
 
 ```bicep
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-galleries'
+  name: '${uniqueString(deployment().name)}-Galleries'
   params: {
     // Required parameters
     name: '<<namePrefix>>azsigweux001'

@@ -159,7 +159,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-userAssignedIdentities'
+  name: '${uniqueString(deployment().name)}-UserAssignedIdentities'
   params: {
     lock: 'CanNotDelete'
     name: '<<namePrefix>>-az-msi-x-001'
