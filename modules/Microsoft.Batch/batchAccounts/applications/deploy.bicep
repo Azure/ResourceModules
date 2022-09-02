@@ -4,9 +4,6 @@ param batchName string
 @description('Required. Name of the application package.')
 param appName string
 
-@description('Optional. The package to use if a client requests the application but does not specify a version. This property can only be set to the name of an existing package.')
-param defaultVersion string = ''
-
 @description('Optional. The display name for the application package.')
 param displayName string = ''
 
@@ -40,7 +37,6 @@ resource application 'Microsoft.Batch/batchAccounts/applications@2022-01-01' = {
   parent: batch
   properties: {
     allowUpdates: allowUpdates
-    defaultVersion: !empty(defaultVersion) ? defaultVersion : null
     displayName: !empty(displayName) ? displayName : null
   }
 }

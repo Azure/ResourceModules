@@ -28,7 +28,6 @@ This module deploys Batch BatchAccounts Applications.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `allowUpdates` | bool | `True` | A value indicating whether packages within the application may be overwritten using the same version string. |
-| `defaultVersion` | string | `''` | The package to use if a client requests the application but does not specify a version. This property can only be set to the name of an existing package. |
 | `displayName` | string | `''` | The display name for the application package. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |

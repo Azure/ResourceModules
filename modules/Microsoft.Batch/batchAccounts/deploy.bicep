@@ -230,7 +230,6 @@ module application 'applications/deploy.bicep' = [for app in applications: {
     batchName: batchAccount.name
     appName: app.name
     allowUpdates: app.allowUpdates
-    defaultVersion: app.defaultVersion
     displayName: app.displayName
   }
 }]
