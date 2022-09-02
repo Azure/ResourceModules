@@ -31,6 +31,8 @@ module resourceGroupResources 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     publicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    certDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
   }
 }
 
@@ -119,7 +121,7 @@ module testDeployment '../../deploy.bicep' = {
           privateIPAddress: '10.0.8.6'
           privateIPAllocationMethod: 'Static'
           subnet: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-007'
+            id: resourceGroupResources.outputs.subnetResourceId
           }
         }
       }
@@ -128,7 +130,7 @@ module testDeployment '../../deploy.bicep' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-apgw'
+            id: resourceGroupResources.outputs.publicIPResourceId
           }
         }
       }
@@ -362,7 +364,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         name: '<<namePrefix>>-az-apgw-x-001-ssl-certificate'
         properties: {
-          keyVaultSecretId: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate'
+          keyVaultSecretId: resourceGroupResources.outputs.certificateSecretUrl
         }
       }
     ]
