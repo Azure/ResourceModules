@@ -6,7 +6,8 @@
             "value": "<<namePrefix>>-az-sqlmi-x-001"
         },
         "lock": {
-            "value": "CanNotDelete"
+            // "value": "CanNotDelete"
+            "value": "RandomToDelete"
         },
         "administratorLogin": {
             "reference": {
