@@ -366,7 +366,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   params: {
     administratorLogin: kv1.getSecret('administratorLogin')
     administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-sqlmi-x-002'
+    name: '<<namePrefix>>-az-sqlmi-x-001'
     subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi'
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
@@ -469,7 +469,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>-az-sqlmi-x-002"
+      "value": "<<namePrefix>>-az-sqlmi-x-001"
     },
     "subnetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi"

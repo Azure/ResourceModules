@@ -232,14 +232,14 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' = {
     vCores: vCores
     storageSizeInGB: storageSizeInGB
     collation: collation
-    dnsZonePartner: dnsZonePartner
+    dnsZonePartner: !empty(dnsZonePartner) ? dnsZonePartner : null
     publicDataEndpointEnabled: publicDataEndpointEnabled
-    sourceManagedInstanceId: sourceManagedInstanceId
-    restorePointInTime: restorePointInTime
+    sourceManagedInstanceId: !empty(sourceManagedInstanceId) ? sourceManagedInstanceId : null
+    restorePointInTime: !empty(restorePointInTime) ? restorePointInTime : null
     proxyOverride: proxyOverride
     timezoneId: timezoneId
-    instancePoolId: instancePoolResourceId
-    primaryUserAssignedIdentityId: primaryUserAssignedIdentityId
+    instancePoolId: !empty(instancePoolResourceId) ? instancePoolResourceId : null
+    primaryUserAssignedIdentityId: !empty(primaryUserAssignedIdentityId) ? primaryUserAssignedIdentityId : null
     requestedBackupStorageRedundancy: requestedBackupStorageRedundancy
     zoneRedundant: zoneRedundant
     servicePrincipal: {
