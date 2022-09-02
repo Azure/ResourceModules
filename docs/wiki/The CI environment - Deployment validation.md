@@ -21,21 +21,25 @@ The deployment validation phase can be divided into three steps, running in sequ
 
 # Template validation
 
-The template validation step performs a dry-run with each parameter file in the module's `'.parameters'` folder
+The template validation step performs a dry-run with each module test file in the module's `'.test'` folder (and its subfolders)
 
-In particular, the step runs a `Test-AzDeployment` cmdlet (_the command may vary based on the template schema_) for each provided module parameter file to verify if the template could be deployed using them.
+In particular, the step runs a `Test-AzDeployment` cmdlet (_the command may vary based on the template schema_) for each provided module test file to verify if the template could be deployed using them.
 
-The intention of this test is to **fail fast**, before getting to the later deployment step. The template validation could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
+The intention of this test is to **fail fast**, before getting to the later deployment step. The template validation could fail either because the template is invalid, or because any of the module test files is configured incorrectly.
 
 # Azure deployment validation
 
-This step performs the actual Azure deployments using each available & configured module parameter file. The purpose of this step is to prove the module can be deployed in different configurations based on the different parameters provided. Deployments for the different variants happen in parallel. 
+This step performs the actual Azure deployments using each available & configured module module test file. The purpose of this step is to prove the module can be deployed in different configurations based on the different parameters provided. Deployments for the different variants happen in parallel.
 
-If any of these parallel deployments require multiple/different/specific resource instances already present, these resources are deployed by the [dependencies pipeline](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline). E.g., for the Azure Firewall to be tested with multiple configurations, the dependencies pipeline deploys multiple VNET instances, with a dedicated "AzureFirewallSubnet" in each.
+If any of these parallel deployments require multiple/different/specific resource instances already present, these resources are deployed by the [dependencies pipeline](./The%20CI%20environment%20-%20Pipeline%20design#dependencies-pipeline). E.g., for the Azure Firewall to be tested with multiple configurations, the dependencies pipeline deploys multiple VNET instances, with a dedicated "AzureFirewallSubnet" in each.
 
-The parameter files used in this stage should ideally cover as many configurations as possible to validate the template flexibility, i.e., to verify that the module can cover multiple scenarios in which the given Azure resource may be used. Using the example of the CosmosDB module, we may want to have one parameter file for the minimum amount of required parameters, one parameter file for each CosmosDB type to test individual configurations, and at least one parameter file testing the supported extension resources such as RBAC & diagnostic settings.
+> NOTE: Once the issue [1583](https://github.com/Azure/ResourceModules/issues/1583) is resolved, the deployment of these dependencies will be moved into the module test files. You can find additional information about this effort [here](./The%20library%20-%20Module%20design#module-test-files).
 
-> **Note**: Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently and naming conventions need to be verified beforehand.
+The module test files used in this stage should ideally cover as many configurations as possible to validate the template flexibility, i.e., to verify that the module can cover multiple scenarios in which the given Azure resource may be used. Using the example of the CosmosDB module, we may want to have one module test file for the minimum amount of required parameters, one module test file for each CosmosDB type to test individual configurations, and at least one module test file testing the supported extension resources such as RBAC & diagnostic settings.
+
+> **Note:** Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently and naming conventions need to be verified beforehand.
+
+> **Note:** Management-Group deployments may eventually exceed the limit of [800](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#management-group-limits) and require you to remove some of them manually. If you are faced with any corresponding error message you can manually remove deployments on a Management-Group-Level on scale using one of our [utilities](./The%20CI%20environment%20-%20Management%20Group%20Deployment%20removal%20utility).
 
 ### Output example
 
@@ -50,7 +54,7 @@ The removal step is triggered after the deployment completes. It removes all res
 - Make sure to keep the validation subscription cost as low as possible.
 - Run test deployments from scratch at every run.
 
-However, the removal step can be skipped in case further investigation on the deployed resource is needed. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design.md#module-pipeline-inputs).
+However, the removal step can be skipped in case further investigation on the deployed resource is needed. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module-pipeline-inputs).
 
 ### How it works
 

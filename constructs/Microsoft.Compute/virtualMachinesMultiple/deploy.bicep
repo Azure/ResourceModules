@@ -282,7 +282,7 @@ param provisionVMAgent bool = true
 @description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
 param enableAutomaticUpdates bool = true
 
-@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
+@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`.')
 param timeZone string = ''
 
 @description('Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object.')
@@ -300,7 +300,7 @@ var vmNamesToApply = !empty(vmNames) ? vmNames : vmGeneratedNames
 
 var enableReferencedModulesTelemetry = false
 
-module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bicep' = [for (vmName, index) in vmNamesToApply: {
+module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/deploy.bicep' = [for (vmName, index) in vmNamesToApply: {
   name: '${deployment().name}-vm-${index}'
   params: {
     name: vmName

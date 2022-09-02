@@ -3,7 +3,6 @@
 #########################################################
 ##
 ## This composite action contains the logic to validate a module using a set of Pester tests
-## The tests are implemented in file 'arm/.global/global.module.tests.ps1'
 ##
 #########################################################
 ##
@@ -11,11 +10,12 @@
 ## ACTION PARAMETERS                         ##
 ##-------------------------------------------##
 ##
-##   |===========================================================================================================|
-##   | Parameter  | Required | Default | Description                     | Example                               |
-##   |------------|----------|---------|---------------------------------|---------------------------------------|
-##   | modulePath | true     | ''      | The path to the module's folder | 'arm/Microsoft.ApiManagement/service' |
-##   |===========================================================================================================|
+##   |==================================================================================================================================================|
+##   | Parameter                | Required | Default | Description                          | Example                                                   |
+##   |--------------------------|----------|---------|--------------------------------------|-----------------------------------------------------------|
+##   | modulePath               | true     | ''      | The path to the module's folder      | 'modules/Microsoft.ApiManagement/service'                 |
+##   | moduleTestFilePath       | true     | ''      | The path to the module Pester tests. | 'utilities/pipelines/staticValidation/module.tests.ps1'   |
+##   |==================================================================================================================================================|
 ##
 ##---------------------------------------------##
 
@@ -27,6 +27,10 @@ inputs:
     description: "The path to the module's folder"
     required: true
     default: ''
+  moduleTestFilePath:
+    description: 'The path to the test file'
+    required: true
+    default: ''
 
 runs:
   using: 'composite'
@@ -35,7 +39,7 @@ runs:
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Setup agent"
+        Write-Output '::group::Setup agent'
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -45,14 +49,15 @@ runs:
             # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
             # @{ Name = 'Pester'; Version = '5.3.1' }
             @{ Name = 'Az.Resources' }
+            @{ Name = 'powershell-yaml'; Version = '0.4.2'}
         )
 
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output "::endgroup::"
+        Write-Output '::endgroup::'
 
-    - name: 'Azure Login'
+    - name: Azure Login
       uses: Azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
@@ -60,14 +65,24 @@ runs:
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run global tests via Pester'
+    - name: 'Run Pester tests'
       id: pester_run_step
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Run global tests via Pester"
+        Write-Output '::group::Run Pester tests'
 
-        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        # Set repo root path
+        $repoRootPath = $env:GITHUB_WORKSPACE
+
+        # Get Service Principal Object ID
+        $context = Get-AzContext
+        $servicePrincipalAppId = $context.Account.Id
+        $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+        $servicePrincipalObjectId = $servicePrincipal.Id
+
+        # Set test input module path
+        $moduleFolderPaths = @(Join-Path $repoRootPath "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }
@@ -76,33 +91,48 @@ runs:
           Write-Verbose "- [($moduleFolderPath]" -Verbose
         }
 
-        $enforcedTokenList = @{}
+        # Construct Token Configuration Input and enforced tokens list
+        $GlobalVariablesObject = Get-Content -Path 'settings.yml' | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
+        $tokenConfiguration = @{
+            Tokens      = @{}
+            TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+            TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+        }
+
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
-            $enforcedTokenList['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
+            $tokenConfiguration.Tokens['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
-            $enforcedTokenList['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
+            $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
-            $enforcedTokenList['deploymentSpId'] = '${{ env.DEPLOYMENT_SP_ID }}'
+            $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
-            $enforcedTokenList['tenantId'] = '${{ env.ARM_TENANT_ID }}'
+            $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'
         }
+
+        # Set and print test output path
+        $moduleTestFilePath = '${{ inputs.moduleTestFilePath }}'
+        $outputPathDirectory = Split-Path $moduleTestFilePath -Parent
+        $outputPathFile = 'testResults.xml'
+        $outputPath = Join-Path $outputPathDirectory $outputPathFile
+        Write-Verbose "Pester tests output: $outputPath" -Verbose
+        Write-Output ('::set-output name={0}::{1}' -f 'outputPath', $outputPath)
 
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = $moduleFolderPaths
-              enforcedTokenList = $enforcedTokenList
+              Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
+              moduleFolderPaths  = $moduleFolderPaths
+              tokenConfiguration = $tokenConfiguration
             }
           }
           TestResult = @{
-            TestSuiteName = 'Global Module Tests'
-            OutputPath    = 'arm/.global/global-testResults.xml'
+            TestSuiteName = 'Module Tests'
+            OutputPath    = $outputPath
             OutputFormat  = 'JUnitXml'
             Enabled       = $true
           }
@@ -115,4 +145,4 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: 'arm/.global/*-testResults.xml'
+        files: '${{ steps.pester_run_step.outputs.outputPath }}'

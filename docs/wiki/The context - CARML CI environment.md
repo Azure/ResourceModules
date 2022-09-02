@@ -22,7 +22,7 @@ This paragraph provides an overview of the standard development-to-deployment fl
 
 This flow generally covers 3 phases:
 
-1. In the **Develop modules** phase modules are first implemented/updated and then validated using one or multiple test-parameter files, testing their successful deployment to a sandbox subscription to prove their correctness.
+1. In the **Develop modules** phase modules are first implemented/updated and then validated using one or multiple module test files, testing their successful deployment to a sandbox subscription to prove their correctness.
 
 1. The next phase, **Publish modules**, packages and publishes the tested and approved modules to a target location for later consumption. The target location (also known as package store or artifact store) should support versioning to allow referencing a specific module version and to avoid breaking changes when referencing them.
 
@@ -43,7 +43,7 @@ Also, if you reference a module version that was tested in and has passed throug
 To ensure the modules hosted by the CARML library are valid and can perform the intended deployments, the repository comes with a continuous integration (CI) environment for each module.
 If the validation is successful, the CI environment is also publishing versioned modules to one or multiple target locations, from where they can be referenced by solutions consuming them.
 
-The CARML CI environment covers `Phase #1`, (the validation) & `Phase #2` (the publishing) of the [deployment flow](#deployment-flow) section - these include the steps typically performed by the *CARML module developer* persona. 
+The CARML CI environment covers `Phase #1`, (the validation) & `Phase #2` (the publishing) of the [deployment flow](#deployment-flow) section - these include the steps typically performed by the *CARML module developer* persona.
 
 The *CARML solution developer* and *solution consumer* personas are usually working in `Phase #2` and `Phase #3`, i.e., building/leveraging complex, multi-module solutions by consuming the already tested and versioned modules previously placed in an artifact store.
 
@@ -67,5 +67,7 @@ From left to right, there are the three phases introduced before, _Develop modul
    - _[Private Bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
    - _[Azure DevOps Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
      > Note: this is only available if using Azure DevOps pipelines.
+
+   To dive deeper and understand which target locations may be best suited for your use case, we provide further information in the [Publish-location considerations](./Solution%20creation#publish-location-considerations) section.
 
 1. The third phase, **Consume modules** is represented on the right. The top right corner provides examples of orchestrations deploying the target solutions by referencing the published modules. The deployments performed in this third phase are supposed to target an integration/production environment. This phase references the validated and published modules coming out of the CARML CI environment, and leverages them with the correctly configured parameters to orchestrate their deployment in the intended order.

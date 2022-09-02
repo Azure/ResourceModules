@@ -21,36 +21,21 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.web.hostingenvironments.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Web/hostingEnvironments/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Web/hostingEnvironments/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Web/hostingEnvironments'
+    value: '/modules/Microsoft.Web/hostingEnvironments'
 
 stages:
-  - stage: Validation
-    displayName: Static validation
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
-
-  - stage: Deployment
-    displayName: Deployment validation
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks:
-            - path: $(modulePath)/.parameters/asev2.parameters.json
-            - path: $(modulePath)/.parameters/asev3.parameters.json
-          defaultJobTimeoutInMinutes: 180
-
-  - stage: Publishing
-    displayName: Publishing
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+  - template: /.azuredevops/pipelineTemplates/stages.module.yml
+    parameters:
+      removeDeployment: '${{ parameters.removeDeployment }}'
+      prerelease: '${{ parameters.prerelease }}'
+      defaultJobTimeoutInMinutes: 180

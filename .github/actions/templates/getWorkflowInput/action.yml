@@ -55,7 +55,7 @@ runs:
       id: get-input-param-action
       run: |
         # Grouping task logs
-        Write-Output "::group::Get workflow input parameters"
+        Write-Output '::group::Get workflow input parameters'
 
         Write-Verbose "The workflow trigger is: ${{ github.event_name }}" -Verbose
 
@@ -66,7 +66,7 @@ runs:
         # Otherwise retrieve default values
         else {
           # Load used functions
-          . "$env:GITHUB_ACTION_PATH/scripts/Get-WorkflowDefaultInput.ps1"
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-GitHubWorkflowDefaultInput.ps1')
 
           $functionInput = @{
             workflowPath = '${{ inputs.workflowPath }}'
@@ -75,12 +75,12 @@ runs:
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          $workflowParameters = Get-WorkflowDefaultInput @functionInput -Verbose
+          $workflowParameters = Get-GitHubWorkflowDefaultInput @functionInput -Verbose
           $removeDeployment = $workflowParameters.removeDeployment
         }
 
         # Output values to be accessed by next jobs
         Write-Output "::set-output name=removeDeployment::$removeDeployment"
 
-        Write-Output "::endgroup::"
+        Write-Output '::endgroup::'
       shell: pwsh

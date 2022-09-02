@@ -18,9 +18,9 @@ Optional. The name of the resource group the deployment was happening in. Releva
 Optional. The ID of the management group to fetch deployments from. Relevant for management-group level deployments.
 
 .EXAMPLE
-Initialize-DeploymentRemoval -DeploymentName 'virtualWans-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
+Initialize-DeploymentRemoval -DeploymentName 'virtualWans-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/modules/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
 
-Remove the deployment 'virtualWans-20211204T1812029146Z' from resource group 'test-virtualWan-parameters.json-rg' that was executed using template in path "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep"
+Remove the deployment 'virtualWans-20211204T1812029146Z' from resource group 'test-virtualWan-parameters.json-rg' that was executed using template in path "$home/ResourceModules/modules/Microsoft.Network/virtualWans/deploy.bicep"
 #>
 function Initialize-DeploymentRemoval {
 
@@ -56,7 +56,12 @@ function Initialize-DeploymentRemoval {
             $null = Set-AzContext -Subscription $subscriptionId
         }
 
-        $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
+        if (-not (Split-Path (Split-Path $templateFilePath -Parent) -LeafBase)) {
+            # In case of new dependency approach (template is in subfolder)
+            $moduleName = Split-Path (Split-Path (Split-Path $templateFilePath -Parent) -Parent) -LeafBase
+        } else {
+            $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
+        }
 
         # The initial sequence is a general order-recommendation
         $removalSequence = @(
@@ -66,6 +71,8 @@ function Initialize-DeploymentRemoval {
             'Microsoft.Network/privateEndpoints',
             'Microsoft.OperationsManagement/solutions',
             'Microsoft.OperationalInsights/workspaces/linkedServices',
+            'Microsoft.OperationalInsights/workspaces',
+            'Microsoft.KeyVault/vaults',
             'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )

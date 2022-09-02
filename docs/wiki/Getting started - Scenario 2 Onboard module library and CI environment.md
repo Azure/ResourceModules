@@ -6,7 +6,7 @@ This requires several steps:
 1. [Fork/clone the repository into your DevOps environment](#2-forkclone-the-repository-into-your-devops-environment)
 1. [Configure the CI environment](#3-configure-the-ci-environment)
 1. [Deploy dependencies](#4-deploy-dependencies)
-1. [Update module parameter files](#5-update-module-parameter-files)
+1. [Update module test files](#5-update-module-test-files)
 1. [(Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
 
 Depending on the DevOps environment you choose (GitHub or Azure DevOps), make sure you also account for the specific requirements outlined below.
@@ -25,13 +25,15 @@ In this first step, make sure you
   - Subscription ID
   - Parent Management Group ID
 
+> **Note:** The Service Principal must be able to query its own details in the Azure Active Directory (AAD). To that end, ensure it has at least the (default) role 'Cloud application administrator'.
+
 # 2. Fork/clone the repository into your DevOps environment
 
 Next, you'll want to create your own copy of the code. Depending on the repository environment you want to use (GitHub or Azure DevOps), the setup will be slightly different.
 
 > **Note:** Whether you chose GitHub or Azure DevOps as your repository's environment, it does not affect your options when registering the pipelines.
 
-> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-LinkedLocalModuleList`](./Getting%20started%20-%20Get%20module%20cross-references) to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example, 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidentally delete required references.
+> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-CrossReferencedModuleList`](./Getting%20started%20-%20Get%20module%20cross-references) with the switch parameter `PrintLocalReferencesOnly` to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example, 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidentally delete required references.
 
 <details>
 <summary>GitHub Repository</summary>
@@ -78,6 +80,12 @@ Alternatively, you can also do the same with a specific release by navigating to
 
 # 3. Configure the CI environment
 
+CARML uses a single ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) file for configuring the CI environment. To replicate the CI environment locally on your machine, and perform local modules tests and validations, you must install the ([powershell-yaml](https://www.powershellgallery.com/packages/powershell-yaml/0.4.2)) module from the PowerShell gallery by executing the following on your PowerShell CLI:
+
+```powershell
+Install-Module -Name powershell-yaml
+```
+
 To configure the CI environment you have to perform several steps:
 - [3.1 Update default `namePrefix`](#31-update-default-nameprefix)
 - [3.2 Set up CI-environment-specific configuration](#32-set-up-ci-environment-specific-configuration)
@@ -88,27 +96,29 @@ To configure the CI environment you have to perform several steps:
 
 To lower the barrier to entry and allow users to easily define their own naming conventions, we introduced a default `'name prefix'` for all deployed resources.
 
-> **Note:** This prefix is only used by the CI environment you validate your modules in, and doesn't affect the naming of any resources you deploy as part of any multi-module solutions (applications/workloads) based on the modules. 
+> **Note:** This prefix is only used by the CI environment you validate your modules in, and doesn't affect the naming of any resources you deploy as part of any multi-module solutions (applications/workloads) based on the modules.
 
-Each pipeline in CARML deploying resources uses a logic that automatically replaces "tokens" (i.e., placeholders) in any parameter file. Tokens are stored in only a few central locations to facilitate maintenance (e.g., local `settings.json`, repository secrets or variable groups).
+Each pipeline in CARML deploying resources uses a logic that automatically replaces "tokens" (i.e., placeholders) in any module test file. Tokens are stored in only a few central locations to facilitate maintenance (e.g., local `settings.yml`, repository secrets or variable groups).
 
 To update the `namePrefix`, perform the following steps:
 
-1. Open the `settings.json` file in the repository's root directory.
+1. Open the `settings.yml` file in the repository's root directory.
 
-1. Replace the `"value": "<...>"` of token `namePrefix` with a different value:
+1. Replace the value of the `localToken_namePrefix` with a different value:
 
-    ```json
-    {
-        "name": "namePrefix",
-        "value": "<...>"
-    }
+    ```yml
+    localToken_namePrefix: 'cntso'
     ```
+
     > **Note:** The value should be a 3-5 character long string like `cntso`. Longer strings are not recommended as they may conflict with Azure resource name length restrictions.
+
+    > **Note:** The CI pipelines automatically removes the `localToken_` prefix from the name when processing the tokens replacement.
 
     > **Note:** We highly encourage you to use the 'Check namePrefix availability' script ([see the documentation here](./Getting%20started%20-%20Check%20NamePrefix%20availability)) to check if the intended resource name will be available, based on the provided prefix.
 
  For further information on the token replacement logic, please refer to the corresponding [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section.
+
+ If you do not prefer to set the `namePrefix` locally for your CI environment. You can optionally set it as a GitHub Secret or add it to the ADO variable group as the key `TOKEN_NAMEPREFIX` and its value `your name prefix value`, and this is only applied if the `localToken_namePrefix` in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) is left empty.
 
 ## 3.2 Set up CI-environment-specific configuration
 
@@ -132,9 +142,9 @@ To use the environment's pipelines you should use the information you gathered d
 | `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
 | `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
 | `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
-| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The service principal ID (Object ID) of the principal used as the Azure service connection. Also used for test Role Assignments when modules are being deployed into Azure. |
 | `AZURE_CREDENTIALS` | `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the deployment principal used to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A private access token (PAT) with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date. |
+| `TOKEN_NAMEPREFIX` | `cntso` | Optional. If you specify the name prefix token here, it is only applied if the `localToken_namePrefix` specified in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) is left empty.  |
 
 <p>
 
@@ -166,16 +176,16 @@ To use the environment's pipelines you should use the information you gathered d
 >
 > **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, causes GitHub to consider each line of the json object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
 
-### 3.2.2 Set up variables file
+### 3.2.2 Set up settings file
 
-The primary pipeline variable file ([`global.variables.yml`](https://github.com/Azure/ResourceModules/blob/main/global.variables.yml)) hosts the fundamental pipeline configuration. In the file you will find and can configure settings such as:
+The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) hosts the fundamental pipeline configuration. In the file you will find and can configure settings such as:
 
 <details>
 <summary>General</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `location` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying parameter file, this location is used. |
+| `location` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying module test file, this location is used. |
 | `resourceGroupName` | `"validation-rg"` | The resource group to deploy all resources for validation to. |
 
 </details>
@@ -208,6 +218,8 @@ The primary pipeline variable file ([`global.variables.yml`](https://github.com/
 
 > **NOTE:** If you plan to use the private container registry for Bicep, make sure to update its value in `bicepRegistryName`, as it must be globally unique.
 
+> **NOTE:** If you are uncertain which publishing option to choose, [this section](./Solution%20creation#publish-location-considerations) may be of help.
+
 ### 3.2.3 Enable actions
 
 Finally, 'GitHub Actions' are disabled by default and hence, must be enabled first.
@@ -222,7 +234,7 @@ To do so, perform the following steps:
 
 ### 3.2.4 Set R/W Workflow permissions
 
-To let the worflow engine publish their results into your repository, you have to enable the read / write access for the github actions.
+To let the workflow engine publish their results into your repository, you have to enable the read / write access for the GitHub actions.
 
 1. Navigate to the `Settings` tab on the top of your repository page.
 
@@ -231,7 +243,7 @@ To let the worflow engine publish their results into your repository, you have t
 1. Make sure to enable `Read and write permissions`
 
     <img src="./media/SetupEnvironment/workflow_permissions.png" alt="Workflow Permissions">
-    
+
 </details>
 
 <p>
@@ -263,7 +275,7 @@ Based on the information you gathered in the [Azure setup](#1-configure-your-azu
 | `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
 | `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
 | `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the Azure Active Directory tenant to test-deploy modules in. |
-| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The service principal ID (Object ID) of the principal used as the Azure service connection. Also used for test Role Assignments when modules are being deployed into Azure. |
+| `TOKEN_NAMEPREFIX` | `<cntso>` | Optional. If you specify the name prefix token here, it is only applied if the `localToken_namePrefix` specified in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) is left empty.  |
 
 Make sure its name matches the `group` reference used in the module pipelines. For example
 
@@ -274,16 +286,16 @@ variables:
 
 > **Note:** If you need to use different name than `PLATFORM_VARIABLES`, make sure to search & replace all references with the new name.
 
-### 3.2.3 Set up variables file
+### 3.2.3 Set up settings file
 
-The primary pipeline variable file ([`global.variables.yml`](https://github.com/Azure/ResourceModules/blob/main/global.variables.yml)) hosts the fundamental pipeline configuration. In the file, you will find and can configure information such as:
+The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) hosts the fundamental pipeline configuration. In the file, you will find and can configure information such as:
 
 <details>
 <summary>General</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `location` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used. |
+| `location` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying module test file, this location is used. |
 | `resourceGroupName` | `'validation-rg'` | The resource group to deploy all resources for validation into. |
 | `serviceConnection` | `'Contoso-Connection'` | The service connection that points to the subscription to test in and publish to. |
 
@@ -329,6 +341,8 @@ The primary pipeline variable file ([`global.variables.yml`](https://github.com/
 
 > **NOTE:** If you plan to use the private container registry for Bicep, make sure to update its value in `bicepRegistryName` as it must be globally unique.
 
+> **NOTE:** If you are uncertain which publishing option to choose, [this section](./Solution%20creation#publish-location-considerations) may be of help.
+
 ### 3.2.4 Register pipelines
 
 To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, run the utility `Register-AzureDevOpsPipeline` we provide in `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Interoperability%20-%20Register%20Azure%20DevOps%20Pipelines).
@@ -339,13 +353,13 @@ This section will explain what is required to publish the modules to [Azure Arti
 #### The dependent components are
 1. An Azure DevOps organization and project
 1. An Azure DevOps artifacts feed
-   > Note: The default feed name is `ResourceModules` as configured in the [`global.variables.yml`](https://github.com/Azure/ResourceModules/blob/main/global.variables.yml) file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
+   > Note: The default feed name is `ResourceModules` as configured in the [`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml) file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
 1. An Azure DevOps project to host the artifact feed
    > Note: There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
 1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
 #### Implementation Guidance
-Each `./azuredevops/modulePipelines` yaml pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1).
+Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1).
 
 </details>
 
@@ -357,9 +371,9 @@ In order to successfully deploy and test all modules in your desired environment
 
 The repository comes with a platform pipeline, i.e., the '*dependencies pipeline*', that deploys a set of Azure services such as Virtual Networks and Key Vaults (along with dummy secrets) to be used by the module pipeline tests.
 
-Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage.md#operate-the-dependencies-pipeline) section.
+Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#operate-the-dependencies-pipeline) section.
 
-> **Note**: For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
+> **Note**: For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design#dependencies-pipeline) section.
 
 ## 4.1 Manual Dependencies
 
@@ -369,7 +383,7 @@ In special cases, manual actions may be required to provision certain resources 
 
 To successfully deploy the sites module using the `fa.parameters.json` parameter file, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
 
-# 5. Update module parameter files
+# 5. Update module test files
 
 Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
 
@@ -379,16 +393,16 @@ For this reason, make sure to update the references in the following modules onc
 
 | File | Parameter | Notes |
 | - | - | - |
-| `arm\Microsoft.Compute\diskEncryptionSets\.parameters\parameters.json` |`keyUrl.value` | |
-| `arm\Microsoft.Compute\virtualMachines\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Compute\virtualMachines\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` | |
-| `arm\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
-| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
-| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
-| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
+| `modules\Microsoft.CognitiveServices\accounts\.test\encr.parameters.json` | `encryption.value.keyVaultProperties.identityClientId` | |
+| `modules\Microsoft.Compute\virtualMachines\.test\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `modules\Microsoft.Compute\virtualMachines\.test\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `modules\Microsoft.Compute\virtualMachineScaleSets\.test\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `modules\Microsoft.Compute\virtualMachineScaleSets\.test\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `modules\Microsoft.Sql\managedInstances\.test\parameters.json` | `keys.value.uri` | |
+| `modules\Microsoft.Network\applicationGateways\.test\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
+| `modules\Microsoft.Web\sites\.test\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
+| `modules\Microsoft.Web\sites\.test\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
+| `modules\Microsoft.Web\sites\.test\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
 
 </details>
 

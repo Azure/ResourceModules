@@ -16,7 +16,7 @@ This section provides an overview of the most impactful limitations and known is
 - [CI environment specific](#ci-environment-specific)
   - [Static validation](#static-validation)
   - [Deployment validation](#deployment-validation)
-    - [Limited parameter file set](#limited-parameter-file-set)
+    - [Limited module test file set](#limited-module-test-file-set)
   - [Publishing](#publishing)
 
 ---
@@ -89,11 +89,11 @@ This section outlines known issues that currently affect the CI environment stat
 
 This section outlines known issues that currently affect the CI environment deployment validation step.
 
-### Limited parameter file set
+### Limited module test file set
 
-The deployment validation step aims to validate multiple configurations for each module. This is done by providing multiple parameter files to be leveraged by the same resource module, each covering a specific scenario.
+The deployment validation step aims to validate multiple configurations for each module. This is done by providing multiple module test files to be leveraged by the same resource module, each covering a specific scenario.
 
-The first planned step for each module is to provide a 'minimum-set' parameter file, limited to the top-level resource required parameters, vs. a 'maximum-set' parameter file, including all possible properties, child resources and extension resources. Some of the modules are still tested through one parameter file only. This is tracked by issue [#401](https://github.com/Azure/ResourceModules/issues/401).
+The first planned step for each module is to provide a 'minimum-set' module test file, limited to the top-level resource required parameters, vs. a 'maximum-set' module test file, including all possible properties, child resources and extension resources. Some of the modules are still tested through one module test file only. This is tracked by issue [#401](https://github.com/Azure/ResourceModules/issues/401).
 
 ## Publishing
 

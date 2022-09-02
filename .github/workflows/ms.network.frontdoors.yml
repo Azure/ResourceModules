@@ -19,21 +19,20 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.frontdoors.yml'
-      - 'arm/Microsoft.Network/frontDoors/**'
-      - 'arm/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.Network/frontDoors/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
-  variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Network/frontDoors'
+  variablesPath: 'settings.yml'
+  modulePath: 'modules/Microsoft.Network/frontDoors'
   workflowPath: '.github/workflows/ms.network.frontdoors.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
+  TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
 
 jobs:
   ###########################
@@ -53,13 +52,13 @@ jobs:
         with:
           workflowPath: '${{ env.workflowPath}}'
       - name: 'Get parameter file paths'
-        id: get-parameter-file-paths
-        uses: ./.github/actions/templates/getParameterFiles
+        id: get-module-test-file-paths
+        uses: ./.github/actions/templates/getModuleTestFiles
         with:
           modulePath: '${{ env.modulePath }}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-      parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
+      moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
 
   #########################
   #   Static validation   #
@@ -72,10 +71,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Run tests'
         uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
+          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   #############################
   #   Deployment validation   #
@@ -89,7 +93,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.parameterFilePaths) }}
+        moduleTestFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -99,11 +103,11 @@ jobs:
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           variablesPath: ${{ env.variablesPath }}
-      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
+      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
