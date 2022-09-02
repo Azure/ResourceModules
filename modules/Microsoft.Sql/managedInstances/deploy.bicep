@@ -339,16 +339,16 @@ module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.
   ]
 }
 
-module managedInstance_key 'keys/deploy.bicep' = [for (key, index) in keys: {
-  name: '${uniqueString(deployment().name, location)}-SqlMi-Key-${index}'
-  params: {
-    managedInstanceName: managedInstance.name
-    name: contains(key, 'name') ? key.name : ''
-    serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
-    uri: contains(key, 'uri') ? key.uri : ''
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
+// module managedInstance_key 'keys/deploy.bicep' = [for (key, index) in keys: {
+//   name: '${uniqueString(deployment().name, location)}-SqlMi-Key-${index}'
+//   params: {
+//     managedInstanceName: managedInstance.name
+//     name: contains(key, 'name') ? key.name : ''
+//     serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
+//     uri: contains(key, 'uri') ? key.uri : ''
+//     enableDefaultTelemetry: enableReferencedModulesTelemetry
+//   }
+// }]
 
 // module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
 //   name: '${uniqueString(deployment().name, location)}-SqlMi-EncryProtector'

@@ -3,11 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-sqlmi-x-001"
+            "value": "<<namePrefix>>-az-sqlmi-x-001-change"
         },
         "lock": {
-            // "value": "CanNotDelete"
-            "value": "RandomToDelete"
+            "value": "CanNotDelete"
         },
         "administratorLogin": {
             "reference": {
@@ -85,21 +84,21 @@
                 }
             ]
         },
-        "keys": {
-            "value": [
-                {
-                    "name": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
-                    "uri": "https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
-                    "serverKeyType": "AzureKeyVault"
-                }
-            ]
-        },
-        "encryptionProtectorObj": {
-            "value": {
-                "serverKeyName": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
-                "serverKeyType": "AzureKeyVault"
-            }
-        },
+        // "keys": {
+        //     "value": [
+        //         {
+        //             "name": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
+        //             "uri": "https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
+        //             "serverKeyType": "AzureKeyVault"
+        //         }
+        //     ]
+        // },
+        // "encryptionProtectorObj": {
+        //     "value": {
+        //         "serverKeyName": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
+        //         "serverKeyType": "AzureKeyVault"
+        //     }
+        // },
         "securityAlertPoliciesObj": {
             "value": {
                 "name": "default",
