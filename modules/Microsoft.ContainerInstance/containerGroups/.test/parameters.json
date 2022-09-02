@@ -18,11 +18,27 @@
                         "ports": [
                             {
                                 "protocol": "Tcp",
-                                "port": "8080"
-                            },
+                                "port": "80"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": 2,
+                                "memoryInGB": 2
+                            }
+                        },
+                        "environmentVariables": []
+                    }
+                },
+                {
+                    "name": "<<namePrefix>>-az-aci-x-002",
+                    "properties": {
+                        "command": [],
+                        "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+                        "ports": [
                             {
                                 "protocol": "Tcp",
-                                "port": "9000"
+                                "port": "443"
                             }
                         ],
                         "resources": {
