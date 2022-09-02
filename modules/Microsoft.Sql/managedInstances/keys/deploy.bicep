@@ -35,11 +35,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
   name: managedInstanceName
 }
 
-resource key 'Microsoft.Sql/managedInstances/keys@2021-05-01-preview' = {
+resource key 'Microsoft.Sql/managedInstances/keys@2022-02-01-preview' = {
   name: !empty(name) ? name : serverKeyName
   parent: managedInstance
   properties: {
