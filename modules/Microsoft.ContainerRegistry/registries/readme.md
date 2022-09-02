@@ -465,7 +465,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-Registries'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azacrx001'
+    name: '<<namePrefix>>azacrx002'
     // Non-required parameters
     acrAdminUserEnabled: false
     acrSku: 'Premium'
@@ -527,7 +527,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azacrx001"
+      "value": "<<namePrefix>>azacrx002"
     },
     // Non-required parameters
     "acrAdminUserEnabled": {
