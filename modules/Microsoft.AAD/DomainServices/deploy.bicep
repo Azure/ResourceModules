@@ -57,6 +57,7 @@ param ntlmV1 string = 'Enabled'
   'Enabled'
   'Disabled'
 ])
+#disable-next-line secure-secrets-in-params // Not a secret
 param syncNtlmPasswords string = 'Enabled'
 
 @description('Optional. The value is to enable on-premises users to authenticate against managed domain.')
@@ -64,6 +65,7 @@ param syncNtlmPasswords string = 'Enabled'
   'Enabled'
   'Disabled'
 ])
+#disable-next-line secure-secrets-in-params // Not a secret
 param syncOnPremPasswords string = 'Enabled'
 
 @description('Optional. The value is to enable Kerberos requests that use RC4 encryption.')
