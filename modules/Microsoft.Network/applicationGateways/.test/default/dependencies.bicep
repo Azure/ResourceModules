@@ -40,6 +40,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 
 resource publicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
     name: publicIPName
+    location: location
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
