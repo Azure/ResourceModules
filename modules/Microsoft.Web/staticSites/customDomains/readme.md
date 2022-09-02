@@ -7,12 +7,13 @@ This module deploys a Custom Domain into a Static Site.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/staticSites/customDomains` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/staticSites/customDomains) |
+| `Microsoft.Web/staticSites/customDomains` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/staticSites/customDomains) |
 
 ## Parameters
 
@@ -37,3 +38,7 @@ This module deploys a Custom Domain into a Static Site.
 | `name` | string | The name of the static site. |
 | `resourceGroupName` | string | The resource group the static site was deployed into. |
 | `resourceId` | string | The resource ID of the static site. |
+
+## Cross-referenced modules
+
+_None_

@@ -7,12 +7,13 @@ This module deploys a Custom Function App into a Static Site using the linkedBac
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/staticSites/linkedBackends` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/staticSites) |
+| `Microsoft.Web/staticSites/linkedBackends` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/staticSites/linkedBackends) |
 
 ## Parameters
 
@@ -42,3 +43,7 @@ This module deploys a Custom Function App into a Static Site using the linkedBac
 | `name` | string | The name of the static site. |
 | `resourceGroupName` | string | The resource group the static site was deployed into. |
 | `resourceId` | string | The resource ID of the static site. |
+
+## Cross-referenced modules
+
+_None_

@@ -7,6 +7,7 @@ This module deploys a Static Site Config.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -41,3 +42,7 @@ This module deploys a Static Site Config.
 | `name` | string | The name of the config. |
 | `resourceGroupName` | string | The name of the resource group the config was created in. |
 | `resourceId` | string | The resource ID of the config. |
+
+## Cross-referenced modules
+
+_None_
