@@ -62,11 +62,12 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-resource msiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${managedIdentityName}-Subscription-Contributor-RoleAssignment')
+resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('msi-${managedIdentityName}-RG-Contributor-RoleAssignment')
+  scope: resourceGroup()
   properties: {
     principalId: managedIdentity.properties.principalId
-    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c' // Contributor
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
     principalType: 'ServicePrincipal'
   }
 }
@@ -212,13 +213,12 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 }
 
-resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+resource msiKVReadRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid('msi-${managedIdentityName}-KeyVault-Key-Read-RoleAssignment')
   scope: keyVault::key
   properties: {
     principalId: managedIdentity.properties.principalId
-    // Key Vault Crypto User
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
     principalType: 'ServicePrincipal'
   }
 }
@@ -251,26 +251,13 @@ resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     }
   }
   properties: {
-    azPowerShellVersion: '3.0'
+    azPowerShellVersion: '6.2.1'
     retentionInterval: 'P1D'
     arguments: ' -StorageAccountName "${storageAccount.name}" -ResourceGroupName "${resourceGroup().name}" -ContainerName "${storageAccount::blobService::container.name}" -FileName "${storageAccountCSEFileName}"'
-    scriptContent: '''
-          param(
-            [string] $StorageAccountName,
-            [string] $ResourceGroupName,
-            [string] $ContainerName,
-            [string] $FileName
-          )
-          Write-Verbose "Create file [$FileName]" -Verbose
-          $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -Force
-          Write-Verbose "Getting storage account [$StorageAccountName|$ResourceGroupName] context." -Verbose
-          $storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName -ErrorAction 'Stop'
-          Write-Verbose 'Uploading file [$fileName]' -Verbose
-          Set-AzStorageBlobContent -File $file.FullName -Container $ContainerName -Context $storageAccount.Context -Force -ErrorAction 'Stop' | Out-Null
-        '''
+    scriptContent: loadTextContent('../.scripts/Set-BlobContent.ps1')
   }
   dependsOn: [
-    msiRoleAssignment
+    msiRGContrRoleAssignment
   ]
 }
 

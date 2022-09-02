@@ -65,11 +65,12 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-resource msiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${managedIdentityName}-Subscription-Contributor-RoleAssignment')
+resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('msi-${managedIdentityName}-ResourceGroup-Contributor-RoleAssignment')
+  scope: resourceGroup()
   properties: {
     principalId: managedIdentity.properties.principalId
-    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c' // Contributor
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
     principalType: 'ServicePrincipal'
   }
 }
@@ -215,13 +216,12 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 }
 
-resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+resource msiKVCryptoUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid('msi-${managedIdentityName}-KeyVault-Key-Read-RoleAssignment')
   scope: keyVault::key
   properties: {
     principalId: managedIdentity.properties.principalId
-    // Key Vault Crypto User
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
     principalType: 'ServicePrincipal'
   }
 }
@@ -273,7 +273,7 @@ resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
         '''
   }
   dependsOn: [
-    msiRoleAssignment
+    msiRGContrRoleAssignment
   ]
 }
 
@@ -288,17 +288,14 @@ resource sshDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' 
     }
   }
   properties: {
-    azPowerShellVersion: '3.0'
+    azPowerShellVersion: '6.2.1'
     retentionInterval: 'P1D'
-    scriptContent: '''
-      ssh-keygen -f generated -N (Get-Random -Maximum 99999)
-
-      $DeploymentScriptOutputs = @{
-        # privateKey = cat generated | Out-String
-        publicKey = cat 'generated.pub'
-      }
-    '''
+    arguments: ' -SSHKeyName "${sshKeyName}" -ResourceGroupName "${resourceGroup().name}"'
+    scriptContent: loadTextContent('../.scripts/New-SSHKey.ps1')
   }
+  dependsOn: [
+    msiRGContrRoleAssignment
+  ]
 }
 
 resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' = {

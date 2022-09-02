@@ -978,6 +978,21 @@ function Set-DeploymentExamplesSection {
 
                 $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + ($bicepExample -split '\n') + $rawBicepExample[($paramsEndIndex + 1)..($rawBicepExample.Count)]
 
+                # Remove any dependsOn as it it test specific
+                if ($detected = ($formattedBicepExample | Select-String '^\s*dependsOn:\s*\[\s*$' | ForEach-Object { $_.LineNumber - 1 })) {
+                    $dependsOnStartIndex = $detected[0]
+
+                    # Find out where the 'dependsOn' ends
+                    $dependsOnEndIndex = $dependsOnStartIndex
+                    do {
+                        $dependsOnEndIndex++
+                    } while ($formattedBicepExample[$dependsOnEndIndex] -notmatch '^\s*\]\s*$')
+
+                    # Cut the 'dependsOn' block out
+                    $formattedBicepExample = $formattedBicepExample[0..($dependsOnStartIndex - 1)] + $formattedBicepExample[($dependsOnEndIndex + 1)..($formattedBicepExample.Count)]
+                }
+
+                # Build result
                 $SectionContent += @(
                     '',
                     '<details>'

@@ -90,4 +90,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
   }
+  dependsOn: [
+    resourceGroupResources // Required to leverage `existing` SSH key reference
+  ]
 }

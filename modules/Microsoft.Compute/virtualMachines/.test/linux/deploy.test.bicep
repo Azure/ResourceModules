@@ -220,4 +220,7 @@ module testDeployment '../../deploy.bicep' = {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
   }
+  dependsOn: [
+    resourceGroupResources // Required to leverage `existing` SSH key reference
+  ]
 }

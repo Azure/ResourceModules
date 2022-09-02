@@ -38,6 +38,16 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
+resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('msi-${managedIdentityName}-RG-Reader-RoleAssignment')
+  scope: resourceGroup()
+  properties: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
+    principalType: 'ServicePrincipal'
+  }
+}
+
 resource sshDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: sshDeploymentScriptName
   location: location
@@ -49,17 +59,14 @@ resource sshDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' 
     }
   }
   properties: {
-    azPowerShellVersion: '3.0'
+    azPowerShellVersion: '6.2.1'
     retentionInterval: 'P1D'
-    scriptContent: '''
-      ssh-keygen -f generated -N (Get-Random -Maximum 99999)
-
-      $DeploymentScriptOutputs = @{
-        # privateKey = cat generated | Out-String
-        publicKey = cat 'generated.pub'
-      }
-    '''
+    arguments: ' -SSHKeyName "${sshKeyName}" -ResourceGroupName "${resourceGroup().name}"'
+    scriptContent: loadTextContent('../.scripts/New-SSHKey.ps1')
   }
+  dependsOn: [
+    msiRGContrRoleAssignment
+  ]
 }
 
 resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' = {
