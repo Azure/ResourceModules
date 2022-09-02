@@ -23,7 +23,7 @@
             "value": {
                 "keySource": "Microsoft.KeyVault",
                 "keyVaultProperties": {
-                    "identityClientId": "c907a696-36f4-49fe-b926-39e3aabba814", // ID must be updated for new identity
+                    "identityClientId": "5d395e10-82b1-4c41-bb5b-a27757e9f725", // ID must be updated for new identity
                     "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
                     "keyName": "keyEncryptionKey",
                     "keyversion": "4570a207ec394a0bbbe4fc9adc663a51" // Version must be updated for new keys
