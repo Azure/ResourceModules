@@ -298,78 +298,11 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-ManagedInstances'
   params: {
+    // Required parameters
     administratorLogin: kv1.getSecret('administratorLogin')
     administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-sqlmi-x-002'
+    name: '<<namePrefix>>-az-sqlmi-min-001'
     subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi'
-    collation: 'SQL_Latin1_General_CP1_CI_AS'
-    databases: [
-      {
-        backupLongTermRetentionPolicies: {
-          name: 'default'
-        }
-        backupShortTermRetentionPolicies: {
-          name: 'default'
-        }
-        name: '<<namePrefix>>-az-sqlmidb-x-001'
-      }
-    ]
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    dnsZonePartner: ''
-    encryptionProtectorObj: {
-      serverKeyName: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
-      serverKeyType: 'AzureKeyVault'
-    }
-    hardwareFamily: 'Gen5'
-    keys: [
-      {
-        name: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
-        serverKeyType: 'AzureKeyVault'
-        uri: 'https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07'
-      }
-    ]
-    licenseType: 'LicenseIncluded'
-    lock: 'CanNotDelete'
-    primaryUserAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
-    proxyOverride: 'Proxy'
-    publicDataEndpointEnabled: false
-    roleAssignments: [
-      {
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    securityAlertPoliciesObj: {
-      emailAccountAdmins: true
-      name: 'default'
-      state: 'Enabled'
-    }
-    servicePrincipal: 'SystemAssigned'
-    skuName: 'GP_Gen5'
-    skuTier: 'GeneralPurpose'
-    storageSizeInGB: 32
-    systemAssignedIdentity: true
-    timezoneId: 'UTC'
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-    vCores: 4
-    vulnerabilityAssessmentsObj: {
-      emailSubscriptionAdmins: true
-      name: 'default'
-      recurringScansEmails: [
-        'test1@contoso.com'
-        'test2@contoso.com'
-      ]
-      recurringScansIsEnabled: true
-      vulnerabilityAssessmentsStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    }
   }
 }
 ```
@@ -386,6 +319,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "administratorLogin": {
       "reference": {
         "keyVault": {
@@ -403,132 +337,10 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>-az-sqlmi-x-002"
+      "value": "<<namePrefix>>-az-sqlmi-min-001"
     },
     "subnetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi"
-    },
-    "collation": {
-      "value": "SQL_Latin1_General_CP1_CI_AS"
-    },
-    "databases": {
-      "value": [
-        {
-          "backupLongTermRetentionPolicies": {
-            "name": "default"
-          },
-          "backupShortTermRetentionPolicies": {
-            "name": "default"
-          },
-          "name": "<<namePrefix>>-az-sqlmidb-x-001"
-        }
-      ]
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-    },
-    "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-    },
-    "dnsZonePartner": {
-      "value": ""
-    },
-    "encryptionProtectorObj": {
-      "value": {
-        "serverKeyName": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07",
-        "serverKeyType": "AzureKeyVault"
-      }
-    },
-    "hardwareFamily": {
-      "value": "Gen5"
-    },
-    "keys": {
-      "value": [
-        {
-          "name": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07",
-          "serverKeyType": "AzureKeyVault",
-          "uri": "https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07"
-        }
-      ]
-    },
-    "licenseType": {
-      "value": "LicenseIncluded"
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "primaryUserAssignedIdentityId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
-    },
-    "proxyOverride": {
-      "value": "Proxy"
-    },
-    "publicDataEndpointEnabled": {
-      "value": false
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<<deploymentSpId>>"
-          ],
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "securityAlertPoliciesObj": {
-      "value": {
-        "emailAccountAdmins": true,
-        "name": "default",
-        "state": "Enabled"
-      }
-    },
-    "servicePrincipal": {
-      "value": "SystemAssigned"
-    },
-    "skuName": {
-      "value": "GP_Gen5"
-    },
-    "skuTier": {
-      "value": "GeneralPurpose"
-    },
-    "storageSizeInGB": {
-      "value": 32
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "timezoneId": {
-      "value": "UTC"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-      }
-    },
-    "vCores": {
-      "value": 4
-    },
-    "vulnerabilityAssessmentsObj": {
-      "value": {
-        "emailSubscriptionAdmins": true,
-        "name": "default",
-        "recurringScansEmails": [
-          "test1@contoso.com",
-          "test2@contoso.com"
-        ],
-        "recurringScansIsEnabled": true,
-        "vulnerabilityAssessmentsStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-      }
     }
   }
 }
