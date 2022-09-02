@@ -4,7 +4,7 @@ param name string
 @description('Required. The containers and their respective config within the container group.')
 param containers array
 
-@description('Conditional. Ports to open on the public IP address. Must include all ports assigned on container level.')
+@description('Optional. Ports to open on the public IP address. Must include all ports assigned on container level.')
 param ipAddressPorts array = []
 
 @description('Optional. The operating system type required by the containers in the container group. - Windows or Linux.')
