@@ -103,7 +103,7 @@ output publicIPResourceId string = publicIP.id
 output managedIdentityResourceId string = managedIdentity.id
 
 @description('The URL of the created certificate.')
-output certificateUrl string = certDeploymentScript.properties.outputs.secretUrl
+output certificateSecretUrl string = certDeploymentScript.properties.outputs.secretUrl
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
