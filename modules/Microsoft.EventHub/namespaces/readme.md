@@ -7,6 +7,7 @@ This module deploys an event hub namespace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,7 +15,7 @@ This module deploys an event hub namespace.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.EventHub/namespaces` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces) |
 | `Microsoft.EventHub/namespaces/authorizationRules` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/authorizationRules) |
 | `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/disasterRecoveryConfigs) |
@@ -48,7 +49,7 @@ This module deploys an event hub namespace.
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maximumThroughputUnits` | int | `1` |  | Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
 | `name` | string | `''` |  | The name of the event hub namespace. If no name is provided, then unique name will be created. |
-| `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Networks ACLs, this object contains IPs/Subnets to whitelist or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
+| `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Configure networking options. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `skuCapacity` | int | `1` |  | Event Hub plan scale-out capacity of the resource. |
@@ -78,9 +79,11 @@ To use Private Endpoint the following dependencies must be deployed:
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<<serviceName>>", // e.g. vault, registry, file, blob, queue, table etc.
-            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-            ],
+            "privateDnsZoneGroup": {
+                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+                ]
+            },
             "customDnsConfigs": [ // Optional
                 {
                     "fqdn": "customname.test.local",
@@ -112,9 +115,11 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
-        privateDnsZoneResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
-        ]
+        privateDnsZoneGroups: {
+            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
+            ]
+        }
         // Optional
         customDnsConfigs: [
             {
@@ -279,6 +284,14 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the eventspace. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -293,7 +306,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-namespaces'
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
 
   }
@@ -326,7 +339,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-namespaces'
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
     authorizationRules: [
       {
@@ -402,7 +415,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>-az-evnsp-x-001'
+    name: '<<namePrefix>>-az-evhns-x-001'
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -415,14 +428,17 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       virtualNetworkRules: [
         {
           ignoreMissingVnetServiceEndpoint: true
-          subnet: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-          }
+          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
         }
       ]
     }
     privateEndpoints: [
       {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net'
+          ]
+        }
         service: 'namespace'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
@@ -546,7 +562,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>-az-evnsp-x-001"
+      "value": "<<namePrefix>>-az-evhns-x-001"
     },
     "networkRuleSets": {
       "value": {
@@ -561,9 +577,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         "virtualNetworkRules": [
           {
             "ignoreMissingVnetServiceEndpoint": true,
-            "subnet": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
-            }
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
           }
         ]
       }
@@ -571,6 +585,11 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
+            ]
+          },
           "service": "namespace",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
@@ -593,6 +612,67 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       "value": {
         "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Pe</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Namespaces'
+  params: {
+    name: '<<namePrefix>>-az-evhns-pe-001'
+    privateEndpoints: [
+      {
+        privateDnsZoneGroups: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net'
+          ]
+        }
+        service: 'namespace'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-evhns-pe-001"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroups": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
+            ]
+          },
+          "service": "namespace",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
     }
   }
 }

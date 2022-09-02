@@ -7,27 +7,27 @@ param namespaceName string
   'Enabled'
   'Disabled'
 ])
-@description('Optional. This determines if traffic is allowed over public network. Default is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only.')
+@description('Optional. This determines if traffic is allowed over public network. Default is "Enabled". If set to "Disabled", traffic to this namespace will be restricted over Private Endpoints only and network rules will not be applied.')
 param publicNetworkAccess string = 'Enabled'
 
 @allowed([
   'Allow'
   'Deny'
 ])
-@description('Optional. Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules or virtualNetworkRules are being used.')
+@description('Optional. Default Action for Network Rule Set. Default is "Allow". It will not be set if publicNetworkAccess is "Disabled". Otherwise, it will be set to "Deny" if ipRules or virtualNetworkRules are being used.')
 param defaultAction string = 'Allow'
 
 @allowed([
   true
   false
 ])
-@description('Optional. Value that indicates whether Trusted Service Access is enabled or not. Default is "true".')
+@description('Optional. Value that indicates whether Trusted Service Access is enabled or not. Default is "true". It will not be set if publicNetworkAccess is "Disabled".')
 param trustedServiceAccessEnabled bool = true
 
-@description('Optional. List virtual network rules. When used, defaultAction will be set to "Deny".')
+@description('Optional. List virtual network rules. It will not be set if publicNetworkAccess is "Disabled". Otherwise, when used, defaultAction will be set to "Deny".')
 param virtualNetworkRules array = []
 
-@description('Optional. List of IpRules. When used, defaultAction will be set to "Deny".')
+@description('Optional. List of IpRules. It will not be set if publicNetworkAccess is "Disabled". Otherwise, when used, defaultAction will be set to "Deny".')
 param ipRules array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -35,8 +35,8 @@ param enableDefaultTelemetry bool = true
 
 var networkRules = [for (virtualNetworkRule, index) in virtualNetworkRules: {
   ignoreMissingVnetServiceEndpoint: contains(virtualNetworkRule, 'ignoreMissingVnetServiceEndpoint') ? virtualNetworkRule.ignoreMissingVnetServiceEndpoint : null
-  subnet: contains(virtualNetworkRule, 'subnet') ? {
-    id: virtualNetworkRule.subnet
+  subnet: contains(virtualNetworkRule, 'subnetResourceId') ? {
+    id: virtualNetworkRule.subnetResourceId
   } : null
 }]
 
@@ -61,8 +61,8 @@ resource networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11
   parent: namespace
   properties: {
     publicNetworkAccess: publicNetworkAccess
-    defaultAction: !empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : defaultAction
-    trustedServiceAccessEnabled: trustedServiceAccessEnabled
+    defaultAction: publicNetworkAccess == 'Disabled' ? null : (!empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : defaultAction)
+    trustedServiceAccessEnabled: publicNetworkAccess == 'Disabled' ? null : trustedServiceAccessEnabled
     ipRules: publicNetworkAccess == 'Disabled' ? null : ipRules
     virtualNetworkRules: publicNetworkAccess == 'Disabled' ? null : networkRules
   }

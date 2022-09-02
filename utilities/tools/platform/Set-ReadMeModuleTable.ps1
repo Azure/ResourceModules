@@ -54,15 +54,16 @@ function Set-ReadMeModuleTable {
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('GitHub', 'ADO')]
-        [string]$Environment,
+        [string] $Environment,
 
         [Parameter(Mandatory = $false)]
-        [string]$ProjectName = ''
+        [string] $ProjectName = ''
     )
 
     # Load external functions
-    . (Join-Path $PSScriptRoot 'helper/Get-ModulesAsMarkdownTable.ps1')
-    . (Join-Path $PSScriptRoot 'helper/Merge-FileWithNewContent.ps1')
+    $toolsRoot = Split-Path $PSScriptRoot -Parent
+    . (Join-Path $toolsRoot 'helper' 'Merge-FileWithNewContent.ps1')
+    . (Join-Path $toolsRoot 'helper' 'Get-ModulesAsMarkdownTable.ps1')
 
     # Logic
     $contentArray = Get-Content -Path $FilePath

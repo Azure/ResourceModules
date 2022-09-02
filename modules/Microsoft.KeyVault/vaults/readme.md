@@ -7,6 +7,7 @@ This module deploys a key vault and its child resources.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,7 +15,7 @@ This module deploys a key vault and its child resources.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.KeyVault/vaults` | [2021-11-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-11-01-preview/vaults) |
 | `Microsoft.KeyVault/vaults/accessPolicies` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies) |
@@ -24,6 +25,11 @@ This module deploys a key vault and its child resources.
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
+
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the Key Vault. Must be globally unique. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -48,7 +54,6 @@ This module deploys a key vault and its child resources.
 | `keys` | _[keys](keys/readme.md)_ array | `[]` |  | All keys to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `name` | string | `''` |  | Name of the Key Vault. If no name is provided, then unique name will be created. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
@@ -57,11 +62,6 @@ This module deploys a key vault and its child resources.
 | `softDeleteRetentionInDays` | int | `90` |  | softDelete data retention days. It accepts >=7 and <=90. |
 | `tags` | object | `{object}` |  | Resource tags. |
 | `vaultSku` | string | `'premium'` | `[premium, standard]` | Specifies the SKU for the vault. |
-
-**Generated parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a SAS token to access the modules. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -310,9 +310,11 @@ To use Private Endpoint the following dependencies must be deployed:
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<<serviceName>>", // e.g. vault, registry, file, blob, queue, table etc.
-            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-            ],
+            "privateDnsZoneGroup": {
+                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+                ]
+            },
             "customDnsConfigs": [ // Optional
                 {
                     "fqdn": "customname.test.local",
@@ -344,9 +346,11 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
-        privateDnsZoneResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
-        ]
+        privateDnsZoneGroups: {
+            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
+            ]
+        }
         // Optional
         customDnsConfigs: [
             {
@@ -378,6 +382,14 @@ privateEndpoints:  [
 | `resourceId` | string | The resource ID of the key vault. |
 | `uri` | string | The URI of the key vault. |
 
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -392,9 +404,9 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vaults'
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
-
+    name: '<<namePrefix>>-az-kv-min-002'
   }
 }
 ```
@@ -410,7 +422,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {}
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-kv-min-002"
+    }
+  }
 }
 ```
 
@@ -425,8 +441,9 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 
 ```bicep
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vaults'
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
+    name: '<<namePrefix>>-az-kv-x-002'
     accessPolicies: [
       {
         objectId: '<<deploymentSpId>>'
@@ -478,7 +495,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>-az-kv-x-002'
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
@@ -545,6 +561,9 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-kv-x-002"
+    },
     "accessPolicies": {
       "value": [
         {
@@ -613,9 +632,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-kv-x-002"
     },
     "networkAcls": {
       "value": {

@@ -48,15 +48,8 @@ param roleAssignments array = []
 @description('Optional. Fault Domain count for each placement group.')
 param scaleSetFaultDomain int = 2
 
-@description('Optional. Creates an proximity placement group and adds the VMs to it.')
-param proximityPlacementGroupName string = ''
-
-@description('Optional. Specifies the type of the proximity placement group.')
-@allowed([
-  'Standard'
-  'Ultra'
-])
-param proximityPlacementGroupType string = 'Standard'
+@description('Optional. Resource ID of a proximity placement group.')
+param proximityPlacementGroupResourceId string = ''
 
 @description('Required. Configures NICs and PIPs.')
 param nicConfigurations array = []
@@ -86,7 +79,7 @@ param licenseType string = ''
 @description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
 param enableServerSideEncryption bool = false
 
-@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter.')
+@description('Optional. Required if name is specified. Password of the user specified in user parameter.')
 @secure()
 param extensionDomainJoinPassword string = ''
 
@@ -218,12 +211,14 @@ param additionalUnattendContent array = []
 param winRM object = {}
 
 @description('Optional. Specifies whether password authentication should be disabled.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param disablePasswordAuthentication bool = false
 
 @description('Optional. The list of SSH public keys used to authenticate with linux based VMs.')
 param publicKeys array = []
 
 @description('Optional. Specifies set of certificates that should be installed onto the virtual machines in the scale set.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param secrets array = []
 
 @description('Optional. Specifies Scheduled Event related configurations.')
@@ -355,15 +350,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2021-04-01' = if (!empty(proximityPlacementGroupName)) {
-  name: !empty(proximityPlacementGroupName) ? proximityPlacementGroupName : 'dummyProximityGroup'
-  location: location
-  tags: tags
-  properties: {
-    proximityPlacementGroupType: proximityPlacementGroupType
-  }
-}
-
 resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
   name: name
   location: location
@@ -371,8 +357,8 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
   identity: identity
   zones: availabilityZones
   properties: {
-    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? {
-      id: az.resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroup.name)
+    proximityPlacementGroup: !empty(proximityPlacementGroupResourceId) ? {
+      id: proximityPlacementGroupResourceId
     } : null
     upgradePolicy: {
       mode: upgradePolicyMode
@@ -446,8 +432,8 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
           name: '${name}${nicConfiguration.nicSuffix}configuration-${index}'
           properties: {
             primary: (index == 0) ? true : any(null)
-            enableAcceleratedNetworking: contains(nicConfigurations, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : null
-            networkSecurityGroup: contains(nicConfigurations, 'nsgId') ? {
+            enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
+            networkSecurityGroup: contains(nicConfiguration, 'nsgId') ? {
               id: nicConfiguration.nsgId
             } : null
             ipConfigurations: nicConfiguration.ipConfigurations
@@ -654,6 +640,8 @@ module vmss_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAs
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: vmss.id
   }
 }]

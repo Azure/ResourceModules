@@ -12,6 +12,7 @@ remote/managing tenant.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -163,6 +164,10 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 **More info on this topic:**
 
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -177,7 +182,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-registrationDefinitions'
+  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
   params: {
     // Required parameters
     authorizations: [
@@ -260,7 +265,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-registrationDefinitions'
+  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
   params: {
     // Required parameters
     authorizations: [

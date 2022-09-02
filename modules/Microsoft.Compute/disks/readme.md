@@ -7,6 +7,7 @@ This template deploys a disk
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,7 +15,7 @@ This template deploys a disk
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/disks` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-08-01/disks) |
 
 ## Parameters
@@ -163,6 +164,10 @@ tags: {
 | `resourceGroupName` | string | The resource group the  disk was deployed into. |
 | `resourceId` | string | The resource ID of the disk. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -177,7 +182,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-image-001'
@@ -248,7 +253,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-import-001'
@@ -263,8 +268,8 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
-    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    sourceUri: 'https://adp<<namePrefix>>azsavhd001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-vhd-001.vhd'
+    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsavhd001'
   }
 }
 ```
@@ -303,10 +308,10 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
       ]
     },
     "sourceUri": {
-      "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
+      "value": "https://adp<<namePrefix>>azsavhd001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-vhd-001.vhd"
     },
     "storageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsavhd001"
     }
   }
 }
@@ -323,7 +328,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-min-001'
@@ -390,7 +395,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-x-001'

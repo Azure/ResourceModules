@@ -264,7 +264,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -349,6 +349,8 @@ module applicationGateway_roleAssignments '.bicep/nested_roleAssignments.bicep' 
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: applicationGateway.id
   }
 }]

@@ -7,6 +7,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,7 +15,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.ContainerRegistry/registries` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-09-01/registries) |
 | `Microsoft.ContainerRegistry/registries/replications` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications) |
 | `Microsoft.ContainerRegistry/registries/webhooks` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/webhooks) |
@@ -186,9 +187,11 @@ To use Private Endpoint the following dependencies must be deployed:
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<<serviceName>>", // e.g. vault, registry, file, blob, queue, table etc.
-            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-            ],
+            "privateDnsZoneGroup": {
+                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+                ]
+            },
             "customDnsConfigs": [ // Optional
                 {
                     "fqdn": "customname.test.local",
@@ -220,9 +223,11 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
-        privateDnsZoneResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
-        ]
+        privateDnsZoneGroups: {
+            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
+            ]
+        }
         // Optional
         customDnsConfigs: [
             {
@@ -329,6 +334,14 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the Azure container registry. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -343,7 +356,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-registries'
+  name: '${uniqueString(deployment().name)}-Registries'
   params: {
     // Required parameters
     name: '<<namePrefix>>azacrencr001'
@@ -412,7 +425,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-registries'
+  name: '${uniqueString(deployment().name)}-Registries'
   params: {
     name: '<<namePrefix>>azacrmin001'
   }
@@ -449,10 +462,10 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-registries'
+  name: '${uniqueString(deployment().name)}-Registries'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azacrx001'
+    name: '<<namePrefix>>azacrx002'
     // Non-required parameters
     acrAdminUserEnabled: false
     acrSku: 'Premium'
@@ -514,7 +527,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azacrx001"
+      "value": "<<namePrefix>>azacrx002"
     },
     // Non-required parameters
     "acrAdminUserEnabled": {

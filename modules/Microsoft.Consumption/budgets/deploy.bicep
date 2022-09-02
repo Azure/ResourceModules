@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
-@description('Optional. The name of the budget.')
-param name string = ''
+@description('Required. The name of the budget.')
+param name string
 
 @allowed([
   'Cost'
@@ -24,7 +24,7 @@ param amount int
 @description('Optional. The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers.')
 param resetPeriod string = 'Monthly'
 
-@description('Required. The start date for the budget. Start date should be the first day of the month and cannot be in the past (except for the current month).')
+@description('Optional. The start date for the budget. Start date should be the first day of the month and cannot be in the past (except for the current month).')
 param startDate string = '${utcNow('yyyy')}-${utcNow('MM')}-01T00:00:00Z'
 
 @description('Optional. The end date for the budget. If not provided, it will default to 10 years from the start date.')
@@ -55,7 +55,6 @@ param enableDefaultTelemetry bool = true
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-var budgetNameVar = empty(name) ? '${resetPeriod}-${category}-Budget' : name
 var notificationsArray = [for threshold in thresholds: {
   'Actual_GreaterThan_${threshold}_Percentage': {
     enabled: true
@@ -84,7 +83,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource budget 'Microsoft.Consumption/budgets@2019-05-01' = {
-  name: budgetNameVar
+  name: name
   properties: {
     category: category
     amount: amount

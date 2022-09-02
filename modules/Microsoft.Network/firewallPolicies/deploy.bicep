@@ -72,7 +72,8 @@ param fqdns array = []
 @description('Optional. List of IP addresses for the ThreatIntel Allowlist.')
 param ipAddresses array = []
 
-@description('Optional. Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.')
+@description('Optional. Secret ID of (base-64 encoded unencrypted PFX) Secret or Certificate object stored in KeyVault.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param keyVaultSecretId string = ''
 
 @description('Optional. Name of the CA certificate.')
@@ -105,7 +106,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-05-01' = {
+resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-08-01' = {
   name: name
   location: location
   tags: tags

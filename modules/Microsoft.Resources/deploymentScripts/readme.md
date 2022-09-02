@@ -8,6 +8,7 @@ This module deploys a deployment script.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -139,6 +140,10 @@ userAssignedIdentities: {
 
 This module requires a User Assigned Identity (MSI, managed service identity) to exist, and this MSI has to have contributor rights on the subscription - that allows the Deployment Script to create the required Storage Account and the Azure Container Instance.
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -153,7 +158,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  name: '${uniqueString(deployment().name)}-DeploymentScripts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-ds-cli-001'
@@ -230,7 +235,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 
 ```bicep
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  name: '${uniqueString(deployment().name)}-DeploymentScripts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-ds-ps-001'

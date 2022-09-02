@@ -81,7 +81,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
+resource server 'Microsoft.Sql/servers@2022-02-01-preview' = {
   location: location
   name: name
   tags: tags
@@ -118,6 +118,8 @@ module server_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (role
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: server.id
   }
 }]

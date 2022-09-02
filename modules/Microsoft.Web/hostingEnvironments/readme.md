@@ -7,6 +7,7 @@ This module deploys an app service environment.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,7 +15,7 @@ This module deploys an app service environment.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Web/hostingEnvironments` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/hostingEnvironments) |
 
@@ -197,6 +198,10 @@ tags: {
 | `resourceGroupName` | string | The resource group the app service environment was deployed into. |
 | `resourceId` | string | The resource ID of the app service environment. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -211,7 +216,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-hostingEnvironments'
+  name: '${uniqueString(deployment().name)}-HostingEnvironments'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appse-asev2-001'
@@ -320,7 +325,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
 
 ```bicep
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-hostingEnvironments'
+  name: '${uniqueString(deployment().name)}-HostingEnvironments'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appse-asev3-001'

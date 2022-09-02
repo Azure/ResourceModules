@@ -8,6 +8,7 @@ With this module you can perform policy assignments across the management group,
 - [Parameters](#Parameters)
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -15,7 +16,7 @@ With this module you can perform policy assignments across the management group,
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policyAssignments` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Parameters
 
@@ -166,6 +167,10 @@ module policyassignment 'yourpath/modules/Microsoft.Authorization.policyAssignme
 | `principalId` | string | Policy Assignment principal ID. |
 | `resourceId` | string | Policy Assignment resource ID. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -180,7 +185,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyAssignments'
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-mg-polAss'
@@ -223,7 +228,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyAssignments'
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-polAss'
@@ -348,7 +353,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyAssignments'
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-rg-polAss'
@@ -401,7 +406,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyAssignments'
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
     name: '<<namePrefix>>-rg-polAss'
@@ -534,7 +539,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyAssignments'
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-sub-polAss'
@@ -583,7 +588,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyAssignments'
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-polAss'

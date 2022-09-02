@@ -1,12 +1,14 @@
 # Network Watchers `[Microsoft.Network/networkWatchers]`
 
-This template deploys a network watcher.
+- This template deploys a network watcher.
+- Network Watcher is a default resource which will get created automatically in every region where a virtual network is present with in the network watcher resource group.
 
 ## Navigation
 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,17 +16,12 @@ This template deploys a network watcher.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/networkWatchers` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers) |
-| `Microsoft.Network/networkWatchers/connectionMonitors` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/connectionMonitors) |
-| `Microsoft.Network/networkWatchers/flowLogs` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/flowLogs) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Network/networkWatchers` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers) |
+| `Microsoft.Network/networkWatchers/connectionMonitors` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers/connectionMonitors) |
+| `Microsoft.Network/networkWatchers/flowLogs` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers/flowLogs) |
 
 ## Parameters
-
-**Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` | Name of the Network Watcher resource (hidden). |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -34,6 +31,7 @@ This template deploys a network watcher.
 | `flowLogs` | _[flowLogs](flowLogs/readme.md)_ array | `[]` |  | Array that contains the Flow Logs. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` |  | Name of the Network Watcher resource (hidden). |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
@@ -147,6 +145,10 @@ tags: {
 | `resourceGroupName` | string | The resource group the network watcher was deployed into. |
 | `resourceId` | string | The resource ID of the deployed network watcher. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -161,7 +163,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-networkWatchers'
+  name: '${uniqueString(deployment().name)}-NetworkWatchers'
   params: {
     location: 'northeurope'
   }
@@ -198,7 +200,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
 
 ```bicep
 module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-networkWatchers'
+  name: '${uniqueString(deployment().name)}-NetworkWatchers'
   params: {
     connectionMonitors: [
       {

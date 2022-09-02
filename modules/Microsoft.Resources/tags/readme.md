@@ -7,6 +7,7 @@ This module deploys Resources Tags on a subscription or resource group scope.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -77,6 +78,10 @@ tags: {
 | `resourceId` | string | The resource ID of the applied tags. |
 | `tags` | object | The applied tags. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -91,7 +96,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-tags'
+  name: '${uniqueString(deployment().name)}-Tags'
   params: {
 
   }
@@ -124,7 +129,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-tags'
+  name: '${uniqueString(deployment().name)}-Tags'
   params: {
     onlyUpdate: false
     resourceGroupName: 'validation-rg'
@@ -175,7 +180,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-tags'
+  name: '${uniqueString(deployment().name)}-Tags'
   params: {
     onlyUpdate: true
     tags: {

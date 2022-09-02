@@ -7,14 +7,15 @@ This module deploys a storage account table service
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Storage/storageAccounts/tableServices` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/tableServices) |
-| `Microsoft.Storage/storageAccounts/tableServices/tables` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/tableServices/tables) |
+| `Microsoft.Storage/storageAccounts/tableServices` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/tableServices) |
+| `Microsoft.Storage/storageAccounts/tableServices/tables` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/tableServices/tables) |
 
 ## Parameters
 
@@ -46,3 +47,7 @@ This module deploys a storage account table service
 | `name` | string | The name of the deployed table service. |
 | `resourceGroupName` | string | The resource group of the deployed table service. |
 | `resourceId` | string | The resource ID of the deployed table service. |
+
+## Cross-referenced modules
+
+_None_

@@ -7,6 +7,7 @@ This module deploys OperationsManagement Solutions.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -41,6 +42,10 @@ This module deploys OperationsManagement Solutions.
 | `resourceGroupName` | string | The resource group where the solution is deployed. |
 | `resourceId` | string | The resource ID of the deployed solution. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -55,7 +60,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-solutions'
+  name: '${uniqueString(deployment().name)}-Solutions'
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
@@ -98,7 +103,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 
 ```bicep
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-solutions'
+  name: '${uniqueString(deployment().name)}-Solutions'
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
@@ -151,7 +156,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 
 ```bicep
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-solutions'
+  name: '${uniqueString(deployment().name)}-Solutions'
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'

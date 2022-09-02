@@ -251,6 +251,8 @@ module app_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAss
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: app.id
   }
 }]
@@ -292,3 +294,6 @@ output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app
 
 @description('The location the resource was deployed into.')
 output location string = app.location
+
+@description('Default hostname of the app.')
+output defaultHostname string = app.properties.defaultHostName

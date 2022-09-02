@@ -20,6 +20,18 @@
         "scaleUnits": {
             "value": 4
         },
+        "disableCopyPaste": {
+            "value": true
+        },
+        "enableFileCopy": {
+            "value": false
+        },
+        "enableIpConnect": {
+            "value": false
+        },
+        "enableShareableLink": {
+            "value": false
+        },
         "roleAssignments": {
             "value": [
                 {

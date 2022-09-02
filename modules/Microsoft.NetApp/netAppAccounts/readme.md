@@ -7,6 +7,7 @@ This template deploys Azure NetApp Files.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,8 +15,8 @@ This template deploys Azure NetApp Files.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.NetApp/netAppAccounts` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-04-01/netAppAccounts) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.NetApp/netAppAccounts` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-01-01/netAppAccounts) |
 | `Microsoft.NetApp/netAppAccounts/capacityPools` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools) |
 | `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes) |
 
@@ -152,6 +153,10 @@ tags: {
 | `resourceGroupName` | string | The name of the Resource Group the NetApp account was created in. |
 | `resourceId` | string | The Resource ID of the NetApp account. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -166,7 +171,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-netAppAccounts'
+  name: '${uniqueString(deployment().name)}-NetAppAccounts'
   params: {
     name: '<<namePrefix>>-az-anf-min-001'
   }
@@ -203,7 +208,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-netAppAccounts'
+  name: '${uniqueString(deployment().name)}-NetAppAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-anf-nfs3-001'
@@ -416,7 +421,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-netAppAccounts'
+  name: '${uniqueString(deployment().name)}-NetAppAccounts'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-anf-nfs41-001'

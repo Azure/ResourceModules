@@ -7,6 +7,7 @@ This template deploys a private DNS zone.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,7 +15,7 @@ This template deploys a private DNS zone.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/privateDnsZones` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones) |
 | `Microsoft.Network/privateDnsZones/A` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A) |
 | `Microsoft.Network/privateDnsZones/AAAA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA) |
@@ -161,6 +162,10 @@ tags: {
 | `resourceGroupName` | string | The resource group the private DNS zone was deployed into. |
 | `resourceId` | string | The resource ID of the private DNS zone. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -175,7 +180,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-privateDnsZones'
+  name: '${uniqueString(deployment().name)}-PrivateDnsZones'
   params: {
     name: '<<namePrefix>>-az-privdns-x-001.com'
   }
@@ -212,7 +217,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 
 ```bicep
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-privateDnsZones'
+  name: '${uniqueString(deployment().name)}-PrivateDnsZones'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-privdns-x-002.com'

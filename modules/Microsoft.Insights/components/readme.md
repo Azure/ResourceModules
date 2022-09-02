@@ -5,13 +5,14 @@
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/components` | [2020-02-02](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-02-02/components) |
 
 ## Parameters
@@ -148,6 +149,10 @@ tags: {
 | `resourceGroupName` | string | The resource group the application insights component was deployed into. |
 | `resourceId` | string | The resource ID of the application insights component. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -162,7 +167,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module components './Microsoft.Insights/components/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-components'
+  name: '${uniqueString(deployment().name)}-Components'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-appi-x-001'

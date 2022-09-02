@@ -7,12 +7,13 @@ This module deploys VPN Gateways Connections.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/vpnGateways/vpnConnections` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/vpnConnections) |
+| `Microsoft.Network/vpnGateways/vpnConnections` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/vpnGateways/vpnConnections) |
 
 ## Parameters
 
@@ -110,3 +111,7 @@ routingConfiguration: {
 | `name` | string | The name of the VPN connection. |
 | `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into. |
 | `resourceId` | string | The resource ID of the VPN connection. |
+
+## Cross-referenced modules
+
+_None_

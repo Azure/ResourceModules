@@ -7,6 +7,7 @@ This module deploys Authorization Locks.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -40,6 +41,10 @@ This module deploys Authorization Locks.
 | `resourceId` | string | The resource ID of the lock. |
 | `scope` | string | The scope this lock applies to. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -54,7 +59,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module locks './Microsoft.Authorization/locks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-locks'
+  name: '${uniqueString(deployment().name)}-Locks'
   params: {
     // Required parameters
     level: 'CanNotDelete'

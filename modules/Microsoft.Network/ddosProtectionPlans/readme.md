@@ -7,6 +7,7 @@ This template deploys a DDoS protection plan.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,15 +15,15 @@ This template deploys a DDoS protection plan.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/ddosProtectionPlans` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/ddosProtectionPlans) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Network/ddosProtectionPlans` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/ddosProtectionPlans) |
 
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string | `''` | Name of the DDoS protection plan to assign the VNET to. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the DDoS protection plan to assign the VNET to. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -143,6 +144,10 @@ tags: {
 | `resourceGroupName` | string | The resource group the DDOS protection plan was deployed into. |
 | `resourceId` | string | The resource ID of the DDOS protection plan. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -157,10 +162,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ddosProtectionPlans'
+  name: '${uniqueString(deployment().name)}-DdosProtectionPlans'
   params: {
-    lock: 'CanNotDelete'
+    // Required parameters
     name: '<<namePrefix>>-az-ddos-x-001'
+    // Non-required parameters
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
@@ -185,11 +192,13 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "lock": {
-      "value": "CanNotDelete"
-    },
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-ddos-x-001"
+    },
+    // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
     },
     "roleAssignments": {
       "value": [

@@ -7,6 +7,7 @@ This module deploys DataProtection BackupVaults.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,7 +15,7 @@ This module deploys DataProtection BackupVaults.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DataProtection/backupVaults` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-03-01/backupVaults) |
 | `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-03-01/backupVaults/backupPolicies) |
 
@@ -330,6 +331,10 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the backup vault. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -344,7 +349,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-backupVaults'
+  name: '${uniqueString(deployment().name)}-BackupVaults'
   params: {
     name: '<<namePrefix>>-az-bv-min-001'
   }
@@ -381,7 +386,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
 
 ```bicep
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-backupVaults'
+  name: '${uniqueString(deployment().name)}-BackupVaults'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-bv-x-001'

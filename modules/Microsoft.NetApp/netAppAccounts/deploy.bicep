@@ -68,7 +68,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
+resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-01-01' = {
   name: name
   tags: tags
   location: location
@@ -93,6 +93,8 @@ module netAppAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: netAppAccount.id
   }
 }]

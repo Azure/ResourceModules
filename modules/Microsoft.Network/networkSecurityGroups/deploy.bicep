@@ -77,7 +77,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -157,6 +157,8 @@ module networkSecurityGroup_roleAssignments '.bicep/nested_roleAssignments.bicep
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: networkSecurityGroup.id
   }
 }]

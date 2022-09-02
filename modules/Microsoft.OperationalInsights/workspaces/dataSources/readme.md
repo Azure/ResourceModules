@@ -7,6 +7,7 @@ This template deploys a data source for a Log Analytics workspace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -93,3 +94,7 @@ tags: {
 | `name` | string | The name of the deployed data source. |
 | `resourceGroupName` | string | The resource group where the data source is deployed. |
 | `resourceId` | string | The resource ID of the deployed data source. |
+
+## Cross-referenced modules
+
+_None_

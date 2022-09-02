@@ -3,6 +3,11 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 2
   },
+  "[json]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false
+  },
   "[markdown]": {
     "files.encoding": "utf8"
   },
@@ -37,7 +42,13 @@
   "powershell.codeFormatting.useConstantStrings": true,
   "powershell.codeFormatting.useCorrectCasing": true,
   "powershell.codeFormatting.whitespaceBetweenParameters": true,
-  "spellright.documentTypes": ["markdown", "latex", "plaintext"],
-  "spellright.language": ["en"],
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext"
+  ],
+  "spellright.language": [
+    "en"
+  ],
   "yaml.format.singleQuote": true
 }

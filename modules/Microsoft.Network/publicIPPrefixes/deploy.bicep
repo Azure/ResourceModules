@@ -39,7 +39,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-05-01' = {
+resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -68,6 +68,8 @@ module publicIpPrefix_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: publicIpPrefix.id
   }
 }]

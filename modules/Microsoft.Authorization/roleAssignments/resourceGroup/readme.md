@@ -7,12 +7,13 @@ With this module you can perform role assignments on a resource group level
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Parameters
 
@@ -43,3 +44,7 @@ With this module you can perform role assignments on a resource group level
 | `resourceGroupName` | string | The name of the resource group the role assignment was applied at. |
 | `resourceId` | string | The resource ID of the Role Assignment. |
 | `scope` | string | The scope this Role Assignment applies to. |
+
+## Cross-referenced modules
+
+_None_

@@ -86,7 +86,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -100,7 +100,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
       id: networkSecurityGroupResourceId
     } : null
     ipConfigurations: [for (ipConfiguration, index) in ipConfigurations: {
-      name: !empty(ipConfiguration.name) ? ipConfiguration.name : null
+      name: contains(ipConfiguration, 'name') ? ipConfiguration.name : 'ipconfig0${index + 1}'
       properties: {
         primary: index == 0 ? true : false
         privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
@@ -151,6 +151,8 @@ module networkInterface_roleAssignments '.bicep/nested_roleAssignments.bicep' = 
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: networkInterface.id
   }
 }]

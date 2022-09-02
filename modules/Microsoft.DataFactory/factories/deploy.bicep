@@ -4,6 +4,9 @@ param name string
 @description('Optional. The name of the Managed Virtual Network.')
 param managedVirtualNetworkName string = ''
 
+@description('Optional. An array of managed private endpoints objects created in the Data Factory managed virtual network.')
+param managedPrivateEndpoints array = []
+
 @description('Optional. The object for the configuration of a Integration Runtime.')
 param integrationRuntime object = {}
 
@@ -206,6 +209,7 @@ module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = 
   params: {
     name: managedVirtualNetworkName
     dataFactoryName: dataFactory.name
+    managedPrivateEndpoints: managedPrivateEndpoints
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -254,7 +258,29 @@ module dataFactory_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for 
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: dataFactory.id
+  }
+}]
+
+module dataFactory_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-DataFactory-PrivateEndpoint-${index}'
+  params: {
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(dataFactory.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: dataFactory.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
 

@@ -150,7 +150,7 @@ var newPip = {
 
 var ipConfigurations = concat([
     {
-      name: 'IpConfAzureFirewallSubnet'
+      name: !empty(azureFirewallSubnetPublicIpId) ? last(split(azureFirewallSubnetPublicIpId, '/')) : publicIPAddress.outputs.name
       //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
       properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
     }
@@ -225,7 +225,7 @@ module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' 
   }
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
   name: name
   location: location
   zones: length(zones) == 0 ? null : zones
@@ -244,6 +244,9 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
     natRuleCollections: natRuleCollections
     networkRuleCollections: networkRuleCollections
   }
+  dependsOn: [
+    publicIPAddress
+  ]
 }
 
 resource azureFirewall_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
@@ -275,6 +278,8 @@ module azureFirewall_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: azureFirewall.id
   }
 }]

@@ -1,0 +1,102 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-postgresqlflexserver-public-001"
+        },
+        "skuName": {
+            "value": "Standard_D2s_v3"
+        },
+        "tier": {
+            "value": "GeneralPurpose"
+        },
+        "administratorLogin": {
+            "value": "adminUserName"
+        },
+        "administratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "administratorLoginPassword"
+            }
+        },
+        "availabilityZone": {
+            "value": "2"
+        },
+        "backupRetentionDays": {
+            "value": 20
+        },
+        "geoRedundantBackup": {
+            "value": "Enabled"
+        },
+        "storageSizeGB": {
+            "value": 1024
+        },
+        "version": {
+            "value": "14"
+        },
+        "highAvailability": {
+            "value": "SameZone"
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "firewallRules": {
+            "value": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "endIpAddress": "0.0.0.0",
+                    "startIpAddress": "0.0.0.0"
+                },
+                {
+                    "name": "test-rule1",
+                    "startIpAddress": "10.10.10.1",
+                    "endIpAddress": "10.10.10.10"
+                },
+                {
+                    "name": "test-rule2",
+                    "startIpAddress": "100.100.100.1",
+                    "endIpAddress": "100.100.100.10"
+                }
+            ]
+        },
+        "databases": {
+            "value": [
+                {
+                    "name": "testdb1",
+                    "collation": "en_US.utf8",
+                    "charset": "UTF8"
+                },
+                {
+                    "name": "testdb2"
+                }
+            ]
+        },
+        "configurations": {
+            "value": [
+                {
+                    "name": "log_min_messages",
+                    "source": "user-override",
+                    "value": "INFO"
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        }
+    }
+}

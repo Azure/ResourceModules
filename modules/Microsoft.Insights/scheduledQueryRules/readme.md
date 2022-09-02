@@ -7,13 +7,14 @@ This module deploys a scheduled query rule.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/scheduledQueryRules` | [2021-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-02-01-preview/scheduledQueryRules) |
 
 ## Parameters
@@ -155,6 +156,10 @@ tags: {
 | `resourceGroupName` | string | The Resource Group of the created query rule. |
 | `resourceId` | string | The resource ID of the created query rule. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -169,7 +174,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-scheduledQueryRules'
+  name: '${uniqueString(deployment().name)}-ScheduledQueryRules'
   params: {
     // Required parameters
     name: 'myAlert01'

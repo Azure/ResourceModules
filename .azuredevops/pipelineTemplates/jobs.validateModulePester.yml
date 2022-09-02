@@ -122,6 +122,7 @@ jobs:
                 # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
                 # @{ Name = 'Pester'; Version = '5.3.1' }
                 @{ Name = 'Az.Resources' }
+                @{ Name = 'powershell-yaml'; Version = '0.4.2'}
             )
 
             # Set agent up
@@ -141,6 +142,13 @@ jobs:
             # Set repo root path
             $repoRootPath = '$(moduleRepoRoot)'
 
+            # Get Service Principal Object ID
+            $context = Get-AzContext
+            $servicePrincipalAppId = $context.Account.Id
+            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+            $servicePrincipalObjectId = $servicePrincipal.Id
+
+            # Build path
             # Set test input module path
             $moduleFolderPaths = @(Join-Path $repoRootPath '${{ parameters.modulePath }}')
             $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
@@ -151,19 +159,26 @@ jobs:
               Write-Verbose "- [($moduleFolderPath]" -Verbose
             }
 
-            # Set enforced token list
-            $enforcedTokenList = @{}
+            # Construct Token Configuration Input
+            $GlobalVariablesObject = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.yml') | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
+            $tokenConfiguration = @{
+                Tokens      = @{}
+                TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+                TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+            }
+
+            # Set token configuration and enforced tokens list
             if (-not [String]::IsNullOrEmpty('${{ parameters.subscriptionId }}')) {
-                $enforcedTokenList['subscriptionId'] = '${{ parameters.subscriptionId }}'
+                $tokenConfiguration.Tokens['subscriptionId'] = '${{ parameters.subscriptionId }}'
             }
             if (-not [String]::IsNullOrEmpty('${{ parameters.managementGroupId }}')) {
-                $enforcedTokenList['managementGroupId'] = '${{ parameters.managementGroupId }}'
+                $tokenConfiguration.Tokens['managementGroupId'] = '${{ parameters.managementGroupId }}'
             }
             if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SP_ID)')) {
-                $enforcedTokenList['deploymentSpId'] = '$(DEPLOYMENT_SP_ID)'
+                $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
             }
             if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
-                $enforcedTokenList['tenantId'] =  '$(ARM_TENANT_ID)'
+                $tokenConfiguration.Tokens['tenantId'] = '$(ARM_TENANT_ID)'
             }
 
             # Set and print test output path
@@ -180,10 +195,9 @@ jobs:
             # --------------------- #
             Invoke-Pester -Configuration @{
               Run        = @{
-                Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
-                  repoRootPath = $repoRootPath
-                  moduleFolderPaths = $moduleFolderPaths
-                  enforcedTokenList = $enforcedTokenList
+                  Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
+                  moduleFolderPaths  = $moduleFolderPaths
+                  tokenConfiguration = $tokenConfiguration
                 }
               }
               TestResult = @{

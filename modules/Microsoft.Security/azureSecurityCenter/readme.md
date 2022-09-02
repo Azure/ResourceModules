@@ -7,6 +7,7 @@ This template enables Azure security center - Standard tier by default, could be
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -94,6 +95,10 @@ securityContactProperties: {
 | `name` | string | The name of the security center. |
 | `workspaceId` | string | The resource ID of the used log analytics workspace. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -108,7 +113,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-azureSecurityCenter'
+  name: '${uniqueString(deployment().name)}-AzureSecurityCenter'
   params: {
     // Required parameters
     scope: '/subscriptions/<<subscriptionId>>'

@@ -176,7 +176,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -253,6 +253,8 @@ module loadBalancer_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: loadBalancer.id
   }
 }]

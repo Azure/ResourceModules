@@ -7,6 +7,7 @@ This module deploys Network ApplicationGateways.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,9 +15,9 @@ This module deploys Network ApplicationGateways.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/applicationGateways` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/applicationGateways) |
+| `Microsoft.Network/applicationGateways` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/applicationGateways) |
 
 ## Parameters
 
@@ -220,6 +221,10 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the application gateway was deployed into. |
 | `resourceId` | string | The resource ID of the application gateway. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -234,7 +239,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-applicationGateways'
+  name: '${uniqueString(deployment().name)}-ApplicationGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-apgw-x-001'
@@ -482,6 +487,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           httpListener: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/public443'
           }
+          priority: 200
           ruleType: 'Basic'
         }
       }
@@ -497,6 +503,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           httpListener: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/private4433'
           }
+          priority: 250
           ruleType: 'Basic'
         }
       }
@@ -506,6 +513,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           httpListener: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/httpRedirect80'
           }
+          priority: 300
           redirectConfiguration: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/redirectConfigurations/httpRedirect80'
           }
@@ -518,6 +526,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           httpListener: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/httpRedirect8080'
           }
+          priority: 350
           redirectConfiguration: {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/redirectConfigurations/httpRedirect8080'
           }
@@ -850,6 +859,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
             "httpListener": {
               "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/public443"
             },
+            "priority": 200,
             "ruleType": "Basic"
           }
         },
@@ -865,6 +875,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
             "httpListener": {
               "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/private4433"
             },
+            "priority": 250,
             "ruleType": "Basic"
           }
         },
@@ -874,6 +885,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
             "httpListener": {
               "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/httpRedirect80"
             },
+            "priority": 300,
             "redirectConfiguration": {
               "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/redirectConfigurations/httpRedirect80"
             },
@@ -886,6 +898,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
             "httpListener": {
               "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/httpRedirect8080"
             },
+            "priority": 350,
             "redirectConfiguration": {
               "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/redirectConfigurations/httpRedirect8080"
             },

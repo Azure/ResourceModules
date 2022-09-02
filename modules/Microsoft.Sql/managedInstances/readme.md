@@ -7,6 +7,7 @@ This template deploys a SQL managed instance.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,7 +15,7 @@ This template deploys a SQL managed instance.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Sql/managedInstances` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/managedInstances) |
 | `Microsoft.Sql/managedInstances/administrators` | [2021-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/administrators) |
@@ -272,6 +273,10 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the deployed managed instance. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -291,7 +296,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managedInstances'
+  name: '${uniqueString(deployment().name)}-ManagedInstances'
   params: {
     administratorLogin: kv1.getSecret('administratorLogin')
     administratorLoginPassword: kv1.getSecret('administratorLoginPassword')

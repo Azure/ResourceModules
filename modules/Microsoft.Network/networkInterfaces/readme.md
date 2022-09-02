@@ -7,6 +7,7 @@ This module deploys Network Interfaces.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,9 +15,9 @@ This module deploys Network Interfaces.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/networkInterfaces` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkInterfaces) |
+| `Microsoft.Network/networkInterfaces` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkInterfaces) |
 
 ## Parameters
 
@@ -177,6 +178,10 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed resource. |
 | `resourceId` | string | The resource ID of the deployed resource. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -191,7 +196,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-networkInterfaces'
+  name: '${uniqueString(deployment().name)}-NetworkInterfaces'
   params: {
     // Required parameters
     ipConfigurations: [
@@ -244,7 +249,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
 
 ```bicep
 module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-networkInterfaces'
+  name: '${uniqueString(deployment().name)}-NetworkInterfaces'
   params: {
     // Required parameters
     ipConfigurations: [
@@ -260,6 +265,14 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
           }
         ]
         name: 'ipconfig01'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+      }
+      {
+        applicationSecurityGroups: [
+          {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+          }
+        ]
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
       }
     ]
@@ -310,6 +323,14 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
             }
           ],
           "name": "ipconfig01",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+        },
+        {
+          "applicationSecurityGroups": [
+            {
+              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+            }
+          ],
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
         }
       ]

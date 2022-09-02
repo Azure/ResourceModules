@@ -1,7 +1,7 @@
 @description('Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG.')
 param networkWatcherName string = 'NetworkWatcher_${resourceGroup().location}'
 
-@description('Optional. Name of the resource.')
+@description('Required. Name of the resource.')
 param name string
 
 @description('Optional. Tags of the resource.')
@@ -46,11 +46,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkWatcher 'Microsoft.Network/networkWatchers@2021-05-01' existing = {
+resource networkWatcher 'Microsoft.Network/networkWatchers@2021-08-01' existing = {
   name: networkWatcherName
 }
 
-resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors@2021-05-01' = {
+resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors@2021-08-01' = {
   name: name
   parent: networkWatcher
   tags: tags

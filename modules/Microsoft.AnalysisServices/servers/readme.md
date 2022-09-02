@@ -7,6 +7,7 @@ This module deploys an Analysis Services Server.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -15,7 +16,7 @@ This module deploys an Analysis Services Server.
 | :-- | :-- |
 | `Microsoft.AnalysisServices/servers` | [2017-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AnalysisServices/2017-08-01/servers) |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
@@ -155,6 +156,10 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the analysis service was deployed into. |
 | `resourceId` | string | The resource ID of the analysis service. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -169,7 +174,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-servers'
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
     name: '<<namePrefix>>azasweumax001'
@@ -300,7 +305,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-servers'
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     name: '<<namePrefix>>azasweumin001'
   }
@@ -337,7 +342,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-servers'
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
     name: '<<namePrefix>>azasweux001'

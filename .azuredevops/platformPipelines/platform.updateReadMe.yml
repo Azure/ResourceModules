@@ -11,13 +11,18 @@ trigger:
     include:
       - 'modules/**/deploy.bicep'
       - 'modules/**/deploy.json'
+      - 'utilities/tools/platform/**'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '../../settings.yml'
   - name: pipelinePrincipalGitUserName
     value: 'CARMLPipelinePrincipal'
   - name: pipelinePrincipalGitUserEmail
     value: 'CARML@noreply.github.com'
+  - name: relativeScriptPath_SetReadMeModuleTable
+    value: 'utilities/tools/platform/Set-ReadMeModuleTable.ps1'
+  - name: relativeScriptPath_SetModuleOverviewTable
+    value: 'utilities/tools/platform/Set-ModuleOverviewTable.ps1'
 
 jobs:
   - job: Update_module_tables
@@ -36,7 +41,7 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-ReadMeModuleTable.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(relativeScriptPath_SetReadMeModuleTable)')
 
             $functionInput = @{
               ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
@@ -60,11 +65,11 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-ReadMeModuleTable.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(relativeScriptPath_SetReadMeModuleTable)')
 
             $functionInput = @{
               ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
-              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'modules/README.md'
+              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'modules' 'README.md'
               Organization   = '$(System.CollectionUri)'.Split('/')[3]
               RepositoryName = '$(Build.Repository.Name)'
               ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
@@ -76,6 +81,23 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             Set-ReadMeModuleTable @functionInput -Verbose
+
+      - name: 'Update module outline'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path '$(System.DefaultWorkingDirectory)' '$(relativeScriptPath_SetModuleOverviewTable)')
+
+          $functionInput = @{
+            MarkdownFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'docs' 'wiki' 'The library - Module overview.md'
+            ModuleFolderPath = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Set-ModuleOverviewTable @functionInput -Verbose
+
       - task: PowerShell@2
         displayName: 'Push changes'
         inputs:

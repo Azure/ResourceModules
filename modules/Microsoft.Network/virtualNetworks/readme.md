@@ -8,6 +8,7 @@ This template deploys a virtual network (vNet).
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -15,11 +16,11 @@ This template deploys a virtual network (vNet).
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/virtualNetworks` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks) |
-| `Microsoft.Network/virtualNetworks/subnets` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/subnets) |
-| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/virtualNetworkPeerings) |
+| `Microsoft.Network/virtualNetworks` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks) |
+| `Microsoft.Network/virtualNetworks/subnets` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/subnets) |
+| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/virtualNetworkPeerings) |
 
 ## Parameters
 
@@ -346,6 +347,10 @@ The network security group and route table resources must reside in the same res
 | `subnetNames` | array | The names of the deployed subnets. |
 | `subnetResourceIds` | array | The resource IDs of the deployed subnets. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -360,7 +365,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualNetworks'
+  name: '${uniqueString(deployment().name)}-VirtualNetworks'
   params: {
     // Required parameters
     addressPrefixes: [
@@ -407,7 +412,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualNetworks'
+  name: '${uniqueString(deployment().name)}-VirtualNetworks'
   params: {
     // Required parameters
     addressPrefixes: [
@@ -602,7 +607,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualNetworks'
+  name: '${uniqueString(deployment().name)}-VirtualNetworks'
   params: {
     // Required parameters
     addressPrefixes: [

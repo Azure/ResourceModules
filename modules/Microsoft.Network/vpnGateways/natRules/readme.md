@@ -7,12 +7,13 @@ This module deploys VPN Gateways NATRules
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/vpnGateways/natRules` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/natRules) |
+| `Microsoft.Network/vpnGateways/natRules` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/vpnGateways/natRules) |
 
 ## Parameters
 
@@ -44,3 +45,7 @@ This module deploys VPN Gateways NATRules
 | `name` | string | The name of the NAT rule. |
 | `resourceGroupName` | string | The name of the resource group the NAT rule was deployed into. |
 | `resourceId` | string | The resource ID of the NAT rule. |
+
+## Cross-referenced modules
+
+_None_

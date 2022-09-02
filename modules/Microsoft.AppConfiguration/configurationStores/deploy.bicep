@@ -14,7 +14,7 @@ param userAssignedIdentities object = {}
   'Free'
   'Standard'
 ])
-@description('Required. Pricing tier of App Configuration.')
+@description('Optional. Pricing tier of App Configuration.')
 param sku string = 'Standard'
 
 @allowed([
@@ -156,7 +156,7 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
     createMode: createMode
     disableLocalAuth: disableLocalAuth
     enablePurgeProtection: sku == 'Free' ? false : enablePurgeProtection
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : null
     softDeleteRetentionInDays: sku == 'Free' ? 0 : softDeleteRetentionInDays
   }
 }
@@ -202,6 +202,8 @@ module configurationStore_roleAssignments '.bicep/nested_roleAssignments.bicep' 
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: configurationStore.id
   }
 }]

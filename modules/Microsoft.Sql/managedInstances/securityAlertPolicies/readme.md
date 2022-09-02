@@ -7,6 +7,7 @@ This module deploys a security alert policy for a SQL managed instance.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -41,3 +42,7 @@ This module deploys a security alert policy for a SQL managed instance.
 | `name` | string | The name of the deployed security alert policy. |
 | `resourceGroupName` | string | The resource group of the deployed security alert policy. |
 | `resourceId` | string | The resource ID of the deployed security alert policy. |
+
+## Cross-referenced modules
+
+_None_

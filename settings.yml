@@ -3,6 +3,26 @@ variables:
   ################################################## Common Variables #######################################################
   ###########################################################################################################################
 
+  # Enable or disable CARMLs CI telemetry tracking. Note: This tracks the number of deployments only.
+  # See: https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20design#telemetry
+  enableDefaultTelemetry: true
+
+  ######################################
+  # Local tokens settings
+  ######################################
+
+  # the 'localToken_' prefix will be removed from the key name when the pipelines run.
+  # e.g. if you have a token in your parameter file as <<customKey>>, then the token defined in this file looks like "localToken_customKey": 'value'
+  localToken_namePrefix: '' # A 3-5 character length unique string, included in the resources names (e.g. 'cntso'). Used for local module testing and pipelines.
+
+  ######################################
+  # global tokens settings
+  ######################################
+
+  # this determines the starting prefix and ending suffix of the token in your file.
+  tokenPrefix: '<<'
+  tokenSuffix: '>>'
+
   ######################################
   # Common folders and file paths
   ######################################

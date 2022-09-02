@@ -8,6 +8,7 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -160,3 +161,7 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group the compute was deployed into. |
 | `resourceId` | string | The resource ID of the compute. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID. |
+
+## Cross-referenced modules
+
+_None_

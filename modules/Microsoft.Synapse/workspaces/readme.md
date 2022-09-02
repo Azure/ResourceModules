@@ -7,6 +7,7 @@ This module deploys a Synapse Workspace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,8 +15,7 @@ This module deploys a Synapse Workspace.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.KeyVault/vaults/accessPolicies` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies) |
 | `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
@@ -88,9 +88,11 @@ To use Private Endpoint the following dependencies must be deployed:
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<<serviceName>>", // e.g. vault, registry, file, blob, queue, table etc.
-            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-            ],
+            "privateDnsZoneGroup": {
+                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+                ]
+            },
             "customDnsConfigs": [ // Optional
                 {
                     "fqdn": "customname.test.local",
@@ -122,9 +124,11 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
-        privateDnsZoneResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
-        ]
+        privateDnsZoneGroups: {
+            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
+            ]
+        }
         // Optional
         customDnsConfigs: [
             {
@@ -289,6 +293,14 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group of the deployed Synapse Workspace. |
 | `resourceID` | string | The resource ID of the deployed Synapse Workspace. |
 
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -303,10 +315,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-encryptwsai-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -334,7 +346,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux001"
+      "value": "adp<<namePrefix>>azsasynapse001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -376,10 +388,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-encryptwuai-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -406,7 +418,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux001"
+      "value": "adp<<namePrefix>>azsasynapse001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -445,10 +457,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux002'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse002'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-managedvnet-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -476,7 +488,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux002"
+      "value": "adp<<namePrefix>>azsasynapse002"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -514,10 +526,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-min-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -539,7 +551,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux001"
+      "value": "adp<<namePrefix>>azsasynapse001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -565,10 +577,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workspaces'
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsaweux001'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>azsasynapse001'
     defaultDataLakeStorageFilesystem: 'synapsews'
     name: '<<namePrefix>>-az-synws-x-001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -627,7 +639,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>azsaweux001"
+      "value": "adp<<namePrefix>>azsasynapse001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"

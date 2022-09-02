@@ -7,6 +7,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,9 +15,9 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2022-03-02-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-03-02-preview/managedClusters) |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.ContainerService/managedClusters` | [2022-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-06-01/managedClusters) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-06-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
@@ -80,7 +81,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `azurePolicyVersion` | string | `'v2'` |  | Specifies the azure policy version to use. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[cluster-autoscaler, kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler]` | `[cluster-autoscaler, kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[cluster-autoscaler, guard, kube-apiserver, kube-audit, kube-audit-admin, kube-controller-manager, kube-scheduler]` | `[cluster-autoscaler, guard, kube-apiserver, kube-audit, kube-audit-admin, kube-controller-manager, kube-scheduler]` | The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -357,6 +358,10 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the managed cluster. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -371,7 +376,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managedClusters'
+  name: '${uniqueString(deployment().name)}-ManagedClusters'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-aks-azure-001'
@@ -616,7 +621,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managedClusters'
+  name: '${uniqueString(deployment().name)}-ManagedClusters'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-aks-kubenet-001'

@@ -7,23 +7,23 @@ This module deploys an Alert based on Activity Log.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/activityLogAlerts` | [2020-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-10-01/activityLogAlerts) |
 
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `conditions` | array |  | The condition that will cause this alert to activate. Array of objects. |
-| `name` | string |  | The name of the alert. |
-| `scopes` | array | `[[subscription().id]]` | the list of resource IDs that this metric alert is scoped to. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `conditions` | array | The condition that will cause this alert to activate. Array of objects. |
+| `name` | string | The name of the alert. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -34,6 +34,7 @@ This module deploys an Alert based on Activity Log.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `'global'` | Location for all resources. |
 | `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `scopes` | array | `[[subscription().id]]` | The list of resource IDs that this metric alert is scoped to. |
 | `tags` | object | `{object}` | Tags of the resource. |
 
 
@@ -392,6 +393,10 @@ tags: {
 | `resourceGroupName` | string | The resource group the activity log alert was deployed into. |
 | `resourceId` | string | The resource ID of the activity log alert. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -406,7 +411,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-activityLogAlerts'
+  name: '${uniqueString(deployment().name)}-ActivityLogAlerts'
   params: {
     // Required parameters
     conditions: [

@@ -9,6 +9,7 @@ With this module you can create policy set definitions across the management gro
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -130,6 +131,10 @@ module policysetdefinition 'yourpath/modules/Microsoft.Authorization.policySetDe
 
 - Policy Set Definitions (Initiatives) have a dependency on Policy Assignments being applied before creating an initiative. You can use the Policy Assignment [Module](../policyDefinitions/deploy.bicep) to deploy a Policy Definition and then create an initiative for it on the required scope.
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -144,7 +149,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policySetDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-min-policySet'
@@ -209,7 +214,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 ```bicep
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policySetDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-policySet'
@@ -352,7 +357,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 ```bicep
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policySetDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-min-policySet'
@@ -423,7 +428,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 ```bicep
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policySetDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-policySet'

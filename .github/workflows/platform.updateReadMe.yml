@@ -12,10 +12,13 @@ on:
     paths:
       - 'modules/**/deploy.bicep'
       - 'modules/**/deploy.json'
+      - 'utilities/tools/platform/**'
 
 env:
   pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
   pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
+  relativeScriptPath_SetReadMeModuleTable: 'utilities/tools/platform/Set-ReadMeModuleTable.ps1'
+  relativeScriptPath_SetModuleOverviewTable: 'utilities/tools/platform/Set-ModuleOverviewTable.ps1'
 
 jobs:
   job_update_readme:
@@ -31,7 +34,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ReadMeModuleTable.ps1"
+          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMeModuleTable)
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
@@ -52,11 +55,11 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ReadMeModuleTable.ps1"
+          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMeModuleTable)
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
-            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'modules/README.md'
+            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'modules' 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
@@ -67,6 +70,22 @@ jobs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Set-ReadMeModuleTable @functionInput -Verbose
+
+      - name: 'Update module outline'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetModuleOverviewTable)
+
+          $functionInput = @{
+            MarkdownFilePath = Join-Path $env:GITHUB_WORKSPACE 'docs' 'wiki' 'The library - Module overview.md'
+            ModuleFolderPath = Join-Path $env:GITHUB_WORKSPACE 'modules'
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Set-ModuleOverviewTable @functionInput -Verbose
 
       - name: 'Push changes'
         shell: pwsh

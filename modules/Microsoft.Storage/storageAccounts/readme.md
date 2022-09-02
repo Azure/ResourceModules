@@ -8,6 +8,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -15,23 +16,28 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.Storage/storageAccounts` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts) |
-| `Microsoft.Storage/storageAccounts/blobServices` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/blobServices) |
-| `Microsoft.Storage/storageAccounts/blobServices/containers` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers) |
-| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
-| `Microsoft.Storage/storageAccounts/fileServices` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/fileServices) |
-| `Microsoft.Storage/storageAccounts/fileServices/shares` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts/fileServices/shares) |
-| `Microsoft.Storage/storageAccounts/managementPolicies` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/managementPolicies) |
-| `Microsoft.Storage/storageAccounts/queueServices` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/queueServices) |
-| `Microsoft.Storage/storageAccounts/queueServices/queues` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues) |
-| `Microsoft.Storage/storageAccounts/tableServices` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/tableServices) |
-| `Microsoft.Storage/storageAccounts/tableServices/tables` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/tableServices/tables) |
+| `Microsoft.Storage/storageAccounts` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts) |
+| `Microsoft.Storage/storageAccounts/blobServices` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices/containers) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
+| `Microsoft.Storage/storageAccounts/fileServices` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/fileServices) |
+| `Microsoft.Storage/storageAccounts/fileServices/shares` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/fileServices/shares) |
+| `Microsoft.Storage/storageAccounts/managementPolicies` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/managementPolicies) |
+| `Microsoft.Storage/storageAccounts/queueServices` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/queueServices) |
+| `Microsoft.Storage/storageAccounts/queueServices/queues` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/queueServices/queues) |
+| `Microsoft.Storage/storageAccounts/tableServices` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/tableServices) |
+| `Microsoft.Storage/storageAccounts/tableServices/tables` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/tableServices/tables) |
 
 ## Parameters
+
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the Storage Account. |
 
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -61,7 +67,6 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managementPolicyRules` | array | `[]` |  | The Storage Account ManagementPolicies Rules. |
 | `minimumTlsVersion` | string | `'TLS1_2'` | `[TLS1_0, TLS1_1, TLS1_2]` | Set the minimum TLS version on request to storage. |
-| `name` | string | `''` |  | Name of the Storage Account. Autogenerated with a unique string if not provided. |
 | `networkAcls` | object | `{object}` |  | Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set. |
@@ -255,9 +260,11 @@ To use Private Endpoint the following dependencies must be deployed:
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<<serviceName>>", // e.g. vault, registry, file, blob, queue, table etc.
-            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-            ],
+            "privateDnsZoneGroup": {
+                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+                ]
+            },
             "customDnsConfigs": [ // Optional
                 {
                     "fqdn": "customname.test.local",
@@ -289,9 +296,11 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
-        privateDnsZoneResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
-        ]
+        privateDnsZoneGroups: {
+            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
+            ]
+        }
         // Optional
         customDnsConfigs: [
             {
@@ -362,6 +371,14 @@ userAssignedIdentities: {
 This is a generic module for deploying a Storage Account. Any customization for different storage needs (such as a diagnostic or other storage account) need to be done through the Archetype.
 The hierarchical namespace of the storage account (see parameter `enableHierarchicalNamespace`), can be only set at creation time.
 
+## Cross-referenced modules
+
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -376,8 +393,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-storageAccounts'
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
+    // Required parameters
+    name: '<<namePrefix>>azsaencr001'
+    // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
       containers: [
@@ -390,7 +410,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     cMKKeyName: 'keyEncryptionKey'
     cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
-    name: '<<namePrefix>>azsaencr001'
     privateEndpoints: [
       {
         privateDnsZoneGroups: {
@@ -424,6 +443,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>azsaencr001"
+    },
+    // Non-required parameters
     "allowBlobPublicAccess": {
       "value": false
     },
@@ -445,9 +469,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     },
     "cMKUserAssignedIdentityResourceId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
-    },
-    "name": {
-      "value": "<<namePrefix>>azsaencr001"
     },
     "privateEndpoints": {
       "value": [
@@ -491,8 +512,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-storageAccounts'
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
+    // Required parameters
+    name: '<<namePrefix>>azsamin001'
+    // Non-required parameters
     allowBlobPublicAccess: false
   }
 }
@@ -510,6 +534,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>azsamin001"
+    },
+    // Non-required parameters
     "allowBlobPublicAccess": {
       "value": false
     }
@@ -528,8 +557,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-storageAccounts'
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
+    // Required parameters
+    name: '<<namePrefix>>azsanfs001'
+    // Non-required parameters
     allowBlobPublicAccess: false
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
@@ -544,7 +576,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     }
-    name: '<<namePrefix>>azsanfs001'
     roleAssignments: [
       {
         principalIds: [
@@ -576,6 +607,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>azsanfs001"
+    },
+    // Non-required parameters
     "allowBlobPublicAccess": {
       "value": false
     },
@@ -603,9 +639,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           }
         ]
       }
-    },
-    "name": {
-      "value": "<<namePrefix>>azsanfs001"
     },
     "roleAssignments": {
       "value": [
@@ -649,8 +682,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-storageAccounts'
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
+    // Required parameters
+    name: '<<namePrefix>>azsax001'
+    // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
       containers: [
@@ -711,7 +747,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       ]
     }
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>azsax001'
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
@@ -832,6 +867,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>azsax001"
+    },
+    // Non-required parameters
     "allowBlobPublicAccess": {
       "value": false
     },
@@ -909,9 +949,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "name": {
-      "value": "<<namePrefix>>azsax001"
     },
     "networkAcls": {
       "value": {
@@ -1050,10 +1087,12 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-storageAccounts'
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
-    allowBlobPublicAccess: false
+    // Required parameters
     name: '<<namePrefix>>azsav1001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
     storageAccountKind: 'Storage'
   }
 }
@@ -1071,11 +1110,13 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "allowBlobPublicAccess": {
-      "value": false
-    },
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>azsav1001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
     },
     "storageAccountKind": {
       "value": "Storage"

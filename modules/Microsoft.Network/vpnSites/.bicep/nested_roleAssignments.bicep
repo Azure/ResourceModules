@@ -22,11 +22,11 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource vpnSite 'Microsoft.Network/vpnSites@2021-05-01' existing = {
+resource vpnSite 'Microsoft.Network/vpnSites@2021-08-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
   name: guid(vpnSite.id, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

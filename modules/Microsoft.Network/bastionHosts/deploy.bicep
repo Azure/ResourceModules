@@ -10,9 +10,6 @@ param vNetId string
 @description('Optional. The public ip resource ID to associate to the azureBastionSubnet. If empty, then the public ip that is created as part of this module will be applied to the azureBastionSubnet.')
 param azureBastionSubnetPublicIpId string = ''
 
-@description('Optional. This is to add any additional public ip configurations on top of the public ip with subnet ip configuration.')
-param additionalPublicIpConfigurations array = []
-
 @description('Optional. Specifies if a public ip should be created by default if one is not provided.')
 param isCreateDefaultPublicIP bool = true
 
@@ -51,6 +48,18 @@ param lock string = ''
 @description('Optional. The SKU of this Bastion Host.')
 param skuType string = 'Basic'
 
+@description('Optional. Choose to disable or enable Copy Paste.')
+param disableCopyPaste bool = false
+
+@description('Optional. Choose to disable or enable File Copy.')
+param enableFileCopy bool = true
+
+@description('Optional. Choose to disable or enable IP Connect.')
+param enableIpConnect bool = false
+
+@description('Optional. Choose to disable or enable Shareable Link.')
+param enableShareableLink bool = false
+
 @description('Optional. The scale units for the Bastion Host resource.')
 param scaleUnits int = 2
 
@@ -83,16 +92,9 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   }
 }]
 
-var scaleUnits_var = skuType == 'Basic' ? 2 : scaleUnits
+var enableTunneling = skuType == 'Standard' ? true : null
 
-var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPublicIpConfigurations: {
-  name: ipConfiguration.name
-  properties: {
-    publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? {
-      id: ipConfiguration.publicIPAddressResourceId
-    } : null
-  }
-}]
+var scaleUnits_var = skuType == 'Basic' ? 2 : scaleUnits
 
 // ----------------------------------------------------------------------------
 // Prep ipConfigurations object AzureBastionSubnet for different uses cases:
@@ -115,13 +117,13 @@ var newPip = {
   } : null
 }
 
-var ipConfigurations = concat([
-    {
-      name: 'IpConfAzureBastionSubnet'
-      //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
-      properties: union(subnet_var, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
-    }
-  ], additionalPublicIpConfigurations_var)
+var ipConfigurations = [
+  {
+    name: 'IpConfAzureBastionSubnet'
+    //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
+    properties: union(subnet_var, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+  }
+]
 
 // ----------------------------------------------------------------------------
 
@@ -168,17 +170,27 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(azureBast
   }
 }
 
-resource azureBastion 'Microsoft.Network/bastionHosts@2021-05-01' = {
+var bastionproperties_var = skuType == 'Standard' ? {
+  scaleUnits: scaleUnits_var
+  ipConfigurations: ipConfigurations
+  enableTunneling: enableTunneling
+  disableCopyPaste: disableCopyPaste
+  enableFileCopy: enableFileCopy
+  enableIpConnect: enableIpConnect
+  enableShareableLink: enableShareableLink
+} : {
+  scaleUnits: scaleUnits_var
+  ipConfigurations: ipConfigurations
+}
+
+resource azureBastion 'Microsoft.Network/bastionHosts@2022-01-01' = {
   name: name
   location: location
   tags: tags
   sku: {
     name: skuType
   }
-  properties: {
-    scaleUnits: scaleUnits_var
-    ipConfigurations: ipConfigurations
-  }
+  properties: bastionproperties_var
 }
 
 resource azureBastion_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
@@ -209,6 +221,8 @@ module azureBastion_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: azureBastion.id
   }
 }]

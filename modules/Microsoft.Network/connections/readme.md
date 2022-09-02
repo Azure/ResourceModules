@@ -7,6 +7,7 @@ This template deploys a virtual network gateway connection.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,7 +15,7 @@ This template deploys a virtual network gateway connection.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Network/connections` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/connections) |
+| `Microsoft.Network/connections` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/connections) |
 
 ## Parameters
 
@@ -302,6 +303,10 @@ tags: {
 | `resourceGroupName` | string | The resource group the remote connection was deployed into. |
 | `resourceId` | string | The resource ID of the remote connection. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -321,7 +326,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module connections './Microsoft.Network/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-connections'
+  name: '${uniqueString(deployment().name)}-Connections'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vnetgwc-x-001'

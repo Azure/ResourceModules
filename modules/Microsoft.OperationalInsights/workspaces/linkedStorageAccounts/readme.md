@@ -7,6 +7,7 @@ This template deploys a linked Storage Accounts for a Log Analytics workspace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -40,3 +41,7 @@ This template deploys a linked Storage Accounts for a Log Analytics workspace.
 | `name` | string | The name of the deployed linked storage account. |
 | `resourceGroupName` | string | The resource group where the linked storage account is deployed. |
 | `resourceId` | string | The resource ID of the deployed linked storage account. |
+
+## Cross-referenced modules
+
+_None_

@@ -7,12 +7,13 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-06-01/managedClusters/agentPools) |
 
 ## Parameters
 
@@ -114,3 +115,7 @@ tags: {
 | `name` | string | The name of the agent pool. |
 | `resourceGroupName` | string | The resource group the agent pool was deployed into. |
 | `resourceId` | string | The resource ID of the agent pool. |
+
+## Cross-referenced modules
+
+_None_

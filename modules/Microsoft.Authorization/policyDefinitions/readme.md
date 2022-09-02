@@ -8,6 +8,7 @@ With this module you can create policy definitions across the management group o
 - [Parameters](#Parameters)
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -124,6 +125,10 @@ module policydefinition 'yourpath/modules/Microsoft.Authorization.policyDefiniti
 | `resourceId` | string | Policy Definition resource ID. |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -138,7 +143,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-min-policyDef'
@@ -227,7 +232,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-policyDef'
@@ -382,7 +387,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-min-policyDef'
@@ -475,7 +480,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyDefinitions'
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-policyDef'

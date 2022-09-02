@@ -49,7 +49,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
+resource virtualWan 'Microsoft.Network/virtualWans@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -77,6 +77,8 @@ module virtualWan_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: virtualWan.id
   }
 }]
