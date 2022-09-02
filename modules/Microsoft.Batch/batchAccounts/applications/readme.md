@@ -8,6 +8,7 @@ This module deploys Batch BatchAccounts Applications.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -45,3 +46,7 @@ This module deploys Batch BatchAccounts Applications.
 | `name` | string | The name of the created application. |
 | `resourceGroupName` | string | The name of the resource group the application was created in. |
 | `resourceId` | string | The resource ID of the created application. |
+
+## Cross-referenced modules
+
+_None_

@@ -8,6 +8,7 @@ This module deploys Batch BatchAccounts Pools.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -35,7 +36,7 @@ This module deploys Batch BatchAccounts Pools.
 | `applicationPackages` | array | `[]` |  | The list of application packages to install on the nodes. There is a maximum of 10 application package references on any given pool. |
 | `certificates` | array | `[]` |  | The list of certificate objects to install on the pool. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `interNodeCommunication` | string | `'Disabled'` | `[Enabled, Disabled]` | This imposes restrictions on which nodes can be assigned to the pool. |
+| `interNodeCommunication` | string | `'Disabled'` | `[Disabled, Enabled]` | This imposes restrictions on which nodes can be assigned to the pool. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `metadata` | array | `[]` |  | The List of metadate for the use of user code. |
 | `mountConfiguration` | array | `[]` |  | The List of mount configurations. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse. |
@@ -91,3 +92,7 @@ userAssignedIdentities: {
 | `name` | string | The name of the deployed batch account pool. |
 | `resourceGroupName` | string | The resource group of the deployed batch account pool. |
 | `resourceId` | string | The resource ID of the deployed batch account pool. |
+
+## Cross-referenced modules
+
+_None_
