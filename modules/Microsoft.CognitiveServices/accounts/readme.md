@@ -435,6 +435,7 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
     kind: 'Face'
     name: '<<namePrefix>>csadef001'
     // Non-required parameters
+<<<<<<< HEAD
     customSubDomainName: '<<namePrefix>>xdomain'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -450,6 +451,16 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
           id: '<id>'
         }
       ]
+=======
+    encryption: {
+      keySource: 'Microsoft.KeyVault'
+      keyVaultProperties: {
+        identityClientId: '5d395e10-82b1-4c41-bb5b-a27757e9f725'
+        keyName: 'keyEncryptionKey'
+        keyVaultUri: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
+        keyversion: '4570a207ec394a0bbbe4fc9adc663a51'
+      }
+>>>>>>> main
     }
     roleAssignments: [
       {
@@ -511,6 +522,7 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
     },
     "networkAcls": {
       "value": {
+<<<<<<< HEAD
         "defaultAction": "deny",
         "virtualNetworkRules": [
           {
@@ -518,6 +530,15 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
             "id": "<id>"
           }
         ]
+=======
+        "keySource": "Microsoft.KeyVault",
+        "keyVaultProperties": {
+          "identityClientId": "5d395e10-82b1-4c41-bb5b-a27757e9f725",
+          "keyName": "keyEncryptionKey",
+          "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
+          "keyversion": "4570a207ec394a0bbbe4fc9adc663a51"
+        }
+>>>>>>> main
       }
     },
     "roleAssignments": {
