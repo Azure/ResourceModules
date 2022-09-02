@@ -77,11 +77,10 @@ module testDeployment '../../deploy.bicep' = {
     }
     osType: 'Linux'
     skuName: 'Standard_B12ms'
-    // Non-required parameters
     availabilityZones: [
       '2'
     ]
-    bootDiagnosticStorageAccountName: diagnosticDependencies.outputs.storageAccountResourceId
+    bootDiagnosticStorageAccountName: last(split(diagnosticDependencies.outputs.storageAccountResourceId, '/'))
     dataDisks: [
       {
         caching: 'ReadOnly'
