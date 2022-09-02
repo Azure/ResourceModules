@@ -24,7 +24,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-var sshKeyName = 'dep-<<namePrefix>>-ssh-${serviceShort}'
 module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
@@ -33,7 +32,7 @@ module resourceGroupResources 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     sshDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
-    sshKeyName: sshKeyName
+    sshKeyName: 'dep-<<namePrefix>>-ssh-${serviceShort}'
   }
 }
 
@@ -41,10 +40,10 @@ module resourceGroupResources 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' existing = {
-  name: sshKeyName
-  scope: resourceGroup
-}
+// resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' existing = {
+//   name: sshKeyName
+//   scope: resourceGroup
+// }
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
@@ -84,7 +83,7 @@ module testDeployment '../../deploy.bicep' = {
     disablePasswordAuthentication: true
     publicKeys: [
       {
-        keyData: sshKey.properties.publicKey
+        keyData: resourceGroupResources.outputs.SSHKey
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
