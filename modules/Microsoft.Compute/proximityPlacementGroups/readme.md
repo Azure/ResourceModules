@@ -155,7 +155,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -163,16 +163,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ProximityPlacementGroups'
+  name: '${uniqueString(deployment().name)}-test-cppgdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-ppg-x-001'
+    name: '<<namePrefix>>cppgdef001'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -195,7 +195,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-ppg-x-001"
+      "value": "<<namePrefix>>cppgdef001"
     },
     // Non-required parameters
     "lock": {
@@ -205,7 +205,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
