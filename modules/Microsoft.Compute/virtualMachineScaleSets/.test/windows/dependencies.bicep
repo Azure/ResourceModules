@@ -73,7 +73,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 }
 
 resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${managedIdentityName}-RG-Reader-RoleAssignment')
+    name: guid('msi-${resourceGroup().id}-${location}-${managedIdentity.id}-RG-Reader-RoleAssignment')
     scope: resourceGroup()
     properties: {
         principalId: managedIdentity.properties.principalId
@@ -83,7 +83,7 @@ resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-
 }
 
 resource msiKVCryptoUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${managedIdentityName}-KeyVault-Key-Read-RoleAssignment')
+    name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-KeyVault-Key-Read-RoleAssignment')
     scope: keyVault::key
     properties: {
         principalId: managedIdentity.properties.principalId
