@@ -4,8 +4,17 @@ param location string = resourceGroup().location
 @description('Required. The name of the Virtual Network to create')
 param virtualNetworkName string
 
+@description('Required. The name of the Recovery Services Vault to create.')
+param recoveryServicesVaultName string
+
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
+
+@description('Required. The name of the Storage Account to create.')
+param storageAccountName string
+
+@description('Required. The name of the Deployment Script used to upload data to the Storage Account.')
+param storageUploadDeploymentScriptName string
 
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
@@ -16,7 +25,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     properties: {
         addressSpace: {
             addressPrefixes: [
-            '10.0.0.0/24'
+                '10.0.0.0/24'
             ]
         }
         subnets: [
@@ -46,11 +55,76 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
         enableRbacAuthorization: true
         accessPolicies: []
     }
+
+    resource key 'keys@2022-07-01' = {
+        name: 'encryptionKey'
+        properties: {
+            kty: 'RSA'
+        }
+    }
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
     location: location
+}
+
+resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid('msi-${managedIdentityName}-RG-Reader-RoleAssignment')
+    scope: resourceGroup()
+    properties: {
+        principalId: managedIdentity.properties.principalId
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
+        principalType: 'ServicePrincipal'
+    }
+}
+
+resource msiKVCryptoUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid('msi-${managedIdentityName}-KeyVault-Key-Read-RoleAssignment')
+    scope: keyVault::key
+    properties: {
+        principalId: managedIdentity.properties.principalId
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
+        principalType: 'ServicePrincipal'
+    }
+}
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+    name: storageAccountName
+    location: location
+    sku: {
+        name: 'Standard_LRS'
+    }
+    kind: 'StorageV2'
+
+    resource blobService 'blobServices@2021-09-01' = {
+        name: 'default'
+
+        resource container 'containers@2021-09-01' = {
+            name: storageContainerName
+        }
+    }
+}
+
+resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+    name: storageUploadDeploymentScriptName
+    location: location
+    kind: 'AzurePowerShell'
+    identity: {
+        type: 'UserAssigned'
+        userAssignedIdentities: {
+            '${managedIdentity.id}': {}
+        }
+    }
+    properties: {
+        azPowerShellVersion: '3.0'
+        retentionInterval: 'P1D'
+        arguments: ' -StorageAccountName "${storageAccount.name}" -ResourceGroupName "${resourceGroup().name}" -ContainerName "${storageAccount::blobService::container.name}" -FileName "${storageAccountCSEFileName}"'
+        scriptContent: loadTextContent('../.scripts/Set-BlobContent.ps1')
+    }
+    dependsOn: [
+        msiRGContrRoleAssignment
+    ]
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')
@@ -64,4 +138,3 @@ output keyVaultUrl string = keyVault.properties.vaultUri
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
-
