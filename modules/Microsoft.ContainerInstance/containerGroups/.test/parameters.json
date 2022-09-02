@@ -8,13 +8,35 @@
         "lock": {
             "value": "CanNotDelete"
         },
-        "containerName": {
-            "value": "<<namePrefix>>-az-aci-x-001"
+        "containers": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-aci-x-001",
+                    "properties": {
+                        "command": [],
+                        "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+                        "ports": [
+                            {
+                                "protocol": "Tcp",
+                                "port": "8080"
+                            },
+                            {
+                                "protocol": "Tcp",
+                                "port": "9000"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": 2,
+                                "memoryInGB": 2
+                            }
+                        },
+                        "environmentVariables": []
+                    }
+                }
+            ]
         },
-        "image": {
-            "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
-        },
-        "ports": {
+        "groupPorts": {
             "value": [
                 {
                     "protocol": "Tcp",
