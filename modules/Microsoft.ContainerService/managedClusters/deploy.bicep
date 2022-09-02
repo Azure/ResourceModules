@@ -84,6 +84,7 @@ param aadProfileClientAppID string = ''
 param aadProfileServerAppID string = ''
 
 @description('Optional. The server AAD application secret.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param aadProfileServerAppSecret string = ''
 
 @description('Optional. Specifies the tenant ID of the Azure Active Directory used by the AKS cluster for authentication.')
@@ -147,6 +148,7 @@ param azurePolicyVersion string = 'v2'
 param kubeDashboardEnabled bool = false
 
 @description('Optional. Specifies whether the KeyvaultSecretsProvider add-on is enabled or not.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param enableKeyvaultSecretsProvider bool = false
 
 @allowed([
@@ -154,6 +156,7 @@ param enableKeyvaultSecretsProvider bool = false
   'true'
 ])
 @description('Optional. Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param enableSecretRotation string = 'false'
 
 @description('Optional. Specifies the scan interval of the auto-scaler of the AKS cluster.')
@@ -378,7 +381,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-04-02-preview' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-06-01' = {
   name: name
   location: location
   tags: tags
