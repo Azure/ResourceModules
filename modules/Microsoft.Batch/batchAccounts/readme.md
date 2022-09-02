@@ -346,12 +346,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     lock: 'CanNotDelete'
     poolAllocationMode: 'BatchService'
-    privateEndpoints: [
-      {
-        service: 'batchAccount'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-      }
-    ]
     roleAssignments: [
       {
         principalIds: [
@@ -407,14 +401,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     },
     "poolAllocationMode": {
       "value": "BatchService"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "service": "batchAccount",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
-        }
-      ]
     },
     "roleAssignments": {
       "value": [
