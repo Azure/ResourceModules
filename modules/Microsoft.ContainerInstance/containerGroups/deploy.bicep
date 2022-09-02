@@ -4,8 +4,8 @@ param name string
 @description('Required. The containers and their respective config within the container group.')
 param containers array
 
-@description('Optional. Port to open on the container and the public IP address.')
-param groupPorts array = []
+@description('Conditional. Ports to open on the public IP address. Must include all ports assigned on container level.')
+param ipAddressPorts array = []
 
 @description('Optional. The operating system type required by the containers in the container group. - Windows or Linux.')
 param osType string = 'Linux'
@@ -73,7 +73,7 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01'
     osType: osType
     ipAddress: {
       type: ipAddressType
-      ports: groupPorts
+      ports: ipAddressPorts
     }
   }
 }
