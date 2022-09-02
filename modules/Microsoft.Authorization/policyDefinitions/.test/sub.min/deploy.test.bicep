@@ -10,7 +10,7 @@ param serviceShort string = 'apdsubmin'
 // Test Execution //
 // ============== //
 
-module testDeployment '../..//subscription/deploy.bicep' = {
+module testDeployment '../../subscription/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
