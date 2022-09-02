@@ -425,7 +425,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azbaweux001'
+    name: '<<namePrefix>>azbaweux002'
     storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
@@ -464,7 +464,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azbaweux001"
+      "value": "<<namePrefix>>azbaweux002"
     },
     "storageAccountId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
@@ -528,7 +528,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azbaweux001'
+    name: '<<namePrefix>>azbaweupoolmin001'
     storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     // Non-required parameters
     pools: [
@@ -583,7 +583,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azbaweux001"
+      "value": "<<namePrefix>>azbaweupoolmin001"
     },
     "storageAccountId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
@@ -643,7 +643,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azbaweux001'
+    name: '<<namePrefix>>azbaweupool001'
     storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     // Non-required parameters
     pools: [
@@ -724,7 +724,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azbaweux001"
+      "value": "<<namePrefix>>azbaweupool001"
     },
     "storageAccountId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
