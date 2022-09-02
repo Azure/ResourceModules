@@ -4,9 +4,6 @@ param location string = resourceGroup().location
 @description('Required. The name of the Virtual Network to create')
 param virtualNetworkName string
 
-@description('Required. The name of the Recovery Services Vault to create.')
-param recoveryServicesVaultName string
-
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
@@ -18,6 +15,12 @@ param storageUploadDeploymentScriptName string
 
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
+
+@description('Required. The name of the Proximity Placement Group to create.')
+param proximityPlacementGroupName string
+
+var storageContainerName = 'scripts'
+var storageAccountCSEFileName = 'scriptExtensionMasterInstaller.ps1'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
@@ -127,8 +130,19 @@ resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     ]
 }
 
+resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2022-03-01' = {
+    name: proximityPlacementGroupName
+    location: location
+}
+
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
+
+@description('The principal ID of the created Managed Identity.')
+output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+
+@description('The resource ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id
 
 @description('The resource ID of the created Key Vault.')
 output keyVaultResourceId string = keyVault.id
@@ -136,5 +150,14 @@ output keyVaultResourceId string = keyVault.id
 @description('The URL of the created Key Vault.')
 output keyVaultUrl string = keyVault.properties.vaultUri
 
-@description('The principal ID of the created Managed Identity.')
-output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+@description('The URL of the created Key Vault Encryption Key.')
+output keyVaultEncryptionKeyUrl string = keyVault::key.properties.keyUriWithVersion
+
+@description('The resource ID of the created Storage Account.')
+output storageAccountResourceId string = storageAccount.id
+
+@description('The URL of the Custom Script Extension in the created Storage Account')
+output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageContainerName}/${storageAccountCSEFileName}'
+
+@description('The resource ID of the created Proximity Placement Group.')
+output proximityPlacementGroupResourceId string = proximityPlacementGroup.id

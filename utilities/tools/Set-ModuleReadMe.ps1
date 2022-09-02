@@ -618,8 +618,11 @@ Convert the given Bicep parameter block to JSON parameter block
 .PARAMETER BicepParamBlock
 Mandatory. The Bicep parameter block to process
 
+.PARAMETER CurrentFilePath
+Mandatory. The Path of the file containing the param block
+
 .EXAMPLE
-ConvertTo-FormattedJSONParameterObject -BicepParamBlock "name: 'carml'\nlock: 'CanNotDelete'"
+ConvertTo-FormattedJSONParameterObject -BicepParamBlock "name: 'carml'\nlock: 'CanNotDelete'" -CurrentFilePath 'c:/deploy.test.bicep'
 
 Convert the Bicep string "name: 'carml'\nlock: 'CanNotDelete'" into a parameter JSON object. Would result into:
 
@@ -637,7 +640,10 @@ function ConvertTo-FormattedJSONParameterObject {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $BicepParamBlock
+        [string] $BicepParamBlock,
+
+        [Parameter()]
+        [string] $CurrentFilePath
     )
 
     # [1/4] Detect top level params for later processing
@@ -721,8 +727,11 @@ function ConvertTo-FormattedJSONParameterObject {
     }
 
     # [2.7] Format the final JSON string to an object to enable processing
-    $paramInJsonFormatObject = $paramInJSONFormatArray | Out-String | ConvertFrom-Json -AsHashtable -Depth 99
-
+    try {
+        $paramInJsonFormatObject = $paramInJSONFormatArray | Out-String | ConvertFrom-Json -AsHashtable -Depth 99 -ErrorAction 'Stop'
+    } catch {
+        throw ('Failed to process file [{0}]. Please check if it properly formatted. Original error message: [{1}]' -f $CurrentFilePath, $_.Exception.Message)
+    }
     # [3/4] Inject top-level 'value`' properties
     $paramInJsonFormatObjectWithValue = @{}
     foreach ($paramKey in $topLevelParams) {
@@ -961,6 +970,7 @@ function Set-DeploymentExamplesSection {
             # [5/6] Convert Bicep parameter block to JSON parameter block to enable processing
             $conversionInputObject = @{
                 BicepParamBlock = $paramBlock
+                CurrentFilePath = $testFilePath
             }
             $paramsInJSONFormat = ConvertTo-FormattedJSONParameterObject @conversionInputObject
 
@@ -978,6 +988,21 @@ function Set-DeploymentExamplesSection {
 
                 $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + ($bicepExample -split '\n') + $rawBicepExample[($paramsEndIndex + 1)..($rawBicepExample.Count)]
 
+                # Remove any dependsOn as it it test specific
+                if ($detected = ($formattedBicepExample | Select-String '^\s*dependsOn:\s*\[\s*$' | ForEach-Object { $_.LineNumber - 1 })) {
+                    $dependsOnStartIndex = $detected[0]
+
+                    # Find out where the 'dependsOn' ends
+                    $dependsOnEndIndex = $dependsOnStartIndex
+                    do {
+                        $dependsOnEndIndex++
+                    } while ($formattedBicepExample[$dependsOnEndIndex] -notmatch '^\s*\]\s*$')
+
+                    # Cut the 'dependsOn' block out
+                    $formattedBicepExample = $formattedBicepExample[0..($dependsOnStartIndex - 1)] + $formattedBicepExample[($dependsOnEndIndex + 1)..($formattedBicepExample.Count)]
+                }
+
+                # Build result
                 $SectionContent += @(
                     '',
                     '<details>'

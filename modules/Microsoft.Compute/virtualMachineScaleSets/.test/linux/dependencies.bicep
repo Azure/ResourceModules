@@ -4,9 +4,6 @@ param location string = resourceGroup().location
 @description('Required. The name of the Virtual Network to create')
 param virtualNetworkName string
 
-@description('Required. The name of the Recovery Services Vault to create.')
-param recoveryServicesVaultName string
-
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
@@ -27,7 +24,6 @@ param sshKeyName string
 
 var storageContainerName = 'scripts'
 var storageAccountCSEFileName = 'scriptExtensionMasterInstaller.ps1'
-var backupPolicyName = 'backupPolicy'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
@@ -46,99 +42,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
                 }
             }
         ]
-    }
-}
-
-resource recoveryServicesVault 'Microsoft.RecoveryServices/vaults@2022-04-01' = {
-    name: recoveryServicesVaultName
-    location: location
-    sku: {
-        name: 'RS0'
-        tier: 'Standard'
-    }
-    properties: {
-    }
-
-    resource backupPolicy 'backupPolicies@2022-03-01' = {
-        name: backupPolicyName
-        properties: {
-            backupManagementType: 'AzureIaasVM'
-            instantRPDetails: {}
-            schedulePolicy: {
-                schedulePolicyType: 'SimpleSchedulePolicy'
-                scheduleRunFrequency: 'Daily'
-                scheduleRunTimes: [
-                    '2019-11-07T07:00:00Z'
-                ]
-                scheduleWeeklyFrequency: 0
-            }
-            retentionPolicy: {
-                retentionPolicyType: 'LongTermRetentionPolicy'
-                dailySchedule: {
-                    retentionTimes: [
-                        '2019-11-07T07:00:00Z'
-                    ]
-                    retentionDuration: {
-                        count: 180
-                        durationType: 'Days'
-                    }
-                }
-                weeklySchedule: {
-                    daysOfTheWeek: [
-                        'Sunday'
-                    ]
-                    retentionTimes: [
-                        '2019-11-07T07:00:00Z'
-                    ]
-                    retentionDuration: {
-                        count: 12
-                        durationType: 'Weeks'
-                    }
-                }
-                monthlySchedule: {
-                    retentionScheduleFormatType: 'Weekly'
-                    retentionScheduleWeekly: {
-                        daysOfTheWeek: [
-                            'Sunday'
-                        ]
-                        weeksOfTheMonth: [
-                            'First'
-                        ]
-                    }
-                    retentionTimes: [
-                        '2019-11-07T07:00:00Z'
-                    ]
-                    retentionDuration: {
-                        count: 60
-                        durationType: 'Months'
-                    }
-                }
-                yearlySchedule: {
-                    retentionScheduleFormatType: 'Weekly'
-                    monthsOfYear: [
-                        'January'
-                    ]
-                    retentionScheduleWeekly: {
-                        daysOfTheWeek: [
-                            'Sunday'
-                        ]
-                        weeksOfTheMonth: [
-                            'First'
-                        ]
-                    }
-                    retentionTimes: [
-                        '2019-11-07T07:00:00Z'
-                    ]
-                    retentionDuration: {
-                        count: 10
-                        durationType: 'Years'
-                    }
-                }
-            }
-            instantRpRetentionRangeInDays: 2
-            timeZone: 'UTC'
-            protectedItemsCount: 0
-        }
     }
 }
 
@@ -262,14 +165,26 @@ resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' = {
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
+@description('The principal ID of the created Managed Identity.')
+output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+
+@description('The resource ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id
+
 @description('The resource ID of the created Key Vault.')
 output keyVaultResourceId string = keyVault.id
 
 @description('The URL of the created Key Vault.')
 output keyVaultUrl string = keyVault.properties.vaultUri
 
-@description('The principal ID of the created Managed Identity.')
-output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+@description('The URL of the created Key Vault Encryption Key.')
+output keyVaultEncryptionKeyUrl string = keyVault::key.properties.keyUriWithVersion
+
+@description('The resource ID of the created Storage Account.')
+output storageAccountResourceId string = storageAccount.id
+
+@description('The URL of the Custom Script Extension in the created Storage Account')
+output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageContainerName}/${storageAccountCSEFileName}'
 
 @description('The resource ID of the created SSH Key')
 output SSHKeyResourceID string = sshKey.id

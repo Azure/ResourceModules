@@ -4,9 +4,6 @@ param location string = resourceGroup().location
 @description('Required. The name of the Virtual Network to create')
 param virtualNetworkName string
 
-@description('Required. The name of the Key Vault to create.')
-param keyVaultName string
-
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
@@ -33,24 +30,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
                 }
             }
         ]
-    }
-}
-
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-    name: keyVaultName
-    location: location
-    properties: {
-        sku: {
-            family: 'A'
-            name: 'standard'
-        }
-        tenantId: tenant().tenantId
-        enablePurgeProtection: null
-        enabledForTemplateDeployment: true
-        enabledForDiskEncryption: true
-        enabledForDeployment: true
-        enableRbacAuthorization: true
-        accessPolicies: []
     }
 }
 
@@ -100,12 +79,6 @@ resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' = {
 
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
-
-@description('The resource ID of the created Key Vault.')
-output keyVaultResourceId string = keyVault.id
-
-@description('The URL of the created Key Vault.')
-output keyVaultUrl string = keyVault.properties.vaultUri
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId

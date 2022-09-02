@@ -11,7 +11,11 @@ param resourceGroupName string = 'ms.compute.virtualmachinescalesets-${serviceSh
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = '...'
+param serviceShort string = 'cvmsswinmin'
+
+@description('Optional. The password to leverage for the login.')
+@secure()
+param password string = newGuid()
 
 // =========== //
 // Deployments //
@@ -29,22 +33,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-  }
-}
-
-// Diagnostics
-// ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
-  params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
-    location: location
   }
 }
 
@@ -57,7 +45,37 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
+    adminUsername: 'localAdminUser'
+    adminPassword: password
+    imageReference: {
+      offer: 'WindowsServer'
+      publisher: 'MicrosoftWindowsServer'
+      sku: '2016-Datacenter'
+      version: 'latest'
+    }
+    osDisk: {
+      createOption: 'fromImage'
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Windows'
+    skuName: 'Standard_B12ms'
+    nicConfigurations: [
+      {
+        ipConfigurations: [
+          {
+            name: 'ipconfig1'
+            properties: {
+              subnet: {
+                id: resourceGroupResources.outputs.subnetResourceId
+              }
+            }
+          }
+        ]
+        nicSuffix: '-nic01'
+      }
+    ]
   }
 }
-
-
