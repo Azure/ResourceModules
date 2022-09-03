@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.dataprotection.backupvaults-${serviceShort}
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = '...'
+param serviceShort string = 'dpbvmin'
 
 // =========== //
 // Deployments //
@@ -22,14 +22,6 @@ param serviceShort string = '...'
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: location
-}
-
-module resourceGroupResources 'dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
-  params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-  }
 }
 
 // ============== //
@@ -43,4 +35,3 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
   }
 }
-

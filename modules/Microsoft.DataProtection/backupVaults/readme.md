@@ -550,9 +550,9 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
 
 ```bicep
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-...'
+  name: '${uniqueString(deployment().name)}-test-dpbvmin'
   params: {
-    name: '<<namePrefix>>...001'
+    name: '<<namePrefix>>dpbvmin001'
   }
 }
 ```
@@ -570,7 +570,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>...001"
+      "value": "<<namePrefix>>dpbvmin001"
     }
   }
 }
