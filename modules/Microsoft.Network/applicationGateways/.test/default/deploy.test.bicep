@@ -28,11 +28,11 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    publicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    certDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    virtualNetworkName: 'dep-carml-vnet-${serviceShort}'
+    publicIPName: 'dep-carml-pip-${serviceShort}'
+    managedIdentityName: 'dep-carml-msi-${serviceShort}'
+    certDeploymentScriptName: 'dep-carml-ds-${serviceShort}'
+    keyVaultName: 'dep-carml-kv-${serviceShort}'
   }
 }
 
@@ -42,10 +42,10 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'depcarmldiasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-carml-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-carml-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-carml-evhns-${serviceShort}'
     location: location
   }
 }
@@ -54,7 +54,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // Test Execution //
 // ============== //
 
-var appGWName = '<<namePrefix>>${serviceShort}001'
+var appGWName = 'carml${serviceShort}001'
 var appGWExpectedResourceID = '${resourceGroup.id}/providers/Microsoft.Network/applicationGateways/${appGWName}'
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
@@ -118,7 +118,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         name: 'private'
         properties: {
-          privateIPAddress: '10.0.8.6'
+          privateIPAddress: '10.0.0.20'
           privateIPAllocationMethod: 'Static'
           subnet: {
             id: resourceGroupResources.outputs.subnetResourceId
@@ -185,7 +185,7 @@ module testDeployment '../../deploy.bicep' = {
           protocol: 'https'
           requireServerNameIndication: false
           sslCertificate: {
-            id: '${appGWExpectedResourceID}/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate'
+            id: '${appGWExpectedResourceID}/sslCertificates/carml-az-apgw-x-001-ssl-certificate'
           }
         }
       }
@@ -202,7 +202,7 @@ module testDeployment '../../deploy.bicep' = {
           protocol: 'https'
           requireServerNameIndication: false
           sslCertificate: {
-            id: '${appGWExpectedResourceID}/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate'
+            id: '${appGWExpectedResourceID}/sslCertificates/carml-az-apgw-x-001-ssl-certificate'
           }
         }
       }
@@ -362,7 +362,7 @@ module testDeployment '../../deploy.bicep' = {
     sku: 'WAF_v2'
     sslCertificates: [
       {
-        name: '<<namePrefix>>-az-apgw-x-001-ssl-certificate'
+        name: 'carml-az-apgw-x-001-ssl-certificate'
         properties: {
           keyVaultSecretId: resourceGroupResources.outputs.certificateSecretUrl
         }
