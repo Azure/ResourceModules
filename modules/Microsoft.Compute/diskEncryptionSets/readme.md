@@ -172,12 +172,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-...'
+  name: '${uniqueString(deployment().name)}-test-cdesdef'
   params: {
     // Required parameters
     keyName: '<keyName>'
     keyVaultResourceId: '<keyVaultResourceId>'
-    name: '<<namePrefix>>...001'
+    name: '<<namePrefix>>cdesdef001'
     // Non-required parameters
     roleAssignments: [
       {
@@ -211,7 +211,7 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
       "value": "<keyVaultResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>...001"
+      "value": "<<namePrefix>>cdesdef001"
     },
     // Non-required parameters
     "roleAssignments": {
