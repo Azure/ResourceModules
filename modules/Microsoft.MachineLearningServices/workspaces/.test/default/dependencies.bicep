@@ -59,12 +59,22 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
     location: location
 }
 
+// resource keyVaultPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//     name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Reader-RoleAssignment')
+//     scope: keyVault
+//     properties: {
+//         principalId: managedIdentity.properties.principalId
+//         roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '21090545-7ca7-4776-b22c-e363652d74d2') // Key Vault Reader
+//         principalType: 'ServicePrincipal'
+//     }
+// }
+
 resource keyVaultPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Reader-RoleAssignment')
     scope: keyVault
     properties: {
         principalId: managedIdentity.properties.principalId
-        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '21090545-7ca7-4776-b22c-e363652d74d2') // Key Vault Reader
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483') // Key Vault Administrator
         principalType: 'ServicePrincipal'
     }
 }
