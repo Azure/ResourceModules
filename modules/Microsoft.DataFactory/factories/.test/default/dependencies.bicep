@@ -75,7 +75,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
 }
 
 resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${managedIdentityName}-KeyVault-Key-Read-RoleAssignment')
+    name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-KeyVault-Key-Read-RoleAssignment')
     scope: keyVault::key
     properties: {
         principalId: managedIdentity.properties.principalId
