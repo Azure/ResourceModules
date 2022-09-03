@@ -341,7 +341,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -349,47 +349,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-BackupVaults'
-  params: {
-    name: '<<namePrefix>>-az-bv-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-bv-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-BackupVaults'
+  name: '${uniqueString(deployment().name)}-test-dpbvdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-bv-x-001'
+    name: '<<namePrefix>>dpbvdef001'
     // Non-required parameters
     backupPolicies: [
       {
@@ -454,6 +417,18 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -472,7 +447,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-bv-x-001"
+      "value": "<<namePrefix>>dpbvdef001"
     },
     // Non-required parameters
     "backupPolicies": {
@@ -541,6 +516,61 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-...'
+  params: {
+    name: '<<namePrefix>>...001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>...001"
     }
   }
 }
