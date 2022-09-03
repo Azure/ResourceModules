@@ -50,7 +50,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}002'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     skuName: 'Standard_D2s_v3'

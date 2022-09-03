@@ -533,7 +533,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dpsqlfspb001'
+    name: '<<namePrefix>>dpsqlfspb002'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -607,7 +607,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dpsqlfspb001"
+      "value": "<<namePrefix>>dpsqlfspb002"
     },
     "skuName": {
       "value": "Standard_D2s_v3"
