@@ -301,7 +301,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
       {
         name: 'private'
         properties: {
-          privateIPAddress: '10.0.8.6'
+          privateIPAddress: '10.0.0.20'
           privateIPAllocationMethod: 'Static'
           subnet: {
             id: '<id>'
@@ -659,7 +659,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         {
           "name": "private",
           "properties": {
-            "privateIPAddress": "10.0.8.6",
+            "privateIPAddress": "10.0.0.20",
             "privateIPAllocationMethod": "Static",
             "subnet": {
               "id": "<id>"
