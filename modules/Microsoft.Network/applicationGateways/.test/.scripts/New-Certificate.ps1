@@ -23,7 +23,10 @@ if (-not ($certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Nam
 
     Write-Verbose 'Certificate created' -Verbose
 
-    $certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertName -ErrorAction 'Stop'
+    while (-not ($certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertName -ErrorAction 'Stop')) {
+        Write-Verbose 'Waiting 10 seconds until certificate can be fetched' -Verbose
+        Start-Sleep 10
+    }
 }
 
 # Write into Deployment Script output stream
