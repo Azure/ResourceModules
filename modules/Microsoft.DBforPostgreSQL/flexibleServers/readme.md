@@ -391,12 +391,12 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
 
 ```bicep
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dpsqlfsprivate'
+  name: '${uniqueString(deployment().name)}-test-dpsqlfspv'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dpsqlfsprivate001'
+    name: '<<namePrefix>>dpsqlfspv001'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -454,7 +454,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dpsqlfsprivate001"
+      "value": "<<namePrefix>>dpsqlfspv001"
     },
     "skuName": {
       "value": "Standard_D2s_v3"
@@ -528,12 +528,12 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
 
 ```bicep
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dpsqlfspublic'
+  name: '${uniqueString(deployment().name)}-test-dpsqlfspb'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dpsqlfspublic001'
+    name: '<<namePrefix>>dpsqlfspb001'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -607,7 +607,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dpsqlfspublic001"
+      "value": "<<namePrefix>>dpsqlfspb001"
     },
     "skuName": {
       "value": "Standard_D2s_v3"
