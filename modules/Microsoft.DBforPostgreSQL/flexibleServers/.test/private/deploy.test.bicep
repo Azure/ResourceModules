@@ -11,7 +11,11 @@ param resourceGroupName string = 'ms.dbforpostgresql.flexibleservers-${serviceSh
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = '...'
+param serviceShort string = 'dpsqlfsprivate'
+
+@description('Optional. The password to leverage for the login.')
+@secure()
+param password string = newGuid()
 
 // =========== //
 // Deployments //
@@ -29,8 +33,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    privateDNSZoneName: '<<namePrefix>>.postgres.database.azure.com'
   }
 }
 
@@ -57,7 +61,39 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: password
+    skuName: 'Standard_D2s_v3'
+    tier: 'GeneralPurpose'
+    configurations: [
+      {
+        name: 'log_min_messages'
+        source: 'user-override'
+        value: 'INFO'
+      }
+      {
+        name: 'autovacuum_naptime'
+        source: 'user-override'
+        value: '80'
+      }
+    ]
+    databases: [
+      {
+        charset: 'UTF8'
+        collation: 'en_US.utf8'
+        name: 'testdb1'
+      }
+      {
+        name: 'testdb2'
+      }
+    ]
+    delegatedSubnetResourceId: resourceGroupResources.outputs.subnetResourceId
+    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticLogsRetentionInDays: 7
+    geoRedundantBackup: 'Enabled'
+    privateDnsZoneArmResourceId: resourceGroupResources.outputs.privateDNSResourceId
   }
 }
-
-

@@ -4,11 +4,11 @@ param location string = resourceGroup().location
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
-@description('Required. The name of the Key Vault to create.')
-param keyVaultName string
-
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
+
+@description('Required. The name of the Private DNS Zone to create.')
+param privateDNSZoneName string
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
@@ -16,7 +16,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     properties: {
         addressSpace: {
             addressPrefixes: [
-            '10.0.0.0/24'
+                '10.0.0.0/24'
             ]
         }
         subnets: [
@@ -24,32 +24,22 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
                 name: 'defaultSubnet'
                 properties: {
                     addressPrefix: '10.0.0.0/24'
+                    delegations: [
+                        {
+                            name: 'Microsoft.DBforPostgreSQL.flexibleServers'
+                            properties: {
+                                serviceName: 'Microsoft.DBforPostgreSQL/flexibleServers'
+                            }
+                        }
+                    ]
                 }
             }
         ]
     }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-    name: keyVaultName
-    location: location
-    properties: {
-        sku: {
-            family: 'A'
-            name: 'standard'
-        }
-        tenantId: tenant().tenantId
-        enablePurgeProtection: null
-        enabledForTemplateDeployment: true
-        enabledForDiskEncryption: true
-        enabledForDeployment: true
-        enableRbacAuthorization: true
-        accessPolicies: []
-    }
-}
-
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name: 'privatelink.azconfig.io'
+    name: privateDNSZoneName
     location: 'global'
 
     resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
@@ -71,15 +61,8 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
-@description('The resource ID of the created Key Vault.')
-output keyVaultResourceId string = keyVault.id
-
-@description('The URL of the created Key Vault.')
-output keyVaultUrl string = keyVault.properties.vaultUri
-
 @description('The resource ID of the created Virtual Network Subnet.')
 output privateDNSResourceId string = privateDNSZone.id
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
-

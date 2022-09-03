@@ -11,7 +11,11 @@ param resourceGroupName string = 'ms.dbforpostgresql.flexibleservers-${serviceSh
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = '...'
+param serviceShort string = 'dpsqlfspublic'
+
+@description('Optional. The password to leverage for the login.')
+@secure()
+param password string = newGuid()
 
 // =========== //
 // Deployments //
@@ -22,16 +26,6 @@ param serviceShort string = '...'
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: location
-}
-
-module resourceGroupResources 'dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
-  params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-  }
 }
 
 // Diagnostics
@@ -57,7 +51,55 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: password
+    skuName: 'Standard_D2s_v3'
+    tier: 'GeneralPurpose'
+    availabilityZone: '2'
+    backupRetentionDays: 20
+    configurations: [
+      {
+        name: 'log_min_messages'
+        source: 'user-override'
+        value: 'INFO'
+      }
+    ]
+    databases: [
+      {
+        charset: 'UTF8'
+        collation: 'en_US.utf8'
+        name: 'testdb1'
+      }
+      {
+        name: 'testdb2'
+      }
+    ]
+    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticLogsRetentionInDays: 7
+    firewallRules: [
+      {
+        endIpAddress: '0.0.0.0'
+        name: 'AllowAllWindowsAzureIps'
+        startIpAddress: '0.0.0.0'
+      }
+      {
+        endIpAddress: '10.10.10.10'
+        name: 'test-rule1'
+        startIpAddress: '10.10.10.1'
+      }
+      {
+        endIpAddress: '100.100.100.10'
+        name: 'test-rule2'
+        startIpAddress: '100.100.100.1'
+      }
+    ]
+    geoRedundantBackup: 'Enabled'
+    highAvailability: 'SameZone'
+    location: location
+    storageSizeGB: 1024
+    version: '14'
   }
 }
-
-
