@@ -23,7 +23,6 @@ if (-not ($certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Nam
 
     Write-Verbose 'Certificate created' -Verbose
 
-
     $certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertName -ErrorAction 'Stop'
 }
 
