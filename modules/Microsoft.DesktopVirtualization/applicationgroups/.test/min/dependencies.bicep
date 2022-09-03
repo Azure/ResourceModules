@@ -14,6 +14,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 
 resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2021-07-12' = {
     name: hostPoolName
+    location: location
     properties: {
         hostPoolType: 'Pooled'
         loadBalancerType: 'BreadthFirst'
