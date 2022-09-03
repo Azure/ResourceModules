@@ -76,6 +76,16 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     }
 }
 
+resource keyVaultPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Reader-RoleAssignment')
+    scope: keyVault
+    properties: {
+        principalId: managedIdentity.properties.principalId
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '21090545-7ca7-4776-b22c-e363652d74d2') // Key Vault Reader
+        principalType: 'ServicePrincipal'
+    }
+}
+
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
     name: applicationInsightsName
     location: location
