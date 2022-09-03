@@ -75,17 +75,17 @@ module testDeployment '../../deploy.bicep' = {
       HTTP: {
         inputs: {
           body: {
-            BeginPeakTime: '[BeginPeakTime]'
-            EndPeakTime: '[EndPeakTime]'
-            HostPoolName: '[HostPoolName]'
-            LAWorkspaceName: '[LAWorkspaceName]'
-            LimitSecondsToForceLogOffUser: '[LimitSecondsToForceLogOffUser]'
-            LogOffMessageBody: '[LogOffMessageBody]'
-            LogOffMessageTitle: '[LogOffMessageTitle]'
+            BeginPeakTime: '<BeginPeakTime>'
+            EndPeakTime: '<EndPeakTime>'
+            HostPoolName: '<HostPoolName>'
+            LAWorkspaceName: '<LAWorkspaceName>'
+            LimitSecondsToForceLogOffUser: '<LimitSecondsToForceLogOffUser>'
+            LogOffMessageBody: '<LogOffMessageBody>'
+            LogOffMessageTitle: '<LogOffMessageTitle>'
             MinimumNumberOfRDSH: 1
-            ResourceGroupName: '[ResourceGroupName]'
+            ResourceGroupName: '<ResourceGroupName>'
             SessionThresholdPerCPU: 1
-            UtcOffset: '[UtcOffset]'
+            UtcOffset: '<UtcOffset>'
           }
           method: 'POST'
           uri: 'https://testStringForValidation.com'
