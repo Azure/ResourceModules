@@ -38,7 +38,6 @@ This module deploys DataProtection BackupVaults.
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
 | `type` | string | `'LocallyRedundant'` | `[GeoRedundant, LocallyRedundant]` | The vault redundancy level to use. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
 ### Parameter Usage: `backupPolicies`
@@ -426,9 +425,6 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -529,11 +525,6 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }

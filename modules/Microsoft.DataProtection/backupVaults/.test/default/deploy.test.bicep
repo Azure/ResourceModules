@@ -50,9 +50,6 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
-    }
     backupPolicies: [
       {
         name: 'DefaultPolicy'
