@@ -157,7 +157,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Images</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -165,10 +165,73 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Galleries'
+  name: '${uniqueString(deployment().name)}-test-cgdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azsigweuimages001'
+    name: '<<namePrefix>>cgdef001'
+    // Non-required parameters
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>cgdef001"
+    },
+    // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Images</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-cgimages'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>cgimages001'
     // Non-required parameters
     images: [
       {
@@ -188,7 +251,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
             roleDefinitionIdOrName: 'Reader'
           }
@@ -227,7 +290,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azsigweuimages001"
+      "value": "<<namePrefix>>cgimages001"
     },
     // Non-required parameters
     "images": {
@@ -249,7 +312,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
               "roleDefinitionIdOrName": "Reader"
             }
@@ -268,69 +331,6 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "osType": "Linux",
           "publisher": "canonical",
           "sku": "20_04-lts-gen2"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Galleries'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>azsigweux001'
-    // Non-required parameters
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>azsigweux001"
-    },
-    // Non-required parameters
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<<deploymentSpId>>"
-          ],
-          "roleDefinitionIdOrName": "Reader"
         }
       ]
     }
