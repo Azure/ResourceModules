@@ -179,7 +179,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -187,12 +187,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ContainerGroups'
+  name: '${uniqueString(deployment().name)}-test-cicgdef'
   params: {
     // Required parameters
-    containerName: '<<namePrefix>>-az-aci-x-001'
+    containername: '<<namePrefix>>-az-aci-x-001'
     image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
-    name: '<<namePrefix>>-az-acg-x-001'
+    name: '<<namePrefix>>cicgdef001'
     // Non-required parameters
     lock: 'CanNotDelete'
     ports: [
@@ -207,7 +207,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -226,14 +226,14 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "containerName": {
+    "containername": {
       "value": "<<namePrefix>>-az-aci-x-001"
     },
     "image": {
       "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
     },
     "name": {
-      "value": "<<namePrefix>>-az-acg-x-001"
+      "value": "<<namePrefix>>cicgdef001"
     },
     // Non-required parameters
     "lock": {
@@ -256,7 +256,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }
