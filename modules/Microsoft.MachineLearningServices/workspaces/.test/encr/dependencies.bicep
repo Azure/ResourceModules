@@ -66,28 +66,17 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
     location: location
 }
 
-// resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-//     name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
-//     scope: keyVault::key
-//     properties: {
-//         principalId: managedIdentity.properties.principalId
-//         roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
-//         principalType: 'ServicePrincipal'
-//     }
-// }
-
-// resource keyVaultPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-//     name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Reader-RoleAssignment')
-//     scope: keyVault
-//     properties: {
-//         principalId: managedIdentity.properties.principalId
-//         roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '21090545-7ca7-4776-b22c-e363652d74d2') // Key Vault Reader
-//         principalType: 'ServicePrincipal'
-//     }
-// }
-
-resource keyVaultPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Reader-RoleAssignment')
+resource keyVaultServicePermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Contributor-RoleAssignment')
+    scope: keyVault
+    properties: {
+        principalId: managedIdentity.properties.principalId
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
+        principalType: 'ServicePrincipal'
+    }
+}
+resource keyVaultDataPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Data-Admin-RoleAssignment')
     scope: keyVault
     properties: {
         principalId: managedIdentity.properties.principalId
