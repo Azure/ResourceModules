@@ -19,23 +19,12 @@ resource cluster 'Microsoft.ContainerService/managedClusters@2022-06-01' = {
     agentPoolProfiles: [
       {
         name: 'agentpool'
-        // osDiskSizeGB: osDiskSizeGB
         count: 1
         vmSize: 'Standard_DS2_v2'
         osType: 'Linux'
         mode: 'System'
       }
     ]
-    // linuxProfile: {
-    //   adminUsername: 'azureuser'
-    //   ssh: {
-    //     publicKeys: [
-    //       {
-    //         keyData: sshRSAPublicKey
-    //       }
-    //     ]
-    //   }
-    // }
   }
 }
 
