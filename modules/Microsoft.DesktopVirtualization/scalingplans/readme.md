@@ -266,7 +266,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -274,9 +274,110 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Scalingplans'
+  name: '${uniqueString(deployment().name)}-test-dvspdef'
   params: {
-    name: '<<namePrefix>>-az-avdsp-x-001'
+    // Required parameters
+    name: '<<namePrefix>>dvspdef001'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    friendlyName: 'My Scaling Plan'
+    hostPoolType: 'Pooled'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    scalingplanDescription: 'My Scaling Plan Description'
+    tags: {
+      Company: 'Contoso'
+      Environment: 'Non-Prod'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>dvspdef001"
+    },
+    // Non-required parameters
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "friendlyName": {
+      "value": "My Scaling Plan"
+    },
+    "hostPoolType": {
+      "value": "Pooled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scalingplanDescription": {
+      "value": "My Scaling Plan Description"
+    },
+    "tags": {
+      "value": {
+        "Company": "Contoso",
+        "Environment": "Non-Prod"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-dvspmin'
+  params: {
+    name: '<<namePrefix>>dvspmin001'
   }
 }
 ```
@@ -294,7 +395,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>-az-avdsp-x-001"
+      "value": "<<namePrefix>>dvspmin001"
     }
   }
 }
