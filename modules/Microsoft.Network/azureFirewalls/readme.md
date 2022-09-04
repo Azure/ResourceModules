@@ -523,7 +523,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
                 '*'
               ]
               targetFqdns: [
-                '<resourceManager>'
+                'bing.com'
               ]
             }
           ]
@@ -649,7 +649,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
                   "*"
                 ],
                 "targetFqdns": [
-                  "<resourceManager>"
+                  "bing.com"
                 ]
               }
             ]

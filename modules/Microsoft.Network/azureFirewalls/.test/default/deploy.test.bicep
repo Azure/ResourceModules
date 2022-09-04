@@ -103,7 +103,7 @@ module testDeployment '../../deploy.bicep' = {
                 '*'
               ]
               targetFqdns: [
-                environment().resourceManager
+                'bing.com'
               ]
             }
           ]
