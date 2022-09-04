@@ -28,7 +28,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     routeTableName: 'dep-<<namePrefix>>-rt-${serviceShort}'
     networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
