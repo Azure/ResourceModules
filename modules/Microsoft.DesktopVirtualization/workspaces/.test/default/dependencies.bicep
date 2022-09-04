@@ -27,6 +27,7 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2021-07-12' = {
 
 resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2021-07-12' = {
     name: applicationGroupName
+    location: location
     properties: {
         applicationGroupType: 'Desktop'
         hostPoolArmPath: hostPool.id
