@@ -30,6 +30,9 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 resource publicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
     name: publicIPName
     location: location
+    properties: {
+        publicIPAllocationMethod: 'Static'
+    }
 }
 
 @description('The resource ID of the created Virtual Network.')
