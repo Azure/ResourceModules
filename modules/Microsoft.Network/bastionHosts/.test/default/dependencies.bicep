@@ -37,6 +37,9 @@ resource publicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
         name: 'Standard'
         tier: 'Regional'
     }
+    properties: {
+        publicIPAllocationMethod: 'Static'
+    }
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
