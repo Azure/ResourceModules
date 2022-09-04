@@ -30,6 +30,10 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 resource publicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
     name: publicIPName
     location: location
+    sku: {
+        name: 'Standard'
+        tier: 'Regional'
+    }
     properties: {
         publicIPAllocationMethod: 'Static'
     }
