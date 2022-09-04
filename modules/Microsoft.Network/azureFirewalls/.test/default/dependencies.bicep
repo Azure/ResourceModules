@@ -40,6 +40,11 @@ resource publicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
     properties: {
         publicIPAllocationMethod: 'Static'
     }
+    zones: [
+        '1'
+        '2'
+        '3'
+    ]
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
