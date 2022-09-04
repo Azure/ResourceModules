@@ -151,7 +151,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -159,14 +159,14 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-UserAssignedIdentities'
+  name: '${uniqueString(deployment().name)}-test-miuaidef'
   params: {
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>-az-msi-x-001'
+    name: '<<namePrefix>>miuaidef001'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -191,13 +191,13 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>-az-msi-x-001"
+      "value": "<<namePrefix>>miuaidef001"
     },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
