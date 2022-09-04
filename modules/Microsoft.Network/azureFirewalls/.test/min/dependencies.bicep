@@ -15,7 +15,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
         }
         subnets: [
             {
-                name: 'defaultSubnet'
+                name: 'AzureFirewallSubnet'
                 properties: {
                     addressPrefix: '10.0.0.0/24'
                 }
