@@ -13,7 +13,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     properties: {
         addressSpace: {
             addressPrefixes: [
-            '10.0.0.0/24'
+                '10.0.0.0/24'
             ]
         }
         subnets: [
@@ -21,6 +21,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
                 name: 'defaultSubnet'
                 properties: {
                     addressPrefix: '10.0.0.0/24'
+                    delegations: [
+                        {
+                            name: 'netappDel'
+                            properties: {
+                                serviceName: 'Microsoft.Netapp/volumes'
+                            }
+                        }
+                    ]
                 }
             }
         ]
@@ -37,4 +45,3 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
-
