@@ -154,7 +154,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -162,16 +162,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ApplicationSecurityGroups'
+  name: '${uniqueString(deployment().name)}-test-nasgdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-asg-x-001'
+    name: '<<namePrefix>>nasgdef001'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -194,7 +194,7 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-asg-x-001"
+      "value": "<<namePrefix>>nasgdef001"
     },
     // Non-required parameters
     "lock": {
@@ -204,7 +204,7 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
