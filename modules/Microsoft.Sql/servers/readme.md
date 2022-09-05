@@ -642,6 +642,8 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>-az-sqlsrv-pe-001'
     // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -674,6 +676,17 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       "value": "<<namePrefix>>-az-sqlsrv-pe-001"
     },
     // Non-required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+        },
+        "secretName": "administratorLoginPassword"
+      }
+    },
     "privateEndpoints": {
       "value": [
         {
