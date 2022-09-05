@@ -476,7 +476,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       {
         ignoreMissingVnetServiceEndpoint: true
         name: 'newVnetRule1'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+        virtualNetworkSubnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
       }
     ]
     vulnerabilityAssessmentsObj: {
@@ -603,7 +603,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         {
           "ignoreMissingVnetServiceEndpoint": true,
           "name": "newVnetRule1",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+          "virtualNetworkSubnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
         }
       ]
     },
