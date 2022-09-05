@@ -195,7 +195,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module NetworkInterfaces './Microsoft.Network/NetworkInterfaces/deploy.bicep' = {
+module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nnidef'
   params: {
     // Required parameters
@@ -328,7 +328,7 @@ module NetworkInterfaces './Microsoft.Network/NetworkInterfaces/deploy.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module NetworkInterfaces './Microsoft.Network/NetworkInterfaces/deploy.bicep' = {
+module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nnimin'
   params: {
     // Required parameters
