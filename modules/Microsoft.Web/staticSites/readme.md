@@ -289,7 +289,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -297,47 +297,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-StaticSites'
-  params: {
-    name: '<<namePrefix>>-az-wss-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-wss-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-StaticSites'
+  name: '${uniqueString(deployment().name)}-test-wssdef'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-wss-x-001'
+    name: '<<namePrefix>>wssdef001'
     // Non-required parameters
     allowConfigFileUpdates: true
     enterpriseGradeCdnStatus: 'Disabled'
@@ -345,13 +308,13 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     privateEndpoints: [
       {
         service: 'staticSites'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -360,7 +323,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     stagingEnvironmentPolicy: 'Enabled'
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -380,7 +343,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-wss-x-001"
+      "value": "<<namePrefix>>wssdef001"
     },
     // Non-required parameters
     "allowConfigFileUpdates": {
@@ -396,7 +359,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
       "value": [
         {
           "service": "staticSites",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -404,7 +367,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -421,8 +384,45 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-wssmin'
+  params: {
+    name: '<<namePrefix>>wssmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>wssmin001"
     }
   }
 }
