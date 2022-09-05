@@ -40,6 +40,9 @@ param databases array = []
 @description('Optional. The firewall rules to create in the server.')
 param firewallRules array = []
 
+@description('Optional. The virtual network rules to create in the server.')
+param virtualNetworkRules array = []
+
 @description('Optional. The security alert policies to create in the server.')
 param securityAlertPolicies array = []
 
@@ -57,7 +60,7 @@ param minimalTlsVersion string = '1.2'
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and neither firewall rules nor virtual network rules are set.')
 @allowed([
   ''
   'Enabled'
@@ -107,7 +110,7 @@ resource server 'Microsoft.Sql/servers@2022-02-01-preview' = {
     } : null
     version: '12.0'
     minimalTlsVersion: minimalTlsVersion
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(firewallRules) && empty(virtualNetworkRules) ? 'Disabled' : null)
   }
 }
 
@@ -195,6 +198,17 @@ module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, i
     serverName: server.name
     endIpAddress: contains(firewallRule, 'endIpAddress') ? firewallRule.endIpAddress : '0.0.0.0'
     startIpAddress: contains(firewallRule, 'startIpAddress') ? firewallRule.startIpAddress : '0.0.0.0'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module server_virtualNetworkRules 'virtualNetworkRules/deploy.bicep' = [for (virtualNetworkRule, index) in virtualNetworkRules: {
+  name: '${uniqueString(deployment().name, location)}-Sql-VirtualNetworkRules-${index}'
+  params: {
+    name: virtualNetworkRule.name
+    serverName: server.name
+    ignoreMissingVnetServiceEndpoint: contains(virtualNetworkRule, 'ignoreMissingVnetServiceEndpoint') ? virtualNetworkRule.ignoreMissingVnetServiceEndpoint : false
+    virtualNetworkSubnetId: virtualNetworkRule.virtualNetworkSubnetId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
