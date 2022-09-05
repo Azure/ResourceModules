@@ -57,7 +57,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Default</h3>
 
 <details>
 
@@ -65,11 +65,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Budgets'
+  name: '${uniqueString(deployment().name)}-test-cbdef'
   params: {
     // Required parameters
     amount: 500
-    name: 'Monthly-Cost-Budget'
+    name: '<<namePrefix>>cbdef001'
     // Non-required parameters
     contactEmails: [
       'dummy@contoso.com'
@@ -102,7 +102,7 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
       "value": 500
     },
     "name": {
-      "value": "Monthly-Cost-Budget"
+      "value": "<<namePrefix>>cbdef001"
     },
     // Non-required parameters
     "contactEmails": {
@@ -118,6 +118,49 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
         100,
         110
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-cbmin'
+  params: {
+    // Required parameters
+    amount: 500
+    name: '<<namePrefix>>cbmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "amount": {
+      "value": 500
+    },
+    "name": {
+      "value": "<<namePrefix>>cbmin001"
     }
   }
 }
