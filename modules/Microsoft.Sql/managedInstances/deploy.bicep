@@ -339,28 +339,28 @@ module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.
   ]
 }
 
-// module managedInstance_key 'keys/deploy.bicep' = [for (key, index) in keys: {
-//   name: '${uniqueString(deployment().name, location)}-SqlMi-Key-${index}'
-//   params: {
-//     managedInstanceName: managedInstance.name
-//     name: contains(key, 'name') ? key.name : ''
-//     serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
-//     uri: contains(key, 'uri') ? key.uri : ''
-//     enableDefaultTelemetry: enableReferencedModulesTelemetry
-//   }
-// }]
+module managedInstance_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
+  name: '${uniqueString(deployment().name, location)}-SqlMi-Key-${index}'
+  params: {
+    name: key.name
+    managedInstanceName: managedInstance.name
+    serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
+    uri: contains(key, 'uri') ? key.uri : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
-// module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
-//   name: '${uniqueString(deployment().name, location)}-SqlMi-EncryProtector'
-//   params: {
-//     managedInstanceName: managedInstance.name
-//     serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key[0].outputs.name
-//     name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
-//     serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
-//     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
-//     enableDefaultTelemetry: enableReferencedModulesTelemetry
-//   }
-// }
+module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
+  name: '${uniqueString(deployment().name, location)}-SqlMi-EncryProtector'
+  params: {
+    managedInstanceName: managedInstance.name
+    serverKeyName: encryptionProtectorObj.serverKeyName
+    name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
+    serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
+    autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
 
 module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorsObj)) {
   name: '${uniqueString(deployment().name, location)}-SqlMi-Admin'

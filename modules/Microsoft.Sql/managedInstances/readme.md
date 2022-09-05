@@ -22,6 +22,8 @@ This template deploys a SQL managed instance.
 | `Microsoft.Sql/managedInstances/databases` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/databases) |
 | `Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/databases/backupLongTermRetentionPolicies) |
 | `Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/databases/backupShortTermRetentionPolicies) |
+| `Microsoft.Sql/managedInstances/encryptionProtector` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/encryptionProtector) |
+| `Microsoft.Sql/managedInstances/keys` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/keys) |
 | `Microsoft.Sql/managedInstances/securityAlertPolicies` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/securityAlertPolicies) |
 | `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/vulnerabilityAssessments) |
 
@@ -299,7 +301,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     // Required parameters
     administratorLogin: kv1.getSecret('administratorLogin')
     administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-sqlmi-min-001-change'
+    name: '<<namePrefix>>-az-sqlmi-min-001'
     subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi'
   }
 }
@@ -335,7 +337,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>-az-sqlmi-min-001-change"
+      "value": "<<namePrefix>>-az-sqlmi-min-001"
     },
     "subnetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi"
@@ -362,12 +364,10 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-ManagedInstances'
   params: {
-    // Required parameters
     administratorLogin: kv1.getSecret('administratorLogin')
     administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-sqlmi-x-001-change'
+    name: '<<namePrefix>>-az-sqlmi-x-001'
     subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi'
-    // Non-required parameters
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
       {
@@ -386,7 +386,18 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     dnsZonePartner: ''
+    encryptionProtectorObj: {
+      serverKeyName: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
+      serverKeyType: 'AzureKeyVault'
+    }
     hardwareFamily: 'Gen5'
+    keys: [
+      {
+        name: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
+        serverKeyType: 'AzureKeyVault'
+        uri: 'https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07'
+      }
+    ]
     licenseType: 'LicenseIncluded'
     lock: 'CanNotDelete'
     primaryUserAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
@@ -441,7 +452,6 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "administratorLogin": {
       "reference": {
         "keyVault": {
@@ -459,12 +469,11 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>-az-sqlmi-x-001-change"
+      "value": "<<namePrefix>>-az-sqlmi-x-001"
     },
     "subnetId": {
       "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi"
     },
-    // Non-required parameters
     "collation": {
       "value": "SQL_Latin1_General_CP1_CI_AS"
     },
@@ -499,8 +508,23 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     "dnsZonePartner": {
       "value": ""
     },
+    "encryptionProtectorObj": {
+      "value": {
+        "serverKeyName": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07",
+        "serverKeyType": "AzureKeyVault"
+      }
+    },
     "hardwareFamily": {
       "value": "Gen5"
+    },
+    "keys": {
+      "value": [
+        {
+          "name": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07",
+          "serverKeyType": "AzureKeyVault",
+          "uri": "https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07"
+        }
+      ]
     },
     "licenseType": {
       "value": "LicenseIncluded"
