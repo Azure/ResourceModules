@@ -78,6 +78,7 @@
         "virtualNetworkRules": {
             "value": [
                 {
+                    "name": "newVnetRule1",
                     "ignoreMissingVnetServiceEndpoint": true,
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
                 }

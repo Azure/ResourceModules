@@ -475,6 +475,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     virtualNetworkRules: [
       {
         ignoreMissingVnetServiceEndpoint: true
+        name: 'newVnetRule1'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
       }
     ]
@@ -601,6 +602,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       "value": [
         {
           "ignoreMissingVnetServiceEndpoint": true,
+          "name": "newVnetRule1",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
         }
       ]

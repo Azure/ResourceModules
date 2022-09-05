@@ -1,7 +1,6 @@
 # Sql Servers VirtualNetworkRules `[Microsoft.Sql/servers/virtualNetworkRules]`
 
-This module deploys Sql Servers VirtualNetworkRules.
-// TODO: Replace Resource and fill in description
+This module deploys a Sql Server Virtual Network Rule.
 
 ## Navigation
 
@@ -35,10 +34,6 @@ This module deploys Sql Servers VirtualNetworkRules.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ignoreMissingVnetServiceEndpoint` | bool | `False` | Allow creating a firewall rule before the virtual network has vnet service endpoint enabled. |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 
