@@ -186,7 +186,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module VPNGateways './Microsoft.Network/VPNGateways/deploy.bicep' = {
+module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nvgdef'
   params: {
     // Required parameters
@@ -335,7 +335,7 @@ module VPNGateways './Microsoft.Network/VPNGateways/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module VPNGateways './Microsoft.Network/VPNGateways/deploy.bicep' = {
+module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nvgmin'
   params: {
     // Required parameters
