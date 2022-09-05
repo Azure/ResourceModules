@@ -1361,6 +1361,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.siterecovery.windowsazure.com'
+          ]
+        }
         service: 'AzureSiteRecovery'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
@@ -1663,6 +1668,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.siterecovery.windowsazure.com"
+            ]
+          },
           "service": "AzureSiteRecovery",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
