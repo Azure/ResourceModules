@@ -15,5 +15,8 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     amount: 500
+    contactEmails: [
+      'dummy@contoso.com'
+    ]
   }
 }

@@ -24,13 +24,17 @@ This module deploys budgets for subscriptions.
 | `amount` | int | The total amount of cost or usage to track with the budget. |
 | `name` | string | The name of the budget. |
 
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `actionGroups` | array | List of action group resource IDs that will receive the alert. Required if neither `contactEmails` or `contactEmails` was provided. |
+| `contactEmails` | array | The list of email addresses to send the budget notification to when the thresholds are exceeded. Required if neither `contactRoles` or `actionGroups` was provided. |
+| `contactRoles` | array | The list of contact roles to send the budget notification to when the thresholds are exceeded. Required if neither `contactEmails` or `actionGroups` was provided. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `actionGroups` | array | `[]` |  | List of action group resource IDs that will receive the alert. |
 | `category` | string | `'Cost'` | `[Cost, Usage]` | The category of the budget, whether the budget tracks cost or usage. |
-| `contactEmails` | array | `[]` |  | The list of email addresses to send the budget notification to when the thresholds are exceeded. |
-| `contactRoles` | array | `[]` |  | The list of contact roles to send the budget notification to when the thresholds are exceeded. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `endDate` | string | `''` |  | The end date for the budget. If not provided, it will default to 10 years from the start date. |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
@@ -139,6 +143,10 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
     // Required parameters
     amount: 500
     name: '<<namePrefix>>cbmin001'
+    // Non-required parameters
+    contactEmails: [
+      'dummy@contoso.com'
+    ]
   }
 }
 ```
@@ -161,6 +169,12 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>cbmin001"
+    },
+    // Non-required parameters
+    "contactEmails": {
+      "value": [
+        "dummy@contoso.com"
+      ]
     }
   }
 }
