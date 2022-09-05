@@ -5,6 +5,17 @@
         "name": {
             "value": "<<namePrefix>>-az-sqlsrv-pe-001"
         },
+        "administratorLogin": {
+            "value": "adminUserName"
+        },
+        "administratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "administratorLoginPassword"
+            }
+        },
         "privateEndpoints": {
             "value": [
                 {
