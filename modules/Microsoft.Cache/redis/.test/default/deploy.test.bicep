@@ -55,6 +55,11 @@ module testDeployment '../../deploy.bicep' = {
     minimumTlsVersion: '1.2'
     privateEndpoints: [
       {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            resourceGroupResources.outputs.privateDNSResourceId
+          ]
+        }
         service: 'redisCache'
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
       }

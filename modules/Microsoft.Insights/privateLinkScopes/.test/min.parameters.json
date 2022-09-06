@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>synplhmin001"
+            "value": "<<namePrefix>>-az-pls-min-001"
         }
     }
 }

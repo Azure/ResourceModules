@@ -342,7 +342,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Redis './Microsoft.Cache/Redis/deploy.bicep' = {
+module redis './Microsoft.Cache/redis/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-crdef'
   params: {
     // Required parameters
@@ -362,6 +362,11 @@ module Redis './Microsoft.Cache/Redis/deploy.bicep' = {
     minimumTlsVersion: '1.2'
     privateEndpoints: [
       {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+        }
         service: 'redisCache'
         subnetResourceId: '<subnetResourceId>'
       }
@@ -424,6 +429,11 @@ module Redis './Microsoft.Cache/Redis/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
           "service": "redisCache",
           "subnetResourceId": "<subnetResourceId>"
         }
@@ -463,7 +473,7 @@ module Redis './Microsoft.Cache/Redis/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Redis './Microsoft.Cache/Redis/deploy.bicep' = {
+module redis './Microsoft.Cache/redis/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-crmin'
   params: {
     name: '<<namePrefix>>crmin001'
