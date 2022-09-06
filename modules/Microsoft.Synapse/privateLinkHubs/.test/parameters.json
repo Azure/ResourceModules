@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "synplhstandard001"
+            "value": "<<namePrefix>>synplhx001"
         },
         "lock": {
             "value": "CanNotDelete"
