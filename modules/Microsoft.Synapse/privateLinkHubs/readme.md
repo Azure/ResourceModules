@@ -252,7 +252,7 @@ The following module usage examples are retrieved from the content of the files 
 module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-PrivateLinkHubs'
   params: {
-    name: 'synplhmin001'
+    name: '<<namePrefix>>synplhmin001'
   }
 }
 ```
@@ -270,7 +270,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "synplhmin001"
+      "value": "<<namePrefix>>synplhmin001"
     }
   }
 }
@@ -290,11 +290,16 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-PrivateLinkHubs'
   params: {
     // Required parameters
-    name: 'synplhstandard001'
+    name: '<<namePrefix>>synplhx001'
     // Non-required parameters
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azuresynapse.net'
+          ]
+        }
         service: 'Web'
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
       }
@@ -331,7 +336,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "synplhstandard001"
+      "value": "<<namePrefix>>synplhx001"
     },
     // Non-required parameters
     "lock": {
@@ -340,6 +345,11 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azuresynapse.net"
+            ]
+          },
           "service": "Web",
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         }
