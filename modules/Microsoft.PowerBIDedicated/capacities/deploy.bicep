@@ -85,13 +85,13 @@ module powerbi_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in
   }
 }]
 
-@description('The resource ID of the recovery services vault.')
+@description('The resource ID of the PowerBi Embedded.')
 output resourceId string = powerbi.id
 
-@description('The name of the resource group the recovery services vault was created in.')
+@description('The name of the resource group the PowerBi Embedded was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The Name of the recovery services vault.')
+@description('The Name of the PowerBi Embedded.')
 output name string = powerbi.name
 
 @description('The location the resource was deployed into.')

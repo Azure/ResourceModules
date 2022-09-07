@@ -1,7 +1,6 @@
 # PowerBIDedicated Capacities `[Microsoft.PowerBIDedicated/capacities]`
 
 This module deploys PowerBIDedicated Capacities.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -39,10 +38,6 @@ This module deploys PowerBIDedicated Capacities.
 | `skuTier` | string | `'PBIE_Azure'` | `[AutoPremiumHost, PBIE_Azure, Premium]` | SkuCapacity of the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `roleAssignments`
 
@@ -149,9 +144,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The Name of the recovery services vault. |
-| `resourceGroupName` | string | The name of the resource group the recovery services vault was created in. |
-| `resourceId` | string | The resource ID of the recovery services vault. |
+| `name` | string | The Name of the PowerBi Embedded. |
+| `resourceGroupName` | string | The name of the resource group the PowerBi Embedded was created in. |
+| `resourceId` | string | The resource ID of the PowerBi Embedded. |
 
 ## Cross-referenced modules
 
