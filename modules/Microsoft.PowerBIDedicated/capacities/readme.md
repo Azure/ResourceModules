@@ -8,8 +8,8 @@ This module deploys PowerBIDedicated Capacities.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Deployment examples](#Deployment-examples)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -153,6 +153,10 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the recovery services vault was created in. |
 | `resourceId` | string | The resource ID of the recovery services vault. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -209,8 +213,3 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
 
 </details>
 <p>
-
-
-## Cross-referenced modules
-
-_None_
