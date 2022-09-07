@@ -21,6 +21,11 @@
                 }
             ]
         },
+        "networkProfileAllowedIpRanges": {
+            "value": [
+                "127.0.0.1"
+            ]
+        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
