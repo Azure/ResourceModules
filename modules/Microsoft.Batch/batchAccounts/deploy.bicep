@@ -33,13 +33,26 @@ param poolAllocationMode string = 'BatchService'
 @description('Conditional. The key vault to associate with the Batch account. Required if the \'poolAllocationMode\' is set to \'UserSubscription\' and requires the service principal \'Microsoft Azure Batch\' to be granted contributor permissions on this key vault.')
 param keyVaultReferenceResourceId string = ''
 
-@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
+
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkProfileAllowedIpRanges are not set.')
 @allowed([
   ''
   'Enabled'
   'Disabled'
 ])
 param publicNetworkAccess string = ''
+
+@allowed([
+  'Allow'
+  'Deny'
+])
+@description('Optional. The network profile default action for endpoint access. It is only applicable when publicNetworkAccess is not explicitly disabled.')
+param networkProfileDefaultAction string = 'Deny'
+
+@description('Optional. Array of IP ranges to filter client IP address. It is only applicable when publicNetworkAccess is not explicitly disabled.')
+param networkProfileAllowedIpRanges array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -108,9 +121,6 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
-param privateEndpoints array = []
-
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -136,6 +146,11 @@ var identity = {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 }
+
+var networkProfileIpRules = [for networkProfileAllowedIpRange in networkProfileAllowedIpRanges: {
+  action: 'Allow'
+  value: networkProfileAllowedIpRange
+}]
 
 var nodeIdentityReference = !empty(storageAccessIdentity) ? {
   resourceId: !empty(storageAccessIdentity) ? storageAccessIdentity : null
@@ -171,7 +186,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
+resource batchAccount 'Microsoft.Batch/batchAccounts@2022-06-01' = {
   name: name
   location: location
   tags: tags
@@ -189,8 +204,14 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
       id: keyVaultReferenceResourceId
       url: keyVaultReferenceKeyVault.properties.vaultUri
     } : null
+    networkProfile: (publicNetworkAccess == 'Disabled') || !empty(networkProfileDefaultAction) ? null : {
+      accountAccess: {
+        defaultAction: networkProfileDefaultAction
+        ipRules: networkProfileIpRules
+      }
+    }
     poolAllocationMode: poolAllocationMode
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkProfileAllowedIpRanges) ? 'Disabled' : null)
   }
 }
 
