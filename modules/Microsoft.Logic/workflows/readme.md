@@ -348,8 +348,11 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
+    systemAssignedIdentity: false
     tags: {}
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
     workflowActions: {
       HTTP: {
         inputs: {
@@ -431,10 +434,15 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
       ]
     },
     "systemAssignedIdentity": {
-      "value": true
+      "value": false
     },
     "tags": {
       "value": {}
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     },
     "workflowActions": {
       "value": {

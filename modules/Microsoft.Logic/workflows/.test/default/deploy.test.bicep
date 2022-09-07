@@ -69,7 +69,10 @@ module testDeployment '../../deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
+    systemAssignedIdentity: false
+    userAssignedIdentities: {
+      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+    }
     tags: {}
     workflowActions: {
       HTTP: {
