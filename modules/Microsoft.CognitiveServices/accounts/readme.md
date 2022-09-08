@@ -569,14 +569,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     networkAcls: {
       defaultAction: 'deny'
       ipRules: [
-        {
-          action: 'Allow'
-          ipMask: '10.0.1.0/32'
-        }
-        {
-          action: 'Allow'
-          ipMask: '10.0.2.0/32'
-        }
+        '40.74.28.0/23'
       ]
       virtualNetworkRules: [
         {
@@ -658,14 +651,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": {
         "defaultAction": "deny",
         "ipRules": [
-          {
-            "action": "Allow",
-            "ipMask": "10.0.1.0/32"
-          },
-          {
-            "action": "Allow",
-            "ipMask": "10.0.2.0/32"
-          }
+          "40.74.28.0/23"
         ],
         "virtualNetworkRules": [
           {
