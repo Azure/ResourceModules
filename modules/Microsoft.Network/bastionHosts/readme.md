@@ -299,100 +299,7 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Custompip</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhctmpip'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>nbhctmpip001'
-    vNetId: '<vNetId>'
-    // Non-required parameters
-    publicIPAddressObject: {
-      diagnosticLogCategoriesToEnable: [
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
-        'DDoSProtectionNotifications'
-      ]
-      diagnosticMetricsToEnable: [
-        'AllMetrics'
-      ]
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-bas'
-      publicIPAllocationMethod: 'Static'
-      publicIPPrefixResourceId: ''
-      roleAssignments: [
-        {
-          principalIds: [
-            '<managedIdentityPrincipalId>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
-      skuName: 'Standard'
-      skuTier: 'Regional'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>nbhctmpip001"
-    },
-    "vNetId": {
-      "value": "<vNetId>"
-    },
-    // Non-required parameters
-    "publicIPAddressObject": {
-      "value": {
-        "diagnosticLogCategoriesToEnable": [
-          "DDoSMitigationFlowLogs",
-          "DDoSMitigationReports",
-          "DDoSProtectionNotifications"
-        ],
-        "diagnosticMetricsToEnable": [
-          "AllMetrics"
-        ],
-        "name": "adp-<<namePrefix>>-az-pip-custom-x-bas",
-        "publicIPAllocationMethod": "Static",
-        "publicIPPrefixResourceId": "",
-        "roleAssignments": [
-          {
-            "principalIds": [
-              "<managedIdentityPrincipalId>"
-            ],
-            "roleDefinitionIdOrName": "Reader"
-          }
-        ],
-        "skuName": "Standard",
-        "skuTier": "Regional"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Default</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -499,6 +406,99 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     },
     "skuType": {
       "value": "Standard"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Custompip</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nbhctmpip'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nbhctmpip001'
+    vNetId: '<vNetId>'
+    // Non-required parameters
+    publicIPAddressObject: {
+      diagnosticLogCategoriesToEnable: [
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+        'DDoSProtectionNotifications'
+      ]
+      diagnosticMetricsToEnable: [
+        'AllMetrics'
+      ]
+      name: 'adp-<<namePrefix>>-az-pip-custom-x-bas'
+      publicIPAllocationMethod: 'Static'
+      publicIPPrefixResourceId: ''
+      roleAssignments: [
+        {
+          principalIds: [
+            '<managedIdentityPrincipalId>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      skuName: 'Standard'
+      skuTier: 'Regional'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nbhctmpip001"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "publicIPAddressObject": {
+      "value": {
+        "diagnosticLogCategoriesToEnable": [
+          "DDoSMitigationFlowLogs",
+          "DDoSMitigationReports",
+          "DDoSProtectionNotifications"
+        ],
+        "diagnosticMetricsToEnable": [
+          "AllMetrics"
+        ],
+        "name": "adp-<<namePrefix>>-az-pip-custom-x-bas",
+        "publicIPAllocationMethod": "Static",
+        "publicIPPrefixResourceId": "",
+        "roleAssignments": [
+          {
+            "principalIds": [
+              "<managedIdentityPrincipalId>"
+            ],
+            "roleDefinitionIdOrName": "Reader"
+          }
+        ],
+        "skuName": "Standard",
+        "skuTier": "Regional"
+      }
     }
   }
 }
