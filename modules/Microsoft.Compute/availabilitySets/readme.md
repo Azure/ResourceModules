@@ -158,14 +158,14 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Default</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module AvailabilitySets './Microsoft.Compute/AvailabilitySets/deploy.bicep' = {
+module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-casdef'
   params: {
     // Required parameters
@@ -232,7 +232,7 @@ module AvailabilitySets './Microsoft.Compute/AvailabilitySets/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module AvailabilitySets './Microsoft.Compute/AvailabilitySets/deploy.bicep' = {
+module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-casmin'
   params: {
     name: '<<namePrefix>>casmin001'
