@@ -421,21 +421,20 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Default</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
+module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-csadef'
   params: {
     // Required parameters
     kind: 'Face'
     name: '<<namePrefix>>csadef001'
     // Non-required parameters
-<<<<<<< HEAD
     customSubDomainName: '<<namePrefix>>xdomain'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -451,16 +450,6 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
           id: '<id>'
         }
       ]
-=======
-    encryption: {
-      keySource: 'Microsoft.KeyVault'
-      keyVaultProperties: {
-        identityClientId: '5d395e10-82b1-4c41-bb5b-a27757e9f725'
-        keyName: 'keyEncryptionKey'
-        keyVaultUri: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
-        keyversion: '4570a207ec394a0bbbe4fc9adc663a51'
-      }
->>>>>>> main
     }
     roleAssignments: [
       {
@@ -522,7 +511,6 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
     },
     "networkAcls": {
       "value": {
-<<<<<<< HEAD
         "defaultAction": "deny",
         "virtualNetworkRules": [
           {
@@ -530,15 +518,6 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
             "id": "<id>"
           }
         ]
-=======
-        "keySource": "Microsoft.KeyVault",
-        "keyVaultProperties": {
-          "identityClientId": "5d395e10-82b1-4c41-bb5b-a27757e9f725",
-          "keyName": "keyEncryptionKey",
-          "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
-          "keyversion": "4570a207ec394a0bbbe4fc9adc663a51"
-        }
->>>>>>> main
       }
     },
     "roleAssignments": {
@@ -576,7 +555,7 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
+module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-csaencr'
   params: {
     // Required parameters
@@ -657,7 +636,7 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
+module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-csamin'
   params: {
     // Required parameters
@@ -700,7 +679,7 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
+module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-csaspeech'
   params: {
     // Required parameters
@@ -763,6 +742,87 @@ module Accounts './Microsoft.CognitiveServices/Accounts/deploy.bicep' = {
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 5: Encr</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Accounts'
+  params: {
+    // Required parameters
+    kind: 'SpeechServices'
+    name: '<<namePrefix>>-az-cgs-encr-001'
+    // Non-required parameters
+    encryption: {
+      keySource: 'Microsoft.KeyVault'
+      keyVaultProperties: {
+        identityClientId: '5d395e10-82b1-4c41-bb5b-a27757e9f725'
+        keyName: 'keyEncryptionKey'
+        keyVaultUri: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
+        keyversion: '4570a207ec394a0bbbe4fc9adc663a51'
+      }
+    }
+    publicNetworkAccess: 'Enabled'
+    sku: 'S0'
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "kind": {
+      "value": "SpeechServices"
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-cgs-encr-001"
+    },
+    // Non-required parameters
+    "encryption": {
+      "value": {
+        "keySource": "Microsoft.KeyVault",
+        "keyVaultProperties": {
+          "identityClientId": "5d395e10-82b1-4c41-bb5b-a27757e9f725",
+          "keyName": "keyEncryptionKey",
+          "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
+          "keyversion": "4570a207ec394a0bbbe4fc9adc663a51"
+        }
+      }
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "sku": {
+      "value": "S0"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
       }
     }
   }
