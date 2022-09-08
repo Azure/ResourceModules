@@ -165,7 +165,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apemg'
   params: {
     // Required parameters
@@ -234,7 +234,7 @@ module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apemgmin'
   params: {
     // Required parameters
@@ -277,7 +277,7 @@ module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aperg'
   params: {
     // Required parameters
@@ -350,7 +350,7 @@ module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apergmin'
   params: {
     // Required parameters
@@ -403,7 +403,7 @@ module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apesub'
   params: {
     // Required parameters
@@ -472,7 +472,7 @@ module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module PolicyExemptions './Microsoft.Authorization/PolicyExemptions/deploy.bicep' = {
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apesubmin'
   params: {
     // Required parameters
