@@ -365,14 +365,14 @@ The following module usage examples are retrieved from the content of the files 
    >**Note**: The name of each example is based on the name of the file from which it is taken.
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Default</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module AutomationAccounts './Microsoft.Automation/AutomationAccounts/deploy.bicep' = {
+module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aadef'
   params: {
     // Required parameters
@@ -781,7 +781,7 @@ module AutomationAccounts './Microsoft.Automation/AutomationAccounts/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module AutomationAccounts './Microsoft.Automation/AutomationAccounts/deploy.bicep' = {
+module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aaencr'
   params: {
     // Required parameters
@@ -846,7 +846,7 @@ module AutomationAccounts './Microsoft.Automation/AutomationAccounts/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module AutomationAccounts './Microsoft.Automation/AutomationAccounts/deploy.bicep' = {
+module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aamin'
   params: {
     name: '<<namePrefix>>aamin001'
