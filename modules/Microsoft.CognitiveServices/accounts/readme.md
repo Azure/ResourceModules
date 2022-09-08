@@ -575,6 +575,17 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         }
       ]
     }
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com'
+          ]
+        }
+        service: 'account'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
     roleAssignments: [
       {
         principalIds: [
@@ -643,6 +654,19 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
           }
         ]
       }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com"
+            ]
+          },
+          "service": "account",
+          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        }
+      ]
     },
     "roleAssignments": {
       "value": [
