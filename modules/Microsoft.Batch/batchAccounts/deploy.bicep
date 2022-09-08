@@ -204,7 +204,7 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-06-01' = {
       id: keyVaultReferenceResourceId
       url: keyVaultReferenceKeyVault.properties.vaultUri
     } : null
-    networkProfile: (publicNetworkAccess == 'Disabled') || !empty(networkProfileDefaultAction) ? null : {
+    networkProfile: (publicNetworkAccess == 'Disabled') || empty(networkProfileAllowedIpRanges) ? null : {
       accountAccess: {
         defaultAction: networkProfileDefaultAction
         ipRules: networkProfileIpRules
