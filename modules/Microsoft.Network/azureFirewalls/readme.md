@@ -371,100 +371,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Custompip</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafcstpip'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>nafcstpip001'
-    vNetId: '<vNetId>'
-    // Non-required parameters
-    publicIPAddressObject: {
-      diagnosticLogCategoriesToEnable: [
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
-        'DDoSProtectionNotifications'
-      ]
-      diagnosticMetricsToEnable: [
-        'AllMetrics'
-      ]
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
-      publicIPAllocationMethod: 'Static'
-      publicIPPrefixResourceId: ''
-      roleAssignments: [
-        {
-          principalIds: [
-            '<managedIdentityPrincipalId>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
-      skuName: 'Standard'
-      skuTier: 'Regional'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>nafcstpip001"
-    },
-    "vNetId": {
-      "value": "<vNetId>"
-    },
-    // Non-required parameters
-    "publicIPAddressObject": {
-      "value": {
-        "diagnosticLogCategoriesToEnable": [
-          "DDoSMitigationFlowLogs",
-          "DDoSMitigationReports",
-          "DDoSProtectionNotifications"
-        ],
-        "diagnosticMetricsToEnable": [
-          "AllMetrics"
-        ],
-        "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
-        "publicIPAllocationMethod": "Static",
-        "publicIPPrefixResourceId": "",
-        "roleAssignments": [
-          {
-            "principalIds": [
-              "<managedIdentityPrincipalId>"
-            ],
-            "roleDefinitionIdOrName": "Reader"
-          }
-        ],
-        "skuName": "Standard",
-        "skuTier": "Regional"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3: Default</h3>
+<h3>Example 2: Common</h3>
 
 <details>
 
@@ -725,6 +632,99 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         "2",
         "3"
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Custompip</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nafcstpip'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nafcstpip001'
+    vNetId: '<vNetId>'
+    // Non-required parameters
+    publicIPAddressObject: {
+      diagnosticLogCategoriesToEnable: [
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+        'DDoSProtectionNotifications'
+      ]
+      diagnosticMetricsToEnable: [
+        'AllMetrics'
+      ]
+      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
+      publicIPAllocationMethod: 'Static'
+      publicIPPrefixResourceId: ''
+      roleAssignments: [
+        {
+          principalIds: [
+            '<managedIdentityPrincipalId>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      skuName: 'Standard'
+      skuTier: 'Regional'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nafcstpip001"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "publicIPAddressObject": {
+      "value": {
+        "diagnosticLogCategoriesToEnable": [
+          "DDoSMitigationFlowLogs",
+          "DDoSMitigationReports",
+          "DDoSProtectionNotifications"
+        ],
+        "diagnosticMetricsToEnable": [
+          "AllMetrics"
+        ],
+        "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
+        "publicIPAllocationMethod": "Static",
+        "publicIPPrefixResourceId": "",
+        "roleAssignments": [
+          {
+            "principalIds": [
+              "<managedIdentityPrincipalId>"
+            ],
+            "roleDefinitionIdOrName": "Reader"
+          }
+        ],
+        "skuName": "Standard",
+        "skuTier": "Regional"
+      }
     }
   }
 }
