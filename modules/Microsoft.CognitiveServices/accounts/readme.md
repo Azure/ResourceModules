@@ -55,9 +55,9 @@ This module deploys different kinds of cognitive services resources
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationToken` | string | `''` |  | Resource migration token. |
-| `networkAcls` | object | `{object}` |  | Service endpoint object information. |
+| `networkAcls` | object | `{object}` |  | A collection of rules governing the accessibility from specific network locations. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public endpoint access is allowed for this account. |
+| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set. |
 | `restore` | bool | `False` |  | Restore a soft-deleted cognitive service at deployment time. Will fail if no such soft-deleted resource exists. |
 | `restrictOutboundNetworkAccess` | bool | `True` |  | Restrict outbound network access. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
