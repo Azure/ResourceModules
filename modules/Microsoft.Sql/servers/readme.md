@@ -342,7 +342,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Servers './Microsoft.Sql/Servers/deploy.bicep' = {
+module servers './Microsoft.SQL/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-sqlsadmin'
   params: {
     // Required parameters
@@ -392,14 +392,14 @@ module Servers './Microsoft.Sql/Servers/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Default</h3>
+<h3>Example 2: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Servers './Microsoft.Sql/Servers/deploy.bicep' = {
+module servers './Microsoft.SQL/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-sqlsdef'
   params: {
     // Required parameters
