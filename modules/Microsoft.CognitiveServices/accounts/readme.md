@@ -568,6 +568,16 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     lock: 'CanNotDelete'
     networkAcls: {
       defaultAction: 'deny'
+      ipRules: [
+        {
+          action: 'Allow'
+          ipMask: '10.0.1.0/32'
+        }
+        {
+          action: 'Allow'
+          ipMask: '10.0.2.0/32'
+        }
+      ]
       virtualNetworkRules: [
         {
           action: 'Allow'
@@ -647,6 +657,16 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "networkAcls": {
       "value": {
         "defaultAction": "deny",
+        "ipRules": [
+          {
+            "action": "Allow",
+            "ipMask": "10.0.1.0/32"
+          },
+          {
+            "action": "Allow",
+            "ipMask": "10.0.2.0/32"
+          }
+        ],
         "virtualNetworkRules": [
           {
             "action": "Allow",
