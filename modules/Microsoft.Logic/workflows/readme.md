@@ -330,10 +330,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-lwdef'
+  name: '${uniqueString(deployment().name)}-test-lwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>lwdef001'
+    name: '<<namePrefix>>lwcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -403,7 +403,7 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>lwdef001"
+      "value": "<<namePrefix>>lwcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
