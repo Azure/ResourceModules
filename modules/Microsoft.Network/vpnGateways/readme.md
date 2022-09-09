@@ -188,10 +188,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvgdef'
+  name: '${uniqueString(deployment().name)}-test-nvgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvgdef001'
+    name: '<<namePrefix>>nvgcom001'
     virtualHubResourceId: '<virtualHubResourceId>'
     // Non-required parameters
     bgpSettings: {
@@ -260,7 +260,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvgdef001"
+      "value": "<<namePrefix>>nvgcom001"
     },
     "virtualHubResourceId": {
       "value": "<virtualHubResourceId>"
