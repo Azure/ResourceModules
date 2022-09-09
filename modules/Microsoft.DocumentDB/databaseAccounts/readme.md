@@ -593,7 +593,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             ]
           }
         ]
-        name: '<<namePrefix>>-az-gdb-x-001'
+        name: '<<namePrefix>>-gdb-dddagrm-001'
       }
       {
         collections: [
@@ -612,7 +612,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             ]
           }
         ]
-        name: '<<namePrefix>>-az-gdb-x-002'
+        name: '<<namePrefix>>-gdb-dddagrm-002'
       }
     ]
     location: '<location>'
@@ -699,7 +699,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               ]
             }
           ],
-          "name": "<<namePrefix>>-az-gdb-x-001"
+          "name": "<<namePrefix>>-gdb-dddagrm-001"
         },
         {
           "collections": [
@@ -718,7 +718,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               ]
             }
           ],
-          "name": "<<namePrefix>>-az-gdb-x-002"
+          "name": "<<namePrefix>>-gdb-dddagrm-002"
         }
       ]
     },
@@ -866,7 +866,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             }
           }
         ]
-        name: '<<namePrefix>>-az-mdb-x-001'
+        name: '<<namePrefix>>-mdb-dddamng-001'
       }
       {
         collections: [
@@ -957,7 +957,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             }
           }
         ]
-        name: '<<namePrefix>>-az-mdb-x-002'
+        name: '<<namePrefix>>-mdb-dddamng-002'
       }
     ]
     roleAssignments: [
@@ -1113,7 +1113,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               }
             }
           ],
-          "name": "<<namePrefix>>-az-mdb-x-001"
+          "name": "<<namePrefix>>-mdb-dddamng-001"
         },
         {
           "collections": [
@@ -1204,7 +1204,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               }
             }
           ],
-          "name": "<<namePrefix>>-az-mdb-x-002"
+          "name": "<<namePrefix>>-mdb-dddamng-002"
         }
       ]
     },
@@ -1387,11 +1387,11 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             ]
           }
         ]
-        name: '<<namePrefix>>-az-sql-x-001'
+        name: '<<namePrefix>>-sql-dddasql-001'
       }
       {
         containers: []
-        name: '<<namePrefix>>-az-sql-x-002'
+        name: '<<namePrefix>>-sql-dddasql-002'
       }
     ]
     userAssignedIdentities: {
@@ -1472,11 +1472,11 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               ]
             }
           ],
-          "name": "<<namePrefix>>-az-sql-x-001"
+          "name": "<<namePrefix>>-sql-dddasql-001"
         },
         {
           "containers": [],
-          "name": "<<namePrefix>>-az-sql-x-002"
+          "name": "<<namePrefix>>-sql-dddasql-002"
         }
       ]
     },

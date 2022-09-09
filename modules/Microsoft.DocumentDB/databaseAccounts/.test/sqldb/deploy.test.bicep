@@ -92,11 +92,11 @@ module testDeployment '../../deploy.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-az-sql-x-001'
+        name: '<<namePrefix>>-sql-${serviceShort}-001'
       }
       {
         containers: []
-        name: '<<namePrefix>>-az-sql-x-002'
+        name: '<<namePrefix>>-sql-${serviceShort}-002'
       }
     ]
     userAssignedIdentities: {

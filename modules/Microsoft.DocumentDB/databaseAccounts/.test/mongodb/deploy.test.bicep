@@ -163,7 +163,7 @@ module testDeployment '../../deploy.bicep' = {
             }
           }
         ]
-        name: '<<namePrefix>>-az-mdb-x-001'
+        name: '<<namePrefix>>-mdb-${serviceShort}-001'
       }
       {
         collections: [
@@ -254,7 +254,7 @@ module testDeployment '../../deploy.bicep' = {
             }
           }
         ]
-        name: '<<namePrefix>>-az-mdb-x-002'
+        name: '<<namePrefix>>-mdb-${serviceShort}-002'
       }
     ]
     roleAssignments: [

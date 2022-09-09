@@ -93,7 +93,7 @@ module testDeployment '../../deploy.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-az-gdb-x-001'
+        name: '<<namePrefix>>-gdb-${serviceShort}-001'
       }
       {
         collections: [
@@ -112,7 +112,7 @@ module testDeployment '../../deploy.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-az-gdb-x-002'
+        name: '<<namePrefix>>-gdb-${serviceShort}-002'
       }
     ]
     location: location
