@@ -349,10 +349,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dpbvdef'
+  name: '${uniqueString(deployment().name)}-test-dpbvcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dpbvdef001'
+    name: '<<namePrefix>>dpbvcom001'
     // Non-required parameters
     backupPolicies: [
       {
@@ -444,7 +444,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dpbvdef001"
+      "value": "<<namePrefix>>dpbvcom001"
     },
     // Non-required parameters
     "backupPolicies": {
