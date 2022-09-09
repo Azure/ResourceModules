@@ -167,10 +167,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-casdef'
+  name: '${uniqueString(deployment().name)}-test-cascom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>casdef001'
+    name: '<<namePrefix>>cascom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     proximityPlacementGroupId: '<proximityPlacementGroupId>'
@@ -200,7 +200,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>casdef001"
+      "value": "<<namePrefix>>cascom001"
     },
     // Non-required parameters
     "lock": {
