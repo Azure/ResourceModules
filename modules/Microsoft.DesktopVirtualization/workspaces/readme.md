@@ -174,10 +174,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvwdef'
+  name: '${uniqueString(deployment().name)}-test-dvwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dvwdef001'
+    name: '<<namePrefix>>dvwcom001'
     // Non-required parameters
     appGroupResourceIds: [
       '<applicationGroupResourceId>'
@@ -217,7 +217,7 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dvwdef001"
+      "value": "<<namePrefix>>dvwcom001"
     },
     // Non-required parameters
     "appGroupResourceIds": {
