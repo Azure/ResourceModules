@@ -32,11 +32,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
   name: managedInstanceName
 }
 
-resource encryptionProtector 'Microsoft.Sql/managedInstances/encryptionProtector@2021-05-01-preview' = {
+resource encryptionProtector 'Microsoft.Sql/managedInstances/encryptionProtector@2022-02-01-preview' = {
   name: name
   parent: managedInstance
   properties: {
@@ -46,11 +46,11 @@ resource encryptionProtector 'Microsoft.Sql/managedInstances/encryptionProtector
   }
 }
 
-@description('The name of the deployed managed instance.')
+@description('The name of the deployed managed instance encryption protector.')
 output name string = encryptionProtector.name
 
-@description('The resource ID of the deployed managed instance.')
+@description('The resource ID of the deployed managed instance encryption protector.')
 output resourceId string = encryptionProtector.id
 
-@description('The resource group of the deployed managed instance.')
+@description('The resource group of the deployed managed instance encryption protector.')
 output resourceGroupName string = resourceGroup().name
