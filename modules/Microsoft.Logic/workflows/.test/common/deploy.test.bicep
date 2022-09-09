@@ -10,8 +10,8 @@ param resourceGroupName string = 'ms.logic.workflows-${serviceShort}-rg'
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
 
-@description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'lwdef'
+@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
+param serviceShort string = 'lwcom'
 
 // =========== //
 // Deployments //
