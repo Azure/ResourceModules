@@ -63,6 +63,7 @@ module testDeployment '../../deploy.bicep' = {
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
       }
     ]
+    // Must be false if `primaryUserAssignedIdentity` is provided
     systemAssignedIdentity: false
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}

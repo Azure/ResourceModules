@@ -424,190 +424,13 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mlswdef'
+  name: '${uniqueString(deployment().name)}-test-mlswcom'
   params: {
     // Required parameters
-<<<<<<< HEAD
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
     associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
     associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: '<<namePrefix>>mlswdef001'
-=======
-    associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
-    associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-    associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    name: '<<namePrefix>>-az-mls-encr-001'
-    sku: 'Basic'
-    // Non-required parameters
-    cMKKeyName: 'keyEncryptionKey'
-    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
-    cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
-    primaryUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms'
-          ]
-        }
-        service: 'amlworkspace'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-      }
-    ]
-    systemAssignedIdentity: false
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "associatedApplicationInsightsResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
-    },
-    "associatedKeyVaultResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-    },
-    "associatedStorageAccountResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-mls-encr-001"
-    },
-    "sku": {
-      "value": "Basic"
-    },
-    // Non-required parameters
-    "cMKKeyName": {
-      "value": "keyEncryptionKey"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
-    },
-    "primaryUserAssignedIdentity": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms"
-            ]
-          },
-          "service": "amlworkspace",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
-        }
-      ]
-    },
-    "systemAssignedIdentity": {
-      "value": false
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Workspaces'
-  params: {
-    // Required parameters
-    associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
-    associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-    associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    name: '<<namePrefix>>-az-mls-min-001'
-    sku: 'Basic'
-    // Non-required parameters
-    systemAssignedIdentity: true
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "associatedApplicationInsightsResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
-    },
-    "associatedKeyVaultResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-    },
-    "associatedStorageAccountResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-mls-min-001"
-    },
-    "sku": {
-      "value": "Basic"
-    },
-    // Non-required parameters
-    "systemAssignedIdentity": {
-      "value": true
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Workspaces'
-  params: {
-    // Required parameters
-    associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
-    associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-    associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    name: '<<namePrefix>>-az-mls-x-001'
->>>>>>> main
+    name: '<<namePrefix>>mlswcom001'
     sku: 'Basic'
     // Non-required parameters
     computes: [
@@ -650,11 +473,6 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
     privateEndpoints: [
       {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms'
-          ]
-        }
         service: 'amlworkspace'
         subnetResourceId: '<subnetResourceId>'
       }
@@ -699,7 +517,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       "value": "<associatedStorageAccountResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>mlswdef001"
+      "value": "<<namePrefix>>mlswcom001"
     },
     "sku": {
       "value": "Basic"
@@ -768,11 +586,6 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms"
-            ]
-          },
           "service": "amlworkspace",
           "subnetResourceId": "<subnetResourceId>"
         }

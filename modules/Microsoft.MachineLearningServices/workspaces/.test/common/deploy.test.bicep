@@ -85,6 +85,7 @@ module testDeployment '../../deploy.bicep' = {
           vmSize: 'STANDARD_DS11_V2'
         }
         sku: 'Basic'
+        // Must be false if `primaryUserAssignedIdentity` is provided
         systemAssignedIdentity: false
         userAssignedIdentities: {
           '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
