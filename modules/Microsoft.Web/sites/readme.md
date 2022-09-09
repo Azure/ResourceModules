@@ -418,7 +418,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Sites './Microsoft.Web/Sites/deploy.bicep' = {
+module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-wsfa'
   params: {
     // Required parameters
@@ -697,7 +697,7 @@ module Sites './Microsoft.Web/Sites/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Sites './Microsoft.Web/Sites/deploy.bicep' = {
+module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-wsfamin'
   params: {
     // Required parameters
@@ -754,7 +754,7 @@ module Sites './Microsoft.Web/Sites/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Sites './Microsoft.Web/Sites/deploy.bicep' = {
+module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-wswa'
   params: {
     // Required parameters
@@ -891,7 +891,7 @@ module Sites './Microsoft.Web/Sites/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module Sites './Microsoft.Web/Sites/deploy.bicep' = {
+module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-wswamin'
   params: {
     // Required parameters
