@@ -649,6 +649,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>azacrpe001'
     // Non-required parameters
+    acrSku: 'Premium'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -681,6 +682,9 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       "value": "<<namePrefix>>azacrpe001"
     },
     // Non-required parameters
+    "acrSku": {
+      "value": "Premium"
+    },
     "privateEndpoints": {
       "value": [
         {
