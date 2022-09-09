@@ -60,7 +60,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module locks './Microsoft.Authorization/locks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aldef'
+  name: '${uniqueString(deployment().name)}-test-alcom'
   params: {
     // Required parameters
     level: 'CanNotDelete'
