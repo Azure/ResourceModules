@@ -10,7 +10,7 @@ param resourceGroupName string = 'ms.batch.batchaccounts-${serviceShort}-rg'
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
 
-@description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
+@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
 param serviceShort string = 'bbaencr'
 
 @description('Generated. Used as a basis for unique resource names.')
