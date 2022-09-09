@@ -374,10 +374,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aadef'
+  name: '${uniqueString(deployment().name)}-test-aacom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>aadef001'
+    name: '<<namePrefix>>aacom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -562,7 +562,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>aadef001"
+      "value": "<<namePrefix>>aacom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
