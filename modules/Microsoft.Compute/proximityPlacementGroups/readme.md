@@ -164,10 +164,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cppgdef'
+  name: '${uniqueString(deployment().name)}-test-cppgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cppgdef001'
+    name: '<<namePrefix>>cppgcom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -196,7 +196,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cppgdef001"
+      "value": "<<namePrefix>>cppgcom001"
     },
     // Non-required parameters
     "lock": {
