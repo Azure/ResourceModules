@@ -273,10 +273,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvhpdef'
+  name: '${uniqueString(deployment().name)}-test-dvhpcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dvhpdef001'
+    name: '<<namePrefix>>dvhpcom001'
     // Non-required parameters
     customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -335,7 +335,7 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dvhpdef001"
+      "value": "<<namePrefix>>dvhpcom001"
     },
     // Non-required parameters
     "customRdpProperty": {
