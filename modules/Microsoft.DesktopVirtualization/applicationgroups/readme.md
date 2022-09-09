@@ -177,12 +177,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvagdef'
+  name: '${uniqueString(deployment().name)}-test-dvagcom'
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
     hostpoolName: '<hostpoolName>'
-    name: '<<namePrefix>>dvagdef001'
+    name: '<<namePrefix>>dvagcom001'
     // Non-required parameters
     applications: [
       {
@@ -243,7 +243,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
       "value": "<hostpoolName>"
     },
     "name": {
-      "value": "<<namePrefix>>dvagdef001"
+      "value": "<<namePrefix>>dvagcom001"
     },
     // Non-required parameters
     "applications": {
