@@ -46,11 +46,11 @@ resource encryptionProtector 'Microsoft.Sql/managedInstances/encryptionProtector
   }
 }
 
-@description('The name of the deployed managed instance.')
+@description('The name of the deployed managed instance encryption protector.')
 output name string = encryptionProtector.name
 
-@description('The resource ID of the deployed managed instance.')
+@description('The resource ID of the deployed managed instance encryption protector.')
 output resourceId string = encryptionProtector.id
 
-@description('The resource group of the deployed managed instance.')
+@description('The resource group of the deployed managed instance encryption protector.')
 output resourceGroupName string = resourceGroup().name
