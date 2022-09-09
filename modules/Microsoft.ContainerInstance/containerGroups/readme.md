@@ -188,12 +188,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cicgdef'
+  name: '${uniqueString(deployment().name)}-test-cicgcom'
   params: {
     // Required parameters
     containername: '<<namePrefix>>-az-aci-x-001'
     image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
-    name: '<<namePrefix>>cicgdef001'
+    name: '<<namePrefix>>cicgcom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     ports: [
@@ -234,7 +234,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
     },
     "name": {
-      "value": "<<namePrefix>>cicgdef001"
+      "value": "<<namePrefix>>cicgcom001"
     },
     // Non-required parameters
     "lock": {
