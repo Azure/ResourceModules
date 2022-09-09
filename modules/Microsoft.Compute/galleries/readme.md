@@ -166,10 +166,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cgdef'
+  name: '${uniqueString(deployment().name)}-test-cgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cgdef001'
+    name: '<<namePrefix>>cgcom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -198,7 +198,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cgdef001"
+      "value": "<<namePrefix>>cgcom001"
     },
     // Non-required parameters
     "lock": {
