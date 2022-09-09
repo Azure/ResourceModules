@@ -298,10 +298,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wssdef'
+  name: '${uniqueString(deployment().name)}-test-wsscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>wssdef001'
+    name: '<<namePrefix>>wsscom001'
     // Non-required parameters
     allowConfigFileUpdates: true
     enterpriseGradeCdnStatus: 'Disabled'
@@ -344,7 +344,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>wssdef001"
+      "value": "<<namePrefix>>wsscom001"
     },
     // Non-required parameters
     "allowConfigFileUpdates": {
