@@ -28,6 +28,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource parentManagementGroup 'Microsoft.Management/managementGroups@2021-04-01' existing = {
+  name: parentId
+  scope: tenant()
+}
+
 resource managementGroup 'Microsoft.Management/managementGroups@2021-04-01' = {
   name: name
   scope: tenant()
@@ -35,7 +40,7 @@ resource managementGroup 'Microsoft.Management/managementGroups@2021-04-01' = {
     displayName: displayName
     details: !empty(parentId) ? {
       parent: {
-        id: '/providers/Microsoft.Management/managementGroups/${parentId}'
+        id: parentManagementGroup.id
       }
     } : null
   }
