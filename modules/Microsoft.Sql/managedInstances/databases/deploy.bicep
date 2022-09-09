@@ -121,11 +121,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
   name: managedInstanceName
 }
 
-resource database 'Microsoft.Sql/managedInstances/databases@2021-05-01-preview' = {
+resource database 'Microsoft.Sql/managedInstances/databases@2022-02-01-preview' = {
   name: name
   parent: managedInstance
   location: location

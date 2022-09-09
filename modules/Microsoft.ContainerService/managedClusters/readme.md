@@ -38,7 +38,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | :-- | :-- | :-- | :-- | :-- |
 | `aadProfileAdminGroupObjectIDs` | array | `[]` |  | Specifies the AAD group object IDs that will have admin role of the cluster. |
 | `aadProfileClientAppID` | string | `''` |  | The client AAD application ID. |
-| `aadProfileEnableAzureRBAC` | bool | `True` |  | Specifies whether to enable Azure RBAC for Kubernetes authorization. |
+| `aadProfileEnableAzureRBAC` | bool | `[parameters('enableRBAC')]` |  | Specifies whether to enable Azure RBAC for Kubernetes authorization. |
 | `aadProfileManaged` | bool | `True` |  | Specifies whether to enable managed AAD integration. |
 | `aadProfileServerAppID` | string | `''` |  | The server AAD application ID. |
 | `aadProfileServerAppSecret` | string | `''` |  | The server AAD application secret. |
@@ -97,6 +97,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `enablePodSecurityPolicy` | bool | `False` |  | Whether to enable Kubernetes pod security policy. |
 | `enablePrivateCluster` | bool | `False` |  | Specifies whether to create the cluster as a private cluster or not. |
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Whether to create additional public FQDN for private cluster or not. |
+| `enableRBAC` | bool | `True` |  | Whether to enable Kubernetes Role-Based Access Control. |
 | `enableSecretRotation` | string | `'false'` | `[false, true]` | Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the httpApplicationRouting add-on is enabled or not. |
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
@@ -366,6 +367,7 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Azure</h3>
