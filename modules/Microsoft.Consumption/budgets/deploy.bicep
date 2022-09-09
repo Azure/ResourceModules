@@ -46,7 +46,7 @@ param contactEmails array = []
 @description('Conditional. The list of contact roles to send the budget notification to when the thresholds are exceeded. Required if neither `contactEmails` or `actionGroups` was provided.')
 param contactRoles array = []
 
-@description('Conditional. List of action group resource IDs that will receive the alert. Required if neither `contactEmails` or `contactEmails` was provided.')
+@description('Conditional. List of action group resource IDs that will receive the alert. Required if neither `contactEmails` nor `contactEmails` was provided.')
 param actionGroups array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
