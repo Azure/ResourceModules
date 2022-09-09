@@ -225,7 +225,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aaddsdef'
+  name: '${uniqueString(deployment().name)}-test-aaddscom'
   params: {
     // Required parameters
     domainName: '<<namePrefix>>.onmicrosoft.com'
@@ -239,7 +239,7 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>aaddsdef001'
+    name: '<<namePrefix>>aaddscom001'
     pfxCertificate: '<pfxCertificate>'
     pfxCertificatePassword: '<pfxCertificatePassword>'
     replicaSets: [
@@ -294,7 +294,7 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>aaddsdef001"
+      "value": "<<namePrefix>>aaddscom001"
     },
     "pfxCertificate": {
       "value": "<pfxCertificate>"
