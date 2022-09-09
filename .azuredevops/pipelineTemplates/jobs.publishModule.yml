@@ -92,6 +92,7 @@ jobs:
       # [Checkout Repositories] task(s)
       #--------------------------------
       - checkout: self
+        fetchDepth: 0
       - ${{ if ne(parameters.checkoutRepositories, '') }}:
           - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
               - checkout: ${{ checkoutRepository }}
