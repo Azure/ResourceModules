@@ -173,10 +173,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnsgdef'
+  name: '${uniqueString(deployment().name)}-test-nnsgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nnsgdef001'
+    name: '<<namePrefix>>nnsgcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -274,7 +274,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nnsgdef001"
+      "value": "<<namePrefix>>nnsgcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
