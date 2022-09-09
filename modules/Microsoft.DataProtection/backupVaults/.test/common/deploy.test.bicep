@@ -10,8 +10,8 @@ param resourceGroupName string = 'ms.dataprotection.backupvaults-${serviceShort}
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
 
-@description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'dpbvdef'
+@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
+param serviceShort string = 'dpbvcom'
 
 // =========== //
 // Deployments //
