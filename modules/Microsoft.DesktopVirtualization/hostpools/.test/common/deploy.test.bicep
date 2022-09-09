@@ -10,8 +10,8 @@ param resourceGroupName string = 'ms.desktopvirtualization.hostpools-${serviceSh
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
 
-@description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'dvhpdef'
+@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
+param serviceShort string = 'dvhpcom'
 
 // =========== //
 // Deployments //
