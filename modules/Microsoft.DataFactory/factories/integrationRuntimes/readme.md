@@ -1,4 +1,4 @@
-# Data Factory Integration RunTimes `[Microsoft.DataFactory/factories/integrationRuntime]`
+# Data Factory Integration RunTimes `[Microsoft.DataFactory/factories/integrationRuntimes]`
 
 This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Data Factory
 

@@ -204,7 +204,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   }
 }
 
-module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = if (!empty(managedVirtualNetworkName)) {
+module dataFactory_managedVirtualNetwork 'managedVirtualNetworks/deploy.bicep' = if (!empty(managedVirtualNetworkName)) {
   name: '${uniqueString(deployment().name, location)}-DataFactory-ManagedVNet'
   params: {
     name: managedVirtualNetworkName
@@ -214,7 +214,7 @@ module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = 
   }
 }
 
-module dataFactory_integrationRuntimes 'integrationRuntime/deploy.bicep' = [for (integrationRuntime, index) in integrationRuntimes: {
+module dataFactory_integrationRuntimes 'integrationRuntimes/deploy.bicep' = [for (integrationRuntime, index) in integrationRuntimes: {
   name: '${uniqueString(deployment().name, location)}-DataFactory-IntegrationRuntime-${index}'
   params: {
     dataFactoryName: dataFactory.name

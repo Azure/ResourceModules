@@ -45,11 +45,11 @@ resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes
   name: name
   parent: dataFactory
   properties: type == 'Managed' ? {
-    type: any(type)
+    type: type
     managedVirtualNetwork: managedVirtualNetwork_var
     typeProperties: typeProperties
   } : {
-    type: any(type)
+    type: type
   }
 }
 
