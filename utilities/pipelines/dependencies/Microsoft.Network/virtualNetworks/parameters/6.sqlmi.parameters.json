@@ -16,10 +16,10 @@
                     "name": "<<namePrefix>>-az-subnet-x-sqlmi", // SQLMi subnet
                     "addressPrefix": "10.6.0.0/24",
                     "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-sqlmi",
-                    "routeTableNameId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-sqlmi",
+                    "routeTableId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-sqlmi",
                     "delegations": [
                         {
-                            "name": "sqlMiDel",
+                            "name": "managedInstanceDelegation",
                             "properties": {
                                 "serviceName": "Microsoft.Sql/managedInstances"
                             }

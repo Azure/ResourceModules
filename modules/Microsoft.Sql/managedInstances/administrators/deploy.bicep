@@ -28,11 +28,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
   name: managedInstanceName
 }
 
-resource administrator 'Microsoft.Sql/managedInstances/administrators@2021-02-01-preview' = {
+resource administrator 'Microsoft.Sql/managedInstances/administrators@2022-02-01-preview' = {
   name: name
   parent: managedInstance
   properties: {
@@ -43,11 +43,11 @@ resource administrator 'Microsoft.Sql/managedInstances/administrators@2021-02-01
   }
 }
 
-@description('The name of the deployed managed instance.')
+@description('The name of the deployed managed instance administrator.')
 output name string = administrator.name
 
-@description('The resource ID of the deployed managed instance.')
+@description('The resource ID of the deployed managed instance administrator.')
 output resourceId string = administrator.id
 
-@description('The resource group of the deployed managed instance.')
+@description('The resource group of the deployed managed instance administrator.')
 output resourceGroupName string = resourceGroup().name
