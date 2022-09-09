@@ -27,9 +27,9 @@ This module deploys budgets for subscriptions.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `actionGroups` | array | List of action group resource IDs that will receive the alert. Required if neither `contactEmails` or `contactEmails` was provided. |
-| `contactEmails` | array | The list of email addresses to send the budget notification to when the thresholds are exceeded. Required if neither `contactRoles` or `actionGroups` was provided. |
-| `contactRoles` | array | The list of contact roles to send the budget notification to when the thresholds are exceeded. Required if neither `contactEmails` or `actionGroups` was provided. |
+| `actionGroups` | array | List of action group resource IDs that will receive the alert. Required if neither `contactEmails` nor `contactEmails` was provided. |
+| `contactEmails` | array | The list of email addresses to send the budget notification to when the thresholds are exceeded. Required if neither `contactRoles` nor `actionGroups` was provided. |
+| `contactRoles` | array | The list of contact roles to send the budget notification to when the thresholds are exceeded. Required if neither `contactEmails` nor `actionGroups` was provided. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
