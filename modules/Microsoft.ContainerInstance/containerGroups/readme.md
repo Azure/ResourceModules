@@ -17,7 +17,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.ContainerInstance/containerGroups` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups) |
+| `Microsoft.ContainerInstance/containerGroups` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-10-01/containerGroups) |
 
 ## Parameters
 
@@ -177,6 +177,7 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Parameters</h3>
