@@ -1,5 +1,5 @@
-@description('Optional. The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern.')
-param name string = ''
+@description('Required. The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern.')
+param name string
 
 @description('Conditional. The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
@@ -48,11 +48,11 @@ resource key 'Microsoft.Sql/managedInstances/keys@2022-02-01-preview' = {
   }
 }
 
-@description('The name of the deployed managed instance.')
+@description('The name of the deployed managed instance key.')
 output name string = key.name
 
-@description('The resource ID of the deployed managed instance.')
+@description('The resource ID of the deployed managed instance key.')
 output resourceId string = key.id
 
-@description('The resource group of the deployed managed instance.')
+@description('The resource group of the deployed managed instance key.')
 output resourceGroupName string = resourceGroup().name
