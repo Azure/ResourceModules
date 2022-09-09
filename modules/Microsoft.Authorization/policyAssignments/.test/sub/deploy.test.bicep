@@ -7,7 +7,7 @@ targetScope = 'subscription'
 @maxLength(80)
 param resourceGroupName string = 'ms.authorization.policyassignments-${serviceShort}-rg'
 
-@description('Optional. A short identifier for the kind of deployment .Should be kept short to not run into resource-name length-constraints')
+@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
 param serviceShort string = 'apasubdef'
 
 @description('Optional. The location to deploy resources to')
