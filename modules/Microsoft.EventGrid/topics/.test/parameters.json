@@ -20,7 +20,10 @@
         },
         "inboundIpRules": {
             "value": [
-                "40.74.28.0/23"
+                {
+                    "action": "Allow",
+                    "ipMask": "40.74.28.0/23"
+                }
             ]
         },
         "privateEndpoints": {
