@@ -174,10 +174,10 @@ module topic_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleA
 @description('The name of the event grid topic.')
 output name string = topic.name
 
-@description('The resource ID of the event grid.')
+@description('The resource ID of the event grid topic.')
 output resourceId string = topic.id
 
-@description('The name of the resource group the event grid was deployed into.')
+@description('The name of the resource group the event grid topic was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
