@@ -340,10 +340,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvsidef'
+  name: '${uniqueString(deployment().name)}-test-nvsicom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-nvsidef'
+    name: '<<namePrefix>>-nvsicom'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     deviceProperties: {
@@ -371,7 +371,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     }
     vpnSiteLinks: [
       {
-        name: '<<namePrefix>>-vSite-nvsidef'
+        name: '<<namePrefix>>-vSite-nvsicom'
         properties: {
           bgpProperties: {
             asn: 65010
@@ -417,7 +417,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-nvsidef"
+      "value": "<<namePrefix>>-nvsicom"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
@@ -459,7 +459,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     "vpnSiteLinks": {
       "value": [
         {
-          "name": "<<namePrefix>>-vSite-nvsidef",
+          "name": "<<namePrefix>>-vSite-nvsicom",
           "properties": {
             "bgpProperties": {
               "asn": 65010,
