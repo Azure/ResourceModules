@@ -51,10 +51,10 @@ param retentionPolicyStatus string = 'enabled'
 @description('Optional. The number of days to retain an untagged manifest after which it gets purged.')
 param retentionPolicyDays int = 15
 
-@description('Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access.')
+@description('Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. Note, requires the \'acrSku\' to be \'Premium\'.')
 param dataEndpointEnabled bool = false
 
-@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkRuleSetIpRules are not set.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkRuleSetIpRules are not set.  Note, requires the \'acrSku\' to be \'Premium\'.')
 @allowed([
   ''
   'Enabled'
@@ -76,10 +76,10 @@ param networkRuleBypassOptions string = 'AzureServices'
 @description('Optional. The default action of allow or deny when no other rules match.')
 param networkRuleSetDefaultAction string = 'Deny'
 
-@description('Optional. The IP ACL rules.')
+@description('Optional. The IP ACL rules. Note, requires the \'acrSku\' to be \'Premium\'.')
 param networkRuleSetIpRules array = []
 
-@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Note, requires the \'acrSku\' to be \'Premium\'.')
 param privateEndpoints array = []
 
 @allowed([
