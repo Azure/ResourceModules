@@ -1,5 +1,5 @@
-@description('Optional. The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern.')
-param name string = ''
+@description('Required. The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern.')
+param name string
 
 @description('Conditional. The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
@@ -35,11 +35,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
   name: managedInstanceName
 }
 
-resource key 'Microsoft.Sql/managedInstances/keys@2021-05-01-preview' = {
+resource key 'Microsoft.Sql/managedInstances/keys@2022-02-01-preview' = {
   name: !empty(name) ? name : serverKeyName
   parent: managedInstance
   properties: {
@@ -48,11 +48,11 @@ resource key 'Microsoft.Sql/managedInstances/keys@2021-05-01-preview' = {
   }
 }
 
-@description('The name of the deployed managed instance.')
+@description('The name of the deployed managed instance key.')
 output name string = key.name
 
-@description('The resource ID of the deployed managed instance.')
+@description('The resource ID of the deployed managed instance key.')
 output resourceId string = key.id
 
-@description('The resource group of the deployed managed instance.')
+@description('The resource group of the deployed managed instance key.')
 output resourceGroupName string = resourceGroup().name

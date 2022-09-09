@@ -346,6 +346,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Common</h3>
@@ -359,7 +360,117 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-crrdef'
   params: {
     // Required parameters
+<<<<<<< HEAD
     name: '<<namePrefix>>crrdef001'
+=======
+    name: '<<namePrefix>>azacrencr001'
+    // Non-required parameters
+    acrSku: 'Premium'
+    cMKKeyName: 'keyEncryptionKey'
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    publicNetworkAccess: 'Disabled'
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>azacrencr001"
+    },
+    // Non-required parameters
+    "acrSku": {
+      "value": "Premium"
+    },
+    "cMKKeyName": {
+      "value": "keyEncryptionKey"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Registries'
+  params: {
+    name: '<<namePrefix>>azacrmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>azacrmin001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-Registries'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>azacrx002'
+>>>>>>> main
     // Non-required parameters
     acrAdminUserEnabled: false
     acrSku: 'Premium'
@@ -421,7 +532,11 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
+<<<<<<< HEAD
       "value": "<<namePrefix>>crrdef001"
+=======
+      "value": "<<namePrefix>>azacrx002"
+>>>>>>> main
     },
     // Non-required parameters
     "acrAdminUserEnabled": {
