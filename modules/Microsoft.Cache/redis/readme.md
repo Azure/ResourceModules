@@ -344,10 +344,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module redis './Microsoft.Cache/redis/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crdef'
+  name: '${uniqueString(deployment().name)}-test-crcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>crdef001'
+    name: '<<namePrefix>>crcom001'
     // Non-required parameters
     capacity: 2
     diagnosticLogCategoriesToEnable: [
@@ -398,7 +398,7 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>crdef001"
+      "value": "<<namePrefix>>crcom001"
     },
     // Non-required parameters
     "capacity": {
