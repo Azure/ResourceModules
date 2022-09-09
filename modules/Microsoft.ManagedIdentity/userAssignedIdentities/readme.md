@@ -160,10 +160,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-miuaidef'
+  name: '${uniqueString(deployment().name)}-test-miuaicom'
   params: {
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>miuaidef001'
+    name: '<<namePrefix>>miuaicom001'
     roleAssignments: [
       {
         principalIds: [
@@ -192,7 +192,7 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>miuaidef001"
+      "value": "<<namePrefix>>miuaicom001"
     },
     "roleAssignments": {
       "value": [
