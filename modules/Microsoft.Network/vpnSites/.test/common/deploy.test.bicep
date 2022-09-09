@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.network.vpnSites-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'nvsidef'
+param serviceShort string = 'nvsicom'
 
 // =========== //
 // Deployments //
