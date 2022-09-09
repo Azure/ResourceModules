@@ -304,10 +304,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-accdef'
+  name: '${uniqueString(deployment().name)}-test-acccom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>accdef001'
+    name: '<<namePrefix>>acccom001'
     // Non-required parameters
     createMode: 'Default'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -361,7 +361,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>accdef001"
+      "value": "<<namePrefix>>acccom001"
     },
     // Non-required parameters
     "createMode": {
