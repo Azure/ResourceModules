@@ -380,10 +380,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafdef'
+  name: '${uniqueString(deployment().name)}-test-nafcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafdef001'
+    name: '<<namePrefix>>nafcom001'
     vNetId: '<vNetId>'
     // Non-required parameters
     applicationRuleCollections: [
@@ -505,7 +505,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafdef001"
+      "value": "<<namePrefix>>nafcom001"
     },
     "vNetId": {
       "value": "<vNetId>"
