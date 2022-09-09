@@ -275,10 +275,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvspdef'
+  name: '${uniqueString(deployment().name)}-test-dvspcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dvspdef001'
+    name: '<<namePrefix>>dvspcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -318,7 +318,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dvspdef001"
+      "value": "<<namePrefix>>dvspcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
