@@ -85,11 +85,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kcfcdef'
+  name: '${uniqueString(deployment().name)}-test-kcfccom'
   params: {
     // Required parameters
     clusterName: '<clusterName>'
-    name: '<<namePrefix>>kcfcdef001'
+    name: '<<namePrefix>>kcfccom001'
     namespace: 'flux-system'
     sourceKind: 'GitRepository'
     // Non-required parameters
@@ -133,7 +133,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
       "value": "<clusterName>"
     },
     "name": {
-      "value": "<<namePrefix>>kcfcdef001"
+      "value": "<<namePrefix>>kcfccom001"
     },
     "namespace": {
       "value": "flux-system"
