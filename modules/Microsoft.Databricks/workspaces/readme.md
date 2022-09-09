@@ -237,10 +237,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.Databricks/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dwdef'
+  name: '${uniqueString(deployment().name)}-test-dwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dwdef001'
+    name: '<<namePrefix>>dwcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -274,7 +274,7 @@ module workspaces './Microsoft.Databricks/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dwdef001"
+      "value": "<<namePrefix>>dwcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
