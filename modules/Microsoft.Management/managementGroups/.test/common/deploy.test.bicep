@@ -15,6 +15,6 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     displayName: 'Test MG'
-    parentId: split(managementGroup().name, '/')[-1]
+    parentId: split(managementGroup().id, '/')[-1]
   }
 }
