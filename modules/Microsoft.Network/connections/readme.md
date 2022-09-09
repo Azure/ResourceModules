@@ -321,7 +321,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Connections './Microsoft.Network/Connections/deploy.bicep' = {
+module connections './Microsoft.Network/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ncvtv'
   params: {
     // Required parameters
