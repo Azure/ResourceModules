@@ -163,10 +163,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nasgdef'
+  name: '${uniqueString(deployment().name)}-test-nasgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nasgdef001'
+    name: '<<namePrefix>>nasgcom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -195,7 +195,7 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nasgdef001"
+      "value": "<<namePrefix>>nasgcom001"
     },
     // Non-required parameters
     "lock": {
