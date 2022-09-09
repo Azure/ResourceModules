@@ -308,10 +308,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhdef'
+  name: '${uniqueString(deployment().name)}-test-nbhcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nbhdef001'
+    name: '<<namePrefix>>nbhcom001'
     vNetId: '<vNetId>'
     // Non-required parameters
     azureBastionSubnetPublicIpId: '<azureBastionSubnetPublicIpId>'
@@ -353,7 +353,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nbhdef001"
+      "value": "<<namePrefix>>nbhcom001"
     },
     "vNetId": {
       "value": "<vNetId>"
