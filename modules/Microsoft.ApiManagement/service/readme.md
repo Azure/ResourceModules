@@ -290,10 +290,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apisdef'
+  name: '${uniqueString(deployment().name)}-test-apiscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apisdef001'
+    name: '<<namePrefix>>apiscom001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     // Non-required parameters
@@ -348,7 +348,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apisdef001"
+      "value": "<<namePrefix>>apiscom001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
