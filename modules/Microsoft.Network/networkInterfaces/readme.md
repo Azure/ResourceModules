@@ -197,7 +197,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnidef'
+  name: '${uniqueString(deployment().name)}-test-nnicom'
   params: {
     // Required parameters
     ipConfigurations: [
@@ -224,7 +224,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    name: '<<namePrefix>>nnidef001'
+    name: '<<namePrefix>>nnicom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -284,7 +284,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nnidef001"
+      "value": "<<namePrefix>>nnicom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
