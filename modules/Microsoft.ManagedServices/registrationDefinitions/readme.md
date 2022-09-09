@@ -175,7 +175,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -183,7 +183,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
+  name: '${uniqueString(deployment().name)}-test-msrdcom'
   params: {
     // Required parameters
     authorizations: [
@@ -204,7 +204,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       }
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    name: 'Component Validation - Subscription assignment'
+    name: 'Component Validation - <<namePrefix>>msrdcom Subscription assignment'
     registrationDescription: 'Managed by Lighthouse'
   }
 }
@@ -246,7 +246,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
     },
     "name": {
-      "value": "Component Validation - Subscription assignment"
+      "value": "Component Validation - <<namePrefix>>msrdcom Subscription assignment"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
@@ -266,7 +266,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
+  name: '${uniqueString(deployment().name)}-test-msrdrg'
   params: {
     // Required parameters
     authorizations: [
@@ -287,10 +287,10 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       }
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    name: 'Component Validation - Resource group assignment'
+    name: 'Component Validation - <<namePrefix>>msrdrg Resource group assignment'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
-    resourceGroupName: 'validation-rg'
+    resourceGroupName: '<resourceGroupName>'
   }
 }
 ```
@@ -331,14 +331,14 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
     },
     "name": {
-      "value": "Component Validation - Resource group assignment"
+      "value": "Component Validation - <<namePrefix>>msrdrg Resource group assignment"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
     },
     // Non-required parameters
     "resourceGroupName": {
-      "value": "validation-rg"
+      "value": "<resourceGroupName>"
     }
   }
 }
