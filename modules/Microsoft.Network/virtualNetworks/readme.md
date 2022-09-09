@@ -366,13 +366,13 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvndef'
+  name: '${uniqueString(deployment().name)}-test-nvncom'
   params: {
     // Required parameters
     addressPrefixes: [
       '10.0.0.0/16'
     ]
-    name: '<<namePrefix>>nvndef001'
+    name: '<<namePrefix>>nvncom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -461,7 +461,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nvndef001"
+      "value": "<<namePrefix>>nvncom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
