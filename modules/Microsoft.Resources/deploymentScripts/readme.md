@@ -158,7 +158,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module DeploymentScripts './Microsoft.Resources/DeploymentScripts/deploy.bicep' = {
+module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rdscli'
   params: {
     // Required parameters
@@ -235,7 +235,7 @@ module DeploymentScripts './Microsoft.Resources/DeploymentScripts/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module DeploymentScripts './Microsoft.Resources/DeploymentScripts/deploy.bicep' = {
+module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rdsps'
   params: {
     // Required parameters
