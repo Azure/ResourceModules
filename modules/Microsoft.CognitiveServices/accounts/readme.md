@@ -430,11 +430,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csadef'
+  name: '${uniqueString(deployment().name)}-test-csacom'
   params: {
     // Required parameters
     kind: 'Face'
-    name: '<<namePrefix>>csadef001'
+    name: '<<namePrefix>>csacom001'
     // Non-required parameters
     customSubDomainName: '<<namePrefix>>xdomain'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -486,7 +486,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "Face"
     },
     "name": {
-      "value": "<<namePrefix>>csadef001"
+      "value": "<<namePrefix>>csacom001"
     },
     // Non-required parameters
     "customSubDomainName": {
