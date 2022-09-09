@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-sqlmi-x-002"
+            "value": "<<namePrefix>>-az-sqlmi-x-001"
         },
         "lock": {
             "value": "CanNotDelete"
