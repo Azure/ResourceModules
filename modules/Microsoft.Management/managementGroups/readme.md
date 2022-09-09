@@ -133,7 +133,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -141,13 +141,13 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ManagementGroups'
+  name: '${uniqueString(deployment().name)}-test-mmgcommon'
   params: {
     // Required parameters
-    name: 'testMG'
+    name: '<<namePrefix>>mmgcommon001'
     // Non-required parameters
     displayName: 'Test MG'
-    parentId: '<<managementGroupId>>'
+    parentId: '<parentId>'
   }
 }
 ```
@@ -166,14 +166,14 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
   "parameters": {
     // Required parameters
     "name": {
-      "value": "testMG"
+      "value": "<<namePrefix>>mmgcommon001"
     },
     // Non-required parameters
     "displayName": {
       "value": "Test MG"
     },
     "parentId": {
-      "value": "<<managementGroupId>>"
+      "value": "<parentId>"
     }
   }
 }
