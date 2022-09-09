@@ -12,9 +12,6 @@ param location string = resourceGroup().location
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
-param privateEndpoints array = []
-
 @description('Optional. Tier of your Azure container registry.')
 @allowed([
   'Basic'
@@ -57,7 +54,7 @@ param retentionPolicyDays int = 15
 @description('Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access.')
 param dataEndpointEnabled bool = false
 
-@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkRuleSetIpRules are not set.')
 @allowed([
   ''
   'Enabled'
@@ -65,7 +62,11 @@ param dataEndpointEnabled bool = false
 ])
 param publicNetworkAccess string = ''
 
-@description('Optional. Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None.')
+@allowed([
+  'AzureServices'
+  'None'
+])
+@description('Optional. Whether to allow trusted Azure services to access a network restricted registry.')
 param networkRuleBypassOptions string = 'AzureServices'
 
 @allowed([
@@ -77,6 +78,9 @@ param networkRuleSetDefaultAction string = 'Deny'
 
 @description('Optional. The IP ACL rules.')
 param networkRuleSetIpRules array = []
+
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
 
 @allowed([
   'Disabled'
@@ -245,7 +249,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
       } : null
     }
     dataEndpointEnabled: dataEndpointEnabled
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkRuleSetIpRules) ? 'Disabled' : null)
     networkRuleBypassOptions: networkRuleBypassOptions
     networkRuleSet: !empty(networkRuleSetIpRules) ? {
       defaultAction: networkRuleSetDefaultAction
