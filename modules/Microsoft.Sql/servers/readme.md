@@ -346,7 +346,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.SQL/servers/deploy.bicep' = {
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-sqlsadmin'
   params: {
     // Required parameters
@@ -403,11 +403,11 @@ module servers './Microsoft.SQL/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.SQL/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlsdef'
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-sqlscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqlsdef'
+    name: '<<namePrefix>>-sqlscom'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -421,7 +421,7 @@ module servers './Microsoft.SQL/servers/deploy.bicep' = {
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: '<<namePrefix>>-sqlsdefdb-001'
+        name: '<<namePrefix>>-sqlscomdb-001'
         skuCapacity: 12
         skuFamily: 'Gen5'
         skuName: 'BC_Gen5'
@@ -442,7 +442,7 @@ module servers './Microsoft.SQL/servers/deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net'
+            '<privateDNSResourceId>'
           ]
         }
         service: 'sqlServer'
@@ -472,7 +472,7 @@ module servers './Microsoft.SQL/servers/deploy.bicep' = {
       {
         ignoreMissingVnetServiceEndpoint: true
         name: 'newVnetRule1'
-        virtualNetworkSubnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+        virtualNetworkSubnetId: '<virtualNetworkSubnetId>'
       }
     ]
     vulnerabilityAssessmentsObj: {
@@ -503,7 +503,7 @@ module servers './Microsoft.SQL/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqlsdef"
+      "value": "<<namePrefix>>-sqlscom"
     },
     // Non-required parameters
     "administratorLogin": {
@@ -523,7 +523,7 @@ module servers './Microsoft.SQL/servers/deploy.bicep' = {
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "<<namePrefix>>-sqlsdefdb-001",
+          "name": "<<namePrefix>>-sqlscomdb-001",
           "skuCapacity": 12,
           "skuFamily": "Gen5",
           "skuName": "BC_Gen5",
@@ -554,7 +554,7 @@ module servers './Microsoft.SQL/servers/deploy.bicep' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"
+              "<privateDNSResourceId>"
             ]
           },
           "service": "sqlServer",
@@ -594,7 +594,7 @@ module servers './Microsoft.SQL/servers/deploy.bicep' = {
         {
           "ignoreMissingVnetServiceEndpoint": true,
           "name": "newVnetRule1",
-          "virtualNetworkSubnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+          "virtualNetworkSubnetId": "<virtualNetworkSubnetId>"
         }
       ]
     },
@@ -624,28 +624,23 @@ module servers './Microsoft.SQL/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','<<resourceGroupName>>')
-}
-
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Servers'
+  name: '${uniqueString(deployment().name)}-test-sqlspe'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-sqlsrv-pe-001'
+    name: '<<namePrefix>>-sqlspe'
     // Non-required parameters
     administratorLogin: 'adminUserName'
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
+    administratorLoginPassword: '<administratorLoginPassword>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net'
+            '<privateDNSResourceId>'
           ]
         }
         service: 'sqlServer'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
   }
@@ -666,30 +661,25 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-sqlsrv-pe-001"
+      "value": "<<namePrefix>>-sqlspe"
     },
     // Non-required parameters
     "administratorLogin": {
       "value": "adminUserName"
     },
     "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
+      "value": "<administratorLoginPassword>"
     },
     "privateEndpoints": {
       "value": [
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"
+              "<privateDNSResourceId>"
             ]
           },
           "service": "sqlServer",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     }

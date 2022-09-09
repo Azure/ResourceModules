@@ -123,6 +123,18 @@ module testDeployment '../../deploy.bicep' = {
       {
         subnetResourceId: resourceGroupResources.outputs.privateEndpointSubnetResourceId
         service: 'sqlServer'
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            resourceGroupResources.outputs.privateDNSResourceId
+          ]
+        }
+      }
+    ]
+    virtualNetworkRules: [
+      {
+        ignoreMissingVnetServiceEndpoint: true
+        name: 'newVnetRule1'
+        virtualNetworkSubnetId: resourceGroupResources.outputs.privateEndpointSubnetResourceId
       }
     ]
   }
