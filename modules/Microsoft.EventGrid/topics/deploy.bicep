@@ -12,7 +12,7 @@ param location string = resourceGroup().location
 ])
 param publicNetworkAccess string = ''
 
-@description('Optional. Array of IPs to whitelist.')
+@description('Optional. This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.')
 param inboundIpRules array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
