@@ -362,10 +362,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dffdef'
+  name: '${uniqueString(deployment().name)}-test-dffcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dffdef001'
+    name: '<<namePrefix>>dffcom001'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -440,7 +440,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dffdef001"
+      "value": "<<namePrefix>>dffcom001"
     },
     // Non-required parameters
     "cMKKeyName": {
