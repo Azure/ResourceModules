@@ -69,11 +69,6 @@ This module deploys a service bus namespace resource.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `zoneRedundant` | bool | `False` |  | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
 
-**Generated parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a SAS token to access the modules. |
-
 
 ### Parameter Usage: `roleAssignments`
 
@@ -347,6 +342,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Min</h3>

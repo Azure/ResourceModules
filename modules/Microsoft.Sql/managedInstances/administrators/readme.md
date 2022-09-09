@@ -40,9 +40,9 @@ This module deploys an administrator for the SQL managed instance
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed managed instance. |
-| `resourceGroupName` | string | The resource group of the deployed managed instance. |
-| `resourceId` | string | The resource ID of the deployed managed instance. |
+| `name` | string | The name of the deployed managed instance administrator. |
+| `resourceGroupName` | string | The resource group of the deployed managed instance administrator. |
+| `resourceId` | string | The resource ID of the deployed managed instance administrator. |
 
 ## Cross-referenced modules
 
