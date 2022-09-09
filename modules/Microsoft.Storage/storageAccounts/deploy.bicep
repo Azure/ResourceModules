@@ -116,9 +116,6 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
-param basetime string = utcNow('u')
-
 @description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set.')
 @allowed([
   ''
