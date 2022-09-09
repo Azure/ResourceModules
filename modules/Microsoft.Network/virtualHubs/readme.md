@@ -121,11 +121,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvhdef'
+  name: '${uniqueString(deployment().name)}-test-nvhcom'
   params: {
     // Required parameters
     addressPrefix: '10.1.0.0/16'
-    name: '<<namePrefix>>-nvhdef'
+    name: '<<namePrefix>>-nvhcom'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     hubRouteTables: [
@@ -139,12 +139,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
         remoteVirtualNetworkId: '<remoteVirtualNetworkId>'
         routingConfiguration: {
           associatedRouteTable: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhdef/hubRouteTables/routeTable1'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1'
           }
           propagatedRouteTables: {
             ids: [
               {
-                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhdef/hubRouteTables/routeTable1'
+                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1'
               }
             ]
             labels: [
@@ -176,7 +176,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       "value": "10.1.0.0/16"
     },
     "name": {
-      "value": "<<namePrefix>>-nvhdef"
+      "value": "<<namePrefix>>-nvhcom"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
@@ -196,12 +196,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
           "remoteVirtualNetworkId": "<remoteVirtualNetworkId>",
           "routingConfiguration": {
             "associatedRouteTable": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhdef/hubRouteTables/routeTable1"
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1"
             },
             "propagatedRouteTables": {
               "ids": [
                 {
-                  "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhdef/hubRouteTables/routeTable1"
+                  "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1"
                 }
               ],
               "labels": [
