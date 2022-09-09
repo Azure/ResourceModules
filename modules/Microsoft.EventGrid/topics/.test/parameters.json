@@ -18,6 +18,11 @@
                 }
             ]
         },
+        "inboundIpRules": {
+            "value": [
+                "40.74.28.0/23"
+            ]
+        },
         "privateEndpoints": {
             "value": [
                 {
