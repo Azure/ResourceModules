@@ -14,8 +14,8 @@ param type string
 @description('Optional. The name of the Managed Virtual Network if using type "Managed" .')
 param managedVirtualNetworkName string = ''
 
-@description('Required. Integration Runtime type properties.')
-param typeProperties object
+@description('Optional. Integration Runtime type properties. Required if type is "Managed".')
+param typeProperties object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -44,10 +44,12 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
 resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = {
   name: name
   parent: dataFactory
-  properties: {
+  properties: type == 'Managed' ? {
     type: any(type)
-    managedVirtualNetwork: type == 'Managed' ? managedVirtualNetwork_var : null
+    managedVirtualNetwork: managedVirtualNetwork_var
     typeProperties: typeProperties
+  } : {
+    type: any(type)
   }
 }
 
