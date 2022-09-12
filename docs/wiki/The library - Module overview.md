@@ -122,51 +122,6 @@ This section provides an overview of the library's feature set.
 | 107 | MS.Databricks<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 141 |
 | Sum | | 84 | 82 | 92 | 49 | 21 | 2 | 145 | 18014 |
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Legend
 
 | Term | Description |
