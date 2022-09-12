@@ -33,44 +33,30 @@ module resourceGroupResources 'dependencies.bicep' = {
   }
 }
 
-// Diagnostics
-// ===========
-// module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
-//   params: {
-//     storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-//     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-//     eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-//     eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
-//     location: location
-//   }
-// }
-
 // ============== //
 // Test Execution //
 // ============== //
 
-// module testDeployment '../../deploy.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-//   params: {
-//     // Required parameters
-//     name: '<<namePrefix>>${serviceShort}001'
-//     osAccountType: 'Premium_LRS'
-//     osDiskBlobUri: 'https://adp<<namePrefix>>azsavhd001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-vhd-001.vhd'
-//     osDiskCaching: 'ReadWrite'
-//     osType: 'Windows'
-//     // Non-required parameters
-//     hyperVGeneration: 'V1'
-//     roleAssignments: [
-//       {
-//         principalIds: [
-//           resourceGroupResources.outputs.managedIdentityPrincipalId
-//         ]
-//         roleDefinitionIdOrName: 'Reader'
-//       }
-//     ]
-//     zoneResilient: true
-//   }
-// }
+module testDeployment '../../deploy.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>${serviceShort}001'
+    osAccountType: 'Premium_LRS'
+    osDiskBlobUri: 'https://adp<<namePrefix>>azsavhd001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-vhd-001.vhd'
+    osDiskCaching: 'ReadWrite'
+    osType: 'Windows'
+    // Non-required parameters
+    hyperVGeneration: 'V1'
+    roleAssignments: [
+      {
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    zoneResilient: true
+  }
+}
