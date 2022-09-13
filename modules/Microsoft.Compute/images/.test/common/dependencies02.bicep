@@ -1,10 +1,10 @@
 @description('Optional. The location to deploy to.')
 param location string = resourceGroup().location
 
-@description('Required. The resource ID of the Managed Identity.')
+@description('Required. The resource ID of the Managed Identity to assign.')
 param managedIdentityResourceId string
 
-@description('Required. The name of the image template.')
+@description('Required. The name prefix of the Image Template to create.')
 param imageTemplateNamePrefix string
 
 @description('Generated. Do not provide a value! This date value is used to generate a unique image template name.')
@@ -16,7 +16,7 @@ param triggerImageDeploymentScriptName string
 @description('Required. The name of the Deployment Script to copy the VHD to a destination storage account.')
 param copyVhdDeploymentScriptName string
 
-@description('Required. The name of the destination storage account.')
+@description('Required. The name of the destination Storage Account to copy the created VHD to.')
 param destinationStorageAccountName string
 
 // Deploy image template
@@ -95,8 +95,6 @@ resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-
     arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\" -DestinationStorageAccountName \\"${destinationStorageAccountName}\\" -VhdName \\"${imageTemplateNamePrefix}\\" -WaitForComplete'
     scriptContent: loadTextContent('../.scripts/Copy-VhdToStorageAccount.ps1')
     cleanupPreference: 'OnSuccess'
-    // runOnce: false
-    // timeout: 'PT30M'
   }
   dependsOn: [ triggerImageDeploymentScript ]
 }
