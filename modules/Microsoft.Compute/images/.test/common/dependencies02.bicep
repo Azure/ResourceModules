@@ -51,51 +51,23 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
   }
 }
 
-// name: '${name}-${baseTime}'
-// location: location
-// tags: tags
-// identity: {
-// type: 'UserAssigned'
-// userAssignedIdentities: {
-// '${az.resourceId(userMsiResourceGroup, 'Microsoft.ManagedIdentity/userAssignedIdentities', userMsiName)}': {}
-// }
-// }
-//
-// properties: {
-// buildTimeoutInMinutes: buildTimeoutInMinutes
-// vmProfile: {
-// vmSize: vmSize
-// osDiskSizeGB: osDiskSizeGB
-// vnetConfig: !empty(subnetId) ? vnetConfig : null
-// }
-// source: imageSource
-// customize: customizationSteps
-// distribute: distribute
-// }
-// customization: [
-//       {
-//         restartTimeout: '30m'
-//         type: 'WindowsRestart'
-//       }
-//     ]
-
-// resource triggerImageDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-//   name: triggerImageDeploymentScriptName
-//   location: location
-//   kind: 'AzurePowerShell'
-//   identity: {
-//     type: 'UserAssigned'
-//     userAssignedIdentities: {
-//       '${managedIdentityResourceId}': {}
-//     }
-//   }
-//   properties: {
-//     azPowerShellVersion: '6.2.1'
-//     retentionInterval: 'P1D'
-//     arguments: '-ImageTemplateName \\"${imageTemplate.outputs.name}\\" -ImageTemplateResourceGroup \\"${imageTemplate.outputs.resourceGroupName}\\"'
-//     scriptContent: loadTextContent('../.scripts/Start-ImageTemplate.ps1')
-//   }
-// }
+resource triggerImageDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+  name: triggerImageDeploymentScriptName
+  location: location
+  kind: 'AzurePowerShell'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentityResourceId}': {}
+    }
+  }
+  properties: {
+    azPowerShellVersion: '6.2.1'
+    retentionInterval: 'P1D'
+    arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\"'
+    scriptContent: loadTextContent('../.scripts/Start-ImageTemplate.ps1')
+  }
+}
 
 // // Trigger VHD creation
 // module triggerImageDeploymentScript '../../../../../modules/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
