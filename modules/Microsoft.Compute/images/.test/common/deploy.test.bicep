@@ -67,6 +67,9 @@ module resourceGroupResources02 'dependencies02.bicep' = {
     copyVhdDeploymentScriptName: copyVhdDeploymentScriptName
     destinationStorageAccountName: destinationStorageAccountName
   }
+  dependsOn: [
+    roleAssignment
+  ]
 }
 
 // ============== //
