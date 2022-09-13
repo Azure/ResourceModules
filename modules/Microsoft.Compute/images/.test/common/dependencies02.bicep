@@ -38,7 +38,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
     distribute: [
       {
         type: 'VHD'
-        runOutputName: '${imageTemplateName}-VHD'
+        runOutputName: '${imageTemplateNamePrefix}-VHD'
         artifactTags: {}
       }
     ]

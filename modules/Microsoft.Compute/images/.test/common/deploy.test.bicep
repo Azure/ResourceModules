@@ -47,7 +47,7 @@ module resourceGroupResources02 'dependencies02.bicep' = {
   params: {
     managedIdentityResourceId: resourceGroupResources01.outputs.managedIdentityResourceId
     triggerImageDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
-    imageTemplateName: 'dep-<<namePrefix>>-imgt-${serviceShort}'
+    imageTemplateNamePrefix: 'dep-<<namePrefix>>-imgt-${serviceShort}'
   }
 }
 
