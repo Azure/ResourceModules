@@ -24,9 +24,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module resourceGroupResources01 'dependencies01.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-paramNested01'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
@@ -37,7 +37,17 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(deployment().name, location, serviceShort)
   properties: {
     roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
-    principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
+    principalId: resourceGroupResources01.outputs.managedIdentityPrincipalId
+  }
+}
+
+module resourceGroupResources02 'dependencies02.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-paramNested02'
+  params: {
+    managedIdentityResourceId: resourceGroupResources01.outputs.managedIdentityResourceId
+    triggerImageDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
+    imageTemplateName: 'dep-<<namePrefix>>-imgt-${serviceShort}'
   }
 }
 
@@ -60,7 +70,7 @@ module testDeployment '../../deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          resourceGroupResources01.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
       }
