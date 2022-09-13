@@ -12,7 +12,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: storageAccountName
   location: location
   kind: 'StorageV2'
@@ -22,7 +22,29 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   properties: {
     allowBlobPublicAccess: false
   }
+  resource blobServices 'blobServices@2021-09-01' = {
+    name: 'default'
+    resource container 'containers@2021-09-01' = {
+      name: 'vhds'
+      properties: {
+        publicAccess: 'None'
+      }
+    }
+  }
 }
+
+// resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-09-01' = {
+//   name: 'default'
+//   parent: storageAccount
+// }
+
+// resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-09-01' = {
+//   name: 'vhds'
+//   parent: blobServices
+//   properties: {
+//     publicAccess: 'None'
+//   }
+// }
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
