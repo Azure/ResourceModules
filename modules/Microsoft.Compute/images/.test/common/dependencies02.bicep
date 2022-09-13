@@ -32,7 +32,13 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
       sku: '19h2-evd'
       version: 'latest'
     }
-    distribute: []
+    distribute: [
+      {
+        type: 'VHD'
+        runOutputName: '${imageTemplateName}-VHD'
+        artifactTags: {}
+      }
+    ]
     customize: [
       {
         restartTimeout: '30m'
