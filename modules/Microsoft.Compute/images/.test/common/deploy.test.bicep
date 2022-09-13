@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for a testing purposes')
 @maxLength(90)
 param resourceGroupName string = 'ms.compute.images-${serviceShort}-rg'
@@ -15,12 +16,18 @@ param serviceShort string = 'imgcom'
 
 // TODO: discuss the following challenge: roleassignment must be a globally unique identifier (GUID). The GUID is normally generated with role + scope + identity.
 // Identity in this case is the MSI deployed in the resourceGroupResources01 module. We cannot get that as output since the resource name requires a value that can be calculated at the start of the deployment.
-// Also the name won't work since it's generated using servicesShort
+// Using the msi name as a workaround. Creating var in order not to duplicate its value (roleAssignment guid + input for resourceGroupResources01 module).
+// Same for destinationStorageAccountName. Creating other vars for consistency.
 
 // ========= //
 // Variables //
 // ========= //
+
 var managedIdentityName = 'dep-<<namePrefix>>-msi-${serviceShort}'
+var destinationStorageAccountName = 'dep<<namePrefix>>sa${serviceShort}01'
+var imageTemplateNamePrefix = 'dep-<<namePrefix>>-imgt-${serviceShort}'
+var triggerImageDeploymentScriptName = 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
+var copyVhdDeploymentScriptName = 'dep-<<namePrefix>>-ds-${serviceShort}-copyVhdToStorage'
 
 // =========== //
 // Deployments //
@@ -38,7 +45,7 @@ module resourceGroupResources01 'dependencies01.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested01'
   params: {
     managedIdentityName: managedIdentityName
-    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
+    storageAccountName: destinationStorageAccountName
   }
 }
 
@@ -55,8 +62,10 @@ module resourceGroupResources02 'dependencies02.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested02'
   params: {
     managedIdentityResourceId: resourceGroupResources01.outputs.managedIdentityResourceId
-    triggerImageDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
-    imageTemplateNamePrefix: 'dep-<<namePrefix>>-imgt-${serviceShort}'
+    imageTemplateNamePrefix: imageTemplateNamePrefix
+    triggerImageDeploymentScriptName: triggerImageDeploymentScriptName
+    copyVhdDeploymentScriptName: copyVhdDeploymentScriptName
+    destinationStorageAccountName: destinationStorageAccountName
   }
 }
 
@@ -71,7 +80,7 @@ module testDeployment '../../deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>${serviceShort}001'
     osAccountType: 'Premium_LRS'
-    osDiskBlobUri: 'https://adp<<namePrefix>>azsavhd001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-vhd-001.vhd'
+    osDiskBlobUri: resourceGroupResources02.outputs.vhdUri
     osDiskCaching: 'ReadWrite'
     osType: 'Windows'
     // Non-required parameters
