@@ -5,13 +5,16 @@ param location string = resourceGroup().location
 param managedIdentityResourceId string
 
 @description('Required. The name of the image template.')
-param imageTemplateName string
+param imageTemplateNamePrefix string
+
+@description('Generated. Do not provide a value! This date value is used to generate a unique image template name.')
+param baseTime string = utcNow('yyyy-MM-dd-HH-mm-ss')
 
 @description('Required. The name of the Deployment Script to create for triggering the image creation.')
 param triggerImageDeploymentScriptName string
 
 resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14' = {
-  name: imageTemplateName
+  name: '${imageTemplateNamePrefix}-${baseTime}'
   location: location
   identity: {
     type: 'UserAssigned'
