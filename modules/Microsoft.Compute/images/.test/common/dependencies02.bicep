@@ -16,7 +16,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      managedIdentityResourceId: {}
+      '${managedIdentityResourceId}': {}
     }
   }
   properties: {
