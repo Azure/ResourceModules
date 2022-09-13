@@ -13,6 +13,15 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
 param serviceShort string = 'imgcom'
 
+// TODO: discuss the following challenge: roleassignment must be a globally unique identifier (GUID). The GUID is normally generated with role + scope + identity.
+// Identity in this case is the MSI deployed in the resourceGroupResources01 module. We cannot get that as output since the resource name requires a value that can be calculated at the start of the deployment.
+// Also the name won't work since it's generated using servicesShort
+
+// ========= //
+// Variables //
+// ========= //
+var managedIdentityName = 'dep-<<namePrefix>>-msi-${serviceShort}'
+
 // =========== //
 // Deployments //
 // =========== //
@@ -28,13 +37,13 @@ module resourceGroupResources01 'dependencies01.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested01'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    managedIdentityName: managedIdentityName
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
   }
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(subscription().subscriptionId, 'Contributor', 'dep-<<namePrefix>>-msi-imgcom')
+  name: guid(subscription().subscriptionId, 'Contributor', managedIdentityName)
   properties: {
     roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
     principalId: resourceGroupResources01.outputs.managedIdentityPrincipalId
