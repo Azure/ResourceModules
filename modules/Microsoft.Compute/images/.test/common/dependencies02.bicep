@@ -33,7 +33,12 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
       version: 'latest'
     }
     distribute: []
-    customize: []
+    customize: [
+      {
+        restartTimeout: '30m'
+        type: 'WindowsRestart'
+      }
+    ]
   }
 }
 
