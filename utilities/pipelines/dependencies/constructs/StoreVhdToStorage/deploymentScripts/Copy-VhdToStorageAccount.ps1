@@ -81,7 +81,7 @@ begin {
 process {
     # Retrieving and initializing parameters before the blob copy
     Write-Verbose 'Initializing source storage account parameters before the blob copy' -Verbose
-    $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
+    $imgtRunOutput = Get-AzImageBuilderTemplateRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
     $sourceUri = $imgtRunOutput.ArtifactUri
     $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
     $storageAccountList = Get-AzStorageAccount
