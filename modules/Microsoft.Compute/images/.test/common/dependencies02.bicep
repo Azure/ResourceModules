@@ -70,11 +70,12 @@ resource triggerImageDeploymentScript 'Microsoft.Resources/deploymentScripts@202
     }
   }
   properties: {
-    azPowerShellVersion: '6.4'
+    azPowerShellVersion: '8.0'
     retentionInterval: 'P1D'
     arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\"'
     scriptContent: loadTextContent('../.scripts/Start-ImageTemplate.ps1')
     cleanupPreference: 'OnSuccess'
+    forceUpdateTag: baseTime
   }
 }
 
@@ -90,11 +91,12 @@ resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-
     }
   }
   properties: {
-    azPowerShellVersion: '6.4'
+    azPowerShellVersion: '8.0'
     retentionInterval: 'P1D'
     arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\" -DestinationStorageAccountName \\"${destinationStorageAccountName}\\" -VhdName \\"${imageTemplateNamePrefix}\\" -WaitForComplete'
     scriptContent: loadTextContent('../.scripts/Copy-VhdToStorageAccount.ps1')
     cleanupPreference: 'OnSuccess'
+    forceUpdateTag: baseTime
   }
   dependsOn: [ triggerImageDeploymentScript ]
 }

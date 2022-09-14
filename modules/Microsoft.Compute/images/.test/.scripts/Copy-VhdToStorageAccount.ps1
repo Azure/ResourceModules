@@ -81,6 +81,8 @@ begin {
 process {
     # Retrieving and initializing parameters before the blob copy
     Write-Verbose 'Initializing source storage account parameters before the blob copy' -Verbose
+    Write-Verbose ('Retrieving source storage account from image template [{0}] in resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose
+    Get-InstalledModule
     $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
     $sourceUri = $imgtRunOutput.ArtifactUri
     $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
@@ -111,7 +113,7 @@ process {
         Write-Verbose ('Copied/initialized copy of VHD from URI [{0}] to container [{1}] in storage account [{2}]' -f $sourceUri, $destinationContainerName, $destinationStorageAccountName) -Verbose
     }
 
-    if ($WaitForComplete){
+    if ($WaitForComplete) {
         $destBlob | Get-AzStorageBlobCopyState -WaitForComplete
     }
 }
