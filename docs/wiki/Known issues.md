@@ -18,6 +18,7 @@ This section provides an overview of the most impactful limitations and known is
   - [Deployment validation](#deployment-validation)
     - [Limited module test file set](#limited-module-test-file-set)
   - [Publishing](#publishing)
+  - [Dependencies pipeline](#dependencies-pipeline)
 
 ---
 
@@ -98,5 +99,15 @@ The first planned step for each module is to provide a 'minimum-set' module test
 ## Publishing
 
 This section outlines known issues that currently affect the CI environment publishing step.
+
+## Dependencies pipeline
+
+The dependencies pipeline currently fails on the Disk Encryption Set resource creation when deployed more than once.
+
+In the majority of cases you will only need to run the dependencies pipeline just once, as a prerequisite before using the module pipelines. It is then possible you will not experience this problem.
+
+> **Workaround**: In case you need to rerun the dependencies pipeline on top of existing resources created by the first run, please delete the Disk Encription Set resource before the rerun.
+
+Further details are tracked in issue [#1727](https://github.com/Azure/ResourceModules/issues/1727).
 
 ---
