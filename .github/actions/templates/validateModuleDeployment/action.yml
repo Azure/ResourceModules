@@ -224,6 +224,10 @@ runs:
             Write-Verbose 'Using template test file [${{ inputs.templateFilePath }}]' -Verbose
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f ($moduleTestFilePath | Split-Path | Split-Path | Split-Path))
+          } elseif(if ('${{ inputs.templateFilePath }}' -like '*.dependencies*') {
+            Write-Verbose 'Using template file [${{ inputs.templateFilePath }}]' -Verbose
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
           } else {
             Write-Verbose 'Using parameter test file [${{ inputs.parameterFilePath }}]' -Verbose
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
@@ -293,6 +297,10 @@ runs:
           if ('${{ inputs.templateFilePath }}' -like '*.test*') {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f ($moduleTestFilePath | Split-Path | Split-Path | Split-Path))
+          } elseif(if ('${{ inputs.templateFilePath }}' -like '*.dependencies*') {
+            Write-Verbose 'Using template file [${{ inputs.templateFilePath }}]' -Verbose
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
           } else {
             $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
             $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
