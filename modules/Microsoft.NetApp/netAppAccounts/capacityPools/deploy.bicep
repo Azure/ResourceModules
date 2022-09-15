@@ -55,11 +55,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-03-01' existing = {
+resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-01-01' existing = {
   name: netAppAccountName
 }
 
-resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2022-03-01' = {
+resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2022-01-01' = {
   name: name
   parent: netAppAccount
   location: location
