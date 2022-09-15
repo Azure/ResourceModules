@@ -79,7 +79,7 @@ The module has a dependency on pre-existing Virtual Network Gateways which we do
 
 ## Microsoft.Synapse/workspaces
 
-The the change from Bicep version `v0.10.13` to `v0.10.61` introduced an new validation that causes a `scope` statement in the module to fail. This issue is tracked in the Bicep issue [8403](https://github.com/Azure/bicep/issues/8403). A new Bicep version will either resolve the issue, or, the update will be updated accordingly.
+The change from Bicep version `v0.10.13` to `v0.10.61` introduced a new validation that causes a `scope` statement in the module to fail. This issue is tracked in the Bicep issue [8403](https://github.com/Azure/bicep/issues/8403). A new Bicep version will either resolve the issue, or, the module will be updated accordingly.
 
 ---
 
