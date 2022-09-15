@@ -425,7 +425,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-NetAppAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-anf-nfs41-001'
+    name: '<<namePrefix>>-az-anf-nfs41-002'
     // Non-required parameters
     capacityPools: [
       {
@@ -478,7 +478,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: 'anf4-vol02-nfsv41'
+            name: 'anf4-vol01-nfsv41'
             protocolTypes: [
               'NFSv4.1'
             ]
@@ -536,7 +536,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-anf-nfs41-001"
+      "value": "<<namePrefix>>-az-anf-nfs41-002"
     },
     // Non-required parameters
     "capacityPools": {
@@ -591,7 +591,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "anf4-vol02-nfsv41",
+              "name": "anf4-vol01-nfsv41",
               "protocolTypes": [
                 "NFSv4.1"
               ],

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-anf-nfs41-001"
+            "value": "<<namePrefix>>-az-anf-nfs41-002"
         },
         "capacityPools": {
             "value": [
@@ -39,7 +39,7 @@
                             ]
                         },
                         {
-                            "name": "anf4-vol02-nfsv41",
+                            "name": "anf4-vol01-nfsv41",
                             "usageThreshold": 107374182400,
                             "protocolTypes": [
                                 "NFSv4.1"
