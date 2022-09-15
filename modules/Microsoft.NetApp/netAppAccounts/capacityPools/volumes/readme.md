@@ -14,7 +14,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes) |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-03-01/netAppAccounts/capacityPools/volumes) |
 
 ## Parameters
 
