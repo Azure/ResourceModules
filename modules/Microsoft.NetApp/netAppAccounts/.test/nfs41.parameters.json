@@ -13,7 +13,7 @@
                     "size": 4398046511104,
                     "volumes": [
                         {
-                            "name": "anf4-vol01-nfsv41",
+                            "name": "anf4-vol02-nfsv41",
                             "usageThreshold": 107374182400,
                             "protocolTypes": [
                                 "NFSv4.1"
