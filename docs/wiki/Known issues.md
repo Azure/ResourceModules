@@ -13,6 +13,7 @@ This section provides an overview of the most impactful limitations and known is
   - [Microsoft.Network/virtualHubs](#microsoftnetworkvirtualhubs)
   - [Microsoft.Network/vpnSites](#microsoftnetworkvpnsites)
   - [Microsoft.Network/connections](#microsoftnetworkconnections)
+  - [Microsoft.Synapse/workspaces](#microsoftsynapseworkspaces)
 - [CI environment specific](#ci-environment-specific)
   - [Static validation](#static-validation)
   - [Deployment validation](#deployment-validation)
@@ -75,6 +76,10 @@ The module has a dependency on a pre-existing Virtual WAN which we don't have de
 ## Microsoft.Network/connections
 
 The module has a dependency on pre-existing Virtual Network Gateways which we don't have deployed using the dependencies pipeline for cost reasons.
+
+## Microsoft.Synapse/workspaces
+
+The change from Bicep version `v0.10.13` to `v0.10.61` introduced a new validation that causes a `scope` statement in the module to fail. This issue is tracked in the Bicep issue [8403](https://github.com/Azure/bicep/issues/8403). A new Bicep version will either resolve the issue, or, the module will be updated accordingly.
 
 ---
 
