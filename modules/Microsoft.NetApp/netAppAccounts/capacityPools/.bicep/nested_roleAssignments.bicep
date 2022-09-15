@@ -49,7 +49,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2021-04-01' existing = {
+resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2022-03-01' existing = {
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 
