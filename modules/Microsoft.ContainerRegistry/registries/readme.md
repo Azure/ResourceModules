@@ -69,6 +69,9 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `trustPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the trust policy is enabled or not. |
+| `azureADAuthenticationAsArmPolicyStatus` | string | `'enabled'` | `[disabled, enabled]` | The value that indicates whether the Azure AD authentication as ARM policy is enabled or not. |
+| `softDeletePolicyStatus` | string | `'enabled'` | `[disabled, enabled]` | Optional. Soft Delete policy status. |
+| `softDeletePolicyDays` | int | `7` |  | Optional. The number of days after which a soft-deleted item is permanently deleted. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `webhooks` | _[webhooks](webhooks/readme.md)_ array | `[]` |  | All webhooks to create. |
 | `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry. |
