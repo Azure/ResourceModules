@@ -23,8 +23,8 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. Backend address pool of the frontdoor resource.')
-param backendPools array = []
+@description('Required. Backend address pool of the frontdoor resource.')
+param backendPools array
 
 @description('Optional. Enforce certificate name check of the frontdoor resource.')
 param enforceCertificateNameCheck string = 'Disabled'

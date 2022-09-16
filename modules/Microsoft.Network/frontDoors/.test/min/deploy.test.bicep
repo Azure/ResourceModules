@@ -47,8 +47,6 @@ module testDeployment '../../deploy.bicep' = {
       {
         name: 'heathProbe'
         properties: {
-          // enabledState: ''
-          // healthProbeMethod: ''
           intervalInSeconds: 60
           path: '/'
           protocol: 'Https'
@@ -86,6 +84,30 @@ module testDeployment '../../deploy.bicep' = {
             backendPool: {
               id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool'
             }
+          }
+        }
+      }
+    ]
+    backendPools: [
+      {
+        name: 'backendPool'
+        properties: {
+          backends: [
+            {
+              address: 'biceptest.local'
+              backendHostHeader: 'backendAddress'
+              enabledState: 'Enabled'
+              httpPort: 80
+              httpsPort: 443
+              priority: 1
+              weight: 50
+            }
+          ]
+          HealthProbeSettings: {
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe'
+          }
+          LoadBalancingSettings: {
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer'
           }
         }
       }
