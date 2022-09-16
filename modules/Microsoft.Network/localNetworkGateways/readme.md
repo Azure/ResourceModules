@@ -161,7 +161,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -169,14 +169,14 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-LocalNetworkGateways'
+  name: '${uniqueString(deployment().name)}-test-nlngcom'
   params: {
     // Required parameters
     localAddressPrefixes: [
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
-    name: '<<namePrefix>>-az-lng-x-001'
+    name: '<<namePrefix>>nlngcom001'
     // Non-required parameters
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
@@ -184,7 +184,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -215,7 +215,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
       "value": "8.8.8.8"
     },
     "name": {
-      "value": "<<namePrefix>>-az-lng-x-001"
+      "value": "<<namePrefix>>nlngcom001"
     },
     // Non-required parameters
     "localAsn": {
@@ -231,11 +231,62 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nlngmin'
+  params: {
+    // Required parameters
+    localAddressPrefixes: [
+      '192.168.1.0/24'
+    ]
+    localGatewayPublicIpAddress: '8.8.8.8'
+    name: '<<namePrefix>>nlngmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "localAddressPrefixes": {
+      "value": [
+        "192.168.1.0/24"
+      ]
+    },
+    "localGatewayPublicIpAddress": {
+      "value": "8.8.8.8"
+    },
+    "name": {
+      "value": "<<namePrefix>>nlngmin001"
     }
   }
 }
