@@ -59,5 +59,5 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
-@description('The resource ID of the created Virtual Network Subnet.')
+@description('The resource ID of the created Private DNS Zone.')
 output privateDNSResourceId string = privateDNSZone.id
