@@ -108,7 +108,7 @@ GitHub workflows used to validate CARML modules are running on GitHub-hosted run
 
 In such a scenario, as documented in the [Usage limits for GitHub Actions workflows](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits), if a job reaches a limit of 6 hours of execution time, the job is terminated and fails to complete.
 
-Modules validating resources which take more than 6 hours to be deployed incur in this limitation. In that case, the corresponding deployment validation job gets terminated before completion, causing the entire module validation pipeline to fail. This is currently the case for the **Microsoft.Sql\managedInstances** module.
+For modules that can take more than 6 hours to deploy, this restriction applies. In these cases, the corresponding deployment validation job may be terminated before completion, causing the entire module validation pipeline to fail. One module where this can happen is the **Microsoft.Sql\managedInstances** module.
 
 ## Publishing
 
