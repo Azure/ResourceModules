@@ -398,10 +398,12 @@ nicConfigurations: [
   }
 },
 "extensionDomainJoinPassword": {
-  "keyVault": {
-    "id": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.KeyVault/vaults/wvd-to-kvlt"
-  },
-  "secretName": "domainJoinUser02-Password"
+  "reference": {
+    "keyVault": {
+      "id": "/subscriptions/<<subscriptionId>/resourceGroups/myRG/providers/Microsoft.KeyVault/vaults/myKvlt"
+    },
+    "secretName": "domainJoinUser02-Password"
+  }
 }
 ```
 
