@@ -172,7 +172,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -180,10 +180,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-FrontDoors'
+  name: '${uniqueString(deployment().name)}-test-nfdcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-fd-x-001'
+    name: '<name>'
     // Non-required parameters
     backendPools: [
       {
@@ -205,10 +205,10 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             }
           ]
           HealthProbeSettings: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe'
           }
           LoadBalancingSettings: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer'
           }
         }
       }
@@ -218,7 +218,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       {
         name: 'frontEnd'
         properties: {
-          hostName: '<<namePrefix>>-az-fd-x-001.azurefd.net'
+          hostName: '${resourceName}.azurefd.net'
           sessionAffinityEnabledState: 'Disabled'
           sessionAffinityTtlSeconds: 60
         }
@@ -258,7 +258,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           enabledState: 'Enabled'
           frontendEndpoints: [
             {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd'
+              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd'
             }
           ]
           patternsToMatch: [
@@ -267,7 +267,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           routeConfiguration: {
             '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
             backendPool: {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool'
+              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool'
             }
             forwardingProtocol: 'MatchRequest'
           }
@@ -293,7 +293,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-fd-x-001"
+      "value": "<name>"
     },
     // Non-required parameters
     "backendPools": {
@@ -317,10 +317,10 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
               }
             ],
             "HealthProbeSettings": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe"
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe"
             },
             "LoadBalancingSettings": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer"
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer"
             }
           }
         }
@@ -334,7 +334,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
         {
           "name": "frontEnd",
           "properties": {
-            "hostName": "<<namePrefix>>-az-fd-x-001.azurefd.net",
+            "hostName": "${resourceName}.azurefd.net",
             "sessionAffinityEnabledState": "Disabled",
             "sessionAffinityTtlSeconds": 60
           }
@@ -382,7 +382,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             "enabledState": "Enabled",
             "frontendEndpoints": [
               {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd"
+                "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd"
               }
             ],
             "patternsToMatch": [
@@ -391,7 +391,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             "routeConfiguration": {
               "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
               "backendPool": {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool"
+                "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool"
               },
               "forwardingProtocol": "MatchRequest"
             }
@@ -401,6 +401,43 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
     },
     "sendRecvTimeoutSeconds": {
       "value": 10
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nfdmin'
+  params: {
+    name: '<<namePrefix>>nfdmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>nfdmin001"
     }
   }
 }
