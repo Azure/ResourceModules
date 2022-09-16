@@ -38,17 +38,17 @@ param enabledState string = 'Enabled'
 @description('Optional. Friendly name of the frontdoor resource.')
 param friendlyName string = ''
 
-@description('Optional. Frontend endpoints of the frontdoor resource.')
-param frontendEndpoints array = []
+@description('Required. Frontend endpoints of the frontdoor resource.')
+param frontendEndpoints array
 
-@description('Optional. Heath probe settings of the frontdoor resource.')
-param healthProbeSettings array = []
+@description('Required. Heath probe settings of the frontdoor resource.')
+param healthProbeSettings array
 
-@description('Optional. Load balancing settings of the frontdoor resource.')
-param loadBalancingSettings array = []
+@description('Required. Load balancing settings of the frontdoor resource.')
+param loadBalancingSettings array
 
-@description('Optional. Routing rules settings of the frontdoor resource.')
-param routingRules array = []
+@description('Required. Routing rules settings of the frontdoor resource.')
+param routingRules array
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)

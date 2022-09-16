@@ -27,11 +27,68 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 // ============== //
 // Test Execution //
 // ============== //
-
+var resourceName = '<<namePrefix>>${serviceShort}001'
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    name: resourceName
+    frontendEndpoints: [
+      {
+        name: 'frontEnd'
+        properties: {
+          hostName: '${resourceName}.azurefd.net'
+          sessionAffinityEnabledState: 'Disabled'
+          sessionAffinityTtlSeconds: 60
+        }
+      }
+    ]
+    healthProbeSettings: [
+      {
+        name: 'heathProbe'
+        properties: {
+          // enabledState: ''
+          // healthProbeMethod: ''
+          intervalInSeconds: 60
+          path: '/'
+          protocol: 'Https'
+        }
+      }
+    ]
+    loadBalancingSettings: [
+      {
+        name: 'loadBalancer'
+        properties: {
+          additionalLatencyMilliseconds: 0
+          sampleSize: 50
+          successfulSamplesRequired: 1
+        }
+      }
+    ]
+    routingRules: [
+      {
+        name: 'routingRule'
+        properties: {
+          acceptedProtocols: [
+            'Https'
+          ]
+          enabledState: 'Enabled'
+          frontendEndpoints: [
+            {
+              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd'
+            }
+          ]
+          patternsToMatch: [
+            '/*'
+          ]
+          routeConfiguration: {
+            '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
+            backendPool: {
+              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool'
+            }
+          }
+        }
+      }
+    ]
   }
 }
