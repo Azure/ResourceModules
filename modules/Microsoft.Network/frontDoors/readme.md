@@ -25,6 +25,7 @@ This module deploys Front Doors.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `backendPools` | array | Backend address pool of the frontdoor resource. |
 | `frontendEndpoints` | array | Frontend endpoints of the frontdoor resource. |
 | `healthProbeSettings` | array | Heath probe settings of the frontdoor resource. |
 | `loadBalancingSettings` | array | Load balancing settings of the frontdoor resource. |
@@ -34,7 +35,6 @@ This module deploys Front Doors.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backendPools` | array | `[]` |  | Backend address pool of the frontdoor resource. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -183,6 +183,34 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nfdcom'
   params: {
     // Required parameters
+    backendPools: [
+      {
+        name: 'backendPool'
+        properties: {
+          backends: [
+            {
+              address: 'biceptest.local'
+              backendHostHeader: 'backendAddress'
+              enabledState: 'Enabled'
+              httpPort: 80
+              httpsPort: 443
+              priority: 1
+              privateLinkAlias: ''
+              privateLinkApprovalMessage: ''
+              privateLinkLocation: ''
+              privateLinkResourceId: ''
+              weight: 50
+            }
+          ]
+          HealthProbeSettings: {
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe'
+          }
+          LoadBalancingSettings: {
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer'
+          }
+        }
+      }
+    ]
     frontendEndpoints: [
       {
         name: 'frontEnd'
@@ -244,34 +272,6 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       }
     ]
     // Non-required parameters
-    backendPools: [
-      {
-        name: 'backendPool'
-        properties: {
-          backends: [
-            {
-              address: 'biceptest.local'
-              backendHostHeader: 'backendAddress'
-              enabledState: 'Enabled'
-              httpPort: 80
-              httpsPort: 443
-              priority: 1
-              privateLinkAlias: ''
-              privateLinkApprovalMessage: ''
-              privateLinkLocation: ''
-              privateLinkResourceId: ''
-              weight: 50
-            }
-          ]
-          HealthProbeSettings: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe'
-          }
-          LoadBalancingSettings: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer'
-          }
-        }
-      }
-    ]
     enforceCertificateNameCheck: 'Disabled'
     lock: 'CanNotDelete'
     sendRecvTimeoutSeconds: 10
@@ -292,6 +292,36 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "backendPools": {
+      "value": [
+        {
+          "name": "backendPool",
+          "properties": {
+            "backends": [
+              {
+                "address": "biceptest.local",
+                "backendHostHeader": "backendAddress",
+                "enabledState": "Enabled",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "priority": 1,
+                "privateLinkAlias": "",
+                "privateLinkApprovalMessage": "",
+                "privateLinkLocation": "",
+                "privateLinkResourceId": "",
+                "weight": 50
+              }
+            ],
+            "HealthProbeSettings": {
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe"
+            },
+            "LoadBalancingSettings": {
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer"
+            }
+          }
+        }
+      ]
+    },
     "frontendEndpoints": {
       "value": [
         {
@@ -363,36 +393,6 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       ]
     },
     // Non-required parameters
-    "backendPools": {
-      "value": [
-        {
-          "name": "backendPool",
-          "properties": {
-            "backends": [
-              {
-                "address": "biceptest.local",
-                "backendHostHeader": "backendAddress",
-                "enabledState": "Enabled",
-                "httpPort": 80,
-                "httpsPort": 443,
-                "priority": 1,
-                "privateLinkAlias": "",
-                "privateLinkApprovalMessage": "",
-                "privateLinkLocation": "",
-                "privateLinkResourceId": "",
-                "weight": 50
-              }
-            ],
-            "HealthProbeSettings": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe"
-            },
-            "LoadBalancingSettings": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer"
-            }
-          }
-        }
-      ]
-    },
     "enforceCertificateNameCheck": {
       "value": "Disabled"
     },
@@ -420,6 +420,30 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nfdmin'
   params: {
     // Required parameters
+    backendPools: [
+      {
+        name: 'backendPool'
+        properties: {
+          backends: [
+            {
+              address: 'biceptest.local'
+              backendHostHeader: 'backendAddress'
+              enabledState: 'Enabled'
+              httpPort: 80
+              httpsPort: 443
+              priority: 1
+              weight: 50
+            }
+          ]
+          HealthProbeSettings: {
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe'
+          }
+          LoadBalancingSettings: {
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer'
+          }
+        }
+      }
+    ]
     frontendEndpoints: [
       {
         name: 'frontEnd'
@@ -493,6 +517,32 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "backendPools": {
+      "value": [
+        {
+          "name": "backendPool",
+          "properties": {
+            "backends": [
+              {
+                "address": "biceptest.local",
+                "backendHostHeader": "backendAddress",
+                "enabledState": "Enabled",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "priority": 1,
+                "weight": 50
+              }
+            ],
+            "HealthProbeSettings": {
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe"
+            },
+            "LoadBalancingSettings": {
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer"
+            }
+          }
+        }
+      ]
+    },
     "frontendEndpoints": {
       "value": [
         {
