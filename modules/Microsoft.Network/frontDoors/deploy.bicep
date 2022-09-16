@@ -30,7 +30,8 @@ param backendPools array
 param enforceCertificateNameCheck string = 'Disabled'
 
 @description('Optional. Certificate name check time of the frontdoor resource.')
-param sendRecvTimeoutSeconds int = 600
+@maxValue(240)
+param sendRecvTimeoutSeconds int = 240
 
 @description('Optional. State of the frontdoor resource.')
 param enabledState string = 'Enabled'
