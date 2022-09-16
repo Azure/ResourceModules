@@ -104,7 +104,7 @@ The first planned step for each module is to provide a 'minimum-set' module test
 
 ### Limited job execution time
 
-CARML module pipelines are running on GitHub-hosted runners.
+GitHub workflows used to validate CARML modules are running on GitHub-hosted runners.
 
 In such a scenario, as documented in the [Usage limits for GitHub Actions workflows](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits), if a job reaches a limit of 6 hours of execution time, the job is terminated and fails to complete.
 
