@@ -113,6 +113,10 @@ function Get-FormattedGitHubRelease {
     $foundContributors = $contributors | Select-Object -Unique
 
     $output = @()
+
+    # =================== #
+    #   PRs by category   #
+    $output += '### Highlights'
     foreach ($category in $foundCategories) {
         $output += "***$category***"
         $categoryItems = $correctlyFormatted | Where-Object { $_ -imatch ".+\[$category\].+" }
@@ -125,10 +129,11 @@ function Get-FormattedGitHubRelease {
             $output += '* {0}' -f $simplifiedItem.Trim()
         }
         $output += ''
-        $output += '#############'
-        $output += ''
     }
-    $output += '***Contributors***'
+    # ================ #
+    #   Contributors   #
+    $output += ''
+    $output += '### Contributors'
     foreach ($contributor in $foundContributors) {
         $contributorHandle = $contributor -replace '@', ''
         # TODO: Return Warning if not found
@@ -141,9 +146,19 @@ function Get-FormattedGitHubRelease {
         }
         $response = Invoke-RestMethod @requestInputObject
         $contributorName = $response.name
-        $output += $contributorName
+        $output += '| ' + $contributorHandle + ' | ' + $contributorName + ' |'
     }
+
     $output += ''
 
+    # ============== #
+    #   Statistics   #
+    $output += ''
+    $output += '### Statistics'
+
+    $output += "* Count of Merged PRs: $($content.count)"
+    $output += "* Count of Contributors: $($foundContributors.count)"
+    $output += '* Count of New Contributors: TODO'
+    $output += ''
     return $output
 }
