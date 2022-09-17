@@ -125,11 +125,13 @@ function Get-FormattedGitHubRelease {
             $output += '* {0}' -f $simplifiedItem.Trim()
         }
         $output += ''
+        $output += '#############'
+        $output += ''
     }
-    $output += '### Contributors'
+    $output += '***Contributors***'
     foreach ($contributor in $foundContributors) {
         $contributorHandle = $contributor -replace '@', ''
-        #$output += "* $contributor"
+        # TODO: Return Warning if not found
         $requestInputObject = @{
             Method  = 'GET'
             Uri     = "https://api.github.com/users/$contributorHandle"
@@ -141,6 +143,7 @@ function Get-FormattedGitHubRelease {
         $contributorName = $response.name
         $output += $contributorName
     }
+    $output += ''
 
     return $output
 }
