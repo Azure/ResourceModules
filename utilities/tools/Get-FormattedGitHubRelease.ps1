@@ -102,11 +102,15 @@ function Get-FormattedGitHubRelease {
     #   Process content   #
     # =================== #
     $categories = @()
+    $contributors = @()
     foreach ($line in $correctlyFormatted) {
-        $match = [regex]::Match($line, '\[(.+?)\].+')
-        $categories += $match.Captures.Groups[1].Value
+        $matchCategory = [regex]::Match($line, '\[(.+?)\].+')
+        $categories += $matchCategory.Captures.Groups[1].Value
+        $matchContributor = [regex]::Match($line, '\@(.*?)\s')
+        $contributors += $matchContributor.Value
     }
     $foundCategories = $categories | Select-Object -Unique
+    $foundContributors = $contributors | Select-Object -Unique
 
     $output = @()
     foreach ($category in $foundCategories) {
@@ -121,6 +125,21 @@ function Get-FormattedGitHubRelease {
             $output += '* {0}' -f $simplifiedItem.Trim()
         }
         $output += ''
+    }
+    $output += '### Contributors'
+    foreach ($contributor in $foundContributors) {
+        $contributorHandle = $contributor -replace '@', ''
+        #$output += "* $contributor"
+        $requestInputObject = @{
+            Method  = 'GET'
+            Uri     = "https://api.github.com/users/$contributorHandle"
+            Headers = @{
+                Authorization = "Bearer $PersonalAccessToken"
+            }
+        }
+        $response = Invoke-RestMethod @requestInputObject
+        $contributorName = $response.name
+        $output += $contributorName
     }
 
     return $output
