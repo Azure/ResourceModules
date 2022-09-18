@@ -45,6 +45,11 @@ module testDeployment '../../deploy.bicep' = {
     customSubDomainName: '<<namePrefix>>speechdomain'
     privateEndpoints: [
       {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            resourceGroupResources.outputs.privateDNSZoneResourceId
+          ]
+        }
         service: 'account'
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
       }
