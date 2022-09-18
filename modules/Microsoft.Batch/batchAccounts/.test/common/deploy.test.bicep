@@ -70,6 +70,11 @@ module testDeployment '../../deploy.bicep' = {
       {
         service: 'batchAccount'
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            resourceGroupResources.outputs.privateDNSZoneResourceId
+          ]
+        }
       }
     ]
     storageAccessIdentity: resourceGroupResources.outputs.managedIdentityResourceId
