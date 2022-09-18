@@ -18,11 +18,24 @@
                 }
             ]
         },
+        "inboundIpRules": {
+            "value": [
+                {
+                    "action": "Allow",
+                    "ipMask": "40.74.28.0/23"
+                }
+            ]
+        },
         "privateEndpoints": {
             "value": [
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "topic"
+                    "service": "topic",
+                    "privateDnsZoneGroup": {
+                        "privateDNSResourceIds": [
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.eventgrid.azure.net"
+                        ]
+                    }
                 }
             ]
         },
