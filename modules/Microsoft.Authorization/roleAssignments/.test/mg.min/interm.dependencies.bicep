@@ -3,7 +3,7 @@ targetScope = 'subscription'
 @description('Required. The location to deploy to')
 param location string
 
-@description('Required. The name of the resource group to deploy for a testing purposes')
+@description('Required. The name of the resource group to deploy for testing purposes')
 @maxLength(90)
 param resourceGroupName string
 
