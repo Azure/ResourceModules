@@ -273,9 +273,9 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 
 ```bicep
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-...'
+  name: '${uniqueString(deployment().name)}-test-nfpmin'
   params: {
-    name: '<<namePrefix>>...001'
+    name: '<<namePrefix>>nfpmin001'
   }
 }
 ```
@@ -293,7 +293,7 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>...001"
+      "value": "<<namePrefix>>nfpmin001"
     }
   }
 }
