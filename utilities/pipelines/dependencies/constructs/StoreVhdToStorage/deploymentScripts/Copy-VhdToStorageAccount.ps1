@@ -111,7 +111,7 @@ process {
         Write-Verbose ('Copied/initialized copy of VHD from URI [{0}] to container [{1}] in storage account [{2}]' -f $sourceUri, $destinationContainerName, $destinationStorageAccountName) -Verbose
     }
 
-    if ($WaitForComplete){
+    if ($WaitForComplete) {
         $destBlob | Get-AzStorageBlobCopyState -WaitForComplete
     }
 }
