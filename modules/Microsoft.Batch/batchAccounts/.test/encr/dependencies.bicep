@@ -120,5 +120,5 @@ output storageAccountResourceId string = storageAccount.id
 @description('The name of the Key Vault Encryption Key.')
 output keyVaultEncryptionKeyName string = keyVault::key.name
 
-@description('The resource ID of the created Virtual Network Subnet.')
+@description('The resource ID of the created Private DNS Zone.')
 output privateDNSZoneResourceId string = privateDNSZone.id
