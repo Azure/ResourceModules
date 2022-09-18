@@ -146,7 +146,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -154,47 +154,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-FirewallPolicies'
-  params: {
-    name: '<<namePrefix>>-az-fwpol-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-fwpol-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-FirewallPolicies'
+  name: '${uniqueString(deployment().name)}-test-nfpcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-fwpol-x-002'
+    name: '<<namePrefix>>nfpcom001'
     // Non-required parameters
     ruleCollectionGroups: [
       {
@@ -252,7 +215,7 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-fwpol-x-002"
+      "value": "<<namePrefix>>nfpcom001"
     },
     // Non-required parameters
     "ruleCollectionGroups": {
@@ -294,6 +257,43 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
           ]
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-...'
+  params: {
+    name: '<<namePrefix>>...001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>...001"
     }
   }
 }
