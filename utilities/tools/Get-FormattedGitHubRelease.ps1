@@ -84,7 +84,7 @@ function Get-FormattedGitHubRelease {
         $_ -notlike '`*`**' # For example: **Full Changelog**: https://github.com/Azure/ResourceModules/compare/v0.0.0...v1.0.0
     }
 
-    $newContributorContent = $response.Body -split '\n' | Where-Object {
+    $newContributorsContent = $response.Body -split '\n' | Where-Object {
         $_ -like '`* @*' # For example: @carml made their first contribution in https://github.com/Azure/ResourceModules/pull/0
     }
 
@@ -117,7 +117,7 @@ function Get-FormattedGitHubRelease {
     $foundContributors = $contributors | Select-Object -Unique
 
     $newContributors = @()
-    foreach ($line in $newContributorContent) {
+    foreach ($line in $newContributorsContent) {
         $matchNewContributor = [regex]::Match($line, '\@(.*?)\s')
         $newContributors += $matchNewContributor.Value
     }
