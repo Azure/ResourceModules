@@ -43,7 +43,7 @@ function Set-ModuleOverviewTable {
     }
     $featureTableString = Get-ModulesFeatureOutline @functionInput -Verbose
 
-    $newContent = Merge-FileWithNewContent -oldContent $originalContentArray -newContent $featureTableString -sectionStartIdentifier '# Feature table' -contentType 'table'
+    $newContent = Merge-FileWithNewContent -oldContent $originalContentArray -newContent $featureTableString.TrimEnd() -sectionStartIdentifier '# Feature table' -contentType 'table'
 
     Write-Verbose 'New content:'
     Write-Verbose '============'
