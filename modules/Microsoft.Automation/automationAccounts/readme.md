@@ -411,7 +411,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       {
         privateDnsZoneGroups: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'Webhook'
@@ -420,7 +420,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       {
         privateDnsZoneGroups: {
           privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'DSCAndHybridWorker'
@@ -620,7 +620,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         {
           "privateDnsZoneGroups": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "Webhook",
@@ -629,7 +629,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         {
           "privateDnsZoneGroups": {
             "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "DSCAndHybridWorker",

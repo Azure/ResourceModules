@@ -89,7 +89,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         privateDnsZoneGroups: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSResourceId
+            resourceGroupResources.outputs.privateDNSZoneResourceId
           ]
         }
         service: 'Webhook'
@@ -98,7 +98,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         privateDnsZoneGroups: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSResourceId
+            resourceGroupResources.outputs.privateDNSZoneResourceId
           ]
         }
         service: 'DSCAndHybridWorker'
