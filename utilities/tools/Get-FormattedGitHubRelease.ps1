@@ -78,17 +78,21 @@ function Get-FormattedGitHubRelease {
         Write-Error "Request failed. Reponse: [$response]"
     }
 
-    $content = $response.Body -split '\n' | Where-Object {
+    $changedContent = $response.Body -split '\n' | Where-Object {
         $_ -like '`**' -and # For example: * [Modules] Update scope @carml in https://github.com/Azure/ResourceModules/pull/0
         $_ -notlike '`* @*' -and # For example: @carml made their first contribution in https://github.com/Azure/ResourceModules/pull/0
         $_ -notlike '`*`**' # For example: **Full Changelog**: https://github.com/Azure/ResourceModules/compare/v0.0.0...v1.0.0
     }
 
+    $newContributorContent = $response.Body -split '\n' | Where-Object {
+        $_ -like '`* @*' # For example: @carml made their first contribution in https://github.com/Azure/ResourceModules/pull/0
+    }
+
     # =================== #
     #   Analyze content   #
     # =================== #
-    $correctlyFormatted = $content | Where-Object { $_ -match '$* \[.*' }
-    $incorrectlyFormatted = $content | Where-Object { $_ -notmatch '$* \[.*' }
+    $correctlyFormatted = $changedContent | Where-Object { $_ -match '$* \[.*' }
+    $incorrectlyFormatted = $changedContent | Where-Object { $_ -notmatch '$* \[.*' }
 
     if ($incorrectlyFormatted.Count -gt 0) {
         Write-Verbose '#############################' -Verbose
@@ -106,17 +110,25 @@ function Get-FormattedGitHubRelease {
     foreach ($line in $correctlyFormatted) {
         $matchCategory = [regex]::Match($line, '\[(.+?)\].+')
         $categories += $matchCategory.Captures.Groups[1].Value
-        $matchContributor = [regex]::Match($line, '\@(.*?)\s')
+        $matchContributor = [regex]::Match($line, 'by \@(.*?)\s')
         $contributors += $matchContributor.Value
     }
     $foundCategories = $categories | Select-Object -Unique
     $foundContributors = $contributors | Select-Object -Unique
 
+    $newContributors = @()
+    foreach ($line in $newContributorContent) {
+        $matchNewContributor = [regex]::Match($line, '\@(.*?)\s')
+        $newContributors += $matchNewContributor.Value
+    }
+
     $output = @()
 
-    # =================== #
     #   PRs by category   #
+    # =================== #
+    $output += ''
     $output += '### Highlights'
+    $output += ''
     foreach ($category in $foundCategories) {
         $output += "***$category***"
         $categoryItems = $correctlyFormatted | Where-Object { $_ -imatch ".+\[$category\].+" }
@@ -130,13 +142,16 @@ function Get-FormattedGitHubRelease {
         }
         $output += ''
     }
-    # ================ #
+
     #   Contributors   #
+    # ================ #
     $output += ''
     $output += '### Contributors'
+    $output += ''
+    $output += '| GH handle | GH name |'
+    $output += '| :-- | :-- |'
     foreach ($contributor in $foundContributors) {
-        $contributorHandle = $contributor -replace '@', ''
-        # TODO: Return Warning if not found
+        $contributorHandle = $contributor -replace 'by @', ''
         $requestInputObject = @{
             Method  = 'GET'
             Uri     = "https://api.github.com/users/$contributorHandle"
@@ -146,19 +161,21 @@ function Get-FormattedGitHubRelease {
         }
         $response = Invoke-RestMethod @requestInputObject
         $contributorName = $response.name
-        $output += '| ' + $contributorHandle + ' | ' + $contributorName + ' |'
+        $contributorNames += $contributorName + ', '
+        $output += ('| {0} | {1} |' -f $contributorHandle, $contributorName)
     }
 
     $output += ''
+    $output += '* CC: ' + $contributorNames
 
-    # ============== #
     #   Statistics   #
+    # ================ #
     $output += ''
     $output += '### Statistics'
-
-    $output += "* Count of Merged PRs: $($content.count)"
+    $output += ''
+    $output += "* Count of Merged PRs: $($changedContent.count)"
     $output += "* Count of Contributors: $($foundContributors.count)"
-    $output += '* Count of New Contributors: TODO'
+    $output += "* Count of New Contributors: $($newContributors.count)"
     $output += ''
     return $output
 }
