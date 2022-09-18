@@ -725,7 +725,7 @@ Describe 'Deployment template tests' -Tag Template {
                         $deploymentTestFile_AllParameterNames = $rawContentHashtable.parameters.Keys | Sort-Object
                     } else {
                         $deploymentFileContent = az bicep build --file $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
-                        $deploymentTestFile_AllParameterNames = $deploymentFileContent.resources[-1].properties.parameters.keys | Sort-Object # The last resource should be the test
+                        $deploymentTestFile_AllParameterNames = $deploymentFileContent.resources[-1].properties.parameters.Keys | Sort-Object # The last resource should be the test
                     }
                     $testFileTestCases += @{
                         testFile_Path                        = $moduleTestFilePath
