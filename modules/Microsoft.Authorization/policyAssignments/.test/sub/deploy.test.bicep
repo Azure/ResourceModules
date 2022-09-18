@@ -3,7 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
-@description('Optional. The name of the resource group to deploy for a testing purposes.')
+@description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(80)
 param resourceGroupName string = 'ms.authorization.policyassignments-${serviceShort}-rg'
 
