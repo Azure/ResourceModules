@@ -28,7 +28,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-01-0
 @description('The resource ID of the created Route Table.')
 output routeTableResourceId string = routeTable.id
 
-@description('The resource ID of the created Route Table.')
+@description('The resource ID of the created Network Security Group.')
 output networkSecurityGroupResourceId string = networkSecurityGroup.id
 
 @description('The principal ID of the created Managed Identity.')
