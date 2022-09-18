@@ -72,14 +72,24 @@
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
         },
-        "publicNetworkAccess": {
-            "value": "Disabled"
+        "networkRuleSetIpRules": {
+            "value": [
+                {
+                    "action": "Allow",
+                    "value": "40.74.28.0/23"
+                }
+            ]
         },
         "privateEndpoints": {
             "value": [
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "registry"
+                    "service": "registry",
+                    "privateDnsZoneGroup": {
+                        "privateDNSResourceIds": [
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io"
+                        ]
+                    }
                 }
             ]
         }
