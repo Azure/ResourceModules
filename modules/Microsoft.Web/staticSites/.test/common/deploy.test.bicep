@@ -49,6 +49,11 @@ module testDeployment '../../deploy.bicep' = {
       {
         service: 'staticSites'
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            resourceGroupResources.outputs.privateDNSZoneResourceId
+          ]
+        }
       }
     ]
     roleAssignments: [
