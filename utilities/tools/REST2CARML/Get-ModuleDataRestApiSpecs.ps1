@@ -39,6 +39,28 @@
     # TODO: Get highest API version (preview/non-preview)
     $latestApiFolder = (Get-ChildItem -Path $(Join-Path $resourceProviderFolder 'stable') | Sort-Object -Descending)[0]
 
+    $putMethods = @()
+    foreach ($jsonFile in $(Get-ChildItem -Path $latestApiFolder -Filter *.json)) {
+        $jsonPaths = (ConvertFrom-Json (Get-Content -Raw -Path $jsonFile)).paths
+        $jsonPaths.PSObject.Properties | ForEach-Object {
+            $put = $_.value.put
+
+            if ($put) {
+                Write-Host $jsonFile
+                Write-Host $_.Name
+
+                $arrItem = [pscustomobject] @{}
+                $arrItem | Add-Member -MemberType NoteProperty -Name 'jsonFile' -Value $jsonFile.Name
+                $arrItem | Add-Member -MemberType NoteProperty -Name 'path' -Value $_.Name
+                # $arrItem | Add-Member -MemberType NoteProperty -Name 'putMethod' -Value $_.value.put
+
+                $putMethods += $arrItem
+            }
+        }
+    }
+
+    $putMethods | ConvertTo-Json
+
     ## Remove temp folder again
     # $null = Remove-Item $tempFolderPath -Recurse -Force
     Set-Location $initialLocation
