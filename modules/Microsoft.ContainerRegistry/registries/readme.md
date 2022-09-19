@@ -514,7 +514,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       }
     ]
     softDeletePolicyDays: 7
-    softDeletePolicyStatus: 'enabled'
+    softDeletePolicyStatus: 'disabled'
     systemAssignedIdentity: true
     trustPolicyStatus: 'enabled'
     userAssignedIdentities: {
@@ -623,7 +623,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       "value": 7
     },
     "softDeletePolicyStatus": {
-      "value": "enabled"
+      "value": "disabled"
     },
     "systemAssignedIdentity": {
       "value": true
