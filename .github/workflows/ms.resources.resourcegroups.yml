@@ -89,6 +89,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
     # [Token replacement] task(s)
     # ---------------------------
     - name: 'Replace tokens in template file'
