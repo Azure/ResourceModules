@@ -57,5 +57,7 @@ rule:
     - Azure.Resource.UseTags
 
 # Suppression ignores rules for a specific Azure resource by name.
-suppression:
+#suppression:
+#  Azure.Resource.UseTags:
+#    - <<namePrefix>>kvvmin001
 
