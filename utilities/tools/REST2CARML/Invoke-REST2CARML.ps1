@@ -31,7 +31,7 @@ function Invoke-REST2CARML {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load used functions
-        . (Join-Path $PSScriptRoot 'Get-ModuleData.ps1')
+        # . (Join-Path $PSScriptRoot 'Get-ModuleData.ps1')
         . (Join-Path $PSScriptRoot 'Set-ModuleFileStructure.ps1')
 
         Write-Verbose ('Processing module [{0}/{1}]' -f $ProviderNamespace, $ResourceType) -Verbose

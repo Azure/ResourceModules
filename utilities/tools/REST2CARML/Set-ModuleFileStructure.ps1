@@ -187,7 +187,7 @@ function Set-ModuleFileStructure {
         }
 
         ## Azure DevOps
-        $azureDevOpsPipelineYAMLPath = Join-Path $repoRootPath '.azuredevops'' modulePipelines' $automationFileName
+        $azureDevOpsPipelineYAMLPath = Join-Path $repoRootPath '.azuredevops' 'modulePipelines' $automationFileName
         $pipelineFileContent = Get-Content (Join-Path $PSScriptRoot 'src' 'azureDevOpsPipelineTemplateFile.yml') -Raw
         $pipelineFileContent = Format-AutomationTemplate -Content $pipelineFileContent -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
         if (-not (Test-Path $azureDevOpsPipelineYAMLPath)) {
