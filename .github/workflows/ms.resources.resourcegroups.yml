@@ -88,7 +88,10 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v3
-
+    - name: Set environment variables
+      uses: ./.github/actions/templates/setEnvironmentVariables
+      with:
+        variablesPath: ${{ env.variablesPath }}
     - name: Azure Login
       uses: Azure/login@v1
       with:
