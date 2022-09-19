@@ -6,7 +6,7 @@ Replace tokens like '<<ProviderNamespace>>' in the given file with an actual val
 .DESCRIPTION
 Replace tokens like '<<ProviderNamespace>>' in the given file with an actual value. Tokens that are replaced:
 - <<providerNamespace>>
-- <<providerNamespacePascal>>
+- <<shortProviderNamespacePascal>>
 - <<shortProviderNamespaceLower>>
 - <<resourceType>>
 - <<resourceTypePascal>>
@@ -46,12 +46,12 @@ function Format-AutomationTemplate {
 
     process {
         $tokens = @{
-            providerNamespace           = $ProviderNamespace
-            providerNamespacePascal     = $ProviderNamespace.substring(0, 1).toupper() + $ProviderNamespace.substring(1)
-            shortProviderNamespaceLower = ($ProviderNamespace -split '\.')[-1].ToLower()
-            resourceType                = $ResourceType
-            resourceTypePascal          = $ResourceType.substring(0, 1).toupper() + $ResourceType.substring(1)
-            resourceTypeLower           = $ResourceType.ToLower()
+            providerNamespace            = $ProviderNamespace
+            shortProviderNamespacePascal = ($ProviderNamespace -split '\.')[-1].substring(0, 1).toupper() + ($ProviderNamespace -split '\.')[-1].substring(1)
+            shortProviderNamespaceLower  = ($ProviderNamespace -split '\.')[-1].ToLower()
+            resourceType                 = $ResourceType
+            resourceTypePascal           = $ResourceType.substring(0, 1).toupper() + $ResourceType.substring(1)
+            resourceTypeLower            = $ResourceType.ToLower()
         }
 
         foreach ($token in $tokens.Keys) {
@@ -178,11 +178,11 @@ function Set-ModuleFileStructure {
         $workflowFileContent = Format-AutomationTemplate -Content $workflowFileContent -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
         if (-not (Test-Path $gitHubWorkflowYAMLPath)) {
             if ($PSCmdlet.ShouldProcess("GitHub Workflow file [$automationFileName]", 'Create')) {
-                $null = New-Item $gitHubWorkflowYAMLPath -ItemType 'File' -Value $workflowFileContent
+                $null = New-Item $gitHubWorkflowYAMLPath -ItemType 'File' -Value $workflowFileContent.TrimEnd()
             }
         } else {
             if ($PSCmdlet.ShouldProcess("GitHub Workflow file [$automationFileName]", 'Update')) {
-                $null = Set-Content -Path $gitHubWorkflowYAMLPath -Value $workflowFileContent
+                $null = Set-Content -Path $gitHubWorkflowYAMLPath -Value $workflowFileContent.TrimEnd()
             }
         }
 
@@ -192,11 +192,11 @@ function Set-ModuleFileStructure {
         $pipelineFileContent = Format-AutomationTemplate -Content $pipelineFileContent -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
         if (-not (Test-Path $azureDevOpsPipelineYAMLPath)) {
             if ($PSCmdlet.ShouldProcess("GitHub Workflow file [$automationFileName]", 'Create')) {
-                $null = New-Item $azureDevOpsPipelineYAMLPath -ItemType 'File' -Value $pipelineFileContent
+                $null = New-Item $azureDevOpsPipelineYAMLPath -ItemType 'File' -Value $pipelineFileContent.TrimEnd()
             }
         } else {
             if ($PSCmdlet.ShouldProcess("GitHub Workflow file [$automationFileName]", 'Update')) {
-                $null = Set-Content -Path $azureDevOpsPipelineYAMLPath -Value $pipelineFileContent
+                $null = Set-Content -Path $azureDevOpsPipelineYAMLPath -Value $pipelineFileContent.TrimEnd()
             }
         }
     }

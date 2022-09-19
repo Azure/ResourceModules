@@ -1,4 +1,4 @@
-name: '<<providerNamespacePascal>>: <<resourceTypePascal>>'
+name: '<<shortProviderNamespacePascal>>: <<resourceTypePascal>>'
 
 on:
   workflow_dispatch:

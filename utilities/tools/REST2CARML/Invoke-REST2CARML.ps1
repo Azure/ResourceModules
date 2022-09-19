@@ -55,4 +55,4 @@ function Invoke-REST2CARML {
     }
 }
 
-Invoke-REST2CARML -ProviderNamespace 'Microsoft.Storage' -ResourceType 'customStorage' -Verbose
+Invoke-REST2CARML -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts' -Verbose
