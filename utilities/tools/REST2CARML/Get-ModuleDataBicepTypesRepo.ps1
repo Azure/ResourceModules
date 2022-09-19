@@ -37,10 +37,23 @@
     $resourceProviderFolder = Join-Path $tempFolderPath $repoName 'generated' $shortenedProviderNamespace $ProviderNamespace.ToLower()
 
     # TODO: Get highest API version (preview/non-preview)
-    $t
+    $apiVersionPaths = (Get-ChildItem $resourceProviderFolder).FullName | Sort-Object
+    if ($IgnorePreview) {
+        $apiVersionPaths = $apiVersionPaths | Where-Object { $_ -notmatch '-preview$' }
+    }
+    $latestAPIVersionPath = $apiVersionPaths[-1]
+
+    $typesMarkdownPath = Join-Path $latestAPIVersionPath 'types.md'
+    $typesMarkdownContent = Get-Content -Path $typesMarkdownPath
+
+    # Find resource start (not yet working)
+    $regexString = (('## Resource {0}/{1}@{2}' -f $ProviderNamespace, $ResourceType, (Split-Path $latestAPIVersionPath -Leaf)) -replace '\.', '\.') -replace '/', '\/'
+    $startingIndex = [array]::IndexOf($typesMarkdownContent, $regexString)
+
+    # Get properties & split accordingly (e.g. name : type : description) + jump recursively to correct child references
 
     ## Remove temp folder again
-    # $null = Remove-Item $tempFolderPath -Recurse -Force
+    $null = Remove-Item $tempFolderPath -Recurse -Force
     Set-Location $initialLocation
 }
-Get-ModuleDataBicepTypesRepo -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+Get-ModuleDataBicepTypesRepo -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts'
