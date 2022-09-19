@@ -69,7 +69,7 @@ function Add-ModuleFileStructure {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
-        $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
+        $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent
     }
 
     process {
@@ -117,8 +117,15 @@ function Add-ModuleFileStructure {
             Write-Verbose ('Version file [{0}] already exists.' -f ($versionFilePath -replace ($repoRootPath -replace '\\', '\\'), ''))
         }
 
-
         ### ReadMe file
+        $readMeFilePath = Join-Path $expectedModuleFolderPath 'readme.md'
+        if (-not (Test-Path $readMeFilePath)) {
+            if ($PSCmdlet.ShouldProcess(('ReadMe file [{0}]' -f ($readMeFilePath -replace ($repoRootPath -replace '\\', '\\'), '')), 'Create')) {
+                $null = New-Item -Path $readMeFilePath -ItemType 'File'
+            }
+        } else {
+            Write-Verbose ('ReadMe file [{0}] already exists.' -f ($readMeFilePath -replace ($repoRootPath -replace '\\', '\\'), ''))
+        }
 
         ## .test files
         @(
@@ -171,4 +178,4 @@ function Add-ModuleFileStructure {
     }
 }
 
-Add-ModuleFileStructure -ProviderNamespace 'Microsoft.Storage' -ResourceType 'customStorage' -Verbose -WhatIf
+Add-ModuleFileStructure -ProviderNamespace 'Microsoft.Storage' -ResourceType 'customStorage' -Verbose
