@@ -92,9 +92,9 @@ jobs:
     # Run analysis by using the PSRule GitHub action.
     - name: Run PSRule analysis
       uses: microsoft/ps-rule@v2.4.0
-        with:
-          modules: 'PSRule.Rules.Azure'
-          inputPath: '../../modules/Microsoft.Resources/resourceGroups/'
+      with:
+        modules: 'PSRule.Rules.Azure'
+        inputPath: '../../modules/Microsoft.Resources/resourceGroups/'
 
 
   #############################
