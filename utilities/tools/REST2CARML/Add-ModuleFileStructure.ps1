@@ -1,49 +1,174 @@
-﻿
+﻿#region Helper functions
+<#
+.SYNOPSIS
+Replace tokens like '<<ProviderNamespace>>' in the given file with an actual value
 
-function Add-ModuleFileStructure{
+.DESCRIPTION
+Replace tokens like '<<ProviderNamespace>>' in the given file with an actual value. Tokens that are replaced:
+- <<providerNamespace>>
+- <<providerNamespacePascal>>
+- <<shortProviderNamespaceLower>>
+- <<resourceType>>
+- <<resourceTypePascal>>
+- <<resourceTypeLower>>
+
+.PARAMETER Content
+Mandatory. The content to update
+
+.PARAMETER ProviderNamespace
+Mandatory. The Provider Namespace to replaces tokens for
+
+.PARAMETER ResourceType
+Mandatory. The Resource Type to replaces tokens for
+
+.EXAMPLE
+Format-AutomationTemplate -Content "Hello <<shortProviderNamespaceLower>>-<<resourceTypePascal>>" -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+
+Update the provided content with different Provider Namespace & Resource Type token variant. Would return 'Hello keyvault-Vaults'
+#>
+function Format-AutomationTemplate {
+
     param(
-         [Parameter(Mandatory)]
-         [string] $ProviderNamespace,
+        [Parameter(Mandatory)]
+        [string] $Content,
 
-         [Parameter(Mandatory)]
-         [string] $ResourceType,
+        [Parameter(Mandatory)]
+        [string] $ProviderNamespace,
 
-
-
-         $filesArray=@('deploy.bicep', 'readme.md', 'version.json'),
-
-         $gitHubWorkflowYAMLPath = "github/workflows/",
-         $azDevOpsModulePipelineYAMLPath = ".azureDevOps/modulePipelines/"
-
+        [Parameter(Mandatory)]
+        [string] $ResourceType
     )
 
-    try{
+    $tokens = @{
+        providerNamespace           = $ProviderNamespace
+        providerNamespacePascal     = $ProviderNamespace.substring(0, 1).toupper() + $ProviderNamespace.substring(1)
+        shortProviderNamespaceLower = ($ProviderNamespace -split '\.')[-1].ToLower()
+        resourceType                = $ResourceType
+        resourceTypePascal          = $ResourceType.substring(0, 1).toupper() + $ResourceType.substring(1)
+        resourceTypeLower           = $ResourceType.ToLower()
+    }
+
+    foreach ($token in $tokens.Keys) {
+        $content = $content -replace "<<$token>>", $tokens[$token]
+    }
+
+    return $content
+}
+#endregion
+
+function Add-ModuleFileStructure {
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param(
+        [Parameter(Mandatory)]
+        [string] $ProviderNamespace,
+
+        [Parameter(Mandatory)]
+        [string] $ResourceType
+    )
+
+    begin {
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
-        $ModulePath = Join-path -path $repoRootPath 'modules'
+    }
 
-        $ModuleName = "$ProviderNamespace\$ResourceType"
-        $ProviderDir = New-Item -Path $ModulePath -Name $ModuleName -ItemType "directory"
+    process {
 
-       write-Host $ProviderDir
-
-
-        if($filesArray){
-            foreach($fileName in $filesArray){
-                if($fileName){
-                    write-Host "Creating File: $fileName"
-                    New-Item -Path $ProviderDir -Name $fileName -ItemType "file"
+        # Create folders
+        # --------------
+        $expectedModuleFolderPath = Join-Path $repoRootPath 'modules' $ProviderNamespace $ResourceType
+        @(
+            $expectedModuleFolderPath,
+            (Join-Path $expectedModuleFolderPath '.bicep'),
+            (Join-Path $expectedModuleFolderPath '.test')
+            (Join-Path $expectedModuleFolderPath '.test' 'common')
+            (Join-Path $expectedModuleFolderPath '.test' 'min')
+        ) | ForEach-Object {
+            if (-not (Test-Path $_)) {
+                if ($PSCmdlet.ShouldProcess(('Folder [{0}]' -f ($_ -replace ($repoRootPath -replace '\\', '\\'), '')), 'Create')) {
+                    $null = New-Item -Path $_ -ItemType 'Directory'
                 }
+            } else {
+                Write-Verbose "Folder [$_] already exists."
             }
         }
 
-        $workflowYAMLPath = Join-path -path $repoRootPath $gitHubWorkflowYAMLPath
-        write-Host $workflowYAMLPath
+        # Create module files
+        # -------------------
+        ## Root files
+        ### Template file
+        $templateFilePath = Join-Path $expectedModuleFolderPath 'deploy.bicep'
+        if (-not (Test-Path $templateFilePath)) {
+            if ($PSCmdlet.ShouldProcess(('Template file [{0}]' -f ($templateFilePath -replace ($repoRootPath -replace '\\', '\\'), '')), 'Create')) {
+                $null = New-Item -Path $templateFilePath -ItemType 'File'
+            }
+        } else {
+            Write-Verbose ('Template file [{0}] already exists.' -f ($templateFilePath -replace ($repoRootPath -replace '\\', '\\'), ''))
+        }
 
-    }catch{
-        Write-Host "An error occurred:"
-        Write-Host $_
+        ### Version file
+        $versionFilePath = Join-Path $expectedModuleFolderPath 'version.json'
+        if (-not (Test-Path $versionFilePath)) {
+            if ($PSCmdlet.ShouldProcess(('Version file [{0}]' -f ($versionFilePath -replace ($repoRootPath -replace '\\', '\\'), '')), 'Create')) {
+                $versionFileContent = Get-Content (Join-Path $PSScriptRoot 'src' 'moduleVersion.json') -Raw
+                $null = New-Item -Path $versionFilePath -ItemType 'File' -Value $versionFileContent
+            }
+        } else {
+            Write-Verbose ('Version file [{0}] already exists.' -f ($versionFilePath -replace ($repoRootPath -replace '\\', '\\'), ''))
+        }
+
+
+        ### ReadMe file
+
+        ## .test files
+        @(
+            (Join-Path $expectedModuleFolderPath '.test' 'common' 'deploy.bicep')
+            (Join-Path $expectedModuleFolderPath '.test' 'min' 'deploy.bicep')
+        ) | ForEach-Object {
+            if (-not (Test-Path $_)) {
+                if ($PSCmdlet.ShouldProcess(('File [{0}]' -f ($_ -replace ($repoRootPath -replace '\\', '\\'), '')), 'Create')) {
+                    $null = New-Item -Path $_ -ItemType 'File'
+                }
+            } else {
+                Write-Verbose "File [$_] already exists."
+            }
+        }
+
+        # Create/Update DevOps files
+        # --------------------------
+        ## GitHub
+        $automationFileName = ('ms.{0}.{1}.yml' -f ($ProviderNamespace -split '\.')[-1], $ResourceType).ToLower()
+        $gitHubWorkflowYAMLPath = Join-Path $repoRootPath '.github' 'workflows' $automationFileName
+        $workflowFileContent = Get-Content (Join-Path $PSScriptRoot 'src' 'gitHubWorkflowTemplateFile.yml') -Raw
+        $workflowFileContent = Format-AutomationTemplate -Content $workflowFileContent -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+        if (-not (Test-Path $gitHubWorkflowYAMLPath)) {
+            if ($PSCmdlet.ShouldProcess("GitHub Workflow file [$automationFileName]", 'Create')) {
+                $null = New-Item $gitHubWorkflowYAMLPath -ItemType 'File' -Value $workflowFileContent
+            }
+        } else {
+            if ($PSCmdlet.ShouldProcess("GitHub Workflow file [$automationFileName]", 'Update')) {
+                $null = Set-Content -Path $gitHubWorkflowYAMLPath -Value $workflowFileContent
+            }
+        }
+
+        ## Azure DevOps
+        $azureDevOpsPipelineYAMLPath = Join-Path $repoRootPath '.azuredevops'' modulePipelines' $automationFileName
+        $pipelineFileContent = Get-Content (Join-Path $PSScriptRoot 'src' 'azureDevOpsPipelineTemplateFile.yml') -Raw
+        $pipelineFileContent = Format-AutomationTemplate -Content $pipelineFileContent -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+        if (-not (Test-Path $azureDevOpsPipelineYAMLPath)) {
+            if ($PSCmdlet.ShouldProcess("GitHub Workflow file [$automationFileName]", 'Create')) {
+                $null = New-Item $azureDevOpsPipelineYAMLPath -ItemType 'File' -Value $pipelineFileContent
+            }
+        } else {
+            if ($PSCmdlet.ShouldProcess("GitHub Workflow file [$automationFileName]", 'Update')) {
+                $null = Set-Content -Path $azureDevOpsPipelineYAMLPath -Value $pipelineFileContent
+            }
+        }
     }
 
+    end {
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
+    }
 }
 
- Add-ModuleFileStructure
+Add-ModuleFileStructure -ProviderNamespace 'Microsoft.Storage' -ResourceType 'customStorage' -Verbose -WhatIf
