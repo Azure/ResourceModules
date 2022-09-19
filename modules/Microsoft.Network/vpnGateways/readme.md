@@ -7,6 +7,7 @@ This module deploys VPN Gateways.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -168,10 +169,15 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the VPN gateway was deployed into. |
 | `resourceId` | string | The resource ID of the VPN gateway. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Min</h3>
@@ -182,7 +188,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnGateways'
+  name: '${uniqueString(deployment().name)}-VpnGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vpngw-min-001'
@@ -225,7 +231,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 
 ```bicep
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnGateways'
+  name: '${uniqueString(deployment().name)}-VpnGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vpngw-x-001'

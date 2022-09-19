@@ -1,5 +1,5 @@
 @description('Required. The name of the proximity placement group that is being created.')
-param name string = ''
+param name string
 
 @description('Optional. Specifies the type of the proximity placement group.')
 @allowed([
@@ -65,6 +65,8 @@ module proximityPlacementGroup_roleAssignments '.bicep/nested_roleAssignments.bi
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: proximityPlacementGroup.id
   }
 }]

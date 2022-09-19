@@ -7,6 +7,7 @@ This template deploys a disk
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,7 +15,7 @@ This template deploys a disk
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/disks` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-08-01/disks) |
 
 ## Parameters
@@ -163,10 +164,15 @@ tags: {
 | `resourceGroupName` | string | The resource group the  disk was deployed into. |
 | `resourceId` | string | The resource ID of the disk. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Image</h3>
@@ -177,7 +183,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-image-001'
@@ -248,7 +254,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-import-001'
@@ -323,7 +329,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-min-001'
@@ -390,7 +396,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-disk-x-001'

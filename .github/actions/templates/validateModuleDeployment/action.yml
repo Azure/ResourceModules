@@ -82,7 +82,7 @@ runs:
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Setup agent"
+        Write-Output '::group::Setup agent'
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -102,13 +102,14 @@ runs:
             @{ Name = 'Az.Monitor' },
             @{ Name = 'Az.OperationalInsights' },
             @{ Name = 'Az.RecoveryServices' }
+            @{ Name = 'powershell-yaml'; Version = '0.4.2'}
           )
         }
 
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output "::endgroup::"
+        Write-Output '::endgroup::'
 
     - name: Azure Login
       uses: Azure/login@v1
@@ -124,13 +125,10 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Replace tokens in template file"
+          Write-Output '::group::Replace tokens in template file'
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
-
-          # Load Settings File
-          $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
 
           # Get target files
           $targetFileList = @('${{ inputs.templateFilePath }}')
@@ -138,31 +136,41 @@ runs:
             $targetFileList += '${{ inputs.parameterFilePath }}'
           }
 
+          # Get Service Principal Object ID
+          $context = Get-AzContext
+          $servicePrincipalAppId = $context.Account.Id
+          $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+          $servicePrincipalObjectId = $servicePrincipal.Id
+
           # Construct Token Function Input
           $ConvertTokensInputs = @{
             FilePathList = $targetFileList
             Tokens       = @{}
-            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+            TokenPrefix  = '${{ env.tokenPrefix }}'
+            TokenSuffix  = '${{ env.tokenSuffix }}'
           }
 
-          # Add defaults
+          # Add enforced tokens
           $ConvertTokensInputs.Tokens += @{
             resourceGroupName = '${{ inputs.resourceGroupName }}'
             subscriptionId    = '${{ inputs.subscriptionId }}'
             managementGroupId = '${{ inputs.managementGroupId }}'
             tenantId          = '${{ env.ARM_TENANT_ID }}'
-            deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
+            deploymentSpId    = $servicePrincipalObjectId
           }
 
-          # Add local tokens
-          if ($Settings.parameterFileTokens.localTokens) {
-            $tokenMap = @{}
-            foreach ($token in $Settings.parameterFileTokens.localTokens) {
-              $tokenMap += @{ $token.name = $token.value }
-            }
-            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-            $ConvertTokensInputs.Tokens += $tokenMap
+          # Add local (source control) tokens
+          $tokenMap = @{}
+          foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+            $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+          }
+          Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.Tokens += $tokenMap
+
+          # Swap 'namePrefix' token if empty and provided as a GitHub secret
+          if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+            Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+            $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
           }
 
           # Add custom tokens (passed in via the pipeline)
@@ -172,10 +180,23 @@ runs:
             $ConvertTokensInputs.Tokens += $customTokens
           }
 
-          # Invoke Token Replacement Functionality
+          Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
+
+          # Invoke Token Replacement Functionality [For Module]
           $null = Convert-TokensInFileList @ConvertTokensInputs
 
-          Write-Output "::endgroup::"
+          # Get target files for modules dependencies
+          $DependencyParameterFilePaths = [System.Collections.ArrayList]@()
+          $DependencyParameterFolders = Get-ChildItem -Path (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies') -Recurse -Filter 'parameters' -Directory
+          foreach ($FolderPath in $DependencyParameterFolders.FullName) {
+              $DependencyParameterFilePaths += Get-ChildItem -Path $FolderPath -Recurse -Filter '*.json'
+          }
+          $ConvertTokensInputs.FilePathList = $DependencyParameterFilePaths
+
+          # Invoke Token Replacement Functionality [For Dependencies]
+          $null = Convert-TokensInFileList @ConvertTokensInputs
+
+          Write-Output '::endgroup::'
 
     # [Deployment validation] task(s)
     # -------------------------------
@@ -185,40 +206,71 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Validate template file"
+          Write-Output '::group::Validate template file'
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
+
+          # Prepare general parameters
+          # --------------------------
+          # Fetching parameters
+          $location = '${{ inputs.location }}'
+          $resourceGroupName = '${{ inputs.resourceGroupName }}'
+          $subscriptionId = '${{ inputs.subscriptionId }}'
+          $managementGroupId = '${{ inputs.managementGroupId }}'
+
+          # Determine template & test file path
+          if ('${{ inputs.templateFilePath }}' -like '*.test*') {
+            Write-Verbose 'Using template test file [${{ inputs.templateFilePath }}]' -Verbose
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f ($moduleTestFilePath | Split-Path | Split-Path | Split-Path))
+          } elseif('${{ inputs.templateFilePath }}' -like '*dependencies*') {
+            Write-Verbose 'Using template file [${{ inputs.templateFilePath }}]' -Verbose
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          } else {
+            Write-Verbose 'Using parameter test file [${{ inputs.parameterFilePath }}]' -Verbose
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          }
+
+          # Determine possible parameters depending on file type
+          if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
+            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+          } else {
+            $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+          }
 
           # ----------------- #
           # Invoke validation #
           # ----------------- #
           $functionInput = @{
-            templateFilePath     = '${{ inputs.templateFilePath }}'
-            location             = '${{ inputs.location }}'
-            resourceGroupName    = '${{ inputs.resourceGroupName }}'
-            subscriptionId       = '${{ inputs.subscriptionId }}'
-            managementGroupId    = '${{ inputs.managementGroupId }}'
-            additionalParameters = @{}
+            TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
+            Location             = $location
+            ResourceGroupName    = $resourceGroupName
+            SubscriptionId       = $subscriptionId
+            ManagementGroupId    = $managementGroupId
+            AdditionalParameters = @{}
           }
 
-          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
-            $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+          # Handle template file
+          if ($moduleTestFilePath -like '*parameters.json') {
+            $functionInput['parameterFilePath'] = $moduleTestFilePath
           }
 
-          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+          if (-not [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
               $functionInput['additionalParameters'] += @{
-                  enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                  enableDefaultTelemetry = [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}')
               }
           }
 
-          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose 'Invoke task with' -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Test-TemplateDeployment @functionInput -Verbose
 
-          Write-Output "::endgroup::"
+          Write-Output '::endgroup::'
 
     # [Deployment execution] task(s)
     # ------------------------------
@@ -229,36 +281,64 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Deploy template file"
+          Write-Output '::group::Deploy template file'
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+
+          # Prepare general parameters
+          # --------------------------
+          $location = '${{ inputs.location }}'
+          $resourceGroupName = '${{ inputs.resourceGroupName }}'
+          $subscriptionId = '${{ inputs.subscriptionId }}'
+          $managementGroupId = '${{ inputs.managementGroupId }}'
+
+          # Determine template & test file path
+          if ('${{ inputs.templateFilePath }}' -like '*.test*') {
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f ($moduleTestFilePath | Split-Path | Split-Path | Split-Path))
+          } elseif('${{ inputs.templateFilePath }}' -like '*dependencies*') {
+            Write-Verbose 'Using template file [${{ inputs.templateFilePath }}]' -Verbose
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          } else {
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          }
+
+          # Determine possible parameters depending on file type
+          if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
+            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+          } else {
+            $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+          }
 
           # ----------------- #
           # Invoke deployment #
           # ----------------- #
           $functionInput = @{
-            templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-            location             = '${{ inputs.location }}'
-            resourceGroupName    = '${{ inputs.resourceGroupName }}'
-            subscriptionId       = '${{ inputs.subscriptionId }}'
-            managementGroupId    = '${{ inputs.managementGroupId }}'
-            doNotThrow           = $true
-            additionalParameters = @{}
+            TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
+            Location             = $location
+            ResourceGroupName    = $resourceGroupName
+            SubscriptionId       = $subscriptionId
+            ManagementGroupId    = $managementGroupId
+            DoNotThrow           = $true
+            AdditionalParameters = @{}
           }
 
-          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
-            $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+          # Handle template file
+          if ($moduleTestFilePath -like '*parameters.json') {
+            $functionInput['parameterFilePath'] = $moduleTestFilePath
           }
 
-          $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-          if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+          if (-not [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
               $functionInput['additionalParameters'] += @{
-                  enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                  enableDefaultTelemetry = [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}')
               }
           }
 
-          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose 'Invoke task with' -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           # Invoke deployment
@@ -268,11 +348,11 @@ runs:
           Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
 
           # Populate further outputs
-          $deploymentOutputHash=@{}
+          $deploymentOutputHash = @{}
 
           foreach ($outputKey in $res.deploymentOutput.Keys) {
             Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-            $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
+            $deploymentOutputHash.add($outputKey, $res.deploymentOutput[$outputKey].Value)
           }
 
           $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
@@ -284,7 +364,7 @@ runs:
             throw $res.exception
           }
 
-          Write-Output "::endgroup::"
+          Write-Output '::endgroup::'
 
     # [Deployment removal] task(s)
     # ----------------------------
@@ -295,24 +375,22 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Remove deployed resources"
+          Write-Output '::group::Remove deployed resources'
 
           # Load used function
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
-          if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
-            $functionInput = @{
-              DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
-              TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-              ResourceGroupName = '${{ inputs.resourceGroupName }}'
-              ManagementGroupId = '${{ inputs.managementGroupId }}'
-              Verbose           = $true
-            }
-
-            Write-Verbose 'Invoke task with' -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-            Initialize-DeploymentRemoval @functionInput
+          $functionInput = @{
+            TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
+            ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            ManagementGroupId = '${{ inputs.managementGroupId }}'
+            Verbose           = $true
           }
 
-          Write-Output "::endgroup::"
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Initialize-DeploymentRemoval @functionInput
+
+          Write-Output '::endgroup::'

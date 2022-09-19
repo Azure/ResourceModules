@@ -9,13 +9,14 @@ This module deploys Role Assignments across the management group, subscription o
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Parameters
 
@@ -165,10 +166,15 @@ module roleassignment 'yourpath/modules/Microsoft.Authorization.roleAssignments/
 
 This module can be deployed at the management group, subscription or resource group level
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Mg Min</h3>
@@ -179,7 +185,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
@@ -222,7 +228,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
@@ -279,7 +285,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
@@ -332,7 +338,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
@@ -393,7 +399,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'
@@ -442,7 +448,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleAssignments'
+  name: '${uniqueString(deployment().name)}-RoleAssignments'
   params: {
     // Required parameters
     principalId: '<<deploymentSpId>>'

@@ -7,6 +7,7 @@ This template deploys a proximity placement group.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,15 +15,15 @@ This template deploys a proximity placement group.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/proximityPlacementGroups` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/proximityPlacementGroups) |
 
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string | `''` | The name of the proximity placement group that is being created. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the proximity placement group that is being created. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -144,10 +145,15 @@ tags: {
 | `resourceGroupName` | string | The resource group the proximity placement group was deployed into. |
 | `resourceId` | string | The resourceId the proximity placement group. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Parameters</h3>
@@ -158,10 +164,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-proximityPlacementGroups'
+  name: '${uniqueString(deployment().name)}-ProximityPlacementGroups'
   params: {
-    lock: 'CanNotDelete'
+    // Required parameters
     name: '<<namePrefix>>-az-ppg-x-001'
+    // Non-required parameters
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
@@ -186,11 +194,13 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "lock": {
-      "value": "CanNotDelete"
-    },
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-az-ppg-x-001"
+    },
+    // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
     },
     "roleAssignments": {
       "value": [

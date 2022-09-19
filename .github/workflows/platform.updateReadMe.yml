@@ -59,7 +59,7 @@ jobs:
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
-            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'modules/README.md'
+            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'modules' 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')

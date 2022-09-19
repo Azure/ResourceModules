@@ -1,0 +1,66 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-pls-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "ipConfigurations": {
+            "value": [
+                {
+                    "name": "pls01",
+                    "properties": {
+                        "primary": true,
+                        "privateIPAllocationMethod": "Dynamic",
+                        "subnet": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009"
+                        }
+                    }
+                }
+            ]
+        },
+        "loadBalancerFrontendIpConfigurations": {
+            "value": [
+                {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls"
+                }
+            ]
+        },
+        "autoApproval": {
+            "value": {
+                "subscriptions": [
+                    "*"
+                ]
+            }
+        },
+        "visibility": {
+            "value": {
+                "subscriptions": [
+                    "<<subscriptionId>>"
+                ]
+            }
+        },
+        "enableProxyProtocol": {
+            "value": true
+        },
+        "fqdns": {
+            "value": [
+                "<<namePrefix>>.plsfqdn01.azure.privatelinkservice",
+                "<<namePrefix>>.plsfqdn02.azure.privatelinkserivce"
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}

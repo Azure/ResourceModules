@@ -9,6 +9,7 @@ With this module you can create policy exemptions across the management group, s
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -147,10 +148,15 @@ module policyexemption 'yourpath/modules/Microsoft.Authorization.policyExemption
 
 - Policy Exemptions have a dependency on Policy Assignments being applied before creating an exemption. You can use the Policy Assignment [Module](../policyAssignments/deploy.bicep) to deploy a Policy Assignment and then create the exemption for it on the required scope.
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Mg Min</h3>
@@ -161,7 +167,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-mg-polexem'
@@ -204,7 +210,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-mg-polexem'
@@ -273,7 +279,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-rg-polexem'
@@ -326,7 +332,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-rg-polexem'
@@ -399,7 +405,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-min-sub-polexem'
@@ -448,7 +454,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-policyExemptions'
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sub-polexem'

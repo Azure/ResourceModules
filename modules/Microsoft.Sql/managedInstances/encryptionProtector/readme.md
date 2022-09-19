@@ -7,12 +7,13 @@ This module deploys an encryption protector for a SQL managed instance.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/managedInstances/encryptionProtector` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/managedInstances/encryptionProtector) |
+| `Microsoft.Sql/managedInstances/encryptionProtector` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/encryptionProtector) |
 
 ## Parameters
 
@@ -39,6 +40,10 @@ This module deploys an encryption protector for a SQL managed instance.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed managed instance. |
-| `resourceGroupName` | string | The resource group of the deployed managed instance. |
-| `resourceId` | string | The resource ID of the deployed managed instance. |
+| `name` | string | The name of the deployed managed instance encryption protector. |
+| `resourceGroupName` | string | The resource group of the deployed managed instance encryption protector. |
+| `resourceId` | string | The resource ID of the deployed managed instance encryption protector. |
+
+## Cross-referenced modules
+
+_None_

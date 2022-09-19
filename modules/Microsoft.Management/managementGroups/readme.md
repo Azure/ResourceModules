@@ -13,6 +13,7 @@ This module has some known **limitations**:
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -121,10 +122,15 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Auto
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
 ```
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Parameters</h3>
@@ -135,7 +141,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-managementGroups'
+  name: '${uniqueString(deployment().name)}-ManagementGroups'
   params: {
     // Required parameters
     name: 'testMG'

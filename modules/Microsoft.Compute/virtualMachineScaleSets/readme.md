@@ -7,6 +7,7 @@ This module deploys a virtual machine scale set.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -14,8 +15,7 @@ This module deploys a virtual machine scale set.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Compute/proximityPlacementGroups` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/proximityPlacementGroups) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/virtualMachineScaleSets` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/virtualMachineScaleSets) |
 | `Microsoft.Compute/virtualMachineScaleSets/extensions` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachineScaleSets/extensions) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
@@ -87,8 +87,7 @@ The following resources are required to be able to deploy this resource.
 | `pauseTimeBetweenBatches` | string | `'PT0S'` |  | The wait time between completing the update for all virtual machines in one batch and starting the next batch. The time duration should be specified in ISO 8601 format. |
 | `plan` | object | `{object}` |  | Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use. |
 | `provisionVMAgent` | bool | `True` |  | Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later. |
-| `proximityPlacementGroupName` | string | `''` |  | Creates an proximity placement group and adds the VMs to it. |
-| `proximityPlacementGroupType` | string | `'Standard'` | `[Standard, Ultra]` | Specifies the type of the proximity placement group. |
+| `proximityPlacementGroupResourceId` | string | `''` |  | Resource ID of a proximity placement group. |
 | `publicIpDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `publicKeys` | array | `[]` |  | The list of SSH public keys used to authenticate with linux based VMs. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -324,6 +323,10 @@ dataDisks: [
 
 ### Parameter Usage: `nicConfigurations`
 
+Comments:
+- The field `nicSuffix` is mandatory.
+- If not disabled, `enableAcceleratedNetworking` is considered `true` by default and requires the VMSS to be deployed with a supported OS and VM size.
+
 <details>
 
 <summary>Parameter JSON format</summary>
@@ -395,10 +398,12 @@ nicConfigurations: [
   }
 },
 "extensionDomainJoinPassword": {
-  "keyVault": {
-    "id": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.KeyVault/vaults/wvd-to-kvlt"
-  },
-  "secretName": "domainJoinUser02-Password"
+  "reference": {
+    "keyVault": {
+      "id": "/subscriptions/<<subscriptionId>/resourceGroups/myRG/providers/Microsoft.KeyVault/vaults/myKvlt"
+    },
+    "secretName": "domainJoinUser02-Password"
+  }
 }
 ```
 
@@ -839,8 +844,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -853,8 +858,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -871,10 +876,15 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the virtual machine scale set. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Linux Min</h3>
@@ -885,7 +895,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -904,7 +914,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Linux'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     disablePasswordAuthentication: true
     nicConfigurations: [
@@ -972,7 +982,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Linux"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "disablePasswordAuthentication": {
@@ -1018,7 +1028,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1037,7 +1047,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Linux'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     availabilityZones: [
       '2'
@@ -1185,7 +1195,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Linux"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "availabilityZones": {
@@ -1362,7 +1372,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: kv1.getSecret('adminUsername')
@@ -1381,7 +1391,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Windows'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: kv1.getSecret('adminPassword')
     nicConfigurations: [
@@ -1448,7 +1458,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Windows"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "adminPassword": {
@@ -1496,7 +1506,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: kv1.getSecret('adminUsername')
@@ -1515,7 +1525,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     }
     osType: 'Windows'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: kv1.getSecret('adminPassword')
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
@@ -1595,6 +1605,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         nicSuffix: '-nic01'
       }
     ]
+    proximityPlacementGroupResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-vmss-001'
     roleAssignments: [
       {
         principalIds: [
@@ -1660,7 +1671,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "Windows"
     },
     "skuName": {
-      "value": "Standard_B2s"
+      "value": "Standard_B12ms"
     },
     // Non-required parameters
     "adminPassword": {
@@ -1777,6 +1788,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
           "nicSuffix": "-nic01"
         }
       ]
+    },
+    "proximityPlacementGroupResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-vmss-001"
     },
     "roleAssignments": {
       "value": [

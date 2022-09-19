@@ -4,7 +4,7 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and inboundIpRules are not set.')
 @allowed([
   ''
   'Enabled'
@@ -12,7 +12,7 @@ param location string = resourceGroup().location
 ])
 param publicNetworkAccess string = ''
 
-@description('Optional. Array of IPs to whitelist.')
+@description('Optional. This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.')
 param inboundIpRules array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -111,7 +111,7 @@ resource topic 'Microsoft.EventGrid/topics@2020-06-01' = {
   location: location
   tags: tags
   properties: {
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(inboundIpRules) ? 'Disabled' : null)
     inboundIpRules: (empty(inboundIpRules) ? null : inboundIpRules)
   }
 }
@@ -165,6 +165,8 @@ module topic_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleA
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: topic.id
   }
 }]
@@ -172,10 +174,10 @@ module topic_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleA
 @description('The name of the event grid topic.')
 output name string = topic.name
 
-@description('The resource ID of the event grid.')
+@description('The resource ID of the event grid topic.')
 output resourceId string = topic.id
 
-@description('The name of the resource group the event grid was deployed into.')
+@description('The name of the resource group the event grid topic was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')

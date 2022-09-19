@@ -20,6 +20,7 @@ param displayName string
 param location string = resourceGroup().location
 
 @description('Optional. Dictionary of nonsecret parameter values.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param nonSecretParameterValues object = {}
 
 @description('Optional. Connection strings or access keys for connection. Example: \'accountName\' and \'accessKey\' when using blobs.  It can change depending on the resource.')
@@ -89,6 +90,8 @@ module connection_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: connection.id
   }
 }]

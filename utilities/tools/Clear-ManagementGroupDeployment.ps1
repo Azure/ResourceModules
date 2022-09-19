@@ -34,6 +34,8 @@ function Clear-ManagementGroupDeployment {
         [string[]] $DeploymentStatusToExclude = @('running', 'failed')
     )
 
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Enables web reponse
+
     # Load used functions
     . (Join-Path $PSScriptRoot 'helper' 'Split-Array.ps1')
 

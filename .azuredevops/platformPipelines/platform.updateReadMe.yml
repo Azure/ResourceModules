@@ -14,7 +14,7 @@ trigger:
       - 'utilities/tools/platform/**'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '../../settings.yml'
   - name: pipelinePrincipalGitUserName
     value: 'CARMLPipelinePrincipal'
   - name: pipelinePrincipalGitUserEmail
@@ -69,7 +69,7 @@ jobs:
 
             $functionInput = @{
               ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
-              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'modules/README.md'
+              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'modules' 'README.md'
               Organization   = '$(System.CollectionUri)'.Split('/')[3]
               RepositoryName = '$(Build.Repository.Name)'
               ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
@@ -82,21 +82,24 @@ jobs:
 
             Set-ReadMeModuleTable @functionInput -Verbose
 
-      - name: 'Update module outline'
-        shell: pwsh
-        run: |
-          # Load used functions
-          . (Join-Path '$(System.DefaultWorkingDirectory)' '$(relativeScriptPath_SetModuleOverviewTable)')
+      - task: PowerShell@2
+        displayName: 'Update module outline'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(relativeScriptPath_SetModuleOverviewTable)')
 
-          $functionInput = @{
-            MarkdownFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'docs' 'wiki' 'The library - Module overview.md'
-            ModuleFolderPath = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
-          }
+            $functionInput = @{
+              MarkdownFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'docs' 'wiki' 'The library - Module overview.md'
+              ModuleFolderPath = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
+            }
 
-          Write-Verbose "Invoke task with" -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Set-ModuleOverviewTable @functionInput -Verbose
+            Set-ModuleOverviewTable @functionInput -Verbose
 
       - task: PowerShell@2
         displayName: 'Push changes'

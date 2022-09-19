@@ -25,7 +25,7 @@ trigger: none
 #       - 'utilities/pipelines/dependencies/**'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: dependencyPath
     value: 'utilities/pipelines/dependencies'
@@ -52,18 +52,18 @@ stages:
               displayName: Locks Resource Group
 
   - ${{ if eq( parameters.deployVhdDependencies, true) }}:
-    - stage: deploy_vhd
-      displayName: Store VHD to Storage Account
-      dependsOn:
-        - deploy_rg
-      variables:
-        templateFilePath: $(dependencyPath)/constructs/StoreVhdToStorage/deploy.bicep
-      jobs:
-        - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
-          parameters:
-            deploymentBlocks:
-              - templateFilePath: $(templateFilePath)
-                displayName: Deploy module
+      - stage: deploy_vhd
+        displayName: Store VHD to Storage Account
+        dependsOn:
+          - deploy_rg
+        variables:
+          templateFilePath: $(dependencyPath)/constructs/StoreVhdToStorage/deploy.bicep
+        jobs:
+          - template: /.azuredevops/pipelineTemplates/jobs.dependenciesModuleDeployment.yml
+            parameters:
+              deploymentBlocks:
+                - templateFilePath: $(templateFilePath)
+                  displayName: Deploy module
 
   - stage: deploy_ppg
     displayName: Deploy proximity placement group
@@ -79,6 +79,12 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Proximity Placement Group
+            - path: $(dependencyPath)/$(resourceType)/parameters/vm.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: VM Proximity Placement Group
+            - path: $(dependencyPath)/$(resourceType)/parameters/vmss.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: VMSS Proximity Placement Group
 
   - stage: deploy_msi
     displayName: Deploy user assigned identity
@@ -269,27 +275,35 @@ stages:
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 $parameterFilePaths = @($parameterFilePath)
 
-                # Replace tokens in parameter file
-                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                # Construct Token Function Input
                 $ConvertTokensInputs = @{
                   FilePathList = $parameterFilePaths
-                  TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-                  TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                  Tokens       = @{}
+                  TokenPrefix  = '$(tokenPrefix)'
+                  TokenSuffix  = '$(tokenSuffix)'
                 }
 
-                # Add local tokens
-                if ($Settings.parameterFileTokens.localTokens) {
-                  $tokenMap = @{}
-                  foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                      $tokenMap += @{ $token.name = $token.value }
-                  }
-                  Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.Tokens = $tokenMap
+                # Add local (source control) tokens
+                $tokenMap = @{}
+                foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+                  $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+                }
+                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                $ConvertTokensInputs.Tokens += $tokenMap
+
+                # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+                if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+                  Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
+                  $ConvertTokensInputs.Tokens['namePrefix'] = "$(TOKEN_NAMEPREFIX)"
                 }
 
                 $null = Convert-TokensInFileList @ConvertTokensInputs
 
                 # Get storage account name
+                if (-not [String]::IsNullOrEmpty('$(ARM_SUBSCRIPTION_ID)')) {
+                    Write-Verbose 'Setting context to subscription [$(ARM_SUBSCRIPTION_ID)]'
+                    $null = Set-AzContext -Subscription '$(ARM_SUBSCRIPTION_ID)'
+                }
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
                 # Upload files to storage account
@@ -584,20 +598,26 @@ stages:
                 $noprParameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'nopr.parameters.json'
                 $parameterFilePaths = @($parameterFilePath, $noprParameterFilePath)
 
-                # Replace tokens in parameter file
-                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                # Construct Token Function Input
                 $ConvertTokensInputs = @{
                   FilePathList = $parameterFilePaths
-                  TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-                  TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                  Tokens       = @{}
+                  TokenPrefix  = '$(tokenPrefix)'
+                  TokenSuffix  = '$(tokenSuffix)'
                 }
-                if ($Settings.parameterFileTokens.localTokens) {
-                  $tokenMap = @{}
-                  foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                      $tokenMap += @{ $token.name = $token.value }
-                  }
-                  Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.Tokens = $tokenMap
+
+                # Add local (source control) tokens
+                $tokenMap = @{}
+                foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+                  $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+                }
+                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                $ConvertTokensInputs.Tokens += $tokenMap
+
+                # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+                if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+                  Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
+                  $ConvertTokensInputs.Tokens['namePrefix'] = "$(TOKEN_NAMEPREFIX)"
                 }
                 $null = Convert-TokensInFileList @ConvertTokensInputs
 
@@ -616,10 +636,11 @@ stages:
                 $vpnSharedKeyString = (New-Guid).Guid.SubString(0, 32)
                 $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
 
-                $namePrefixToken = $Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }
+                $namePrefixToken = $ConvertTokensInputs.Tokens['namePrefix']
+
                 $certInputObject = @{
-                    Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken.value
-                    DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken.value
+                    Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken
+                    DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken
                     CertStoreLocation = 'cert:\LocalMachine\My'
                     KeyExportPolicy   = 'Exportable'
                     Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
@@ -716,21 +737,28 @@ stages:
                     $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
                     $parameterFilePaths = @($parameterFilePath)
 
-                    # Replace tokens in parameter file
-                    $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                    # Construct Token Function Input
                     $ConvertTokensInputs = @{
                       FilePathList = $parameterFilePath
-                      TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-                      TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                      Tokens       = @{}
+                      TokenPrefix  = '$(tokenPrefix)'
+                      TokenSuffix  = '$(tokenSuffix)'
                     }
-                    if ($Settings.parameterFileTokens.localTokens) {
-                      $tokenMap = @{}
-                      foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                          $tokenMap += @{ $token.name = $token.value }
-                      }
-                      Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                      $ConvertTokensInputs.Tokens = $tokenMap
+
+                    # Add local (source control) tokens
+                    $tokenMap = @{}
+                    foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+                      $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
                     }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens += $tokenMap
+
+                    # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+                    if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+                      Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
+                      $ConvertTokensInputs.Tokens['namePrefix'] = "$(TOKEN_NAMEPREFIX)"
+                    }
+
                     $null = Convert-TokensInFileList @ConvertTokensInputs
 
                     # Get key vault name
@@ -863,6 +891,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/13.bastion.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Virtual Network Custom
+            - path: $(dependencyPath)/$(resourceType)/parameters/14.postgres.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: PostgreSQL Virtual Network Custom
 
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
@@ -949,6 +980,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/webpubsub.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Web PubSub Private DNS Zone
+            - path: $(dependencyPath)/$(resourceType)/parameters/postgres.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: PostgreSQL Private DNS Zone
 
   - stage: deploy_vm
     displayName: Deploy virtual machines
@@ -980,4 +1014,7 @@ stages:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/internal.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Deploy module
+              displayName: Deploy Internal LB
+            - path: $(dependencyPath)/$(resourceType)/parameters/pls.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Deploy PLS LB

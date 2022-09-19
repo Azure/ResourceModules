@@ -7,6 +7,7 @@ This template deploys a virtual network gateway connection.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
@@ -302,10 +303,15 @@ tags: {
 | `resourceGroupName` | string | The resource group the remote connection was deployed into. |
 | `resourceId` | string | The resource ID of the remote connection. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Vnet2vnet</h3>
@@ -321,7 +327,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module connections './Microsoft.Network/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-connections'
+  name: '${uniqueString(deployment().name)}-Connections'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vnetgwc-x-001'

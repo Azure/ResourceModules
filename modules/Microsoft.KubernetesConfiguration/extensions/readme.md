@@ -8,6 +8,7 @@ This module deploys Kubernetes Configuration Extensions.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Prerequisites
@@ -63,10 +64,15 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `resourceGroupName` | string | The name of the resource group the extension was deployed into. |
 | `resourceId` | string | The resource ID of the extension. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Min</h3>
@@ -77,7 +83,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-extensions'
+  name: '${uniqueString(deployment().name)}-Extensions'
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
@@ -134,7 +140,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 
 ```bicep
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-extensions'
+  name: '${uniqueString(deployment().name)}-Extensions'
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'

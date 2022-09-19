@@ -22,7 +22,7 @@ This paragraph provides an overview of the standard development-to-deployment fl
 
 This flow generally covers 3 phases:
 
-1. In the **Develop modules** phase modules are first implemented/updated and then validated using one or multiple test-parameter files, testing their successful deployment to a sandbox subscription to prove their correctness.
+1. In the **Develop modules** phase modules are first implemented/updated and then validated using one or multiple module test files, testing their successful deployment to a sandbox subscription to prove their correctness.
 
 1. The next phase, **Publish modules**, packages and publishes the tested and approved modules to a target location for later consumption. The target location (also known as package store or artifact store) should support versioning to allow referencing a specific module version and to avoid breaking changes when referencing them.
 

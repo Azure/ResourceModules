@@ -8,6 +8,7 @@ This module deploys Kubernetes Configuration Flux Configurations.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Prerequisites
@@ -65,10 +66,15 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `resourceGroupName` | string | The name of the resource group the flux configuration was deployed into. |
 | `resourceId` | string | The resource ID of the flux configuration. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Min</h3>
@@ -79,7 +85,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-fluxConfigurations'
+  name: '${uniqueString(deployment().name)}-FluxConfigurations'
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'
@@ -156,7 +162,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 
 ```bicep
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-fluxConfigurations'
+  name: '${uniqueString(deployment().name)}-FluxConfigurations'
   params: {
     // Required parameters
     clusterName: '<<namePrefix>>-az-aks-kubenet-001'

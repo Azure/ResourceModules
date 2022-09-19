@@ -7,6 +7,7 @@ This module deploys a subscription wide export of the activity log.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -39,10 +40,15 @@ This module deploys a subscription wide export of the activity log.
 | `resourceId` | string | The resource ID of the diagnostic settings. |
 | `subscriptionName` | string | The name of the subscription to deploy into. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Parameters</h3>
@@ -53,7 +59,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module diagnosticSettings './Microsoft.Insights/diagnosticSettings/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-diagnosticSettings'
+  name: '${uniqueString(deployment().name)}-DiagnosticSettings'
   params: {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'

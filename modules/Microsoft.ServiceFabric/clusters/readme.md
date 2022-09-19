@@ -7,6 +7,7 @@ This module deploys a Service Fabric Cluster.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -14,7 +15,7 @@ This module deploys a Service Fabric Cluster.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.ServiceFabric/clusters` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters) |
 | `Microsoft.ServiceFabric/clusters/applicationTypes` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes) |
 
@@ -226,10 +227,15 @@ tags: {
 | `resourceGroupName` | string | The Service Fabric Cluster resource group. |
 | `resourceId` | string | The Service Fabric Cluster resource ID. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Cert</h3>
@@ -240,7 +246,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-clusters'
+  name: '${uniqueString(deployment().name)}-Clusters'
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080'
@@ -335,7 +341,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-clusters'
+  name: '${uniqueString(deployment().name)}-Clusters'
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
@@ -738,7 +744,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-clusters'
+  name: '${uniqueString(deployment().name)}-Clusters'
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080'
