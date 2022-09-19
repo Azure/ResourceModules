@@ -1,0 +1,10 @@
+{
+    "moduleAliases": {
+      "br": {
+        "pbr": {
+          "registry": "adpsxxazacrx009.azurecr.io",
+          "modulePath": "bicep/modules"
+        }
+      }
+    }
+  }
