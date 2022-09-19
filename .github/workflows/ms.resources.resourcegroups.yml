@@ -119,6 +119,7 @@ jobs:
 
           # Get Service Principal Object ID
           $context = Get-AzContext
+          Write-Output 'Checking context'
           $context
           $servicePrincipalAppId = $context.Account.Id
           $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
