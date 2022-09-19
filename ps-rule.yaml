@@ -58,4 +58,4 @@ rule:
 # Suppression ignores rules for a specific Azure resource by name.
 suppression:
   Azure.Resource.UseTags:
-    - *kvvmin001
+    - <<namePrefix>>kvvmin001
