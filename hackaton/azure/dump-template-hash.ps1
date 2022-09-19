@@ -29,6 +29,20 @@
 $storageAccount = ' '
 $resourceGroup = ' '
 
+
+Function CreateStg ($storageAccount, $content) {
+    $storageAccount = Get-AzStorageAccount -Name $env:storageAccount -ResourceGroupName $env:resourceGroup
+    $ctx = $storageAccount.Context
+    $partitionKey = 'Commits'
+    New-AzStorageTable -Name $partitionKey -Context $ctx -ErrorAction SilentlyContinue | Out-Null
+    $table = (Get-AzStorageTable –Name $partitionKey –Context $ctx).CloudTable
+}
+
+Function CreateStg ($storageAccount, $content) {
+    Add-AzTableRow -table $table -partitionKey $partitionKey -rowKey $_.commitId -property $commit -UpdateExisting | Out-Null
+}
+
+
 ##Create Storage Account table
 # $storageAccount = Get-AzStorageAccount -Name $env:storageAccount -ResourceGroupName $env:resourceGroup
 # $ctx = $storageAccount.Context
@@ -52,7 +66,7 @@ foreach ($sub in $subscriptions) {
         foreach ($deployment in $azDeployments) {
             #Write-Output 'Processing: ' $deployment.DeploymentName
             Save-AzDeploymentTemplate -DeploymentName $deployment.DeploymentName -Force | Out-Null
-            (Get-FileHash -Path "./$($deployment.DeploymentName).json" -Algorithm SHA256).Hash | Out-Null
+            (Get-FileHash -Path "./$($deployment.DeploymentName).json" -Algorithm SHA256).Hash | Out-Null # invoke Function
             Remove-Item "./$($deployment.DeploymentName).json"
             $processedDeployments++
         }
