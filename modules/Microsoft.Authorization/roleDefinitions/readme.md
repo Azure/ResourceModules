@@ -16,7 +16,7 @@ This module deploys custom RBAC Role Definitions across the management group, su
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleDefinitions` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleDefinitions) |
+| `Microsoft.Authorization/roleDefinitions` | [2018-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions) |
 
 ## Parameters
 
@@ -40,6 +40,7 @@ This module deploys custom RBAC Role Definitions across the management group, su
 | `resourceGroupName` | string | `''` | The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
 | `subscriptionId` | string | `''` | The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
 
+
 ### Parameter Usage: `managementGroupId`
 
 To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
@@ -55,6 +56,7 @@ To deploy resource to a Management Group, provide the `managementGroupId` as an 
 ```
 
 </details>
+
 
 <details>
 
@@ -72,6 +74,7 @@ managementGroupId: 'contoso-group'
 ### Parameter Usage: `subscriptionId`
 
 To deploy resource to an Azure Subscription, provide the `subscriptionId` as an input parameter to the module. **Example**:
+
 
 <details>
 
@@ -115,6 +118,7 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 </details>
 
+
 <details>
 
 <summary>Bicep format</summary>
@@ -142,13 +146,10 @@ Error BCP134: Scope "subscription" is not valid for this module. Permitted scope
 The solution is to have the option of directly targeting the sub-module that achieves the required scope. For example, if you have your own Bicep file wanting to create resources at the subscription level, and also use some of the modules from the `Microsoft.Authorization` namespace, then you can directly use the sub-module ['/subscription/deploy.bicep'](./subscription/deploy.bicep) as a path within your repository, or reference that same published module from the bicep registry. CARML also published the sub-modules so you would be able to reference it like the following:
 
 **Bicep Registry Reference**
-
 ```bicep
 module roledefinition 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.authorization.roledefinitions.subscription:version' = {}
 ```
-
 **Local Path Reference**
-
 ```bicep
 module roledefinition 'yourpath/modules/Microsoft.Authorization.roleDefinitions/subscription/deploy.bicep' = {}
 ```

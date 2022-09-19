@@ -13,7 +13,7 @@ With this module you can create role definitions on a resource group level
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleDefinitions` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleDefinitions) |
+| `Microsoft.Authorization/roleDefinitions` | [2018-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions) |
 
 ## Parameters
 
@@ -34,6 +34,7 @@ With this module you can create role definitions on a resource group level
 | `notDataActions` | array | `[]` | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
 | `resourceGroupName` | string | `[resourceGroup().name]` | The name of the Resource Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` | The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
+
 
 ## Outputs
 

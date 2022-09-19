@@ -13,7 +13,7 @@ With this module you can create role definitions on a management group level
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleDefinitions` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleDefinitions) |
+| `Microsoft.Authorization/roleDefinitions` | [2018-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions) |
 
 ## Parameters
 
@@ -32,6 +32,7 @@ With this module you can create role definitions on a management group level
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `notActions` | array | `[]` | List of denied actions. |
+
 
 ## Outputs
 
