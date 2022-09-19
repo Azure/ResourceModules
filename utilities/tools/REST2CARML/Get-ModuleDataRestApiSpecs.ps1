@@ -46,9 +46,6 @@
             $put = $_.value.put
 
             if ($put) {
-                Write-Host $jsonFile
-                Write-Host $_.Name
-
                 $arrItem = [pscustomobject] @{}
                 $arrItem | Add-Member -MemberType NoteProperty -Name 'jsonFile' -Value $jsonFile.Name
                 $arrItem | Add-Member -MemberType NoteProperty -Name 'path' -Value $_.Name
@@ -60,6 +57,7 @@
     }
 
     $putMethods | ConvertTo-Json
+
 
     ## Remove temp folder again
     # $null = Remove-Item $tempFolderPath -Recurse -Force
