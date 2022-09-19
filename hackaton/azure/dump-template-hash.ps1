@@ -26,21 +26,43 @@
 #Write-Output 'Subscription + RG + DeploymentName +  Hash)'
 
 
+$storageAccount = ' '
+$resourceGroup = ' '
+
+##Create Storage Account table
+# $storageAccount = Get-AzStorageAccount -Name $env:storageAccount -ResourceGroupName $env:resourceGroup
+# $ctx = $storageAccount.Context
+# $partitionKey = 'Commits'
+# New-AzStorageTable -Name $partitionKey -Context $ctx -ErrorAction SilentlyContinue | Out-Null
+# $table = (Get-AzStorageTable –Name $partitionKey –Context $ctx).CloudTable
+
+
+$subscriptions = Get-AzSubscription
+
 $StartTime = $(Get-Date)
 
-$processedDeployments = 0
+foreach ($sub in $subscriptions) {
+    Select-AzSubscription -Subscription $sub.name
 
-#Region: Get the current Azure Deployments.
-$azDeployments = Get-AzDeployment
-foreach ($deployment in $azDeployments) {
-    Write-Output 'Processing: ' $deployment.DeploymentName
-    Save-AzDeploymentTemplate -DeploymentName $deployment.DeploymentName -Force | Out-Null
-    (Get-FileHash -Path "./$($deployment.DeploymentName).json" -Algorithm SHA256).Hash
-    Remove-Item "./$($deployment.DeploymentName).json"
-    $processedDeployments++
+    #Region: Get the current Azure Deployments.
+    $processedDeployments = 0
+    try {
+        $azDeployments = Get-AzDeployment
+
+        foreach ($deployment in $azDeployments) {
+            #Write-Output 'Processing: ' $deployment.DeploymentName
+            Save-AzDeploymentTemplate -DeploymentName $deployment.DeploymentName -Force | Out-Null
+            (Get-FileHash -Path "./$($deployment.DeploymentName).json" -Algorithm SHA256).Hash | Out-Null
+            Remove-Item "./$($deployment.DeploymentName).json"
+            $processedDeployments++
+        }
+    } catch {
+        Write-Output "Error: $($_.Exception.Message)"
+        continue
+    }
 }
 
 $elapsedTime = $(Get-Date) - $StartTime
 $totalTime = '{0:HH:mm:ss}' -f ([datetime]$elapsedTime.Ticks)
 
-Write-Output 'Processed deployments: ' $processedDeployments 'in ' $totalTime
+Write-Output 'Processed deployments: ' + $processedDeployments 'Time spent '+$totalTime ''
