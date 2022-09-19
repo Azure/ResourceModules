@@ -67,16 +67,23 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     gitConfigureLater: true
-    integrationRuntime: {
-      managedVirtualNetworkName: 'default'
-      name: 'AutoResolveIntegrationRuntime'
-      type: 'Managed'
-      typeProperties: {
-        computeProperties: {
-          location: 'AutoResolve'
+    integrationRuntimes: [
+      {
+        managedVirtualNetworkName: 'default'
+        name: 'AutoResolveIntegrationRuntime'
+        type: 'Managed'
+        typeProperties: {
+          computeProperties: {
+            location: 'AutoResolve'
+          }
         }
       }
-    }
+
+      {
+        name: 'TestRuntime'
+        type: 'SelfHosted'
+      }
+    ]
     lock: 'CanNotDelete'
     managedPrivateEndpoints: [
       {

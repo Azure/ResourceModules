@@ -1,4 +1,4 @@
-# Data Factory Integration RunTimes `[Microsoft.DataFactory/factories/integrationRuntime]`
+# Data Factory Integration RunTimes `[Microsoft.DataFactory/factories/integrationRuntimes]`
 
 This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Data Factory
 
@@ -22,7 +22,6 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | The name of the Integration Runtime. |
 | `type` | string | `[Managed, SelfHosted]` | The type of Integration Runtime. |
-| `typeProperties` | object |  | Integration Runtime type properties. |
 
 **Conditional parameters**
 | Parameter Name | Type | Description |
@@ -34,6 +33,7 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `managedVirtualNetworkName` | string | `''` | The name of the Managed Virtual Network if using type "Managed" . |
+| `typeProperties` | object | `{object}` | Integration Runtime type properties. Required if type is "Managed". |
 
 
 ### Parameter Usage: [`typeProperties`](https://docs.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
