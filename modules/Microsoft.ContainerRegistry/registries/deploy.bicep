@@ -63,7 +63,7 @@ param azureADAuthenticationAsArmPolicyStatus string = 'enabled'
   'enabled'
 ])
 @description('Optional. Soft Delete policy status.')
-param softDeletePolicyStatus string = 'enabled'
+param softDeletePolicyStatus string = 'disabled'
 
 @description('Optional. The number of days after which a soft-deleted item is permanently deleted.')
 param softDeletePolicyDays int = 7
