@@ -55,6 +55,7 @@ rule:
   exclude:
     # Ignore the following rules for all resources
     - Azure.KeyVault.PurgeProtect
+    - Azure.Resource.UseTags
 # Suppression ignores rules for a specific Azure resource by name.
 suppression:
   Azure.Resource.UseTags:
