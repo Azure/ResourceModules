@@ -27,7 +27,7 @@
             "value": "enabled"
         },
         "softDeletePolicyStatus": {
-            "value": "enabled"
+            "value": "disabled"
         },
         "softDeletePolicyDays": {
             "value": 7
