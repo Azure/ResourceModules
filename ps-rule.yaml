@@ -37,6 +37,7 @@ input:
     # Exclude modules but not tests.
     - 'modules/**/*.bicep'
     - '!modules/**/*.test.bicep'
+    - 'modules/**/*version.json'
 
 configuration:
   # Enable automatic expansion of Azure parameter files.
