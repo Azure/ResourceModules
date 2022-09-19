@@ -97,7 +97,7 @@ jobs:
         uses: microsoft/ps-rule@v2.4.0
         with:
           modules: 'PSRule.Rules.Azure'
-          inputPath: '${{ env.modulePath }}'
+          inputPath: '${{ env.modulePath }}/'
 
   #############################
   #   Deployment validation   #
