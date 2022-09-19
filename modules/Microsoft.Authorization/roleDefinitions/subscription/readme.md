@@ -4,16 +4,18 @@ With this module you can create role definitions on a subscription level
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
+- [Role Definitions on Subscription level `[Microsoft.Authorization/roleDefinitions/subscription]`](#role-definitions-on-subscription-level-microsoftauthorizationroledefinitionssubscription)
+  - [Navigation](#navigation)
+  - [Resource Types](#resource-types)
+  - [Parameters](#parameters)
+  - [Outputs](#outputs)
+  - [Cross-referenced modules](#cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleDefinitions` | [2018-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions) |
+| `Microsoft.Authorization/roleDefinitions` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleDefinitions) |
 
 ## Parameters
 
@@ -34,7 +36,6 @@ With this module you can create role definitions on a subscription level
 | `notActions` | array | `[]` | List of denied actions. |
 | `notDataActions` | array | `[]` | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` | The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
-
 
 ## Outputs
 
