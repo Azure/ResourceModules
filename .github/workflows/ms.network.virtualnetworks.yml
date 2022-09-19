@@ -74,7 +74,7 @@ jobs:
         uses: microsoft/ps-rule@main
         with:
           modules: 'PSRule.Rules.Azure'
-          inputPath: '${{ env.modulePath }}'
+          inputPath: '${{ env.modulePath }}/'
 
   
 
