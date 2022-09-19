@@ -40,7 +40,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | :-- | :-- | :-- | :-- | :-- |
 | `acrAdminUserEnabled` | bool | `False` |  | Enable admin user that have push / pull permission to the registry. |
 | `acrSku` | string | `'Basic'` | `[Basic, Premium, Standard]` | Tier of your Azure container registry. |
-| `azureADAuthenticationAsArmPolicyStatus` | string | `'enabled'` | `[disabled, enabled]` | The value that indicates whether the policy for using ARM audience token for a container registr is enabled or not. |
+| `azureADAuthenticationAsArmPolicyStatus` | string | `'enabled'` | `[disabled, enabled]` | The value that indicates whether the policy for using ARM audience token for a container registr is enabled or not. default is enabled |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Note, CMK requires the 'acrSku' to be 'Premium'. |
 | `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the 'acrSku' to be 'Premium'. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
@@ -68,7 +68,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `retentionPolicyStatus` | string | `'enabled'` | `[disabled, enabled]` | The value that indicates whether the retention policy is enabled or not. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `softDeletePolicyDays` | int | `7` |  | The number of days after which a soft-deleted item is permanently deleted. |
-| `softDeletePolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | Soft Delete policy status. |
+| `softDeletePolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | Soft Delete policy status. default is disabled. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `trustPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the trust policy is enabled or not. |

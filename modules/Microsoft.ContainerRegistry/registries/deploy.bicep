@@ -55,14 +55,14 @@ param retentionPolicyDays int = 15
   'disabled'
   'enabled'
 ])
-@description('Optional. The value that indicates whether the policy for using ARM audience token for a container registr is enabled or not.')
+@description('Optional. The value that indicates whether the policy for using ARM audience token for a container registr is enabled or not. default is enabled')
 param azureADAuthenticationAsArmPolicyStatus string = 'enabled'
 
 @allowed([
   'disabled'
   'enabled'
 ])
-@description('Optional. Soft Delete policy status.')
+@description('Optional. Soft Delete policy status. default is disabled.')
 param softDeletePolicyStatus string = 'disabled'
 
 @description('Optional. The number of days after which a soft-deleted item is permanently deleted.')
