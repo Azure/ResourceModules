@@ -27,3 +27,11 @@ jobs:
           DEFAULT_BRANCH: ${{ github.base_ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILTER_REGEX_EXCLUDE: '[module.tests.ps1|Get\-ModulesAsMarkdownTable.ps1|.*yml]'
+
+      # Analyze repository with PSRule
+      - name: Run PSRule analysis
+        uses: microsoft/ps-rule@v2.4.0
+        continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
+        with:
+          modules: PSRule.Rules.Azure
+          baseline: Azure.Default
