@@ -23,26 +23,24 @@
     .\Complete-WikiMigration.ps1 @parameters
 #>
 
-[CmdletBinding()]
-Param (
-    [Parameter(Mandatory = $true)]
-    [String] $AzureDevOpsRepositoryName,
+#Write-Output 'Subscription + RG + DeploymentName +  Hash)'
 
-    [Parameter(Mandatory = $true)]
-    [String] $AzureDevOpsRepositoryHomePageName,
 
-    [Parameter(Mandatory = $true)]
-    [String] $GitHubRepositoryURL,
+$StartTime = $(Get-Date)
 
-    [Parameter(Mandatory = $true)]
-    [String] $GitHubPAT,
-
-    [Parameter(Mandatory = $true)]
-    [String] $GitHubRepositoryName
-)
+$processedDeployments = 0
 
 #Region: Get the current Azure Deployments.
 $azDeployments = Get-AzDeployment
-foreach ($deployment in $azDeployments.DeploymentName) {
-    ((Save-AzDeploymentTemplate -DeploymentName $deployment -Force) | Get-FileHash -Algorithm SHA256) | Select-Object -Property Hash
+foreach ($deployment in $azDeployments) {
+    Write-Output 'Processing: ' $deployment.DeploymentName
+    Save-AzDeploymentTemplate -DeploymentName $deployment.DeploymentName -Force | Out-Null
+    (Get-FileHash -Path "./$($deployment.DeploymentName).json" -Algorithm SHA256).Hash
+    Remove-Item "./$($deployment.DeploymentName).json"
+    $processedDeployments++
 }
+
+$elapsedTime = $(Get-Date) - $StartTime
+$totalTime = '{0:HH:mm:ss}' -f ([datetime]$elapsedTime.Ticks)
+
+Write-Output 'Processed deployments: ' $processedDeployments 'in ' $totalTime
