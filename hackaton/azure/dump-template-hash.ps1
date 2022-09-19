@@ -38,7 +38,7 @@ Function CreateStg ($storageAccount, $content) {
     $table = (Get-AzStorageTable –Name $partitionKey –Context $ctx).CloudTable
 }
 
-Function CreateStg ($storageAccount, $content) {
+Function UploadToStg ($storageAccount, $content) {
     Add-AzTableRow -table $table -partitionKey $partitionKey -rowKey $_.commitId -property $commit -UpdateExisting | Out-Null
 }
 
