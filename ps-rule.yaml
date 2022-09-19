@@ -30,14 +30,21 @@ output:
 input:
   pathIgnore:
     # Ignore other files in the repository.
-    - '.vscode/'
-    - '.github/'
-    - '*.md'
+    # - '.azuredevops/'
+    # - '.github/'
+    # - '.vscode/'
+    # - 'constructs/'
+    # - 'docs/'
+    # - 'utilities'
+    - '**/*'
+    # - '*.md'
+    # # - '!**/.tests/*.bicep'
+
 
     # Exclude modules but not tests.
-    - 'modules/**/*.bicep'
+    # - 'modules/**/*.bicep'
     - '!modules/**/*.test.bicep'
-    - 'modules/**/*version.json'
+    # - 'modules/**/*version.json'
 
 configuration:
   # Enable automatic expansion of Azure parameter files.
