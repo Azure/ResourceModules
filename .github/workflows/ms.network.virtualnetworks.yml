@@ -75,6 +75,8 @@ jobs:
         with:
           modules: 'PSRule.Rules.Azure'
           inputPath: '${{ env.modulePath }}/'
+          outputFormat: Sarif
+          option: ${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
   
 
