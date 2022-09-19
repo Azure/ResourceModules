@@ -10,8 +10,8 @@
 binding:
   preferTargetInfo: true
   targetType:
-  - type
-  - resourceType
+    - type
+    - resourceType
 
 # Require minimum versions of modules.
 requires:
@@ -21,37 +21,35 @@ requires:
 # Use PSRule for Azure.
 include:
   module:
-  - PSRule.Rules.Azure
+    - PSRule.Rules.Azure
 
 output:
   culture:
-  - 'en-US'
+    - 'en-US'
 
 input:
   pathIgnore:
+    # Ignore other files in the repository.
+    - '.vscode/'
+    - '.github/'
+    - '*.md'
 
-  # Ignore other files in the repository.
-  - '.vscode/'
-  - '.github/'
-  - '*.md'
-
-  # Exclude modules but not tests.
-  - 'modules/**/*.bicep'
-  - '!modules/**/*.test.bicep'
+    # Exclude modules but not tests.
+    - 'modules/**/*.bicep'
+    - '!modules/**/*.test.bicep'
 
 configuration:
   # Enable automatic expansion of Azure parameter files.
-  AZURE_PARAMETER_FILE_EXPANSION: true
+  AZURE_PARAMETER_FILE_EXPANSION: false
 
   # Enable automatic expansion of Azure Bicep source files.
   AZURE_BICEP_FILE_EXPANSION: true
 
   # Configures the number of seconds to wait for build Bicep files.
   AZURE_BICEP_FILE_EXPANSION_TIMEOUT: 10
-
 # Suppression ignores rules for a specific Azure resource by name.
 # suppression:
 #   Azure.KeyVault.Logs:
-#   - kvtest001
+#     - kvtest001
 #   Azure.Storage.BlobPublicAccess:
-#   - sttest001
+#     - sttest001
