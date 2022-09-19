@@ -27,6 +27,22 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     }
 }
 
+resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+    name: 'privatelink.azurecr.io'
+    location: 'global'
+
+    resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+        name: '${virtualNetwork.name}-vnetlink'
+        location: 'global'
+        properties: {
+            virtualNetwork: {
+                id: virtualNetwork.id
+            }
+            registrationEnabled: false
+        }
+    }
+}
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
     location: location
@@ -40,3 +56,6 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
+
+@description('The resource ID of the created Private DNS Zone.')
+output privateDNSZoneResourceId string = privateDNSZone.id

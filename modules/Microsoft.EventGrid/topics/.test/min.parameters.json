@@ -3,12 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-vnet-min-001"
-        },
-        "addressPrefixes": {
-            "value": [
-                "10.0.0.0/16"
-            ]
+            "value": "<<namePrefix>>-az-egtn-min-001"
         }
     }
 }

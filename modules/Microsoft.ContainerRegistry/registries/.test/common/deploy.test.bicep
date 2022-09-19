@@ -69,9 +69,19 @@ module testDeployment '../../deploy.bicep' = {
       {
         service: 'registry'
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            resourceGroupResources.outputs.privateDNSZoneResourceId
+          ]
+        }
       }
     ]
-    publicNetworkAccess: 'Disabled'
+    networkRuleSetIpRules: [
+      {
+        action: 'Allow'
+        value: '40.74.28.0/23'
+      }
+    ]
     quarantinePolicyStatus: 'enabled'
     replications: [
       {
