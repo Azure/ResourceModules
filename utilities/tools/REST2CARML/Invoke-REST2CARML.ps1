@@ -30,11 +30,15 @@ function Invoke-REST2CARML {
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
+        # Load used functions
+        . (Join-Path $PSScriptRoot 'Get-ModuleData.ps1')
+
         Write-Verbose ('Processing module [{0}/{1}]' -f $ProviderNamespace, $ResourceType) -Verbose
     }
 
     process {
         # TODO: Invoke function to fetch module data
+        # $moduleData = Get-ModuleData -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
 
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
             # TODO: Invoke function to create intial module structure & create workflow/pipeline files
