@@ -81,6 +81,24 @@ jobs:
           modulePath: '${{ env.modulePath }}'
           moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
+  job_psrule_test:
+    name: 'PsRule Analyze repository'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+
+      # Run analysis by using the PSRule GitHub action.
+      - name: Run PSRule analysis
+        uses: microsoft/ps-rule@v2.4.0
+        with:
+          modules: 'PSRule.Rules.Azure'
+          inputPath: '${{ env.modulePath }}/'
+
   #############################
   #   Deployment validation   #
   #############################
