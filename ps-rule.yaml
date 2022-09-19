@@ -56,8 +56,6 @@ rule:
     # Ignore the following rules for all resources
     - Azure.KeyVault.PurgeProtect
 # Suppression ignores rules for a specific Azure resource by name.
-# suppression:
-#   Azure.KeyVault.Logs:
-#     - kvtest001
-#   Azure.Storage.BlobPublicAccess:
-#     - sttest001
+suppression:
+  Azure.Resource.UseTags:
+    - *kvvmin001
