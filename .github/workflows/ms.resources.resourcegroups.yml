@@ -124,7 +124,7 @@ jobs:
           # $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
           # $servicePrincipalObjectId = $servicePrincipal.Id
 
-          # Polulate tokens
+          # Populate tokens
           $Tokens = @{
             resourceGroupName = '${{ env.resourceGroupName }}'
             subscriptionId    = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
