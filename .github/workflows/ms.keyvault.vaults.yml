@@ -154,40 +154,6 @@ jobs:
           modules: 'PSRule.Rules.Azure'
           inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
 
-<<<<<<< HEAD
-  #############################
-  #   Deployment validation   #
-  #############################
-  job_module_deploy_validation:
-    runs-on: ubuntu-20.04
-    name: 'Deployment validation'
-    needs:
-      - job_initialize_pipeline
-      - job_module_pester_validation
-      - job_psrule_test
-    strategy:
-      fail-fast: false
-      matrix:
-        moduleTestFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          location: '${{ env.location }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
-=======
   # #############################
   # #   Deployment validation   #
   # #############################
@@ -220,7 +186,6 @@ jobs:
   #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
->>>>>>> hack/topic6
 
   # ##################
   # #   Publishing   #
