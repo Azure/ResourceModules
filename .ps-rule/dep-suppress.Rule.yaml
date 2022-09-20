@@ -6,7 +6,7 @@ metadata:
   name: 'SuppressDependancy'
 spec:
   rule:
-  - 'PSRule.Rules.Azure\'
+  - 'Azure.GA_2022_06' 
   if:
     name: '.'
     startsWith: 
