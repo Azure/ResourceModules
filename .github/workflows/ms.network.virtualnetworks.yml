@@ -153,8 +153,9 @@ jobs:
         with:
           modules: 'PSRule.Rules.Azure'
           inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          outputFormat: NUnit3
-          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml'
+          outputFormat: Markdown
+          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
+          outputOutcome: 'Problem'
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
             
       # - name: 'PSRule test summary'
@@ -164,7 +165,7 @@ jobs:
       #     files: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml'
 
       - name: Output to Github summaries
-        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml'
+        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
 
   # #############################
   # #   Deployment validation   #
