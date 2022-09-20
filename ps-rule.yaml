@@ -27,6 +27,7 @@ output:
   culture:
     - 'en-US'
 
+
 input:
   pathIgnore:
     # Ignore other files in the repository.
