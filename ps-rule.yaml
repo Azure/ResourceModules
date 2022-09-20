@@ -30,21 +30,14 @@ output:
 input:
   pathIgnore:
     # Ignore other files in the repository.
-    # - '.azuredevops/'
-    # - '.github/'
-    # - '.vscode/'
-    # - 'constructs/'
-    # - 'docs/'
-    # - 'utilities'
-    - '**/*'
-    # - '*.md'
-    # # - '!**/.tests/*.bicep'
-
+    - '.vscode/'
+    - '.github/'
+    - '*.md'
 
     # Exclude modules but not tests.
-    # - 'modules/**/*.bicep'
+    - 'modules/**/*.bicep'
     - '!modules/**/*.test.bicep'
-    # - 'modules/**/*version.json'
+    - 'modules/**/*version.json'
 
 configuration:
   # Enable automatic expansion of Azure parameter files.
@@ -62,7 +55,7 @@ rule:
   exclude:
     # Ignore the following rules for all resources
     - Azure.KeyVault.PurgeProtect
- 
+
 # Suppression ignores rules for a specific Azure resource by name.
 suppression:
   Azure.Resource.UseTags:
