@@ -163,12 +163,12 @@ jobs:
             $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
           }
 
-          # Add custom tokens (passed in via the pipeline)
-          if(-not [String]::IsNullOrEmpty($customParameterFileTokens)) {
-            $customTokens = $customParameterFileTokens| ConvertFrom-Json -AsHashTable
-            Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
-            $ConvertTokensInputs.Tokens += $customTokens
-          }
+          # # Add custom tokens (passed in via the pipeline)
+          # if(-not [String]::IsNullOrEmpty($customParameterFileTokens)) {
+          #   $customTokens = $customParameterFileTokens| ConvertFrom-Json -AsHashTable
+          #   Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
+          #   $ConvertTokensInputs.Tokens += $customTokens
+          # }
 
           Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
