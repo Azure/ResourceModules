@@ -57,7 +57,7 @@ rule:
     - Azure.Resource.UseTags
 
 # Suppression ignores rules for a specific Azure resource by name.
-suppression:
-  Azure.Identity.UserAssignedName:
-    - 'dep*'
+#suppression:
+#  Azure.Identity.UserAssignedName:
+#    - 'dep*'
 
