@@ -1,4 +1,4 @@
-name: 'prfx-conn-ae-network-hub-rg'
+name: 'prfx-conn-network-hub-rg'
 
 pr: none
 
@@ -9,7 +9,7 @@ trigger:
       - main
   paths:
     include:
-      - root (b3b845c6-2a30-6f4c-62d3-a8b417cb9173)/prfx-connectivity-ae (3e51c849-d082-4b01-9385-455f253a5729)/prfx-conn-ae-network-hub-rg/*
+      - solutions/CoreInfra/*
 
 variables:
   - template: /settings.yml
@@ -17,10 +17,10 @@ variables:
 
 resources:
   repositories:
-  - repository: ResourceModules
-    name: ResourceModules
-    ref: 'refs/heads/main'
-    type: git
+    - repository: ResourceModules
+      name: ResourceModules
+      ref: 'refs/heads/main'
+      type: git
 
 stages:
   - stage:
