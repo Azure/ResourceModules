@@ -17,7 +17,6 @@ binding:
 requires:
   PSRule: '@pre >=2.4.0'
   PSRule.Rules.Azure: '@pre >=1.19.2'
-  baseline: 'Azure.GA_2022_06'
 
 # Use PSRule for Azure.
 include:
