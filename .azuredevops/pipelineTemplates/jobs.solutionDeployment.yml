@@ -93,207 +93,207 @@ jobs:
         vmImage: ${{ parameters.vmImage }}
       ${{ if ne(parameters.poolName, '') }}:
         name: ${{ parameters.poolName }}
-    strategy:
-      runOnce:
-        deploy:
-          ##---------------------------------------------##
-          ## TEMPLATE LOGIC                              ##
-          ##---------------------------------------------##
-          steps:
-            # [Environment Variables] task(s)
-            #--------------------------------
-            - pwsh: |
-                $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(environmentPath)' '${{ parameters.modulePath }}'
-                $sourceDirectory = '$(System.DefaultWorkingDirectory)'
-                Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
-                Write-Output "##vso[task.setvariable variable=ENVSOURCEDIRECTORY]$sourceDirectory"
-            # [Checkout Repositories] task(s)
-            #--------------------------------
-            - checkout: self
-            - ${{ if ne(parameters.checkoutRepositories, '') }}:
-                - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
-                    - checkout: ${{ checkoutRepository }}
-                      fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                      path: 's/${{ checkoutRepository }}'
-                - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
-                  # [Multi Repo] Support task
-                  #--------------------------
-                  - task: PowerShell@2
-                    displayName: Handle Multi-Repo Invocation
-                    inputs:
-                      targetType: inline
-                      pwsh: true
-                      script: |
-                        # ---------------------------- #
-                        # HANDLE MULTI-REPO INVOCATION #
-                        # ---------------------------- #
+    # strategy:
+    #   runOnce:
+    #     deploy:
+    ##---------------------------------------------##
+    ## TEMPLATE LOGIC                              ##
+    ##---------------------------------------------##
+    steps:
+      # [Environment Variables] task(s)
+      #--------------------------------
+      - pwsh: |
+          $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(environmentPath)' '${{ parameters.modulePath }}'
+          $sourceDirectory = '$(System.DefaultWorkingDirectory)'
+          Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
+          Write-Output "##vso[task.setvariable variable=ENVSOURCEDIRECTORY]$sourceDirectory"
+      # [Checkout Repositories] task(s)
+      #--------------------------------
+      - checkout: self
+      - ${{ if ne(parameters.checkoutRepositories, '') }}:
+          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
+              - checkout: ${{ checkoutRepository }}
+                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
+                path: 's/${{ checkoutRepository }}'
+          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
+            # [Multi Repo] Support task
+            #--------------------------
+            - task: PowerShell@2
+              displayName: Handle Multi-Repo Invocation
+              inputs:
+                targetType: inline
+                pwsh: true
+                script: |
+                  # ---------------------------- #
+                  # HANDLE MULTI-REPO INVOCATION #
+                  # ---------------------------- #
 
-                        # Handle multiple-repositories
-                        Write-Verbose "Multi-Repo Checkout" -Verbose
-                        $sourceDirectory = '$(Build.Repository.Name)'
-                        $sourceDirectory = $sourceDirectory.Split('/')[-1]
-                        $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' ${{ checkoutRepository }} '${{ parameters.modulePath }}'
-                        Write-Verbose "modulePath: $modulePath" -Verbose
-                        Write-Verbose "sourceDirectory: $sourceDirectory" -Verbose
-                        Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
-                        Write-Output "##vso[task.setvariable variable=ENVSOURCEDIRECTORY]$sourceDirectory"
-
-            # [Download Azure Artifacts] task(s)
-            #---------------------
-            - ${{ if ne(parameters.moduleName, '') }}:
-              - pwsh : |
-                  $lowerModuleName = "${{ parameters.moduleName }}".ToLower()
-                  Write-Host "##vso[task.setVariable variable=lowerModuleName]$lowerModuleName"
-
-                  $modulePath = Join-Path '$(downloadDirectory)/${{ parameters.moduleName }}' 'deploy.json'
-
+                  # Handle multiple-repositories
+                  Write-Verbose "Multi-Repo Checkout" -Verbose
+                  $sourceDirectory = '$(Build.Repository.Name)'
+                  $sourceDirectory = $sourceDirectory.Split('/')[-1]
+                  $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' ${{ checkoutRepository }} '${{ parameters.modulePath }}'
+                  Write-Verbose "modulePath: $modulePath" -Verbose
+                  Write-Verbose "sourceDirectory: $sourceDirectory" -Verbose
                   Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
-                displayName: 'Prepare download from artifacts feed'
-              - task: UniversalPackages@0
-                displayName: 'Download module [${{ parameters.moduleName }}] version [${{ parameters.moduleVersion }}] from feed [${{ parameters.artifactFeedPath }}]'
-                inputs:
-                  command: download
-                  vstsFeed: '${{ parameters.artifactFeedPath }}'
-                  vstsFeedPackage: '$(lowerModuleName)'
-                  vstsPackageVersion: '${{ parameters.moduleVersion }}'
-                  downloadDirectory: '$(downloadDirectory)/$(lowerModuleName)'
+                  Write-Output "##vso[task.setvariable variable=ENVSOURCEDIRECTORY]$sourceDirectory"
 
-            # [Validation] task(s)
-            #---------------------
-            - ${{ if eq( parameters.whatif, true) }}:
-              - task: AzurePowerShell@5
-                displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
-                inputs:
-                  azureSubscription: ${{ parameters.serviceConnection }}
-                  azurePowerShellVersion: 'latestVersion'
-                  preferredAzurePowerShellVersion: ''
-                  ScriptType: InlineScript
-                  pwsh: true
-                  inline: |
-                    # Load used functions
-                    . (Join-Path '$(ENVSOURCEDIRECTORY)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
+      # [Download Azure Artifacts] task(s)
+      #---------------------
+      - ${{ if ne(parameters.moduleName, '') }}:
+        - pwsh : |
+            $lowerModuleName = "${{ parameters.moduleName }}".ToLower()
+            Write-Host "##vso[task.setVariable variable=lowerModuleName]$lowerModuleName"
 
-                    # Fetching parameters
-                    $location = '${{ parameters.location }}'
-                    $resourceGroupName = '${{ parameters.resourceGroupName }}'
-                    $subscriptionId = '${{ parameters.subscriptionId }}'
-                    $managementGroupId = '${{ parameters.managementGroupId }}'
+            $modulePath = Join-Path '$(downloadDirectory)/${{ parameters.moduleName }}' 'deploy.json'
 
-                    $moduleTestFilePath = Join-Path '$(ENVSOURCEDIRECTORY)' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
+            Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
+          displayName: 'Prepare download from artifacts feed'
+        - task: UniversalPackages@0
+          displayName: 'Download module [${{ parameters.moduleName }}] version [${{ parameters.moduleVersion }}] from feed [${{ parameters.artifactFeedPath }}]'
+          inputs:
+            command: download
+            vstsFeed: '${{ parameters.artifactFeedPath }}'
+            vstsFeedPackage: '$(lowerModuleName)'
+            vstsPackageVersion: '${{ parameters.moduleVersion }}'
+            downloadDirectory: '$(downloadDirectory)/$(lowerModuleName)'
 
-                    # ----------- #
-                    # INVOKE TEST #
-                    # ----------- #
+      # [Validation] task(s)
+      #---------------------
+      - ${{ if eq( parameters.whatif, true) }}:
+        - task: AzurePowerShell@5
+          displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
+          inputs:
+            azureSubscription: ${{ parameters.serviceConnection }}
+            azurePowerShellVersion: 'latestVersion'
+            preferredAzurePowerShellVersion: ''
+            ScriptType: InlineScript
+            pwsh: true
+            inline: |
+              # Load used functions
+              . (Join-Path '$(ENVSOURCEDIRECTORY)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
-                    # Building input object
-                    $functionInput = @{
-                        templateFilePath     = '$(ENVMODULEPATH)'
-                        parameterFilePath    = $moduleTestFilePath
-                        location             = $location
-                        resourceGroupName    = $resourceGroupName
-                        subscriptionId       = $subscriptionId
-                        managementGroupId    = $managementGroupId
-                        additionalParameters = @{}
-                    }
+              # Fetching parameters
+              $location = '${{ parameters.location }}'
+              $resourceGroupName = '${{ parameters.resourceGroupName }}'
+              $subscriptionId = '${{ parameters.subscriptionId }}'
+              $managementGroupId = '${{ parameters.managementGroupId }}'
 
-                    Write-Verbose "Invoke task with" -Verbose
-                    Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+              $moduleTestFilePath = Join-Path '$(ENVSOURCEDIRECTORY)' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
 
-                    Test-TemplateDeployment @functionInput -Verbose
+              # ----------- #
+              # INVOKE TEST #
+              # ----------- #
 
-            # [Deployment] task(s)
-            #---------------------
-            - ${{ if ne( parameters.whatif, true) }}:
-              - task: AzurePowerShell@5
-                name: deployModule
-                displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
-                inputs:
-                  azureSubscription: ${{ parameters.serviceConnection }}
-                  azurePowerShellVersion: 'latestVersion'
-                  preferredAzurePowerShellVersion: ''
-                  pwsh: true
-                  ScriptType: InlineScript
-                  inline: |
-                    # Load used functions
-                    . (Join-Path '$(ENVSOURCEDIRECTORY)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+              # Building input object
+              $functionInput = @{
+                  templateFilePath     = '$(ENVMODULEPATH)'
+                  parameterFilePath    = $moduleTestFilePath
+                  location             = $location
+                  resourceGroupName    = $resourceGroupName
+                  subscriptionId       = $subscriptionId
+                  managementGroupId    = $managementGroupId
+                  additionalParameters = @{}
+              }
 
-                    $location = '${{ parameters.location }}'
-                    $resourceGroupName = '${{ parameters.resourceGroupName }}'
-                    $subscriptionId = '${{ parameters.subscriptionId }}'
-                    $managementGroupId = '${{ parameters.managementGroupId }}'
+              Write-Verbose "Invoke task with" -Verbose
+              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-                    $moduleTestFilePath = Join-Path '$(ENVSOURCEDIRECTORY)' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
+              Test-TemplateDeployment @functionInput -Verbose
 
-                    # ----------- #
-                    # INVOKE TEST #
-                    # ----------- #
+      # [Deployment] task(s)
+      #---------------------
+      - ${{ if ne( parameters.whatif, true) }}:
+        - task: AzurePowerShell@5
+          name: deployModule
+          displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
+          inputs:
+            azureSubscription: ${{ parameters.serviceConnection }}
+            azurePowerShellVersion: 'latestVersion'
+            preferredAzurePowerShellVersion: ''
+            pwsh: true
+            ScriptType: InlineScript
+            inline: |
+              # Load used functions
+              . (Join-Path '$(ENVSOURCEDIRECTORY)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
-                    # Building input object
-                    $functionInput = @{
-                        templateFilePath     = '$(ENVMODULEPATH)'
-                        parameterFilePath    = $moduleTestFilePath
-                        location             = $location
-                        resourceGroupName    = $resourceGroupName
-                        subscriptionId       = $subscriptionId
-                        managementGroupId    = $managementGroupId
-                        additionalParameters = @{}
-                    }
+              $location = '${{ parameters.location }}'
+              $resourceGroupName = '${{ parameters.resourceGroupName }}'
+              $subscriptionId = '${{ parameters.subscriptionId }}'
+              $managementGroupId = '${{ parameters.managementGroupId }}'
 
-                    Write-Verbose 'Invoke task with' -Verbose
-                    Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+              $moduleTestFilePath = Join-Path '$(ENVSOURCEDIRECTORY)' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
 
-                    # Invoke deployment
-                    $res = New-TemplateDeployment @functionInput -Verbose
+              # ----------- #
+              # INVOKE TEST #
+              # ----------- #
 
-                    # Get deployment name
-                    $deploymentName = $res.deploymentName
-                    Write-Verbose "Deployment name: $deploymentName" -Verbose
-                    Write-Host "##vso[task.setvariable variable=deploymentName]$deploymentName"
-                    Write-Host "##vso[task.setvariable variable=deploymentName;isOutput=true]$deploymentName"
+              # Building input object
+              $functionInput = @{
+                  templateFilePath     = '$(ENVMODULEPATH)'
+                  parameterFilePath    = $moduleTestFilePath
+                  location             = $location
+                  resourceGroupName    = $resourceGroupName
+                  subscriptionId       = $subscriptionId
+                  managementGroupId    = $managementGroupId
+                  additionalParameters = @{}
+              }
 
-                    # Populate further outputs
-                    $deploymentOutputHash=@{}
+              Write-Verbose 'Invoke task with' -Verbose
+              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-                    foreach ($outputKey in $res.deploymentOutput.Keys) {
-                      Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-                      $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
-                    }
+              # Invoke deployment
+              $res = New-TemplateDeployment @functionInput -Verbose
 
-                    $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
-                    Write-Verbose "Deployment output: $deploymentOutput" -Verbose
-                    Write-Output "##vso[task.setvariable variable=deploymentOutput;isOutput=true]$deploymentOutput"
+              # Get deployment name
+              $deploymentName = $res.deploymentName
+              Write-Verbose "Deployment name: $deploymentName" -Verbose
+              Write-Host "##vso[task.setvariable variable=deploymentName]$deploymentName"
+              Write-Host "##vso[task.setvariable variable=deploymentName;isOutput=true]$deploymentName"
 
-                    if ($res.ContainsKey('exception')) {
-                      # Happens only if there is an exception
-                      throw $res.exception
-                    }
+              # Populate further outputs
+              $deploymentOutputHash=@{}
 
-              # [Removal] task(s)
-              #------------------
-              - task: AzurePowerShell@5
-                displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-                condition: and(succeededOrFailed(), eq('${{ parameters.removeDeployment }}', 'True'), not(eq(variables['deploymentName'],'')), not(startsWith(variables['deploymentName'], 'variables[' )))
-                inputs:
-                  azureSubscription: ${{ parameters.serviceConnection }}
-                  azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-                  preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-                  ScriptType: InlineScript
-                  failOnStandardError: false
-                  pwsh: true
-                  inline: |
-                    # Load used function
-                    . (Join-Path '$(ENVSOURCEDIRECTORY)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+              foreach ($outputKey in $res.deploymentOutput.Keys) {
+                Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+                $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
+              }
 
-                    $functionInput = @{
-                      TemplateFilePath  = '$(ENVMODULEPATH)'
-                      ResourceGroupName = '${{ parameters.resourceGroupName }}'
-                      subscriptionId    = '${{ parameters.subscriptionId }}'
-                      ManagementGroupId = '${{ parameters.managementGroupId }}'
-                      deploymentName    = '$(deploymentName)'
-                      Verbose           = $true
-                    }
+              $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+              Write-Verbose "Deployment output: $deploymentOutput" -Verbose
+              Write-Output "##vso[task.setvariable variable=deploymentOutput;isOutput=true]$deploymentOutput"
 
-                    Write-Verbose 'Invoke task with' -Verbose
-                    Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+              if ($res.ContainsKey('exception')) {
+                # Happens only if there is an exception
+                throw $res.exception
+              }
 
-                    Initialize-DeploymentRemoval @functionInput
+        # [Removal] task(s)
+        #------------------
+        - task: AzurePowerShell@5
+          displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
+          condition: and(succeededOrFailed(), eq('${{ parameters.removeDeployment }}', 'True'), not(eq(variables['deploymentName'],'')), not(startsWith(variables['deploymentName'], 'variables[' )))
+          inputs:
+            azureSubscription: ${{ parameters.serviceConnection }}
+            azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+            preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+            ScriptType: InlineScript
+            failOnStandardError: false
+            pwsh: true
+            inline: |
+              # Load used function
+              . (Join-Path '$(ENVSOURCEDIRECTORY)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+
+              $functionInput = @{
+                TemplateFilePath  = '$(ENVMODULEPATH)'
+                ResourceGroupName = '${{ parameters.resourceGroupName }}'
+                subscriptionId    = '${{ parameters.subscriptionId }}'
+                ManagementGroupId = '${{ parameters.managementGroupId }}'
+                deploymentName    = '$(deploymentName)'
+                Verbose           = $true
+              }
+
+              Write-Verbose 'Invoke task with' -Verbose
+              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+              Initialize-DeploymentRemoval @functionInput
