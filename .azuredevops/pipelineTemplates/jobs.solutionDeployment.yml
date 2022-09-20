@@ -180,7 +180,7 @@ jobs:
               $subscriptionId = '${{ parameters.subscriptionId }}'
               $managementGroupId = '${{ parameters.managementGroupId }}'
 
-              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '${{ parameters.moduleTestFilePath }}'
 
               # ----------- #
               # INVOKE TEST #
@@ -223,7 +223,7 @@ jobs:
               $subscriptionId = '${{ parameters.subscriptionId }}'
               $managementGroupId = '${{ parameters.managementGroupId }}'
 
-              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '${{ parameters.moduleTestFilePath }}'
 
               # ----------- #
               # INVOKE TEST #
