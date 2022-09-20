@@ -156,38 +156,16 @@ jobs:
           outputFormat: Sarif
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
-  #########################
-  #   Static validation   #
-  #########################
-  job_module_pester_validation:
-    runs-on: ubuntu-20.04
-    name: 'Static validation'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-      - name: 'Run tests'
-        uses: ./.github/actions/templates/validateModulePester
-        with:
-          modulePath: '${{ env.modulePath }}'
-          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
-
-
-
-  # #############################
-  # #   Deployment validation   #
-  # #############################
+  #############################
+  #   Deployment validation   #
+  #############################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment validation'
     needs:
       - job_initialize_pipeline
       - job_module_pester_validation
+      - job_psrule_test
     strategy:
       fail-fast: false
       matrix:
@@ -211,9 +189,9 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
 
-  # ##################
-  # #   Publishing   #
-  # ##################
+  ##################
+  #   Publishing   #
+  ##################
   job_publish_module:
     name: 'Publishing'
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
