@@ -155,7 +155,6 @@ jobs:
           inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
           outputFormat: Markdown
           outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
-          outputOutcome: 'Problem'
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
             
       # - name: 'PSRule test summary'
@@ -165,6 +164,7 @@ jobs:
       #     files: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml'
 
       - name: Output to Github summaries
+        if: always()
         run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
 
   # #############################
