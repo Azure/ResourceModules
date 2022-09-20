@@ -1,0 +1,9 @@
+variables:
+  resourceGroupName: 'solutions-ne-rg'
+  environmentPath: 'solutions/network'
+  location: 'northeurope'
+  vmImage: 'ubuntu-latest'
+  poolName: ''
+  serviceConnection: 'CARML-CSU-Tenant-Connection'
+  subscriptionId: 'a7439831-1cd9-435d-a091-4aa863c96556'
+  managementGroupId: ''
