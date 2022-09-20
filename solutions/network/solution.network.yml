@@ -27,7 +27,7 @@ stages:
   - stage:
     displayName: WhatIf
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: resourceGroups
           displayName: 'Resource Group'
@@ -40,7 +40,7 @@ stages:
   - stage:
     displayName: Deploy
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: resourceGroups
           displayName: 'Resource Group'
