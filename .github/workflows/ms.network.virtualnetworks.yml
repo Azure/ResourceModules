@@ -156,9 +156,9 @@ jobs:
           outputFormat: Sarif
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
-  #############################
-  #   Deployment validation   #
-  #############################
+  # #############################
+  # #   Deployment validation   #
+  # #############################
   # job_module_deploy_validation:
   #   runs-on: ubuntu-20.04
   #   name: 'Deployment validation'
