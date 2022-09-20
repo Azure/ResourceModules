@@ -157,14 +157,14 @@ jobs:
           outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml'
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
             
-      - name: 'PSRule test summary'
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        if: always()
-        with:
-          files: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml'
+      # - name: 'PSRule test summary'
+      #   uses: EnricoMi/publish-unit-test-result-action@v1
+      #   if: always()
+      #   with:
+      #     files: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml'
 
-#      - name: Output to Github summaries
-#        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml' >> $GITHUB_STEP_SUMMARY
+      - name: Output to Github summaries
+        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml'
 
   # #############################
   # #   Deployment validation   #
