@@ -1,11 +1,23 @@
-# Synopsis: Suppress Rules for dependancies
+# # Synopsis: Suppress Rules for dependancies
+# apiVersion: github.com/microsoft/PSRule/v1
+# kind: SuppressionGroup
+# metadata:
+#   name: 'SuppressDependancy'
+# spec:
+#   rule:
+#     - PSRule.Rules.Azure/
+#   if:
+#     name: '.'
+#     startsWith:
+#       - 'dep'
+
+---
+# Synopsis: Selector for dependencies
 apiVersion: github.com/microsoft/PSRule/v1
-kind: SuppressionGroup
+kind: Selector
 metadata:
-  name: 'SuppressDependancy'
+  name: 'SupressSelector'
 spec:
-  rule:
-    - PSRule.Rules.Azure/
   if:
     name: '.'
     startsWith:
