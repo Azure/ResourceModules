@@ -649,6 +649,11 @@ function ConvertTo-FormattedJSONParameterObject {
         [string] $BicepParamBlock
     )
 
+    if ([String]::IsNullOrEmpty($BicepParamBlock)) {
+        # Case: No mandatory parameters
+        return @{}
+    }
+
     # [1/4] Detect top level params for later processing
     $bicepParamBlockArray = $BicepParamBlock -split '\n'
     $topLevelParamIndent = ([regex]::Match($bicepParamBlockArray[0], '^(\s+).*')).Captures.Groups[1].Value.Length
@@ -965,8 +970,14 @@ function Set-DeploymentExamplesSection {
             $rawBicepExampleArray = $rawBicepExample -split '\n'
             $moduleDeploymentPropertyIndent = ([regex]::Match($rawBicepExampleArray[1], '^(\s+).*')).Captures.Groups[1].Value.Length
             $paramsStartIndex = ($rawBicepExampleArray | Select-String ("^[\s]{$moduleDeploymentPropertyIndent}params:[\s]*\{") | ForEach-Object { $_.LineNumber - 1 })[0] + 1
-            $paramsEndIndex = ($rawBicepExampleArray[($paramsStartIndex + 1)..($rawBicepExampleArray.Count)] | Select-String "^[\s]{$moduleDeploymentPropertyIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + $paramsStartIndex
-            $paramBlock = ($rawBicepExampleArray[$paramsStartIndex..$paramsEndIndex] | Out-String).TrimEnd()
+            if ($rawBicepExampleArray[($paramsStartIndex + 1)].Trim() -ne '}') {
+                # Handle case where param block is empty
+                $paramsEndIndex = ($rawBicepExampleArray[($paramsStartIndex + 1)..($rawBicepExampleArray.Count)] | Select-String "^[\s]{$moduleDeploymentPropertyIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + $paramsStartIndex
+                $paramBlock = ($rawBicepExampleArray[$paramsStartIndex..$paramsEndIndex] | Out-String).TrimEnd()
+            } else {
+                $paramBlock = ''
+                $paramsEndIndex = $paramsStartIndex
+            }
 
             # [5/6] Convert Bicep parameter block to JSON parameter block to enable processing
             $conversionInputObject = @{
@@ -986,7 +997,12 @@ function Set-DeploymentExamplesSection {
             # --------------------- #
             if ($addBicep) {
 
-                $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + ($bicepExample -split '\n') + $rawBicepExample[($paramsEndIndex + 1)..($rawBicepExample.Count)]
+                if ([String]::IsNullOrEmpty($paramBlock)) {
+                    # Handle case where param block is empty
+                    $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + $rawBicepExample[($paramsEndIndex)..($rawBicepExample.Count)]
+                } else {
+                    $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + ($bicepExample -split '\n') + $rawBicepExample[($paramsEndIndex + 1)..($rawBicepExample.Count)]
+                }
 
                 $SectionContent += @(
                     '',

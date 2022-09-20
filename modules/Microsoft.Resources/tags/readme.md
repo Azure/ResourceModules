@@ -97,9 +97,8 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Tags'
+  name: '${uniqueString(deployment().name)}-test-rtmin'
   params: {
-
   }
 }
 ```
@@ -130,10 +129,10 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Tags'
+  name: '${uniqueString(deployment().name)}-test-rtrg'
   params: {
     onlyUpdate: false
-    resourceGroupName: 'validation-rg'
+    resourceGroupName: '<resourceGroupName>'
     tags: {
       Test: 'Yes'
       TestToo: 'No'
@@ -158,7 +157,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
       "value": false
     },
     "resourceGroupName": {
-      "value": "validation-rg"
+      "value": "<resourceGroupName>"
     },
     "tags": {
       "value": {
@@ -181,7 +180,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Tags'
+  name: '${uniqueString(deployment().name)}-test-rtsub'
   params: {
     onlyUpdate: true
     tags: {
