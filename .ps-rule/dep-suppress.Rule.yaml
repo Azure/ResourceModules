@@ -1,4 +1,3 @@
----
 # Synopsis: Suppress Rules for dependancies
 apiVersion: github.com/microsoft/PSRule/v1
 kind: SuppressionGroup
@@ -6,11 +5,8 @@ metadata:
   name: 'SuppressDependancy'
 spec:
   rule:
-  - 'Azure.GA_2022_06' 
+    - PSRule.Rules.Azure/
   if:
     name: '.'
-    startsWith: 
-    - 'dep'
-  
-
-
+    startsWith:
+      - 'dep'
