@@ -184,7 +184,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-npdzcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npdzcom001'
+    name: '<<namePrefix>>npdzcom001.com'
     // Non-required parameters
     a: [
       {
@@ -371,7 +371,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npdzcom001"
+      "value": "<<namePrefix>>npdzcom001.com"
     },
     // Non-required parameters
     "a": {
@@ -580,7 +580,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-npdzmin'
   params: {
-    name: '<<namePrefix>>npdzmin001'
+    name: '<<namePrefix>>npdzmin001.com'
   }
 }
 ```
@@ -598,7 +598,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>npdzmin001"
+      "value": "<<namePrefix>>npdzmin001.com"
     }
   }
 }
