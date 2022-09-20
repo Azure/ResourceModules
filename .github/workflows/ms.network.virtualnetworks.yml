@@ -165,7 +165,7 @@ jobs:
 
       - name: Output to Github summaries
         if: always()
-        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
+        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md' >> $GITHUB_STEP_SUMMARY
 
   # #############################
   # #   Deployment validation   #
