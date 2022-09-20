@@ -77,7 +77,7 @@ parameters:
 ## TEMPLATE LOGIC                              ##
 ##---------------------------------------------##
 jobs:
-  - deployment: ${{ parameters.jobName }}${{ parameters.whatif }}
+  - job: ${{ parameters.jobName }}${{ parameters.whatif }}
     ${{ if eq( parameters.whatif, true) }}:
       displayName: ${{ parameters.displayName }} WhatIf
     ${{ if ne( parameters.whatif, true) }}:
