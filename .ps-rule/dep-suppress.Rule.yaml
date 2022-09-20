@@ -6,7 +6,7 @@ metadata:
   name: 'SuppressDependancy'
 spec:
   rule:
-  - 'Azure.Identity.UserAssignedName'
+  - 'Azure.*'
   if:
     name: '.'
     startsWith: 
