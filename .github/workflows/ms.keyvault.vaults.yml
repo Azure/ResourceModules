@@ -93,58 +93,58 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-    #   - name: Set environment variables
-    #     uses: ./.github/actions/templates/setEnvironmentVariables
-    #     with:
-    #       variablesPath: ${{ env.variablesPath }}
-    # - name: 'Replace tokens in template file'
-    #   uses: azure/powershell@v1
-    #   with:
-    #     azPSVersion: 'latest'
-    #     inlineScript: |
-    #       $templateFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-    #       # Grouping task logs
-    #       Write-Output '::group::Replace tokens in template file'
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+    - name: 'Replace tokens in template file'
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          $templateFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          # Grouping task logs
+          Write-Output '::group::Replace tokens in template file'
 
-    #       # Load used functions
-    #       . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
-    #       # Populate tokens
-    #       $Tokens = @{
-    #         resourceGroupName = '${{ env.resourceGroupName }}'
-    #         subscriptionId    = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-    #         managementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
-    #         tenantId          = '${{ env.ARM_TENANT_ID }}'
-    #       }
+          # Populate tokens
+          $Tokens = @{
+            resourceGroupName = '${{ env.resourceGroupName }}'
+            subscriptionId    = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+            managementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
+            tenantId          = '${{ env.ARM_TENANT_ID }}'
+          }
 
-    #       ## Add local (source control) tokens
-    #       $tokenMap = @{}
-    #       foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
-    #         $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
-    #       }
-    #       Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-    #       $Tokens += $tokenMap
+          ## Add local (source control) tokens
+          $tokenMap = @{}
+          foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+            $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+          }
+          Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+          $Tokens += $tokenMap
 
-    #       ## Swap 'namePrefix' token if empty and provided as a GitHub secret
-    #       if([String]::IsNullOrEmpty($Tokens['namePrefix'])){
-    #         Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
-    #         $Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
-    #       }
+          ## Swap 'namePrefix' token if empty and provided as a GitHub secret
+          if([String]::IsNullOrEmpty($Tokens['namePrefix'])){
+            Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+            $Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
+          }
 
-    #       # Construct Token Function Input
-    #       $ConvertTokensInputs = @{
-    #         FilePathList = @($templateFilePath)
-    #         Tokens       = $Tokens
-    #         TokenPrefix  = '${{ env.tokenPrefix }}'
-    #         TokenSuffix  = '${{ env.tokenSuffix }}'
-    #       }
+          # Construct Token Function Input
+          $ConvertTokensInputs = @{
+            FilePathList = @($templateFilePath)
+            Tokens       = $Tokens
+            TokenPrefix  = '${{ env.tokenPrefix }}'
+            TokenSuffix  = '${{ env.tokenSuffix }}'
+          }
 
-    #       Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
+          Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
-    #       # Invoke Token Replacement Functionality [For Module]
-    #       $null = Convert-TokensInFileList @ConvertTokensInputs
+          # Invoke Token Replacement Functionality [For Module]
+          $null = Convert-TokensInFileList @ConvertTokensInputs
 
-    #       Write-Output '::endgroup::'
+          Write-Output '::endgroup::'
 
     #   # Run analysis by using the PSRule GitHub action.
     #   - name: Run PSRule analysis
