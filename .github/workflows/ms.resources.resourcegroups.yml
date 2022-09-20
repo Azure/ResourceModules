@@ -110,19 +110,11 @@ jobs:
         azPSVersion: 'latest'
         inlineScript: |
           $templateFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          # # $parameterFilePath = ""
-          # # $customParameterFileTokens = ""
           # Grouping task logs
           Write-Output '::group::Replace tokens in template file'
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
-
-          # Get target files
-          # # $targetFileList = @($templateFilePath)
-          # # if(-not [String]::IsNullOrEmpty($parameterFilePath)) {
-          # #   $targetFileList += $parameterFilePath
-          # # }
 
           # # Get Service Principal Object ID
           # $context = Get-AzContext
@@ -132,59 +124,40 @@ jobs:
           # $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
           # $servicePrincipalObjectId = $servicePrincipal.Id
 
-          # Construct Token Function Input
-          $ConvertTokensInputs = @{
-            # # FilePathList = $targetFileList
-            FilePathList = @($templateFilePath)
-            Tokens       = @{}
-            TokenPrefix  = '${{ env.tokenPrefix }}'
-            TokenSuffix  = '${{ env.tokenSuffix }}'
-          }
-
-          # Add enforced tokens
-          $ConvertTokensInputs.Tokens += @{
+          # Polulate tokens
+          $Tokens = @{
             resourceGroupName = '${{ env.resourceGroupName }}'
             subscriptionId    = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
             managementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
             tenantId          = '${{ env.ARM_TENANT_ID }}'
           }
 
-          # Add local (source control) tokens
+          ## Add local (source control) tokens
           $tokenMap = @{}
           foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
             $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
           }
           Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-          $ConvertTokensInputs.Tokens += $tokenMap
+          $Tokens += $tokenMap
 
-          # Swap 'namePrefix' token if empty and provided as a GitHub secret
-          if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+          ## Swap 'namePrefix' token if empty and provided as a GitHub secret
+          if([String]::IsNullOrEmpty($Tokens['namePrefix'])){
             Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
-            $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
+            $Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
           }
 
-          # # Add custom tokens (passed in via the pipeline)
-          # if(-not [String]::IsNullOrEmpty($customParameterFileTokens)) {
-          #   $customTokens = $customParameterFileTokens| ConvertFrom-Json -AsHashTable
-          #   Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
-          #   $ConvertTokensInputs.Tokens += $customTokens
-          # }
+          # Construct Token Function Input
+          $ConvertTokensInputs = @{
+            FilePathList = @($templateFilePath)
+            Tokens       = $Tokens
+            TokenPrefix  = '${{ env.tokenPrefix }}'
+            TokenSuffix  = '${{ env.tokenSuffix }}'
+          }
 
           Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
           # Invoke Token Replacement Functionality [For Module]
           $null = Convert-TokensInFileList @ConvertTokensInputs
-
-          # # # Get target files for modules dependencies
-          # # $DependencyParameterFilePaths = [System.Collections.ArrayList]@()
-          # # $DependencyParameterFolders = Get-ChildItem -Path (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies') -Recurse -Filter 'parameters' -Directory
-          # # foreach ($FolderPath in $DependencyParameterFolders.FullName) {
-          # #     $DependencyParameterFilePaths += Get-ChildItem -Path $FolderPath -Recurse -Filter '*.json'
-          # # }
-          # # $ConvertTokensInputs.FilePathList = $DependencyParameterFilePaths
-
-          # # # Invoke Token Replacement Functionality [For Dependencies]
-          # # $null = Convert-TokensInFileList @ConvertTokensInputs
 
           Write-Output '::endgroup::'
 
