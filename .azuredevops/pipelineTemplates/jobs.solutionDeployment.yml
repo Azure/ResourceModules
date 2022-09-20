@@ -180,7 +180,7 @@ jobs:
               $subscriptionId = '${{ parameters.subscriptionId }}'
               $managementGroupId = '${{ parameters.managementGroupId }}'
 
-              $moduleTestFilePath = Join-Path '$(ENVSOURCEDIRECTORY)' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
 
               # ----------- #
               # INVOKE TEST #
@@ -216,14 +216,14 @@ jobs:
             ScriptType: InlineScript
             inline: |
               # Load used functions
-              . (Join-Path '$(ENVSOURCEDIRECTORY)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+              . (Join-Path '$(System.DefaultWorkingDirectory)' 'self' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
               $location = '${{ parameters.location }}'
               $resourceGroupName = '${{ parameters.resourceGroupName }}'
               $subscriptionId = '${{ parameters.subscriptionId }}'
               $managementGroupId = '${{ parameters.managementGroupId }}'
 
-              $moduleTestFilePath = Join-Path '$(ENVSOURCEDIRECTORY)' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
 
               # ----------- #
               # INVOKE TEST #
@@ -283,7 +283,7 @@ jobs:
             pwsh: true
             inline: |
               # Load used function
-              . (Join-Path '$(ENVSOURCEDIRECTORY)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+              . (Join-Path '$(System.DefaultWorkingDirectory)' 'self' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
               $functionInput = @{
                 TemplateFilePath  = '$(ENVMODULEPATH)'
