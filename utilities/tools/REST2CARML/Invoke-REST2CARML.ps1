@@ -33,6 +33,7 @@ function Invoke-REST2CARML {
         # Load used functions
         # . (Join-Path $PSScriptRoot 'Get-ModuleData.ps1')
         . (Join-Path $PSScriptRoot 'Set-ModuleFileStructure.ps1')
+        . (Join-Path $PSScriptRoot 'Set-ModuleTemplate.ps1')
 
         Write-Verbose ('Processing module [{0}/{1}]' -f $ProviderNamespace, $ResourceType) -Verbose
     }
@@ -40,13 +41,14 @@ function Invoke-REST2CARML {
     process {
         # TODO: Invoke function to fetch module data
         # $moduleData = Get-ModuleData -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+        $moduleData = @{}
 
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
             Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
         }
 
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
-            # TODO: Invoke function to fill module files with module data
+            Set-ModuleTemplate -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -ModuleData $moduleData
         }
     }
 
