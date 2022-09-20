@@ -97,14 +97,14 @@ jobs:
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           variablesPath: ${{ env.variablesPath }}
-    # - name: 'Replace tokens in template file'
-    #   uses: azure/powershell@v1
-    #   with:
-    #     azPSVersion: 'latest'
-    #     inlineScript: |
-    #       $templateFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-    #       # Grouping task logs
-    #       Write-Output '::group::Replace tokens in template file'
+    - name: 'Replace tokens in template file'
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          $templateFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          # Grouping task logs
+          Write-Output '::group::Replace tokens in template file'
 
     #       # Load used functions
     #       . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
