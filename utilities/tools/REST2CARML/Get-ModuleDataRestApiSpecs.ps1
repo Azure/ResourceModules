@@ -192,6 +192,9 @@ function Get-ModuleDataSource {
                 $jsonPaths = (ConvertFrom-Json (Get-Content -Raw -Path $jsonFile)).paths
                 $jsonPaths.PSObject.Properties | ForEach-Object {
                     $put = $_.value.put
+                    # if ($_.Name -contains $ResourceType) {
+                    #     Write-Verbose ('File: [{0}], API: [{1}] JsonKeyPath: [{2}]' -f $jsonFile.Name, $apiversionFolder.Name, $_.Name) -Verbose
+                    # }
                     if ($put) {
                         $pathSplit = $_.Name.Split('/')
                         if (($pathSplit[$pathSplit.Count - 3] -eq $ProviderNamespace) -and ($pathSplit[$pathSplit.Count - 2] -eq $ResourceType)) {
@@ -230,11 +233,11 @@ function Get-ModuleDataSource {
     }
 }
 
-Get-ModuleDataRestApiSpecs -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+# Get-ModuleDataRestApiSpecs -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
 
 # Example call for further processing
-# $result = Get-ModuleDataSource -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -IgnorePreview $false
-
+$result = Get-ModuleDataSource -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -IgnorePreview $false | Format-List
+$result | Format-List
 
 # Kris: the below code is for debugging only and will be deleted later.
 ## It is commented out and doesn't run, so it can be ignored
@@ -242,31 +245,35 @@ Get-ModuleDataRestApiSpecs -ProviderNamespace 'Microsoft.KeyVault' -ResourceType
 # test function calls
 # working calls
 # Get-ModuleDataSource -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -IgnorePreview $false | Format-List
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Batch' -ResourceType 'batchAccounts'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'virtualNetworks'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'networkSecurityGroups'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.CognitiveServices' -ResourceType 'accounts'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'applicationGateways'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'bastionHosts'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'azureFirewalls'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Sql' -ResourceType 'servers'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Sql' -ResourceType 'managedInstances'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.RecoveryServices' -ResourceType 'vaults'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.AnalysisServices' -ResourceType 'servers'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Batch' -ResourceType 'batchAccounts' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'virtualNetworks' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'networkSecurityGroups' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.CognitiveServices' -ResourceType 'accounts' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'applicationGateways' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'bastionHosts' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'azureFirewalls' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Sql' -ResourceType 'servers' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Sql' -ResourceType 'managedInstances' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.RecoveryServices' -ResourceType 'vaults' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.AnalysisServices' -ResourceType 'servers' | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'roleAssignments' -IgnorePreview $true | Format-List # no results, special case
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'roleDefinitions' -IgnorePreview $true | Format-List # no results, special case
+# repaired calls
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Automation' -ResourceType 'automationAccounts' | Format-List # no results
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Management' -ResourceType 'managementGroups' | Format-List
 
 # not working calls
 # Get-ModuleDataSource -ProviderNamespace 'Microsoft.Compute' -ResourceType 'virtualMachines' # provider folder structure
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Automation' -ResourceType 'automationAccounts' # no results
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Management' -ResourceType 'managementGroups'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Resources' -ResourceType 'resourceGroups'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.ManagedIdentity' -ResourceType 'userAssignedIdentities'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.AAD' -ResourceType 'DomainServices' # provider folder not found
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'locks' # no results
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Cache' -ResourceType 'redis' # provider folder not found
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.DBforPostgreSQL' -ResourceType 'flexibleServers' # different provider folder name
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.DocumentDB' -ResourceType 'databaseAccounts' # different provider folder name
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Insights' -ResourceType 'actionGroups'
-# Get-ModuleDataSource -ProviderNamespace 'Microsoft.OperationsManagement' -ResourceType 'solutions'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Resources' -ResourceType 'resourceGroups' -IgnorePreview $false | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.ManagedIdentity' -ResourceType 'userAssignedIdentities' -IgnorePreview $false  | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.AAD' -ResourceType 'DomainServices' -IgnorePreview $false  | Format-List # provider folder not found
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'locks' -IgnorePreview $false | Format-List # no results, special case
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'policyAssignments' -IgnorePreview $true | Format-List # no results, more than one provider folder, exists in the second folder (to be verified)
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Cache' -ResourceType 'redis' -IgnorePreview $false | Format-List # provider folder not found
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.DBforPostgreSQL' -ResourceType 'flexibleServers' -IgnorePreview $false | Format-List # different provider folder name
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.DocumentDB' -ResourceType 'databaseAccounts' -IgnorePreview $false | Format-List # different provider folder name
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Insights' -ResourceType 'actionGroups' -IgnorePreview | Format-List $false
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.OperationsManagement' -ResourceType 'solutions' -IgnorePreview $false | Format-List
 
 # running the function against the CARML modules folder
 # to collect some statistics.
