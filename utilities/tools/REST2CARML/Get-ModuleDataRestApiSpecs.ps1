@@ -232,5 +232,79 @@ function Get-ModuleDataSource {
 
 Get-ModuleDataRestApiSpecs -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
 
-Get-ModuleDataSource -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' | Format-List
+# Example call for further processing
+# $result = Get-ModuleDataSource -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -IgnorePreview $false
+
+
+# Kris: the below code is for debugging only and will be deleted later.
+## It is commented out and doesn't run, so it can be ignored
+
+# test function calls
+# working calls
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -IgnorePreview $false | Format-List
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Batch' -ResourceType 'batchAccounts'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'virtualNetworks'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'networkSecurityGroups'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.CognitiveServices' -ResourceType 'accounts'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'applicationGateways'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'bastionHosts'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Network' -ResourceType 'azureFirewalls'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Sql' -ResourceType 'servers'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Sql' -ResourceType 'managedInstances'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.RecoveryServices' -ResourceType 'vaults'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.AnalysisServices' -ResourceType 'servers'
+
+# not working calls
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Compute' -ResourceType 'virtualMachines' # provider folder structure
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Automation' -ResourceType 'automationAccounts' # no results
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Management' -ResourceType 'managementGroups'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Resources' -ResourceType 'resourceGroups'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.ManagedIdentity' -ResourceType 'userAssignedIdentities'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.AAD' -ResourceType 'DomainServices' # provider folder not found
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'locks' # no results
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Cache' -ResourceType 'redis' # provider folder not found
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.DBforPostgreSQL' -ResourceType 'flexibleServers' # different provider folder name
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.DocumentDB' -ResourceType 'databaseAccounts' # different provider folder name
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.Insights' -ResourceType 'actionGroups'
+# Get-ModuleDataSource -ProviderNamespace 'Microsoft.OperationsManagement' -ResourceType 'solutions'
+
+# running the function against the CARML modules folder
+# to collect some statistics.
+# It requires some modifications of the function Get-ModuleDataSource, so please don't use it.
+# below code is temporary and will be deleted later
+exit # protecting from unnecessary run
+$carmlModulesRoot = Join-Path $PSScriptRoot '..' '..' '..' 'modules'
+$resArray = @()
+foreach ($providerFolder in $(Get-ChildItem -Path $carmlModulesRoot -Filter 'Microsoft.*')) {
+    foreach ($resourceFolder in $(Get-ChildItem -Path $(Join-Path $carmlModulesRoot $providerFolder.Name) -Directory)) {
+        Write-Host ('Processing [{0}/{1}]...' -f $providerFolder.Name, $resourceFolder.Name)
+        $res = Get-ModuleDataSource -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name -IgnorePreview $false
+        # Get-ModuleDataSource -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name
+
+        $resArrItem = [pscustomobject] @{}
+        $resArrItem | Add-Member -MemberType NoteProperty -Name 'Provider' -Value $providerFolder.Name
+        $resArrItem | Add-Member -MemberType NoteProperty -Name 'ResourceType' -Value $resourceFolder.Name
+        $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value $res
+        $resArray += $resArrItem
+    }
+}
+
+
+
+# statistics
+
+$count = $resArray.Count
+$resArray | ConvertTo-Json -Depth 99
+$numberErrRepo = ($resArray | Where-Object { $_.Result -eq -1 }).Count
+$numberErrResourceType = ($resArray | Where-Object { $_.Result -eq -2 }).Count
+$numberNoResults = ($resArray | Where-Object { $_.Result -eq 0 }).Count
+$numberOK = ($resArray | Where-Object { $_.Result -eq 1 }).Count
+$numberTooMuch = ($resArray | Where-Object { $_.Result -gt 1 }).Count
+
+Write-Host ('Too much: {0} of {1}' -f ((($resArray | Where-Object { $_.Result -gt 1 }).Count), $count ))
+Write-Host ('Successful: {0}' -f ((($resArray | Where-Object { $_.Result -eq 1 }).Count)))
+Write-Host ('No Results: {0}' -f ((($resArray | Where-Object { $_.Result -eq 0 }).Count)))
+Write-Host ('Repo Error: {0}' -f ((($resArray | Where-Object { $_.Result -eq -1 }).Count)))
+Write-Host ('RT Error  : {0}' -f ((($resArray | Where-Object { $_.Result -eq -2 }).Count)))
+
 
