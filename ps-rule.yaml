@@ -18,6 +18,9 @@ requires:
   PSRule: '@pre >=2.4.0'
   PSRule.Rules.Azure: '@pre >=1.19.2'
 
+execution:
+  notProcessedWarning: false
+
 # Use PSRule for Azure.
 include:
   module:
@@ -62,7 +65,7 @@ rule:
   exclude:
     # Ignore the following rules for all resources
     - Azure.KeyVault.PurgeProtect
- 
+
 # Suppression ignores rules for a specific Azure resource by name.
 suppression:
   Azure.Resource.UseTags:
