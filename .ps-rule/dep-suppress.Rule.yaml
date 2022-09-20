@@ -6,7 +6,7 @@ metadata:
   name: 'SuppressDependancy'
 spec:
   rule:
-  - 'PSRule.Rules.Azure\'
+  - 'PSRule.Rules.Azure/*'
   if:
     name: '.'
     startsWith: 
@@ -24,7 +24,7 @@ spec:
   if:
     field: 'Name'
     notContains:
-    - 'dep'
+    - 'Azure.NSG.LateralTraversal'
 
 
     
