@@ -82,7 +82,7 @@ jobs:
           moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   job_psrule_test:
-    name: 'PsRule Analyze repository'
+    name: 'PsRule in-flight validation'
     runs-on: ubuntu-latest
     needs:
        - job_initialize_pipeline
@@ -97,13 +97,6 @@ jobs:
       uses: ./.github/actions/templates/setEnvironmentVariables
       with:
         variablesPath: ${{ env.variablesPath }}
-    # - name: Azure Login
-    #   uses: Azure/login@v1
-    #   with:
-    #     creds: ${{ env.AZURE_CREDENTIALS }}
-    #     enable-AzPSSession: true
-    # [Token replacement] task(s)
-    # ---------------------------
     - name: 'Replace tokens in template file'
       uses: azure/powershell@v1
       with:
@@ -115,14 +108,6 @@ jobs:
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
-
-          # # Get Service Principal Object ID
-          # $context = Get-AzContext
-          # Write-Output 'Checking context'
-          # $context
-          # $servicePrincipalAppId = $context.Account.Id
-          # $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-          # $servicePrincipalObjectId = $servicePrincipal.Id
 
           # Populate tokens
           $Tokens = @{
@@ -160,14 +145,13 @@ jobs:
           $null = Convert-TokensInFileList @ConvertTokensInputs
 
           Write-Output '::endgroup::'
-
     # Run analysis by using the PSRule GitHub action.
     - name: Run PSRule analysis
       uses: microsoft/ps-rule@v2.4.0
+      continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
       with:
         modules: 'PSRule.Rules.Azure'
-        inputPath: 'modules/Microsoft.Resources/resourceGroups/${{ matrix.moduleTestFilePaths }}'
-
+        inputPath: '${{modulePath}}/${{ matrix.moduleTestFilePaths }}'
 
   # ############################
   # #  Deployment validation   #
