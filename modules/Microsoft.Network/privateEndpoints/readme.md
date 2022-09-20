@@ -172,7 +172,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -180,81 +180,26 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateEndpoints'
+  name: '${uniqueString(deployment().name)}-test-npecom'
   params: {
     // Required parameters
     groupIds: [
       'vault'
     ]
-    name: '<<namePrefix>>-az-pe-kvlt-min-001'
-    serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
-    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "groupIds": {
-      "value": [
-        "vault"
-      ]
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-pe-kvlt-min-001"
-    },
-    "serviceResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe"
-    },
-    "subnetResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateEndpoints'
-  params: {
-    // Required parameters
-    groupIds: [
-      'vault'
-    ]
-    name: '<<namePrefix>>-az-pe-kvlt-001'
-    serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
-    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+    name: '<<namePrefix>>npecom001'
+    serviceResourceId: '<serviceResourceId>'
+    subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
     lock: 'CanNotDelete'
     privateDnsZoneGroup: {
       privateDNSResourceIds: [
-        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
+        '<privateDNSZoneResourceId>'
       ]
     }
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -282,13 +227,13 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-pe-kvlt-001"
+      "value": "<<namePrefix>>npecom001"
     },
     "serviceResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe"
+      "value": "<serviceResourceId>"
     },
     "subnetResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+      "value": "<subnetResourceId>"
     },
     // Non-required parameters
     "lock": {
@@ -297,7 +242,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     "privateDnsZoneGroup": {
       "value": {
         "privateDNSResourceIds": [
-          "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+          "<privateDNSZoneResourceId>"
         ]
       }
     },
@@ -305,11 +250,66 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-npemin'
+  params: {
+    // Required parameters
+    groupIds: [
+      'vault'
+    ]
+    name: '<<namePrefix>>npemin001'
+    serviceResourceId: '<serviceResourceId>'
+    subnetResourceId: '<subnetResourceId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupIds": {
+      "value": [
+        "vault"
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>npemin001"
+    },
+    "serviceResourceId": {
+      "value": "<serviceResourceId>"
+    },
+    "subnetResourceId": {
+      "value": "<subnetResourceId>"
     }
   }
 }
