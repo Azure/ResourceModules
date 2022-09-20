@@ -23,6 +23,15 @@
         "trustPolicyStatus": {
             "value": "enabled"
         },
+        "azureADAuthenticationAsArmPolicyStatus": {
+            "value": "enabled"
+        },
+        "softDeletePolicyStatus": {
+            "value": "disabled"
+        },
+        "softDeletePolicyDays": {
+            "value": 7
+        },
         "replications": {
             "value": [
                 {
