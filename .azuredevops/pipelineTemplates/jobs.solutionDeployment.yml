@@ -51,7 +51,7 @@ parameters:
   moduleVersion: '$(moduleVersion)'
   artifactFeedPath: '$(artifactFeedPath)'
   checkoutRepositories: ''
-  environment: ''
+  # environment: ''
   serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
@@ -86,7 +86,7 @@ jobs:
       dependsOn:
         - ${{ each dependency in parameters.dependsOn }}:
             - ${{ dependency }}${{ parameters.whatif }}
-    environment: ${{ parameters.environment }}
+    # environment: ${{ parameters.environment }}
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
       ${{ if ne(parameters.vmImage, '') }}:

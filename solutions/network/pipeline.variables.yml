@@ -1,6 +1,6 @@
 variables:
   resourceGroupName: 'solutions-ne-rg'
-  environmentPath: ''
+  environmentPath: 'solutions/network'
   location: 'northeurope'
   vmImage: 'ubuntu-latest'
   poolName: ''
