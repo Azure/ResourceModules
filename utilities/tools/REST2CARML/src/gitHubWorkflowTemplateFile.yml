@@ -1,0 +1,145 @@
+name: '<<shortProviderNamespacePascal>>: <<resourceTypePascal>>'
+
+on:
+  workflow_dispatch:
+    inputs:
+      removeDeployment:
+        type: boolean
+        description: 'Remove deployed module'
+        required: false
+        default: true
+      prerelease:
+        type: boolean
+        description: 'Publish prerelease module'
+        required: false
+        default: false
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/actions/templates/**'
+      - '.github/workflows/ms.<<shortProviderNamespaceLower>>.<<resourceTypeLower>>.yml'
+      - 'modules/<<providerNamespace>>/<<resourceType>>/**'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
+
+env:
+  variablesPath: 'settings.yml'
+  modulePath: 'modules/<<providerNamespace>>/<<resourceType>>'
+  workflowPath: '.github/workflows/ms.<<shortProviderNamespaceLower>>.<<resourceTypeLower>>.yml'
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+  TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
+
+jobs:
+  ###########################
+  #   Initialize pipeline   #
+  ###########################
+  job_initialize_pipeline:
+    runs-on: ubuntu-20.04
+    name: 'Initialize pipeline'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Set input parameters to output variables'
+        id: get-workflow-param
+        uses: ./.github/actions/templates/getWorkflowInput
+        with:
+          workflowPath: '${{ env.workflowPath}}'
+      - name: 'Get parameter file paths'
+        id: get-module-test-file-paths
+        uses: ./.github/actions/templates/getModuleTestFiles
+        with:
+          modulePath: '${{ env.modulePath }}'
+    outputs:
+      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
+
+  #########################
+  #   Static validation   #
+  #########################
+  job_module_pester_validation:
+    runs-on: ubuntu-20.04
+    name: 'Static validation'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Run tests'
+        uses: ./.github/actions/templates/validateModulePester
+        with:
+          modulePath: '${{ env.modulePath }}'
+          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
+
+  #############################
+  #   Deployment validation   #
+  #############################
+  job_module_deploy_validation:
+    runs-on: ubuntu-20.04
+    name: 'Deployment validation'
+    needs:
+      - job_initialize_pipeline
+      - job_module_pester_validation
+    strategy:
+      fail-fast: false
+      matrix:
+        moduleTestFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
+
+  ##################
+  #   Publishing   #
+  ##################
+  job_publish_module:
+    name: 'Publishing'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
+    runs-on: ubuntu-20.04
+    needs:
+      - job_module_deploy_validation
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Publishing'
+        uses: ./.github/actions/templates/publishModule
+        with:
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          templateSpecsRGName: '${{ env.templateSpecsRGName }}'
+          templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
+          templateSpecsDescription: '${{ env.templateSpecsDescription }}'
+          templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
+          bicepRegistryName: '${{ env.bicepRegistryName }}'
+          bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
+          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'

@@ -31,7 +31,8 @@ function Invoke-REST2CARML {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load used functions
-        . (Join-Path $PSScriptRoot 'Get-ModuleData.ps1')
+        # . (Join-Path $PSScriptRoot 'Get-ModuleData.ps1')
+        . (Join-Path $PSScriptRoot 'Set-ModuleFileStructure.ps1')
 
         Write-Verbose ('Processing module [{0}/{1}]' -f $ProviderNamespace, $ResourceType) -Verbose
     }
@@ -41,7 +42,7 @@ function Invoke-REST2CARML {
         # $moduleData = Get-ModuleData -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
 
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
-            # TODO: Invoke function to create intial module structure & create workflow/pipeline files
+            Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
         }
 
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
@@ -53,3 +54,5 @@ function Invoke-REST2CARML {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
+
+Invoke-REST2CARML -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts' -Verbose
