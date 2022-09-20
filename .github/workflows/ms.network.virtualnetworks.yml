@@ -60,6 +60,26 @@ jobs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
 
+  job_psrule_validation:
+    runs-on: ubuntu-20.04
+    name: 'psrule-validation'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: Run PSRule analysis
+        uses: microsoft/ps-rule@main
+        with:
+          modules: 'PSRule.Rules.Azure'
+          inputPath: '${{ env.modulePath }}/'
+          outputFormat: Sarif
+          option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
+
+  
+
   #########################
   #   Static validation   #
   #########################
@@ -81,9 +101,11 @@ jobs:
           modulePath: '${{ env.modulePath }}'
           moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
-  #############################
-  #   Deployment validation   #
-  #############################
+  
+
+  # #############################
+  # #   Deployment validation   #
+  # #############################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment validation'
@@ -113,9 +135,9 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
 
-  ##################
-  #   Publishing   #
-  ##################
+  # ##################
+  # #   Publishing   #
+  # ##################
   job_publish_module:
     name: 'Publishing'
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
