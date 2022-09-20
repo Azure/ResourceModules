@@ -5,26 +5,10 @@ kind: SuppressionGroup
 metadata:
   name: 'SuppressDependancy'
 spec:
-  rule:
-  - 'PSRule.Rules.Azure/*'
   if:
     name: '.'
     startsWith: 
     - 'dep'
-  
-
-
----
-# Synopsis: 
-apiVersion: github.com/microsoft/PSRule/v1
-kind: Selector
-metadata:
-  name: 'SupressSelector'
-spec:
-  if:
-    field: 'Name'
-    notContains:
-    - 'Azure.NSG.LateralTraversal'
 
 
     
