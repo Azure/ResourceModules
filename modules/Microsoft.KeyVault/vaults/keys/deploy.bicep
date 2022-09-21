@@ -1,4 +1,4 @@
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
+@description('Conditional! The name of the parent key vault. Required if the template is used in a standalone deployment.')
 param keyVaultName string
 
 @description('Required. The name of the key.')
