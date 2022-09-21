@@ -27,8 +27,8 @@ output:
   culture:
     - 'en-US'
   outcome: 'Fail'
-  as: 'Summary'
-  
+  #as: 'Summary'
+
 
 input:
   pathIgnore:
