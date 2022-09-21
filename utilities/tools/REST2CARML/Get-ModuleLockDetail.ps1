@@ -12,7 +12,7 @@
 
         $arrItem = [pscustomobject] @{}
 
-        $arrItem = $SpecificationUrl -split '\\'
+        $arrItem = $SpecificationUrl -split '\/'
     }
 
     process {
