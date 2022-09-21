@@ -12,7 +12,6 @@ trigger:
       - solutions/CoreInfra/Platform/HubNetwork*
 
 variables:
-  # - template: /settings.yml
   - template: pipeline.variables.yml
 
 stages:

@@ -12,7 +12,6 @@ trigger:
       - solutions/CoreInfra/Platform/Monitor*
 
 variables:
-  # - template: /settings.yml
   - template: pipeline.variables.yml
 
 stages:
@@ -31,7 +30,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: logAnalytics
-          displayName: 'logAnalytics'
+          displayName: 'Log Analytics'
           modulePath: '/modules/Microsoft.OperationalInsights/workspaces/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/logAnalytics/parameters.json'
           whatif: true
@@ -40,7 +39,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: actionGroups
-          displayName: 'actionGroups'
+          displayName: 'Action Groups'
           modulePath: '/modules/Microsoft.Insights/actionGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/actionGroups/parameters.json'
           whatif: true
