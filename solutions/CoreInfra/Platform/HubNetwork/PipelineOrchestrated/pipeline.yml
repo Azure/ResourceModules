@@ -15,13 +15,6 @@ variables:
   - template: /settings.yml
   - template: pipeline.variables.yml
 
-# resources:
-#   repositories:
-#     - repository: ResourceModules
-#       name: ResourceModules
-#       ref: 'refs/heads/main'
-#       type: git
-
 stages:
   - stage:
     displayName: WhatIf
@@ -63,41 +56,41 @@ stages:
           checkoutRepositories:
             - self
 
-  # - stage:
-  #   displayName: Deploy
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
-  #       parameters:
-  #         jobName: resourceGroups
-  #         displayName: 'Resource Group'
-  #         modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
-  #         moduleTestFilePath: '$(resourceGroupName)/parameters.json'
-  #         checkoutRepositories:
-  #           - self
-  #     - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
-  #       parameters:
-  #         jobName: networkSecurityGroups
-  #         displayName: 'Network Security Groups'
-  #         modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
-  #         moduleTestFilePath: '$(resourceGroupName)/networkSecurityGroups/parameters.json'
-  #         checkoutRepositories:
-  #           - self
-  #     - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
-  #       parameters:
-  #         jobName: routeTables
-  #         displayName: 'Route Tables'
-  #         modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
-  #         moduleTestFilePath: '$(resourceGroupName)/routeTables/parameters.json'
-  #         checkoutRepositories:
-  #           - self
-  #     - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
-  #       parameters:
-  #         jobName: virtualNetworks
-  #         displayName: 'Virtual Networks'
-  #         modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
-  #         moduleTestFilePath: '$(resourceGroupName)/virtualNetworks/parameters.json'
-  #         checkoutRepositories:
-  #           - self
-  #         dependsOn:
-  #           - networkSecurityGroups
-  #           - routeTables
+  - stage:
+    displayName: Deploy
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Resource Group'
+          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/parameters.json'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: networkSecurityGroups
+          displayName: 'Network Security Groups'
+          modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/networkSecurityGroups/parameters.json'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: routeTables
+          displayName: 'Route Tables'
+          modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/routeTables/parameters.json'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: virtualNetworks
+          displayName: 'Virtual Networks'
+          modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/virtualNetworks/parameters.json'
+          checkoutRepositories:
+            - self
+          dependsOn:
+            - networkSecurityGroups
+            - routeTables
