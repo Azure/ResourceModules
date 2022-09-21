@@ -33,6 +33,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Analyze repository with PSRule
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: Run PSRule analysis
         uses: microsoft/ps-rule@v2.4.0
         continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
@@ -41,11 +47,9 @@ jobs:
           inputPath: 'modules/'
           outputFormat: Csv
           outputPath: 'modules/PSRule-output.csv'
-
       - name: Output to Github Logs
         if: always()
         run: cat 'modules/PSRule-output.csv'
-
       - name: Output to Github summaries
         if: always()
         run: cat 'modules/PSRule-output.csv' >> $GITHUB_STEP_SUMMARY
