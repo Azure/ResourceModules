@@ -33,5 +33,16 @@ jobs:
         uses: microsoft/ps-rule@v2.4.0
         continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
         with:
-          modules: PSRule.Rules.Azure
-          baseline: Azure.Default
+          modules: 'PSRule.Rules.Azure'
+          inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          outputFormat: Csv
+          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
+          option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
+
+      - name: Output to Github Logs
+        if: always()
+        run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
+
+      - name: Output to Github summaries
+        if: always()
+        run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv' >> $GITHUB_STEP_SUMMARY
