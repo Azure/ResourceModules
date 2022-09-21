@@ -101,7 +101,7 @@ variables:
   # Wiki Repository settings
   ######################################
 
-  checkoutRepositories: 'CARML.wiki' # The name of the wiki repository
+  checkoutRepositories: ['CARML.wiki'] # The name of the wiki repository
 #
 # NOTE: To override for just an individual template, just add the following to the
 #     templates pipeline.yml replacing '4.4.0' with the desired version:
