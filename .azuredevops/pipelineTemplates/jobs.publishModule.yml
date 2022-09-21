@@ -43,6 +43,13 @@
 ##
 ##---------------------------------------------##
 
+resources:
+  repositories:
+    - repository: wiki
+      type: git
+      name: 'CARML.wiki'
+      ref: wikiMaster
+
 parameters:
   # Pipeline-related parameters
   checkoutRepositories: '$(checkoutRepositories)'
