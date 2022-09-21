@@ -81,7 +81,7 @@ jobs:
             $moduleTestFiles = [System.Collections.ArrayList]@()
             # $moduleTestFiles += Get-ChildItem -Path $modulesFolderPath -Filter *.test.bicep -Recurse -Force -Name
             # Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.test.bicep -Recurse -Force -Name | Join-Path $env:GITHUB_WORKSPACE '$._'
-            $moduleTestFiles += Get-ChildItem -Filter *.test.bicep -Recurse -Force -Name | ForEach-Object {$_.root} | Join-Path -ChildPath "Subdir"
+            $moduleTestFiles += Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.test.bicep -Recurse -Force -Name | ForEach-Object {$_.root} | Join-Path -ChildPath "Subdir"
 
 
             # Construct Token Function Input
@@ -95,7 +95,8 @@ jobs:
             Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
             # Invoke Token Replacement Functionality [For Module]
-            $null = Convert-TokensInFileList @ConvertTokensInputs
+            # $null =
+            Convert-TokensInFileList @ConvertTokensInputs -verbose
 
             Write-Output '::endgroup::'
 
