@@ -154,13 +154,13 @@ jobs:
         with:
           modules: 'PSRule.Rules.Azure'
           inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          outputFormat: Wide
-          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output'
+          outputFormat: Yaml
+          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.yaml'
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
       - name: Output to Github Logs
         if: always()
-        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output'
+        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.yaml'
 
       # - name: 'PSRule test summary'
       #   uses: EnricoMi/publish-unit-test-result-action@v1
@@ -170,7 +170,7 @@ jobs:
 
       - name: Output to Github summaries
         if: always()
-        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output' >> $GITHUB_STEP_SUMMARY
+        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.yaml' >> $GITHUB_STEP_SUMMARY
 
   # #############################
   # #   Deployment validation   #
