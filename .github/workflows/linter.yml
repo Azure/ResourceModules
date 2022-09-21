@@ -54,6 +54,27 @@ jobs:
       - name: Output to Github Logs
         if: always()
         run: cat '${{ env.modulesPath }}/PSRule-output.csv'
+      - name: 'Replace tokens in template file'
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: 'latest'
+          inlineScript: |
+            # Grouping task logs
+            Write-Output '::group::Replace tokens in template file'
+
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'PSRuleValidation' 'Set-PSRuleOutput.ps1')
+
+            # Populate parameter input
+            $ParameterInput = @{
+              inputFilePath   = '${{ env.modulesPath }}/PSRule-output.csv'
+              outputFilePath  = '${{ env.modulesPath }}/PSRule-output.md'
+            }
+
+            # Invoke function
+            $null = Set-PSRuleOutput @ParameterInput
+
+            Write-Output '::endgroup::'
       - name: Output to Github summaries
         if: always()
-        run: cat '${{ env.modulesPath }}/PSRule-output.csv' >> $GITHUB_STEP_SUMMARY
+        run: cat '${{ env.modulesPath }}/PSRule-output.md' >> $GITHUB_STEP_SUMMARY
