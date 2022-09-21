@@ -342,7 +342,13 @@ Describe 'Readme tests' -Tag Readme {
                 $expectedColumnsInOrder += @('Description')
 
                 $readMeCategoryIndex = $readMeContent | Select-String -Pattern "^\*\*$paramCategory parameters\*\*$" | ForEach-Object { $_.LineNumber }
-                $readmeCategoryColumns = ($readMeContent[$readMeCategoryIndex] -split '\|') | ForEach-Object { $_.Trim() } | Where-Object { -not [String]::IsNullOrEmpty($_) }
+
+                $tableStartIndex = $readMeCategoryIndex
+                while ($readMeContent[$tableStartIndex] -notlike '*|*' -and -not ($tableStartIndex -ge $readMeContent.count)) {
+                    $tableStartIndex++
+                }
+
+                $readmeCategoryColumns = ($readMeContent[$tableStartIndex] -split '\|') | ForEach-Object { $_.Trim() } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
                 $readmeCategoryColumns | Should -Be $expectedColumnsInOrder
             }
