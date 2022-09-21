@@ -42,13 +42,20 @@ function Invoke-REST2CARML {
         # TODO: Invoke function to fetch module data
         # $moduleData = Get-ModuleData -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
         $moduleData = @{}
+        $specificationFilePath = ''
 
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
             Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
         }
 
+        $moduleTemplateInputObject = @{
+            ProviderNamespace     = $ProviderNamespace
+            ResourceType          = $ResourceType
+            ModuleData            = $moduleData
+            SpecificationFilePath = $specificationFilePath
+        }
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
-            Set-ModuleTemplate -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -ModuleData $moduleData
+            Set-ModuleTemplate @moduleTemplateInputObject
         }
     }
 

@@ -9,7 +9,10 @@
         [string] $ResourceType,
 
         [Parameter(Mandatory = $true)]
-        [Hashtable] $ModuleData
+        [Hashtable] $ModuleData,
+
+        [Parameter(Mandatory = $true)]
+        [string] $SpecificationFilePath
     )
 
     begin {
@@ -18,7 +21,8 @@
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent
         $templatePath = Join-Path $repoRootPath 'modules' $ProviderNamespace $ResourceType 'deploy.bicep'
         # Load used functions
-        . (Join-Path $PSScriptRoot 'Get-DiagnosticOption.ps1')
+        . (Join-Path $PSScriptRoot 'Get-DiagnosticOptionsList.ps1')
+        . (Join-Path $PSScriptRoot 'Get-SupportsPrivateEndpoint.ps1')
         . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
     }
 
@@ -28,10 +32,12 @@
         ##   Collect additional data   ##
         #################################
         # TODO: Clarify: Might need to be always 'All metrics' if any metric exists
-        $diagnosticOptions = Get-DiagnosticOption -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+        $diagnosticOptions = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+
+        $supportsPrivateEndpoint = Get-SupportsPrivateEndpoint -SpecificationFilePath $SpecificationFilePath
 
         ## TODO: Add RBAC
-        ## TODO: Add Private Endpoints
+
         ## TODO: Add Locks
 
         #############################

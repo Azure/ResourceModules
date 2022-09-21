@@ -13,11 +13,11 @@ Mandatory. The Provider Namespace to fetch the data for
 Mandatory. The Resource Type to fetch the data for
 
 .EXAMPLE
-Get-DiagnosticOption -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+Get-DiagnosticOptionsList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
 
 Fetch the diagnostic options (logs & metrics) for Resource Type [Microsoft.KeyVault/vaults]
 #>
-function Get-DiagnosticOption {
+function Get-DiagnosticOptionsList {
 
     [CmdletBinding()]
     param(
