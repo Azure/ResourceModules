@@ -41,7 +41,7 @@ $passContent = [System.Collections.ArrayList]@(
     '# Passing Rules',
     '',
     '| RuleName | TargetName | Outcome  | OutcomeReason |  Synopsis |Recommendation|',
-    '| :-- | :-- | :-- | :-- | :-- | :-- |'
+    '| :-- | :-- | :--: | :-- | :-- | :-- |'
 )
 
 foreach ($content in $pass ) {
@@ -56,7 +56,7 @@ $failContent = [System.Collections.ArrayList]@(
     '# Failing Rules',
     '',
     '| RuleName | TargetName | Outcome | OutcomeReason |  Synopsis |Recommendation|',
-    '| :-- | :-- | :-- | :-- | :-- | :-- |'
+    '| :-- | :-- | :--: | :-- | :-- | :-- |'
 )
 
 foreach ($content in $fail ) {

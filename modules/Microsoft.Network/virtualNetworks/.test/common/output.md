@@ -1,7 +1,7 @@
 # Passing Rules
 
 | RuleName | TargetName | Outcome  | OutcomeReason |  Synopsis |Recommendation|
-| :-- | :-- | :-- | :-- | :-- | :-- |
+| :-- | :-- | :--: | :-- | :-- | :-- |
 | Azure.Template.ParameterStrongType | /home/runner/work/ResourceModules/ResourceModules/modules/Microsoft.Network/virtualNetworks/.test/common/deploy.test.bicep | :white_check_mark: | Processed | Set the parameter value to a value that matches the specified strong type. | Consider updating the parameter value to a value that matches the specifed strong type. |
 | Azure.Template.ExpressionLength | /home/runner/work/ResourceModules/ResourceModules/modules/Microsoft.Network/virtualNetworks/.test/common/deploy.test.bicep | :white_check_mark: | Processed | Template expressions should not exceed the maximum length. | Consider updating the expression to reduce complexity and length. |
 | Azure.Deployment.OutputSecretValue | /home/runner/work/ResourceModules/ResourceModules/modules/Microsoft.Network/virtualNetworks/.test/common/deploy.test.bicep | :white_check_mark: | Processed | Avoid outputting sensitive deployment values. | Consider removing any output values that return secret values in code. |
@@ -58,5 +58,5 @@ Where possibly consider deploying Azure Private DNS Zones, a platform-as-a-servi
 # Failing Rules
 
 | RuleName | TargetName | Outcome | OutcomeReason |  Synopsis |Recommendation|
-| :-- | :-- | :-- | :-- | :-- | :-- |
+| :-- | :-- | :--: | :-- | :-- | :-- |
 | Azure.VNET.UseNSGs | ***nvncom001 | :x: | Processed | Virtual network (VNET) subnets should have Network Security Groups (NSGs) assigned. | For virtual network subnets, ensure that a network security groups (NSGs) are assigned. |
