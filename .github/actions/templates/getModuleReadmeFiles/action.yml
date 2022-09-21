@@ -88,12 +88,12 @@ runs:
 
           # Publish the modified child resources
           foreach ($ModuleReadmeFile in $ModuleReadmeFiles) {
-            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/readme.')[0]
-            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+            $RelPath = (($ModuleReadmeFile.TemplateFilePath).Split('/modules/')[-1]).Split('/readme.')[0]
+            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleReadmeFile.Version)"
 
             $functionInput = @{
-              ReadmeFilePath = $ModuleToPublish.TemplateFilePath
-              ModuleVersion  = $ModuleToPublish.Version
+              ReadmeFilePath = $ModuleReadmeFile.TemplateFilePath
+              ModuleVersion  = $ModuleReadmeFile.Version
             }
 
             Write-Verbose "Invoke task with...Luke..." -Verbose
