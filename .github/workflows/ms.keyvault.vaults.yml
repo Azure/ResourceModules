@@ -156,6 +156,14 @@ jobs:
           outputFormat: Csv
           outputPath: '${{ env.modulePath }}-outputsummary.csv'
 
+      - name: Output to Github Logs
+        if: always()
+        run:  cat '${{ env.modulePath }}-outputsummary.csv'
+
+      - name: Output to Github summaries
+        if: always()
+        run:  cat '${{ env.modulePath }}-outputsummary.csv' >> $GITHUB_STEP_SUMMARY
+
   # #############################
   # #   Deployment validation   #
   # #############################
