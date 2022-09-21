@@ -1,41 +1,4 @@
-﻿function FilterParameters ($putObj, $definitions) {
-    # TODO: recheck params
-    $obj = {}
-    $putObj.parameters | ForEach-Object {
-        if ($_.name -eq 'parameters') {
-            $newObj = Get-NestedParams($_.schema.$ref, $definitions)
-            # $obj | Add-Member -MemberType NoteProperty -Name $newObj.name -Value $newObj
-        } elseif ($null -ne $_.name) {
-            $paramItem = [PSCustomObject]@{
-                name        = $_.name
-                type        = $_.type
-                description = $_.description
-            }
-
-            $obj | Add-Member -MemberType NoteProperty -Name $paramItem.name -Value $paramItem
-        } elseif ($null -ne $_.$ref) {
-            $newObj = Get-NestedParams($_.$ref, $definitions)
-            # $obj | Add-Member -MemberType NoteProperty -Name $newObj.name -Value $newObj
-        }
-    }
-    return $obj
-}
-
-function Get-NestedParams {
-    # TODO: check why ref is null here
-    Param($params)
-    $ref = $params[0]
-    $definitions = $params[1]
-    $refDef = Split-Path $ref -LeafBase
-    if ($refDef -notin $definitions) {
-        throw 'ref is not contained in definition'
-    } else {
-        #TODO: strip $definitions.$refDef and return
-    }
-}
-
-
-function Get-ModuleDataSource {
+﻿function Get-ModuleDataSource {
 
     param (
         [Parameter(Mandatory = $true)]
@@ -128,10 +91,6 @@ function Get-ModuleDataSource {
                             $arrItem | Add-Member -MemberType NoteProperty -Name 'jsonFilePath' -Value $jsonFile.FullName
                             $arrItem | Add-Member -MemberType NoteProperty -Name 'jsonKeyPath' -Value $_.Name
                             # $arrItem | Add-Member -MemberType NoteProperty -Name 'putMethod' -Value $_.value.put
-
-                            # add nested parameters
-                            $paramObj = FilterParameters($put, $definitions)
-                            # $arrItem | Add-Member -MemberType NoteProperty -Name 'parameters' -Value $paramObj
 
                             $putMethods += $arrItem
                         }
