@@ -27,6 +27,9 @@ include:
 output:
   culture:
     - 'en-US'
+  #outcome: 'Fail'
+  #as: 'Summary'
+
 
 input:
   pathIgnore:

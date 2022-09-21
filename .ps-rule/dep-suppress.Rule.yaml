@@ -1,20 +1,9 @@
+---
 # Synopsis: Suppress Rules for dependancies
 apiVersion: github.com/microsoft/PSRule/v1
 kind: SuppressionGroup
 metadata:
   name: 'SuppressDependancy'
-spec:
-  if:
-    name: '.'
-    startsWith:
-      - 'dep'
-
----
-# Synopsis: Selector for dependencies
-apiVersion: github.com/microsoft/PSRule/v1
-kind: Selector
-metadata:
-  name: 'SupressSelector'
 spec:
   if:
     name: '.'
