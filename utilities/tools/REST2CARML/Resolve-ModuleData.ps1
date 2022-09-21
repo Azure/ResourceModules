@@ -1,71 +1,166 @@
-﻿function FilterParameters ($putObj, $definitions) {
-    # TODO: recheck params
-    $obj = {}
-    $putObj.parameters | ForEach-Object {
-        if ($_.name -eq 'parameters') {
-            $newObj = Get-NestedParams($_.schema.$ref, $definitions)
-            # $obj | Add-Member -MemberType NoteProperty -Name $newObj.name -Value $newObj
-        } elseif ($null -ne $_.name) {
-            $paramItem = [PSCustomObject]@{
-                name        = $_.name
-                type        = $_.type
-                description = $_.description
-            }
-
-            $obj | Add-Member -MemberType NoteProperty -Name $paramItem.name -Value $paramItem
-        } elseif ($null -ne $_.$ref) {
-            $newObj = Get-NestedParams($_.$ref, $definitions)
-            # $obj | Add-Member -MemberType NoteProperty -Name $newObj.name -Value $newObj
-        }
-    }
-    return $obj
-}
-
-function Get-NestedParams {
-    # TODO: check why ref is null here
-    Param($params)
-    $ref = $params[0]
-    $definitions = $params[1]
-    $refDef = Split-Path $ref -LeafBase
-    if ($refDef -notin $definitions) {
-        throw 'ref is not contained in definition'
-    } else {
-        #TODO: strip $definitions.$refDef and return
-    }
-}
-
-
-function Resolve-ModuleData {
+﻿function Add-OptionalParameter {
 
     [CmdletBinding()]
     param (
         [Parameter()]
-        [array] $SpecificationPaths
+        [hashtable] $SourceParameterObject,
+
+        [Parameter()]
+        [hashtable] $TargetObject
     )
 
-    $templateData = @{}
-    foreach ($SpecificationPath in $SpecificationPaths) {
+    # Allowed values
+    if ($SourceParameterObject.Keys -contains 'enum') {
+        $TargetObject['allowedValues'] = $SourceParameterObject.enum
 
-        $specificationData = Get-Content -Path $SpecificationPath.jsonFilePath -Raw | ConvertFrom-Json -AsHashtable
+        if ($SourceParameterObject.enum.count -eq 1) {
+            $TargetObject['default'] = $SourceParameterObject.enum[0]
+        }
+    }
 
-        $definitions = $specificationData.definitions
+    # Max Length
+    if ($SourceParameterObject.Keys -contains 'maxLength') {
+        $TargetObject['maxLength'] = $SourceParameterObject.maxLength
+    }
 
-        $matchingPathObjectParameters = $specificationData.paths[$SpecificationPath.jsonKeyPath].put.parameters
+    # Min Length
+    if ($SourceParameterObject.Keys -contains 'minLength') {
+        $TargetObject['minLength'] = $SourceParameterObject.minLength
+    }
 
-        $relevantParameters = $matchingPathObjectParameters | Where-Object { $_.name -notin @('resourceGroupName', 'subscription') }
+    # Default value
+    if ($SourceParameterObject.Keys -contains 'default') {
+        $TargetObject['default'] = $SourceParameterObject.default
+    }
+
+    # Pattern
+    if ($SourceParameterObject.Keys -contains 'pattern') {
+        $TargetObject['pattern'] = $SourceParameterObject.pattern
+    }
+
+    return $TargetObject
+}
+
+<#
+.SYNOPSIS
+Extract the outer (top-level) and inner (property-level) parameters for a given API Path
+
+.DESCRIPTION
+Extract the outer (top-level) and inner (property-level) parameters for a given API Path
+
+.PARAMETER JSONFilePath
+Mandatory. The service specification file to process.
+
+.PARAMETER JSONKeyPath
+Mandatory. The API Path in the JSON specification file to process
+
+.EXAMPLE
+Resolve-ModuleData -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -JSONKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+
+Process the API path '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' in file 'keyvault.json'
+#>
+function Resolve-ModuleData {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $JSONFilePath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $JSONKeyPath
+    )
+
+
+    # Collect data
+    # ------------
+    $specificationData = Get-Content -Path $JSONFilePath -Raw | ConvertFrom-Json -AsHashtable
+    $definitions = $specificationData.definitions
+    $specParameters = $specificationData.parameters
+
+    $putParameters = $specificationData.paths[$JSONKeyPath].put.parameters
+    $matchingPathObjectParametersRef = ($putParameters | Where-Object { $_.name -eq 'parameters' }).schema.'$ref'
+    $outerParameters = $definitions[(Split-Path $matchingPathObjectParametersRef -Leaf)]
+
+    $templateData = [System.Collections.ArrayList]@()
+
+    # Handle resource name
+    # --------------------
+    # Note: The name can be specified in different locations like the PUT statement, but also in the spec's 'parameters' object as a reference
+    # Case: The name in the url is also a parameter of the PUT statement
+    $pathServiceName = (Split-Path $JSONKeyPath -Leaf) -replace '{|}', ''
+    if ($putParameters.name -contains $pathServiceName) {
+        $param = $putParameters | Where-Object { $_.name -eq $pathServiceName }
+
+        $parameterObject = @{
+            level       = 0
+            name        = 'name'
+            type        = 'string'
+            description = $param.description
+            required    = $true
+        }
+
+        $parameterObject = Add-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
+    } else {
+        # Case: The name is a ref in the spec's 'parameters' object. E.g., { "$ref": "#/parameters/BlobServicesName" }
+        # For this, we need to find the correct ref, as there can be multiple
+        $nonDefaultParameter = $putParameters.'$ref' | Where-Object { $_ -like '#/parameters/*' } | Where-Object { $specParameters[(Split-Path $_ -Leaf)].name -eq $pathServiceName }
+        if ($nonDefaultParameter) {
+            $param = $specParameters[(Split-Path $nonDefaultParameter -Leaf)]
+
+            $parameterObject = @{
+                level       = 0
+                name        = 'name'
+                type        = 'string'
+                description = $param.description
+                required    = $true
+            }
+
+            $parameterObject = Add-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
+        }
+    }
+
+    $templateData += $parameterObject
+
+    # Process outer properties
+    # ------------------------
+    foreach ($outerParameter in $outerParameters.properties.Keys | Where-Object { $_ -ne 'properties' }) {
+        $param = $outerParameters.properties[$outerParameter]
+        $parameterObject = @{
+            level       = 0
+            name        = $outerParameter
+            type        = $param.keys -contains 'type' ? $param.type : 'object'
+            description = $param.description
+            required    = $outerParameters.required -contains $outerParameter
+        }
+
+        $parameterObject = Add-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
+
+        $templateData += $parameterObject
+    }
+
+    # Process inner properties
+    # ------------------------
+    $innerRef = $outerParameters.properties.properties.'$ref'
+    $innerParameters = $definitions[(Split-Path $innerRef -Leaf)].properties
+
+    foreach ($innerParameter in $innerParameters.Keys ) {
+        $param = $innerParameters[$innerParameter]
+        $parameterObject = @{
+            level       = 1
+            name        = $innerParameter
+            type        = $param.keys -contains 'type' ? $param.type : 'object'
+            description = $param.description
+            required    = $innerParameters.required -contains $innerParameter
+        }
+
+        $parameterObject = Add-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
+
+        $templateData += $parameterObject
     }
 
     return $templateData
 }
 
-
-Resolve-ModuleData -SpecificationPaths @(
-    @{
-        jsonFilePath = 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json'
-        jsonKeyPath  = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' # PUT path
-    }
-    # @{
-    #     jsonFilePath = 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json'
-    #     jsonKeyPath  = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' # PUT path
-    # }
-)
+Resolve-ModuleData -jsonFilePath 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json' -jsonKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' | ConvertTo-Json
+# Resolve-ModuleData -jsonFilePath 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\blob.json' -jsonKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}' | ConvertTo-Json
+# Resolve-ModuleData -jsonFilePath 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json' -jsonKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' | ConvertTo-Json
