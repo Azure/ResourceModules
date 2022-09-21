@@ -95,6 +95,13 @@ variables:
   # If using the latest version of the Az PowerShell modules, set `preferredAzurePowerShellVersion` to an empty string ''.
   # If overriding the Az PowerShell module version, set to the version. Example: '4.4.0'
   preferredAzurePowerShellVersion: ''
+
+
+  ######################################
+  # Wiki Repository settings
+  ######################################
+
+  checkoutRepositories: ['CARML.wiki'] # The name of the wiki repository
 #
 # NOTE: To override for just an individual template, just add the following to the
 #     templates pipeline.yml replacing '4.4.0' with the desired version:
