@@ -1,6 +1,6 @@
 # Key Vault Key `[Microsoft.KeyVault/vaults/keys]`
 
-This module deploys a key vault key. (v0.6)
+This module deploys a key vault key. (v0.6-patch)
 
 ## Navigation
 
