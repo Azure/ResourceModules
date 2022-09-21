@@ -15,12 +15,12 @@ variables:
   - template: /settings.yml
   - template: pipeline.variables.yml
 
-resources:
-  repositories:
-    - repository: ResourceModules
-      name: ResourceModules
-      ref: 'refs/heads/main'
-      type: git
+# resources:
+#   repositories:
+#     - repository: ResourceModules
+#       name: ResourceModules
+#       ref: 'refs/heads/main'
+#       type: git
 
 stages:
   - stage:
