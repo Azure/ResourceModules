@@ -14,9 +14,9 @@
             "value": [{
                 "name": "subnet",
                 "addressPrefix": "10.5.64.0/24",
-                "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-spk-001",
+                "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-spk-001",
                 "serviceEndpoints": [],
-                "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
             }]
         }
     }

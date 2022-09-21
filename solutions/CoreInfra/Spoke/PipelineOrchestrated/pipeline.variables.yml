@@ -1,5 +1,5 @@
 variables:
-  resourceGroupName: 'ssolutions-ne-spoke-rg'
+  resourceGroupName: 'solutions-ne-spoke-rg'
   environmentPath: 'solutions/CoreInfra/Spoke/PipelineOrchestrated'
   location: 'northeurope'
   vmImage: 'ubuntu-latest'
