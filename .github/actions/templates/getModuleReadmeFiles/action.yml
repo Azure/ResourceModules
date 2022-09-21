@@ -38,32 +38,32 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: "Setup agent"
-      shell: pwsh
-      run: |
-        # Grouping task logs
-        Write-Output '::group::Setup agent'
+    # - name: "Setup agent"
+    #   shell: pwsh
+    #   run: |
+    #     # Grouping task logs
+    #     Write-Output '::group::Setup agent'
 
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+    #     # Load used functions
+    #     . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-        # Define PS modules to install on the runner
-        $Modules = @(
-            @{ Name = 'Az.Accounts' },
-            @{ Name = 'Az.ContainerRegistry' },
-            @{ Name = 'Az.Resources' }
-        )
+    #     # Define PS modules to install on the runner
+    #     $Modules = @(
+    #         @{ Name = 'Az.Accounts' },
+    #         @{ Name = 'Az.ContainerRegistry' },
+    #         @{ Name = 'Az.Resources' }
+    #     )
 
-        # Set agent up
-        Set-EnvironmentOnAgent -PSModules $Modules
+    #     # Set agent up
+    #     Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output '::endgroup::'
+    #     Write-Output '::endgroup::'
 
-    - name: Azure Login
-      uses: Azure/login@v1
-      with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
+    # - name: Azure Login
+    #   uses: Azure/login@v1
+    #   with:
+    #     creds: ${{ env.AZURE_CREDENTIALS }}
+    #     enable-AzPSSession: true
 
     - name: "Get Readme Files to Publish"
       uses: azure/powershell@v1
