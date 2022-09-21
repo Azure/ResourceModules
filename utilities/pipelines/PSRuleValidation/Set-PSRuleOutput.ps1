@@ -4,7 +4,7 @@
         [Parameter(Mandatory)]
         [String] $inputFilePath,
 
-        [Parameter()]
+        [Parameter(Mandatory = $false)]
         [string] $outputFilePath = './output.md'
     )
 
