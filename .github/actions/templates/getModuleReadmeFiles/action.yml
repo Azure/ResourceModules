@@ -74,7 +74,7 @@ runs:
           Write-Output '::group::Get readme files to publish'
 
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesReadmeFiles.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModuleReadmeFiles.ps1')
 
           $functionInput = @{
             ReadmeFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.readmeFilePath }}"
