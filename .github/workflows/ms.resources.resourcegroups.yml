@@ -82,7 +82,7 @@ jobs:
           moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   job_psrule_test:
-    name: 'PsRule inflight validation'
+    name: 'PsRule pre-flight validation'
     runs-on: ubuntu-latest
     needs:
        - job_initialize_pipeline
