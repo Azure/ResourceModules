@@ -154,7 +154,7 @@ jobs:
         with:
           modules: 'PSRule.Rules.Azure'
           inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          outputFormat: Json
+          outputFormat: Markdown
           outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
