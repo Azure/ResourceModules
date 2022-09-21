@@ -31,7 +31,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: logAnalytics
-          displayName: 'Resource Group'
+          displayName: 'logAnalytics'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/logAnalytics/parameters.json'
           whatif: true
@@ -40,7 +40,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: actionGroups
-          displayName: 'Resource Group'
+          displayName: 'actionGroups'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/actionGroups/parameters.json'
           whatif: true
@@ -53,7 +53,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: DeployResourceGroups
-          displayName: 'Resource Group'
+          displayName: 'Deploy Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/parameters.json'
           checkoutRepositories:
@@ -61,7 +61,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: DeployLogAnalytics
-          displayName: 'Resource Group'
+          displayName: 'Deploy Log Analytics'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/logAnalytics/parameters.json'
           checkoutRepositories:
@@ -69,7 +69,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: DeployActionGroups
-          displayName: 'Resource Group'
+          displayName: 'Deploy Action Groups'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/actionGroups/parameters.json'
           checkoutRepositories:
