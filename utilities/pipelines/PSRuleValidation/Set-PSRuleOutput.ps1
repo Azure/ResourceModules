@@ -45,6 +45,7 @@
             '',
             '<details>',
             '<summary>GitHub private repository</summary>',
+            '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- | :-- |'
         )
@@ -69,7 +70,9 @@
 
         }
         $failContent += [System.Collections.ArrayList]@(
-            '</details>')
+            '',
+            '</details>',
+            '')
         #Append markdown with failed rules table
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $failContent
     }
