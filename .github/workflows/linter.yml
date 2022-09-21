@@ -77,9 +77,12 @@ jobs:
             }
 
             # Get File Path List
+            $modulesFolderPath = Join-Path $env:GITHUB_WORKSPACE '${{ env.modulesPath }}'
+            Write-Verbose $modulesFolderPath -Verbose
             $moduleTestFiles = @()
-            $moduleTestFiles += Get-ChildItem -Path (Join-Path $env:GITHUB_WORKSPACE '${{ env.modulesPath }}') -Filter *.test.bicep -Recurse -File -Name
-
+            $moduleTestFiles += Get-ChildItem -Path $modulesFolderPath -Filter *.test.bicep -Recurse -File -Name
+            Write-Verbose '$($moduleTestFiles.Count)' -Verbose
+            Write-Verbose '$($moduleTestFiles.GetType())' -Verbose
             # Construct Token Function Input
             $ConvertTokensInputs = @{
               FilePathList = $moduleTestFiles
