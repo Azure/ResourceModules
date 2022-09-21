@@ -33,4 +33,4 @@ stages:
     displayName: Publish module readme files
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
-      - template: /azuredevops/pipelineTemplates/jobs.publishModuleReadmeFiles.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModuleReadmeFiles.yml
