@@ -1,0 +1,396 @@
+#########################################################
+## 'Deploy module' Composite Action                    ##
+#########################################################
+##
+## This composite action contains the logic to both test and execute a deployment of a given template and parameter file.
+## By default, tested deployments are also removed. Optionally, the removal step can be skipped.
+##
+#########################################################
+##
+##-------------------------------------------##
+## ACTION PARAMETERS                         ##
+##-------------------------------------------##
+##
+##   |=====================================================================================================================================================================================|
+##   | Parameter                 | Required | Default | Description                                           | Example                                                                    |
+##   |---------------------------|----------|---------|-------------------------------------------------------|----------------------------------------------------------------------------|
+##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'modules/Microsoft.ApiManagement/service/deploy.bicep'                     |
+##   | parameterFilePath         | false    | ''      | The path to the parameter file to use for deployment  | 'modules/Microsoft.ApiManagement/service/.test/parameters.json'            |
+##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                               |
+##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                            |
+##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
+##   | managementGroupId         | false    | ''      | The managementGroupId to deploy to                    | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
+##   | customParameterFileTokens | false    | ''      | Additional parameter file token pairs in json format. | '{"tokenName":"tokenValue"}'                                               |
+##   | removeDeployment          | false    | 'true'  | Set "true" to set module up for removal               | 'true'                                                                     |
+##   |=====================================================================================================================================================================================|
+##
+#########################################################
+##
+##----------------------------------------##
+## ACTION OUTPUTS                         ##
+##----------------------------------------##
+##
+##   |================================================================|
+##   | Output           | Description                                 |
+##   |------------------|---------------------------------------------|
+##   | deploymentOutput | The module deployment output in json format |
+##   |================================================================|
+##
+##---------------------------------------------##
+
+name: 'Deploy module'
+description: 'Deploy module'
+
+inputs:
+  templateFilePath:
+    description: 'The path to the template file to use for deployment'
+    required: true
+  parameterFilePath:
+    description: 'The path to the parameter file to use for deployment'
+    required: false
+  location:
+    description: 'The location to use for deployment'
+    required: true
+  resourceGroupName:
+    description: 'The resource group to deploy to'
+    required: false
+  subscriptionId:
+    description: 'The subscription ID to deploy to'
+    required: false
+  managementGroupId:
+    description: 'The management group ID to deploy to'
+    required: false
+  customParameterFileTokens:
+    description: 'Additional parameter file token pairs in json format. e.g. {"tokenName":"tokenValue"}'
+    required: false
+  removeDeployment:
+    description: 'Set "true" to set module up for removal'
+    default: 'true'
+    required: false
+
+outputs:
+  deploymentOutput:
+    description: 'The module deployment output in json format'
+    value: ${{ steps.deploy_step.outputs.deploymentOutput }}
+
+runs:
+  using: 'composite'
+  steps:
+    # [Setup] task(s)
+    # ---------------
+    - name: 'Setup agent'
+      shell: pwsh
+      run: |
+        # Grouping task logs
+        Write-Output '::group::Setup agent'
+
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+        # Define PS modules to install on the runner
+        $Modules = @(
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.Resources' }
+        )
+
+        # Additional PS modules need to be installed for the removal step in case it is enabled
+        if ('${{ inputs.removeDeployment}}' -eq 'true') {
+          $Modules += @(
+            @{ Name = 'Az.CognitiveServices' },
+            @{ Name = 'Az.Compute' },
+            @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.Monitor' },
+            @{ Name = 'Az.OperationalInsights' },
+            @{ Name = 'Az.RecoveryServices' }
+            @{ Name = 'powershell-yaml'; Version = '0.4.2'}
+          )
+        }
+
+        # Set agent up
+        Set-EnvironmentOnAgent -PSModules $Modules
+
+        Write-Output '::endgroup::'
+
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
+    # [Token replacement] task(s)
+    # ---------------------------
+    - name: 'Replace tokens in template file'
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output '::group::Replace tokens in template file'
+
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+          # Get target files
+          $targetFileList = @('${{ inputs.templateFilePath }}')
+          if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+            $targetFileList += '${{ inputs.parameterFilePath }}'
+          }
+
+          # Get Service Principal Object ID
+          $context = Get-AzContext
+          $servicePrincipalAppId = $context.Account.Id
+          $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+          $servicePrincipalObjectId = $servicePrincipal.Id
+
+          # Construct Token Function Input
+          $ConvertTokensInputs = @{
+            FilePathList = $targetFileList
+            Tokens       = @{}
+            TokenPrefix  = '${{ env.tokenPrefix }}'
+            TokenSuffix  = '${{ env.tokenSuffix }}'
+          }
+
+          # Add enforced tokens
+          $ConvertTokensInputs.Tokens += @{
+            resourceGroupName = '${{ inputs.resourceGroupName }}'
+            subscriptionId    = '${{ inputs.subscriptionId }}'
+            managementGroupId = '${{ inputs.managementGroupId }}'
+            tenantId          = '${{ env.ARM_TENANT_ID }}'
+            deploymentSpId    = $servicePrincipalObjectId
+          }
+
+          # Add local (source control) tokens
+          $tokenMap = @{}
+          foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+            $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+          }
+          Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.Tokens += $tokenMap
+
+          # Swap 'namePrefix' token if empty and provided as a GitHub secret
+          if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+            Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+            $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
+          }
+
+          # Add custom tokens (passed in via the pipeline)
+          if(-not [String]::IsNullOrEmpty('${{  inputs.customParameterFileTokens }}')) {
+            $customTokens = '${{ inputs.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+            Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens += $customTokens
+          }
+
+          Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
+
+          # Invoke Token Replacement Functionality [For Module]
+          $null = Convert-TokensInFileList @ConvertTokensInputs
+
+          # Get target files for modules dependencies
+          $DependencyParameterFilePaths = [System.Collections.ArrayList]@()
+          $DependencyParameterFolders = Get-ChildItem -Path (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies') -Recurse -Filter 'parameters' -Directory
+          foreach ($FolderPath in $DependencyParameterFolders.FullName) {
+              $DependencyParameterFilePaths += Get-ChildItem -Path $FolderPath -Recurse -Filter '*.json'
+          }
+          $ConvertTokensInputs.FilePathList = $DependencyParameterFilePaths
+
+          # Invoke Token Replacement Functionality [For Dependencies]
+          $null = Convert-TokensInFileList @ConvertTokensInputs
+
+          Write-Output '::endgroup::'
+
+    # [Deployment validation] task(s)
+    # -------------------------------
+    - name: 'Validate template file'
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output '::group::Validate template file'
+
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
+
+          # Prepare general parameters
+          # --------------------------
+          # Fetching parameters
+          $location = '${{ inputs.location }}'
+          $resourceGroupName = '${{ inputs.resourceGroupName }}'
+          $subscriptionId = '${{ inputs.subscriptionId }}'
+          $managementGroupId = '${{ inputs.managementGroupId }}'
+
+          # Determine template & test file path
+          if ('${{ inputs.templateFilePath }}' -like '*.test*') {
+            Write-Verbose 'Using template test file [${{ inputs.templateFilePath }}]' -Verbose
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f ($moduleTestFilePath | Split-Path | Split-Path | Split-Path))
+          } elseif('${{ inputs.templateFilePath }}' -like '*dependencies*') {
+            Write-Verbose 'Using template file [${{ inputs.templateFilePath }}]' -Verbose
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          } else {
+            Write-Verbose 'Using parameter test file [${{ inputs.parameterFilePath }}]' -Verbose
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          }
+
+          # Determine possible parameters depending on file type
+          if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
+            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+          } else {
+            $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+          }
+
+          # ----------------- #
+          # Invoke validation #
+          # ----------------- #
+          $functionInput = @{
+            TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
+            Location             = $location
+            ResourceGroupName    = $resourceGroupName
+            SubscriptionId       = $subscriptionId
+            ManagementGroupId    = $managementGroupId
+            AdditionalParameters = @{}
+          }
+
+          # Handle template file
+          if ($moduleTestFilePath -like '*parameters.json') {
+            $functionInput['parameterFilePath'] = $moduleTestFilePath
+          }
+
+          # if (-not [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
+          #     $functionInput['additionalParameters'] += @{
+          #         enableDefaultTelemetry = [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}')
+          #     }
+          # }
+
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Test-TemplateDeployment @functionInput -Verbose
+
+          Write-Output '::endgroup::'
+
+    # [Deployment execution] task(s)
+    # ------------------------------
+    - name: 'Deploy template file'
+      id: deploy_step
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output '::group::Deploy template file'
+
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+
+          # Prepare general parameters
+          # --------------------------
+          $location = '${{ inputs.location }}'
+          $resourceGroupName = '${{ inputs.resourceGroupName }}'
+          $subscriptionId = '${{ inputs.subscriptionId }}'
+          $managementGroupId = '${{ inputs.managementGroupId }}'
+
+          # Determine template & test file path
+          if ('${{ inputs.templateFilePath }}' -like '*.test*') {
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Resolve-Path ('{0}/deploy.*' -f ($moduleTestFilePath | Split-Path | Split-Path | Split-Path))
+          } elseif('${{ inputs.templateFilePath }}' -like '*dependencies*') {
+            Write-Verbose 'Using template file [${{ inputs.templateFilePath }}]' -Verbose
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          } else {
+            $moduleTestFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+            $moduleTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          }
+
+          # Determine possible parameters depending on file type
+          if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
+            $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
+          } else {
+            $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+          }
+
+          # ----------------- #
+          # Invoke deployment #
+          # ----------------- #
+          $functionInput = @{
+            TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
+            Location             = $location
+            ResourceGroupName    = $resourceGroupName
+            SubscriptionId       = $subscriptionId
+            ManagementGroupId    = $managementGroupId
+            DoNotThrow           = $true
+            AdditionalParameters = @{}
+          }
+
+          # Handle template file
+          if ($moduleTestFilePath -like '*parameters.json') {
+            $functionInput['parameterFilePath'] = $moduleTestFilePath
+          }
+
+          # if (-not [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
+          #     $functionInput['additionalParameters'] += @{
+          #         enableDefaultTelemetry = [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}')
+          #     }
+          # }
+
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          # Invoke deployment
+          $res = New-TemplateDeployment @functionInput -Verbose
+
+          # Get deployment name
+          Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
+
+          # Populate further outputs
+          $deploymentOutputHash = @{}
+
+          foreach ($outputKey in $res.deploymentOutput.Keys) {
+            Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+            $deploymentOutputHash.add($outputKey, $res.deploymentOutput[$outputKey].Value)
+          }
+
+          $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+          Write-Verbose "Deployment output: $deploymentOutput" -Verbose
+          Write-Output ('::set-output name={0}::{1}' -f 'deploymentOutput', $deploymentOutput)
+
+          if ($res.ContainsKey('exception')) {
+            # Happens only if there is an exception
+            throw $res.exception
+          }
+
+          Write-Output '::endgroup::'
+
+    # [Deployment removal] task(s)
+    # ----------------------------
+    - name: 'Remove deployed resources'
+      if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output '::group::Remove deployed resources'
+
+          # Load used function
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+
+          $functionInput = @{
+            TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
+            ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            ManagementGroupId = '${{ inputs.managementGroupId }}'
+            Verbose           = $true
+          }
+
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Initialize-DeploymentRemoval @functionInput
+
+          Write-Output '::endgroup::'
