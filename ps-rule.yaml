@@ -26,14 +26,11 @@ include:
 execution:
   suppressedRuleWarning: false
 
-logging:
-  rulePass: Information
-
 output:
   culture:
     - 'en-US'
   #outcome: 'All'
-  #as: 'Summary'
+  as: 'Summary'
 
 
 input:

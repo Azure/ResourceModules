@@ -153,16 +153,16 @@ jobs:
         with:
           modules: 'PSRule.Rules.Azure'
           inputPath: '${{ env.modulePath }}/'
-          outputFormat: Csv
-          outputPath: '${{ env.modulePath }}-output.csv'
+          # outputFormat: Csv
+          # outputPath: '${{ env.modulePath }}-output.csv'
 
-      - name: Output to Github Logs
-        if: always()
-        run:  cat '${{ env.modulePath }}-output.csv'
+      # - name: Output to Github Logs
+      #   if: always()
+      #   run:  cat '${{ env.modulePath }}-output.csv'
 
-      - name: Output to Github summaries
-        if: always()
-        run:  cat '${{ env.modulePath }}-output.csv' >> $GITHUB_STEP_SUMMARY
+      # - name: Output to Github summaries
+      #   if: always()
+      #   run:  cat '${{ env.modulePath }}-output.csv' >> $GITHUB_STEP_SUMMARY
 
   # #############################
   # #   Deployment validation   #
