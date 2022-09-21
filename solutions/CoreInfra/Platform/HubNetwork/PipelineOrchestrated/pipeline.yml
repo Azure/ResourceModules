@@ -72,7 +72,7 @@ stages:
           jobName: networkSecurityGroups
           displayName: 'Network Security Groups'
           modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
-          moduleTestFilePath: '$/solutions/CoreInfra/Platform/HubNetwork/PipelineOrchestrated/networkSecurityGroups/parameters.json'
+          moduleTestFilePath: '/solutions/CoreInfra/Platform/HubNetwork/PipelineOrchestrated/networkSecurityGroups/parameters.json'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -80,7 +80,7 @@ stages:
           jobName: routeTables
           displayName: 'Route Tables'
           modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
-          moduleTestFilePath: '$/solutions/CoreInfra/Platform/HubNetwork/PipelineOrchestrated/routeTables/parameters.json'
+          moduleTestFilePath: '/solutions/CoreInfra/Platform/HubNetwork/PipelineOrchestrated/routeTables/parameters.json'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
