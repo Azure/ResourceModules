@@ -78,7 +78,7 @@ jobs:
 
             # Get File Path List
             $moduleTestFiles = @()
-            $moduleTestFiles += Get-ChildItem -Path '${{ env.modulesPath }}' -Filter *.test.bicep -Recurse -File -Name
+            $moduleTestFiles += Get-ChildItem -Path (Join-Path $env:GITHUB_WORKSPACE '${{ env.modulesPath }}') -Filter *.test.bicep -Recurse -File -Name
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{
