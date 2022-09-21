@@ -17,7 +17,6 @@ binding:
 requires:
   PSRule: '@pre >=2.4.0'
   PSRule.Rules.Azure: '@pre >=1.19.2'
-  baseline: 'Azure.GA_2022_06'
 
 # Use PSRule for Azure.
 include:
@@ -29,7 +28,6 @@ output:
     - 'en-US'
   #outcome: 'Fail'
   #as: 'Summary'
-
 
 input:
   pathIgnore:
@@ -59,7 +57,6 @@ rule:
   exclude:
     # Ignore the following rules for all resources
     - Azure.Resource.UseTags
-
 # Suppression ignores rules for a specific Azure resource by name.
 #suppression:
 #  Azure.Identity.UserAssignedName:
