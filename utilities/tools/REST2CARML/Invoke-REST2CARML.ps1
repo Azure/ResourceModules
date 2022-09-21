@@ -40,7 +40,12 @@ function Invoke-REST2CARML {
 
     process {
         # TODO: Invoke function to fetch module data
-        # $moduleData = Get-ModuleData -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+        $pathData = @{
+            jsonFilePath = '(...)\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json'
+            jsonKeyPath  = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' # PUT path
+        }
+
+        # $moduleData = Resolve-ModuleData -PathData $pathData
         $moduleData = @{
             parameters = @(
                 @{
@@ -60,7 +65,6 @@ function Invoke-REST2CARML {
                 }
             )
         }
-        $specificationFilePath = ''
 
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
             Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
@@ -69,8 +73,9 @@ function Invoke-REST2CARML {
         $moduleTemplateInputObject = @{
             ProviderNamespace     = $ProviderNamespace
             ResourceType          = $ResourceType
+            SpecificationFilePath = $pathData.jsonFilePath
+            SpecificationUrl      = $pathData.jsonKeyPath
             ModuleData            = $moduleData
-            SpecificationFilePath = $specificationFilePath
         }
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
             Set-ModuleTemplate @moduleTemplateInputObject

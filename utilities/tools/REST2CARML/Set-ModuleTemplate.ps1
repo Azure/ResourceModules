@@ -12,7 +12,7 @@
         [Hashtable] $ModuleData,
 
         [Parameter(Mandatory = $true)]
-        [string] $SpecificationFilePath
+        [object] $PathData
     )
 
     begin {
@@ -45,6 +45,7 @@
         #############################
 
         # TODO: Update template file
+
 
         #############################
         ##   Update Module ReadMe   #
