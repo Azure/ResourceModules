@@ -1,4 +1,4 @@
-﻿function Set-ModuleTemplate {
+﻿function Set-Module {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
