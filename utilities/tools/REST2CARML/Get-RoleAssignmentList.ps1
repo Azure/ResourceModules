@@ -1,19 +1,18 @@
 ﻿<#
 .SYNOPSIS
-Fetch all available Role Definitions for the given Resource Type
+Fetch all available Role Definitions for the given ProviderNamespace
 
 .DESCRIPTION
-Fetch all available Role Definitions for the given Resource Type
+Fetch all available Role Definitions for the given ProviderNamespace
 Leverges Microsoft Docs's [https://learn.microsoft.com/en-us/powershell/module/az.resources/get-azroledefinition?view=azps-8.3.0] to fetch the data
 
 .PARAMETER ProviderNamespace
-Mandatory. The Provider Namespace to fetch the data for
-
+Mandatory. The Provider Namespace to fetch the role definitions
 
 .EXAMPLE
-Get-AzRoleDefinition | Where-Object { !$_.IsCustom -and ($_.Actions -match 'Microsoft.KeyVault/' -or $_.DataActions -match 'Microsoft.KeyVault/'  -or $_.Actions -like '`**') } | FT Name, Id
+Get-AzRoleDefinition | Where-Object { !$_.IsCustom -and ($_.Actions -match $ProviderNamespace -or $_.DataActions -match $ProviderNamespace -or $_.Actions -like '`**') } | Select-Object Name, Id | ConvertTo-Json | ConvertFrom-Json
 
-Fetch the diagnostic options (logs & metrics) for Resource Type [Microsoft.KeyVault/vaults]
+Fetch all available Role Definitions for ProviderNamespace [Microsoft.KeyVault]
 #>
 function Get-RoleAssignmentsList {
 
@@ -31,7 +30,7 @@ function Get-RoleAssignmentsList {
     process {
 
         #################
-        ##   Get Roles  ##
+        ##   Get Roles ##
         #################
         $roleDefinitions = Get-AzRoleDefinition | Where-Object { !$_.IsCustom -and ($_.Actions -match $ProviderNamespace -or $_.DataActions -match $ProviderNamespace -or $_.Actions -like '`**') } | Select-Object Name, Id | ConvertTo-Json | ConvertFrom-Json
         $resBicep = [System.Collections.ArrayList]@()
