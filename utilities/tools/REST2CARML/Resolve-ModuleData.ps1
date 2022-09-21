@@ -1,11 +1,30 @@
-﻿function Add-OptionalParameter {
+﻿#region helperFunctions
+<#
+.SYNOPSIS
+Add any optional property to the given 'TargetObject' if it exists in the given 'SourceObject'
+
+.DESCRIPTION
+Add any optional property to the given 'TargetObject' if it exists in the given 'SourceObject'
+
+.PARAMETER SourceParameterObject
+Mandatory. The source object to fetch the properties from
+
+.PARAMETER TargetObject
+Mandatory. The target object to add the optional parameters to
+
+.EXAMPLE
+Set-OptionalParameter -SourceParameterObject @{ minLength = 3; allowedValues = @('default') } -TargetObject @{ name = 'sampleObject' }
+
+Add any optional parameter defined in the given source object to the given target object. In this case, both the 'minLength' & 'allowedValues' properties would be added. In addition, the property 'default' is added, as the 'allowedValues' specify only one possible value.
+#>
+function Set-OptionalParameter {
 
     [CmdletBinding()]
     param (
-        [Parameter()]
+        [Parameter(Mandatory = $true)]
         [hashtable] $SourceParameterObject,
 
-        [Parameter()]
+        [Parameter(Mandatory = $true)]
         [hashtable] $TargetObject
     )
 
@@ -40,6 +59,7 @@
 
     return $TargetObject
 }
+#endregion
 
 <#
 .SYNOPSIS
@@ -99,7 +119,7 @@ function Resolve-ModuleData {
             required    = $true
         }
 
-        $parameterObject = Add-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
+        $parameterObject = Set-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
     } else {
         # Case: The name is a ref in the spec's 'parameters' object. E.g., { "$ref": "#/parameters/BlobServicesName" }
         # For this, we need to find the correct ref, as there can be multiple
@@ -115,7 +135,7 @@ function Resolve-ModuleData {
                 required    = $true
             }
 
-            $parameterObject = Add-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
+            $parameterObject = Set-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
         }
     }
 
@@ -133,7 +153,7 @@ function Resolve-ModuleData {
             required    = $outerParameters.required -contains $outerParameter
         }
 
-        $parameterObject = Add-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
+        $parameterObject = Set-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
 
         $templateData += $parameterObject
     }
@@ -153,7 +173,7 @@ function Resolve-ModuleData {
             required    = $innerParameters.required -contains $innerParameter
         }
 
-        $parameterObject = Add-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
+        $parameterObject = Set-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
 
         $templateData += $parameterObject
     }
