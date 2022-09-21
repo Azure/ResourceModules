@@ -1,6 +1,6 @@
 variables:
   resourceGroupName: 'solutions-ne-rg'
-  environmentPath: 'solutions/network'
+  environmentPath: 'solutions/deploymentTest'
   location: 'northeurope'
   vmImage: 'ubuntu-latest'
   poolName: ''

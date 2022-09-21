@@ -1,4 +1,4 @@
-name: 'Solutions - Vnet'
+name: 'Solutions - deploymentTest'
 
 pr: none
 
@@ -7,21 +7,13 @@ trigger:
   branches:
     include:
       - main
-#   paths:
-#     include:
-#       - root (b3b845c6-2a30-6f4c-62d3-a8b417cb9173)/prfx-connectivity-ae (3e51c849-d082-4b01-9385-455f253a5729)/prfx-conn-ae-monitoring-rg/*
+  paths:
+    include:
+      - solutions/deploymentTest/*
 
 variables:
   - template: /settings.yml
   - template: pipeline.variables.yml
-
-# resources:
-#   repositories:
-#   - repository: modules
-#     name: $(modulesRepository)
-#     ref: $(ref)
-#     endpoint: segraef
-#     type: github
 
 stages:
   - stage:
@@ -32,7 +24,7 @@ stages:
           jobName: resourceGroups
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
-          moduleTestFilePath: '/solutions/network/parameters.json'
+          moduleTestFilePath: '/solutions/deploymentTest/parameters.json'
           whatif: true
           checkoutRepositories:
             - self
@@ -45,6 +37,6 @@ stages:
           jobName: resourceGroups
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
-          moduleTestFilePath: '/solutions/network/parameters.json'
+          moduleTestFilePath: '/solutions/deploymentTest/parameters.json'
           checkoutRepositories:
             - self
