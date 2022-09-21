@@ -29,8 +29,8 @@ execution:
 output:
   culture:
     - 'en-US'
-  #outcome: 'All'
-  as: 'Summary'
+  outcome: 'All'
+  #as: 'Summary'
 
 
 input:
