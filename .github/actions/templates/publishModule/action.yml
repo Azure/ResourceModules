@@ -208,11 +208,11 @@ runs:
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ReadmeToPublish.Version)"
 
             $functionInput = @{
-              ReadmeFilePath        = $ReadmeToPublish.ReadmeFilePath
+              ReadmeFilePath            = $ReadmeToPublish.ReadmeFilePath
               # BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
               # BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
               # BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
-              ModuleVersion           = $ReadmeToPublish.Version
+              ModuleVersion             = $ReadmeToPublish.Version
             }
 
             Write-Verbose "Invoke task with" -Verbose
