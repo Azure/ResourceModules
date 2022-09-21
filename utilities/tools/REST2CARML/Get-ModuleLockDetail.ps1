@@ -1,16 +1,22 @@
-﻿function Get-ModuleLockDetail {
+function Get-ModuleLockDetail {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
 
         [Parameter(Mandatory = $true)]
-        [string] $SpecificationUrl
+        [string] $SpecificationUrl,
+        [string] $PolicyAssignmentString = 'Microsoft.Authorization/policyAssignments'
     )
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         $arrItem = [pscustomobject] @{}
+
+        if ($SpecificationUrl.Contains($PolicyAssignmentString)) {
+            Write-Verbose 'Lock not required' -Verbose
+            Exit
+        }
 
         $arrItem = $SpecificationUrl -split '\/'
     }
@@ -19,7 +25,7 @@
 
 
         if ($arrItem -and $arrItem.Count -le 9) {
-            Write-Host 'apply lock'
+            Write-Host 'Apply lock'
         } else {
             Write-Host "Can't apply lock"
         }
@@ -31,4 +37,4 @@
 
 }
 
-Get-ModuleLockDetail '\subscriptions\{subscriptionId}\resourceGroups\{resourceGroupName}\providers\Microsoft.Storage\storageAccounts\{accountName}'
+Get-ModuleLockDetail '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}'
