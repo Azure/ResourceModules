@@ -21,7 +21,7 @@
 ##   |======================================================================================================================================================================================================================|
 ##   | Parameter                       | Default Value                        | Description                                                                                             | Example                           |
 ##   |---------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------|
-##   | displayName                     | 'Publishing'                         | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
+##   | displayName                     | 'Publishing'                     | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
 ##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                           | 'demo-internal'                   |
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'Custom Deployment Pool'          |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
@@ -312,53 +312,5 @@ jobs:
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
-              Write-Host "##[endgroup]"
-            }
-
-      # [documentation to document repo publish] task(s)
-      #--------------------------
-      - task: PowerShell@2
-        displayName: 'Publish documentation to document repo'
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ReadmeToDocumentRepo.ps1')
-
-            #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
-            if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.json'
-            }
-
-            $functionInput = @{
-              TemplateFilePath = $TemplateFilePath
-            }
-
-            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-            # Get the modified child resources
-            $ReadmesToPublish = Get-ModulesToPublish @functionInput -Verbose
-
-            # Publish the modified child resources
-            foreach ($ReadmeToPublish in $ReadmesToPublish) {
-              $RelPath = (($ReadmeToPublish.ReadmeFilePath).Split('/modules/')[-1]).Split('/readme.')[0]
-              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ReadmeToPublish.Version)"
-
-              $functionInput = @{
-                ReadmeFilePath            = $ReadmeToPublish.ReadmeFilePath
-                # BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
-                # BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
-                # BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
-                ModuleVersion             = $ReadmeToPublish.Version
-              }
-
-              Write-Verbose "Invoke Publish-ReadmeToDocumentRepo with" -Verbose
-              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-              Publish-ReadmeToDocumentRepo @functionInput -Verbose
               Write-Host "##[endgroup]"
             }
