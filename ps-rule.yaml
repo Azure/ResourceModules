@@ -23,9 +23,14 @@ include:
   module:
     - PSRule.Rules.Azure
 
+execution:
+  suppressedRuleWarning: false
+
 output:
   culture:
     - 'en-US'
+  outcome: 'All'
+  #as: 'Summary'
 
 
 input:
@@ -58,6 +63,6 @@ rule:
     - Azure.KeyVault.PurgeProtect
 
 # Suppression ignores rules for a specific Azure resource by name.
-suppression:
-  Azure.Resource.UseTags:
-    - <<namePrefix>>kvvmin001
+# suppression:
+#   Azure.Resource.UseTags:
+#     - <<namePrefix>>kvvmin001
