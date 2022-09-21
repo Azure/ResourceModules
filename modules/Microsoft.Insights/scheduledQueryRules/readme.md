@@ -20,12 +20,14 @@ This module deploys a scheduled query rule.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Alert. |
 | `scopes` | array | The list of resource IDs that this scheduled query rule is scoped to. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Actions to invoke when the alert fires. |
@@ -167,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -175,10 +177,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ScheduledQueryRules'
+  name: '${uniqueString(deployment().name)}-test-isqrcom'
   params: {
     // Required parameters
-    name: 'myAlert01'
+    name: '<<namePrefix>>isqrcom001'
     // Non-required parameters
     alertDescription: 'My sample Alert'
     autoMitigate: false
@@ -203,7 +205,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
           ]
           metricMeasureColumn: 'AggregatedValue'
           operator: 'GreaterThan'
-          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+          query: '<query>'
           threshold: 0
           timeAggregation: 'Average'
         }
@@ -214,13 +216,13 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     scopes: [
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      '<logAnalyticsWorkspaceResourceId>'
     ]
     suppressForMinutes: 'PT5M'
     windowSize: 'PT5M'
@@ -242,7 +244,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "myAlert01"
+      "value": "<<namePrefix>>isqrcom001"
     },
     // Non-required parameters
     "alertDescription": {
@@ -273,7 +275,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
             ],
             "metricMeasureColumn": "AggregatedValue",
             "operator": "GreaterThan",
-            "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
+            "query": "<query>",
             "threshold": 0,
             "timeAggregation": "Average"
           }
@@ -290,7 +292,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -298,7 +300,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     },
     "scopes": {
       "value": [
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        "<logAnalyticsWorkspaceResourceId>"
       ]
     },
     "suppressForMinutes": {
@@ -306,6 +308,43 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     },
     "windowSize": {
       "value": "PT5M"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-isqrmin'
+  params: {
+    name: '<<namePrefix>>isqrmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>isqrmin001"
     }
   }
 }
