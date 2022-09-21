@@ -77,7 +77,7 @@ runs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModuleReadmeFiles.ps1')
 
           $functionInput = @{
-            ReadmeFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.readmeFilePath }}"
+            TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.readmeFilePath }}"
           }
 
           Write-Verbose "Invoke task with" -Verbose

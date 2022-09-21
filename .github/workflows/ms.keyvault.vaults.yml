@@ -162,7 +162,7 @@ jobs:
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           variablesPath: ${{ env.variablesPath }}
-      - name: "Publishing"
+      - name: "Publishing Readme"
         uses: ./.github/actions/templates/getModuleReadmeFiles
         with:
           readmeFilePath: "${{ env.modulePath }}/readme.md"
