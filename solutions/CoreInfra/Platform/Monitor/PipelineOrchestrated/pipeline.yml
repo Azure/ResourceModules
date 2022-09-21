@@ -32,7 +32,7 @@ stages:
         parameters:
           jobName: logAnalytics
           displayName: 'logAnalytics'
-          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          modulePath: '/modules/Microsoft.OperationalInsights/workspaces/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/logAnalytics/parameters.json'
           whatif: true
           checkoutRepositories:
@@ -41,7 +41,7 @@ stages:
         parameters:
           jobName: actionGroups
           displayName: 'actionGroups'
-          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          modulePath: '/modules/Microsoft.Insights/actionGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/actionGroups/parameters.json'
           whatif: true
           checkoutRepositories:
@@ -62,7 +62,7 @@ stages:
         parameters:
           jobName: DeployLogAnalytics
           displayName: 'Deploy Log Analytics'
-          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          modulePath: '/modules/Microsoft.OperationalInsights/workspaces/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/logAnalytics/parameters.json'
           checkoutRepositories:
             - self
@@ -70,7 +70,7 @@ stages:
         parameters:
           jobName: DeployActionGroups
           displayName: 'Deploy Action Groups'
-          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          modulePath: '/modules/Microsoft.Insights/actionGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/actionGroups/parameters.json'
           checkoutRepositories:
             - self
