@@ -79,8 +79,10 @@ jobs:
             # Get File Path List
             $modulesFolderPath = Join-Path $env:GITHUB_WORKSPACE '${{ env.modulesPath }}'
             Write-Verbose $modulesFolderPath -Verbose
+
             $moduleTestFiles = [System.Collections.ArrayList]@()
-            $moduleTestFiles += Get-ChildItem -Path $modulesFolderPath -Filter *.test.bicep -Recurse -File -Name
+            $moduleTestFiles += Get-ChildItem -Path $modulesFolderPath  -Recurse -File -Name
+            # -Filter *.test.bicep
             Write-Verbose $($moduleTestFiles.Count) -Verbose
             Write-Verbose $($moduleTestFiles.GetType()) -Verbose
             # Construct Token Function Input
