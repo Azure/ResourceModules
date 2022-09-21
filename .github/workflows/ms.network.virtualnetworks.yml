@@ -83,7 +83,7 @@ jobs:
           moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   job_psrule_test:
-    name: 'PsRule inflight validation'
+    name: 'PsRule pre-flight validation'
     runs-on: ubuntu-latest
     needs:
        - job_initialize_pipeline
@@ -155,12 +155,12 @@ jobs:
           modules: 'PSRule.Rules.Azure'
           inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
           outputFormat: Json
-          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.json'
+          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
       - name: Output to Github Logs
         if: always()
-        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.json'
+        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
 
       # - name: 'PSRule test summary'
       #   uses: EnricoMi/publish-unit-test-result-action@v1
@@ -170,7 +170,7 @@ jobs:
 
       - name: Output to Github summaries
         if: always()
-        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.json' >> $GITHUB_STEP_SUMMARY
+        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md' >> $GITHUB_STEP_SUMMARY
 
   # #############################
   # #   Deployment validation   #
