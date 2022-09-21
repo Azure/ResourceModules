@@ -1,7 +1,7 @@
 parameters:
   removeDeployment: true
   prerelease: false
-  templateFilePath: ''
+  templateFilePath: ""
   defaultJobTimeoutInMinutes: 120
 
 stages:
@@ -15,8 +15,8 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          templateFilePath: '$(modulePath)/deploy.bicep'
-          removeDeployment: '${{ parameters.removeDeployment }}'
+          templateFilePath: "$(modulePath)/deploy.bicep"
+          removeDeployment: "${{ parameters.removeDeployment }}"
           defaultJobTimeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
 
   - stage: Publishing
@@ -26,3 +26,11 @@ stages:
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+
+  - stage: readmefile
+    dependsOn:
+      - Publishing
+    displayName: Publish module readme files
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /azuredevops/pipelineTemplates/jobs.publishModuleReadmeFiles.yml
