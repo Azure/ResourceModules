@@ -83,7 +83,7 @@ jobs:
           moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   job_psrule_test:
-    name: 'PsRule inflight validation'
+    name: 'PsRule pre-flight validation'
     runs-on: ubuntu-latest
     needs:
        - job_initialize_pipeline
@@ -154,10 +154,14 @@ jobs:
         with:
           modules: 'PSRule.Rules.Azure'
           inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          outputFormat: Markdown
-          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
+          outputFormat: Csv
+          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
-            
+
+      - name: Output to Github Logs
+        if: always()
+        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
+
       # - name: 'PSRule test summary'
       #   uses: EnricoMi/publish-unit-test-result-action@v1
       #   if: always()
@@ -166,7 +170,7 @@ jobs:
 
       - name: Output to Github summaries
         if: always()
-        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md' >> $GITHUB_STEP_SUMMARY
+        run:  cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv' >> $GITHUB_STEP_SUMMARY
 
   # #############################
   # #   Deployment validation   #
