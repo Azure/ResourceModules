@@ -48,12 +48,12 @@ jobs:
         continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
         with:
           modules: 'PSRule.Rules.Azure'
-          inputPath: '${{ modulesPath }}/'
+          inputPath: '${{ env.modulesPath }}/'
           outputFormat: Csv
-          outputPath: '${{ modulesPath }}/PSRule-output.csv'
+          outputPath: '${{ env.modulesPath }}/PSRule-output.csv'
       - name: Output to Github Logs
         if: always()
-        run: cat '${{ modulesPath }}/PSRule-output.csv'
+        run: cat '${{ env.modulesPath }}/PSRule-output.csv'
       - name: Output to Github summaries
         if: always()
-        run: cat '${{ modulesPath }}/PSRule-output.csv' >> $GITHUB_STEP_SUMMARY
+        run: cat '${{ env.modulesPath }}/PSRule-output.csv' >> $GITHUB_STEP_SUMMARY
