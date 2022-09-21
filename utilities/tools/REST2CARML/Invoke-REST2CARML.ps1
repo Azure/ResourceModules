@@ -41,7 +41,25 @@ function Invoke-REST2CARML {
     process {
         # TODO: Invoke function to fetch module data
         # $moduleData = Get-ModuleData -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
-        $moduleData = @{}
+        $moduleData = @{
+            parameters = @(
+                @{
+                    level         = 0
+                    name          = 'sku'
+                    type          = 'object'
+                    description   = '...'
+                    allowedValues = @('')
+                    required      = $false
+                    default       = ''
+                }
+                @{
+                    level       = 1
+                    name        = 'firewallEnabled'
+                    type        = 'boolean'
+                    description = '...'
+                }
+            )
+        }
         $specificationFilePath = ''
 
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {

@@ -37,11 +37,35 @@ function Get-NestedParams {
 
 function Resolve-ModuleData {
 
-
-    $dummyObject = @(
-        @{
-        jsonFilePath = 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json'
-        jsonKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' # PUT path
-    }
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [array] $SpecificationPaths
     )
+
+    $templateData = @{}
+    foreach ($SpecificationPath in $SpecificationPaths) {
+
+        $specificationData = Get-Content -Path $SpecificationPath.jsonFilePath -Raw | ConvertFrom-Json -AsHashtable
+
+        $definitions = $specificationData.definitions
+
+        $matchingPathObjectParameters = $specificationData.paths[$SpecificationPath.jsonKeyPath].put.parameters
+
+        $relevantParameters = $matchingPathObjectParameters | Where-Object { $_.name -notin @('resourceGroupName', 'subscription') }
+    }
+
+    return $templateData
 }
+
+
+Resolve-ModuleData -SpecificationPaths @(
+    @{
+        jsonFilePath = 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json'
+        jsonKeyPath  = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' # PUT path
+    }
+    # @{
+    #     jsonFilePath = 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json'
+    #     jsonKeyPath  = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' # PUT path
+    # }
+)
