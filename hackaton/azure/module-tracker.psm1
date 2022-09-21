@@ -95,12 +95,20 @@ function New-StorageAccountTable {
         $ctx = $storageAccount.Context
 
         # create the table
-        New-AzStorageTable -Name $TableName -Context $ctx -ErrorAction SilentlyContinue | Out-Null
+        New-AzStorageTable -Name $TableName -Context $ctx | Out-Null
         $table = (Get-AzStorageTable -Name $TableName -Context $ctx).CloudTable
+
+        Write-Output "Table created successfully"
 
         return $table
     } catch {
-        throw $_
+        # get storage Account and context
+        $storageAccount = Get-AzStorageAccount -Name $StorageAccountName -ResourceGroupName $ResourceGroup
+        $ctx = $storageAccount.Context
+        $table = (Get-AzStorageTable -Name $TableName -Context $ctx).CloudTable
+        return $table
+
+        Write-Output "Table already exists"
     }
 }
 
