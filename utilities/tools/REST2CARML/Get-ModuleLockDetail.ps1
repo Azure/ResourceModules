@@ -21,7 +21,7 @@
         if ($arrItem -and $arrItem.Count -le 9) {
             Write-Host 'apply lock'
         } else {
-            Write-Host"Can't apply lock"
+            Write-Host "Can't apply lock"
         }
     }
 
