@@ -51,10 +51,7 @@ jobs:
           inputPath: '${{ env.modulesPath }}/'
           outputFormat: Csv
           outputPath: '${{ env.modulesPath }}/PSRule-output.csv'
-      - name: Output to Github Logs
-        if: always()
-        run: cat '${{ env.modulesPath }}/PSRule-output.csv'
-      - name: 'Replace tokens in template file'
+      - name: 'Parse CSV content'
         uses: azure/powershell@v1
         with:
           azPSVersion: 'latest'
@@ -75,6 +72,6 @@ jobs:
             $null = Set-PSRuleOutput @ParameterInput
 
             Write-Output '::endgroup::'
-      - name: Output to Github summaries
+      - name: Output to GitHub job summaries
         if: always()
         run: cat '${{ env.modulesPath }}/PSRule-output.md' >> $GITHUB_STEP_SUMMARY

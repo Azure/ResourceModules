@@ -41,10 +41,10 @@
         #Create Failing table
 
         $failContent = [System.Collections.ArrayList]@(
-            '# Rules Failed',
+            '## Rules Failed',
             '',
             '<details>',
-            '<summary>GitHub private repository</summary>',
+            '<summary>List of Rules Failed</summary>',
             '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- | :-- |'
@@ -81,7 +81,10 @@
     if ($passedRules.Count -gt 0) {
 
         $passContent = [System.Collections.ArrayList]@(
-            '# Rules Passed',
+            '## Rules Passed',
+            '',
+            '<details>',
+            '<summary>List of Rules Passed</summary>',
             '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- |  :-- |'
@@ -109,14 +112,14 @@
         }
 
         $passContent += [System.Collections.ArrayList]@(
+            '',
+            '</details>',
             '')
 
         #Append markdown with passed rules table
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $passContent
 
     }
-
-
 }
 
 
