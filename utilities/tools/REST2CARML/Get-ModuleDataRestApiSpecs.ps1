@@ -128,11 +128,13 @@ function Get-ModuleDataSource {
                             $arrItem | Add-Member -MemberType NoteProperty -Name 'jsonFilePath' -Value $jsonFile.FullName
                             $arrItem | Add-Member -MemberType NoteProperty -Name 'jsonKeyPath' -Value $_.Name
                             # $arrItem | Add-Member -MemberType NoteProperty -Name 'putMethod' -Value $_.value.put
+
+                            # add nested parameters
+                            $paramObj = FilterParameters($put, $definitions)
+                            # $arrItem | Add-Member -MemberType NoteProperty -Name 'parameters' -Value $paramObj
+
                             $putMethods += $arrItem
                         }
-
-                        # add nested parameters
-                        FilterParameters($put, $definitions)
                     }
                 }
 
