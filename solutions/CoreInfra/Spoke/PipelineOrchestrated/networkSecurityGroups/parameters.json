@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "prfx-az-nsg-spk-001"
+        },
+        "securityRules": {
+            "value": [{
+                "name": "HTTPS",
+                "properties": {
+                    "description": "HTTPS",
+                    "protocol": "*",
+                    "sourcePortRange": "*",
+                    "destinationPortRange": "443",
+                    "sourceAddressPrefix": "*",
+                    "destinationAddressPrefix": "*",
+                    "access": "Allow",
+                    "priority": 100,
+                    "direction": "Inbound"
+                }
+            }, {
+                "name": "HTTPS2",
+                "properties": {
+                    "description": "HTTPS2",
+                    "protocol": "*",
+                    "sourcePortRange": "*",
+                    "destinationPortRange": "8443",
+                    "sourceAddressPrefix": "*",
+                    "destinationAddressPrefix": "*",
+                    "access": "Allow",
+                    "priority": 110,
+                    "direction": "Inbound"
+                }
+            }]
+        }
+    }
+}
