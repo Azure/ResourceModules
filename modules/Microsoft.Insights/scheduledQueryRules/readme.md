@@ -23,6 +23,7 @@ This module deploys a scheduled query rule.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `criterias` | object | The rule criteria that defines the conditions of the scheduled query rule. |
 | `name` | string | The name of the Alert. |
 | `scopes` | array | The list of resource IDs that this scheduled query rule is scoped to. |
 
@@ -33,7 +34,6 @@ This module deploys a scheduled query rule.
 | `actions` | array | `[]` |  | Actions to invoke when the alert fires. |
 | `alertDescription` | string | `''` |  | The description of the scheduled query rule. |
 | `autoMitigate` | bool | `True` |  | The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert. |
-| `criterias` | object | `{object}` |  | The rule criteria that defines the conditions of the scheduled query rule. |
 | `enabled` | bool | `True` |  | The flag which indicates whether this scheduled query rule is enabled. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `evaluationFrequency` | string | `''` |  | How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
@@ -181,6 +181,9 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
   params: {
     // Required parameters
     name: '<<namePrefix>>isqrcom001'
+    scopes: [
+      '<logAnalyticsWorkspaceResourceId>'
+    ]
     // Non-required parameters
     alertDescription: 'My sample Alert'
     autoMitigate: false
@@ -221,9 +224,6 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    scopes: [
-      '<logAnalyticsWorkspaceResourceId>'
-    ]
     suppressForMinutes: 'PT5M'
     windowSize: 'PT5M'
   }
@@ -245,6 +245,11 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     // Required parameters
     "name": {
       "value": "<<namePrefix>>isqrcom001"
+    },
+    "scopes": {
+      "value": [
+        "<logAnalyticsWorkspaceResourceId>"
+      ]
     },
     // Non-required parameters
     "alertDescription": {
@@ -298,53 +303,11 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
         }
       ]
     },
-    "scopes": {
-      "value": [
-        "<logAnalyticsWorkspaceResourceId>"
-      ]
-    },
     "suppressForMinutes": {
       "value": "PT5M"
     },
     "windowSize": {
       "value": "PT5M"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-isqrmin'
-  params: {
-    name: '<<namePrefix>>isqrmin001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>isqrmin001"
     }
   }
 }
