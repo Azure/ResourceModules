@@ -1,4 +1,4 @@
-name: 'Solutions - Vnet'
+name: 'Solutions - Monitor'
 
 pr: none
 
@@ -12,7 +12,7 @@ trigger:
       - solutions/CoreInfra/Platform/Monitor*
 
 variables:
-  - template: /settings.yml
+  # - template: /settings.yml
   - template: pipeline.variables.yml
 
 stages:
@@ -28,6 +28,24 @@ stages:
           whatif: true
           checkoutRepositories:
             - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Resource Group'
+          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/logAnalytics/parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Resource Group'
+          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/actionGroups/parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
 
   - stage:
     displayName: Deploy
@@ -38,5 +56,21 @@ stages:
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/parameters.json'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: logAnalytics
+          displayName: 'Resource Group'
+          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/logAnalytics/parameters.json'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: actionGroups
+          displayName: 'Resource Group'
+          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/actionGroups/parameters.json'
           checkoutRepositories:
             - self
