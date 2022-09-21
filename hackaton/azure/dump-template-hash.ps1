@@ -85,8 +85,8 @@ foreach ($sub in $subscriptions) {
             $hash = Get-TemplateHash -TemplatePath "./$($deployment.DeploymentName).json"
             $tableRows += [PSCustomObject]@{
                 deploymentName = $deployment.DeploymentName
-                deploymentId = $deployment.Id
-                hash = $hash
+                deploymentId   = $deployment.Id
+                hash           = $hash
             }
             Remove-Item "./$($deployment.DeploymentName).json"
             $processedDeployments++
@@ -97,7 +97,7 @@ foreach ($sub in $subscriptions) {
     }
 }
 Select-AzSubscription -SubscriptionId $storageSubscriptionId
-foreach ($row in $tableRows){
+foreach ($row in $tableRows) {
     New-StorageAccountTableRow -Table $tableObject -PartitionKey $row.deploymentId -DeploymentName $row.deploymentName -Hash $row.hash
 }
 $elapsedTime = $(Get-Date) - $StartTime
@@ -115,18 +115,22 @@ foreach ($sub in $subscriptions) {
     $resourceGroups = Get-AzResourceGroup
 
     $processedDeployments = 0
-    foreach ($rg in $resourceGroups){
+    foreach ($rg in $resourceGroups) {
         try {
             $azDeployments = Get-AzResourceGroupDeployment
 
             foreach ($deployment in $azDeployments) {
+                #exporting the deployment template object
                 Save-AzDeploymentTemplate -DeploymentName $deployment.DeploymentName -Force | Out-Null
+                #Generating hash value
                 $hash = Get-TemplateHash -TemplatePath "./$($deployment.DeploymentName).json"
+                #Adding results to object
                 $tableRows += [PSCustomObject]@{
                     deploymentName = $deployment.DeploymentName
-                    deploymentId = $rg
-                    hash = $hash
+                    deploymentId   = $rg
+                    hash           = $hash
                 }
+                #Removing temporal json file
                 Remove-Item "./$($deployment.DeploymentName).json"
                 $processedDeployments++
             }
@@ -136,8 +140,9 @@ foreach ($sub in $subscriptions) {
         }
     }
 }
+
 Select-AzSubscription -SubscriptionId $storageSubscriptionId
-foreach ($row in $tableRows){
+foreach ($row in $tableRows) {
     New-StorageAccountTableRow -Table $tableObject -PartitionKey $row.deploymentId -DeploymentName $row.deploymentName -Hash $row.hash
 }
 $elapsedTime = $(Get-Date) - $StartTime

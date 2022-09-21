@@ -1,0 +1,55 @@
+name: "GitModule Tracker"
+
+on:
+  workflow_dispatch:
+    inputs:
+      resourceGroupName:
+        type: string
+        description: "Resource Group where infrastructure will be deployed/updated"
+        required: true
+        default: ""
+
+jobs:
+  deploy_dashboard:
+    runs-on: windows-2022
+    name: "Module tracker Backend"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_JS_SUB }}
+          enable-AzPSSession: true
+      - name: "Deploy infrastructure"
+        id: Function
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: ${{ github.event.inputs.resourceGroupName }}
+          resourceGroupName: ${{ github.event.inputs.resourceGroupName }}
+          template: ./modules/Microsoft.Web/sites/deploy.bicep
+          parameters: ./modules/Microsoft.Web/sites/parameters.json
+      - name: "Deploy infrastructure"
+        id: stg
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: ${{ github.event.inputs.resourceGroupName }}
+          resourceGroupName: ${{ github.event.inputs.resourceGroupName }}
+          template: ./modules/Microsoft.Storage/storageAccounts/deploy.bicep
+          parameters: ./modules/Microsoft.Web/sites/parameters.json
+      - name: "Deploy code"
+        shell: pwsh
+        run: |
+          # Initialize parameters
+          Install-Module -Name Az.Functions -Force
+          $functionApp = Get-AzFunctionApp -ResourceGroupName '${{ github.event.inputs.resourceGroupName }}'
+          $functionAppName = $functionApp[0].Name
+          $DeployFunctionInputs = @{
+              ResourceGroup      = '${{ github.event.inputs.resourceGroupName }}'
+              FunctionAppName    = $functionAppName
+              Dashboard          = 'GitHub'
+          }
+          # Invoke Function
+          ./tools/scripts/deploy-function.ps1 @DeployFunctionInputs -Verbose
