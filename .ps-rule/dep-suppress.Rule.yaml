@@ -7,8 +7,5 @@ metadata:
 spec:
   if:
     name: '.'
-    startsWith: 
-    - 'dep'
-
-
-    
+    startsWith:
+      - 'dep'

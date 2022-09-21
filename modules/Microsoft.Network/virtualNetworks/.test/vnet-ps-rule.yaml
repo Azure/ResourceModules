@@ -29,7 +29,6 @@ output:
   #outcome: 'Fail'
   #as: 'Summary'
 
-
 input:
   pathIgnore:
     # Ignore other files in the repository.
@@ -58,7 +57,6 @@ rule:
   exclude:
     # Ignore the following rules for all resources
     - Azure.Resource.UseTags
-
 # Suppression ignores rules for a specific Azure resource by name.
 #suppression:
 #  Azure.Identity.UserAssignedName:
