@@ -43,6 +43,58 @@ jobs:
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           variablesPath: ${{ env.variablesPath }}
+      - name: 'Replace tokens in template file'
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: 'latest'
+          inlineScript: |
+            # Grouping task logs
+            Write-Output '::group::Replace tokens in template file'
+
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+            # Populate tokens
+            $Tokens = @{
+              resourceGroupName = '${{ env.resourceGroupName }}'
+              subscriptionId    = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+              managementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
+              tenantId          = '${{ env.ARM_TENANT_ID }}'
+            }
+
+            ## Add local (source control) tokens
+            $tokenMap = @{}
+            foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+              $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+            }
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $Tokens += $tokenMap
+
+            ## Swap 'namePrefix' token if empty and provided as a GitHub secret
+            if([String]::IsNullOrEmpty($Tokens['namePrefix'])){
+              Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+              $Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
+            }
+
+            # Get File Path List
+            $moduleTestFiles = @()
+            $moduleTestFiles += Get-ChildItem -Path '${{ env.modulesPath }} -Filter *.test.bicep -Recurse -File -Name
+
+            # Construct Token Function Input
+            $ConvertTokensInputs = @{
+              FilePathList = $moduleTestFiles
+              Tokens       = $Tokens
+              TokenPrefix  = '${{ env.tokenPrefix }}'
+              TokenSuffix  = '${{ env.tokenSuffix }}'
+            }
+
+            Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
+
+            # Invoke Token Replacement Functionality [For Module]
+            $null = Convert-TokensInFileList @ConvertTokensInputs
+
+            Write-Output '::endgroup::'
+
       - name: Run PSRule analysis
         uses: microsoft/ps-rule@v2.4.0
         continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
