@@ -1,0 +1,104 @@
+#########################################################
+## 'Publishing' Composite Action                   ##
+#########################################################
+##
+## This composite action contains the logic to publish a given template to a number of different locations such as:
+## - Template Specs
+## - Private Bicep Registry
+##
+#########################################################
+##
+##-------------------------------------------##
+## ACTION PARAMETERS                         ##
+##-------------------------------------------##
+##
+##   |===========================================================================================================================================================================================================|
+##   | Parameter                | Required | Default | Description                                                                                      | Example                                                |
+##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'modules/Microsoft.ApiManagement/service/deploy.bicep' |
+##   | templateSpecsRgName      | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to           | 'artifacts-rg'                                         |
+##   | templateSpecsRgLocation  | false    | ''      | Required to publish to template spec. Location of the template spec resource group               | 'WestEurope'                                           |
+##   | templateSpecsDescription | false    | ''      | Required to publish to template spec. Description of the template spec to publish to             | 'This is an API-Management service template'           |
+##   | templateSpecsDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to template specs                                     | 'true'                                                 |
+##   | bicepRegistryName        | false    | ''      | Required to publish to private bicep registry. Name of the container registry to publish to      | 'myacr'                                                |
+##   | bicepRegistryRgName      | false    | ''      | Required to publish to private bicep registry. Name of the container registry resource group     | 'artifacts-rg'                                         |
+##   | bicepRegistryRgLocation  | false    | ''      | Required to publish to private bicep registry. Location of the container registry resource group | 'WestEurope'                                           |
+##   | bicepRegistryDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to the private bicep registry                         | 'true'                                                 |
+##   |===========================================================================================================================================================================================================|
+##
+##---------------------------------------------##
+name: "GetModuleReadmeFiles"
+description: "Get the updated readme file from updated module and its parent modules"
+
+inputs:
+  readmeFilePath:
+    description: "The path to the readme file to publish"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Setup agent"
+      shell: pwsh
+      run: |
+        # Grouping task logs
+        Write-Output '::group::Setup agent'
+
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+        # Define PS modules to install on the runner
+        $Modules = @(
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.ContainerRegistry' },
+            @{ Name = 'Az.Resources' }
+        )
+
+        # Set agent up
+        Set-EnvironmentOnAgent -PSModules $Modules
+
+        Write-Output '::endgroup::'
+
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
+    - name: "Get Readme Files to Publish"
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: "latest"
+        inlineScript: |
+          # Grouping task logs
+          Write-Output '::group::Get readme files to publish'
+
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesReadmeFiles.ps1')
+
+          $functionInput = @{
+            ReadmeFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.readmeFilePath }}"
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          # Get the modified child resources
+          $ModuleReadmeFiles = Get-ModulesToPublish @functionInput -Verbose
+
+          # Publish the modified child resources
+          foreach ($ModuleReadmeFile in $ModuleReadmeFiles) {
+            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/readme.')[0]
+            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+
+            $functionInput = @{
+              ReadmeFilePath = $ModuleToPublish.TemplateFilePath
+              ModuleVersion  = $ModuleToPublish.Version
+            }
+
+            Write-Verbose "Invoke task with...Luke..." -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          }
+
+          Write-Output '::endgroup::'
