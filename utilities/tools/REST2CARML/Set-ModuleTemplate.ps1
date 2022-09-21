@@ -12,7 +12,10 @@
         [Hashtable] $ModuleData,
 
         [Parameter(Mandatory = $true)]
-        [object] $PathData
+        [string] $SpecificationFilePath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $SpecificationUrl
     )
 
     begin {
