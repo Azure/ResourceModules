@@ -166,6 +166,7 @@ function Set-ParametersSection {
         # 2. Create header including optional columns
         $newSectionContent += @(
             ('**{0} parameters**' -f $category),
+            (''),
             ('| Parameter Name | Type | {0}{1}Description |' -f ($hasDefault ? 'Default Value | ' : ''), ($hasAllowed ? 'Allowed Values | ' : '')),
             ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefault ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
         )
