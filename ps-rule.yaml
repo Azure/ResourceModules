@@ -23,6 +23,9 @@ include:
   module:
     - PSRule.Rules.Azure
 
+execution:
+  suppressedRuleWarning: false
+
 output:
   culture:
     - 'en-US'
