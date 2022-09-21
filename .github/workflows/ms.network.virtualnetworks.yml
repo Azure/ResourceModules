@@ -81,65 +81,156 @@ jobs:
           modulePath: '${{ env.modulePath }}'
           moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
-  # #############################
-  # #   Deployment validation   #
-  # #############################
-  job_module_deploy_validation:
-    runs-on: ubuntu-20.04
-    name: 'Deployment validation'
+  job_psrule_test:
+    name: 'PsRule pre-flight validation'
+    runs-on: ubuntu-latest
     needs:
       - job_initialize_pipeline
-      - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
         moduleTestFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Set environment variables
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           variablesPath: ${{ env.variablesPath }}
-      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeployment
+      - name: 'Replace tokens in template file'
+        uses: azure/powershell@v1
         with:
-          templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          location: '${{ env.location }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
+          azPSVersion: 'latest'
+          inlineScript: |
+            $templateFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+            # Grouping task logs
+            Write-Output '::group::Replace tokens in template file'
+
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+            # Populate tokens
+            $Tokens = @{
+              resourceGroupName = '${{ env.resourceGroupName }}'
+              subscriptionId    = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+              managementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
+              tenantId          = '${{ env.ARM_TENANT_ID }}'
+            }
+
+            ## Add local (source control) tokens
+            $tokenMap = @{}
+            foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+              $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+            }
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $Tokens += $tokenMap
+
+            ## Swap 'namePrefix' token if empty and provided as a GitHub secret
+            if([String]::IsNullOrEmpty($Tokens['namePrefix'])){
+              Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+              $Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
+            }
+
+            # Construct Token Function Input
+            $ConvertTokensInputs = @{
+              FilePathList = @($templateFilePath)
+              Tokens       = $Tokens
+              TokenPrefix  = '${{ env.tokenPrefix }}'
+              TokenSuffix  = '${{ env.tokenSuffix }}'
+            }
+
+            Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
+
+            # Invoke Token Replacement Functionality [For Module]
+            $null = Convert-TokensInFileList @ConvertTokensInputs
+
+            Write-Output '::endgroup::'
+
+      # Run analysis by using the PSRule GitHub action.
+      - name: Run PSRule analysis
+        uses: microsoft/ps-rule@v2.4.0
+        # continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
+        with:
+          modules: 'PSRule.Rules.Azure'
+          inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          outputFormat: Csv
+          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
+          option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
+
+      - name: Output to Github Logs
+        if: always()
+        run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
+
+      # - name: 'PSRule test summary'
+      #   uses: EnricoMi/publish-unit-test-result-action@v1
+      #   if: always()
+      #   with:
+      #     files: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml'
+
+      - name: Output to Github summaries
+        if: always()
+        run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv' >> $GITHUB_STEP_SUMMARY
+
+  # #############################
+  # #   Deployment validation   #
+  # #############################
+  # job_module_deploy_validation:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Deployment validation'
+  #   needs:
+  #     - job_initialize_pipeline
+  #     - job_module_pester_validation
+  #     - job_psrule_test
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       moduleTestFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set environment variables
+  #       uses: ./.github/actions/templates/setEnvironmentVariables
+  #       with:
+  #         variablesPath: ${{ env.variablesPath }}
+  #     - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
+  #       uses: ./.github/actions/templates/validateModuleDeployment
+  #       with:
+  #         templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+  #         location: '${{ env.location }}'
+  #         resourceGroupName: '${{ env.resourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  #         removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
 
   # ##################
   # #   Publishing   #
   # ##################
-  job_publish_module:
-    name: 'Publishing'
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
-    runs-on: ubuntu-20.04
-    needs:
-      - job_module_deploy_validation
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-      - name: 'Publishing'
-        uses: ./.github/actions/templates/publishModule
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          templateSpecsRGName: '${{ env.templateSpecsRGName }}'
-          templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
-          templateSpecsDescription: '${{ env.templateSpecsDescription }}'
-          templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
-          bicepRegistryName: '${{ env.bicepRegistryName }}'
-          bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
-          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
-          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
+  # job_publish_module:
+  #   name: 'Publishing'
+  #   if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
+  #   runs-on: ubuntu-20.04
+  #   needs:
+  #     - job_module_deploy_validation
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set environment variables
+  #       uses: ./.github/actions/templates/setEnvironmentVariables
+  #       with:
+  #         variablesPath: ${{ env.variablesPath }}
+  #     - name: 'Publishing'
+  #       uses: ./.github/actions/templates/publishModule
+  #       with:
+  #         templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+  #         templateSpecsRGName: '${{ env.templateSpecsRGName }}'
+  #         templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
+  #         templateSpecsDescription: '${{ env.templateSpecsDescription }}'
+  #         templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
+  #         bicepRegistryName: '${{ env.bicepRegistryName }}'
+  #         bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+  #         bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
+  #         bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
