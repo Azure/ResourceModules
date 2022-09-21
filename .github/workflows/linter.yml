@@ -81,8 +81,8 @@ jobs:
             Write-Verbose $modulesFolderPath -Verbose
 
             $moduleTestFiles = [System.Collections.ArrayList]@()
-            $moduleTestFiles += Get-ChildItem -Path $modulesFolderPath  -Recurse
-            # -Filter *.test.bicep
+            $moduleTestFiles += Get-ChildItem -Path $modulesFolderPath -Filter *.test.bicep -Recurse -Force -Name
+
             Write-Verbose $($moduleTestFiles.Count) -Verbose
             Write-Verbose $($moduleTestFiles.GetType()) -Verbose
             # Construct Token Function Input
