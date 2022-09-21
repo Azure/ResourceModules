@@ -2,6 +2,10 @@ name: '.Platform: Linter'
 
 on: [pull_request]
 
+env:
+  variablesPath: 'settings.yml'
+  modulesPath: 'modules'
+
 jobs:
   build:
     name: Linter
@@ -44,12 +48,12 @@ jobs:
         continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
         with:
           modules: 'PSRule.Rules.Azure'
-          inputPath: 'modules/'
+          inputPath: '${{ modulesPath }}/'
           outputFormat: Csv
-          outputPath: 'modules/PSRule-output.csv'
+          outputPath: '${{ modulesPath }}/PSRule-output.csv'
       - name: Output to Github Logs
         if: always()
-        run: cat 'modules/PSRule-output.csv'
+        run: cat '${{ modulesPath }}/PSRule-output.csv'
       - name: Output to Github summaries
         if: always()
-        run: cat 'modules/PSRule-output.csv' >> $GITHUB_STEP_SUMMARY
+        run: cat '${{ modulesPath }}/PSRule-output.csv' >> $GITHUB_STEP_SUMMARY
