@@ -1,6 +1,6 @@
 variables:
   resourceGroupName: 'solutions-ne-rg'
-  environmentPath: 'solutions/network'
+  environmentPath: 'solutions/CoreInfra/Platform/HubSpoke/PipelineOrchestrated'
   location: 'northeurope'
   vmImage: 'ubuntu-latest'
   poolName: ''

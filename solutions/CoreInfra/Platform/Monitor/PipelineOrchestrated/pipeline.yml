@@ -7,6 +7,9 @@ trigger:
   branches:
     include:
       - main
+  paths:
+    include:
+      - solutions/CoreInfra/Platform/Monitor*
 
 variables:
   - template: /settings.yml
@@ -21,7 +24,7 @@ stages:
           jobName: resourceGroups
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
-          moduleTestFilePath: '/solutions/network/parameters.json'
+          moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/parameters.json'
           whatif: true
           checkoutRepositories:
             - self
@@ -34,6 +37,6 @@ stages:
           jobName: resourceGroups
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
-          moduleTestFilePath: '/solutions/network/parameters.json'
+          moduleTestFilePath: '/solutions/CoreInfra/Platform/Monitor/PipelineOrchestrated/parameters.json'
           checkoutRepositories:
             - self

@@ -204,7 +204,7 @@ jobs:
 
       # [Deployment] task(s)
       #---------------------
-      - ${{ if eq( parameters.whatif, true) }}:
+      - ${{ if ne( parameters.whatif, true) }}:
         - task: AzurePowerShell@5
           name: deployModule
           displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
