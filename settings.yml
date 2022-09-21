@@ -79,7 +79,7 @@ variables:
   # Publish: Universal packages settings
   ######################################
 
-  artifactsFeedDoPublish: true # Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
+  artifactsFeedDoPublish: false # Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
   vstsFeedName: 'ResourceModules' # The name of the Azure DevOps universal packages feed to publish to
   vstsFeedProject: '$(System.TeamProject)' # The project that hosts the feed
   vstsFeedToken: $(System.AccessToken) # The token used to publish universal packages into the feed above
