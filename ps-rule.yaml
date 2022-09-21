@@ -18,10 +18,6 @@ requires:
   PSRule: '@pre >=2.4.0'
   PSRule.Rules.Azure: '@pre >=1.19.2'
 
-execution:
-  notProcessedWarning: false
-  suppressedRuleWarning: false
-
 # Use PSRule for Azure.
 include:
   module:
@@ -29,6 +25,7 @@ include:
 
 execution:
   suppressedRuleWarning: false
+  notProcessedWarning: false
 
 output:
   culture:
