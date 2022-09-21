@@ -180,13 +180,6 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
   name: '${uniqueString(deployment().name)}-test-isqrcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>isqrcom001'
-    scopes: [
-      '<logAnalyticsWorkspaceResourceId>'
-    ]
-    // Non-required parameters
-    alertDescription: 'My sample Alert'
-    autoMitigate: false
     criterias: {
       allOf: [
         {
@@ -214,6 +207,13 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
         }
       ]
     }
+    name: '<<namePrefix>>isqrcom001'
+    scopes: [
+      '<logAnalyticsWorkspaceResourceId>'
+    ]
+    // Non-required parameters
+    alertDescription: 'My sample Alert'
+    autoMitigate: false
     evaluationFrequency: 'PT5M'
     queryTimeRange: 'PT5M'
     roleAssignments: [
@@ -243,21 +243,6 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "name": {
-      "value": "<<namePrefix>>isqrcom001"
-    },
-    "scopes": {
-      "value": [
-        "<logAnalyticsWorkspaceResourceId>"
-      ]
-    },
-    // Non-required parameters
-    "alertDescription": {
-      "value": "My sample Alert"
-    },
-    "autoMitigate": {
-      "value": false
-    },
     "criterias": {
       "value": {
         "allOf": [
@@ -286,6 +271,21 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
           }
         ]
       }
+    },
+    "name": {
+      "value": "<<namePrefix>>isqrcom001"
+    },
+    "scopes": {
+      "value": [
+        "<logAnalyticsWorkspaceResourceId>"
+      ]
+    },
+    // Non-required parameters
+    "alertDescription": {
+      "value": "My sample Alert"
+    },
+    "autoMitigate": {
+      "value": false
     },
     "evaluationFrequency": {
       "value": "PT5M"

@@ -55,7 +55,7 @@ param windowSize string = ''
 param actions array = []
 
 @description('Required. The rule criteria that defines the conditions of the scheduled query rule.')
-param criterias object = {}
+param criterias object
 
 @description('Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. If set, autoMitigate must be disabled.Relevant only for rules of the kind LogAlert.')
 param suppressForMinutes string = ''
