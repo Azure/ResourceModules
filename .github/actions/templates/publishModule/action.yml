@@ -210,7 +210,7 @@ runs:
             # Extracts Microsoft.KeyVault/vaults from e.g. C:\modules\Microsoft.KeyVault\vaults\deploy.bicep
             $ModuleRegistryIdentifier = 'bicep/modules/{0}' -f $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
 
-            $SubscriptionId = (Get-AzContext).Subscription.Id
+            $SubscriptionId = (Get-AzSubscription | where { $_.SubscriptionId -eq (Get-AzContext).Subscription.Id }).SubscriptionId
             $TemplateSpecsIdentifier = $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
 
             $functionInput = @{

@@ -25,7 +25,13 @@ function Publish-ReadmeToDocumentRepo {
         [string] $ReadMeFilePath,
 
         [Parameter(Mandatory)]
-        [string] $ModuleVersion
+        [string] $ModuleVersion,
+
+        [Parameter(Mandatory)]
+        [string] $BicepRegistryUrl,
+
+        [Parameter(Mandatory)]
+        [string] $TemplateSpecsUrl
     )
 
     Set-NewReadmeVersion -Path $ReadMeFilePath -Version $ModuleVersion
