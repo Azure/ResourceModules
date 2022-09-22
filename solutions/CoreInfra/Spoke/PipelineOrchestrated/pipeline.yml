@@ -112,4 +112,4 @@ stages:
     dependsOn: Deployment
     condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'))
     jobs:
-    - template: /Modules/ARM/.global/PipelineTemplates/pipeline.jobs.remove.yml
+    - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
