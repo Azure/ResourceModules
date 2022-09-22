@@ -24,7 +24,7 @@
     $headerTable = [System.Collections.ArrayList]@(
         '# Output Summary ',
         '',
-        '| Total No. of Rules Processed | Rules Passed :white_check_mark: | Rules Failed :x: |',
+        '| Total No. of Processed Rules| Passed Rules :white_check_mark: | Failed Rules :x: |',
         '| :-- | :-- | :-- |'
     )
 
@@ -41,10 +41,10 @@
         #Create Failing table
 
         $failContent = [System.Collections.ArrayList]@(
-            '## Rules Failed',
+            '# Failed Rules',
             '',
             '<details>',
-            '<summary>List of Rules Failed</summary>',
+            '<summary>List of Failed Rules</summary>',
             '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- | :-- |'
@@ -72,7 +72,8 @@
         $failContent += [System.Collections.ArrayList]@(
             '',
             '</details>',
-            '')
+            ''
+        )
         #Append markdown with failed rules table
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $failContent
     }
@@ -81,10 +82,11 @@
     if ($passedRules.Count -gt 0) {
 
         $passContent = [System.Collections.ArrayList]@(
-            '## Rules Passed',
+            '# Passed Rules',
             '',
             '<details>',
-            '<summary>List of Rules Passed</summary>',
+            '<summary>List of Passed Rules</summary>',
+            '',
             '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- |  :-- |'
@@ -107,15 +109,14 @@
                 $resourceLink = $content.RuleName
             }
 
-            $passContent += ('| {0} | {1} |  {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
+            $passContent += ('| {0} | {1} | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
 
         }
-
         $passContent += [System.Collections.ArrayList]@(
             '',
             '</details>',
-            '')
-
+            ''
+        )
         #Append markdown with passed rules table
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $passContent
 
