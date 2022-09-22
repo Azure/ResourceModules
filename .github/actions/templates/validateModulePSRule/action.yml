@@ -159,5 +159,4 @@ runs:
     - name: Output to Github summaries
       shell: pwsh
       if: always()
-      run: cat '${{ env.modulePath }}/${{ inputs.moduleTestFilePath }}-output.md' # >> $GITHUB_STEP_SUMMARY
-
+      run: cat '${{ env.modulePath }}/${{ inputs.moduleTestFilePath }}-output.md' >> $GITHUB_STEP_SUMMARY
