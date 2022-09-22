@@ -6,7 +6,7 @@ parameters:
 
 stages:
   - stage: psrule
-    displayName: PSRule validation
+    displayName: PSRuleValidation
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validatePSRule.yml
         parameters:

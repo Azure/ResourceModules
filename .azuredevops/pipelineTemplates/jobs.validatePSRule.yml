@@ -67,7 +67,7 @@ parameters:
 ##---------------------------------------------##
 jobs:
   - template: /.azuredevops/pipelineTemplates/jobs.getModuleTestFiles.yml
-  - job: PSRule Validation
+  - job: PSRuleValidation
     displayName: 'PSRule Validation' 
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
