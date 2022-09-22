@@ -1,0 +1,14 @@
+---
+# Synopsis: Suppress Rules for min tests
+apiVersion: github.com/microsoft/PSRule/v1
+kind: SuppressionGroup
+metadata:
+  name: 'Suppressmin'
+spec:
+  rule:
+   - Azure.Resource.UseTags
+  if:
+    name: '.'
+    contains:
+      - 'min'
+  
