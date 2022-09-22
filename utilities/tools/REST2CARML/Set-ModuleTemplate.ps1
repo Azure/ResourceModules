@@ -23,7 +23,8 @@ function Get-ModuleParameter {
 
     # description line (optional)
     if ($ParameterData.description) {
-        $descriptionLine = "@description('" + $ParameterData.description + "')"
+        $description = $ParameterData.description.Replace("'", '"')
+        $descriptionLine = "@description('" + $description + "')"
     }
 
     # todo:
@@ -36,10 +37,23 @@ function Get-ModuleParameter {
     # other?
 
     # param line (mandatory)
-    $paramLine = 'param ' + $ParameterData.name + ' ' + $ParameterData.type
+    switch ($ParameterData.type) {
+        'boolean' { $parameterType = 'bool'; break }
+        'integer' { $parameterType = 'int'; break }
+        Default { $parameterType = $ParameterData.type }
+    }
+    $paramLine = 'param ' + $ParameterData.name + ' ' + $parameterType
 
     if ($ParameterData.default) {
-        $paramLine += ' = ' + $ParameterData.default
+        switch ($ParameterData.type) {
+            'boolean' {
+                $defaultValue = $ParameterData.default.ToString().ToLower() ; break
+            }
+            'string' { $defaultValue = "'" + $ParameterData.default + "'"; break }
+            Default { $defaultValue = $ParameterData.default }
+        }
+
+        $paramLine += ' = ' + $defaultValue
     }
     # to do: default value depending on type: quotes/no quotes, boolean, arrays (multiline) etc...
 
@@ -248,6 +262,18 @@ function Set-ModuleTempalate {
         # to do
         $templateContent += Get-DeploymentResourceLastLine
 
+        #######################################
+        ##  Create template outputs section  ##
+        #######################################
+
+        # @description('The name of the deployed resource.')
+        # output name string = vault.name
+
+        # @description('The resource ID of the deployed resource.')
+        # output resourceId string = vault.id
+
+        # @description('The resource group of the deployed resource.')
+        # output resourceGroupName string = resourceGroup().name
 
         return $templateContent # will be replaced with writing the template file
     }
@@ -258,43 +284,20 @@ function Set-ModuleTempalate {
 
 }
 
-# using dummy module data for the first draft
-$moduleData = @{
-    parameters = @(
-        @{
-            level         = 0
-            name          = 'sku'
-            type          = 'object'
-            description   = 'Optional. My sample description'
-            allowedValues = @('')
-            required      = $false
-            default       = ''
-        }
-        @{
-            level       = 1
-            name        = 'firewallEnabled'
-            type        = 'boolean'
-            description = 'Optional. My sample description 2'
-            default     = $true
-        }
-    )
-}
+# . (Join-Path $PSScriptRoot 'Resolve-ModuleData.ps1')
 
-. (Join-Path $PSScriptRoot 'Resolve-ModuleData.ps1')
+# $jsonFilePath = 'C:\Local\Repos\CARML\ResourceModules-CARML\utilities\tools\REST2CARML\temp\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json'
+# $jsonKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+# $providerNamespace = 'Microsoft.KeyVault'
+# $resourceType = 'vaults'
 
+# # $jsonFilePath = 'C:\Local\Repos\CARML\ResourceModules-CARML\utilities\tools\REST2CARML\temp\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json'
+# # $jsonKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}'
+# # $providerNamespace = 'Microsoft.Storage'
+# # $resourceType = 'storageAccounts'
 
-$jsonFilePath = 'C:\Local\Repos\CARML\ResourceModules-CARML\utilities\tools\REST2CARML\temp\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json'
-$jsonKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
-$providerNamespace = 'Microsoft.KeyVault'
-$resourceType = 'vaults'
+# $resolvedModuleData = Resolve-ModuleData -jsonFilePath $jsonFilePath -jsonKeyPath $jsonKeyPath
+# $resolvedModuleData | ConvertTo-Json | Out-String | Out-File -FilePath (Join-Path $PSScriptRoot 'ModuleData.json')
 
-$jsonFilePath = 'C:\Local\Repos\CARML\ResourceModules-CARML\utilities\tools\REST2CARML\temp\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json'
-$jsonKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}'
-$providerNamespace = 'Microsoft.Storage'
-$resourceType = 'storageAccounts'
-
-$resolvedModuleData = Resolve-ModuleData -jsonFilePath $jsonFilePath -jsonKeyPath $jsonKeyPath
-$resolvedModuleData | ConvertTo-Json | Out-String | Out-File -FilePath (Join-Path $PSScriptRoot 'ModuleData.json')
-
-Set-ModuleTempalate -ProviderNamespace $providerNamespace -ResourceType $resourceType -ModuleData $resolvedModuleData -JSONFilePath $jsonFilePath -JSONKeyPath $jsonKeyPath
-
+# $templateContent = Set-ModuleTempalate -ProviderNamespace $providerNamespace -ResourceType $resourceType -ModuleData $resolvedModuleData -JSONFilePath $jsonFilePath -JSONKeyPath $jsonKeyPath
+# $templateContent | Out-File -FilePath (Join-Path $PSScriptRoot 'deploy.bicep')
