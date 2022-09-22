@@ -201,6 +201,6 @@ jobs:
       - task: ps-rule-assert@2
         displayName: PSrule Validation
         inputs:
-          modules: 'PSRUle.Rules.Azure'
-        inputPath: '$(moduleTestFilePath)'
+          modules: 'PSRule.Rules.Azure'
+          inputPath: '$(moduleTestFilePath)'
 
