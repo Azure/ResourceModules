@@ -62,6 +62,62 @@ function Get-ModuleParameter {
     return $result
 }
 
+function Get-ModuleOutputName {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $ResourceType
+    )
+
+    $result = ''
+
+    $resourceSingularName = Get-ResourceTypeSingularName -ResourceType $ResourceType
+    $description = "@description('The name of the {0}')" -f $resourceSingularName
+    $outputLine = 'output name string = {0}.name' -f $resourceSingularName
+
+
+    # building and returning the final parameter entry
+    $result = $description + [System.Environment]::NewLine + $outputLine + [System.Environment]::NewLine + [System.Environment]::NewLine
+    return $result
+}
+
+function Get-ModuleOutputId {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $ResourceType
+    )
+
+    $result = ''
+
+    $resourceSingularName = Get-ResourceTypeSingularName -ResourceType $ResourceType
+    $description = "@description('The resource ID of the {0}')" -f $resourceSingularName
+    $outputLine = 'output resourceId string = {0}.id' -f $resourceSingularName
+
+
+    # building and returning the final parameter entry
+    $result = $description + [System.Environment]::NewLine + $outputLine + [System.Environment]::NewLine + [System.Environment]::NewLine
+    return $result
+}
+
+function Get-ModuleOutputRg {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $ResourceType
+    )
+
+    $result = ''
+
+
+    # @description('The resource group of the deployed resource.')
+    # output resourceGroupName string = resourceGroup().name
+
+    $resourceSingularName = Get-ResourceTypeSingularName -ResourceType $ResourceType
+    $description = "@description('The name of the resource group the {0} was created in.')" -f $resourceSingularName
+    $outputLine = 'output resourceGroupName string = resourceGroup().name'
+
+    # building and returning the final parameter entry
+    $result = $description + [System.Environment]::NewLine + $outputLine + [System.Environment]::NewLine + [System.Environment]::NewLine
+    return $result
+}
 function Get-ApiVersion {
     param (
         [Parameter(Mandatory = $true)]
@@ -186,7 +242,7 @@ function Get-DeploymentResourceParameters {
 }
 
 function Get-DeploymentResourceLastLine {
-    return '}'
+    return '}' + [System.Environment]::NewLine + [System.Environment]::NewLine
 }
 
 function Get-IntentSpaces {
@@ -266,14 +322,14 @@ function Set-ModuleTempalate {
         ##  Create template outputs section  ##
         #######################################
 
-        # @description('The name of the deployed resource.')
-        # output name string = vault.name
+        # Output header comment
+        $templateContent += Get-SectionDivider -SectionName 'Outputs'
 
-        # @description('The resource ID of the deployed resource.')
-        # output resourceId string = vault.id
+        $templateContent += Get-ModuleOutputId -ResourceType $ResourceType
 
-        # @description('The resource group of the deployed resource.')
-        # output resourceGroupName string = resourceGroup().name
+        $templateContent += Get-ModuleOutputRg -ResourceType $ResourceType
+
+        $templateContent += Get-ModuleOutputName -ResourceType $ResourceType
 
         return $templateContent # will be replaced with writing the template file
     }
@@ -286,12 +342,12 @@ function Set-ModuleTempalate {
 
 # . (Join-Path $PSScriptRoot 'Resolve-ModuleData.ps1')
 
-# $jsonFilePath = 'C:\Local\Repos\CARML\ResourceModules-CARML\utilities\tools\REST2CARML\temp\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json'
+# $jsonFilePath = 'C:\Users\shrivastavar\Hackathon\ResourceModules\utilities\tools\REST2CARML\temp\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json'
 # $jsonKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
 # $providerNamespace = 'Microsoft.KeyVault'
 # $resourceType = 'vaults'
 
-# # $jsonFilePath = 'C:\Local\Repos\CARML\ResourceModules-CARML\utilities\tools\REST2CARML\temp\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json'
+# # $jsonFilePath = 'C:\Users\shrivastavar\Hackathon\ResourceModules\utilities\tools\REST2CARML\temp\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json'
 # # $jsonKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}'
 # # $providerNamespace = 'Microsoft.Storage'
 # # $resourceType = 'storageAccounts'
