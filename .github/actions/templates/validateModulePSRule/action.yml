@@ -35,33 +35,33 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Setup agent'
-      shell: pwsh
-      run: |
-        # Grouping task logs
-        Write-Output '::group::Setup agent'
+    # - name: 'Setup agent'
+    #   shell: pwsh
+    #   run: |
+    #     # Grouping task logs
+    #     Write-Output '::group::Setup agent'
 
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+    #     # Load used functions
+    #     . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-        # Define PS modules to install on the runner
-        $Modules = @(
-            # This is the latest tested PSRule version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
-            # @{ Name = 'PSRule'; Version = '5.3.1' }
-            @{ Name = 'Az.Resources' }
-            @{ Name = 'powershell-yaml'; Version = '0.4.2'}
-        )
+    #     # Define PS modules to install on the runner
+    #     $Modules = @(
+    #         # This is the latest tested PSRule version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
+    #         # @{ Name = 'PSRule'; Version = '5.3.1' }
+    #         @{ Name = 'Az.Resources' }
+    #         @{ Name = 'powershell-yaml'; Version = '0.4.2'}
+    #     )
 
-        # Set agent up
-        Set-EnvironmentOnAgent -PSModules $Modules
+    #     # Set agent up
+    #     Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output '::endgroup::'
+    #     Write-Output '::endgroup::'
 
-    - name: Azure Login
-      uses: Azure/login@v1
-      with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
+    # - name: Azure Login
+    #   uses: Azure/login@v1
+    #   with:
+    #     creds: ${{ env.AZURE_CREDENTIALS }}
+    #     enable-AzPSSession: true
 
     # [Module PSRule Test] task(s)
     #-----------------------------
@@ -70,7 +70,7 @@ runs:
       with:
         azPSVersion: 'latest'
         inlineScript: |
-          $templateFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          $templateFilePath = '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}'
           # Grouping task logs
           Write-Output '::group::Replace tokens in template file'
 
@@ -120,10 +120,10 @@ runs:
       # continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
       with:
         modules: 'PSRule.Rules.Azure'
-        inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+        inputPath: '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}'
         outputFormat: Csv
-        outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
-        option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
+        outputPath: '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}-output.csv'
+        # option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
     - name: 'Set PSRule Output'
       if: always()
@@ -139,8 +139,8 @@ runs:
 
           # Populate tokens
           $Input = @{
-            inputFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
-            outputFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
+            inputFilePath = '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}-output.csv'
+            outputFilePath = '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}-output.md'
           }
 
           Write-Verbose "Set PS Rule Output with following parameters:`n $($Input | ConvertTo-Json -Depth 10)" -Verbose
@@ -153,5 +153,5 @@ runs:
     - name: Output to Github summaries
       shell: pwsh
       if: always()
-      run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md' # >> $GITHUB_STEP_SUMMARY
+      run: cat '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}-output.md' # >> $GITHUB_STEP_SUMMARY
 

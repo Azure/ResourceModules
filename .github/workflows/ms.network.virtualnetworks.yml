@@ -97,94 +97,100 @@ jobs:
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           variablesPath: ${{ env.variablesPath }}
-      - name: 'Replace tokens in template file'
-        uses: azure/powershell@v1
+      - name: Set PSRule validation
+        uses: ./.github/actions/templates/validateModulePSRule
         with:
-          azPSVersion: 'latest'
-          inlineScript: |
-            $templateFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-            # Grouping task logs
-            Write-Output '::group::Replace tokens in template file'
+          modulePath: ${{ env.modulePath }}
+          moduleTestFilePath: ${{ matrix.moduleTestFilePaths }}
 
-            # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+      # - name: 'Replace tokens in template file'
+      #   uses: azure/powershell@v1
+      #   with:
+      #     azPSVersion: 'latest'
+      #     inlineScript: |
+      #       $templateFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+      #       # Grouping task logs
+      #       Write-Output '::group::Replace tokens in template file'
 
-            # Populate tokens
-            $Tokens = @{
-              resourceGroupName = '${{ env.resourceGroupName }}'
-              subscriptionId    = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-              managementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
-              tenantId          = '${{ env.ARM_TENANT_ID }}'
-            }
+      #       # Load used functions
+      #       . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
-            ## Add local (source control) tokens
-            $tokenMap = @{}
-            foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
-              $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
-            }
-            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-            $Tokens += $tokenMap
+      #       # Populate tokens
+      #       $Tokens = @{
+      #         resourceGroupName = '${{ env.resourceGroupName }}'
+      #         subscriptionId    = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+      #         managementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
+      #         tenantId          = '${{ env.ARM_TENANT_ID }}'
+      #       }
 
-            ## Swap 'namePrefix' token if empty and provided as a GitHub secret
-            if([String]::IsNullOrEmpty($Tokens['namePrefix'])){
-              Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
-              $Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
-            }
+      #       ## Add local (source control) tokens
+      #       $tokenMap = @{}
+      #       foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+      #         $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+      #       }
+      #       Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+      #       $Tokens += $tokenMap
 
-            # Construct Token Function Input
-            $ConvertTokensInputs = @{
-              FilePathList = @($templateFilePath)
-              Tokens       = $Tokens
-              TokenPrefix  = '${{ env.tokenPrefix }}'
-              TokenSuffix  = '${{ env.tokenSuffix }}'
-            }
+      #       ## Swap 'namePrefix' token if empty and provided as a GitHub secret
+      #       if([String]::IsNullOrEmpty($Tokens['namePrefix'])){
+      #         Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+      #         $Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
+      #       }
 
-            Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
+      #       # Construct Token Function Input
+      #       $ConvertTokensInputs = @{
+      #         FilePathList = @($templateFilePath)
+      #         Tokens       = $Tokens
+      #         TokenPrefix  = '${{ env.tokenPrefix }}'
+      #         TokenSuffix  = '${{ env.tokenSuffix }}'
+      #       }
 
-            # Invoke Token Replacement Functionality [For Module]
-            $null = Convert-TokensInFileList @ConvertTokensInputs
+      #       Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
-            Write-Output '::endgroup::'
+      #       # Invoke Token Replacement Functionality [For Module]
+      #       $null = Convert-TokensInFileList @ConvertTokensInputs
 
-      # Run analysis by using the PSRule GitHub action.
-      - name: Run PSRule analysis
-        uses: microsoft/ps-rule@v2.4.0
-        # continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
-        with:
-          modules: 'PSRule.Rules.Azure'
-          inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          outputFormat: Csv
-          outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
-          option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
+      #       Write-Output '::endgroup::'
 
-      - name: 'Set PSRule Output'
-        if: always()
-        uses: azure/powershell@v1
-        with:
-          azPSVersion: 'latest'
-          inlineScript: |
-            # Grouping task logs
-            Write-Output '::group::Setting Output'
+      # # Run analysis by using the PSRule GitHub action.
+      # - name: Run PSRule analysis
+      #   uses: microsoft/ps-rule@v2.4.0
+      #   # continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
+      #   with:
+      #     modules: 'PSRule.Rules.Azure'
+      #     inputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+      #     outputFormat: Csv
+      #     outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
+      #     option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
-            # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'PSRuleValidation' 'Set-PSRuleOutput.ps1')
+      # - name: 'Set PSRule Output'
+      #   if: always()
+      #   uses: azure/powershell@v1
+      #   with:
+      #     azPSVersion: 'latest'
+      #     inlineScript: |
+      #       # Grouping task logs
+      #       Write-Output '::group::Setting Output'
 
-            # Populate tokens
-            $Input = @{
-              inputFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
-              outputFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
-            }
+      #       # Load used functions
+      #       . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'PSRuleValidation' 'Set-PSRuleOutput.ps1')
 
-            Write-Verbose "Set PS Rule Output with following parameters:`n $($Input | ConvertTo-Json -Depth 10)" -Verbose
+      #       # Populate tokens
+      #       $Input = @{
+      #         inputFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
+      #         outputFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
+      #       }
 
-            # Invoke Set PSRule Output Functionality
-            $null = Set-PSRuleOutput @Input
+      #       Write-Verbose "Set PS Rule Output with following parameters:`n $($Input | ConvertTo-Json -Depth 10)" -Verbose
 
-            Write-Output '::endgroup::'
+      #       # Invoke Set PSRule Output Functionality
+      #       $null = Set-PSRuleOutput @Input
 
-      - name: Output to Github summaries
-        if: always()
-        run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md' >> $GITHUB_STEP_SUMMARY
+      #       Write-Output '::endgroup::'
+
+      # - name: Output to Github summaries
+      #   if: always()
+      #   run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md' >> $GITHUB_STEP_SUMMARY
 
   # #############################
   # #   Deployment validation   #
