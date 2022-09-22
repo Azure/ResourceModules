@@ -104,7 +104,9 @@ jobs:
           moduleTestFilePath: ${{ matrix.moduleTestFilePaths }}
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-
+      - name: Output to Github summaries
+        if: always()
+        run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md' >> $GITHUB_STEP_SUMMARY
       # - name: 'Replace tokens in template file'
       #   uses: azure/powershell@v1
       #   with:
