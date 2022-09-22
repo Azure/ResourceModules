@@ -131,8 +131,8 @@ function Get-ServiceSpecPathData {
 }
 
 # Example call for further processing
-$result = Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -IncludePreview $true | Format-List
-$result | Format-List
+# $result = Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -IncludePreview $true | Format-List
+# $result | Format-List
 
 # Kris: the below code is for debugging only and will be deleted later.
 ## It is commented out and doesn't run, so it can be ignored
@@ -176,41 +176,41 @@ $result | Format-List
 # to collect some statistics.
 # It requires some modifications of the function Get-ServiceSpecPathData, so please don't use it.
 # below code is temporary and will be deleted later
-exit # protecting from unnecessary run
-$carmlModulesRoot = Join-Path $PSScriptRoot '..' '..' '..' 'modules'
-$resArray = @()
-foreach ($providerFolder in $(Get-ChildItem -Path $carmlModulesRoot -Filter 'Microsoft.*')) {
-    foreach ($resourceFolder in $(Get-ChildItem -Path $(Join-Path $carmlModulesRoot $providerFolder.Name) -Directory)) {
-        Write-Host ('Processing [{0}/{1}]...' -f $providerFolder.Name, $resourceFolder.Name)
-        $res = Get-ServiceSpecPathData -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name -IncludePreview $false
-        # Get-ServiceSpecPathData -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name
+# exit # protecting from unnecessary run
+# $carmlModulesRoot = Join-Path $PSScriptRoot '..' '..' '..' 'modules'
+# $resArray = @()
+# foreach ($providerFolder in $(Get-ChildItem -Path $carmlModulesRoot -Filter 'Microsoft.*')) {
+#     foreach ($resourceFolder in $(Get-ChildItem -Path $(Join-Path $carmlModulesRoot $providerFolder.Name) -Directory)) {
+#         Write-Host ('Processing [{0}/{1}]...' -f $providerFolder.Name, $resourceFolder.Name)
+#         $res = Get-ServiceSpecPathData -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name -IncludePreview $false
+#         # Get-ServiceSpecPathData -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name
 
-        $resArrItem = [pscustomobject] @{}
-        $resArrItem | Add-Member -MemberType NoteProperty -Name 'Provider' -Value $providerFolder.Name
-        $resArrItem | Add-Member -MemberType NoteProperty -Name 'ResourceType' -Value $resourceFolder.Name
-        if ($null -eq $res) {
-            $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value 0
-        } elseif ($res -is [array]) {
-            $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value $res.Count
-        } elseif ($res.GetType().Name -eq 'pscustomobject') {
-            $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value 1
-        } else {
-            $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value $res
-        }
-        $resArray += $resArrItem
-    }
-}
+#         $resArrItem = [pscustomobject] @{}
+#         $resArrItem | Add-Member -MemberType NoteProperty -Name 'Provider' -Value $providerFolder.Name
+#         $resArrItem | Add-Member -MemberType NoteProperty -Name 'ResourceType' -Value $resourceFolder.Name
+#         if ($null -eq $res) {
+#             $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value 0
+#         } elseif ($res -is [array]) {
+#             $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value $res.Count
+#         } elseif ($res.GetType().Name -eq 'pscustomobject') {
+#             $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value 1
+#         } else {
+#             $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value $res
+#         }
+#         $resArray += $resArrItem
+#     }
+# }
 
 
 
-# statistics
+# # statistics
 
-$count = $resArray.Count
-$resArray | ConvertTo-Json -Depth 99
+# $count = $resArray.Count
+# $resArray | ConvertTo-Json -Depth 99
 
-Write-Host ('Success, more than one result: {0} of {1}' -f ((($resArray | Where-Object { $_.Result -gt 1 }).Count), $count ))
-Write-Host ('Success, one result: {0} of {1}' -f ((($resArray | Where-Object { $_.Result -eq 1 }).Count), $count))
-Write-Host ('No Results: {0} of {1}' -f ((($resArray | Where-Object { $_.Result -eq 0 }).Count), $count))
-Write-Host ('RT Error  : {0} of {1}' -f ((($resArray | Where-Object { $_.Result -eq -2 }).Count), $count))
+# Write-Host ('Success, more than one result: {0} of {1}' -f ((($resArray | Where-Object { $_.Result -gt 1 }).Count), $count ))
+# Write-Host ('Success, one result: {0} of {1}' -f ((($resArray | Where-Object { $_.Result -eq 1 }).Count), $count))
+# Write-Host ('No Results: {0} of {1}' -f ((($resArray | Where-Object { $_.Result -eq 0 }).Count), $count))
+# Write-Host ('RT Error  : {0} of {1}' -f ((($resArray | Where-Object { $_.Result -eq -2 }).Count), $count))
 
 
