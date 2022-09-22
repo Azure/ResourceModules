@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "prfx-ne-hub-vnet01"
+            "value": "prfx-ne-hub-vnet001"
         },
         "addressPrefixes": {
             "value": [
