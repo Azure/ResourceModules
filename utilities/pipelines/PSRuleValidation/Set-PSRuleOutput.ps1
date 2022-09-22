@@ -84,6 +84,10 @@
         $passContent = [System.Collections.ArrayList]@(
             '# Rules Passed',
             '',
+            '<details>',
+            '<summary>Rules Failed</summary>',
+            '',
+            '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- |  :-- |'
         )
@@ -108,10 +112,11 @@
             $passContent += ('| {0} | {1} |  {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
 
         }
-
         $passContent += [System.Collections.ArrayList]@(
-            '')
-
+            '',
+            '</details>',
+            ''
+        )
         #Append markdown with passed rules table
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $passContent
 
