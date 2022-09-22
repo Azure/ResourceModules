@@ -100,7 +100,6 @@ jobs:
       - name: Set PSRule validation
         uses: ./.github/actions/templates/validateModulePSRule
         with:
-          modulePath: ${{ env.modulePath }}
           moduleTestFilePath: ${{ matrix.moduleTestFilePaths }}
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
