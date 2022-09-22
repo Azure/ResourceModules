@@ -80,7 +80,7 @@ function Invoke-REST2CARML {
 
         ## Clone repository into temp folder
         if (-not (Test-Path (Join-Path $tempFolderPath $repoName))) {
-            git clone git clone --depth=1 --single-branch --branch=main --filter=tree:0 $repoUrl
+            git clone --depth=1 --single-branch --branch=main --filter=tree:0 $repoUrl
         } else {
             Write-Verbose "Repository [$repoName] already cloned"
         }
