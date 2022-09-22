@@ -1,23 +1,79 @@
-﻿function Get-ResourceProviderFolders {
+﻿function Get-FolderList {
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
         [string] $rootFolder,
-
         [Parameter(Mandatory = $true)]
-        [string] $ProviderNamespace,
-
-        [Parameter(Mandatory = $true)]
-        [string] $ResourceType
+        [string] $ProviderNamespace
     )
-    try {
-        #find the resource provider folder
-        $resourceProviderFolderSearchResults = Get-ChildItem -Path $rootFolder -Directory -Recurse -Depth 4 | Where-Object { $_.Name -eq $ProviderNamespace -and $_.Parent.Name -eq 'resource-manager' }
-        return $resourceProviderFolderSearchResults | ForEach-Object { "$($_.FullName)" }
 
-    } catch {
-        Write-Error 'Error detecting provider folder'
+    $allFolderPaths = (Get-ChildItem -Path $rootFolder -Recurse -Directory).FullName
+    Write-Verbose ('Fetched all [{0}] folder paths. Filtering...' -f $allFolderPaths.Count)
+    # Filter
+    $filteredFolderPaths = $allFolderPaths | Where-Object {
+        ($_ -replace '\\', '/') -like '*/resource-manager/*'
+    }
+    $filteredFolderPaths = $filteredFolderPaths | Where-Object {
+        ($_ -replace '\\', '/') -like "*/$ProviderNamespace/*"
+    }
+    $filteredFolderPaths = $filteredFolderPaths | Where-Object {
+        (($_ -replace '\\', '/') -like '*/stable') -or (($_ -replace '\\', '/') -like '*/preview')
     }
 
+    $filteredFolderPaths = $filteredFolderPaths | ForEach-Object { Split-Path -Path $_ -Parent }
+    $filteredFolderPaths = $filteredFolderPaths | Select-Object -Unique
+
+    if (-not $filteredFolderPaths) {
+        Write-Warning "No folders found for provider namespace [$ProviderNamespace]"
+        return $filteredFolderPaths
+    }
+
+    Write-Verbose ('Filtered down to [{0}] folders.' -f $filteredFolderPaths.Length)
+    return $filteredFolderPaths | Sort-Object
+}
+
+function Get-FileList {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $rootFolder,
+        [Parameter(Mandatory = $true)]
+        [string] $ProviderNamespace,
+        [Parameter(Mandatory = $true)]
+        [string] $ResourceType,
+        [Parameter(Mandatory = $false)]
+        [bool] $IgnorePreview = $true
+    )
+
+    $allFilePaths = (Get-ChildItem -Path $rootFolder -Recurse -File).FullName
+    Write-Verbose ('Fetched all [{0}] file paths. Filtering...' -f $allFilePaths.Count) -Verbose
+    # Filter
+    $filteredFilePaths = $allFilePaths | Where-Object {
+        ($_ -replace '\\', '/') -like '*/resource-manager/*'
+    }
+    $filteredFilePaths = $filteredFilePaths | Where-Object {
+        ($_ -replace '\\', '/') -notlike '*/examples/*'
+    }
+    $filteredFilePaths = $filteredFilePaths | Where-Object {
+        ($_ -replace '\\', '/') -like "*/$ProviderNamespace/*"
+    }
+    if ($IgnorePreview) {
+        $filteredFilePaths = $filteredFilePaths | Where-Object {
+            ($_ -replace '\\', '/') -notlike '*/preview/*'
+        }
+    }
+    $filteredFilePaths = $filteredFilePaths | Where-Object {
+        ($_ -replace '\\', '/') -like ('*/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*/*.json')
+    }
+    $filteredFilePaths = $filteredFilePaths | Where-Object {
+        ($_ -replace '\\', '/') -like ('*/*.json')
+    }
+    if (-not $filteredFilePaths) {
+        Write-Warning "No files found for resource type [$ProviderNamespace/$ResourceType]"
+        return $filteredFilePaths
+    }
+    Write-Verbose ('Filtered down to [{0}] files.' -f $filteredFilePaths.Length) -Verbose
+    return $filteredFilePaths | Sort-Object
 }
 
 function Get-ServiceSpecPathData {
@@ -61,7 +117,7 @@ function Get-ServiceSpecPathData {
 
     try {
         #find the resource provider folder
-        $resourceProviderFolders = Get-ResourceProviderFolders -rootFolder $(Join-Path $tempFolderPath $repoName 'specification') -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+        $resourceProviderFolders = Get-FolderList -rootFolder $(Join-Path $tempFolderPath $repoName 'specification') -ProviderNamespace $ProviderNamespace
 
         $resultArr = @()
         foreach ($resourceProviderFolder in $resourceProviderFolders) {
@@ -77,8 +133,8 @@ function Get-ServiceSpecPathData {
             # sorting all API version from the newest to the oldest
             $apiVersionFoldersArr = $apiVersionFoldersArr | Sort-Object -Property Name -Descending
             if ($apiVersionFoldersArr.Count -eq 0) {
-                throw ('No API folder found in folder [{0}]' -f $resourceProviderFolder)
-
+                Write-Warning ('No API folder found in folder [{0}]' -f $resourceProviderFolder)
+                continue
             }
 
             foreach ($apiversionFolder in $apiVersionFoldersArr) {
@@ -131,46 +187,36 @@ function Get-ServiceSpecPathData {
 }
 
 # Example call for further processing
-# $result = Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -IncludePreview $true | Format-List
+# $result = Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' | Format-List
 # $result | Format-List
 
 # Kris: the below code is for debugging only and will be deleted later.
 ## It is commented out and doesn't run, so it can be ignored
 
 # test function calls
-# working calls
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -IncludePreview $true | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Batch' -ResourceType 'batchAccounts' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Network' -ResourceType 'virtualNetworks' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Network' -ResourceType 'networkSecurityGroups' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.CognitiveServices' -ResourceType 'accounts' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Network' -ResourceType 'applicationGateways' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Network' -ResourceType 'bastionHosts' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Network' -ResourceType 'azureFirewalls' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Sql' -ResourceType 'servers' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Sql' -ResourceType 'managedInstances' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.RecoveryServices' -ResourceType 'vaults' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.AnalysisServices' -ResourceType 'servers' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'roleAssignments' -IncludePreview $false | Format-List # no results, special case
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'roleDefinitions' -IncludePreview $false | Format-List # no results, special case
-# repaired calls
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Automation' -ResourceType 'automationAccounts' | Format-List # no results
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Management' -ResourceType 'managementGroups' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.AAD' -ResourceType 'DomainServices' -IncludePreview $true | Format-List # provider folder not found
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'policyAssignments' -IncludePreview $false | Format-List # no results, more than one provider folder, exists in the second folder (to be verified)
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.DocumentDB' -ResourceType 'databaseAccounts' -IncludePreview $true | Format-List # different provider folder name
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.OperationsManagement' -ResourceType 'solutions' -IncludePreview $true | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.ManagedIdentity' -ResourceType 'userAssignedIdentities' -IncludePreview $true | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.DBforPostgreSQL' -ResourceType 'flexibleServers' -IncludePreview $true | Format-List # different provider folder name
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'policyDefinitions' -IncludePreview $false | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'policySetDefinitions' -IncludePreview $false | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Cache' -ResourceType 'redis' -IncludePreview $false | Format-List # provider folder not found
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'locks' -IncludePreview $false | Format-List # no results, special case
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Insights' -ResourceType 'actionGroups' -IncludePreview $false | Format-List
+# two examples of working calls for testing
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' | Format-List
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts' | Format-List
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Compute' -ResourceType 'virtualMachines' | Format-List
 
-# not working calls
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Compute' -ResourceType 'virtualMachines' # provider folder structure
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Resources' -ResourceType 'resourceGroups' -IncludePreview $false | Format-List
+# working, multiple results
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'locks' | Format-List # no results, special case
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'policyDefinitions' | Format-List
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'policySetDefinitions' | Format-List
+
+# no results (different ResourceId schema, to be repaired)
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Resources' -ResourceType 'resourceGroups' | Format-List
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Security' -ResourceType 'azureSecurityCenter' | Format-List
+
+# working with preview only
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'policyExemptions' -IncludePreview | Format-List
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Insights' -ResourceType 'privateLinkScopes' -IncludePreview | Format-List
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.OperationsManagement' -ResourceType 'solutions' -IncludePreview | Format-List
+
+# working. If run without preview, returning one result, with preview: four results
+# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Insights' -ResourceType 'diagnosticSettings' -IncludePreview | Format-List
+
+
 
 # running the function against the CARML modules folder
 # to collect some statistics.
@@ -182,7 +228,7 @@ function Get-ServiceSpecPathData {
 # foreach ($providerFolder in $(Get-ChildItem -Path $carmlModulesRoot -Filter 'Microsoft.*')) {
 #     foreach ($resourceFolder in $(Get-ChildItem -Path $(Join-Path $carmlModulesRoot $providerFolder.Name) -Directory)) {
 #         Write-Host ('Processing [{0}/{1}]...' -f $providerFolder.Name, $resourceFolder.Name)
-#         $res = Get-ServiceSpecPathData -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name -IncludePreview $false
+#         $res = Get-ServiceSpecPathData -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name -IncludePreview
 #         # Get-ServiceSpecPathData -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name
 
 #         $resArrItem = [pscustomobject] @{}
