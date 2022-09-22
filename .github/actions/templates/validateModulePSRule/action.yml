@@ -23,10 +23,6 @@ name: 'Execute PSRule module tests'
 description: 'Execute PSRule module tests (if any)'
 
 inputs:
-  modulePath:
-    description: "The path to the module's folder"
-    required: true
-    default: ''
   moduleTestFilePath:
     description: 'The path to the test file'
     required: true
@@ -129,6 +125,6 @@ runs:
           Write-Output '::endgroup::'
 
     - name: Output to Github summaries
-      shell: pwsh
+      shell: bash
       if: always()
       run: cat '${{ env.modulePath }}/${{ inputs.moduleTestFilePath }}-output.md' >> $GITHUB_STEP_SUMMARY
