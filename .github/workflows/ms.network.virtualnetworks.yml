@@ -157,7 +157,8 @@ jobs:
           outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
-      - name: 'Set Output'
+      - name: 'Set PSRule Output'
+        if: always()
         uses: azure/powershell@v1
         with:
           azPSVersion: 'latest'
