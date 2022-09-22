@@ -60,6 +60,15 @@ stages:
           whatif: '${{ parameters.whatif }}'
           checkoutRepositories:
             - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: keyVault
+          displayName: 'Key Vault'
+          modulePath: '/modules/Microsoft.KeyVault/vaults/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/keyVault/parameters.json'
+          whatif: '${{ parameters.whatif }}'
+          checkoutRepositories:
+            - self
 
   - stage:
     displayName: Deploy
@@ -99,3 +108,11 @@ stages:
           dependsOn:
             - networkSecurityGroups
             - routeTables
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: keyVault
+          displayName: 'Key Vault'
+          modulePath: '/modules/Microsoft.KeyVault/vaults/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/keyVault/parameters.json'
+          checkoutRepositories:
+            - self

@@ -33,6 +33,18 @@ stages:
           checkoutRepositories:
             - self
 
+    #Key Vaults
+    #---------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: keyVault
+          displayName: 'Key Vault'
+          modulePath: '/modules/Microsoft.KeyVault/vaults/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/keyvaults/parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
     #Network Security Groups
     #-----------------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -101,6 +113,17 @@ stages:
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/parameters.json'
+          checkoutRepositories:
+            - self
+
+    #Key Vaults
+    #---------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: keyVault
+          displayName: 'Key Vault'
+          modulePath: '/modules/Microsoft.KeyVault/vaults/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/keyvaults/parameters.json'
           checkoutRepositories:
             - self
 
