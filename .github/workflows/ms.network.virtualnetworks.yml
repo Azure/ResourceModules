@@ -157,19 +157,33 @@ jobs:
           outputPath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
           option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
-      - name: Output to Github Logs
-        if: always()
-        run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
+      - name: 'Set Output'
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: 'latest'
+          inlineScript: |
+            # Grouping task logs
+            Write-Output '::group::Setting Output'
 
-      # - name: 'PSRule test summary'
-      #   uses: EnricoMi/publish-unit-test-result-action@v1
-      #   if: always()
-      #   with:
-      #     files: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.xml'
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'PSRuleValidation' 'Set-PSRuleOutput.ps1')
+
+            # Populate tokens
+            $Input = @{
+              inputFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv'
+              outputFilePath = '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md'
+            }
+
+            Write-Verbose "Set PS Rule Output with following parameters:`n $($Input | ConvertTo-Json -Depth 10)" -Verbose
+
+            # Invoke Set PSRule Output Functionality
+            $null = Set-PSRuleOutput @Input
+
+            Write-Output '::endgroup::'
 
       - name: Output to Github summaries
         if: always()
-        run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.csv' >> $GITHUB_STEP_SUMMARY
+        run: cat '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}-output.md' >> $GITHUB_STEP_SUMMARY
 
   # #############################
   # #   Deployment validation   #
