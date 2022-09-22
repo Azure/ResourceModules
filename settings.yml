@@ -110,6 +110,6 @@ variables:
   # Wiki Repository settings
   ######################################
 
-publishWikiToGitHub: false # Set to true, if you would like to publish readmes to the GitHub Wiki.
-publishWikiToAzureDevOps: false # Set to true, if you would like to publish readmes to the Azure DevOps Project Wiki.
-publishWikiToWebSite: false # Set to true, if you would like to publish readmes to a DocFX Website using Azure Static Web sites.
+  publishWikiToGitHub: false # Set to true, if you would like to publish readmes to the GitHub Wiki.
+  publishWikiToAzureDevOps: false # Set to true, if you would like to publish readmes to the Azure DevOps Project Wiki.
+  publishWikiToWebSite: false # Set to true, if you would like to publish readmes to a DocFX Website using Azure Static Web sites.
