@@ -3,7 +3,8 @@
 Create/Update a CARML module based on the latest API information available
 
 .DESCRIPTION
-Create/Update a CARML module based on the latest API information available
+Create/Update a CARML module based on the latest API information available.
+NOTE: As we query some data from Azure, you must be connected to an Azure Context to use this function
 
 .PARAMETER ProviderNamespace
 Mandatory. The provider namespace to query the data for
@@ -39,6 +40,8 @@ function Invoke-REST2CARML {
     }
 
     process {
+        v
+
         # TODO: Invoke function to fetch module data
         $pathData = @{
             jsonFilePath = '(...)\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json'
