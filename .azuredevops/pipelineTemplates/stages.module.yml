@@ -5,7 +5,7 @@ parameters:
   defaultJobTimeoutInMinutes: 120
 
 stages:
-  - stage: PSRuleValidation
+  - stage: psrulevalidation
     displayName: PSRule validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validatePSRule.yml
