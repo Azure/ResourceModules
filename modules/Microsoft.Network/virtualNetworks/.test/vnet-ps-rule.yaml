@@ -23,9 +23,14 @@ include:
   module:
     - PSRule.Rules.Azure
 
+execution:
+  suppressedRuleWarning: false
+
 output:
   culture:
     - 'en-US'
+  #outcome: 'Fail'
+  #as: 'Summary'
 
 input:
   pathIgnore:
@@ -55,7 +60,6 @@ rule:
   exclude:
     # Ignore the following rules for all resources
     - Azure.Resource.UseTags
-
 # Suppression ignores rules for a specific Azure resource by name.
 #suppression:
 #  Azure.Identity.UserAssignedName:
