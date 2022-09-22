@@ -196,7 +196,7 @@ jobs:
       - task: ps-rule-install@2
         displayName: PSRule install
         inputs:
-          module:PSRule.Rule.Azure
+          module:PSRule.Rules.Azure
 
       - task: ps-rule-assert@2
         displayName: PSrule Validation
