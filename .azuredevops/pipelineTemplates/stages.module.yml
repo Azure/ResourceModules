@@ -5,6 +5,14 @@ parameters:
   defaultJobTimeoutInMinutes: 120
 
 stages:
+  - stage: PSRule-validation
+    displayName: PSRule validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validatePSRule.yml
+        parameters:
+          templateFilePath: '$(modulePath)/deploy.bicep'
+          
+  
   - stage: validation
     displayName: Static validation
     jobs:
