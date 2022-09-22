@@ -65,8 +65,8 @@ stages:
           checkoutRepositories:
             - self
 
-  - stage:
-    displayName: Deployment
+  - stage: Deployment
+    displayName: Deploy
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
