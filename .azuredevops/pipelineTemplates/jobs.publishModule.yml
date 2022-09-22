@@ -353,8 +353,8 @@ jobs:
 
               $functionInput = @{
                 ReadmeFilePath            = $ReadmeToPublish.ReadmeFilePath
-                BicepRegistryUrl          = 'br:{0}.azurecr.io/{1}:{2}' -f '${{ inputs.bicepRegistryName }}', $ModuleRegistryIdentifier, $ReadmeToPublish.Version
-                TemplateSpecsUrl          = 'ts:{0}/{1}/{2}:{3}' -f '<Subscription_Id>', '${{ inputs.templateSpecsRgName }}', $TemplateSpecsIdentifier, $ReadmeToPublish.Version
+                BicepRegistryUrl          = 'br:{0}.azurecr.io/{1}:{2}' -f '${{ parameters.bicepRegistryName }}', $ModuleRegistryIdentifier, $ReadmeToPublish.Version
+                TemplateSpecsUrl          = 'ts:{0}/{1}/{2}:{3}' -f '<Subscription_Id>', '${{ parameters.templateSpecsRgName }}', $TemplateSpecsIdentifier, $ReadmeToPublish.Version
                 ModuleVersion             = $ReadmeToPublish.Version
               }
 
