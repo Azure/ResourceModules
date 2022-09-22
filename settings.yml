@@ -79,7 +79,7 @@ variables:
   # Publish: Universal packages settings
   ######################################
 
-  artifactsFeedDoPublish: true # Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
+  artifactsFeedDoPublish: false # Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
   vstsFeedName: 'ResourceModules' # The name of the Azure DevOps universal packages feed to publish to
   vstsFeedProject: '$(System.TeamProject)' # The project that hosts the feed
   vstsFeedToken: $(System.AccessToken) # The token used to publish universal packages into the feed above
@@ -95,6 +95,7 @@ variables:
   # If using the latest version of the Az PowerShell modules, set `preferredAzurePowerShellVersion` to an empty string ''.
   # If overriding the Az PowerShell module version, set to the version. Example: '4.4.0'
   preferredAzurePowerShellVersion: ''
+
 #
 # NOTE: To override for just an individual template, just add the following to the
 #     templates pipeline.yml replacing '4.4.0' with the desired version:
@@ -104,3 +105,11 @@ variables:
 #   - name: preferredAzurePowerShellVersion
 #     value: '4.4.0'
 #
+
+  ######################################
+  # Wiki Repository settings
+  ######################################
+
+  publishWikiToGitHub: false # Set to true, if you would like to publish readmes to the GitHub Wiki.
+  publishWikiToAzureDevOps: false # Set to true, if you would like to publish readmes to the Azure DevOps Project Wiki.
+  publishWikiToWebSite: false # Set to true, if you would like to publish readmes to a DocFX Website using Azure Static Web sites.

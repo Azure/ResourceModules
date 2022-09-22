@@ -381,6 +381,7 @@ function Get-ModulesToPublish {
         $ModulesToPublish += @{
             Version          = $ModuleVersion
             TemplateFilePath = $TemplateFileToPublish.FullName
+            ReadmeFilePath   = $TemplateFileToPublish.DirectoryName + '/readme.md'
         }
 
         if ($ModuleVersion -notmatch 'prerelease') {
@@ -389,12 +390,14 @@ function Get-ModulesToPublish {
             $ModulesToPublish += @{
                 Version          = ($ModuleVersion.Split('.')[0..1] -join '.')
                 TemplateFilePath = $TemplateFileToPublish.FullName
+                ReadmeFilePath   = $TemplateFileToPublish.DirectoryName + '/readme.md'
             }
 
             # Latest Major
             $ModulesToPublish += @{
                 Version          = ($ModuleVersion.Split('.')[0])
                 TemplateFilePath = $TemplateFileToPublish.FullName
+                ReadmeFilePath   = $TemplateFileToPublish.DirectoryName + '/readme.md'
             }
         }
 
@@ -405,6 +408,7 @@ function Get-ModulesToPublish {
             $ModulesToPublish += @{
                 Version          = $ParentModuleVersion
                 TemplateFilePath = $ParentTemplateFileToPublish.FullName
+                ReadmeFilePath   = $ParentTemplateFileToPublish.DirectoryName + '/readme.md'
             }
 
             if ($ModuleVersion -notmatch 'prerelease') {
@@ -413,12 +417,14 @@ function Get-ModulesToPublish {
                 $ModulesToPublish += @{
                     Version          = ($ParentModuleVersion.Split('.')[0..1] -join '.')
                     TemplateFilePath = $ParentTemplateFileToPublish.FullName
+                    ReadmeFilePath   = $ParentTemplateFileToPublish.DirectoryName + '/readme.md'
                 }
 
                 # Latest Major
                 $ModulesToPublish += @{
                     Version          = ($ParentModuleVersion.Split('.')[0])
                     TemplateFilePath = $ParentTemplateFileToPublish.FullName
+                    ReadmeFilePath   = $ParentTemplateFileToPublish.DirectoryName + '/readme.md'
                 }
             }
         }

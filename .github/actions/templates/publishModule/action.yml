@@ -178,3 +178,47 @@ runs:
           }
 
           Write-Output '::endgroup::'
+
+    - name: 'Publish documentation to document repo'
+      # if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output '::group::Publish documentation to document repo'
+
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ReadmeToDocumentRepo.ps1')
+
+          $functionInput = @{
+            TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          # Get the modified child resources
+          $ReadmesToPublish = Get-ModulesToPublish @functionInput -Verbose
+
+          # Publish the modified child resources
+          foreach ($ReadmeToPublish in $ReadmesToPublish) {
+            $RelPath = (($ReadmeToPublish.ReadmeFilePath).Split('/modules/')[-1]).Split('/readme.')[0]
+            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ReadmeToPublish.Version)"
+
+            $functionInput = @{
+              ReadmeFilePath            = $ReadmeToPublish.ReadmeFilePath
+              # BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
+              # BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
+              # BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
+              ModuleVersion             = $ReadmeToPublish.Version
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Publish-ReadmeToDocumentRepo @functionInput -Verbose
+          }
+
+          Write-Output '::endgroup::'
