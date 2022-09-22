@@ -15,7 +15,7 @@
                 {
                     "name": "AzureFirewallSubnet",
                     "addressPrefix": "192.168.100.0/26",
-                    "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hub-ne-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-hub-001",
+                    "networkSecurityGroupId": "",
                     "serviceEndpoints": [],
                     "routeTableId": ""
                 },
@@ -29,7 +29,7 @@
                 {
                     "name": "GatewaySubnet",
                     "addressPrefix": "192.168.100.128/27",
-                    "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hub-ne-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-hub-001",
+                    "networkSecurityGroupId": "",
                     "serviceEndpoints": [],
                     "routeTableId": ""
                 },

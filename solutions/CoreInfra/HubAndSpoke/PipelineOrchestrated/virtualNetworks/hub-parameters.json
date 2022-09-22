@@ -15,37 +15,37 @@
                 {
                     "name": "AzureFirewallSubnet",
                     "addressPrefix": "192.168.100.0/26",
-                    "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-hub-001",
+                    "networkSecurityGroupId": "",
                     "serviceEndpoints": [],
-                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                    "routeTableId": ""
                 },
                 {
                     "name": "FrontendSubnet",
                     "addressPrefix": "192.168.100.64/26",
                     "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-hub-001",
                     "serviceEndpoints": [],
-                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                    "routeTableId": ""
                 },
                 {
                     "name": "GatewaySubnet",
                     "addressPrefix": "192.168.100.128/27",
-                    "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-hub-001",
+                    "networkSecurityGroupId": "",
                     "serviceEndpoints": [],
-                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                    "routeTableId": ""
                 },
                 {
                     "name": "AzureBastionSubnet",
                     "addressPrefix": "192.168.100.160/27",
                     "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-hub-001",
                     "serviceEndpoints": [],
-                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                    "routeTableId": ""
                 },
                 {
                     "name": "BackendSubnet",
                     "addressPrefix": "192.168.100.192/26",
                     "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-hub-001",
                     "serviceEndpoints": [],
-                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                    "routeTableId": ""
                 }
             ]
         }
