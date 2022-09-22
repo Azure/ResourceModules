@@ -15,7 +15,7 @@
                 {
                     "name": "AzureFirewallSubnet",
                     "addressPrefix": "192.168.100.0/26",
-                    "networkSecurityGroupId": "",
+                    // "networkSecurityGroupId": "",
                     "serviceEndpoints": [],
                     "routeTableId": ""
                 },
@@ -29,7 +29,7 @@
                 {
                     "name": "GatewaySubnet",
                     "addressPrefix": "192.168.100.128/27",
-                    "networkSecurityGroupId": "",
+                    // "networkSecurityGroupId": "",
                     "serviceEndpoints": [],
                     "routeTableId": ""
                 },
