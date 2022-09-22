@@ -24,7 +24,7 @@
     $headerTable = [System.Collections.ArrayList]@(
         '# Output Summary ',
         '',
-        '| Total No. of Rules Processed | Rules Passed :white_check_mark: | Rules Failed :x: |',
+        '| Total No. of Processed Rules| Passed Rules :white_check_mark: | Failed Rules :x: |',
         '| :-- | :-- | :-- |'
     )
 
@@ -41,10 +41,10 @@
         #Create Failing table
 
         $failContent = [System.Collections.ArrayList]@(
-            '# Rules Failed',
+            '# Failed Rules',
             '',
             '<details>',
-            '<summary>Rules Failed</summary>',
+            '<summary>Failed Rules</summary>',
             '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- | :-- |'
@@ -82,10 +82,10 @@
     if ($passedRules.Count -gt 0) {
 
         $passContent = [System.Collections.ArrayList]@(
-            '# Rules Passed',
+            '# Passed Rules',
             '',
             '<details>',
-            '<summary>Rules Passed</summary>',
+            '<summary>Passed Rules</summary>',
             '',
             '',
             '| RuleName | TargetName |  Synopsis |',
