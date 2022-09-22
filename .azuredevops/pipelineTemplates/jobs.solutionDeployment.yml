@@ -2,7 +2,7 @@
 ## DEPLOYMENT PIPELINE                                 ##
 #########################################################
 ##
-## This pipeline template contains the logic to deploy a given module's ARM template using the provided parameter file(s)
+## This pipeline template contains the logic to deploy a given module's Bicep or ARM template using the provided parameter file(s)
 ##
 ## Enabled levels of deployment
 ## - Resource-Group-Level
