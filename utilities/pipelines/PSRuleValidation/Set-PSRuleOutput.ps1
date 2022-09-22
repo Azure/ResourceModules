@@ -109,7 +109,7 @@
                 $resourceLink = $content.RuleName
             }
 
-            $passContent += ('| {0} | {1} |  {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
+            $passContent += ('| {0} | {1} | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
 
         }
         $passContent += [System.Collections.ArrayList]@(
