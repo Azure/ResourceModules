@@ -48,25 +48,131 @@ function Get-ModuleParameter {
     return $result
 }
 
+function Get-ApiVersion {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $JSONFilePath
+    )
+
+    return Split-Path -Path (Split-Path -Path $JSONFilePath -Parent) -Leaf
+}
+
+function Get-ResourceTypeSingularName {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $ResourceType
+    )
+
+    if ($ResourceType -like '*ii') { return $ResourceType -replace 'ii$', 'us' }
+    if ($ResourceType -like '*ies') { return $ResourceType -replace 'ies$', 'y' }
+    if ($ResourceType -like '*s') { return $ResourceType -replace 's$', '' }
+
+    return $ResourceType
+}
+
 function Get-DeploymentResourceFirstLine {
     param (
         [Parameter(Mandatory = $true)]
-        [object] $ParameterData
+        [string] $ProviderNamespace,
+
+        [Parameter(Mandatory = $true)]
+        [string] $ResourceType,
+
+        [Parameter(Mandatory = $true)]
+        [string] $JSONFilePath
     )
+
     # resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
 
     $result = ''
 
-    $result += "@description('" + $ParameterData.description + "')"
+    $apiversion = Get-ApiVersion -JSONFilePath $JSONFilePath
+    $resouceName = Get-ResourceTypeSingularName -ResourceType $ResourceType
 
-    $paramLine = 'param ' + $ParameterData.name + ' ' + $ParameterData.type
-    if ($ParameterData.default) {
-        $paramLine += ' = ' + $ParameterData.default
+    $result += ("resource {0} '{1}/{2}@{3}' = " -f $resouceName, $ProviderNamespace, $ResourceType, $apiversion)
+    $result += '{' + [System.Environment]::NewLine
+
+    return $result
+}
+
+function Get-DeploymentResourceParametersNewLevel {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $levelParentName,
+
+        [Parameter(Mandatory = $true)]
+        [int] $levelParentLevel,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet(
+            'Begin',
+            'End'
+        )]
+        [string] $BeginOrEnd
+    )
+
+    # properties: {
+    # }
+
+    $result = ''
+    if ($BeginOrEnd -eq 'Begin') {
+        $result += Get-IntentSpaces -level $levelParentLevel
+        $result += $levelParentName + ': {'
+        $result += [System.Environment]::NewLine
+    } else {
+        $result += Get-IntentSpaces -level $levelParentLevel
+        $result += '}' + [System.Environment]::NewLine
+    }
+    return $result
+}
+
+function Get-DeploymentResourceSignleParameter {
+    param (
+        [Parameter(Mandatory = $true)]
+        [object] $ParameterData
+    )
+
+    # tags: tags
+    # properties: {
+    #     enabledForDeployment: enableVaultForDeployment
+    # }
+
+    $result = ''
+    $result += Get-IntentSpaces -level $ParameterData.level
+    $result += $ParameterData.name + ': ' + $ParameterData.name
+    $result += [System.Environment]::NewLine
+
+    return $result
+}
+
+function Get-DeploymentResourceParameters {
+    param (
+        [Parameter(Mandatory = $true)]
+        [array] $ModuleData
+    )
+
+    # tags: tags
+    # properties: {
+    #     enabledForDeployment: enableVaultForDeployment
+    # }
+
+    $result = ''
+
+    foreach ($moduleParameter in $ModuleData | Where-Object { $_.level -eq 0 } ) {
+        $result += Get-DeploymentResourceSignleParameter -ParameterData $moduleParameter
     }
 
-    # param location string = resourceGroup().location
-    $result = $descriptionLine + [System.Environment]::NewLine + $paramLine + [System.Environment]::NewLine
+    $result += Get-DeploymentResourceParametersNewLevel -levelParentName 'properties' -levelParentLevel 0 -BeginOrEnd Begin
+    foreach ($moduleParameter in $ModuleData | Where-Object { $_.level -eq 1 } ) {
+        $result += Get-DeploymentResourceSignleParameter -ParameterData $moduleParameter
+    }
+    $result += Get-DeploymentResourceParametersNewLevel -levelParentName 'properties' -levelParentLevel 0 -BeginOrEnd End
+
     return $result
+}
+
+function Get-DeploymentResourceLastLine {
+    return '}'
 }
 
 function Get-IntentSpaces {
@@ -89,7 +195,13 @@ function Set-ModuleTempalate {
         [string] $ResourceType,
 
         [Parameter(Mandatory = $true)]
-        [Hashtable] $ModuleData
+        [array] $ModuleData,
+
+        [Parameter(Mandatory = $true)]
+        [string] $JSONFilePath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $JSONKeyPath
     )
 
     begin {
@@ -100,6 +212,7 @@ function Set-ModuleTempalate {
         # Load used functions
         . (Join-Path $PSScriptRoot 'Get-DiagnosticOptionsList.ps1')
         . (Join-Path $PSScriptRoot 'Get-SupportsPrivateEndpoint.ps1')
+        . (Join-Path $PSScriptRoot 'Resolve-ModuleData.ps1')
         . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
     }
 
@@ -114,7 +227,7 @@ function Set-ModuleTempalate {
         $templateContent += Get-SectionDivider -SectionName 'Parameters'
 
         # Add parameters
-        foreach ($parameter in $ModuleData.parameters) {
+        foreach ($parameter in $ModuleData) {
             $templateContent += Get-ModuleParameter -ParameterData $parameter
         }
 
@@ -126,15 +239,14 @@ function Set-ModuleTempalate {
         $templateContent += Get-SectionDivider -SectionName 'Deployments'
 
         # Deployment resource declaration line
-        # to do
+        $templateContent += Get-DeploymentResourceFirstLine -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -JSONFilePath $JSONFilePath
 
-        # Add deployment parameters
-        foreach ($parameter in $ModuleData.parameters) {
-            # to do
-        }
+        # Add deployment parameters section
 
+        $templateContent += Get-DeploymentResourceParameters -ModuleData $ModuleData
         # Deployment resource finising line
         # to do
+        $templateContent += Get-DeploymentResourceLastLine
 
 
         return $templateContent # will be replaced with writing the template file
@@ -168,4 +280,21 @@ $moduleData = @{
     )
 }
 
-Set-ModuleTempalate -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ModuleData $moduleData
+. (Join-Path $PSScriptRoot 'Resolve-ModuleData.ps1')
+
+
+$jsonFilePath = 'C:\Local\Repos\CARML\ResourceModules-CARML\utilities\tools\REST2CARML\temp\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json'
+$jsonKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+$providerNamespace = 'Microsoft.KeyVault'
+$resourceType = 'vaults'
+
+$jsonFilePath = 'C:\Local\Repos\CARML\ResourceModules-CARML\utilities\tools\REST2CARML\temp\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json'
+$jsonKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}'
+$providerNamespace = 'Microsoft.Storage'
+$resourceType = 'storageAccounts'
+
+$resolvedModuleData = Resolve-ModuleData -jsonFilePath $jsonFilePath -jsonKeyPath $jsonKeyPath
+$resolvedModuleData | ConvertTo-Json | Out-String | Out-File -FilePath (Join-Path $PSScriptRoot 'ModuleData.json')
+
+Set-ModuleTempalate -ProviderNamespace $providerNamespace -ResourceType $resourceType -ModuleData $resolvedModuleData -JSONFilePath $jsonFilePath -JSONKeyPath $jsonKeyPath
+
