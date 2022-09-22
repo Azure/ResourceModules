@@ -194,7 +194,7 @@ jobs:
             $null = Convert-TokensInFileList @ConvertTokensInputs
 
       - task: ps-rule-install@2
-        displayname: PSRule install
+        displayName: PSRule install
         inputs:
           module:PSRule.Rule.Azure
 
