@@ -153,7 +153,7 @@ function Resolve-ModuleData {
 
     # Process outer properties
     # ------------------------
-    foreach ($outerParameter in $outerParameters.properties.Keys | Where-Object { $_ -ne 'properties' }) {
+    foreach ($outerParameter in $outerParameters.properties.Keys | Where-Object { $_ -ne 'properties' -and -not $outerParameters.properties[$_].readOnly }) {
         $param = $outerParameters.properties[$outerParameter]
         $parameterObject = @{
             level       = 0
@@ -173,7 +173,7 @@ function Resolve-ModuleData {
     $innerRef = $outerParameters.properties.properties.'$ref'
     $innerParameters = $definitions[(Split-Path $innerRef -Leaf)].properties
 
-    foreach ($innerParameter in $innerParameters.Keys ) {
+    foreach ($innerParameter in ($innerParameters.Keys | Where-Object { -not $innerParameters[$_].readOnly })) {
         $param = $innerParameters[$innerParameter]
         $parameterObject = @{
             level       = 1
@@ -190,7 +190,3 @@ function Resolve-ModuleData {
 
     return $templateData
 }
-
-# Resolve-ModuleData -jsonFilePath 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json' -jsonKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' | ConvertTo-Json
-# Resolve-ModuleData -jsonFilePath 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\blob.json' -jsonKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}' | ConvertTo-Json
-# Resolve-ModuleData -jsonFilePath 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json' -jsonKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' | ConvertTo-Json
