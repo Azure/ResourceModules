@@ -108,7 +108,7 @@ stages:
             - networkSecurityGroups
             - routeTables
 
-  - stage: Remove Deployment
+  - stage: Remove
     displayName: removeDeployment
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
