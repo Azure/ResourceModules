@@ -13,8 +13,9 @@
 ##   |==================================================================================================================================================|
 ##   | Parameter                | Required | Default | Description                          | Example                                                   |
 ##   |--------------------------|----------|---------|--------------------------------------|-----------------------------------------------------------|
-##   | modulePath               | true     | ''      | The path to the module's folder      | 'modules/Microsoft.ApiManagement/service'                 |
 ##   | moduleTestFilePath       | true     | ''      | The path to the module PSRule tests. | 'utilities/pipelines/staticValidation/module.tests.ps1'   |
+##   | subscriptionId           | false    | ''      | The subscriptionId to deploy to      | '1a97b80a-4dda-4f50-ab53-349e29344654'                    |
+##   | managementGroupId        | false    | ''      | The managementGroupId to deploy to   | '1a97b80a-4dda-4f50-ab53-349e29344654'                    |
 ##   |==================================================================================================================================================|
 ##
 ##---------------------------------------------##
