@@ -39,14 +39,17 @@
     if ($failedRules.Count -gt 0) {
 
         #Create Failing table
-    
+
         $failContent = [System.Collections.ArrayList]@(
             '# Rules Failed',
+            '',
+            '<details>',
+            '<summary>Rules Failed</summary>',
             '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- | :-- |'
         )
-    
+
         foreach ($content in $failedRules ) {
             # Shorten the target name for deployment resoure type
             if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
@@ -58,15 +61,19 @@
             try {
                 $PSRuleReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
                 $null = Invoke-WebRequest -Uri $PSRuleReferenceUrl
-                $resourceLink = "[" + $content.RuleName + "](" + $PSRuleReferenceUrl + ")"
-            }
-            catch {
+                $resourceLink = '[' + $content.RuleName + '](' + $PSRuleReferenceUrl + ')'
+            } catch {
                 Write-Warning "Unable to build url for $content.RuleName"
                 $resourceLink = $content.RuleName
             }
             $failContent += ('| {0} | {1} | {2} | ' -f $resourceLink, $content.TargetName, $content.Synopsis)
-        
+
         }
+        $failContent += [System.Collections.ArrayList]@(
+            '',
+            '</details>',
+            ''
+        )
         #Append markdown with failed rules table
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $failContent
     }
@@ -76,6 +83,10 @@
 
         $passContent = [System.Collections.ArrayList]@(
             '# Rules Passed',
+            '',
+            '<details>',
+            '<summary>Rules Passed</summary>',
+            '',
             '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- |  :-- |'
@@ -92,20 +103,20 @@
             try {
                 $PSRuleReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
                 $null = Invoke-WebRequest -Uri $PSRuleReferenceUrl
-                $resourceLink = "[" + $content.RuleName + "](" + $PSRuleReferenceUrl + ")"
-            }
-            catch {
+                $resourceLink = '[' + $content.RuleName + '](' + $PSRuleReferenceUrl + ')'
+            } catch {
                 Write-Warning "Unable to build url for $content.RuleName"
                 $resourceLink = $content.RuleName
             }
-        
+
             $passContent += ('| {0} | {1} |  {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
 
         }
-
         $passContent += [System.Collections.ArrayList]@(
-            '')
-
+            '',
+            '</details>',
+            ''
+        )
         #Append markdown with passed rules table
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $passContent
 
@@ -114,5 +125,5 @@
 
 }
 
- 
+
 
