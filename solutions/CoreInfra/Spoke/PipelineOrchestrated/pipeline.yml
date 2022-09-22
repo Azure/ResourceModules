@@ -65,7 +65,7 @@ stages:
           jobName: keyVault
           displayName: 'Key Vault'
           modulePath: '/modules/Microsoft.KeyVault/vaults/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/keyVault/parameters.json'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/keyVaults/parameters.json'
           whatif: '${{ parameters.whatif }}'
           checkoutRepositories:
             - self
@@ -113,6 +113,6 @@ stages:
           jobName: keyVault
           displayName: 'Key Vault'
           modulePath: '/modules/Microsoft.KeyVault/vaults/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/keyVault/parameters.json'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/keyVaults/parameters.json'
           checkoutRepositories:
             - self
