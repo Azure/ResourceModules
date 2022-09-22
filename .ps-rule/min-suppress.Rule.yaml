@@ -7,8 +7,10 @@ metadata:
 spec:
   rule:
    - Azure.Resource.UseTags
+   - Azure.KeyVault.Logs
   if:
     name: '.'
     contains:
       - 'min'
+  
   
