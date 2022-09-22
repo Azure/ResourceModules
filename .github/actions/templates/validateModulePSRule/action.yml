@@ -76,7 +76,7 @@ runs:
       with:
         azPSVersion: 'latest'
         inlineScript: |
-          $templateFilePath = '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}'
+          $templateFilePath = '${{ env.modulePath }}/${{ inputs.moduleTestFilePath }}'
           # Grouping task logs
           Write-Output '::group::Replace tokens in template file'
 
@@ -126,9 +126,9 @@ runs:
       # continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
       with:
         modules: 'PSRule.Rules.Azure'
-        inputPath: '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}'
+        inputPath: '${{ env.modulePath }}/${{ inputs.moduleTestFilePath }}'
         outputFormat: Csv
-        outputPath: '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}-output.csv'
+        outputPath: '${{ env.modulePath }}/${{ inputs.moduleTestFilePath }}-output.csv'
         # option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
     - name: 'Set PSRule Output'
@@ -145,8 +145,8 @@ runs:
 
           # Populate tokens
           $Input = @{
-            inputFilePath = '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}-output.csv'
-            outputFilePath = '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}-output.md'
+            inputFilePath = '${{ env.modulePath }}/${{ inputs.moduleTestFilePath }}-output.csv'
+            outputFilePath = '${{ env.modulePath }}/${{ inputs.moduleTestFilePath }}-output.md'
           }
 
           Write-Verbose "Set PS Rule Output with following parameters:`n $($Input | ConvertTo-Json -Depth 10)" -Verbose
@@ -159,5 +159,5 @@ runs:
     - name: Output to Github summaries
       shell: pwsh
       if: always()
-      run: cat '${{ env.modulePath }}/${{ inputs.moduleTestFilePaths }}-output.md' # >> $GITHUB_STEP_SUMMARY
+      run: cat '${{ env.modulePath }}/${{ inputs.moduleTestFilePath }}-output.md' # >> $GITHUB_STEP_SUMMARY
 
