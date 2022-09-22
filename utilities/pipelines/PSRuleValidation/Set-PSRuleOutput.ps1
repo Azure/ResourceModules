@@ -85,7 +85,7 @@
             '# Rules Passed',
             '',
             '<details>',
-            '<summary>Rules Failed</summary>',
+            '<summary>Rules Passed</summary>',
             '',
             '',
             '| RuleName | TargetName |  Synopsis |',
