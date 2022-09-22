@@ -64,4 +64,4 @@ rule:
 # Suppression ignores rules for a specific Azure resource by name.
 suppression:
   Azure.Resource.UseTags:
-    - *min*
+    - '*min*'
