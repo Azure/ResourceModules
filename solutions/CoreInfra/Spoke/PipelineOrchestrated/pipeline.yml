@@ -5,10 +5,6 @@ parameters:
   displayName: Validate template file via connection
   type: boolean
   default: true
-- name: removeDeployment
-  displayName: Remove resources post-deployment
-  type: boolean
-  default: true
 
 pr: none
 
@@ -104,15 +100,15 @@ stages:
             - networkSecurityGroups
             - routeTables
 
-  # - stage: Remove
-  #   displayName: removeDeployment
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
-  #       parameters:
-  #         jobName: resourceGroups
-  #         displayName: 'Resource Group'
-  #         modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
-  #         moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/parameters.json'
-  #         removeDeployment: '${{ parameters.removeDeployment }}'
-  #         checkoutRepositories:
-  #           - self
+  - stage: Remove
+    displayName: removeDeployment
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Resource Group'
+          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/parameters.json'
+          removeDeployment: true
+          checkoutRepositories:
+            - self
