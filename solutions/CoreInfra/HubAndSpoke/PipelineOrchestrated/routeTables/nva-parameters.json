@@ -10,7 +10,8 @@
                     "name": "default",
                     "properties": {
                         "addressPrefix": "0.0.0.0/0",
-                        "nextHopType": "Internet"
+                        "nextHopType": "Internet",
+                        "hasBgpOverride": false
                     }
                 }
             ]
