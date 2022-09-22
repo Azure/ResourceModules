@@ -21,11 +21,13 @@ This module deploys custom RBAC Role Definitions across the management group, su
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `roleName` | string | Name of the custom RBAC role to be created. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` | List of allowed actions. |

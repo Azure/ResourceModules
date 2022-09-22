@@ -18,11 +18,13 @@ With this module you can create role definitions on a subscription level
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `roleName` | string | Name of the custom RBAC role to be created. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` | List of allowed actions. |
