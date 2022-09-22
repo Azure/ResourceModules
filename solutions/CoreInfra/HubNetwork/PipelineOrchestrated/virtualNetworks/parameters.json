@@ -28,8 +28,7 @@
                 {
                     "name": "GatewaySubnet",
                     "addressPrefix": "192.168.100.128/27",
-                    "serviceEndpoints": [],
-                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hub-ne-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                    "serviceEndpoints": []
                 },
                 {
                     "name": "AzureBastionSubnet",
