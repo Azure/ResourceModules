@@ -261,6 +261,7 @@ resource storageAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!e
   scope: storageAccount
 }
 
+// locally referenced child module, considered as extension within CARML
 module storageAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Storage-Rbac-${index}'
   params: {
@@ -274,6 +275,7 @@ module storageAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
   }
 }]
 
+// cross-referenced remote parent module
 module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-StorageAccount-PrivateEndpoint-${index}'
   params: {
@@ -294,7 +296,7 @@ module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints
   }
 }]
 
-// Lifecycle Policy
+// Lifecycle Policy // locally referenced child module
 module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if (!empty(managementPolicyRules)) {
   name: '${uniqueString(deployment().name, location)}-Storage-ManagementPolicies'
   params: {
