@@ -129,6 +129,6 @@ runs:
           Write-Output '::endgroup::'
 
     - name: Output to Github summaries
-      # shell: bash
+      shell: bash
       if: always()
       run: cat '${{ env.modulePath }}/${{ inputs.moduleTestFilePath }}-output.md' >> $GITHUB_STEP_SUMMARY
