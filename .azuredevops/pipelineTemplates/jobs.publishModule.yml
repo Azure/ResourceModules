@@ -45,7 +45,7 @@
 
 parameters:
   # Pipeline-related parameters
-  checkoutRepositories: '$(checkoutRepositories)'
+  checkoutRepositories: ''
   displayName: 'Publishing'
   serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
@@ -98,7 +98,6 @@ jobs:
               - checkout: ${{ checkoutRepository }}
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
                 path: 's/${{ checkoutRepository }}'
-                persistCredentials: true
 
       # [Agent] Prepare environment
       #----------------------------
