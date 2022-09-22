@@ -123,9 +123,9 @@ function Invoke-REST2CARML {
         } catch {
             throw $_
         } finally {
-            ############################
+            ##########################
             ##   Remove Artifacts   ##
-            ############################
+            ##########################
             if (-not $KeepArtifacts) {
                 Write-Verbose "Deleting folder [$tempFolderPath]"
                 $null = Remove-Item $tempFolderPath -Recurse -Force
