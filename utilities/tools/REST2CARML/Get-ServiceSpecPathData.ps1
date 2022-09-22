@@ -94,7 +94,7 @@ function Get-ServiceSpecPathData {
 
     try {
         #find the resource provider folder
-        $resourceProviderFolders = Get-FolderList -rootFolder (Join-Path $repoRootPath 'specification') -ProviderNamespace $ProviderNamespace
+        $resourceProviderFolders = Get-FolderList -rootFolder (Join-Path $RepositoryPath 'specification') -ProviderNamespace $ProviderNamespace
 
         $resultArr = @()
         foreach ($resourceProviderFolder in $resourceProviderFolders) {
