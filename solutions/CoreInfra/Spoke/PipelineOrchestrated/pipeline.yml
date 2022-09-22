@@ -15,7 +15,7 @@ trigger:
       - main
   paths:
     include:
-      - solutions/CoreInfra/Platform/HubNetwork*
+      - solutions/CoreInfra/Spoke*
 
 variables:
   - template: pipeline.variables.yml

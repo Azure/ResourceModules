@@ -1,4 +1,4 @@
-name: 'solutions-ne-rg'
+name: 'solutions-hubspk-ne-rg'
 
 pr: none
 
@@ -15,49 +15,86 @@ variables:
   - template: pipeline.variables.yml
 
 stages:
+# ---------------- #
+# Validation Stage #
+# ---------------- #
   - stage:
     displayName: WhatIf
     jobs:
+    #Resource Groups
+    #---------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: resourceGroups
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/parameters.json'
-          whatif: true
-          checkoutRepositories:
-            - self
-      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
-        parameters:
-          jobName: networkSecurityGroups
-          displayName: 'Network Security Groups'
-          modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/networkSecurityGroups/parameters.json'
-          whatif: true
-          checkoutRepositories:
-            - self
-      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
-        parameters:
-          jobName: routeTables
-          displayName: 'Route Tables'
-          modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/routeTables/parameters.json'
-          whatif: true
-          checkoutRepositories:
-            - self
-      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
-        parameters:
-          jobName: virtualNetworks
-          displayName: 'Virtual Networks'
-          modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/virtualNetworks/parameters.json'
           whatif: true
           checkoutRepositories:
             - self
 
+    #Network Security Groups
+    #-----------------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: hubNetworkSecurityGroups
+          displayName: 'Hub Network Security Groups'
+          modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/networkSecurityGroups/hub-parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: spokeNetworkSecurityGroups
+          displayName: 'Network Security Groups'
+          modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/networkSecurityGroups/spoke-parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
+    #RouteTables
+    #-----------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: routeTables
+          displayName: 'Route Tables'
+          modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/routeTables/parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
+    # VirtualNetwork
+    # --------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: hubVirtualNetwork
+          displayName: 'Hub Virtual Network'
+          modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/virtualNetworks/hub-parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: spokeVirtualNetwork
+          displayName: 'Spoke Virtual Network'
+          modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/virtualNetworks/spoke-parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
+# ---------------- #
+# Deployment Stage #
+# ---------------- #
   - stage:
     displayName: Deploy
     jobs:
+    #Resource Groups
+    #---------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: resourceGroups
@@ -66,14 +103,28 @@ stages:
           moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/parameters.json'
           checkoutRepositories:
             - self
+
+    #Network Security Groups
+    #-----------------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
-          jobName: networkSecurityGroups
-          displayName: 'Network Security Groups'
+          jobName: hubnetworkSecurityGroups
+          displayName: 'Hub Network Security Groups'
           modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/networkSecurityGroups/parameters.json'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/networkSecurityGroups/hub-parameters.json'
           checkoutRepositories:
             - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: spokeNetworkSecurityGroups
+          displayName: 'Spoke Network Security Groups'
+          modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/networkSecurityGroups/spoke-parameters.json'
+          checkoutRepositories:
+            - self
+
+    #RouteTables
+    #-----------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: routeTables
@@ -82,12 +133,27 @@ stages:
           moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/routeTables/parameters.json'
           checkoutRepositories:
             - self
+
+    # VirtualNetworks
+    # ---------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: virtualNetworks
           displayName: 'Virtual Networks'
           modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/virtualNetworks/parameters.json'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/virtualNetworks/hub-parameters.json'
+          checkoutRepositories:
+            - self
+          dependsOn:
+            - networkSecurityGroups
+            - routeTables
+
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: spokeVirtualNetwork
+          displayName: 'Spoke Virtual Network'
+          modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/virtualNetworks/spoke-parameters.json'
           checkoutRepositories:
             - self
           dependsOn:
