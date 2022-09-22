@@ -27,44 +27,44 @@
 ##   |===========================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
-name: "Publishing"
-description: "Publishing"
+name: 'Publishing'
+description: 'Publishing'
 
 inputs:
   templateFilePath:
-    description: "The path to the template file to publish"
+    description: 'The path to the template file to publish'
     required: true
   templateSpecsRgName:
-    description: "Required to publish to template spec. ResourceGroup of the template spec to publish to"
+    description: 'Required to publish to template spec. ResourceGroup of the template spec to publish to'
     required: false
   templateSpecsRgLocation:
-    description: "Required to publish to template spec. Location of the template spec resource group"
+    description: 'Required to publish to template spec. Location of the template spec resource group'
     required: false
   templateSpecsDescription:
-    description: "Required to publish to template spec. Description of the template spec to publish to"
+    description: 'Required to publish to template spec. Description of the template spec to publish to'
     required: false
   templateSpecsDoPublish:
-    description: "Flag to indicate whether or not to publish to template specs"
-    default: "false"
+    description: 'Flag to indicate whether or not to publish to template specs'
+    default: 'false'
     required: false
   bicepRegistryName:
-    description: "Required to publish to private bicep registry. Name of the container registry to publish to"
+    description: 'Required to publish to private bicep registry. Name of the container registry to publish to'
     required: false
   bicepRegistryRgName:
-    description: "Required to publish to private bicep registry. Name of the container registry resource group"
+    description: 'Required to publish to private bicep registry. Name of the container registry resource group'
     required: false
   bicepRegistryRgLocation:
-    description: "Required to publish to private bicep registry. Location of the container registry resource group"
+    description: 'Required to publish to private bicep registry. Location of the container registry resource group'
     required: false
   bicepRegistryDoPublish:
-    description: "Flag to indicate whether or not to publish to the private bicep registry"
-    default: "false"
+    description: 'Flag to indicate whether or not to publish to the private bicep registry'
+    default: 'false'
     required: false
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
-    - name: "Setup agent"
+    - name: 'Setup agent'
       shell: pwsh
       run: |
         # Grouping task logs
@@ -91,11 +91,11 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: "Publish module to template specs"
+    - name: 'Publish module to template specs'
       if: ${{ inputs.templateSpecsDoPublish == 'true' }}
       uses: azure/powershell@v1
       with:
-        azPSVersion: "latest"
+        azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
           Write-Output '::group::Publish module to template specs'
@@ -135,11 +135,11 @@ runs:
 
           Write-Output '::endgroup::'
 
-    - name: "Publish module to private bicep registry"
+    - name: 'Publish module to private bicep registry'
       if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
       uses: azure/powershell@v1
       with:
-        azPSVersion: "latest"
+        azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
           Write-Output '::group::Publish module to private bicep registry'
@@ -179,11 +179,11 @@ runs:
 
           Write-Output '::endgroup::'
 
-    - name: "Publish documentation to document repo"
+    - name: 'Publish documentation to document repo'
       # if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
       uses: azure/powershell@v1
       with:
-        azPSVersion: "latest"
+        azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
           Write-Output '::group::Publish documentation to document repo'
