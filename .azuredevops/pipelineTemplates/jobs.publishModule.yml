@@ -276,7 +276,7 @@ jobs:
 
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToBicepRegistry.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
@@ -307,9 +307,9 @@ jobs:
                 ModuleVersion           = $ModuleToPublish.Version
               }
 
-              Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose
+              Write-Verbose "Invoke Publish-ModuleToBicepRegistry with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-              Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+              Publish-ModuleToBicepRegistry @functionInput -Verbose
               Write-Host "##[endgroup]"
             }

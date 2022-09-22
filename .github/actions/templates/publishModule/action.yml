@@ -146,7 +146,7 @@ runs:
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToBicepRegistry.ps1')
 
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
@@ -174,7 +174,7 @@ runs:
             Write-Verbose "Invoke task with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+            Publish-ModuleToBicepRegistry @functionInput -Verbose
           }
 
           Write-Output '::endgroup::'
