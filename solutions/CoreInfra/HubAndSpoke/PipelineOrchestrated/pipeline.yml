@@ -139,7 +139,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: hubVirtualNetworks
-          displayName: 'Virtual Networks'
+          displayName: 'Hub Virtual Networks'
           modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/virtualNetworks/hub-parameters.json'
           checkoutRepositories:
