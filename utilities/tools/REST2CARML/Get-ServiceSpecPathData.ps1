@@ -85,39 +85,16 @@ function Get-ServiceSpecPathData {
         [Parameter(Mandatory = $true)]
         [string] $ResourceType,
 
+        [Parameter(Mandatory = $true)]
+        [string] $RepositoryPath,
+
         [Parameter(Mandatory = $false)]
         [switch] $IncludePreview
     )
 
-    # prepare the repo
-    try {
-        $initialLocation = (Get-Location).Path
-        $repoUrl = 'https://github.com/Azure/azure-rest-api-specs.git'
-        $repoName = Split-Path $repoUrl -LeafBase
-        $tempFolderName = 'temp'
-        $tempFolderPath = Join-Path $PSScriptRoot $tempFolderName
-
-        # Clone repository
-        ## Create temp folder
-        if (-not (Test-Path $tempFolderPath)) {
-            $null = New-Item -Path $tempFolderPath -ItemType 'Directory'
-        }
-        ## Switch to temp folder
-        Set-Location $tempFolderPath
-
-        ## Clone repository into temp folder
-        if (-not (Test-Path (Join-Path $tempFolderPath $repoName))) {
-            git clone $repoUrl
-        } else {
-            Write-Verbose "Repository [$repoName] already cloned"
-        }
-    } catch {
-        throw "Repo preparation failed: $_"
-    }
-
     try {
         #find the resource provider folder
-        $resourceProviderFolders = Get-FolderList -rootFolder $(Join-Path $tempFolderPath $repoName 'specification') -ProviderNamespace $ProviderNamespace
+        $resourceProviderFolders = Get-FolderList -rootFolder (Join-Path $repoRootPath 'specification') -ProviderNamespace $ProviderNamespace
 
         $resultArr = @()
         foreach ($resourceProviderFolder in $resourceProviderFolders) {

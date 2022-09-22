@@ -94,6 +94,7 @@ function Invoke-REST2CARML {
             $getPathDataInputObject = @{
                 ProviderNamespace = $ProviderNamespace
                 ResourceType      = $ResourceType
+                RepositoryPath    = Join-Path $tempFolderPath $repoName
                 IncludePreview    = $IncludePreview
             }
             $pathData = Get-ServiceSpecPathData @getPathDataInputObject
