@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "prfx-conn-ne-ag-001"
+            "value": "prfx-spk-ne-ag-001"
         },
         "groupShortName": {
-            "value": "aeconnag001"
+            "value": "nespkag001"
         },
         "emailReceivers": {
             "value": [{

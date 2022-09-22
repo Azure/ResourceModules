@@ -3,21 +3,51 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "prfx-con-ne-spoke-vnet01"
+            "value": "prfx-ne-spoke-vnet001"
         },
         "addressPrefixes": {
             "value": [
-                "10.5.64.0/21"
+                "192.168.101.0/24"
             ]
         },
         "subnets": {
-            "value": [{
-                "name": "subnet",
-                "addressPrefix": "10.5.64.0/24",
-                "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-spk-001",
-                "serviceEndpoints": [],
-                "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
-            }]
+            "value": [
+                {
+                    "name": "FrontendSubnet",
+                    "addressPrefix": "192.168.101.0/26",
+                    "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-spk-001",
+                    "serviceEndpoints": [],
+                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                },
+                {
+                    "name": "BackendSubnet",
+                    "addressPrefix": "192.168.101.64/26",
+                    "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-spk-001",
+                    "serviceEndpoints": [],
+                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                },
+                {
+                    "name": "DBSubnet",
+                    "addressPrefix": "192.168.101.128/27",
+                    "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-spk-001",
+                    "serviceEndpoints": [],
+                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                },
+                {
+                    "name": "PESubnet",
+                    "addressPrefix": "192.168.101.160/27",
+                    "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-spk-001",
+                    "serviceEndpoints": [],
+                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                },
+                {
+                    "name": "AppSubnet",
+                    "addressPrefix": "192.168.101.192/26",
+                    "networkSecurityGroupId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/networkSecurityGroups/prfx-az-nsg-spk-001",
+                    "serviceEndpoints": [],
+                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                }
+            ]
         }
     }
 }

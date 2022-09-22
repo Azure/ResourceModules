@@ -1,5 +1,5 @@
 variables:
-  resourceGroupName: 'solutions-ne-rg'
+  resourceGroupName: 'solutions-hubspk-ne-rg'
   environmentPath: 'solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated'
   location: 'northeurope'
   vmImage: 'ubuntu-latest'
