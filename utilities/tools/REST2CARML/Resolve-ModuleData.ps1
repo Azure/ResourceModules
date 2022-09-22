@@ -28,8 +28,6 @@ function Set-OptionalParameter {
         [hashtable] $TargetObject
     )
 
-    # TODO: Add max & min
-
     # Allowed values
     if ($SourceParameterObject.Keys -contains 'enum') {
         $TargetObject['allowedValues'] = $SourceParameterObject.enum
@@ -39,14 +37,24 @@ function Set-OptionalParameter {
         }
     }
 
+    # Min Length
+    if ($SourceParameterObject.Keys -contains 'minLength') {
+        $TargetObject['minLength'] = $SourceParameterObject.minLength
+    }
+
     # Max Length
     if ($SourceParameterObject.Keys -contains 'maxLength') {
         $TargetObject['maxLength'] = $SourceParameterObject.maxLength
     }
 
-    # Min Length
-    if ($SourceParameterObject.Keys -contains 'minLength') {
-        $TargetObject['minLength'] = $SourceParameterObject.minLength
+    # Min
+    if ($SourceParameterObject.Keys -contains 'minimum') {
+        $TargetObject['minimum'] = $SourceParameterObject.minimum
+    }
+
+    # Max
+    if ($SourceParameterObject.Keys -contains 'maximum') {
+        $TargetObject['maximum'] = $SourceParameterObject.maximum
     }
 
     # Default value
