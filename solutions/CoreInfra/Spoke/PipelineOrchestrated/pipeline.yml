@@ -74,7 +74,7 @@ stages:
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/parameters.json'
-          removeDeployment: '${{ parameters.removeDeployment }}'
+          # removeDeployment: '${{ parameters.removeDeployment }}'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -83,7 +83,7 @@ stages:
           displayName: 'Network Security Groups'
           modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/networkSecurityGroups/parameters.json'
-          removeDeployment: '${{ parameters.removeDeployment }}'
+          # removeDeployment: '${{ parameters.removeDeployment }}'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -92,7 +92,7 @@ stages:
           displayName: 'Route Tables'
           modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/routeTables/parameters.json'
-          removeDeployment: '${{ parameters.removeDeployment }}'
+          # removeDeployment: '${{ parameters.removeDeployment }}'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -101,15 +101,22 @@ stages:
           displayName: 'Virtual Networks'
           modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/virtualNetworks/parameters.json'
-          removeDeployment: '${{ parameters.removeDeployment }}'
+          # removeDeployment: '${{ parameters.removeDeployment }}'
           checkoutRepositories:
             - self
           dependsOn:
             - networkSecurityGroups
             - routeTables
 
-  - stage: Removal
-    dependsOn: Deployment
-    condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'))
+  - stage: Remove Deployment
+    displayName: removeDeployment
     jobs:
-    - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Resource Group'
+          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/parameters.json'
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          checkoutRepositories:
+            - self

@@ -58,7 +58,7 @@ parameters:
   whatif: false
 
   # Logic-related parameters
-  # removeDeployment: false
+  removeDeployment: true
   templateFilePath: ''
   moduleTestFilePath: ''
   customParameterFileTokens: ''
