@@ -4,7 +4,7 @@ parameters:
 - name: whatif
   displayName: Validate template file via connection
   type: boolean
-  default: false
+  default: true
 
 pr: none
 
