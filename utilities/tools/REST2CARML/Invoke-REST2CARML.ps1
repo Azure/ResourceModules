@@ -12,6 +12,9 @@ Mandatory. The provider namespace to query the data for
 .PARAMETER ResourceType
 Mandatory. The resource type to query the data for
 
+.PARAMETER IncludePreview
+Mandatory. Include preview API versions
+
 .EXAMPLE
 Invoke-REST2CARML -ProviderNamespace 'Microsoft.Keyvault' -ResourceType 'vaults'
 
@@ -25,14 +28,18 @@ function Invoke-REST2CARML {
         [string] $ProviderNamespace,
 
         [Parameter(Mandatory = $true)]
-        [string] $ResourceType
+        [string] $ResourceType,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $IncludePreview
     )
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load used functions
-        # . (Join-Path $PSScriptRoot 'Get-ModuleData.ps1')
+        . (Join-Path $PSScriptRoot 'Get-ServiceSpecPathData.ps1')
+        . (Join-Path $PSScriptRoot 'Resolve-ModuleData.ps1')
         . (Join-Path $PSScriptRoot 'Set-ModuleFileStructure.ps1')
         . (Join-Path $PSScriptRoot 'Set-Module.ps1')
 
@@ -40,39 +47,28 @@ function Invoke-REST2CARML {
     }
 
     process {
-        v
 
-        # TODO: Invoke function to fetch module data
-        $pathData = @{
-            jsonFilePath = '(...)\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json'
-            jsonKeyPath  = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' # PUT path
+        ###########################
+        ##   Fetch module data   ##
+        ###########################
+        $getPathDataInputObject = @{
+            ProviderNamespace = $ProviderNamespace
+            ResourceType      = $ResourceType
+            IncludePreview    = $IncludePreview
         }
+        $pathData = Get-ServiceSpecPathData @getPathDataInputObject
+        $moduleData = Resolve-ModuleData -JSONFilePath $pathData.jsonFilePath -JSONKeyPath $pathData.jsonKeyPath
 
-        # $moduleData = Resolve-ModuleData -PathData $pathData
-        $moduleData = @{
-            parameters = @(
-                @{
-                    level         = 0
-                    name          = 'sku'
-                    type          = 'object'
-                    description   = '...'
-                    allowedValues = @('')
-                    required      = $false
-                    default       = ''
-                }
-                @{
-                    level       = 1
-                    name        = 'firewallEnabled'
-                    type        = 'boolean'
-                    description = '...'
-                }
-            )
-        }
-
+        ###########################################
+        ##   Generate initial module structure   ##
+        ###########################################
         if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
             Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
         }
 
+        ############################
+        ##   Set module content   ##
+        ############################
         $moduleTemplateInputObject = @{
             ProviderNamespace     = $ProviderNamespace
             ResourceType          = $ResourceType
