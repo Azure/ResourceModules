@@ -24,10 +24,10 @@
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent
         $templatePath = Join-Path $repoRootPath 'modules' $ProviderNamespace $ResourceType 'deploy.bicep'
         # Load used functions
-        . (Join-Path $PSScriptRoot 'Get-SupportsLock.ps1')
-        . (Join-Path $PSScriptRoot 'Get-RoleAssignmentList.ps1')
-        . (Join-Path $PSScriptRoot 'Get-DiagnosticOptionsList.ps1')
-        . (Join-Path $PSScriptRoot 'Get-SupportsPrivateEndpoint.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Get-SupportsLock.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Get-RoleAssignmentList.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Get-DiagnosticOptionsList.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Get-SupportsPrivateEndpoint.ps1')
         . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
     }
 
