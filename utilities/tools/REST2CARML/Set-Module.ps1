@@ -24,8 +24,10 @@
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent
         $templatePath = Join-Path $repoRootPath 'modules' $ProviderNamespace $ResourceType 'deploy.bicep'
         # Load used functions
-        . (Join-Path $PSScriptRoot 'Get-DiagnosticOptionsList.ps1')
-        . (Join-Path $PSScriptRoot 'Get-SupportsPrivateEndpoint.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Get-SupportsLock.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Get-RoleAssignmentList.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Get-DiagnosticOptionsList.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Get-SupportsPrivateEndpoint.ps1')
         . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
     }
 
@@ -34,21 +36,26 @@
         #################################
         ##   Collect additional data   ##
         #################################
+
+        # Get diagnostic data
         # TODO: Clarify: Might need to be always 'All metrics' if any metric exists
         $diagnosticOptions = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
 
+        # Get Endpoint data
         $supportsPrivateEndpoint = Get-SupportsPrivateEndpoint -SpecificationFilePath $SpecificationFilePath
 
-        ## TODO: Add RBAC
+        ## Get RBAC data
+        $supportedRoles = Get-RoleAssignmentList -ProviderNamespace $ProviderNamespace
 
-        ## TODO: Add Locks
+        ## Get Locks data
+        $supportsLock = Get-SupportsLock -SpecificationUrl $SpecificationUrl
 
         #############################
         ##   Update Template File   #
         #############################
 
         # TODO: Update template file
-
+        Set-ModuleTemplate
 
         #############################
         ##   Update Module ReadMe   #

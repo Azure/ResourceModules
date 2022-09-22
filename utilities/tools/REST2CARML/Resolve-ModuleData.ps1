@@ -37,14 +37,24 @@ function Set-OptionalParameter {
         }
     }
 
+    # Min Length
+    if ($SourceParameterObject.Keys -contains 'minLength') {
+        $TargetObject['minLength'] = $SourceParameterObject.minLength
+    }
+
     # Max Length
     if ($SourceParameterObject.Keys -contains 'maxLength') {
         $TargetObject['maxLength'] = $SourceParameterObject.maxLength
     }
 
-    # Min Length
-    if ($SourceParameterObject.Keys -contains 'minLength') {
-        $TargetObject['minLength'] = $SourceParameterObject.minLength
+    # Min
+    if ($SourceParameterObject.Keys -contains 'minimum') {
+        $TargetObject['minimum'] = $SourceParameterObject.minimum
+    }
+
+    # Max
+    if ($SourceParameterObject.Keys -contains 'maximum') {
+        $TargetObject['maximum'] = $SourceParameterObject.maximum
     }
 
     # Default value
@@ -181,6 +191,6 @@ function Resolve-ModuleData {
     return $templateData
 }
 
-Resolve-ModuleData -jsonFilePath 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json' -jsonKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' | ConvertTo-Json
+# Resolve-ModuleData -jsonFilePath 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\storage.json' -jsonKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' | ConvertTo-Json
 # Resolve-ModuleData -jsonFilePath 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\storage\resource-manager\Microsoft.Storage\stable\2022-05-01\blob.json' -jsonKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}' | ConvertTo-Json
 # Resolve-ModuleData -jsonFilePath 'C:\dev\ip\azure-rest-api-specs\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\stable\2022-07-01\keyvault.json' -jsonKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' | ConvertTo-Json

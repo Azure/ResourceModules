@@ -1,9 +1,9 @@
 ﻿<#
 .SYNOPSIS
-Check if the given service specification references Private Endpoint
+Check if the given service specification supports private endpoints
 
 .DESCRIPTION
-Check if the given service specification references Private Endpoint
+Check if the given service specification supports private endpoints
 
 .PARAMETER SpecificationFilePath
 Mandatory. The file path to the service specification to check
