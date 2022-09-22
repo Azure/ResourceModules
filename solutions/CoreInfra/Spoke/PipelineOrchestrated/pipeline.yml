@@ -1,5 +1,15 @@
 name: 'solutions-ne-spoke-rg'
 
+parameters:
+- name: whatif
+  displayName: Validate template file via connection
+  type: boolean
+  default: true
+- name: removeDeployment
+  displayName: Remove resources post-deployment
+  type: boolean
+  default: true
+
 pr: none
 
 trigger:
@@ -24,7 +34,7 @@ stages:
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/parameters.json'
-          whatif: true
+          whatif: '${{ parameters.whatif }}'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -33,7 +43,7 @@ stages:
           displayName: 'Network Security Groups'
           modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/networkSecurityGroups/parameters.json'
-          whatif: true
+          whatif: '${{ parameters.whatif }}'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -42,7 +52,7 @@ stages:
           displayName: 'Route Tables'
           modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/routeTables/parameters.json'
-          whatif: true
+          whatif: '${{ parameters.whatif }}'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -51,12 +61,12 @@ stages:
           displayName: 'Virtual Networks'
           modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/virtualNetworks/parameters.json'
-          whatif: true
+          whatif: '${{ parameters.whatif }}'
           checkoutRepositories:
             - self
 
   - stage:
-    displayName: Deploy
+    displayName: Deployment
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
@@ -64,6 +74,7 @@ stages:
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/parameters.json'
+          removeDeployment: '${{ parameters.removeDeployment }}'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -72,6 +83,7 @@ stages:
           displayName: 'Network Security Groups'
           modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/networkSecurityGroups/parameters.json'
+          removeDeployment: '${{ parameters.removeDeployment }}'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -80,6 +92,7 @@ stages:
           displayName: 'Route Tables'
           modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/routeTables/parameters.json'
+          removeDeployment: '${{ parameters.removeDeployment }}'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -88,8 +101,15 @@ stages:
           displayName: 'Virtual Networks'
           modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/virtualNetworks/parameters.json'
+          removeDeployment: '${{ parameters.removeDeployment }}'
           checkoutRepositories:
             - self
           dependsOn:
             - networkSecurityGroups
             - routeTables
+
+  - stage: Removal
+    dependsOn: Deployment
+    condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'))
+    jobs:
+    - template: /Modules/ARM/.global/PipelineTemplates/pipeline.jobs.remove.yml
