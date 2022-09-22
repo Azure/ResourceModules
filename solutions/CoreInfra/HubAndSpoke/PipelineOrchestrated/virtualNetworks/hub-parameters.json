@@ -33,8 +33,7 @@
                 {
                     "name": "AzureBastionSubnet",
                     "addressPrefix": "192.168.100.160/27",
-                    "serviceEndpoints": [],
-                    "routeTableId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-hubspk-ne-rg/providers/Microsoft.Network/routeTables/con-spoke-to-hub"
+                    "serviceEndpoints": []
                 },
                 {
                     "name": "BackendSubnet",
