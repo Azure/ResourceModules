@@ -102,6 +102,8 @@ jobs:
         with:
           modulePath: ${{ env.modulePath }}
           moduleTestFilePath: ${{ matrix.moduleTestFilePaths }}
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
       # - name: 'Replace tokens in template file'
       #   uses: azure/powershell@v1

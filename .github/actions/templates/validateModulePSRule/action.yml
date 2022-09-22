@@ -31,6 +31,12 @@ inputs:
     description: 'The path to the test file'
     required: true
     default: ''
+  subscriptionId:
+    description: 'The subscription ID to deploy to'
+    required: false
+  managementGroupId:
+    description: 'The management group ID to deploy to'
+    required: false
 
 runs:
   using: 'composite'
@@ -80,8 +86,8 @@ runs:
           # Populate tokens
           $Tokens = @{
             resourceGroupName = '${{ env.resourceGroupName }}'
-            subscriptionId    = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-            managementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
+            subscriptionId    = '${{ inputs.subscriptionId }}'
+            managementGroupId = '${{ inputs.managementGroupId }}'
             tenantId          = '${{ env.ARM_TENANT_ID }}'
           }
 
