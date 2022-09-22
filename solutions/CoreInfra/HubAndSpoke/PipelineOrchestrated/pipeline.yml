@@ -145,7 +145,7 @@ stages:
           checkoutRepositories:
             - self
           dependsOn:
-            - networkSecurityGroups
+            - hubnetworkSecurityGroups
             - routeTables
 
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -157,5 +157,5 @@ stages:
           checkoutRepositories:
             - self
           dependsOn:
-            - networkSecurityGroups
+            - spokeNetworkSecurityGroups
             - routeTables
