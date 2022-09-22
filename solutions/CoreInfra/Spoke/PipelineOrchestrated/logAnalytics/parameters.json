@@ -1,0 +1,31 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "prfx-spk-ne-log-001"
+        },
+        "publicNetworkAccessForIngestion": {
+            "value": "Enabled"
+        },
+        "publicNetworkAccessForQuery": {
+            "value": "Enabled"
+        },
+        "useResourcePermissions": {
+            "value": true
+        },
+        "dataRetention": {
+            "value": 730
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/solutions-ne-rg/providers/microsoft.operationalinsights/workspaces/prfx-mgmt-ae-log-001"
+        },
+        "gallerySolutions": {
+            "value": [{
+                "name": "AzureAutomation",
+                "product": "OMSGallery",
+                "publisher": "Microsoft"
+            }]
+        }
+    }
+}

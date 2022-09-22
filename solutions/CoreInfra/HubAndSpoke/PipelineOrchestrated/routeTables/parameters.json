@@ -13,14 +13,6 @@
                         "nextHopType": "VirtualAppliance",
                         "nextHopIpAddress": "10.5.8.100"
                     }
-                },
-                {
-                    "name": "appGatewayRouteViaFW",
-                    "properties": {
-                        "addressPrefix": "10.5.10.0/24",
-                        "nextHopType": "VirtualAppliance",
-                        "nextHopIpAddress": "10.5.8.100"
-                    }
                 }
             ]
         }

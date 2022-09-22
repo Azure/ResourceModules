@@ -1,0 +1,31 @@
+variables:
+  resourceGroupName: 'solutions-hub-ne-rg'
+  environmentPath: 'solutions/CoreInfra/HubNetwork/PipelineOrchestrated'
+  location: 'northeurope'
+  vmImage: 'ubuntu-latest'
+  poolName: ''
+  serviceConnection: 'CARML-CSU-Tenant-Connection'
+  subscriptionId: 'a7439831-1cd9-435d-a091-4aa863c96556'
+  managementGroupId: ''
+
+  ######################################
+  # Source
+  ######################################
+  vstsOrganizationURI: '$(System.CollectionUri)' # The URI of the TFS collection or Azure DevOps organization. For example: https://dev.azure.com/fabrikam/.
+  vstsProject: '$(System.TeamProject)'
+  modulesRepository: ResourceModules # The repository hosting the deployment code (i.e. 'Components'). MUST be provided as a variable with every pipeline
+  pipelineFunctionsPath: 'utilities/pipelines'
+
+  ######################################
+  # Publish: Universal packages settings
+  ######################################
+  artifactsFeedDoPublish: true # Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
+  vstsFeedName: 'ResourceModules' # The name of the Azure DevOps universal packages feed to publish to
+  vstsFeedProject: '$(System.TeamProject)' # The project that hosts the feed
+  vstsFeedToken: $(System.AccessToken) # The token used to publish universal packages into the feed above
+
+  ######################################
+  # Azure PowerShell Version
+  ######################################
+  azurePowerShellVersion: 'latestVersion'
+  preferredAzurePowerShellVersion: ''

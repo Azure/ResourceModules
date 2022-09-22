@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "prfx-con-ae-spoke-vnet02"
+            "value": "prfx-con-ne-spoke-vnet01"
         },
         "addressPrefixes": {
             "value": [

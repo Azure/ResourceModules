@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "prfx-mgmt-ae-log-001"
+            "value": "prfx-mgmt-ne-log-001"
         },
         "publicNetworkAccessForIngestion": {
             "value": "Enabled"
