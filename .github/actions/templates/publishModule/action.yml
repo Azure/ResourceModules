@@ -207,16 +207,14 @@ runs:
             $RelPath = (($ReadmeToPublish.ReadmeFilePath).Split('/modules/')[-1]).Split('/readme.')[0]
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ReadmeToPublish.Version)"
 
-            # Extracts Microsoft.KeyVault/vaults from e.g. C:\modules\Microsoft.KeyVault\vaults\deploy.bicep
+            # Extracts microsoft.keyvault.vaults from module relative path e.g. \modules\Microsoft.KeyVault\vaults
             $ModuleRegistryIdentifier = 'bicep/modules/{0}' -f $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
-
-            $SubscriptionId = (Get-AzSubscription | where { $_.SubscriptionId -eq (Get-AzContext).Subscription.Id }).SubscriptionId
             $TemplateSpecsIdentifier = $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
 
             $functionInput = @{
               ReadmeFilePath            = $ReadmeToPublish.ReadmeFilePath
               BicepRegistryUrl          = 'br:{0}.azurecr.io/{1}:{2}' -f '${{ inputs.bicepRegistryName }}', $ModuleRegistryIdentifier, $ReadmeToPublish.Version
-              TemplateSpecsUrl          = 'ts:{0}/{1}/{2}:{3}' -f $SubscriptionId, '${{ inputs.templateSpecsRgName }}', $TemplateSpecsIdentifier, $ReadmeToPublish.Version
+              TemplateSpecsUrl          = 'ts:{0}/{1}/{2}:{3}' -f '<Subscription_Id>', '${{ inputs.templateSpecsRgName }}', $TemplateSpecsIdentifier, $ReadmeToPublish.Version
               ModuleVersion             = $ReadmeToPublish.Version
             }
 
