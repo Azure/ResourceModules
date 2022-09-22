@@ -24,18 +24,13 @@ param systemAssignedIdentity bool = false
 param userAssignedIdentities object = {}
 
 @description('Optional. Event Hub Endpoint.')
-param eventhubEndpoint object = {
-
-}
+param eventhubEndpoint object = {}
 
 @description('Optional. Event Grid Endpoint.')
-param eventgridEndpoint object = {
-
-}
+param eventgridEndpoint object = {}
 
 @description('Optional. Service Bus Endpoint.')
-param servicebusEndpoint object = {
-}
+param servicebusEndpoint object = {}
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
