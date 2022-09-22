@@ -4,7 +4,7 @@ parameters:
 - name: whatif
   displayName: Validate template file via connection
   type: boolean
-  default: true
+  default: false
 
 pr: none
 
@@ -99,16 +99,3 @@ stages:
           dependsOn:
             - networkSecurityGroups
             - routeTables
-
-  - stage: Remove
-    displayName: removeDeployment
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
-        parameters:
-          jobName: resourceGroups
-          displayName: 'Resource Group'
-          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/parameters.json'
-          removeDeployment: true
-          checkoutRepositories:
-            - self
