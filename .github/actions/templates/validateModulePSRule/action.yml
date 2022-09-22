@@ -41,34 +41,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    # - name: 'Setup agent'
-    #   shell: pwsh
-    #   run: |
-    #     # Grouping task logs
-    #     Write-Output '::group::Setup agent'
-
-    #     # Load used functions
-    #     . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-    #     # Define PS modules to install on the runner
-    #     $Modules = @(
-    #         # This is the latest tested PSRule version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
-    #         # @{ Name = 'PSRule'; Version = '5.3.1' }
-    #         @{ Name = 'Az.Resources' }
-    #         @{ Name = 'powershell-yaml'; Version = '0.4.2'}
-    #     )
-
-    #     # Set agent up
-    #     Set-EnvironmentOnAgent -PSModules $Modules
-
-    #     Write-Output '::endgroup::'
-
-    # - name: Azure Login
-    #   uses: Azure/login@v1
-    #   with:
-    #     creds: ${{ env.AZURE_CREDENTIALS }}
-    #     enable-AzPSSession: true
-
     # [Module PSRule Test] task(s)
     #-----------------------------
     - name: 'Replace tokens in template file'
