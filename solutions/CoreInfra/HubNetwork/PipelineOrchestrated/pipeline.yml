@@ -84,6 +84,14 @@ stages:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
+          jobName: nvaRouteTables
+          displayName: 'NVA Route Tables'
+          modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubNetwork/PipelineOrchestrated/routeTables/nva-parameters.json'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
           jobName: virtualNetworks
           displayName: 'Virtual Networks'
           modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
@@ -93,3 +101,4 @@ stages:
           dependsOn:
             - networkSecurityGroups
             - routeTables
+            - nvaRouteTables
