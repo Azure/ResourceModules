@@ -65,7 +65,7 @@ stages:
           checkoutRepositories:
             - self
 
-  - stage: Deployment
+  - stage:
     displayName: Deploy
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -104,15 +104,15 @@ stages:
             - networkSecurityGroups
             - routeTables
 
-  - stage: Remove
-    displayName: removeDeployment
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
-        parameters:
-          jobName: resourceGroups
-          displayName: 'Resource Group'
-          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/parameters.json'
-          removeDeployment: '${{ parameters.removeDeployment }}'
-          checkoutRepositories:
-            - self
+  # - stage: Remove
+  #   displayName: removeDeployment
+  #   jobs:
+  #     - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+  #       parameters:
+  #         jobName: resourceGroups
+  #         displayName: 'Resource Group'
+  #         modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+  #         moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/parameters.json'
+  #         removeDeployment: '${{ parameters.removeDeployment }}'
+  #         checkoutRepositories:
+  #           - self
