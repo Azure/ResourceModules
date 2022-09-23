@@ -215,7 +215,7 @@ runs:
             $ModuleRegistryIdentifier = 'bicep/modules/{0}' -f $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
             $TemplateSpecsIdentifier = $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
 
-            $SubcriptionId = $env:ARM_SUBSCRIPTION_ID
+            $SubcriptionId = '${{ env.ARM_SUBSCRIPTION_ID }}'
 
             $functionInput = @{
               ReadmeFilePath            = $ReadmeToPublish.ReadmeFilePath
