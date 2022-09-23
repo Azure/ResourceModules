@@ -42,8 +42,14 @@
   "powershell.codeFormatting.useConstantStrings": true,
   "powershell.codeFormatting.useCorrectCasing": true,
   "powershell.codeFormatting.whitespaceBetweenParameters": true,
-  "spellright.documentTypes": ["markdown", "latex", "plaintext"],
-  "spellright.language": ["en"],
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext"
+  ],
+  "spellright.language": [
+    "en"
+  ],
   "yaml.format.singleQuote": true,
   "githubPullRequests.ignoredPullRequestBranches": ["main"]
 }
