@@ -1,4 +1,19 @@
-﻿function Get-FormattedModuleParameter {
+﻿<#
+.SYNOPSIS
+Convert the given Parameter Data object into a formatted Bicep parameter block.
+
+.DESCRIPTION
+Convert the given Parameter Data object into a formatted Bicep parameter block. The result is returned as an array of parameter block lines.
+
+.PARAMETER ParameterData
+Mandatory. The Parameter Data to convert.
+
+.EXAMPLE
+Get-FormattedModuleParameter -ParameterData @{ name = 'myParam'; type = 'string'; (...) }
+
+Convert the given 'myParam' parameter into the Bicep format.
+#>
+function Get-FormattedModuleParameter {
 
     param (
         [Parameter(Mandatory = $true)]

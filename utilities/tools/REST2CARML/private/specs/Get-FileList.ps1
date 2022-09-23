@@ -34,6 +34,7 @@ Get-FileList -RootFolder './temp/azure-rest-api-specs/specification' -ProviderNa
 Get the API spec files for [Microsoft.KeyVault/vaults].
 #>
 function Get-FileList {
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -48,6 +49,8 @@ function Get-FileList {
         [Parameter(Mandatory = $false)]
         [switch] $IncludePreview
     )
+
+    # TODO: Is this file intended to be used anywhere?
 
     $allFilePaths = (Get-ChildItem -Path $rootFolder -Recurse -File).FullName
     Write-Verbose ('Fetched all [{0}] file paths. Filtering...' -f $allFilePaths.Count) -Verbose

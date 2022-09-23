@@ -1,4 +1,31 @@
-﻿function Set-Module {
+﻿<#
+.SYNOPSIS
+Update the module's files with the provided module data including added extension resources data.
+
+.DESCRIPTION
+Update the module's files with the provided module data including added extension resources data (i.e., RBAC, Diagnostic Settings, Private Endpoints, etc.).
+
+.PARAMETER ProviderNamespace
+Mandatory. The ProviderNamespace to update the template for.
+
+.PARAMETER ResourceType
+Mandatory. The ResourceType to update the template for.
+
+.PARAMETER ModuleData
+Mandatory. The module data (e.g. parameters) to add to the template.
+
+.PARAMETER JSONFilePath
+Mandatory. The service specification file to process.
+
+.PARAMETER JSONKeyPath
+Mandatory. The API Path in the JSON specification file to process
+
+.EXAMPLE
+Set-Module -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -JSONKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+
+Update the module [Microsoft.KeyVault/vaults] with the provided module data.
+#>
+function Set-Module {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
