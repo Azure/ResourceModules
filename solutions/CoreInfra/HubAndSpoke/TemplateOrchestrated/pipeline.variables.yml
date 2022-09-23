@@ -1,7 +1,7 @@
 variables:
   resourceGroupName: ""
   environmentPath: "solutions/CoreInfra/HubAndSpoke/TemplateOrchestrated"
-  location: "northeurope"
+  location: "westeurope"
   vmImage: "ubuntu-latest"
   poolName: ""
   serviceConnection: "OliverlabsAzurePipe"
