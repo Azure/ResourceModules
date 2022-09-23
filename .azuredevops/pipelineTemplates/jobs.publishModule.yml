@@ -164,8 +164,8 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
@@ -223,8 +223,8 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
@@ -283,8 +283,8 @@ jobs:
             Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
 
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
@@ -331,8 +331,8 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ReadmeToDocumentRepo.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ReadmeToDocumentRepo.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
