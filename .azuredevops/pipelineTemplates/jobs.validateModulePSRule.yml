@@ -1,5 +1,5 @@
 #########################################################
-## 'Validate module with PSRule' Pipeline Template                                 ##
+## 'Validate module with PSRule' Pipeline Template     ##
 #########################################################
 ##
 ## This pipeline template contains the logic to validate a given module's testfile with PSRule
