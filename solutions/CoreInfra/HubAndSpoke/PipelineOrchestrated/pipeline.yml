@@ -33,6 +33,18 @@ stages:
           checkoutRepositories:
             - self
 
+    #User Assigned Identities
+    #---------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: userAssignedIdentities
+          displayName: 'User Assigned Identities'
+          modulePath: '/modules/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/userAssignedIdentities/parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
     #Storage Accounts
     #---------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -149,6 +161,17 @@ stages:
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/parameters.json'
+          checkoutRepositories:
+            - self
+
+    #User Assigned Identities
+    #---------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: userAssignedIdentities
+          displayName: 'User Assigned Identities'
+          modulePath: '/modules/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/userAssignedIdentities/parameters.json'
           checkoutRepositories:
             - self
 
