@@ -67,7 +67,7 @@
 
 
         $diagnosticResource = @(
-            "resource {0}_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {" -f $ResourceType
+            "resource $($ResourceType)_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {"
             '    name: diagnosticSettingsName'
             '    properties: {'
             '        storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null'

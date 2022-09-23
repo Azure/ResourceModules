@@ -31,6 +31,8 @@ function Get-DiagnosticOptionsList {
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         $urlRoot = 'https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/main/articles/azure-monitor/essentials'
+        $diagnosticMetricsPath = Join-Path (Split-Path $PSScriptRoot) 'temp' 'diagnosticMetrics.md'
+        $diagnosticLogsPath = Join-Path (Split-Path $PSScriptRoot) 'temp' 'diagnosticLogs.md'
     }
 
     process {
@@ -39,7 +41,11 @@ function Get-DiagnosticOptionsList {
         ##   METRICS   ##
         #################
         $foundMetrics = @()
-        $metricsMarkdown = (Invoke-WebRequest -Uri "$urlRoot/metrics-supported.md").Content -split '\n'
+        if (-not (Test-Path $diagnosticMetricsPath)) {
+            Write-Verbose 'Fetching diagnostic metrics data. This may take a moment...' -Verbose
+            Invoke-WebRequest -Uri "$urlRoot/metrics-supported.md" -OutFile $diagnosticMetricsPath
+        }
+        $metricsMarkdown = Get-Content $diagnosticMetricsPath
 
         # Find provider in file
         $matchingMetricResourceTypeLine = $metricsMarkdown.IndexOf(($metricsMarkdown -like "## $ProviderNamespace/$ResourceType")[-1])
@@ -71,7 +77,11 @@ function Get-DiagnosticOptionsList {
         ##   LOGS   ##
         ##############
         $foundLogs = @()
-        $logsMarkdown = (Invoke-WebRequest -Uri "$urlRoot/resource-logs-categories.md").Content -split '\n'
+        if (-not (Test-Path $diagnosticMetricsPath)) {
+            Write-Verbose 'Fetching diagnostic logs data. This may take a moment...' -Verbose
+            Invoke-WebRequest -Uri "$urlRoot/resource-logs-categories.md" -OutFile $diagnosticLogsPath
+        }
+        $logsMarkdown = Get-Content $diagnosticMetricsPath
 
         # Find provider in file
         $matchingLogResourceTypeLine = $logsMarkdown.IndexOf(($logsMarkdown -like "## $ProviderNamespace/$ResourceType")[-1])
