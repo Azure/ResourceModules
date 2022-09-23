@@ -14,7 +14,8 @@ function Set-NewReadmeVersion {
     $newName = <#(Get-Item $Path).BaseName + '_' + #> $Version + (Get-Item $Path).Extension
 
     Write-Host 'File renamed to: ' $newName
-    return Rename-Item $Path $newName -PassThru
+    #return Rename-Item $Path $newName -PassThru
+    return Copy-Item $Path -Destination $newName -PassThru
 
 
 }
