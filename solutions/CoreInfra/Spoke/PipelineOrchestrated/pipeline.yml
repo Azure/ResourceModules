@@ -80,6 +80,15 @@ stages:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
+          jobName: logAnalytics
+          displayName: 'Log Analytics'
+          modulePath: '/modules/Microsoft.OperationalInsights/workspaces/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/logAnalytics/parameters.json'
+          whatif: '${{ parameters.whatif }}'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
           jobName: userAssignedIdentities
           displayName: 'User Assigned Identities'
           modulePath: '/modules/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep'
@@ -149,6 +158,14 @@ stages:
           displayName: 'Storage Account'
           modulePath: '/modules/Microsoft.Storage/storageAccounts/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/storageAccounts/parameters.json'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: logAnalytics
+          displayName: 'Log Analytics'
+          modulePath: '/modules/Microsoft.OperationalInsights/workspaces/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/logAnalytics/parameters.json'
           checkoutRepositories:
             - self
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
