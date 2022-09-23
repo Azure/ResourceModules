@@ -26,10 +26,10 @@
         $templatePath = Join-Path $moduleRootPath 'deploy.bicep'
 
         # Load used functions
-        . (Join-Path $PSScriptRoot 'extension' 'Add-DiagnosticModuleData')
-        . (Join-Path $PSScriptRoot 'extension' 'Add-RoleAssignmentModuleData.ps1')
-        . (Join-Path $PSScriptRoot 'extension' 'Add-PrivateEndpointModuleData.ps1')
-        . (Join-Path $PSScriptRoot 'extension' 'Add-LockModuleData.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Set-DiagnosticModuleData.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Set-RoleAssignmentsModuleData.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Set-PrivateEndpointModuleData.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Set-LockModuleData.ps1')
         . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
     }
 
@@ -63,7 +63,7 @@
             ModuleRootPath    = $moduleRootPath
             ServiceApiVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
         }
-        Set-RoleAssignmentModuleData @rbacInputObject
+        Set-RoleAssignmentsModuleData @rbacInputObject
 
         ## Set Locks data
         $lockInputObject = @{
