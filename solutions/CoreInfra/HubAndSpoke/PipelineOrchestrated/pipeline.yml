@@ -114,6 +114,18 @@ stages:
           checkoutRepositories:
             - self
 
+    #Recovery Services
+    #-----------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: recoveryServices
+          displayName: 'Recovery Services'
+          modulePath: '/modules/Microsoft.RecoveryServices/vaults/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/recoveryServices/parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
     # VirtualNetwork
     # --------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -135,14 +147,48 @@ stages:
           checkoutRepositories:
             - self
 
-    #Recovery Services
-    #-----------
+    #Private Dns Zones
+    #-----------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
-          jobName: recoveryServices
-          displayName: 'Recovery Services'
-          modulePath: '/modules/Microsoft.RecoveryServices/vaults/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/recoveryServices/parameters.json'
+          jobName: privateDnsZonesAutomation
+          displayName: 'Private Dns Zones'
+          modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/automation.parameters.json'
+          whatif: true
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: privateDnsZonesBlob
+          displayName: 'Private Dns Zones Blob'
+          modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/blob.parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: privateDnsZonesVault
+          displayName: 'Private Dns Zones Vaultcore'
+          modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/vaultcore.parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: privateDnsZonesDB
+          displayName: 'Private Dns Zones database'
+          modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/database.parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: privateDnsZonesRecovery
+          displayName: 'Private Dns Zones Recovery'
+          modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/siterecovery.parameters.json'
           whatif: true
           checkoutRepositories:
             - self
@@ -246,6 +292,17 @@ stages:
           checkoutRepositories:
             - self
 
+    #Recovery Services
+    #---------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: recoveryServices
+          displayName: 'Recovery Services'
+          modulePath: '/modules/Microsoft.RecoveryServices/vaults/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/recoveryServices/parameters.json'
+          checkoutRepositories:
+            - self
+
     # VirtualNetworks
     # ---------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -273,13 +330,53 @@ stages:
             - spokeNetworkSecurityGroups
             - routeTables
 
-    #Recovery Services
-    #---------------
+    #Private Dns Zones
+    #-----------------
+    #Private Dns Zones
+    #-----------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
-          jobName: recoveryServices
-          displayName: 'Recovery Services'
-          modulePath: '/modules/Microsoft.RecoveryServices/vaults/deploy.bicep'
-          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/recoveryServices/parameters.json'
+          jobName: privateDnsZonesAutomation
+          displayName: 'Private Dns Zones'
+          modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/automation.parameters.json'
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: privateDnsZonesBlob
+          displayName: 'Private Dns Zones Blob'
+          modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/blob.parameters.json'
           checkoutRepositories:
             - self
+          dependsOn:
+            - hubVirtualNetworks
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: privateDnsZonesVault
+          displayName: 'Private Dns Zones Vaultcore'
+          modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/vaultcore.parameters.json'
+          checkoutRepositories:
+            - self
+          dependsOn:
+            - hubVirtualNetworks
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: privateDnsZonesDB
+          displayName: 'Private Dns Zones database'
+          modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/database.parameters.json'
+          checkoutRepositories:
+            - self
+          dependsOn:
+            - hubVirtualNetworks
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: privateDnsZonesRecovery
+          displayName: 'Private Dns Zones Recovery'
+          modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/siterecovery.parameters.json'
+          checkoutRepositories:
+            - self
+          dependsOn:
+            - hubVirtualNetworks
