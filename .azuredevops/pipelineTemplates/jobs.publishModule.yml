@@ -46,7 +46,6 @@
 parameters:
   # Pipeline-related parameters
   checkoutRepositories: ''
-  wikiDocuRepository: 'wiki'
   publishWikiToAzureDevOps: '$(publishWikiToAzureDevOps)'
   displayName: 'Publishing'
   serviceConnection: '$(serviceConnection)'
