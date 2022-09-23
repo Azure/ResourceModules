@@ -99,7 +99,7 @@ function Invoke-REST2CARML {
             }
             $pathData = Get-ServiceSpecPathData @getPathDataInputObject
 
-            $resolveInputObject - @{
+            $resolveInputObject = @{
                 JSONFilePath = $pathData.jsonFilePath
                 JSONKeyPath  = $pathData.jsonKeyPath
                 ResourceType = $ResourceType
