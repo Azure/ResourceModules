@@ -33,6 +33,30 @@ stages:
           checkoutRepositories:
             - self
 
+    #Storage Accounts
+    #---------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: storageAccounts
+          displayName: 'Storage Accounts'
+          modulePath: '/modules/Microsoft.Storage/storageAccounts/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/storageAccounts/parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
+    #Log Analytics
+    #---------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: logAnalytics
+          displayName: 'Log Analytics'
+          modulePath: '/modules/Microsoft.OperationalInsights/workspaces/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/logAnalytics/parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
     #Key Vaults
     #---------------
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
@@ -99,6 +123,18 @@ stages:
           checkoutRepositories:
             - self
 
+    #Recovery Services
+    #-----------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: recoveryServices
+          displayName: 'Recovery Services'
+          modulePath: '/modules/Microsoft.RecoveryServices/vaults/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/recoveryServices/parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
 # ---------------- #
 # Deployment Stage #
 # ---------------- #
@@ -113,6 +149,28 @@ stages:
           displayName: 'Resource Group'
           modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/parameters.json'
+          checkoutRepositories:
+            - self
+
+    #Storage Accounts
+    #---------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: storageAccount
+          displayName: 'Storage Account'
+          modulePath: '/modules/Microsoft.Storage/storageAccounts/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/storageAccounts/parameters.json'
+          checkoutRepositories:
+            - self
+
+    #Log Analytics
+    #---------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: logAnalytics
+          displayName: 'Log Analytics'
+          modulePath: '/modules/Microsoft.OperationalInsights/workspaces/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/logAnalytics/parameters.json'
           checkoutRepositories:
             - self
 
@@ -191,3 +249,14 @@ stages:
           dependsOn:
             - spokeNetworkSecurityGroups
             - routeTables
+
+    #Recovery Services
+    #---------------
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: recoveryServices
+          displayName: 'Recovery Services'
+          modulePath: '/modules/Microsoft.RecoveryServices/vaults/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/recoveryServices/parameters.json'
+          checkoutRepositories:
+            - self
