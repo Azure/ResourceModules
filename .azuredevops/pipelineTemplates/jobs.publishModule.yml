@@ -45,7 +45,7 @@
 
 parameters:
   # Pipeline-related parameters
-  checkoutRepositories: 'wiki'
+  checkoutRepositories: ''
   displayName: 'Publishing'
   serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
@@ -93,6 +93,9 @@ jobs:
       #--------------------------------
       - checkout: self
         fetchDepth: 0
+      - checkout: wiki # Temporary -> should done via checkoutRepositories
+        path: wiki
+        persistCredentials: true
       - ${{ if ne(parameters.checkoutRepositories, '') }}:
           - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
               - checkout: ${{ checkoutRepository }}
