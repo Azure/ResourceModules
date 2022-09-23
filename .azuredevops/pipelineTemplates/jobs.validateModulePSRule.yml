@@ -201,9 +201,9 @@ jobs:
         displayName: Analyze Azure template files
         inputs:
           modules: 'PSRule.Rules.Azure'
-          inputPath: '${{ parameters.parameterFilePath }}'
+          inputPath: '$(System.DefaultWorkingDirectory)${{ parameters.parameterFilePath }}'
           outputFormat: Csv
-          outputPath: '${{ parameters.parameterFilePath }}-output.csv'
+          outputPath: '$(System.DefaultWorkingDirectory)${{ parameters.parameterFilePath }}-output.csv'
 
       # - task: AzurePowerShell@5
       #   displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
