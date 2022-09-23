@@ -21,7 +21,9 @@ Mandatory. The service specification file to process.
 Mandatory. The API Path in the JSON specification file to process
 
 .EXAMPLE
-Set-ModuleTemplate
+Set-ModuleTemplate -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -JSONKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+
+Update the module [Microsoft.KeyVault/vaults] with the provided module data.
 #>
 function Set-ModuleTemplate {
 
