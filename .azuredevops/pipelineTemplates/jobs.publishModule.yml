@@ -90,6 +90,14 @@ jobs:
       ${{ if ne(parameters.poolName, '') }}:
         name: ${{ parameters.poolName }}
     steps:
+      - task: PowerShell@2
+        displayName: publishWikiToAzureDevOps
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            Write-Host ("${{ parameters.publishWikiToAzureDevOps }}")
+
       # [Checkout Repositories] task(s)
       #--------------------------------
       - checkout: self
