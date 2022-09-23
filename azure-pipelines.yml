@@ -13,7 +13,7 @@ trigger:
 
 variables:
   - template: /settings.yml
-  - template: pipeline.variables.yml
+  - template: /solutions/CoreInfra/HubAndSpoke/TemplateOrchestrated/pipeline.variables.yml
 
 # resources:
 #   repositories:
