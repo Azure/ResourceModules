@@ -11,7 +11,6 @@ $script:moduleRoot = $PSScriptRoot
 $script:src = Join-Path $PSScriptRoot 'src'
 $script:temp = Join-Path $PSScriptRoot 'temp'
 
-
 Write-Verbose 'Import everything in sub folders public & private'
 $functionFolders = @('public', 'private')
 foreach ($folder in $functionFolders) {

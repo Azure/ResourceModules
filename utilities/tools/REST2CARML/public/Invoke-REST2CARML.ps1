@@ -24,9 +24,14 @@ Invoke-REST2CARML -ProviderNamespace 'Microsoft.Keyvault' -ResourceType 'vaults'
 Generate/Update a CARML module for [Microsoft.Keyvault/vaults]
 
 .EXAMPLE
+Invoke-REST2CARML -ProviderNamespace 'Microsoft.AVS' -ResourceType 'privateClouds' -Verbose -KeepArtifacts
+
+Generate/Update a CARML module for [Microsoft.AVS/privateClouds] and do not delete any downloaded/cloned artifact.
+
+.EXAMPLE
 Invoke-REST2CARML -ProviderNamespace 'Microsoft.Keyvault' -ResourceType 'vaults' -KeepArtifacts
 
-Generate/Update a CARML module for [Microsoft.Keyvault/vaults] and do not download any downloaded/cloned artifact.
+Generate/Update a CARML module for [Microsoft.Keyvault/vaults] and do not delete any downloaded/cloned artifact.
 #>
 function Invoke-REST2CARML {
 
@@ -118,7 +123,6 @@ function Invoke-REST2CARML {
             if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
                 Set-Module @moduleTemplateInputObject
             }
-
         } catch {
             throw $_
         } finally {
@@ -136,6 +140,3 @@ function Invoke-REST2CARML {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
-
-# Invoke-REST2CARML -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts' -Verbose -KeepArtifacts
-# Invoke-REST2CARML -ProviderNamespace 'Microsoft.AVS' -ResourceType 'privateClouds' -Verbose -KeepArtifacts

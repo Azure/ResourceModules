@@ -1,4 +1,28 @@
-﻿function Get-ServiceSpecPathData {
+﻿<#
+.SYNOPSIS
+Get the latest API spec file path & service path (in file) for a given ProviderNamespace - ResourceType combination.
+
+.DESCRIPTION
+Get the latest API spec file path & service path (in file) for a given ProviderNamespace - ResourceType combination.
+
+.PARAMETER ProviderNamespace
+Mandatory. The provider namespace to query the data for
+
+.PARAMETER ResourceType
+Mandatory. The resource type to query the data for
+
+.PARAMETER RepositoryPath
+Mandatory. The path of the cloned/downloaded API Specs repository
+
+.PARAMETER IncludePreview
+Optional. Set to also consider 'preview' versions for the request.
+
+.EXAMPLE
+Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Keyvault' -ResourceType 'vaults' -RepositoryPath './temp/azure-rest-api-specs' -IncludePreview
+
+Get the latest API spec file path & service path for the resource type [Microsoft.KeyVault/vaults] - including the latest preview version (if any)
+#>
+function Get-ServiceSpecPathData {
 
     [CmdletBinding()]
     param (

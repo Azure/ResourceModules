@@ -1,4 +1,39 @@
-﻿function Get-FileList {
+﻿<#
+.SYNOPSIS
+Get a list of all API Spec files that are relevant for the given Provider Namespace & Resource Type.
+
+.DESCRIPTION
+Get a list of all API Spec files that are relevant for the given Provider Namespace & Resource Type.
+
+Paths must contain:
+- ProviderNamespace
+- Resource-Manager
+- API version
+- Speicication JSON file
+- Preview (if configured)
+
+
+Paths must NOT contain
+- Examples
+
+.PARAMETER RootFolder
+Mandatory. The root folder to search from (recursively).
+
+.PARAMETER ProviderNamespace
+Mandatory. The ProviderNsmespace to filter for.
+
+.PARAMETER ResourceType
+Mandatory. The ResourceType to filter for.
+
+.PARAMETER IncludePreview
+Optional. Consider preview versions
+
+.EXAMPLE
+Get-FileList -RootFolder './temp/azure-rest-api-specs/specification' -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+
+Get the API spec files for [Microsoft.KeyVault/vaults].
+#>
+function Get-FileList {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -11,7 +46,7 @@
         [string] $ResourceType,
 
         [Parameter(Mandatory = $false)]
-        [bool] $IgnorePreview = $true
+        [switch] $IncludePreview
     )
 
     $allFilePaths = (Get-ChildItem -Path $rootFolder -Recurse -File).FullName
@@ -26,7 +61,7 @@
     $filteredFilePaths = $filteredFilePaths | Where-Object {
         ($_ -replace '\\', '/') -like "*/$ProviderNamespace/*"
     }
-    if ($IgnorePreview) {
+    if (-not $IncludePreview) {
         $filteredFilePaths = $filteredFilePaths | Where-Object {
             ($_ -replace '\\', '/') -notlike '*/preview/*'
         }
