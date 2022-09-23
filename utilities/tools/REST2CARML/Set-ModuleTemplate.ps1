@@ -19,46 +19,102 @@ function Get-ModuleParameter {
         [object] $ParameterData
     )
 
-    $result = ''
+    $result = @()
 
-    # description line (optional)
+    # description (optional)
+    # ----------------------
     if ($ParameterData.description) {
-        $description = $ParameterData.description.Replace("'", '"')
-        $descriptionLine = "@description('" + $description + "')"
+        $result += '@description({0}. {1})' -f (($ParameterData.required) ? 'Required' : 'Optional'), $ParameterData.description
     }
 
-    # todo:
     # secure (optional)
-    # allowed (optional)
-    # minValue (optional)
-    # maxValue (optional)
-    # minLength (optional)
-    # maxLength (optional)
-    # other?
-
-    # param line (mandatory)
-    switch ($ParameterData.type) {
-        'boolean' { $parameterType = 'bool'; break }
-        'integer' { $parameterType = 'int'; break }
-        Default { $parameterType = $ParameterData.type }
+    # -----------------
+    if ($ParameterData.secure) {
+        $result += '@secure'
     }
-    $paramLine = 'param ' + $ParameterData.name + ' ' + $parameterType
+
+    # allowed (optional)
+    # ------------------
+    if ($ParameterData.allowedValues) {
+        $result += '@allowed(['
+        switch ($ParameterData.type) {
+            'boolean' {
+                $result += $ParameterData.allowedValues | ForEach-Object { "  '{0}'" -f $_.ToLower() }
+                break
+            }
+            'string' {
+                $result += $ParameterData.allowedValues | ForEach-Object { "  '$_'" }
+                break
+            }
+            default {
+                $result += $ParameterData.allowedValues | ForEach-Object { "  $_" }
+            }
+        }
+        $result += '])'
+    }
+
+    # minValue (optional)
+    # -------------------
+    if ($ParameterData.minValue) {
+        $result += '@minValue({0})' -f $ParameterData.minValue
+    }
+
+    # maxValue (optional)
+    # -------------------
+    if ($ParameterData.maxValue) {
+        $result += '@maxValue({0})' -f $ParameterData.maxValue
+    }
+
+    # minLength (optional)
+    # --------------------
+    if ($ParameterData.minLength) {
+        $result += '@minLength({0})' -f $ParameterData.minLength
+    }
+
+    # maxLength (optional)
+    # --------------------
+    if ($ParameterData.maxLength) {
+        $result += '@maxLength({0})' -f $ParameterData.maxLength
+    }
+
+    # param line (mandatory) with (optional) default value
+    # ----------------------------------------------------
+    switch ($ParameterData.type) {
+        'boolean' {
+            $parameterType = 'bool'
+            break
+        }
+        'integer' {
+            $parameterType = 'int'
+            break
+        }
+        Default {
+            $parameterType = $ParameterData.type
+        }
+    }
+    $paramLine = 'param {0} {1}' -f $ParameterData.name, $parameterType
 
     if ($ParameterData.default) {
         switch ($ParameterData.type) {
             'boolean' {
-                $defaultValue = $ParameterData.default.ToString().ToLower() ; break
+                $defaultValue = $ParameterData.default.ToString().ToLower() # boolean 'True' must be lower-cased
+                break
             }
-            'string' { $defaultValue = "'" + $ParameterData.default + "'"; break }
-            Default { $defaultValue = $ParameterData.default }
+            'string' {
+                $defaultValue = "'{0}'" -f $ParameterData.default
+                break
+            }
+            default {
+                $defaultValue = $ParameterData.default
+            }
         }
 
-        $paramLine += ' = ' + $defaultValue
+        $paramLine += " = $defaultValue"
     }
-    # to do: default value depending on type: quotes/no quotes, boolean, arrays (multiline) etc...
+    $result += $paramLine
 
-    # building and returning the final parameter entry
-    $result = $descriptionLine + [System.Environment]::NewLine + $paramLine + [System.Environment]::NewLine + [System.Environment]::NewLine
+    $result += ''
+
     return $result
 }
 
@@ -259,10 +315,10 @@ function Get-TargetScope {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $JSONFilePath
+        [string] $JSONKeyPath
     )
 
-    switch ($JSONFilePath) {
+    switch ($JSONKeyPath) {
         { $PSItem -like '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/*' } { return 'resourceGroup' }
         { $PSItem -like '/subscriptions/{subscriptionId}/*' } { return 'subscription' }
         { $PSItem -like 'providers/Microsoft.Management/managementGroups/*' } { return 'managementGroup' }
@@ -304,7 +360,7 @@ function Set-ModuleTemplate {
         ##  Create template parameters section  ##
         ##########################################
 
-        $targetScope = Get-TargetScope -JSONKeyPath $JSONFilePath
+        $targetScope = Get-TargetScope -JSONKeyPath $JSONKeyPath
 
         $templateContent = @(
             "targetScope = '{0}'" -f $targetScope
@@ -315,13 +371,12 @@ function Set-ModuleTemplate {
             ''
         )
 
-        # # Parameters header comment
-        # $templateContent += Get-SectionDivider -SectionName 'Parameters'
-
-        # TODO : Add extension parameters if applicable
-
-        # Add parameters
-        foreach ($parameter in $ModuleData) {
+        # Add primary (service) parameters
+        foreach ($parameter in $ModuleData.parameters) {
+            $templateContent += Get-ModuleParameter -ParameterData $parameter
+        }
+        # Add additional (extension) parameters
+        foreach ($parameter in $ModuleData.additionalParameters) {
             $templateContent += Get-ModuleParameter -ParameterData $parameter
         }
 
@@ -329,7 +384,9 @@ function Set-ModuleTemplate {
         ##  Create template variables section  ##
         #########################################
 
-        # TODO : Add variables if applicable
+        foreach ($variable in $ModuleData.variables) {
+            $templateContent += $variable
+        }
 
         ###########################################
         ##  Create template deployments section  ##

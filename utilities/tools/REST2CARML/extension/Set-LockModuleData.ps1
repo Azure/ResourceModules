@@ -41,12 +41,12 @@ function Set-LockModuleData {
 
         $ModuleData.resources += @(
             "resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {"
-            "    name: '`${$ResourceType.name}-`${lock}-lock'"
-            '    properties: {'
-            '        level: any(lock)'
-            "        notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'"
-            '    }'
-            '    scope: {0}' -f $ResourceType
+            "  name: '`${$ResourceType.name}-`${lock}-lock'"
+            '  properties: {'
+            '    level: any(lock)'
+            "    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'"
+            '  }'
+            '  scope: {0}' -f $ResourceType
             '}'
         )
     }

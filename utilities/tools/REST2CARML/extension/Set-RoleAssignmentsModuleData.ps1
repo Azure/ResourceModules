@@ -53,17 +53,17 @@ function Set-RoleAssignmentsModuleData {
         )
 
         $ModuleData.resources += @(
-            "module $($ResourceType)_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment,index) in roleAssignments: {"
-            "    name: '`${uniqueString(deployment().name, location)}-$($tokens.resourceTypeSingular)-Rbac-`${index}'"
-            '    params: {'
-            "        description: contains(roleAssignment,'description') ? roleAssignment.description : ''"
-            '        principalIds: roleAssignment.principalIds'
-            "        principalType: contains(roleAssignment,'principalType') ? roleAssignment.principalType : ''"
-            '        roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName'
-            "        condition: contains(roleAssignment,'condition') ? roleAssignment.condition : ''"
-            "        delegatedManagedIdentityResourceId: contains(roleAssignment,'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''"
-            "        resourceId: $($tokens.resourceTypeSingular).id"
-            '    }'
+            "module $($tokens.resourceTypeSingular)_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment,index) in roleAssignments: {"
+            "  name: '`${uniqueString(deployment().name, location)}-$($tokens.resourceTypeSingular)-Rbac-`${index}'"
+            '  params: {'
+            "    description: contains(roleAssignment,'description') ? roleAssignment.description : ''"
+            '    principalIds: roleAssignment.principalIds'
+            "    principalType: contains(roleAssignment,'principalType') ? roleAssignment.principalType : ''"
+            '    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName'
+            "    condition: contains(roleAssignment,'condition') ? roleAssignment.condition : ''"
+            "    delegatedManagedIdentityResourceId: contains(roleAssignment,'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''"
+            "    resourceId: $($tokens.resourceTypeSingular).id"
+            '  }'
             '}]'
         )
 

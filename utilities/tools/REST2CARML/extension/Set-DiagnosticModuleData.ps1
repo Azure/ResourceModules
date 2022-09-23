@@ -19,6 +19,7 @@
     }
 
     process {
+        $resourceTypeSingular = $ResourceType[-1] -eq 's' ? $ResourceType.Substring(0, $ResourceType.Length - 1) : $ResourceType
         $diagnosticOptions = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
 
         if (-not $diagnosticOptions) {
@@ -67,15 +68,13 @@
 
 
         $diagnosticResource = @(
-            "resource $($ResourceType)_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {"
-            '    name: diagnosticSettingsName'
-            '    properties: {'
-            '        storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null'
-            '        workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null'
-            '        eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null'
-            '        eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null'
-            '        metrics: diagnosticsMetrics'
-            '        logs: diagnosticsLogs'
+            "resource $($resourceTypeSingular)_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {"
+            '  name: diagnosticSettingsName'
+            '  properties: {'
+            '    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null'
+            '    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null'
+            '    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null'
+            '    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null'
         )
 
         # Metric-specific
@@ -97,17 +96,18 @@
             )
             $ModuleData.variables += @(
                 'var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {'
-                '    category: metric'
-                '    timeGrain: null'
+                '  category: metric'
+                '  timeGrain: null'
+                '  enabled: true'
+                '  retentionPolicy: {'
                 '    enabled: true'
-                '    retentionPolicy: {'
-                '        enabled: true'
-                '        days: diagnosticLogsRetentionInDays'
-                '    }'
+                '    days: diagnosticLogsRetentionInDays'
+                '  }'
                 '}]'
+                ''
             )
 
-            $diagnosticResource += '        metrics: diagnosticsMetrics'
+            $diagnosticResource += '    metrics: diagnosticsMetrics'
         }
 
         # Log-specific
@@ -124,21 +124,22 @@
             )
             $ModuleData.variables += @(
                 'var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {'
-                '    category: category'
+                '  category: category'
+                '  enabled: true'
+                '  retentionPolicy: {'
                 '    enabled: true'
-                '    retentionPolicy: {'
-                '        enabled: true'
-                '        days: diagnosticLogsRetentionInDays'
-                '    }'
+                '    days: diagnosticLogsRetentionInDays'
+                '  }'
                 '}]'
+                ''
             )
 
-            $diagnosticResource += '        logs: diagnosticsLogs'
+            $diagnosticResource += '    logs: diagnosticsLogs'
         }
 
         $diagnosticResource += @(
-            '    }'
-            '    scope: server'
+            '  }'
+            "  scope: {$resourceTypeSingular}"
             '}'
         )
 

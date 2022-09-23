@@ -49,12 +49,12 @@ function Set-OptionalParameter {
 
     # Min
     if ($SourceParameterObject.Keys -contains 'minimum') {
-        $TargetObject['minimum'] = $SourceParameterObject.minimum
+        $TargetObject['minValue'] = $SourceParameterObject.minimum
     }
 
     # Max
     if ($SourceParameterObject.Keys -contains 'maximum') {
-        $TargetObject['maximum'] = $SourceParameterObject.maximum
+        $TargetObject['maxValue'] = $SourceParameterObject.maximum
     }
 
     # Default value
