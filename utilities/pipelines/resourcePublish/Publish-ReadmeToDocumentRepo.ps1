@@ -51,6 +51,7 @@ function Publish-ReadmeToDocumentRepo {
     Write-Host "moduleDir: $moduleDir"
     Write-Host "ReadMeFilePath: $ReadMeFilePath"
     Write-Host "newFileName: $newFileName"
+    New-Item -ItemType Directory -Path $moduleDir -Force | Out-Null
     Copy-Item -Path $renamedFile -Destination $moduleDir -Recurse -Force -Verbose #-Filter "*.md"
 
 
