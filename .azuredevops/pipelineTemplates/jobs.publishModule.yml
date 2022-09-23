@@ -102,11 +102,15 @@ jobs:
       #--------------------------------
       - checkout: self
         fetchDepth: 0
-      - ${{ if eq(parameters.publishWikiToAzureDevOps, true) }}:
-        - checkout: git://CARML/CARML.wiki
-          fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-          path: wiki
-          persistCredentials: true
+     # - ${{ if eq(parameters.publishWikiToAzureDevOps, true) }}:
+      - checkout: git://CARML/CARML.wiki
+        condition: and(
+          eq(parameters.publishWikiToAzureDevOps, true),
+          succeeded()
+          )
+        fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
+        path: wiki
+        persistCredentials: true
       - ${{ if ne(parameters.checkoutRepositories, '') }}:
           - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
               - checkout: ${{ checkoutRepository }}
