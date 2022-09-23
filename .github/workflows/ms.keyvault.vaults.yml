@@ -109,7 +109,7 @@ jobs:
   #############################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
-    if: ${{ always() && (needs.job_module_pester_validation.result == 'success') }}
+    if: ${{ always() && (needs.job_module_pester_validation.result == 'success') }} # Deployment validation will not be blocked by the failing PSRule validation stage (for the time being). <- Remove the condition block to change behavior
     name: 'Deployment validation'
     needs:
       - job_initialize_pipeline
