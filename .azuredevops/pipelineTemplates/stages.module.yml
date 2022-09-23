@@ -11,6 +11,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: PSRuleValidation
+    dependsOn: []
     displayName: PSRule validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePSRule.yml
