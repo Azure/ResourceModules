@@ -106,13 +106,13 @@ jobs:
             if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0 -or ("${{ parameters.publishWikiToAzureDevOps }}" -eq 'true')) {
               Write-Verbose "Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
-              $workingPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 's/carml'
+              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' 'carml'
               Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$true"
 
             } else {
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
-              $workingPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 's/carml' #Because ADO doesn't use default path even condition for multi repo is false we have to change path
+              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' 'carml' #Because ADO doesn't use default path even condition for multi repo is false we have to change path
               Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$false"
             }
             Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
@@ -361,7 +361,7 @@ jobs:
             # Get the modified child resources
             $ReadmesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
-            $wikiPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 'wiki'
+            $wikiPath = Join-Path '$(System.DefaultWorkingDirectory)' 'wiki'
 
             # Publish the modified child resources
             foreach ($ReadmeToPublish in $ReadmesToPublish) {
