@@ -26,11 +26,11 @@ Optional. The location of the resourceGroup the private bicep registry is deploy
 Example: 'West Europe'
 
 .EXAMPLE
-Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
+Publish-ModuleToBicepRegistry -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a private bicep registry called 'adpsxxazacrx001' in resource group 'artifacts-rg'.
 #>
-function Publish-ModuleToPrivateBicepRegistry {
+function Publish-ModuleToBicepRegistry {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
@@ -47,7 +47,10 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $BicepRegistryRgName,
 
         [Parameter(Mandatory = $false)]
-        [string] $BicepRegistryRgLocation
+        [string] $BicepRegistryRgLocation,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $BicepRegistryPublic
     )
 
     begin {
@@ -76,16 +79,24 @@ function Publish-ModuleToPrivateBicepRegistry {
             }
         }
 
+        if ($BicepRegistryPublic) {
+            if ($PSCmdlet.ShouldProcess("Container Registry [$BicepRegistryName] public (anonymous) access", 'Enable')) {
+                az acr update --name $BicepRegistryName --anonymous-pull-enabled
+            }
+        }
+
         # Extracts Microsoft.KeyVault/vaults from e.g. C:\modules\Microsoft.KeyVault\vaults\deploy.bicep
         $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/modules/')[1]
         $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
 
         #############################################
-        ##    Publish to private bicep registry    ##
+        ##    Publish to bicep registry    ##
         #############################################
         $publishingTarget = 'br:{0}.azurecr.io/{1}:{2}' -f $BicepRegistryName, $moduleRegistryIdentifier, $ModuleVersion
-        if ($PSCmdlet.ShouldProcess("Private bicep registry entry [$moduleRegistryIdentifier] version [$ModuleVersion] to registry [$BicepRegistryName]", 'Publish')) {
+        $publishingTargetLatest = 'br:{0}.azurecr.io/{1}:{2}' -f $BicepRegistryName, $moduleRegistryIdentifier, 'latest'
+        if ($PSCmdlet.ShouldProcess("Bicep registry entry [$moduleRegistryIdentifier] version [$ModuleVersion] to registry [$BicepRegistryName]", 'Publish')) {
             bicep publish $TemplateFilePath --target $publishingTarget
+            bicep publish $TemplateFilePath --target $publishingTargetLatest
         }
         Write-Verbose 'Publish complete'
     }
