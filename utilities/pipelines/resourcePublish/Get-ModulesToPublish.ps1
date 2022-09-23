@@ -388,22 +388,22 @@ function Get-ModulesToPublish {
             ReadmeFilePath   = $TemplateFileToPublish.DirectoryName + '/readme.md'
         }
 
-        #if ($ModuleVersion -notmatch 'prerelease') {
+        if ($ModuleVersion -notmatch 'prerelease') {
 
-        # Latest Major,Minor
-        $ModulesToPublish += @{
-            Version          = ($ModuleVersion.Split('.')[0..1] -join '.')
-            TemplateFilePath = $TemplateFileToPublish.FullName
-            ReadmeFilePath   = $TemplateFileToPublish.DirectoryName + '/readme.md'
-        }
+            # Latest Major,Minor
+            $ModulesToPublish += @{
+                Version          = ($ModuleVersion.Split('.')[0..1] -join '.')
+                TemplateFilePath = $TemplateFileToPublish.FullName
+                ReadmeFilePath   = $TemplateFileToPublish.DirectoryName + '/readme.md'
+            }
 
-        # Latest Major
-        $ModulesToPublish += @{
-            Version          = ($ModuleVersion.Split('.')[0])
-            TemplateFilePath = $TemplateFileToPublish.FullName
-            ReadmeFilePath   = $TemplateFileToPublish.DirectoryName + '/readme.md'
+            # Latest Major
+            $ModulesToPublish += @{
+                Version          = ($ModuleVersion.Split('.')[0])
+                TemplateFilePath = $TemplateFileToPublish.FullName
+                ReadmeFilePath   = $TemplateFileToPublish.DirectoryName + '/readme.md'
+            }
         }
-        # }
 
         $ParentTemplateFilesToPublish = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToPublish.FullName -Recurse
         foreach ($ParentTemplateFileToPublish in $ParentTemplateFilesToPublish) {
@@ -415,22 +415,22 @@ function Get-ModulesToPublish {
                 ReadmeFilePath   = $ParentTemplateFileToPublish.DirectoryName + '/readme.md'
             }
 
-            # if ($ModuleVersion -notmatch 'prerelease') {
+            if ($ModuleVersion -notmatch 'prerelease') {
 
-            # Latest Major,Minor
-            $ModulesToPublish += @{
-                Version          = ($ParentModuleVersion.Split('.')[0..1] -join '.')
-                TemplateFilePath = $ParentTemplateFileToPublish.FullName
-                ReadmeFilePath   = $ParentTemplateFileToPublish.DirectoryName + '/readme.md'
-            }
+                # Latest Major,Minor
+                $ModulesToPublish += @{
+                    Version          = ($ParentModuleVersion.Split('.')[0..1] -join '.')
+                    TemplateFilePath = $ParentTemplateFileToPublish.FullName
+                    ReadmeFilePath   = $ParentTemplateFileToPublish.DirectoryName + '/readme.md'
+                }
 
-            # Latest Major
-            $ModulesToPublish += @{
-                Version          = ($ParentModuleVersion.Split('.')[0])
-                TemplateFilePath = $ParentTemplateFileToPublish.FullName
-                ReadmeFilePath   = $ParentTemplateFileToPublish.DirectoryName + '/readme.md'
+                # Latest Major
+                $ModulesToPublish += @{
+                    Version          = ($ParentModuleVersion.Split('.')[0])
+                    TemplateFilePath = $ParentTemplateFileToPublish.FullName
+                    ReadmeFilePath   = $ParentTemplateFileToPublish.DirectoryName + '/readme.md'
+                }
             }
-            # }
         }
     }
 
