@@ -11,10 +11,12 @@ function Set-NewReadmeVersion {
     )
 
     #Rename the File
-    $newName = (Get-Item $Path).BaseName + '_' + $Version + (Get-Item $Path).Extension
+    $newName = <#(Get-Item $Path).BaseName + '_' + #> $Version + (Get-Item $Path).Extension
     Rename-Item $Path $newName
 
     Write-Host 'File renamed to: ' $newName
+    return $newName
+
 
 }
 
@@ -31,7 +33,7 @@ function Publish-ReadmeToDocumentRepo {
         [string] $wikiPath
     )
 
-    Set-NewReadmeVersion -Path $ReadMeFilePath -Version $ModuleVersion
+    $newFileName = Set-NewReadmeVersion -Path $ReadMeFilePath -Version $ModuleVersion
     Get-Location
     Get-ChildItem
     #####
@@ -41,7 +43,15 @@ function Publish-ReadmeToDocumentRepo {
     Invoke-Git -Command 'checkout wikiMaster'
 
     #### PUT FILES INTO HERE
-    New-Item -Name 'dummy.md' -Force -ItemType File -Value 'Hello World'
+    #New-Item -Name 'dummy.md' -Force -ItemType File -Value 'Hello World'
+    #
+    $moduleDir = $ReadMeFilePath.Split('/modules/')[1]
+    Write-Host "moduleDir: $moduleDir"
+    Write-Host "ReadMeFilePath: $ReadMeFilePath"
+    Write-Host "newFileName: $newFileName"
+    #Copy-Item -Path "$sourceFolderPath/$modulePath/*.md" -Destination "$targetFolderPath/$moduleDir/versions" -Recurse -Force -Verbose #-Filter "*.md"
+
+
 
     ## publishing md to wiki
     Write-Host '##############################'
