@@ -41,7 +41,7 @@ function Publish-ReadmeToDocumentRepo {
     Invoke-Git -Command 'checkout wikiMaster'
 
     #### PUT FILES INTO HERE
-    New-Item -Name 'dummy.md' -ItemType File -Value 'Hello World'
+    New-Item -Name 'dummy.md' -Force -ItemType File -Value 'Hello World'
 
     ## publishing md to wiki
     Write-Host '##############################'
