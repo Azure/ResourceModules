@@ -103,7 +103,7 @@ jobs:
       - checkout: self
         fetchDepth: 0
      # - ${{ if eq(parameters.publishWikiToAzureDevOps, true) }}:
-      - checkout: git://CARML/CARML.wiki
+      - checkout: git://$(SYSTEM.TEAMPROJECT)/$(SYSTEM.TEAMPROJECT).wiki # SYSTEM_TEAMPROJECT
         # condition: and(
         #   eq(parameters.publishWikiToAzureDevOps, true),
         #   succeeded()
