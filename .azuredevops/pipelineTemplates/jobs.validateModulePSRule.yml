@@ -1,14 +1,9 @@
 #########################################################
-## DEPLOYMENT PIPELINE                                 ##
+## 'Validate module with PSRule' Pipeline Template                                 ##
 #########################################################
 ##
-## This pipeline template contains the logic to deploy a given module's ARM template using the provided parameter file(s)
+## This pipeline template contains the logic to validate a given module's testfile with PSRule
 ##
-## Enabled levels of deployment
-## - Resource-Group-Level
-## - Subscription-Level
-## - Management-Group-Level
-## - Tenant-Level
 ##
 ########################################################
 ##
@@ -28,12 +23,8 @@
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on.                                       | 'Custom Deployment Pool'                              |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on.                                       | 'ubuntu20.04'                                         |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline.                                                                 | 120                                                   |
-##   | removeDeployment                | 'true'                               | Set to [true] to flag resources for removal. If not provided, defaults to true.                           | 'true'                                                |
-##   | templateFilePath                | ''                                   | Path to the template file to deploy.                                                                      | 'arm/Microsoft.AnalysisServices/servers/deploy.bicep' |
 ##   | customParameterFileTokens       | ''                                   |                                                                                                           |                                                       |
-##   | jobDisplayName                  | ''                                   | The display name of the job.                                                                              | 'Deploy module'                                       |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                         |
-##   | location                        | '$(location)'                        | The location to deploy resources to.                                                                      | 'EastUs2'                                             |
 ##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments.                     | 'validation-rg'                                       |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to deploy into when using a Management group service connection.               | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'                |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to deploy into. Required only for Management-Group-Level deployments.      | '6ycc9620-cb01-454f-9ebc-fc6b1df48d64'                |
@@ -50,10 +41,8 @@ parameters:
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
   # Logic-related parameters
-  templateFilePath: ''
   customParameterFileTokens: ''
   modulePath: '$(modulePath)'
-  location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
@@ -211,5 +200,4 @@ jobs:
           testRunTitle: 'PSRule' # The title to use for the test run.
           testRunner: NUnit # Import report using the NUnit format.
           testResultsFiles: '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)-output.xml' # The previously saved NUnit report.
-        continueOnError: true
         condition: succeededOrFailed()

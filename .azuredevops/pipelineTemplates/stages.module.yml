@@ -21,7 +21,8 @@ stages:
     dependsOn:
       - validation
       - PSRuleValidation
-    condition: |
+    condition:
+      | # Deployment validation will not be blocked by the failing PSRule validation stage (for the time being). <- Remove the condition block to change behavior
       eq(dependencies.validation.result, 'Succeeded')
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
