@@ -1,8 +1,0 @@
-variables:
-  resourceGroupName: 'solutions-ne-rg'
-  environmentPath: 'solutions\ResourceGroup'
-  location: 'northeurope'
-  vmImage: 'ubuntu-latest'
-  poolName: ''
-  tokenPrefix: '<<'
-  tokenSuffix: '>>'

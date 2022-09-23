@@ -1,9 +1,0 @@
-variables:
-  resourceGroupName: ""
-  environmentPath: "solutions/CoreInfra/HubAndSpoke/TemplateOrchestrated"
-  location: "northeurope"
-  vmImage: "ubuntu-latest"
-  poolName: ""
-  serviceConnection: "vsent-azure"
-  subscriptionId: "188438bd-4e39-4b0f-b3cf-4edf0ca5c6b0"
-  managementGroupId: ""
