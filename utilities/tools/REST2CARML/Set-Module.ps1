@@ -67,7 +67,7 @@
 
         ## Set Locks data
         $lockInputObject = @{
-            JSONFilePath = $JSONFilePath
+            JSONKeyPath  = $JSONKeyPath
             ResourceType = $ResourceType
             ModuleData   = $ModuleData
         }

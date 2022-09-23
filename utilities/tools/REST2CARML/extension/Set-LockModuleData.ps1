@@ -3,7 +3,7 @@ function Set-LockModuleData {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $JSONFilePath,
+        [string] $JSONKeyPath,
 
         [Parameter(Mandatory = $true)]
         [string] $ResourceType,
@@ -20,7 +20,7 @@ function Set-LockModuleData {
 
     process {
 
-        if (-not (Get-SupportsLock -JSONFilePath $JSONFilePath)) {
+        if (-not (Get-SupportsLock -JSONKeyPath $JSONKeyPath)) {
             return
         }
 
