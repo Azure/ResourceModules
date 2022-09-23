@@ -371,6 +371,10 @@ function Get-ModulesToPublish {
         [string] $TemplateFilePath
     )
 
+    ### Quick Debugging
+    Set-Location '/home/vsts/work/1/s/ResourceModules/'
+    ###
+
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
 
