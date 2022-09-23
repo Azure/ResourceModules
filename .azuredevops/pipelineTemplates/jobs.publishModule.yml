@@ -47,6 +47,7 @@ parameters:
   # Pipeline-related parameters
   checkoutRepositories: ''
   wikiDocuRepository: 'wiki'
+  publishWikiToAzureDevOps: '$(publishWikiToAzureDevOps)'
   displayName: 'Publishing'
   serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
@@ -117,7 +118,7 @@ jobs:
             # ---------------------------- #
 
             # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0 -or ( "${{ parameters.wikiDocuRepository }}" -eq 'wiki')) {
+            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0 -or ("${{ parameters.publishWikiToAzureDevOps }}")) {
               Write-Verbose "Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
               $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
@@ -345,6 +346,7 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              workingPath = '$(workingPath)'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
