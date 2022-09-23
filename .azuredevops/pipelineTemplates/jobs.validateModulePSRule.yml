@@ -201,7 +201,7 @@ jobs:
         displayName: Analyze Azure template files
         inputs:
           modules: 'PSRule.Rules.Azure'
-          inputPath: '$(System.DefaultWorkingDirectory)${{ parameters.parameterFilePath }}'
+          inputPath: '$(System.DefaultWorkingDirectory)$(modulePath)$(moduleTestFilePath)' #'$(System.DefaultWorkingDirectory)${{ parameters.parameterFilePath }}'
           outputFormat: Csv
           outputPath: '$(System.DefaultWorkingDirectory)${{ parameters.parameterFilePath }}-output.csv'
 
