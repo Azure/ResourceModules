@@ -1,24 +1,24 @@
-function Set-NewReadmeVersion {
+# function Set-NewReadmeVersion {
 
-    [CmdletBinding(SupportsShouldProcess)]
+#     [CmdletBinding(SupportsShouldProcess)]
 
-    param(
-        [Parameter(Mandatory)]
-        [string] $Path,
+#     param(
+#         [Parameter(Mandatory)]
+#         [string] $Path,
 
-        [Parameter(Mandatory)]
-        [string] $Version
-    )
+#         [Parameter(Mandatory)]
+#         [string] $Version
+#     )
 
-    #Rename the File
-    $newName = <#(Get-Item $Path).BaseName + '_' + #> $Version + (Get-Item $Path).Extension
+#     #Rename the File
+#     $newName = <#(Get-Item $Path).BaseName + '_' + #> $Version + (Get-Item $Path).Extension
 
-    Write-Host 'File renamed to: ' $newName
-    #return Rename-Item $Path $newName -PassThru
-    return Copy-Item $Path -Destination $newName -PassThru
+#     Write-Host 'File renamed to: ' $newName
+#     #return Rename-Item $Path $newName -PassThru
+#     return Copy-Item $Path -Destination $newName -PassThru
 
 
-}
+# }
 
 function Publish-ReadmeToDocumentRepo {
 
@@ -33,7 +33,8 @@ function Publish-ReadmeToDocumentRepo {
         [string] $wikiPath
     )
 
-    $renamedFile = Set-NewReadmeVersion -Path $ReadMeFilePath -Version $ModuleVersion
+    $newName = $ModuleVersion + (Get-Item $ReadMeFilePath).Extension
+    #$renamedFile = Set-NewReadmeVersion -Path $ReadMeFilePath -Version $ModuleVersion
     #####
     Set-Location $wikiPath
 
@@ -46,7 +47,8 @@ function Publish-ReadmeToDocumentRepo {
     $moduleDir = Split-Path $readmeRelFilePath -Parent
 
     New-Item -ItemType Directory -Path $moduleDir -Force | Out-Null
-    Copy-Item -Path $renamedFile -Destination $moduleDir -Recurse -Force -Verbose #-Filter "*.md"
+
+    Copy-Item -Path $renamedFile -Destination "$moduleDir/$newName" -Recurse -Force -Verbose #-Filter "*.md"
 
 
 
