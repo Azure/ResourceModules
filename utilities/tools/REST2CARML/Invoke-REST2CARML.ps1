@@ -98,7 +98,13 @@ function Invoke-REST2CARML {
                 IncludePreview    = $IncludePreview
             }
             $pathData = Get-ServiceSpecPathData @getPathDataInputObject
-            $moduleData = Resolve-ModuleData -JSONFilePath $pathData.jsonFilePath -JSONKeyPath $pathData.jsonKeyPath -ResourceType $ResourceType
+
+            $resolveInputObject - @{
+                JSONFilePath = $pathData.jsonFilePath
+                JSONKeyPath  = $pathData.jsonKeyPath
+                ResourceType = $ResourceType
+            }
+            $moduleData = Resolve-ModuleData @resolveInputObject
 
             ###########################################
             ##   Generate initial module structure   ##
@@ -112,11 +118,11 @@ function Invoke-REST2CARML {
             ##   Set module content   ##
             ############################
             $moduleTemplateInputObject = @{
-                ProviderNamespace     = $ProviderNamespace
-                ResourceType          = $ResourceType
-                SpecificationFilePath = $pathData.jsonFilePath
-                SpecificationUrl      = $pathData.jsonKeyPath
-                ModuleData            = $moduleData
+                ProviderNamespace = $ProviderNamespace
+                ResourceType      = $ResourceType
+                JSONFilePath      = $pathData.jsonFilePath
+                JSONKeyPath       = $pathData.jsonKeyPath
+                ModuleData        = $moduleData
             }
             if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
                 Set-Module @moduleTemplateInputObject

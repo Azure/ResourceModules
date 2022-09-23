@@ -12,10 +12,10 @@
         [Hashtable] $ModuleData,
 
         [Parameter(Mandatory = $true)]
-        [string] $SpecificationFilePath,
+        [string] $JSONFilePath,
 
         [Parameter(Mandatory = $true)]
-        [string] $SpecificationUrl
+        [string] $JSONKeyPath
     )
 
     begin {
@@ -38,18 +38,23 @@
         #############################
 
         $moduleTemplateContentInputObject = @{
+            ProviderNamespace        = $ProviderNamespace
+            ResourceType             = $ResourceType
             ModuleData               = $ModuleData
+            JSONFilePath             = $JSONFilePath
+            JSONKeyPath              = $JSONKeyPath
+
             # Extension data
             # --------------
             # Get diagnostic data
             # TODO: Clarify: Might need to be always 'All metrics' if any metric exists
             $diagnosticOptions       = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
             # Get Endpoint data
-            $supportsPrivateEndpoint = Get-SupportsPrivateEndpoint -SpecificationFilePath $SpecificationFilePath
+            $supportsPrivateEndpoint = Get-SupportsPrivateEndpoint -JSONFilePath $JSONFilePath
             ## Get RBAC data
             $supportedRoles          = Get-RoleAssignmentList -ProviderNamespace $ProviderNamespace
             ## Get Locks data
-            $supportsLock            = Get-SupportsLock -SpecificationUrl $SpecificationUrl ## Get Locks data
+            $supportsLock            = Get-SupportsLock -JSONKeyPath $JSONKeyPath ## Get Locks data
         }
         Set-ModuleTemplate @moduleTemplateContentInputObject
 
