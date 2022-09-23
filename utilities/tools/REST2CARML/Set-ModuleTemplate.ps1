@@ -254,7 +254,25 @@ function Get-IntentSpaces {
     return ' ' * 2 * $($level + 1)
 }
 
-function Set-ModuleTempalate {
+function Get-TargetScope {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $JSONFilePath
+    )
+
+    switch ($JSONFilePath) {
+        { $PSItem -like '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/*' } { return 'resourceGroup' }
+        { $PSItem -like '/subscriptions/{subscriptionId}/*' } { return 'subscription' }
+        { $PSItem -like 'providers/Microsoft.Management/managementGroups/*' } { return 'managementGroup' }
+    }
+    Default {
+        throw 'Unable to detect target scope'
+    }
+}
+
+function Set-ModuleTemplate {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
@@ -291,22 +309,50 @@ function Set-ModuleTempalate {
         ##  Create template parameters section  ##
         ##########################################
 
-        $templateContent = ''
+        $targetScope = Get-TargetScope -JSONKeyPath $JSONKeyPath
 
-        # Parameters header comment
-        $templateContent += Get-SectionDivider -SectionName 'Parameters'
+        $templateContent = @(
+            "targetScope = '{0}'" -f $targetScope
+            ''
+            '// ============== //'
+            '//   Parameters   //'
+            '// ============== //'
+            ''
+        )
+
+        # # Parameters header comment
+        # $templateContent += Get-SectionDivider -SectionName 'Parameters'
+
+        # TODO : Add extension parameters if applicable
 
         # Add parameters
         foreach ($parameter in $ModuleData) {
             $templateContent += Get-ModuleParameter -ParameterData $parameter
         }
 
+        #########################################
+        ##  Create template variables section  ##
+        #########################################
+
+        # TODO : Add variables if applicable
+
         ###########################################
         ##  Create template deployments section  ##
         ###########################################
 
-        # Deployments header comment
-        $templateContent += Get-SectionDivider -SectionName 'Deployments'
+
+        $templateContent += @(
+            ''
+            '// =============== //'
+            '//   Deployments   //'
+            '// =============== //'
+            ''
+        )
+
+        # TODO: Add telemetry
+
+        # # Deployments header comment
+        # $templateContent += Get-SectionDivider -SectionName 'Deployments'
 
         # Deployment resource declaration line
         $templateContent += Get-DeploymentResourceFirstLine -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -JSONFilePath $JSONFilePath
@@ -317,6 +363,9 @@ function Set-ModuleTempalate {
         # Deployment resource finising line
         # to do
         $templateContent += Get-DeploymentResourceLastLine
+
+        # TODO: Add exension resources if applicable
+        # TODO: Add children if applicable
 
         #######################################
         ##  Create template outputs section  ##
@@ -355,5 +404,5 @@ function Set-ModuleTempalate {
 # $resolvedModuleData = Resolve-ModuleData -jsonFilePath $jsonFilePath -jsonKeyPath $jsonKeyPath
 # $resolvedModuleData | ConvertTo-Json | Out-String | Out-File -FilePath (Join-Path $PSScriptRoot 'ModuleData.json')
 
-# $templateContent = Set-ModuleTempalate -ProviderNamespace $providerNamespace -ResourceType $resourceType -ModuleData $resolvedModuleData -JSONFilePath $jsonFilePath -JSONKeyPath $jsonKeyPath
+# $templateContent = Set-ModuleTemplate -ProviderNamespace $providerNamespace -ResourceType $resourceType -ModuleData $resolvedModuleData -JSONFilePath $jsonFilePath -JSONKeyPath $jsonKeyPath
 # $templateContent | Out-File -FilePath (Join-Path $PSScriptRoot 'deploy.bicep')

@@ -34,15 +34,15 @@ param conditionVersion string = '2.0'
 param delegatedManagedIdentityResourceId string = ''
 
 var builtInRoleNames = {
-
+  <<roleDefinitions>>
 }
 
-resource <<resourceType>> '<<providerNamespace>>/<<resourceType>>@<<apiVersion>>' existing = {
+resource <<resourceTypeSingular>> '<<providerNamespace>>/<<resourceType>>@<<apiVersion>>' existing = {
   name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
-  name: guid(<<resourceType>>.id, principalId, roleDefinitionIdOrName)
+  name: guid(<<resourceTypeSingular>>.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
@@ -52,5 +52,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
     conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
   }
-  scope: <<resourceType>>
+  scope: <<resourceTypeSingular>>
 }]

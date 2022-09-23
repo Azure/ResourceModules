@@ -99,9 +99,23 @@ function Set-ModuleFileStructure {
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent
+
+        # Load used functions
+        . (Join-Path $PSScriptRoot 'Set-TokenValuesInArray.ps1')
     }
 
     process {
+
+        # Tokens to replace in files
+        $tokens = @{
+            providerNamespace            = $ProviderNamespace
+            shortProviderNamespacePascal = ($ProviderNamespace -split '\.')[ - 1].substring(0, 1).toupper() + ($ProviderNamespace -split '\.')[ - 1].substring(1)
+            shortProviderNamespaceLower  = ($ProviderNamespace -split '\.')[ - 1].ToLower()
+            resourceType                 = $ResourceType
+            resourceTypePascal           = $ResourceType.substring(0, 1).toupper() + $ResourceType.substring(1)
+            resourceTypeLower            = $ResourceType.ToLower()
+        }
+
         # Create folders
         # --------------
         $expectedModuleFolderPath = Join-Path $repoRootPath 'modules' $ProviderNamespace $ResourceType
@@ -175,7 +189,7 @@ function Set-ModuleFileStructure {
         $automationFileName = ('ms.{0}.{1}.yml' -f ($ProviderNamespace -split '\.')[-1], $ResourceType).ToLower()
         $gitHubWorkflowYAMLPath = Join-Path $repoRootPath '.github' 'workflows' $automationFileName
         $workflowFileContent = Get-Content (Join-Path $PSScriptRoot 'src' 'gitHubWorkflowTemplateFile.yml') -Raw
-        $workflowFileContent = Format-AutomationTemplate -Content $workflowFileContent -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+        $pipelineFileContent = Set-TokenValuesInArray -Content $pipelineFileContent -Tokens $tokens
         if (-not (Test-Path $gitHubWorkflowYAMLPath)) {
             if ($PSCmdlet.ShouldProcess("GitHub Workflow file [$automationFileName]", 'Create')) {
                 $null = New-Item $gitHubWorkflowYAMLPath -ItemType 'File' -Value $workflowFileContent.TrimEnd()
@@ -189,7 +203,7 @@ function Set-ModuleFileStructure {
         ## Azure DevOps
         $azureDevOpsPipelineYAMLPath = Join-Path $repoRootPath '.azuredevops' 'modulePipelines' $automationFileName
         $pipelineFileContent = Get-Content (Join-Path $PSScriptRoot 'src' 'azureDevOpsPipelineTemplateFile.yml') -Raw
-        $pipelineFileContent = Format-AutomationTemplate -Content $pipelineFileContent -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+        $pipelineFileContent = Set-TokenValuesInArray -Content $pipelineFileContent -Tokens $tokens
         if (-not (Test-Path $azureDevOpsPipelineYAMLPath)) {
             if ($PSCmdlet.ShouldProcess("GitHub Workflow file [$automationFileName]", 'Create')) {
                 $null = New-Item $azureDevOpsPipelineYAMLPath -ItemType 'File' -Value $pipelineFileContent.TrimEnd()

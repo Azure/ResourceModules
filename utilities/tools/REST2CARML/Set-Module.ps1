@@ -22,39 +22,67 @@
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent
-        $templatePath = Join-Path $repoRootPath 'modules' $ProviderNamespace $ResourceType 'deploy.bicep'
+        $moduleRootPath = Join-Path $repoRootPath 'modules' $ProviderNamespace $ResourceType
+        $templatePath = Join-Path $moduleRootPath 'deploy.bicep'
+
         # Load used functions
-        . (Join-Path $PSScriptRoot 'extension' 'Get-SupportsLock.ps1')
-        . (Join-Path $PSScriptRoot 'extension' 'Get-RoleAssignmentList.ps1')
-        . (Join-Path $PSScriptRoot 'extension' 'Get-DiagnosticOptionsList.ps1')
-        . (Join-Path $PSScriptRoot 'extension' 'Get-SupportsPrivateEndpoint.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Add-DiagnosticModuleData')
+        . (Join-Path $PSScriptRoot 'extension' 'Add-RoleAssignmentModuleData.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Add-PrivateEndpointModuleData.ps1')
+        . (Join-Path $PSScriptRoot 'extension' 'Add-LockModuleData.ps1')
         . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
     }
 
     process {
+
+        #################################
+        ##   Collect additional data   ##
+        #################################
+
+        # Set diagnostic data
+        $diagInputObject = @{
+            ProviderNamespace = $ProviderNamespace
+            ResourceType      = $ResourceType
+            ModuleData        = $ModuleData
+        }
+        Set-DiagnosticModuleData @diagInputObject
+
+        # Set Endpoint data
+        $endpInputObject = @{
+            JSONFilePath = $JSONFilePath
+            ResourceType = $ResourceType
+            ModuleData   = $ModuleData
+        }
+        Set-PrivateEndpointModuleData @endpInputObject
+
+        ## Set RBAC data
+        $rbacInputObject = @{
+            ProviderNamespace = $ProviderNamespace
+            ResourceType      = $ResourceType
+            ModuleData        = $ModuleData
+            ModuleRootPath    = $moduleRootPath
+            ServiceApiVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
+        }
+        Set-RoleAssignmentModuleData @rbacInputObject
+
+        ## Set Locks data
+        $lockInputObject = @{
+            JSONFilePath = $JSONFilePath
+            ResourceType = $ResourceType
+            ModuleData   = $ModuleData
+        }
+        Set-LockModuleData @lockInputObject
 
         #############################
         ##   Update Template File   #
         #############################
 
         $moduleTemplateContentInputObject = @{
-            ProviderNamespace        = $ProviderNamespace
-            ResourceType             = $ResourceType
-            ModuleData               = $ModuleData
-            JSONFilePath             = $JSONFilePath
-            JSONKeyPath              = $JSONKeyPath
-
-            # Extension data
-            # --------------
-            # Get diagnostic data
-            # TODO: Clarify: Might need to be always 'All metrics' if any metric exists
-            $diagnosticOptions       = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
-            # Get Endpoint data
-            $supportsPrivateEndpoint = Get-SupportsPrivateEndpoint -JSONFilePath $JSONFilePath
-            ## Get RBAC data
-            $supportedRoles          = Get-RoleAssignmentList -ProviderNamespace $ProviderNamespace
-            ## Get Locks data
-            $supportsLock            = Get-SupportsLock -JSONKeyPath $JSONKeyPath ## Get Locks data
+            ProviderNamespace = $ProviderNamespace
+            ResourceType      = $ResourceType
+            ModuleData        = $ModuleData
+            JSONFilePath      = $JSONFilePath
+            JSONKeyPath       = $JSONKeyPath
         }
         Set-ModuleTemplate @moduleTemplateContentInputObject
 

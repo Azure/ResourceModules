@@ -5,11 +5,11 @@ Check if the given service specification supports private endpoints
 .DESCRIPTION
 Check if the given service specification supports private endpoints
 
-.PARAMETER SpecificationFilePath
+.PARAMETER JSONFilePath
 Mandatory. The file path to the service specification to check
 
 .EXAMPLE
-Get-SupportsPrivateEndpoint -SpecificationFilePath './resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json'
+Get-SupportsPrivateEndpoint -JSONFilePath './resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json'
 
 Check the Key Vault service specification for any Private Endpoint references
 #>
@@ -19,7 +19,7 @@ function Get-SupportsPrivateEndpoint {
     [OutputType('System.Boolean')]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $SpecificationFilePath
+        [string] $JSONFilePath
     )
 
     begin {
@@ -28,7 +28,7 @@ function Get-SupportsPrivateEndpoint {
 
     process {
 
-        $specContent = Get-Content -Path $SpecificationFilePath -Raw | ConvertFrom-Json -AsHashtable
+        $specContent = Get-Content -Path $JSONFilePath -Raw | ConvertFrom-Json -AsHashtable
 
         $relevantPaths = $specContent.paths.Keys | Where-Object {
             ($_ -replace '\\', '/') -like '*/privateLinkResources*' -or

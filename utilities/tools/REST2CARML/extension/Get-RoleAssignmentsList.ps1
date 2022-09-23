@@ -34,10 +34,10 @@ function Get-RoleAssignmentsList {
         #################
         $roleDefinitions = Get-AzRoleDefinition | Where-Object { !$_.IsCustom -and ($_.Actions -match $ProviderNamespace -or $_.DataActions -match $ProviderNamespace -or $_.Actions -like '`**') } | Select-Object Name, Id | ConvertTo-Json | ConvertFrom-Json
         $resBicep = [System.Collections.ArrayList]@()
-        foreach ($role in $roleDefinitions) {
+        foreach ($role in $roleDefinitions | Sort-Object -Property name) {
             $roleName = $role.Name
             $roleId = $role.Id
-            $resBicep += "'$roleName': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','$roleId')"
+            $resBicep += "'$roleName': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '$roleId')"
         }
 
         return $resBicep

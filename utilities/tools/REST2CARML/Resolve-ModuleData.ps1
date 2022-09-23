@@ -297,5 +297,11 @@ function Resolve-ModuleData {
         $filteredList += $templateData | Where-Object { $_.level -eq $level } | Sort-Object name -Unique
     }
 
-    return $filteredList
+    return @{
+        parameters           = $filteredList
+        additionalParameters = @()
+        resources            = @()
+        variables            = @()
+        outputs              = @()
+    }
 }
