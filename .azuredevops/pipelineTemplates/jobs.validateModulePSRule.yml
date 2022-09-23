@@ -203,6 +203,7 @@ jobs:
           inputPath: '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)'
           outputFormat: NUnit3 # Save results to an NUnit report.
           outputPath: '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)-output.xml' # Write NUnit report to '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)-output.xml'.
+        errorActionPreference: continue
 
       # # Run analysis from JSON files using the `PSRule.Rules.Azure` module and custom rules from `.ps-rule/`.
       # - task: ps-rule-assert@0
@@ -221,7 +222,8 @@ jobs:
           testRunTitle: 'PSRule' # The title to use for the test run.
           testRunner: NUnit # Import report using the NUnit format.
           testResultsFiles: '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)-output.xml' # The previously saved NUnit report.
-
+        continueOnError: false
+        condition: succeededOrFailed()
 
       # - task: AzurePowerShell@5
       #   displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
