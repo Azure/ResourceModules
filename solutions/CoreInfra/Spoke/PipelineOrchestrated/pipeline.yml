@@ -87,6 +87,15 @@ stages:
           whatif: '${{ parameters.whatif }}'
           checkoutRepositories:
             - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: recoveryServices
+          displayName: 'Recovery Services'
+          modulePath: '/modules/Microsoft.RecoveryServices/vaults/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/recoveryServices/parameters.json'
+          whatif: '${{ parameters.whatif }}'
+          checkoutRepositories:
+            - self
 
   - stage:
     displayName: Deploy
@@ -148,5 +157,13 @@ stages:
           displayName: 'User Assigned Identities'
           modulePath: '/modules/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/userAssignedIdentities/parameters.json'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: recoveryServices
+          displayName: 'Recovery Services'
+          modulePath: '/modules/Microsoft.RecoveryServices/vaults/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/recoveryServices/parameters.json'
           checkoutRepositories:
             - self

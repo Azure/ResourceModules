@@ -5,9 +5,9 @@
         "name": {
             "value": "hack5-az-rsv-s-001"
         },
-        "lock": {
-            "value": "CanNotDelete"
-        },
+        // "lock": {
+        //     "value": "CanNotDelete"
+        // },
         "backupConfig": {
             "value": {
                 "enhancedSecurityState": "Disabled",
@@ -252,50 +252,50 @@
                 "crossRegionRestoreFlag": true
             }
         },
-        "privateEndpoints": {
-            "value": [
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "AzureSiteRecovery",
-                    "privateDnsZoneGroup": {
-                        "privateDNSResourceIds": [
-                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.siterecovery.windowsazure.com"
-                        ]
-                    }
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
+        // "privateEndpoints": {
+        //     "value": [
+        //         {
+        //             "subnetResourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+        //             "service": "AzureSiteRecovery",
+        //             "privateDnsZoneGroup": {
+        //                 "privateDNSResourceIds": [
+        //                     "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Network/privateDnsZones/privatelink.siterecovery.windowsazure.com"
+        //                 ]
+        //             }
+        //         }
+        //     ]
+        // },
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Reader",
+        //             "principalIds": [
+        //                 "<<deploymentSpId>>"
+        //             ]
+        //         }
+        //     ]
+        // },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.Storage/storageAccounts/sahacktopic5spkdiag001"
         },
         "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/solutions-ne-spoke-rg/providers/microsoft.operationalinsights/workspaces/prfx-spk-ne-log-001"
         },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
+        // "diagnosticEventHubAuthorizationRuleId": {
+        //     "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        // },
+        // "diagnosticEventHubName": {
+        //     "value": "adp-<<namePrefix>>-az-evh-x-001"
+        // },
         "systemAssignedIdentity": {
             "value": true
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+                "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/solutions-ne-spoke-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/hacktopic5-az-msi-spk-001": {}
             }
         }
     }
