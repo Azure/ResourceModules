@@ -140,7 +140,7 @@ jobs:
             } else {
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
-              $workingPath = '$(System.DefaultWorkingDirectory)'
+              $workingPath = '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' #Because condition is not working outside of checkout, this needs to be also modified
             }
             Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
             Write-Output "##vso[task.setvariable variable=workingPath]$workingPath"
