@@ -9,9 +9,11 @@ stages:
     displayName: Static validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+
+  - stage: PSRuleValidation
+    displayName: PSRule validation
+    jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePSRule.yml
-        # parameters:
-        #   templateFilePath: '$(modulePath)/deploy.bicep' #$moduleTestFilePath
 
   - stage: deployment
     displayName: Deployment validation
