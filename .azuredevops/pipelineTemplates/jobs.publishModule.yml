@@ -36,6 +36,7 @@
 ##   | bicepRegistryName               | '$(bicepRegistryName)'               | Required to publish to the private bicep registry. Name of the hosting container registry               | 'adpsxxazacrx001'                 |
 ##   | bicepRegistryRGName             | '$(bicepRegistryRGName)'             | Required to publish to the private bicep registry. Resource group of the hosting container registry     | 'artifacts-rg'                    |
 ##   | bicepRegistryRgLocation         | '$(bicepRegistryRgLocation)'         | Required to publish to the private bicep registry. Location of the RG of the hosting container registry | 'West Europe'                     |
+##   | bicepRegistryPublic             | '$(bicepRegistryPublic)'             | Set to true if you would like to enable anonymous (public) access                                       | 'true'                            |
 ##   | vstsOrganizationUri             | '$(vstsOrganizationUri)'             | Required to publish to a DevOps feed. Name of the organization hosting the artifacts feed.              | 'servicescode'                    |
 ##   | azurePowerShellVersion          | '$(azurePowerShellVersion)'          | Used for configuring the Azure PowerShell Version, one of the example values.                           | 'latestVersion' or 'OtherVersion' |
 ##   | preferredAzurePowerShellVersion | '$(preferredAzurePowerShellVersion)' | Used for configuring the Azure PowerShell Version, either an empty string or specific version.          | '4.4.0'                           |
@@ -75,6 +76,7 @@ parameters:
   bicepRegistryName: '$(bicepRegistryName)'
   bicepRegistryRGName: '$(bicepRegistryRGName)'
   bicepRegistryRgLocation: '$(bicepRegistryRgLocation)'
+  bicepRegistryPublic: '$(bicepRegistryPublic)'
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
@@ -304,6 +306,7 @@ jobs:
                 BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
+                bicepRegistryPublic     = '${{ parameters.bicepRegistryPublic }}'
                 ModuleVersion           = $ModuleToPublish.Version
               }
 
