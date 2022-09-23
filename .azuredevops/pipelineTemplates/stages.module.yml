@@ -18,6 +18,14 @@ stages:
 
   - stage: deployment
     displayName: Deployment validation
+    dependsOn:
+      - validation
+      - PSRuleValidation
+    condition: |
+      and
+      (
+        eq(dependencies.validation, 'Succeeded')
+      )
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
