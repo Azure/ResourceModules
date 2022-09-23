@@ -99,10 +99,7 @@ jobs:
             Write-Host ("${{ parameters.publishWikiToAzureDevOps }}")
             $publishWikiToAzureDevOps = "${{ parameters.publishWikiToAzureDevOps }}"
             Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$publishWikiToAzureDevOps"
-      - task: Bash@3 #DEBUG
-        inputs:
-          targetType: 'inline'
-          script: 'env | sort'
+
       # [Checkout Repositories] task(s)
       #--------------------------------
       - checkout: self
@@ -139,15 +136,19 @@ jobs:
             if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0 -or ("${{ parameters.publishWikiToAzureDevOps }}" -eq 'true')) {
               Write-Verbose "Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
-              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
+              $workingPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 'carml'
             } else {
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
-              $workingPath = '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' #Because condition is not working outside of checkout, this needs to be also modified
+              $workingPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 'carml'
+              #$workingPath = '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' #Because condition is not working outside of checkout, this needs to be also modified
             }
             Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
             Write-Output "##vso[task.setvariable variable=workingPath]$workingPath"
-
+      - task: Bash@3 #DEBUG
+        inputs:
+          targetType: 'inline'
+          script: 'env | sort'
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
