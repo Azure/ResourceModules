@@ -67,7 +67,7 @@ parameters:
 jobs:
   - template: /.azuredevops/pipelineTemplates/jobs.getModuleTestFiles.yml
   - job: deploy
-    displayName: 'Deploying ' # Auto-populated
+    displayName: 'Run PSRule on ' # Auto-populated
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
