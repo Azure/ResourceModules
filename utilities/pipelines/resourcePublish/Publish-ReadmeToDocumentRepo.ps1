@@ -51,29 +51,8 @@ function Publish-ReadmeToDocumentRepo {
     Invoke-Git -Command 'add .'
     $msg = 'Wiki updated by pipeline'
     Invoke-Git -Command "commit -m `"$msg`"" -IgnoreExitCode
-    Invoke-Git -Command 'push'
-    <#
-    .SYNOPSIS
-    ##
+    Invoke-Git -Command 'push' #needs Contributor permissions in ADO Project Wiki
 
-    .DESCRIPTION
-    Long description
-
-    .PARAMETER ReadMeFilePath
-    Parameter description
-
-    .PARAMETER ModuleVersion
-    Parameter description
-
-    .PARAMETER wikiPath
-    Parameter description
-
-    .EXAMPLE
-    An example
-
-    .NOTES
-    General notes
-    #>
 }
 
 function Invoke-Git {
