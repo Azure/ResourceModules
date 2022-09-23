@@ -112,8 +112,7 @@ jobs:
             } else {
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
-              $workingPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 'carml'
-              #$workingPath = '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' #Because condition is not working outside of checkout, this needs to be also modified
+              $workingPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 'carml' #Because ADO doesn't use default path even condition for multi repo is false we have to change path
               Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$false"
             }
             Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
@@ -358,6 +357,8 @@ jobs:
             # Get the modified child resources
             $ReadmesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
+            $wikiPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 'wiki'
+
             # Publish the modified child resources
             foreach ($ReadmeToPublish in $ReadmesToPublish) {
               $RelPath = (($ReadmeToPublish.ReadmeFilePath).Split('/modules/')[-1]).Split('/readme.')[0]
@@ -369,6 +370,7 @@ jobs:
                 # BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 # BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
                 ModuleVersion             = $ReadmeToPublish.Version
+                wikiPath                  = $wikiPath
               }
 
               Write-Verbose "Invoke Publish-ReadmeToDocumentRepo with" -Verbose
