@@ -1,4 +1,29 @@
-﻿function Set-ModuleTemplate {
+﻿<#
+.SYNOPSIS
+Update the module's primary template (deploy.bicep) as per the provided module data.
+
+.DESCRIPTION
+Update the module's primary template (deploy.bicep) as per the provided module data.
+
+.PARAMETER ProviderNamespace
+Mandatory. The ProviderNamespace to update the template for.
+
+.PARAMETER ResourceType
+Mandatory. The ResourceType to update the template for.
+
+.PARAMETER ModuleData
+Mandatory. The module data (e.g. parameters) to add to the template.
+
+.PARAMETER JSONFilePath
+Mandatory. The service specification file to process.
+
+.PARAMETER JSONKeyPath
+Mandatory. The API Path in the JSON specification file to process
+
+.EXAMPLE
+Set-ModuleTemplate
+#>
+function Set-ModuleTemplate {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
