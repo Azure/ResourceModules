@@ -33,8 +33,6 @@ function Publish-ReadmeToDocumentRepo {
     )
 
     $renamedFile = Set-NewReadmeVersion -Path $ReadMeFilePath -Version $ModuleVersion
-    Get-Location
-    Get-ChildItem
     #####
     Set-Location $wikiPath
 

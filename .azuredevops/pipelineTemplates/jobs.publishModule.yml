@@ -336,6 +336,7 @@ jobs:
           eq(variables['publishWikiToAzureDevOps'], true),
           succeeded()
           )
+          # ONLY IN MAIN BRANCH
         inputs:
           targetType: inline
           pwsh: true
