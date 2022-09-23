@@ -203,7 +203,6 @@ jobs:
           inputPath: '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)'
           outputFormat: NUnit3 # Save results to an NUnit report.
           outputPath: '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)-output.xml' # Write NUnit report to '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)-output.xml'.
-        errorActionPreference: continue
 
       # # Run analysis from JSON files using the `PSRule.Rules.Azure` module and custom rules from `.ps-rule/`.
       # - task: ps-rule-assert@0
