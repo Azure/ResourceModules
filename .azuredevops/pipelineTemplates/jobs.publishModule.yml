@@ -103,12 +103,8 @@ jobs:
       - checkout: self
         fetchDepth: 0
      # - ${{ if eq(parameters.publishWikiToAzureDevOps, true) }}:
-      - checkout: git://$(SYSTEM.TEAMPROJECT)/$(SYSTEM.TEAMPROJECT).wiki # SYSTEM_TEAMPROJECT
-        # condition: and(
-        #   eq(parameters.publishWikiToAzureDevOps, true),
-        #   succeeded()
-        #   )
-        condition: and(succeeded(), eq('${{ parameters.publishWikiToAzureDevOps }}', 'true'))
+      - checkout: git://$(SYSTEM.TEAMPROJECT)/$(SYSTEM.TEAMPROJECT).wiki
+        condition: eq('${{ parameters.publishWikiToAzureDevOps }}', 'true')
         fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
         path: wiki
         persistCredentials: true
