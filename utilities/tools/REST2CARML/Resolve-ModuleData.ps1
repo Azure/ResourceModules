@@ -67,59 +67,80 @@ function Set-OptionalParameter {
         $TargetObject['pattern'] = $SourceParameterObject.pattern
     }
 
+    # Secure
+    if ($SourceParameterObject.Keys -contains 'x-ms-secret') {
+        $TargetObject['secure'] = $SourceParameterObject.'x-ms-secret'
+    }
+
     return $TargetObject
 }
-#endregion
 
 <#
 .SYNOPSIS
-Extract the outer (top-level) and inner (property-level) parameters for a given API Path
+Extract all parameters from the given API spec parameter root
 
 .DESCRIPTION
-Extract the outer (top-level) and inner (property-level) parameters for a given API Path
+Extract all parameters from the given API spec parameter root (e.g., PUT parameters)
 
-.PARAMETER JSONFilePath
-Mandatory. The service specification file to process.
+.PARAMETER SpecificationData
+Mandatory. The source content to crawl for data.
+
+.PARAMETER RelevantParamRoot
+Mandatory. The array of root parameters to process (e.g., PUT parameters).
 
 .PARAMETER JSONKeyPath
 Mandatory. The API Path in the JSON specification file to process
 
-.EXAMPLE
-Resolve-ModuleData -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -JSONKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+.PARAMETER ResourceType
+Mandatory. The Resource Type to investigate
 
-Process the API path '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' in file 'keyvault.json'
+.EXAMPLE
+Get-ParametersFromRoot -SpecificationData @{ paths = @(...); definitions = @{...} } -RelevantParamRoot @(@{ $ref: "../(...)"}) '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' -ResourceType 'vaults'
+
+Fetch all parameters (e.g., PUT) from the KeyVault REST path.
 #>
-function Resolve-ModuleData {
+function Get-ParametersFromRoot {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $JSONFilePath,
+        [hashtable] $SpecificationData,
 
         [Parameter(Mandatory = $true)]
-        [string] $JSONKeyPath
+        [array] $RelevantParamRoot,
+
+        [Parameter(Mandatory = $true)]
+        [string] $JSONKeyPath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $ResourceType
     )
 
-
-    # Collect data
-    # ------------
-    $specificationData = Get-Content -Path $JSONFilePath -Raw | ConvertFrom-Json -AsHashtable
     $definitions = $specificationData.definitions
     $specParameters = $specificationData.parameters
 
-    $putParameters = $specificationData.paths[$JSONKeyPath].put.parameters
-    $matchingPathObjectParametersRef = ($putParameters | Where-Object { $_.name -eq 'parameters' }).schema.'$ref'
-    $outerParameters = $definitions[(Split-Path $matchingPathObjectParametersRef -Leaf)]
+    $templateData = @()
 
-    $templateData = [System.Collections.ArrayList]@()
+    $matchingPathObjectParametersRef = ($relevantParamRoot | Where-Object { $_.in -eq 'body' }).schema.'$ref'
+
+    if (-not $matchingPathObjectParametersRef) {
+        # If 'parameters' does not exist (as the API isn't consistent), we try the resource type instead
+        $matchingPathObjectParametersRef = ($relevantParamRoot | Where-Object { $_.name -eq $ResourceType }).schema.'$ref'
+    }
+    if (-not $matchingPathObjectParametersRef) {
+        # If even that doesn't exist (as the API is even more inconsistent), let's try a 'singular' resource type
+        $matchingPathObjectParametersRef = ($relevantParamRoot | Where-Object { $_.name -eq ($ResourceType.Substring(0, $ResourceType.Length - 1)) }).schema.'$ref'
+    }
+
+    $outerParameters = $definitions[(Split-Path $matchingPathObjectParametersRef -Leaf)]
 
     # Handle resource name
     # --------------------
     # Note: The name can be specified in different locations like the PUT statement, but also in the spec's 'parameters' object as a reference
     # Case: The name in the url is also a parameter of the PUT statement
     $pathServiceName = (Split-Path $JSONKeyPath -Leaf) -replace '{|}', ''
-    if ($putParameters.name -contains $pathServiceName) {
-        $param = $putParameters | Where-Object { $_.name -eq $pathServiceName }
+    if ($relevantParamRoot.name -contains $pathServiceName) {
+        $param = $relevantParamRoot | Where-Object { $_.name -eq $pathServiceName }
 
         $parameterObject = @{
             level       = 0
@@ -133,7 +154,7 @@ function Resolve-ModuleData {
     } else {
         # Case: The name is a ref in the spec's 'parameters' object. E.g., { "$ref": "#/parameters/BlobServicesName" }
         # For this, we need to find the correct ref, as there can be multiple
-        $nonDefaultParameter = $putParameters.'$ref' | Where-Object { $_ -like '#/parameters/*' } | Where-Object { $specParameters[(Split-Path $_ -Leaf)].name -eq $pathServiceName }
+        $nonDefaultParameter = $relevantParamRoot.'$ref' | Where-Object { $_ -like '#/parameters/*' } | Where-Object { $specParameters[(Split-Path $_ -Leaf)].name -eq $pathServiceName }
         if ($nonDefaultParameter) {
             $param = $specParameters[(Split-Path $nonDefaultParameter -Leaf)]
 
@@ -168,6 +189,22 @@ function Resolve-ModuleData {
         $templateData += $parameterObject
     }
 
+    # Special case: Location
+    # The location parameter is not explicitely documented at this place (even though it should). It is however referenced as 'required' and must be included
+    if ($outerParameters.required -contains 'location') {
+        $parameterObject = @{
+            level       = 0
+            name        = 'location'
+            type        = 'string'
+            description = 'Location for all Resources.'
+            required    = $false
+            default     = ($JSONKeyPath -like '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/*') ? 'resourceGroup().location' : 'deployment().location'
+        }
+
+        # param location string = resourceGroup().location
+        $templateData += $parameterObject
+    }
+
     # Process inner properties
     # ------------------------
     $innerRef = $outerParameters.properties.properties.'$ref'
@@ -189,4 +226,76 @@ function Resolve-ModuleData {
     }
 
     return $templateData
+}
+#endregion
+
+<#
+.SYNOPSIS
+Extract the outer (top-level) and inner (property-level) parameters for a given API Path
+
+.DESCRIPTION
+Extract the outer (top-level) and inner (property-level) parameters for a given API Path
+
+.PARAMETER JSONFilePath
+Mandatory. The service specification file to process.
+
+.PARAMETER JSONKeyPath
+Mandatory. The API Path in the JSON specification file to process
+
+.PARAMETER ResourceType
+Mandatory. The Resource Type to investigate
+
+.EXAMPLE
+Resolve-ModuleData -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -JSONKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' -ResourceType 'vaults'
+
+Process the API path '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' in file 'keyvault.json'
+#>
+function Resolve-ModuleData {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $JSONFilePath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $JSONKeyPath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $ResourceType
+    )
+
+    # Output object
+    $templateData = [System.Collections.ArrayList]@()
+
+    # Collect data
+    # ------------
+    $specificationData = Get-Content -Path $JSONFilePath -Raw | ConvertFrom-Json -AsHashtable
+
+    # Get PUT parameters
+    $putParametersInputObject = @{
+        SpecificationData = $SpecificationData
+        RelevantParamRoot = $specificationData.paths[$JSONKeyPath].put.parameters
+        JSONKeyPath       = $JSONKeyPath
+        ResourceType      = $ResourceType
+    }
+    $templateData += Get-ParametersFromRoot @putParametersInputObject
+
+    # Get PATCH parameters (as the REST command actually always is Create or Update)
+    if ($specificationData.paths[$JSONKeyPath].patch) {
+        $putParametersInputObject = @{
+            SpecificationData = $SpecificationData
+            RelevantParamRoot = $specificationData.paths[$JSONKeyPath].patch.parameters
+            JSONKeyPath       = $JSONKeyPath
+            ResourceType      = $ResourceType
+        }
+        $templateData += Get-ParametersFromRoot @putParametersInputObject
+    }
+
+    # Filter duplicates
+    $filteredList = @()
+    foreach ($level in $templateData.Level | Select-Object -Unique) {
+        $filteredList += $templateData | Where-Object { $_.level -eq $level } | Sort-Object name -Unique
+    }
+
+    return $filteredList
 }

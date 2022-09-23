@@ -33,29 +33,25 @@
 
     process {
 
-        #################################
-        ##   Collect additional data   ##
-        #################################
-
-        # Get diagnostic data
-        # TODO: Clarify: Might need to be always 'All metrics' if any metric exists
-        $diagnosticOptions = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
-
-        # Get Endpoint data
-        $supportsPrivateEndpoint = Get-SupportsPrivateEndpoint -SpecificationFilePath $SpecificationFilePath
-
-        ## Get RBAC data
-        $supportedRoles = Get-RoleAssignmentList -ProviderNamespace $ProviderNamespace
-
-        ## Get Locks data
-        $supportsLock = Get-SupportsLock -SpecificationUrl $SpecificationUrl
-
         #############################
         ##   Update Template File   #
         #############################
 
-        # TODO: Update template file
-        Set-ModuleTemplate
+        $moduleTemplateContentInputObject = @{
+            ModuleData               = $ModuleData
+            # Extension data
+            # --------------
+            # Get diagnostic data
+            # TODO: Clarify: Might need to be always 'All metrics' if any metric exists
+            $diagnosticOptions       = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+            # Get Endpoint data
+            $supportsPrivateEndpoint = Get-SupportsPrivateEndpoint -SpecificationFilePath $SpecificationFilePath
+            ## Get RBAC data
+            $supportedRoles          = Get-RoleAssignmentList -ProviderNamespace $ProviderNamespace
+            ## Get Locks data
+            $supportsLock            = Get-SupportsLock -SpecificationUrl $SpecificationUrl ## Get Locks data
+        }
+        Set-ModuleTemplate @moduleTemplateContentInputObject
 
         #############################
         ##   Update Module ReadMe   #

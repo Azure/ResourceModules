@@ -98,12 +98,13 @@ function Invoke-REST2CARML {
                 IncludePreview    = $IncludePreview
             }
             $pathData = Get-ServiceSpecPathData @getPathDataInputObject
-            $moduleData = Resolve-ModuleData -JSONFilePath $pathData.jsonFilePath -JSONKeyPath $pathData.jsonKeyPath
+            $moduleData = Resolve-ModuleData -JSONFilePath $pathData.jsonFilePath -JSONKeyPath $pathData.jsonKeyPath -ResourceType $ResourceType
 
             ###########################################
             ##   Generate initial module structure   ##
             ###########################################
             if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
+                # TODO: Consider child modules. BUT be aware that pipelines are only generated for the top-level resource
                 Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
             }
 
@@ -139,4 +140,5 @@ function Invoke-REST2CARML {
     }
 }
 
-Invoke-REST2CARML -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts' -Verbose -KeepArtifacts
+# Invoke-REST2CARML -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts' -Verbose -KeepArtifacts
+Invoke-REST2CARML -ProviderNamespace 'Microsoft.AVS' -ResourceType 'privateClouds' -Verbose -KeepArtifacts
