@@ -1,6 +1,6 @@
 function Set-RoleAssignmentsModuleData {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $true)]
         [string] $ProviderNamespace,
@@ -83,9 +83,13 @@ function Set-RoleAssignmentsModuleData {
         # Set content
         $roleTemplateFilePath = Join-Path $ModuleRootPath '.bicep' 'nested_roleAssignments.bicep'
         if (-not (Test-Path $roleTemplateFilePath)) {
-            New-Item -Path $roleTemplateFilePath -ItemType 'File' -Value $fileContent
+            if ($PSCmdlet.ShouldProcess(('RBAC file [{0}].' -f (Split-Path $roleTemplateFilePath -Leaf)), 'Create')) {
+                New-Item -Path $roleTemplateFilePath -ItemType 'File' -Value $fileContent
+            }
         } else {
-            Set-Content -Path $roleTemplateFilePath -Value $fileContent
+            if ($PSCmdlet.ShouldProcess(('RBAC file [{0}].' -f (Split-Path $roleTemplateFilePath -Leaf)), 'Update')) {
+                Set-Content -Path $roleTemplateFilePath -Value $fileContent
+            }
         }
     }
 
