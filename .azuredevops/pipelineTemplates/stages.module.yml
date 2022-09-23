@@ -4,13 +4,6 @@ parameters:
   templateFilePath: ''
   defaultJobTimeoutInMinutes: 120
 
-resources:
-  repositories:
-    - repository: wiki
-      type: git
-      name: 'CARML.wiki'
-      ref: 'wikiMaster'
-
 stages:
   - stage: validation
     displayName: Static validation
