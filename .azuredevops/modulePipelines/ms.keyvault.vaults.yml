@@ -10,13 +10,6 @@ parameters:
     type: boolean
     default: false
 
-# resources:
-#   repositories:
-#     - repository: wiki
-#       type: git
-#       name: 'CARML.wiki'
-#       ref: wikiMaster
-
 pr: none
 
 trigger:

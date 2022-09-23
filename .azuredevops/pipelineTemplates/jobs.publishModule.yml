@@ -108,7 +108,7 @@ jobs:
         #   eq(parameters.publishWikiToAzureDevOps, true),
         #   succeeded()
         #   )
-        #condition: eq('${{ parameters.publishWikiToAzureDevOps }}', 'true')
+        condition: eq('${{ parameters.publishWikiToAzureDevOps }}', true)
         fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
         path: wiki
         persistCredentials: true
