@@ -201,8 +201,27 @@ jobs:
         inputs:
           modules: 'PSRule.Rules.Azure'
           inputPath: '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)'
-          outputFormat: Csv
-          outputPath: '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)-output.csv'
+          outputFormat: NUnit3 # Save results to an NUnit report.
+          outputPath: '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)-output.xml' # Write NUnit report to '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)-output.xml'.
+
+      # # Run analysis from JSON files using the `PSRule.Rules.Azure` module and custom rules from `.ps-rule/`.
+      # - task: ps-rule-assert@0
+      #   inputs:
+      #     inputType: inputPath
+      #     inputPath: 'out/*.json'                  # Read objects from JSON files in 'out/'.
+      #     modules: 'PSRule.Rules.Azure'            # Analyze objects using the rules within the PSRule.Rules.Azure PowerShell module.
+      #     source: '.ps-rule/'                      # Additionally, analyze object using custom rules from '.ps-rule/'.
+      #     outputFormat: NUnit3                     # Save results to an NUnit report.
+      #     outputPath: reports/ps-rule-results.xml  # Write NUnit report to 'reports/ps-rule-results.xml'.
+
+      # Publish NUnit report as test results
+      - task: PublishTestResults@2
+        displayName: 'Publish PSRule results'
+        inputs:
+          testRunTitle: 'PSRule' # The title to use for the test run.
+          testRunner: NUnit # Import report using the NUnit format.
+          testResultsFiles: '$(System.DefaultWorkingDirectory)$(modulePath)/$(moduleTestFilePath)-output.xml' # The previously saved NUnit report.
+
 
       # - task: AzurePowerShell@5
       #   displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
