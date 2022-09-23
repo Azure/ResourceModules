@@ -22,6 +22,8 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 
 > **Note:** The orchestration options described in the [solution creation](./Solution%20creation) section work differently well with the publishing locations we offer in CARML. To help you select the best location for your use case, we provide further information [here](./Solution%20creation#publish-location-considerations) section.
 
+ If you decide to use a public registry (Azure Container Registry) to host the CARML modules that can be accomplished by setting the `bicepRegistryPublic` environment variable found in the settings.yml file to `true`. This will turn on the anonymous access feature on the ACR turning it from a private registry to a public registry. Anonymous access on the ACR will allow others to call CARML modules from the ACR using the ACR's login server address along with the path to the moodule. Example : `br:carml.azurecr.io/bicep/modules/microsoft.storage.storageaccounts:latest`
+
 # How it works
 
 The publishing works as follows:

@@ -24,6 +24,7 @@
 ##   | bicepRegistryRgName      | false    | ''      | Required to publish to private bicep registry. Name of the container registry resource group     | 'artifacts-rg'                                         |
 ##   | bicepRegistryRgLocation  | false    | ''      | Required to publish to private bicep registry. Location of the container registry resource group | 'WestEurope'                                           |
 ##   | bicepRegistryDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to the private bicep registry                         | 'true'                                                 |
+##   | bicepRegistryPublic      | false    | 'false' | Set to true if you would like to enable anonymous (public) access                                | 'true'
 ##   |===========================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
@@ -58,6 +59,9 @@ inputs:
     required: false
   bicepRegistryDoPublish:
     description: 'Flag to indicate whether or not to publish to the private bicep registry'
+    default: 'false'
+    required: false
+  bicepRegistryPublic: 'Set to true if you would like to enable anonymous (public) access'
     default: 'false'
     required: false
 
