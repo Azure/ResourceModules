@@ -45,36 +45,36 @@
 
 parameters:
   # Pipeline-related parameters
-  checkoutRepositories: ""
-  displayName: "Publishing"
-  serviceConnection: "$(serviceConnection)"
-  poolName: "$(poolName)"
-  vmImage: "$(vmImage)"
+  checkoutRepositories: ''
+  displayName: 'Publishing'
+  serviceConnection: '$(serviceConnection)'
+  poolName: '$(poolName)'
+  vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
-  modulesRepository: "$(modulesRepository)"
+  modulesRepository: '$(modulesRepository)'
 
   # Logic-related parameters
   ## Module-related
-  modulePath: "$(modulePath)"
+  modulePath: '$(modulePath)'
 
   ## TemplateSpec-related
-  templateSpecsDoPublish: "$(templateSpecsDoPublish)"
-  templateSpecsRGName: "$(templateSpecsRGName)"
-  templateSpecsRGLocation: "$(templateSpecsRGLocation)"
-  templateSpecsDescription: "$(templateSpecsDescription)"
+  templateSpecsDoPublish: '$(templateSpecsDoPublish)'
+  templateSpecsRGName: '$(templateSpecsRGName)'
+  templateSpecsRGLocation: '$(templateSpecsRGLocation)'
+  templateSpecsDescription: '$(templateSpecsDescription)'
 
   ## Artifact-Feed-related
-  artifactsFeedDoPublish: "$(artifactsFeedDoPublish)"
-  vstsOrganizationUri: "$(vstsOrganizationUri)"
-  vstsFeedProject: "$(vstsFeedProject)"
-  vstsFeedName: "$(vstsFeedName)"
-  vstsFeedToken: "$(vstsFeedToken)"
+  artifactsFeedDoPublish: '$(artifactsFeedDoPublish)'
+  vstsOrganizationUri: '$(vstsOrganizationUri)'
+  vstsFeedProject: '$(vstsFeedProject)'
+  vstsFeedName: '$(vstsFeedName)'
+  vstsFeedToken: '$(vstsFeedToken)'
 
   ## Private-Bicep-Registry-related
-  bicepRegistryDoPublish: "$(bicepRegistryDoPublish)"
-  bicepRegistryName: "$(bicepRegistryName)"
-  bicepRegistryRGName: "$(bicepRegistryRGName)"
-  bicepRegistryRgLocation: "$(bicepRegistryRgLocation)"
+  bicepRegistryDoPublish: '$(bicepRegistryDoPublish)'
+  bicepRegistryName: '$(bicepRegistryName)'
+  bicepRegistryRGName: '$(bicepRegistryRGName)'
+  bicepRegistryRgLocation: '$(bicepRegistryRgLocation)'
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
@@ -97,12 +97,12 @@ jobs:
           - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
               - checkout: ${{ checkoutRepository }}
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: "s/${{ checkoutRepository }}"
+                path: 's/${{ checkoutRepository }}'
 
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
-        displayName: "Setup agent"
+        displayName: 'Setup agent'
         inputs:
           targetType: inline
           pwsh: true
@@ -145,7 +145,7 @@ jobs:
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
       - task: PowerShell@2
-        displayName: "Publish module to artifacts feed"
+        displayName: 'Publish module to artifacts feed'
         condition: and(
           eq(variables['artifactsFeedDoPublish'], true),
           succeeded()
@@ -201,14 +201,14 @@ jobs:
       # [template-spec publish] task(s)
       #--------------------------------
       - task: AzurePowerShell@5
-        displayName: "Publish module to template specs"
+        displayName: 'Publish module to template specs'
         condition: and(
           eq(variables['templateSpecsDoPublish'], true),
           succeeded()
           )
         enabled: true
         inputs:
-          azureSubscription: "${{ parameters.serviceConnection }}"
+          azureSubscription: '${{ parameters.serviceConnection }}'
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
           preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
           pwsh: true
@@ -257,14 +257,14 @@ jobs:
       # [private bicep registry publish] task(s)
       #-------------------------------------------
       - task: AzureCLI@2
-        displayName: "Publish module to private bicep registry"
+        displayName: 'Publish module to private bicep registry'
         condition: and(
           eq(variables['bicepRegistryDoPublish'], true),
           succeeded()
           )
         inputs:
           addSpnToEnvironment: true
-          azureSubscription: "${{ parameters.serviceConnection }}"
+          azureSubscription: '${{ parameters.serviceConnection }}'
           scriptType: pscore
           scriptLocation: inlineScript
           inlineScript: |
@@ -317,7 +317,7 @@ jobs:
       # [documentation to document repo publish] task(s)
       #--------------------------
       - task: PowerShell@2
-        displayName: "Publish documentation to document repo"
+        displayName: 'Publish documentation to document repo'
         condition: and(
           eq(variables['publishWikiToAzureDevOps'], true),
           succeeded()

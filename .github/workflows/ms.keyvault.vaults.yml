@@ -1,38 +1,38 @@
-name: "KeyVault: Vaults"
+name: 'KeyVault: Vaults'
 
 on:
   workflow_dispatch:
     inputs:
       removeDeployment:
         type: boolean
-        description: "Remove deployed module"
+        description: 'Remove deployed module'
         required: false
         default: true
       prerelease:
         type: boolean
-        description: "Publish prerelease module"
+        description: 'Publish prerelease module'
         required: false
         default: false
   push:
     branches:
       - main
     paths:
-      - ".github/actions/templates/**"
-      - ".github/workflows/ms.keyvault.vaults.yml"
-      - "modules/Microsoft.KeyVault/vaults/**"
-      - "utilities/pipelines/**"
-      - "!utilities/pipelines/dependencies/**"
-      - "!*/**/readme.md"
+      - '.github/actions/templates/**'
+      - '.github/workflows/ms.keyvault.vaults.yml'
+      - 'modules/Microsoft.KeyVault/vaults/**'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
+      - '!*/**/readme.md'
 
 env:
-  variablesPath: "settings.yml"
-  modulePath: "modules/Microsoft.KeyVault/vaults"
-  workflowPath: ".github/workflows/ms.keyvault.vaults.yml"
+  variablesPath: 'settings.yml'
+  modulePath: 'modules/Microsoft.KeyVault/vaults'
+  workflowPath: '.github/workflows/ms.keyvault.vaults.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  ARM_SUBSCRIPTION_ID: "${{ secrets.ARM_SUBSCRIPTION_ID }}"
-  ARM_MGMTGROUP_ID: "${{ secrets.ARM_MGMTGROUP_ID }}"
-  ARM_TENANT_ID: "${{ secrets.ARM_TENANT_ID }}"
-  TOKEN_NAMEPREFIX: "${{ secrets.TOKEN_NAMEPREFIX }}"
+  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+  TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
 
 jobs:
   ###########################
@@ -40,22 +40,22 @@ jobs:
   ###########################
   job_initialize_pipeline:
     runs-on: ubuntu-20.04
-    name: "Initialize pipeline"
+    name: 'Initialize pipeline'
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Set input parameters to output variables"
+      - name: 'Set input parameters to output variables'
         id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
-          workflowPath: "${{ env.workflowPath}}"
-      - name: "Get parameter file paths"
+          workflowPath: '${{ env.workflowPath}}'
+      - name: 'Get parameter file paths'
         id: get-module-test-file-paths
         uses: ./.github/actions/templates/getModuleTestFiles
         with:
-          modulePath: "${{ env.modulePath }}"
+          modulePath: '${{ env.modulePath }}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
@@ -117,13 +117,13 @@ jobs:
   #   Publishing   #
   ##################
   job_publish_module:
-    name: "Publishing"
+    name: 'Publishing'
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     # needs:
     #   - job_module_deploy_validation
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -131,16 +131,16 @@ jobs:
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           variablesPath: ${{ env.variablesPath }}
-      - name: "Publishing"
+      - name: 'Publishing'
         uses: ./.github/actions/templates/publishModule
         with:
-          templateFilePath: "${{ env.modulePath }}/deploy.bicep"
-          templateSpecsRGName: "${{ env.templateSpecsRGName }}"
-          templateSpecsRGLocation: "${{ env.templateSpecsRGLocation }}"
-          templateSpecsDescription: "${{ env.templateSpecsDescription }}"
-          templateSpecsDoPublish: "${{ env.templateSpecsDoPublish }}"
-          bicepRegistryName: "${{ env.bicepRegistryName }}"
-          bicepRegistryRGName: "${{ env.bicepRegistryRGName }}"
-          bicepRegistryRgLocation: "${{ env.bicepRegistryRgLocation }}"
-          bicepRegistryDoPublish: "${{ env.bicepRegistryDoPublish }}"
-          publishWikiToGitHub: "${{ env.publishWikiToGitHub }}"
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          templateSpecsRGName: '${{ env.templateSpecsRGName }}'
+          templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
+          templateSpecsDescription: '${{ env.templateSpecsDescription }}'
+          templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
+          bicepRegistryName: '${{ env.bicepRegistryName }}'
+          bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
+          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
+          publishWikiToGitHub: '${{ env.publishWikiToGitHub }}'
