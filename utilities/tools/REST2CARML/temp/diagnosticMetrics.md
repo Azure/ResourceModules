@@ -16,40 +16,40 @@ ms.reviewer: priyamishra
 
 Date list was last updated: 2021-10-05.
 
-Azure Monitor provides several ways to interact with metrics, including charting them in the Azure portal, accessing them through the REST API, or querying them by using PowerShell or the Azure CLI. 
+Azure Monitor provides several ways to interact with metrics, including charting them in the Azure portal, accessing them through the REST API, or querying them by using PowerShell or the Azure CLI.
 
 This article is a complete list of all platform (that is, automatically collected) metrics currently available with the consolidated metric pipeline in Azure Monitor. Metrics changed or added after the date at the top of this article might not yet appear in the list. To query for and access the list of metrics programmatically, use the [2018-01-01 api-version](/rest/api/monitor/metricdefinitions). Other metrics not in this list might be available in the portal or through legacy APIs.
 
-The metrics are organized by resource provider and resource type. For a list of services and the resource providers and types that belong to them, see [Resource providers for Azure services](../../azure-resource-manager/management/azure-services-resource-providers.md).  
+The metrics are organized by resource provider and resource type. For a list of services and the resource providers and types that belong to them, see [Resource providers for Azure services](../../azure-resource-manager/management/azure-services-resource-providers.md).
 
 ## Exporting platform metrics to other locations
 
 You can export the platform metrics from the Azure monitor pipeline to other locations in one of two ways:
 
 - Use the [metrics REST API](/rest/api/monitor/metrics/list).
-- Use [diagnostic settings](../essentials/diagnostic-settings.md) to route platform metrics to: 
+- Use [diagnostic settings](../essentials/diagnostic-settings.md) to route platform metrics to:
     - Azure Storage.
     - Azure Monitor Logs (and thus Log Analytics).
-    - Event hubs, which is how you get them to non-Microsoft systems. 
+    - Event hubs, which is how you get them to non-Microsoft systems.
 
-Using diagnostic settings is the easiest way to route the metrics, but there are some limitations: 
+Using diagnostic settings is the easiest way to route the metrics, but there are some limitations:
 
-- **Exportability**. All metrics are exportable through the REST API, but some can't be exported through diagnostic settings because of intricacies in the Azure Monitor back end. The column "Exportable via Diagnostic Settings" in the following tables lists which metrics can be exported in this way.  
+- **Exportability**. All metrics are exportable through the REST API, but some can't be exported through diagnostic settings because of intricacies in the Azure Monitor back end. The column "Exportable via Diagnostic Settings" in the following tables lists which metrics can be exported in this way.
 
-- **Multi-dimensional metrics**. Sending multi-dimensional metrics to other locations via diagnostic settings is not currently supported. Metrics with dimensions are exported as flattened single-dimensional metrics, aggregated across dimension values. 
+- **Multi-dimensional metrics**. Sending multi-dimensional metrics to other locations via diagnostic settings is not currently supported. Metrics with dimensions are exported as flattened single-dimensional metrics, aggregated across dimension values.
 
   For example, the *Incoming Messages* metric on an event hub can be explored and charted on a per-queue level. But when the metric is exported via diagnostic settings, it will be represented as all incoming messages across all queues in the event hub.
 
 ## Guest OS and host OS metrics
 
-Metrics for the guest operating system (guest OS) that runs in Azure Virtual Machines, Service Fabric, and Cloud Services are *not* listed here. Guest OS metrics must be collected through one or more agents that run on or as part of the guest operating system. Guest OS metrics include performance counters that track guest CPU percentage or memory usage, both of which are frequently used for autoscaling or alerting. 
+Metrics for the guest operating system (guest OS) that runs in Azure Virtual Machines, Service Fabric, and Cloud Services are *not* listed here. Guest OS metrics must be collected through one or more agents that run on or as part of the guest operating system. Guest OS metrics include performance counters that track guest CPU percentage or memory usage, both of which are frequently used for autoscaling or alerting.
 
-Host OS metrics *are* available and listed in the tables. Host OS metrics relate to the Hyper-V session that's hosting your guest OS session. 
+Host OS metrics *are* available and listed in the tables. Host OS metrics relate to the Hyper-V session that's hosting your guest OS session.
 
 > [!TIP]
-> A best practice is to use and configure the Azure Monitor agent to send guest OS performance metrics into the same Azure Monitor metric database where platform metrics are stored. The agent routes guest OS metrics through the [custom metrics](../essentials/metrics-custom-overview.md) API. You can then chart, alert, and otherwise use guest OS metrics like platform metrics. 
+> A best practice is to use and configure the Azure Monitor agent to send guest OS performance metrics into the same Azure Monitor metric database where platform metrics are stored. The agent routes guest OS metrics through the [custom metrics](../essentials/metrics-custom-overview.md) API. You can then chart, alert, and otherwise use guest OS metrics like platform metrics.
 >
-> Alternatively or in addition, you can send the guest OS metrics to Azure Monitor Logs by using the same agent. There you can query on those metrics in combination with non-metric data by using Log Analytics. 
+> Alternatively or in addition, you can send the guest OS metrics to Azure Monitor Logs by using the same agent. There you can query on those metrics in combination with non-metric data by using Log Analytics.
 
 The Azure Monitor agent replaces the Azure Diagnostics extension and Log Analytics agent, which were previously used for guest OS routing. For important additional information, see [Overview of Azure Monitor agents](../agents/agents-overview.md).
 
@@ -327,13 +327,13 @@ This latest update adds a new column and reorders the metrics to be alphabetical
 |WaitingForStartTaskNodeCount|No|Waiting For Start Task Node Count|Count|Total|Number of nodes waiting for the Start Task to complete|No Dimensions|
 
 
-## Microsoft.BatchAI/workspaces 
+## Microsoft.BatchAI/workspaces
 
-|Category|Category Display Name|Costs To Export| 
-|---|---|---| 
-|BaiClusterEvent|BaiClusterEvent|No| 
-|BaiClusterNodeEvent|BaiClusterNodeEvent|No| 
-|BaiJobEvent|BaiJobEvent|No| 
+|Category|Category Display Name|Costs To Export|
+|---|---|---|
+|BaiClusterEvent|BaiClusterEvent|No|
+|BaiClusterNodeEvent|BaiClusterNodeEvent|No|
+|BaiJobEvent|BaiJobEvent|No|
 
 ## microsoft.bing/accounts
 

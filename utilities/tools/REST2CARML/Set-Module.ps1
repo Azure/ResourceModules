@@ -30,6 +30,7 @@
         . (Join-Path $PSScriptRoot 'extension' 'Set-RoleAssignmentsModuleData.ps1')
         . (Join-Path $PSScriptRoot 'extension' 'Set-PrivateEndpointModuleData.ps1')
         . (Join-Path $PSScriptRoot 'extension' 'Set-LockModuleData.ps1')
+        . (Join-Path $PSScriptRoot 'Set-ModuleTemplate.ps1')
         . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
     }
 

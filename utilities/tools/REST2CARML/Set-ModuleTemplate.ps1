@@ -297,11 +297,6 @@ function Set-ModuleTemplate {
 
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent
         $templatePath = Join-Path $repoRootPath 'modules' $ProviderNamespace $ResourceType 'deploy.bicep'
-        # Load used functions
-        . (Join-Path $PSScriptRoot 'Get-DiagnosticOptionsList.ps1')
-        . (Join-Path $PSScriptRoot 'Get-SupportsPrivateEndpoint.ps1')
-        . (Join-Path $PSScriptRoot 'Resolve-ModuleData.ps1')
-        . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
     }
 
     process {
@@ -309,7 +304,7 @@ function Set-ModuleTemplate {
         ##  Create template parameters section  ##
         ##########################################
 
-        $targetScope = Get-TargetScope -JSONKeyPath $JSONKeyPath
+        $targetScope = Get-TargetScope -JSONKeyPath $JSONFilePath
 
         $templateContent = @(
             "targetScope = '{0}'" -f $targetScope
