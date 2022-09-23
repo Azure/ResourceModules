@@ -45,7 +45,8 @@ function Get-ModuleTestFileList {
     }
 
     if (-not $deploymentTests) {
-        throw "No deployment test files found for module [$ModulePath]"
+        Write-Warning "No deployment test files found for module [$ModulePath]"
+        return @()
     }
 
     $deploymentTests = $deploymentTests | ForEach-Object {

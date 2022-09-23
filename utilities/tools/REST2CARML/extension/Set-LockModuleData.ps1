@@ -16,9 +16,12 @@ function Set-LockModuleData {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         # Load used functions
         . (Join-Path $PSScriptRoot 'Get-SupportsLock.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'Get-ResourceTypeSingularName.ps1')
     }
 
     process {
+
+        $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
 
         if (-not (Get-SupportsLock -JSONKeyPath $JSONKeyPath)) {
             return
@@ -41,13 +44,14 @@ function Set-LockModuleData {
 
         $ModuleData.resources += @(
             "resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {"
-            "  name: '`${$ResourceType.name}-`${lock}-lock'"
+            "  name: '`${$resourceTypeSingular.name}-`${lock}-lock'"
             '  properties: {'
             '    level: any(lock)'
             "    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'"
             '  }'
-            '  scope: {0}' -f $ResourceType
+            '  scope: {0}' -f $resourceTypeSingular
             '}'
+            ''
         )
     }
 

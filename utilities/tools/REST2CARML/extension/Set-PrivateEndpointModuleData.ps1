@@ -16,11 +16,12 @@
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         # Load used functions
         . (Join-Path $PSScriptRoot 'Get-SupportsPrivateEndpoint.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'Get-ResourceTypeSingularName.ps1')
     }
 
     process {
 
-        $resourceTypeSingular = $ResourceType[-1] -eq 's' ? $ResourceType.Substring(0, $ResourceType.Length - 1) : $ResourceType
+        $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
 
         if (-not (Get-SupportsPrivateEndpoint -JSONFilePath $JSONFilePath)) {
             return
@@ -56,6 +57,7 @@
             "    customDnsConfigs: contains(privateEndpoint,'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []"
             '  }'
             '}]'
+            ''
         )
     }
 

@@ -23,15 +23,18 @@ function Set-RoleAssignmentsModuleData {
         # Load used functions
         . (Join-Path $PSScriptRoot 'Get-RoleAssignmentsList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'Set-TokenValuesInArray.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'Get-ResourceTypeSingularName.ps1')
     }
 
     process {
+
+        $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
 
         # Tokens to replace in files
         $tokens = @{
             providerNamespace    = $ProviderNamespace
             resourceType         = $ResourceType
-            resourceTypeSingular = $ResourceType[-1] -eq 's' ? $ResourceType.Substring(0, $ResourceType.Length - 1) : $ResourceType
+            resourceTypeSingular = $resourceTypeSingular
             apiVersion           = $ServiceApiVersion
         }
 
@@ -53,8 +56,8 @@ function Set-RoleAssignmentsModuleData {
         )
 
         $ModuleData.resources += @(
-            "module $($tokens.resourceTypeSingular)_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment,index) in roleAssignments: {"
-            "  name: '`${uniqueString(deployment().name, location)}-$($tokens.resourceTypeSingular)-Rbac-`${index}'"
+            "module $($resourceTypeSingular)_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment,index) in roleAssignments: {"
+            "  name: '`${uniqueString(deployment().name, location)}-$resourceTypeSingular-Rbac-`${index}'"
             '  params: {'
             "    description: contains(roleAssignment,'description') ? roleAssignment.description : ''"
             '    principalIds: roleAssignment.principalIds'
@@ -62,9 +65,10 @@ function Set-RoleAssignmentsModuleData {
             '    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName'
             "    condition: contains(roleAssignment,'condition') ? roleAssignment.condition : ''"
             "    delegatedManagedIdentityResourceId: contains(roleAssignment,'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''"
-            "    resourceId: $($tokens.resourceTypeSingular).id"
+            "    resourceId: $resourceTypeSingular.id"
             '  }'
             '}]'
+            ''
         )
 
         $fileContent = @()

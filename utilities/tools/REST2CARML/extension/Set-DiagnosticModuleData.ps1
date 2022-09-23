@@ -16,10 +16,11 @@
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         # Load used functions
         . (Join-Path $PSScriptRoot 'Get-DiagnosticOptionsList.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'Get-ResourceTypeSingularName.ps1')
     }
 
     process {
-        $resourceTypeSingular = $ResourceType[-1] -eq 's' ? $ResourceType.Substring(0, $ResourceType.Length - 1) : $ResourceType
+        $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
         $diagnosticOptions = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
 
         if (-not $diagnosticOptions) {
@@ -65,7 +66,6 @@
                 default     = ''
             }
         )
-
 
         $diagnosticResource = @(
             "resource $($resourceTypeSingular)_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {"
@@ -139,11 +139,18 @@
 
         $diagnosticResource += @(
             '  }'
-            "  scope: {$resourceTypeSingular}"
+            "  scope: $resourceTypeSingular"
             '}'
+            ''
         )
 
         $ModuleData.resources += $diagnosticResource
+
+        # Other variables
+        $ModuleData.variables += @(
+            "@description('Optional. The name of the diagnostic setting, if deployed.')"
+            "param diagnosticSettingsName string = '`${name}-diagnosticSettings'"
+        )
     }
 
     end {
