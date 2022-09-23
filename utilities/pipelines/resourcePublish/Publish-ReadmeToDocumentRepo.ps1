@@ -1,24 +1,3 @@
-# function Set-NewReadmeVersion {
-
-#     [CmdletBinding(SupportsShouldProcess)]
-
-#     param(
-#         [Parameter(Mandatory)]
-#         [string] $Path,
-
-#         [Parameter(Mandatory)]
-#         [string] $Version
-#     )
-
-#     #Rename the File
-#     $newName = <#(Get-Item $Path).BaseName + '_' + #> $Version + (Get-Item $Path).Extension
-
-#     Write-Host 'File renamed to: ' $newName
-#     #return Rename-Item $Path $newName -PassThru
-#     return Copy-Item $Path -Destination $newName -PassThru
-
-
-# }
 
 function Publish-ReadmeToDocumentRepo {
 
@@ -34,8 +13,7 @@ function Publish-ReadmeToDocumentRepo {
     )
 
     $newName = $ModuleVersion + (Get-Item $ReadMeFilePath).Extension
-    #$renamedFile = Set-NewReadmeVersion -Path $ReadMeFilePath -Version $ModuleVersion
-    #####
+
     Set-Location $wikiPath
 
     Invoke-Git -Command 'fetch'
@@ -48,7 +26,7 @@ function Publish-ReadmeToDocumentRepo {
 
     New-Item -ItemType Directory -Path $moduleDir -Force | Out-Null
 
-    Copy-Item -Path $ReadMeFilePath -Destination "$moduleDir/$newName" -Recurse -Force -Verbose #-Filter "*.md"
+    Copy-Item -Path $ReadMeFilePath -Destination "$moduleDir/$newName" -Recurse -Force -Verbose
 
 
 
