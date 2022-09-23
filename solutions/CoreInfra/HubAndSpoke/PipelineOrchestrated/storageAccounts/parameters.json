@@ -9,7 +9,7 @@
             "value": false
         },
         "systemAssignedIdentity": {
-            "value": false
+            "value": true
         },
         "blobServices": {
             "value": {
