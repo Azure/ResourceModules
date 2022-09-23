@@ -188,7 +188,7 @@ resource servicebusendpointkey 'Microsoft.DigitalTwins/digitalTwinsInstances/end
   }
 }
 
-module digitaltwin_privateEndpoints '../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module digitaltwin_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-DigitalTwin-PrivateEndpoint-${index}'
   params: {
     groupIds: [

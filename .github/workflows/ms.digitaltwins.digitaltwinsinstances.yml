@@ -26,7 +26,7 @@ on:
 
 env:
   variablesPath: 'settings.yml'
-  modulePath: 'modules/Microsoft.DigitalTwins'
+  modulePath: 'modules/Microsoft.DigitalTwins/digitalTwinInstances'
   workflowPath: '.github/workflows/ms.digitaltwins.digitaltwinsinstances.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
