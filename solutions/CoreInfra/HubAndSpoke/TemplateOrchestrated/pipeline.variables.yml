@@ -5,5 +5,5 @@ variables:
   vmImage: "ubuntu-latest"
   poolName: ""
   serviceConnection: "OliverlabsAzurePipe"
-  subscriptionId: "be5ec5d6-8bcf-4049-8a47-1beb59796b15"
+  subscriptionId: "d3696aa4-85af-44e1-a83f-5c1516a22fff"
   managementGroupId: ""
