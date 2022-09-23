@@ -158,8 +158,6 @@ stages:
           whatif: true
           checkoutRepositories:
             - self
-          dependsOn:
-            - hubVirtualNetworks
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: privateDnsZonesBlob
