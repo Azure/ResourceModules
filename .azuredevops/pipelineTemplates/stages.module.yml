@@ -8,7 +8,7 @@ resources:
   repositories:
     - repository: wiki
       type: git
-      name: 'CARML.wiki'
+      name: 'ResourceModules.wiki'
       ref: 'wikiMaster'
 
 stages:
