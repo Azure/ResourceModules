@@ -95,7 +95,7 @@ jobs:
       - checkout: self
         fetchDepth: 0
       - checkout: wiki # Temporary -> should done via checkoutRepositories
-        condition: eq('${{ parameters.publishWikiToAzureDevOps }}', 'true'))
+        condition: eq('${{ parameters.publishWikiToAzureDevOps }}', 'true')
         path: wiki
         persistCredentials: true
       - ${{ if ne(parameters.checkoutRepositories, '') }}:
