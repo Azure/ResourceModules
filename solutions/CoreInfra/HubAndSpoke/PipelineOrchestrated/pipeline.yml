@@ -156,6 +156,10 @@ stages:
           modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/automation.parameters.json'
           whatif: true
+          checkoutRepositories:
+            - self
+          dependsOn:
+            - hubVirtualNetworks
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: privateDnsZonesBlob
@@ -340,6 +344,10 @@ stages:
           displayName: 'Private Dns Zones'
           modulePath: '/modules/Microsoft.Network/privateDnsZones/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/HubAndSpoke/PipelineOrchestrated/privateDnsZones/automation.parameters.json'
+          checkoutRepositories:
+            - self
+          dependsOn:
+            - hubVirtualNetworks
       - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
         parameters:
           jobName: privateDnsZonesBlob
