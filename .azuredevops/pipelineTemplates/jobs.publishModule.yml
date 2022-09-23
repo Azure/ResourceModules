@@ -99,27 +99,6 @@ jobs:
             Write-Host ("${{ parameters.publishWikiToAzureDevOps }}")
             $publishWikiToAzureDevOps = "${{ parameters.publishWikiToAzureDevOps }}"
             Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$publishWikiToAzureDevOps"
-
-      # [Checkout Repositories] task(s)
-      #--------------------------------
-      - checkout: self
-        fetchDepth: 0
-        path: carml
-     # - ${{ if eq(parameters.publishWikiToAzureDevOps, true) }}:
-      - checkout: git://$(SYSTEM.TEAMPROJECT)/$(SYSTEM.TEAMPROJECT).wiki
-        condition: eq( variables['publishWikiToAzureDevOps'], 'true')
-        fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-        path: wiki
-        persistCredentials: true
-      - ${{ if ne(parameters.checkoutRepositories, '') }}:
-          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
-              - checkout: ${{ checkoutRepository }}
-                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: 's/${{ checkoutRepository }}'
-      - task: Bash@3 #DEBUG
-        inputs:
-          targetType: 'inline'
-          script: 'env | sort'
       # [Multi Repo] Support task
       #--------------------------
       - task: PowerShell@2
@@ -137,15 +116,36 @@ jobs:
               Write-Verbose "Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
               $workingPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 'carml'
+
             } else {
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
               $workingPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 'carml'
               #$workingPath = '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' #Because condition is not working outside of checkout, this needs to be also modified
             }
+            Write-Host ("${{ parameters.publishWikiToAzureDevOps }}")
+            $publishWikiToAzureDevOps = "${{ parameters.publishWikiToAzureDevOps }}"
+            Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$publishWikiToAzureDevOps"
             Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
             Write-Output "##vso[task.setvariable variable=workingPath]$workingPath"
+      # [Checkout Repositories] task(s)
+      #--------------------------------
+      - checkout: self
+        fetchDepth: 0
+        path: carml
+     # - ${{ if eq(parameters.publishWikiToAzureDevOps, true) }}:
+      - checkout: git://$(SYSTEM.TEAMPROJECT)/$(SYSTEM.TEAMPROJECT).wiki
+        condition: eq( variables['publishWikiToAzureDevOps'], 'true')
+        fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
+        path: wiki
+        persistCredentials: true
+      - ${{ if ne(parameters.checkoutRepositories, '') }}:
+          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
+              - checkout: ${{ checkoutRepository }}
+                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
+                path: 's/${{ checkoutRepository }}'
       - task: Bash@3 #DEBUG
+        displayName: 'DEBUG: List Working Directory'
         inputs:
           targetType: 'inline'
           script: 'env | sort'
