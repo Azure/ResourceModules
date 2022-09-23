@@ -332,6 +332,10 @@ jobs:
       #--------------------------
       - task: PowerShell@2
         displayName: 'Publish documentation to document repo'
+        condition: and(
+          eq(variables['publishWikiToAzureDevOps'], true),
+          succeeded()
+          )
         inputs:
           targetType: inline
           pwsh: true
