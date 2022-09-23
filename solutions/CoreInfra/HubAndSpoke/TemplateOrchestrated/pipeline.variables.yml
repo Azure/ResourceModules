@@ -1,9 +1,9 @@
 variables:
   resourceGroupName: ""
   environmentPath: "solutions/CoreInfra/HubAndSpoke/TemplateOrchestrated"
-  location: "westeurope"
+  location: "northeurope"
   vmImage: "ubuntu-latest"
   poolName: ""
-  serviceConnection: "OliverlabsAzurePipe"
-  subscriptionId: "d3696aa4-85af-44e1-a83f-5c1516a22fff"
+  serviceConnection: "vsent-azure"
+  subscriptionId: "188438bd-4e39-4b0f-b3cf-4edf0ca5c6b0"
   managementGroupId: ""
