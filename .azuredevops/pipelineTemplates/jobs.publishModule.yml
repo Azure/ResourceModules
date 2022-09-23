@@ -45,7 +45,7 @@
 
 parameters:
   # Pipeline-related parameters
-  checkoutRepositories: ''
+  checkoutRepositories: 'wiki'
   displayName: 'Publishing'
   serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
