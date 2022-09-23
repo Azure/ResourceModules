@@ -84,11 +84,11 @@ function Set-RoleAssignmentsModuleData {
         $roleTemplateFilePath = Join-Path $ModuleRootPath '.bicep' 'nested_roleAssignments.bicep'
         if (-not (Test-Path $roleTemplateFilePath)) {
             if ($PSCmdlet.ShouldProcess(('RBAC file [{0}].' -f (Split-Path $roleTemplateFilePath -Leaf)), 'Create')) {
-                $null = New-Item -Path $roleTemplateFilePath -ItemType 'File' -Value $fileContent
+                $null = New-Item -Path $roleTemplateFilePath -ItemType 'File' -Value ($fileContent | Out-String).Trim()
             }
         } else {
             if ($PSCmdlet.ShouldProcess(('RBAC file [{0}].' -f (Split-Path $roleTemplateFilePath -Leaf)), 'Update')) {
-                $null = Set-Content -Path $roleTemplateFilePath -Value $fileContent
+                $null = Set-Content -Path $roleTemplateFilePath -Value ($fileContent | Out-String).Trim()
             }
         }
     }
