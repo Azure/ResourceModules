@@ -48,7 +48,7 @@ function Publish-ReadmeToDocumentRepo {
 
     New-Item -ItemType Directory -Path $moduleDir -Force | Out-Null
 
-    Copy-Item -Path $renamedFile -Destination "$moduleDir/$newName" -Recurse -Force -Verbose #-Filter "*.md"
+    Copy-Item -Path $ReadMeFilePath -Destination "$moduleDir/$newName" -Recurse -Force -Verbose #-Filter "*.md"
 
 
 
