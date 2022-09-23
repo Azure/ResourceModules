@@ -99,10 +99,10 @@ jobs:
             Write-Host ("${{ parameters.publishWikiToAzureDevOps }}")
             $publishWikiToAzureDevOps = "${{ parameters.publishWikiToAzureDevOps }}"
             Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$publishWikiToAzureDevOps"
-      - task: Bash@3 #DEBUG
-        inputs:
-          targetType: 'inline'
-          script: 'env | sort'
+      # - task: Bash@3 #DEBUG
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: 'env | sort'
       # [Checkout Repositories] task(s)
       #--------------------------------
       - checkout: self
