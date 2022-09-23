@@ -123,7 +123,6 @@ jobs:
       - checkout: self
         fetchDepth: 0
         path: carml
-     # - ${{ if eq(parameters.publishWikiToAzureDevOps, true) }}:
       - checkout: git://$(SYSTEM.TEAMPROJECT)/$(SYSTEM.TEAMPROJECT).wiki
         condition: eq( variables['publishWikiToAzureDevOps'], 'true')
         fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
@@ -134,11 +133,6 @@ jobs:
               - checkout: ${{ checkoutRepository }}
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
                 path: 's/${{ checkoutRepository }}'
-      - task: Bash@3 #DEBUG
-        displayName: 'DEBUG: List Working Directory'
-        inputs:
-          targetType: 'inline'
-          script: 'env | sort'
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
