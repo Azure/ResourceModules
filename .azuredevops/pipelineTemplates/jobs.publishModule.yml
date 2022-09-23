@@ -124,10 +124,10 @@ jobs:
             } else {
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
+              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)'
             }
             Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
             Write-Output "##vso[task.setvariable variable=workingPath]$workingPath"
-            Write-Verbose "$workingPath" -Verbose
 
       # [Agent] Prepare environment
       #----------------------------
