@@ -90,15 +90,6 @@ jobs:
       ${{ if ne(parameters.poolName, '') }}:
         name: ${{ parameters.poolName }}
     steps:
-      - task: PowerShell@2
-        displayName: publishWikiToAzureDevOps
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            Write-Host ("${{ parameters.publishWikiToAzureDevOps }}")
-            $publishWikiToAzureDevOps = "${{ parameters.publishWikiToAzureDevOps }}"
-            Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$publishWikiToAzureDevOps"
       # [Multi Repo] Support task
       #--------------------------
       - task: PowerShell@2
@@ -116,16 +107,15 @@ jobs:
               Write-Verbose "Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
               $workingPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 'carml'
+              Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$true"
 
             } else {
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
               $workingPath = Join-Path '$(AGENT.BUILDDIRECTORY)' 'carml'
               #$workingPath = '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' #Because condition is not working outside of checkout, this needs to be also modified
+              Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$false"
             }
-            Write-Host ("${{ parameters.publishWikiToAzureDevOps }}")
-            $publishWikiToAzureDevOps = "${{ parameters.publishWikiToAzureDevOps }}"
-            Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$publishWikiToAzureDevOps"
             Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
             Write-Output "##vso[task.setvariable variable=workingPath]$workingPath"
       # [Checkout Repositories] task(s)
