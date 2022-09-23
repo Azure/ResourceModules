@@ -69,6 +69,24 @@ stages:
           whatif: '${{ parameters.whatif }}'
           checkoutRepositories:
             - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: storageAccount
+          displayName: 'Storage Account'
+          modulePath: '/modules/Microsoft.Storage/storageAccounts/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/storageAccounts/parameters.json'
+          whatif: '${{ parameters.whatif }}'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: userAssignedIdentities
+          displayName: 'User Assigned Identities'
+          modulePath: '/modules/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/userAssignedIdentities/parameters.json'
+          whatif: '${{ parameters.whatif }}'
+          checkoutRepositories:
+            - self
 
   - stage:
     displayName: Deploy
@@ -114,5 +132,21 @@ stages:
           displayName: 'Key Vault'
           modulePath: '/modules/Microsoft.KeyVault/vaults/deploy.bicep'
           moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/keyVaults/parameters.json'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: storageAccount
+          displayName: 'Storage Account'
+          modulePath: '/modules/Microsoft.Storage/storageAccounts/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/storageAccounts/parameters.json'
+          checkoutRepositories:
+            - self
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: userAssignedIdentities
+          displayName: 'User Assigned Identities'
+          modulePath: '/modules/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep'
+          moduleTestFilePath: '/solutions/CoreInfra/Spoke/PipelineOrchestrated/userAssignedIdentities/parameters.json'
           checkoutRepositories:
             - self
