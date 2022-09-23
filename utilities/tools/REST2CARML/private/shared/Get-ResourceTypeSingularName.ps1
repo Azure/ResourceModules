@@ -15,6 +15,7 @@ Returns 'vault'
 #>
 function Get-ResourceTypeSingularName {
 
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
         [string] $ResourceType

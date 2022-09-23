@@ -48,12 +48,6 @@ function Invoke-REST2CARML {
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
-        # Load used functions
-        . (Join-Path $PSScriptRoot 'Get-ServiceSpecPathData.ps1')
-        . (Join-Path $PSScriptRoot 'Resolve-ModuleData.ps1')
-        . (Join-Path $PSScriptRoot 'Set-ModuleFileStructure.ps1')
-        . (Join-Path $PSScriptRoot 'Set-Module.ps1')
-
         Write-Verbose ('Processing module [{0}/{1}]' -f $ProviderNamespace, $ResourceType) -Verbose
 
         $initialLocation = (Get-Location).Path
@@ -64,22 +58,19 @@ function Invoke-REST2CARML {
         #########################################
         ##   Temp Clone API Specs Repository   ##
         #########################################
-
-        $repoUrl = 'https://github.com/Azure/azure-rest-api-specs.git'
+        $repoUrl = $script:CONFIG.url_CloneRESTAPISpecRepository
         $repoName = Split-Path $repoUrl -LeafBase
-        $tempFolderName = 'temp'
-        $tempFolderPath = Join-Path $PSScriptRoot $tempFolderName
 
         # Clone repository
         ## Create temp folder
-        if (-not (Test-Path $tempFolderPath)) {
-            $null = New-Item -Path $tempFolderPath -ItemType 'Directory'
+        if (-not (Test-Path $script:temp)) {
+            $null = New-Item -Path $script:temp -ItemType 'Directory'
         }
         ## Switch to temp folder
-        Set-Location $tempFolderPath
+        Set-Location $script:temp
 
         ## Clone repository into temp folder
-        if (-not (Test-Path (Join-Path $tempFolderPath $repoName))) {
+        if (-not (Test-Path (Join-Path $script:temp $repoName))) {
             git clone --depth=1 --single-branch --branch=main --filter=tree:0 $repoUrl
         } else {
             Write-Verbose "Repository [$repoName] already cloned"
@@ -94,7 +85,7 @@ function Invoke-REST2CARML {
             $getPathDataInputObject = @{
                 ProviderNamespace = $ProviderNamespace
                 ResourceType      = $ResourceType
-                RepositoryPath    = Join-Path $tempFolderPath $repoName
+                RepositoryPath    = Join-Path $script:temp $repoName
                 IncludePreview    = $IncludePreview
             }
             $pathData = Get-ServiceSpecPathData @getPathDataInputObject
@@ -135,8 +126,8 @@ function Invoke-REST2CARML {
             ##   Remove Artifacts   ##
             ##########################
             if (-not $KeepArtifacts) {
-                Write-Verbose "Deleting folder [$tempFolderPath]"
-                $null = Remove-Item $tempFolderPath -Recurse -Force
+                Write-Verbose ('Deleting temp folder [{0}]' -f $script:temp)
+                $null = Remove-Item $script:temp -Recurse -Force
             }
         }
     }
@@ -147,4 +138,4 @@ function Invoke-REST2CARML {
 }
 
 # Invoke-REST2CARML -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts' -Verbose -KeepArtifacts
-Invoke-REST2CARML -ProviderNamespace 'Microsoft.AVS' -ResourceType 'privateClouds' -Verbose -KeepArtifacts
+# Invoke-REST2CARML -ProviderNamespace 'Microsoft.AVS' -ResourceType 'privateClouds' -Verbose -KeepArtifacts

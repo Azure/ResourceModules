@@ -27,7 +27,6 @@ function Get-SupportsPrivateEndpoint {
     }
 
     process {
-
         $specContent = Get-Content -Path $JSONFilePath -Raw | ConvertFrom-Json -AsHashtable
 
         $relevantPaths = $specContent.paths.Keys | Where-Object {

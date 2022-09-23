@@ -14,9 +14,6 @@ function Set-LockModuleData {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
-        # Load used functions
-        . (Join-Path $PSScriptRoot 'Get-SupportsLock.ps1')
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'Get-ResourceTypeSingularName.ps1')
     }
 
     process {

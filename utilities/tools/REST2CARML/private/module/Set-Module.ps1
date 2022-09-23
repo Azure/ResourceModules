@@ -21,17 +21,11 @@
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
-        $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent
-        $moduleRootPath = Join-Path $repoRootPath 'modules' $ProviderNamespace $ResourceType
+        $moduleRootPath = Join-Path $script:repoRoot 'modules' $ProviderNamespace $ResourceType
         $templatePath = Join-Path $moduleRootPath 'deploy.bicep'
 
-        # Load used functions
-        . (Join-Path $PSScriptRoot 'extension' 'Set-DiagnosticModuleData.ps1')
-        . (Join-Path $PSScriptRoot 'extension' 'Set-RoleAssignmentsModuleData.ps1')
-        . (Join-Path $PSScriptRoot 'extension' 'Set-PrivateEndpointModuleData.ps1')
-        . (Join-Path $PSScriptRoot 'extension' 'Set-LockModuleData.ps1')
-        . (Join-Path $PSScriptRoot 'Set-ModuleTemplate.ps1')
-        . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
+        # Load external functions
+        . (Join-Path $script:repoRoot 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
     }
 
     process {

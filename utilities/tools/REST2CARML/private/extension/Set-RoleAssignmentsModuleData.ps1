@@ -20,10 +20,6 @@ function Set-RoleAssignmentsModuleData {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
-        # Load used functions
-        . (Join-Path $PSScriptRoot 'Get-RoleAssignmentsList.ps1')
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'Set-TokenValuesInArray.ps1')
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'Get-ResourceTypeSingularName.ps1')
     }
 
     process {
@@ -72,7 +68,7 @@ function Set-RoleAssignmentsModuleData {
         )
 
         $fileContent = @()
-        $rawContent = Get-Content -Path (Join-Path (Split-Path $PSScriptRoot -Parent) 'src' 'nested_roleAssignments.bicep') -Raw
+        $rawContent = Get-Content -Path (Join-Path $script:src 'nested_roleAssignments.bicep') -Raw
 
         # Replace general tokens
         $fileContent = Set-TokenValuesInArray -Content $rawContent -Tokens $tokens

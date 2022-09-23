@@ -8,6 +8,9 @@ Replace tokens like '<<ProviderNamespace>>' in the given file with an actual val
 .PARAMETER Content
 Mandatory. The content to update
 
+.PARAMETER Tokens
+A hashtable of tokens to replace
+
 .EXAMPLE
 Set-TokenValuesInArray -Content "Hello <<shortProviderNamespaceLower>>-<<resourceTypePascal>>" -Tokens @{ shortProviderNamespaceLower = 'keyvault'; resourceTypePascal = 'Vaults' }
 
@@ -29,11 +32,9 @@ function Set-TokenValuesInArray {
     }
 
     process {
-
         foreach ($token in $tokens.Keys) {
             $content = $content -replace "<<$token>>", $tokens[$token]
         }
-
         return $content
     }
 

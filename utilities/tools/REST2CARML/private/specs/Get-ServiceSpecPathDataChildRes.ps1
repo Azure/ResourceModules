@@ -1,5 +1,6 @@
 ﻿function Get-ServiceSpecPathDataChildRes {
 
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
         [string] $ProviderNamespace,
