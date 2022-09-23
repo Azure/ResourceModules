@@ -46,11 +46,6 @@ function Publish-ReadmeToDocumentRepo {
     $readmeRelFilePath = $ReadMeFilePath.Split('/modules/')[1]
     $moduleDir = Split-Path $readmeRelFilePath -Parent
 
-    Write-Host "renamedFile: $renamedFile"
-    Write-Host "readmeRelFilePath: $readmeRelFilePath"
-    Write-Host "moduleDir: $moduleDir"
-    Write-Host "ReadMeFilePath: $ReadMeFilePath"
-    Write-Host "newFileName: $newFileName"
     New-Item -ItemType Directory -Path $moduleDir -Force | Out-Null
     Copy-Item -Path $renamedFile -Destination $moduleDir -Recurse -Force -Verbose #-Filter "*.md"
 
