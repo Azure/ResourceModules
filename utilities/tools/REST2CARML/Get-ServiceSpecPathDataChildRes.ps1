@@ -58,13 +58,14 @@
 }
 
 # . (Join-Path $PSScriptRoot 'Get-ServiceSpecPathData.ps1')
+# $repoPath = Join-Path $PSScriptRoot 'temp' 'azure-rest-api-specs'
 
 # # $providerNamespace = 'Microsoft.Storage'; $resourceType = 'storageAccounts'
 # # $providerNamespace = 'Microsoft.KeyVault'; $resourceType = 'vaults'
 # # $providerNamespace = 'Microsoft.Compute'; $resourceType = 'virtualMachines'
 # $providerNamespace = 'Microsoft.Network'; $resourceType = 'virtualNetworks'
 
-# $parentResData = Get-ServiceSpecPathData -ProviderNamespace $providerNamespace -ResourceType $resourceType
+# $parentResData = Get-ServiceSpecPathData -ProviderNamespace $providerNamespace -ResourceType $resourceType -RepositoryPath $repoPath
 
 # Write-Host 'Parent resource data:'
 # $parentResData | Format-List
