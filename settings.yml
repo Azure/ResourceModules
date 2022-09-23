@@ -96,20 +96,20 @@ variables:
   # If overriding the Az PowerShell module version, set to the version. Example: '4.4.0'
   preferredAzurePowerShellVersion: ''
 
-#
-# NOTE: To override for just an individual template, just add the following to the
-#     templates pipeline.yml replacing '4.4.0' with the desired version:
-#
-#   - name: azurePowerShellVersion
-#     value: 'OtherVersion'
-#   - name: preferredAzurePowerShellVersion
-#     value: '4.4.0'
-#
+  #
+  # NOTE: To override for just an individual template, just add the following to the
+  #     templates pipeline.yml replacing '4.4.0' with the desired version:
+  #
+  #   - name: azurePowerShellVersion
+  #     value: 'OtherVersion'
+  #   - name: preferredAzurePowerShellVersion
+  #     value: '4.4.0'
+  #
 
   ######################################
   # Wiki Repository settings
   ######################################
 
-  publishWikiToGitHub: false # Set to true, if you would like to publish readmes to the GitHub Wiki.
-  publishWikiToAzureDevOps: false # Set to true, if you would like to publish readmes to the Azure DevOps Project Wiki.
+  publishWikiToGitHub: true # Set to true, if you would like to publish readmes to the GitHub Wiki.
+  publishWikiToAzureDevOps: true # Set to true, if you would like to publish readmes to the Azure DevOps Project Wiki.
   publishWikiToWebSite: false # Set to true, if you would like to publish readmes to a DocFX Website using Azure Static Web sites.

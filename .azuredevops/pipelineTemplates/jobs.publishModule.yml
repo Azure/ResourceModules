@@ -318,6 +318,10 @@ jobs:
       #--------------------------
       - task: PowerShell@2
         displayName: 'Publish documentation to document repo'
+        condition: and(
+          eq(variables['publishWikiToAzureDevOps'], true),
+          succeeded()
+          )
         inputs:
           targetType: inline
           pwsh: true
@@ -347,11 +351,16 @@ jobs:
               $RelPath = (($ReadmeToPublish.ReadmeFilePath).Split('/modules/')[-1]).Split('/readme.')[0]
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ReadmeToPublish.Version)"
 
+              # Extracts microsoft.keyvault.vaults from module relative path e.g. \modules\Microsoft.KeyVault\vaults
+              $ModuleRegistryIdentifier = 'bicep/modules/{0}' -f $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
+              $TemplateSpecsIdentifier = $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
+
+              $SubscriptionId = '$(ARM_SUBSCRIPTION_ID)'
+
               $functionInput = @{
                 ReadmeFilePath            = $ReadmeToPublish.ReadmeFilePath
-                # BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
-                # BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
-                # BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
+                BicepRegistryUrl          = 'br:{0}.azurecr.io/{1}:{2}' -f '${{ parameters.bicepRegistryName }}', $ModuleRegistryIdentifier, $ReadmeToPublish.Version
+                TemplateSpecsUrl          = 'ts:{0}/{1}/{2}:{3}' -f $SubscriptionId, '${{ parameters.templateSpecsRgName }}', $TemplateSpecsIdentifier, $ReadmeToPublish.Version
                 ModuleVersion             = $ReadmeToPublish.Version
               }
 
