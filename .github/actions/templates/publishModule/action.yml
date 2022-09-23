@@ -215,10 +215,12 @@ runs:
             $ModuleRegistryIdentifier = 'bicep/modules/{0}' -f $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
             $TemplateSpecsIdentifier = $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
 
+            $SubcriptionId = $env:ARM_SUBSCRIPTION_ID
+
             $functionInput = @{
               ReadmeFilePath            = $ReadmeToPublish.ReadmeFilePath
               BicepRegistryUrl          = 'br:{0}.azurecr.io/{1}:{2}' -f '${{ inputs.bicepRegistryName }}', $ModuleRegistryIdentifier, $ReadmeToPublish.Version
-              TemplateSpecsUrl          = 'ts:{0}/{1}/{2}:{3}' -f '<Subscription_Id>', '${{ inputs.templateSpecsRgName }}', $TemplateSpecsIdentifier, $ReadmeToPublish.Version
+              TemplateSpecsUrl          = 'ts:{0}/{1}/{2}:{3}' -f $SubscriptionId, '${{ inputs.templateSpecsRgName }}', $TemplateSpecsIdentifier, $ReadmeToPublish.Version
               ModuleVersion             = $ReadmeToPublish.Version
             }
 

@@ -36,4 +36,7 @@ function Publish-ReadmeToDocumentRepo {
 
     Set-NewReadmeVersion -Path $ReadMeFilePath -Version $ModuleVersion
 
+    Write-Host 'Bicep registry:' $BicepRegistryUrl
+    Write-Host 'Template specs:' $TemplateSpecsUrl
+
 }
