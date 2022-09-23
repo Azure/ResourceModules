@@ -97,9 +97,9 @@ jobs:
           pwsh: true
           script: |
             Write-Host ("${{ parameters.publishWikiToAzureDevOps }}")
-            $var = "${{ parameters.publishWikiToAzureDevOps }}"
-            Write-Output "##vso[task.setvariable variable=TESTVAR]$var"
-      - task: Bash@3
+            $publishWikiToAzureDevOps = "${{ parameters.publishWikiToAzureDevOps }}"
+            Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$publishWikiToAzureDevOps"
+      - task: Bash@3 #DEBUG
         inputs:
           targetType: 'inline'
           script: 'env | sort'
@@ -109,7 +109,7 @@ jobs:
         fetchDepth: 0
      # - ${{ if eq(parameters.publishWikiToAzureDevOps, true) }}:
       - checkout: git://$(SYSTEM.TEAMPROJECT)/$(SYSTEM.TEAMPROJECT).wiki
-        condition: eq( variables['TESTVAR'], 'true')
+        condition: eq( variables['publishWikiToAzureDevOps'], 'true')
         fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
         path: wiki
         persistCredentials: true
