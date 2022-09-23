@@ -1,0 +1,50 @@
+name: 'Solutions - HUb & Spoke'
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+#   paths:
+#     include:
+#       - root (b3b845c6-2a30-6f4c-62d3-a8b417cb9173)/prfx-connectivity-ae (3e51c849-d082-4b01-9385-455f253a5729)/prfx-conn-ae-monitoring-rg/*
+
+variables:
+  - template: /settings.yml
+  - template: pipeline.variables.yml
+
+# resources:
+#   repositories:
+#   - repository: modules
+#     name: $(modulesRepository)
+#     ref: $(ref)
+#     endpoint: segraef
+#     type: github
+
+stages:
+  - stage:
+    displayName: WhatIf
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Hub & Spoke'
+          modulePath: '/solutions/CoreInfra/HubAndSpoke/TemplateOrchestrated/deploy.bicep'
+          moduleTestFilePath: '.test/parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
+  - stage:
+    displayName: Deploy
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Hub & Spoke'
+          modulePath: '/solutions/CoreInfra/HubAndSpoke/TemplateOrchestrated/deploy.bicep'
+          moduleTestFilePath: '.test/parameters.json'
+          checkoutRepositories:
+            - self
