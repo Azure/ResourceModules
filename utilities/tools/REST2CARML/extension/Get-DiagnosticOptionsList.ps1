@@ -77,7 +77,7 @@ function Get-DiagnosticOptionsList {
         ##   LOGS   ##
         ##############
         $foundLogs = @()
-        if (-not (Test-Path $diagnosticMetricsPath)) {
+        if (-not (Test-Path $diagnosticLogsPath)) {
             Write-Verbose 'Fetching diagnostic logs data. This may take a moment...' -Verbose
             Invoke-WebRequest -Uri "$urlRoot/resource-logs-categories.md" -OutFile $diagnosticLogsPath
         }
