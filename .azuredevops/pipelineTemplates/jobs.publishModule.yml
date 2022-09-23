@@ -294,6 +294,7 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              workingPath = '$(workingPath)'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose

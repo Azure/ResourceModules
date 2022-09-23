@@ -368,12 +368,12 @@ function Get-ModulesToPublish {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string] $TemplateFilePath
+        [string] $TemplateFilePath,
+        [Parameter(Mandatory)]
+        [string] $workingPath
     )
 
-    ### Quick Debugging
-    Set-Location '/home/vsts/work/1/s/ResourceModules/'
-    ###
+    Set-Location $workingPath
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
