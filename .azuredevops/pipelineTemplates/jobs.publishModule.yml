@@ -46,7 +46,7 @@
 parameters:
   # Pipeline-related parameters
   checkoutRepositories: ''
-  testparam: 'wiki'
+  wikiDocuRepository: 'wiki'
   displayName: 'Publishing'
   serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
@@ -103,6 +103,32 @@ jobs:
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
                 path: 's/${{ checkoutRepository }}'
 
+
+      # [Multi Repo] Support task
+      #--------------------------
+      - task: PowerShell@2
+        displayName: Handle Multi-Repo Invocation
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # ---------------------------- #
+            # HANDLE MULTI-REPO INVOCATION #
+            # ---------------------------- #
+
+            # Handle multiple-repositories
+            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) -or ( "${{ parameters.wikiDocuRepository }}" -eq 'wiki') {
+              Write-Verbose "Multi-Repo Checkout" -Verbose
+              $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
+              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
+            } else {
+              Write-Verbose "No Multi-Repo Checkout" -Verbose
+              $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
+            }
+            Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
+            Write-Output "##vso[task.setvariable variable=workingPath]$workingPath"
+            Write-Verbose "$workingPath" -Verbose
+
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
@@ -123,28 +149,6 @@ jobs:
 
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
-
-      # [Multi Repo] Support task
-      #--------------------------
-      - task: PowerShell@2
-        displayName: Handle Multi-Repo Invocation
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # ---------------------------- #
-            # HANDLE MULTI-REPO INVOCATION #
-            # ---------------------------- #
-
-            # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
-              Write-Verbose "Multi-Repo Checkout" -Verbose
-              $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
-            } else {
-              Write-Verbose "No Multi-Repo Checkout" -Verbose
-              $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
-            }
-            Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
 
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
