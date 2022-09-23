@@ -106,13 +106,13 @@ jobs:
             if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0 -or ("${{ parameters.publishWikiToAzureDevOps }}" -eq 'true')) {
               Write-Verbose "Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
-              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' 'carml'
+              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
               Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$true"
 
             } else {
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
-              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' 'carml' #Because ADO doesn't use default path even condition for multi repo is false we have to change path
+              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' #Because ADO doesn't use default path even condition for multi repo is false we have to change path
               Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$false"
             }
             Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
@@ -121,7 +121,7 @@ jobs:
       #--------------------------------
       - checkout: self
         fetchDepth: 0
-        path: s/carml
+        path: 's/${{ parameters.modulesRepository }}'
       - checkout: git://$(SYSTEM.TEAMPROJECT)/$(SYSTEM.TEAMPROJECT).wiki
         condition: eq( variables['publishWikiToAzureDevOps'], 'true')
         fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
