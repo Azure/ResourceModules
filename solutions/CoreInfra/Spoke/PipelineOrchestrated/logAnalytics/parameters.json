@@ -18,7 +18,7 @@
             "value": 730
         },
         "diagnosticWorkspaceId": {
-            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/solutions-ne-rg/providers/microsoft.operationalinsights/workspaces/prfx-mgmt-ae-log-001"
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/solutions-ne-spoke-rg/providers/microsoft.operationalinsights/workspaces/prfx-spk-ne-log-001"
         },
         "gallerySolutions": {
             "value": [{
