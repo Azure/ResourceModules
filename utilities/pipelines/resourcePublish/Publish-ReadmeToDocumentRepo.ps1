@@ -32,7 +32,8 @@ function Publish-ReadmeToDocumentRepo {
     )
 
     Set-NewReadmeVersion -Path $ReadMeFilePath -Version $ModuleVersion
-
+    Get-Location
+    Get-ChildItem
     #####
     Set-Location $wikiPath
 
