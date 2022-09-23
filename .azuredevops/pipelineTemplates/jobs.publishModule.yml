@@ -117,7 +117,7 @@ jobs:
             # ---------------------------- #
 
             # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0 -or ("${{ parameters.publishWikiToAzureDevOps }}")) {
+            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0 -or ("${{ parameters.publishWikiToAzureDevOps }}" -eq 'true')) {
               Write-Verbose "Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
               $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
