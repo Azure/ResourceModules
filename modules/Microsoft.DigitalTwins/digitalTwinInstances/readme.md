@@ -56,6 +56,7 @@ This module deploys DigitalTwins DigitalTwinInstances.
 | `tags` | object | `{object}` |  | Resource tags. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
+
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
