@@ -26,11 +26,13 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the SQL managed instance database. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `longTermRetentionBackupResourceId` | string | `''` | The resource ID of the Long Term Retention backup to be used for restore of this managed database. Required if createMode is RestoreLongTermRetentionBackup. |
@@ -42,6 +44,7 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 | `storageContainerUri` | string | `''` | Specifies the uri of the storage container where backups for this restore are stored. Required if createMode is RestoreExternalBackup. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupLongTermRetentionPoliciesObj` | _[backupLongTermRetentionPolicies](backupLongTermRetentionPolicies/readme.md)_ object | `{object}` |  | The configuration for the backup long term retention policy definition. |

@@ -37,6 +37,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `clusterName` | string | The name of the AKS cluster that should be configured. |
@@ -44,6 +45,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `name` | string | The name of the Flux Configuration. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `configurationProtectedSettings` | object | `{object}` | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |

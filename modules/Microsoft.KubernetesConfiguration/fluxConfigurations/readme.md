@@ -38,6 +38,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `clusterName` | string |  | The name of the AKS cluster that should be configured. |
@@ -47,6 +48,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `sourceKind` | string | `[Bucket, GitRepository]` | Source Kind to pull the configuration data from. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `bucket` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |

@@ -23,11 +23,13 @@ This module deploys a Web PubSub Service resource.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Web PubSub Service resource. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `capacity` | int | `1` |  | The unit count of the resource. 1 by default. |
