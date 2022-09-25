@@ -322,7 +322,7 @@ dataDisks: [
 ### Parameter Usage: `nicConfigurations`
 
 Comments:
-- The field `nicSuffix` and `subnetId` are mandatory.
+- The field `nicSuffix` and `subnetResourceId` are mandatory.
 - If `enablePublicIP` is set to true, then `publicIpNameSuffix` is also mandatory.
 - Each IP config needs to have the mandatory field `name`.
 - If not disabled, `enableAcceleratedNetworking` is considered `true` by default and requires the VM to be deployed with a supported OS and VM size.
@@ -340,7 +340,7 @@ Comments:
       "ipConfigurations": [
         {
           "name": "ipconfig1",
-          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "subnetResourceId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
           "pipConfiguration": {
             "publicIpNameSuffix": "-pip-01",
             "roleAssignments": [
@@ -355,7 +355,7 @@ Comments:
         },
         {
           "name": "ipconfig2",
-          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "subnetResourceId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
         }
       ],
       "nsgId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/networkSecurityGroups/<nsgName>",
@@ -373,14 +373,14 @@ Comments:
       "ipConfigurations": [
         {
           "name": "ipconfig1",
-          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "subnetResourceId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
           "pipConfiguration": {
             "publicIpNameSuffix": "-pip-02"
           }
         },
         {
           "name": "ipconfig2",
-          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "subnetResourceId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
           "privateIPAllocationMethod": "Static",
           "privateIPAddress": "10.0.0.9"
         }
@@ -405,7 +405,7 @@ nicConfigurations: {
       ipConfigurations: [
         {
           name: 'ipconfig1'
-          subnetId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
+          subnetResourceId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
           pipConfiguration: {
             publicIpNameSuffix: '-pip-01'
             roleAssignments: [
@@ -420,7 +420,7 @@ nicConfigurations: {
         }
         {
           name: 'ipconfig2'
-          subnetId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
+          subnetResourceId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
         }
       ]
       nsgId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/networkSecurityGroups/<nsgName>'
@@ -438,14 +438,14 @@ nicConfigurations: {
       ipConfigurations: [
         {
           name: 'ipconfig1'
-          subnetId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
+          subnetResourceId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
           pipConfiguration: {
             publicIpNameSuffix: '-pip-02'
           }
         }
         {
           name: 'ipconfig2'
-          subnetId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
+          subnetResourceId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
           privateIPAllocationMethod: 'Static'
           privateIPAddress: '10.0.0.9'
         }
