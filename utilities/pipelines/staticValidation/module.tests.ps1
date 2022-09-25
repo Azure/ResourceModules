@@ -341,7 +341,7 @@ Describe 'Readme tests' -Tag Readme {
                 if ($shouldHaveAllowed) { $expectedColumnsInOrder += @('Allowed Values') }
                 $expectedColumnsInOrder += @('Description')
 
-                $readMeCategoryIndex = $readMeContent | Select-String -Pattern "^\*\*$paramCategory parameters\*\*$" | ForEach-Object { $_.LineNumber }
+                $readMeCategoryIndex = $readMeContent | Select-String -Pattern "^\*\*$paramCategory parameters\*\*$" | ForEach-Object { $_.LineNumber + 1 }
                 $readmeCategoryColumns = ($readMeContent[$readMeCategoryIndex] -split '\|') | ForEach-Object { $_.Trim() } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
                 $readmeCategoryColumns | Should -Be $expectedColumnsInOrder

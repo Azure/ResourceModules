@@ -28,6 +28,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `adminUsername` | secureString |  |  | Administrator username. |
@@ -39,6 +40,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `vmSize` | string |  |  | Specifies the size for the VMs. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalUnattendContent` | array | `[]` |  | Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object. |
@@ -107,6 +109,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `winRM` | object | `{object}` |  | Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a registration token. |
