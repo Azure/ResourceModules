@@ -51,5 +51,4 @@
     "en"
   ],
   "yaml.format.singleQuote": true,
-  "githubPullRequests.ignoredPullRequestBranches": ["main"]
 }
