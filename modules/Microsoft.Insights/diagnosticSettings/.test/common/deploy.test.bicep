@@ -24,13 +24,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
-  params: {
-  }
-}
-
 // Diagnostics
 // ===========
 module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
