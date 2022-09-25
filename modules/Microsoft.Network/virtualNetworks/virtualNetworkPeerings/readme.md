@@ -25,16 +25,19 @@ The following resources are required to be able to deploy this resource.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `remoteVirtualNetworkId` | string | The Resource ID of the VNet that is this Local VNet is being peered to. Should be in the format of a Resource ID. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `localVnetName` | string | The name of the parent Virtual Network to add the peering to. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `allowForwardedTraffic` | bool | `True` | Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network. Default is true. |

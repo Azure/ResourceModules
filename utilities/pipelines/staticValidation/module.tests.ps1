@@ -349,7 +349,6 @@ Describe 'Readme tests' -Tag Readme {
                 }
 
                 $readmeCategoryColumns = ($readMeContent[$tableStartIndex] -split '\|') | ForEach-Object { $_.Trim() } | Where-Object { -not [String]::IsNullOrEmpty($_) }
-
                 $readmeCategoryColumns | Should -Be $expectedColumnsInOrder
             }
         }
