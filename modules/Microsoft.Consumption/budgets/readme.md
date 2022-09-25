@@ -19,12 +19,14 @@ This module deploys budgets for subscriptions.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `amount` | int | The total amount of cost or usage to track with the budget. |
 | `name` | string | The name of the budget. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actionGroups` | array | `[]` |  | List of action group resource IDs that will receive the alert. |

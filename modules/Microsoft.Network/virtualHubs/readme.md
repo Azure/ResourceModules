@@ -22,6 +22,7 @@ This module deploys a Virtual Hub.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `addressPrefix` | string | Address-prefix for this VirtualHub. |
@@ -29,6 +30,7 @@ This module deploys a Virtual Hub.
 | `virtualWanId` | string | Resource ID of the virtual WAN to link to. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBranchToBranchTraffic` | bool | `True` |  | Flag to control transit for VirtualRouter hub. |
