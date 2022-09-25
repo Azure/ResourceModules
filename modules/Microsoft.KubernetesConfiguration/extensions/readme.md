@@ -28,6 +28,7 @@ az provider register --namespace Microsoft.KubernetesConfiguration
 ```
 
 For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -77,7 +78,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -85,69 +86,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Extensions'
+  name: '${uniqueString(deployment().name)}-test-kcecom'
   params: {
     // Required parameters
-    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    clusterName: '<clusterName>'
     extensionType: 'microsoft.flux'
-    name: 'flux'
-    // Non-required parameters
-    releaseNamespace: 'flux-system'
-    releaseTrain: 'Stable'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "clusterName": {
-      "value": "<<namePrefix>>-az-aks-kubenet-001"
-    },
-    "extensionType": {
-      "value": "microsoft.flux"
-    },
-    "name": {
-      "value": "flux"
-    },
-    // Non-required parameters
-    "releaseNamespace": {
-      "value": "flux-system"
-    },
-    "releaseTrain": {
-      "value": "Stable"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Extensions'
-  params: {
-    // Required parameters
-    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    extensionType: 'microsoft.flux'
-    name: 'flux'
+    name: '<<namePrefix>>kcecom001'
     // Non-required parameters
     configurationSettings: {
       'image-automation-controller.enabled': 'false'
@@ -177,13 +121,13 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "clusterName": {
-      "value": "<<namePrefix>>-az-aks-kubenet-001"
+      "value": "<clusterName>"
     },
     "extensionType": {
       "value": "microsoft.flux"
     },
     "name": {
-      "value": "flux"
+      "value": "<<namePrefix>>kcecom001"
     },
     // Non-required parameters
     "configurationSettings": {
@@ -203,6 +147,63 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
     },
     "version": {
       "value": "0.5.2"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-kcemin'
+  params: {
+    // Required parameters
+    clusterName: '<clusterName>'
+    extensionType: 'microsoft.flux'
+    name: '<<namePrefix>>kcemin001'
+    // Non-required parameters
+    releaseNamespace: 'flux-system'
+    releaseTrain: 'Stable'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<clusterName>"
+    },
+    "extensionType": {
+      "value": "microsoft.flux"
+    },
+    "name": {
+      "value": "<<namePrefix>>kcemin001"
+    },
+    // Non-required parameters
+    "releaseNamespace": {
+      "value": "flux-system"
+    },
+    "releaseTrain": {
+      "value": "Stable"
     }
   }
 }
