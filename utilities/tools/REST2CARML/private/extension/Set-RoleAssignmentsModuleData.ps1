@@ -1,3 +1,30 @@
+<#
+.SYNOPSIS
+Fetch all available roles for a given resource type, generate the corresponding nested_roleAssignment.bicep file in the given module path & add any additional required parameters, variables & resources to the provide module data object.
+
+.DESCRIPTION
+Fetch all available roles for a given resource type, generate the corresponding nested_roleAssignment.bicep file in the given module path & add any additional required parameters, variables & resources to the provide module data object.
+
+.PARAMETER ProviderNamespace
+Mandatory. The ProviderNamespace to fetch the available role options for.
+
+.PARAMETER ResourceType
+Mandatory. The ResourceType to fetch the available role options for.
+
+.PARAMETER ServiceApiVersion
+Mandatory. The API version of the module to generate the RBAC module file for
+
+.PARAMETER ModuleData
+Mandatory. The ModuleData object to populate.
+
+.PARAMETER ModuleRootPath
+Mandatory. The path to the generated module to add the RBAC module file to.
+
+.EXAMPLE
+Set-RoleAssignmentsModuleData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ServiceApiVersion '10-10-2022' -ModuleData @{ parameters = @(...); resources = @(...); (...) } -ModuleRootPath 'C:/ResourceModules/modules/Microsoft.KeyVault/vaults'
+
+Generate the nested_roleAssignment.bicep file in the [Microsoft.KeyVault/vaults]'s module path and add any additional required data to the provided module data object.
+#>
 function Set-RoleAssignmentsModuleData {
 
     [CmdletBinding(SupportsShouldProcess)]

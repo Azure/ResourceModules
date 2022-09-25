@@ -1,3 +1,24 @@
+<#
+.SYNOPSIS
+Populate the provided ModuleData with all parameters, variables & resources required for locks.
+
+.DESCRIPTION
+Populate the provided ModuleData with all parameters, variables & resources required for locks.
+
+.PARAMETER JSONKeyPath
+Mandatory. The JSON key path (of the API Specs) to use when determining if locks are supported or not
+
+.PARAMETER ResourceType
+Mandatory. The resource type to check if lock are supported.
+
+.PARAMETER ModuleData
+Mandatory. The ModuleData object to populate.
+
+.EXAMPLE
+Set-LockModuleData -JSONKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
+
+Add the lock module data of the resource type [vaults] to the provided module data object
+#>
 function Set-LockModuleData {
 
     [CmdletBinding()]

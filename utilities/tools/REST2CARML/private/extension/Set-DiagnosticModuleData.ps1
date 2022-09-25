@@ -1,4 +1,25 @@
-﻿function Set-DiagnosticModuleData {
+﻿<#
+.SYNOPSIS
+Populate the provided ModuleData with all parameters, variables & resources required for diagnostic settings.
+
+.DESCRIPTION
+Populate the provided ModuleData with all parameters, variables & resources required for diagnostic settings.
+
+.PARAMETER ProviderNamespace
+Mandatory. The ProviderNamespace to fetch the available diagnostic options for.
+
+.PARAMETER ResourceType
+Mandatory. The ResourceType to fetch the available diagnostic options for.
+
+.PARAMETER ModuleData
+Mandatory. The ModuleData object to populate.
+
+.EXAMPLE
+Set-DiagnosticModuleData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
+
+Add the diagnostic module data of the resource type [Microsoft.KeyVault/vaults] to the provided module data object
+#>
+function Set-DiagnosticModuleData {
 
     [CmdletBinding()]
     param (

@@ -1,4 +1,25 @@
-﻿function Set-PrivateEndpointModuleData {
+﻿<#
+.SYNOPSIS
+Populate the provided ModuleData with all parameters, variables & resources required for private endpoints.
+
+.DESCRIPTION
+Populate the provided ModuleData with all parameters, variables & resources required for private endpoints.
+
+.PARAMETER JSONFilePath
+Mandatory. The path to the API Specs file to use to check if private endpoints are supported.
+
+.PARAMETER ResourceType
+Mandatory. The resource type to check if private endpoints are supported.
+
+.PARAMETER ModuleData
+Mandatory. The ModuleData object to populate.
+
+.EXAMPLE
+Set-PrivateEndpointModuleData -JSONFilePath './resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json'  -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
+
+Add the private endpoint module data of the resource type [vaults] to the provided module data object
+#>
+function Set-PrivateEndpointModuleData {
 
     [CmdletBinding()]
     param (
