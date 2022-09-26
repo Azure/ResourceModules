@@ -1,4 +1,4 @@
-name: 'DigitalTwins - DigitalTwinInstances'
+name: 'DigitalTwins - DigitalTwinsInstances'
 
 parameters:
   - name: removeDeployment
@@ -21,7 +21,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.logic.workflows.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.DigitalTwins/digitalTwinInstances/*'
+      - '/modules/Microsoft.DigitalTwins/digitalTwinsInstances/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/dependencies/*'
@@ -31,7 +31,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.DigitalTwins/digitalTwinInstances'
+    value: '/modules/Microsoft.DigitalTwins/digitalTwinsInstances'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
