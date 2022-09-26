@@ -21,11 +21,13 @@ This module deploys a user defined route table.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name given for the hub route table. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `disableBgpRoutePropagation` | bool | `False` |  | Switch to disable BGP route propagation. |

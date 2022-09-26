@@ -23,11 +23,13 @@ This module deploys a Static Web App.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the static site. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowConfigFileUpdates` | bool | `True` |  | If config file is locked for this static web app. |

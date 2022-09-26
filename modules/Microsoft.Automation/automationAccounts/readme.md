@@ -32,11 +32,13 @@ This module deploys an Azure Automation Account.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Automation Account. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |

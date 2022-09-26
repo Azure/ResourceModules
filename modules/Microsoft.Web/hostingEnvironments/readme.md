@@ -22,12 +22,14 @@ This module deploys an app service environment.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the App Service Environment. |
 | `subnetResourceId` | string | ResourceId for the subnet. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `clusterSettings` | array | `[System.Collections.Hashtable]` |  | Custom settings for changing the behavior of the App Service Environment. |
