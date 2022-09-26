@@ -27,11 +27,13 @@ This module deploys a key vault and its child resources.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Key Vault. Must be globally unique. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `accessPolicies` | _[accessPolicies](accessPolicies/readme.md)_ array | `[]` |  | Array of access policies object. |

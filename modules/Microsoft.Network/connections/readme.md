@@ -20,12 +20,14 @@ This template deploys a virtual network gateway connection.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Remote connection name. |
 | `virtualNetworkGateway1` | object | The primary Virtual Network Gateway. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection. |

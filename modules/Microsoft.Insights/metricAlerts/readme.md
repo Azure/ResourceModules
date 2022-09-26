@@ -20,18 +20,21 @@ This module deploys an alert based on metrics.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `criterias` | array | Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects. |
 | `name` | string | The name of the alert. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `targetResourceRegion` | string | `''` | The region of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria. |
 | `targetResourceType` | string | `''` | The resource type of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | The list of actions to take when alert triggers. |

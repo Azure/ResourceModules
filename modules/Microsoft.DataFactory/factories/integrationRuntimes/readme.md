@@ -18,17 +18,20 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | The name of the Integration Runtime. |
 | `type` | string | `[Managed, SelfHosted]` | The type of Integration Runtime. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `dataFactoryName` | string | The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |

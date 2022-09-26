@@ -18,16 +18,19 @@ This module deploys ContainerRegistry Registries Webhooks.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `serviceUri` | string | The service URI for the webhook to post notifications. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `registryName` | string | The name of the parent registry. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `action` | array | `[chart_delete, chart_push, delete, push, quarantine]` |  | The list of actions that trigger the webhook to post notifications. |

@@ -25,11 +25,13 @@ This module deploys an App Configuration Store.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Azure App Configuration. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `createMode` | string | `'Default'` | `[Default, Recover]` | Indicates whether the configuration store need to be recovered. |
