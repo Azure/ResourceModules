@@ -26,11 +26,13 @@ This module deploys DigitalTwins DigitalTwinInstances.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Resource Name. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -53,6 +55,7 @@ This module deploys DigitalTwins DigitalTwinInstances.
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ### Parameter Usage: `privateEndpoints`
 
