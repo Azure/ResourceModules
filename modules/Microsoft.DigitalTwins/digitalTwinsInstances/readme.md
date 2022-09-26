@@ -1,7 +1,6 @@
 # DigitalTwins DigitalTwinInstances `[Microsoft.DigitalTwins/digitalTwinsInstances]`
 
-This module deploys DigitalTwins DigitalTwinInstances.
-// TODO: Replace Resource and fill in description
+This module deploys Azure Digital Twins Instances and  Digital Twins Endpoints.
 
 ## Navigation
 
@@ -271,6 +270,171 @@ userAssignedIdentities: {
 </details>
 <p>
 
+### Parameter Usage: `eventhubEndpoint` Identity Auth
+
+Deployment of Digital Twins Event Hub Endpoint. Identity based authentication.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+        "eventhubEndpoint": {
+            "value": {
+                "EndpointName": "<Endpoint Name>",
+                "EventHubEntityPath": "evh1", // Event Hub Name
+                "EventHubURI": "sb://xyz.servicebus.windows.net" //Event Hub namespace, including sb://
+            }
+        }
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+  EndpointName: '<Endpoint Name>'
+  EventHubEntityPath: 'evh1' // Event Hub Name
+  EventHubURI: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
+```
+
+</details>
+<p>
+
+### Parameter Usage: `eventhubEndpoint` Key Auth
+
+Deployment of Digital Twins Event Hub Endpoint. Key based authentication.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+        "eventhubEndpoint": {
+            "value": {
+                "EndpointName": "<Endpoint Name>",
+                "EventHubConnectionStringPrimaryKey": "Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-KEY>=;EntityPath=<Event-Hub Name>",
+                "EventHubConnectionStringSecondaryKey": "Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-Key>;EntityPath=<Event-Hub Name>"
+            }
+        }
+```
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+   EndpointName: '<Endpoint Name>'
+   EventHubConnectionStringPrimaryKey: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-KEY>=;EntityPath=<Event-Hub Name>'
+   EventHubConnectionStringSecondaryKey: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-Key>;EntityPath=<Event-Hub Name>'
+```
+</details>
+<p>
+
+### Parameter Usage: `eventgridEndpoint`
+
+Deployment of Digital Twins Event Grid Endpoint.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+        "eventgridEndpoint": {
+            "value": {
+                "EndpointName": "<Endpoint Name>",
+                "EventGridTopicEndpoint": "https://xyz.<region>.eventgrid.azure.net/api/events",
+                "EventGridAccessKey1": "<Event Grid Topic Access Key 1>",
+                "EventGridAccessKey2": "<Event Grid Topic Access Key 2>"
+            }
+        }
+```
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+  EndpointName: '<Endpoint Name>'
+  EventGridTopicEndpoint: 'https://xyz.<region>.eventgrid.azure.net/api/events'
+  EventGridAccessKey1: '<Event Grid Topic Access Key 1>'
+  EventGridAccessKey2: '<Event Grid Topic Access Key 2>'
+```
+
+</details>
+<p>
+
+### Parameter Usage: `servicebusEndpoint` Identity Auth
+
+Deployment of Digital Twins Service Bus Endpoint. Identity based authentication.
+
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+        "servicebusEndpoint": {
+            "value": {
+                "EndpointName": "<Endpoint Name>",
+                "ServiceBusEndpointUri": "sb://xyz.servicebus.windows.net", //Service Bus URI, including sb://
+                "ServiceBusEntityPath": "<Service Bus Entity Path>"
+            }
+        }
+```
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+    EndpointName: '<Endpoint Name>'
+    ServiceBusEndpointUri: 'sb://xyz.servicebus.windows.net' //Service Bus URI, including sb://
+    ServiceBusEntityPath: '<Service Bus Entity Path>'
+```
+
+</details>
+<p>
+
+### Parameter Usage: `servicebusEndpoint` Key Auth
+
+Deployment of Digital Twins Service Bus Endpoint. Key based authentication.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+        "servicebusEndpoint": {
+            "value": {
+                "EndpointName": "<Endpoint Name>",
+                "ServiceBusPrimaryConnectionString": "Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS Key Name>;SharedAccessKey=<SAS Key>=;EntityPath=<EntityPath>",
+                "ServiceBusSecondaryConnectionString": "Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS Key Name>;SharedAccessKey=<SAS Key>=;EntityPath=<EntityPath>"
+            }
+        }
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+    EndpointName: '<Endpoint Name>'
+    ServiceBusPrimaryConnectionString: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS Key Name>;SharedAccessKey=<SAS Key>=;EntityPath=<EntityPath>'
+    ServiceBusSecondaryConnectionString: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS Key Name>;SharedAccessKey=<SAS Key>=;EntityPath=<EntityPath>'
+```
+
+</details>
+<p>
+
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -332,3 +496,4 @@ module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/dep
 
 </details>
 <p>
+
