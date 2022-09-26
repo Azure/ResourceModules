@@ -19,7 +19,7 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.digitaltwins.digitaltwinsinstances.yml'
-      - 'modules/Microsoft.DigitalTwins/**'
+      - 'modules/Microsoft.DigitalTwins/digitalTwinsInstances/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
