@@ -133,7 +133,7 @@ resource digitaltwin 'Microsoft.DigitalTwins/digitalTwinsInstances@2022-05-31' =
   identity: identity
   tags: tags
   properties: {
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : 'Enabled')
   }
 }
 
