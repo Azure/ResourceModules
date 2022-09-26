@@ -14,7 +14,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 
 resource actionGroup 'Microsoft.Insights/actionGroups@2022-06-01' = {
     name: actionGroupName
-    location: location
+    location: 'global'
 }
 
 @description('The principal ID of the created Managed Identity.')
