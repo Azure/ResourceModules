@@ -18,7 +18,7 @@ resource actionGroup 'Microsoft.Insights/actionGroups@2022-06-01' = {
 
     properties: {
         enabled: true
-        groupShortName: actionGroupName
+        groupShortName: substring(actionGroupName, 0, 11)
     }
 }
 
