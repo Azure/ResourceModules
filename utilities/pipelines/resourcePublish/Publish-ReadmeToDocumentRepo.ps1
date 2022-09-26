@@ -28,8 +28,6 @@ function Publish-ReadmeToDocumentRepo {
 
     Copy-Item -Path $ReadMeFilePath -Destination "$moduleDir/$newName" -Recurse -Force -Verbose
 
-
-
     ## publishing md to wiki
     Write-Host '##############################'
     Write-Host 'Publishing...'

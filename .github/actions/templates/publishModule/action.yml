@@ -60,6 +60,10 @@ inputs:
     description: 'Flag to indicate whether or not to publish to the private bicep registry'
     default: 'false'
     required: false
+  publishWikiToGitHub:
+    description: 'Flag to indicate whether or not to publish documents to Github Wiki'
+    default: 'false'
+    required: false
 
 runs:
   using: 'composite'
@@ -180,7 +184,7 @@ runs:
           Write-Output '::endgroup::'
 
     - name: 'Publish documentation to document repo'
-      # if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
+      if: ${{ inputs.publishWikiToGitHub == 'true' }}
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
@@ -207,11 +211,16 @@ runs:
             $RelPath = (($ReadmeToPublish.ReadmeFilePath).Split('/modules/')[-1]).Split('/readme.')[0]
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ReadmeToPublish.Version)"
 
+            # Extracts microsoft.keyvault.vaults from module relative path e.g. \modules\Microsoft.KeyVault\vaults
+            $ModuleRegistryIdentifier = 'bicep/modules/{0}' -f $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
+            $TemplateSpecsIdentifier = $RelPath.Replace('\', '/').Replace('/', '.').ToLower()
+
+            $SubscriptionId = (Get-AzContext).Subscription.Id
+
             $functionInput = @{
               ReadmeFilePath            = $ReadmeToPublish.ReadmeFilePath
-              # BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
-              # BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
-              # BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
+              BicepRegistryUrl          = 'br:{0}.azurecr.io/{1}:{2}' -f '${{ inputs.bicepRegistryName }}', $ModuleRegistryIdentifier, $ReadmeToPublish.Version
+              TemplateSpecsUrl          = 'ts:{0}/{1}/{2}:{3}' -f $SubscriptionId, '${{ inputs.templateSpecsRgName }}', $TemplateSpecsIdentifier, $ReadmeToPublish.Version
               ModuleVersion             = $ReadmeToPublish.Version
             }
 
