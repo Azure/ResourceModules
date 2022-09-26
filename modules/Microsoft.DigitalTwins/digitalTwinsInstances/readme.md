@@ -1,4 +1,4 @@
-# DigitalTwins DigitalTwinInstances `[Microsoft.DigitalTwins/digitalTwinInstances]`
+# DigitalTwins DigitalTwinInstances `[Microsoft.DigitalTwins/digitalTwinsInstances]`
 
 This module deploys DigitalTwins DigitalTwinInstances.
 // TODO: Replace Resource and fill in description
@@ -303,8 +303,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module digitalTwinInstances './Microsoft.DigitalTwins/digitalTwinInstances/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DigitalTwinInstances'
+module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-DigitalTwinsInstances'
   params: {
     name: '<<namePrefix>>-az-digitaltwin-001'
   }
