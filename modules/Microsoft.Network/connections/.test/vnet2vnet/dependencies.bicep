@@ -128,5 +128,5 @@ resource secondaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-
 @description('The resource ID of the created primary Virtual Network Gateway.')
 output primaryVNETGatewayResourceID string = primaryVNETGateway.id
 
-@description('The resource ID of the second created Virtual Network Gateways.')
+@description('The resource ID of the created secondary Virtual Network Gateway.')
 output secondaryVNETGatewayResourceID string = secondaryVNETGateway.id
