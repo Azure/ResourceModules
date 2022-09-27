@@ -37,7 +37,7 @@ module resourceGroupResources 'dependencies.bicep' = {
     primaryVirtualNetworkGatewayName: 'dep-<<namePrefix>>-vpn-gw-${serviceShort}-1'
     secondaryPublicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}-2'
     secondaryVirtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-2'
-    secondaryVirtualNetworkGateway: 'dep-<<namePrefix>>-vpn-gw-${serviceShort}-2'
+    secondaryVirtualNetworkGatewayName: 'dep-<<namePrefix>>-vpn-gw-${serviceShort}-2'
   }
 }
 
