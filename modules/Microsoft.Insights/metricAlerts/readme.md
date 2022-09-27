@@ -20,18 +20,21 @@ This module deploys an alert based on metrics.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `criterias` | array | Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects. |
 | `name` | string | The name of the alert. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `targetResourceRegion` | string | `''` | The region of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria. |
 | `targetResourceType` | string | `''` | The resource type of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | The list of actions to take when alert triggers. |
@@ -382,9 +385,10 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -392,7 +396,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-MetricAlerts'
+  name: '${uniqueString(deployment().name)}-test-imacom'
   params: {
     // Required parameters
     criterias: [
@@ -406,16 +410,16 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
         timeAggregation: 'Average'
       }
     ]
-    name: '<<namePrefix>>-az-ma-x-001'
+    name: '<<namePrefix>>imacom001'
     // Non-required parameters
     actions: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
+      '<actionGroupResourceId>'
     ]
     alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -454,12 +458,12 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-ma-x-001"
+      "value": "<<namePrefix>>imacom001"
     },
     // Non-required parameters
     "actions": {
       "value": [
-        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
+        "<actionGroupResourceId>"
       ]
     },
     "alertCriteriaType": {
@@ -469,7 +473,7 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }

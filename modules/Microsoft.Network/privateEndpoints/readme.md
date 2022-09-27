@@ -32,6 +32,7 @@ The following resources are required to be able to deploy this resource:
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `groupIds` | array | Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to. |
@@ -40,6 +41,7 @@ The following resources are required to be able to deploy this resource:
 | `subnetResourceId` | string | Resource ID of the subnet where the endpoint needs to be created. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `customDnsConfigs` | array | `[]` |  | Custom DNS configurations. |
@@ -169,6 +171,7 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Min</h3>
