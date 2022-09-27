@@ -143,4 +143,4 @@ jobs:
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
           bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
-          publishWikiToGitHub: '${{ env.publishWikiToGitHub }}'
+          publishDocToGitHubWiki: '${{ env.publishDocToGitHubWiki }}'

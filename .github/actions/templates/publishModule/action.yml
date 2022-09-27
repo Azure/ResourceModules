@@ -60,7 +60,7 @@ inputs:
     description: 'Flag to indicate whether or not to publish to the private bicep registry'
     default: 'false'
     required: false
-  publishWikiToGitHub:
+  publishDocToGitHubWiki:
     description: 'Flag to indicate whether or not to publish documents to Github Wiki'
     default: 'false'
     required: false
@@ -184,7 +184,7 @@ runs:
           Write-Output '::endgroup::'
 
     - name: 'Publish documentation to document repo'
-      if: ${{ inputs.publishWikiToGitHub == 'true' }}
+      if: ${{ inputs.publishDocToGitHubWiki == 'true' }}
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'

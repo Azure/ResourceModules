@@ -107,9 +107,13 @@ variables:
   #
 
   ######################################
-  # Wiki Repository settings
+  # Module documentation settings
   ######################################
 
-  publishWikiToGitHub: true # Set to true, if you would like to publish readmes to the GitHub Wiki.
-  publishWikiToAzureDevOps: true # Set to true, if you would like to publish readmes to the Azure DevOps Project Wiki.
-  publishWikiToWebSite: false # Set to true, if you would like to publish readmes to a DocFX Website using Azure Static Web sites.
+  publishDocToGitHubWiki: true # Set to true, if you would like to publish readmes to the GitHub Wiki.
+  publishDocToAzureDevOpsWiki: true # Set to true, if you would like to publish readmes to the Azure DevOps Project Wiki.
+  publishDocToWebSite: false # Set to true, if you would like to publish readmes to a DocFX Website using Azure Static Web sites.
+  publishDocOnMajorUpdate: true # Set to true, if you would like to publish on major updates
+  publishDocOnMinorUpdate: true # Set to true, if you would like to publish on minor updates
+  publishDocOnPatchUpdate: true # Set to true, if you would like to publish on patch updates
+  publishLatestModule: true ## Set to true, if you would like to always publish a 'latest' version.
