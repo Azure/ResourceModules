@@ -166,6 +166,7 @@ function Set-ParametersSection {
         # 2. Create header including optional columns
         $newSectionContent += @(
             ('**{0} parameters**' -f $category),
+            '',
             ('| Parameter Name | Type | {0}{1}Description |' -f ($hasDefault ? 'Default Value | ' : ''), ($hasAllowed ? 'Allowed Values | ' : '')),
             ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefault ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
         )
@@ -970,7 +971,7 @@ function Set-DeploymentExamplesSection {
             $rawBicepExampleArray = $rawBicepExample -split '\n'
             $moduleDeploymentPropertyIndent = ([regex]::Match($rawBicepExampleArray[1], '^(\s+).*')).Captures.Groups[1].Value.Length
             $paramsStartIndex = ($rawBicepExampleArray | Select-String ("^[\s]{$moduleDeploymentPropertyIndent}params:[\s]*\{") | ForEach-Object { $_.LineNumber - 1 })[0] + 1
-            if ($rawBicepExampleArray[($paramsStartIndex + 1)].Trim() -ne '}') {
+            if ($rawBicepExampleArray[$paramsStartIndex].Trim() -ne '}') {
                 # Handle case where param block is empty
                 $paramsEndIndex = ($rawBicepExampleArray[($paramsStartIndex + 1)..($rawBicepExampleArray.Count)] | Select-String "^[\s]{$moduleDeploymentPropertyIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + $paramsStartIndex
                 $paramBlock = ($rawBicepExampleArray[$paramsStartIndex..$paramsEndIndex] | Out-String).TrimEnd()
