@@ -1,8 +1,11 @@
 @description('Optional. The location to deploy to.')
 param location string = resourceGroup().location
 
-@description('Required. The resource ID of the Managed Identity to assign.')
-param managedIdentityResourceId string
+@description('Required. The name of the Managed Identity to create.')
+param managedIdentityName string
+
+@description('Required. The name of the Storage Account to create.')
+param storageAccountName string
 
 @description('Required. The name prefix of the Image Template to create.')
 param imageTemplateNamePrefix string
@@ -19,6 +22,41 @@ param copyVhdDeploymentScriptName string
 @description('Required. The name of the destination Storage Account to copy the created VHD to.')
 param destinationStorageAccountName string
 
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+  name: managedIdentityName
+  location: location
+}
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+  name: storageAccountName
+  location: location
+  kind: 'StorageV2'
+  sku: {
+    name: 'Standard_LRS'
+  }
+  properties: {
+    allowBlobPublicAccess: false
+  }
+  resource blobServices 'blobServices@2021-09-01' = {
+    name: 'default'
+    resource container 'containers@2021-09-01' = {
+      name: 'vhds'
+      properties: {
+        publicAccess: 'None'
+      }
+    }
+  }
+}
+
+module roleAssignment 'dependencies_rbac.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-MSI-roleAssignment'
+  scope: subscription()
+  params: {
+    managedIdentityPrincipalId: managedIdentity.properties.principalId
+    managedIdentityResourceId: managedIdentity.id
+  }
+}
+
 // Deploy image template
 resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14' = {
   name: '${imageTemplateNamePrefix}-${baseTime}'
@@ -26,7 +64,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${managedIdentityResourceId}': {}
+      '${managedIdentity.id}': {}
     }
   }
   properties: {
@@ -66,7 +104,7 @@ resource triggerImageDeploymentScript 'Microsoft.Resources/deploymentScripts@202
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${managedIdentityResourceId}': {}
+      '${managedIdentity.id}': {}
     }
   }
   properties: {
@@ -77,6 +115,9 @@ resource triggerImageDeploymentScript 'Microsoft.Resources/deploymentScripts@202
     cleanupPreference: 'OnSuccess'
     forceUpdateTag: baseTime
   }
+  dependsOn: [
+    roleAssignment
+  ]
 }
 
 // Copy VHD to destination storage account
@@ -87,7 +128,7 @@ resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${managedIdentityResourceId}': {}
+      '${managedIdentity.id}': {}
     }
   }
   properties: {
@@ -103,3 +144,9 @@ resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-
 
 @description('The URI of the created VHD.')
 output vhdUri string = 'https://${destinationStorageAccountName}.blob.core.windows.net/vhds/${imageTemplateNamePrefix}.vhd'
+
+@description('The principal ID of the created Managed Identity.')
+output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+
+@description('The resource ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id
