@@ -18,11 +18,13 @@ This module deploys a Service Fabric Cluster Application Type.
 ## Parameters
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `serviceFabricClusterName` | string | `''` | The name of the parent Service Fabric cluster. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
