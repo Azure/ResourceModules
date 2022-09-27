@@ -368,8 +368,12 @@ function Get-ModulesToPublish {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string] $TemplateFilePath
+        [string] $TemplateFilePath,
+        [Parameter(Mandatory)]
+        [string] $workingPath
     )
+
+    Set-Location $workingPath
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending

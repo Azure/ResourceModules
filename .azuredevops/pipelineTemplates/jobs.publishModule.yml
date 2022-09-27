@@ -46,6 +46,7 @@
 parameters:
   # Pipeline-related parameters
   checkoutRepositories: ''
+  publishWikiToAzureDevOps: '$(publishWikiToAzureDevOps)'
   displayName: 'Publishing'
   serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
@@ -89,37 +90,6 @@ jobs:
       ${{ if ne(parameters.poolName, '') }}:
         name: ${{ parameters.poolName }}
     steps:
-      # [Checkout Repositories] task(s)
-      #--------------------------------
-      - checkout: self
-        fetchDepth: 0
-      - ${{ if ne(parameters.checkoutRepositories, '') }}:
-          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
-              - checkout: ${{ checkoutRepository }}
-                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: 's/${{ checkoutRepository }}'
-
-      # [Agent] Prepare environment
-      #----------------------------
-      - task: PowerShell@2
-        displayName: 'Setup agent'
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-            # Define PS modules to install on the runner
-            $Modules = @(
-                @{ Name = 'Az.Accounts' },
-                @{ Name = 'Az.ContainerRegistry' },
-                @{ Name = 'Az.Resources' }
-            )
-
-            # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
-
       # [Multi Repo] Support task
       #--------------------------
       - task: PowerShell@2
@@ -133,14 +103,55 @@ jobs:
             # ---------------------------- #
 
             # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
+            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0 -or ("${{ parameters.publishWikiToAzureDevOps }}" -eq 'true')) {
               Write-Verbose "Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
+              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
+              Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$true"
+
             } else {
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
+              $workingPath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' #Because ADO doesn't use default path even condition for multi repo is false we have to change path
+              Write-Output "##vso[task.setvariable variable=publishWikiToAzureDevOps]$false"
             }
             Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
+            Write-Output "##vso[task.setvariable variable=workingPath]$workingPath"
+      # [Checkout Repositories] task(s)
+      #--------------------------------
+      - checkout: self
+        fetchDepth: 0
+        path: 's/${{ parameters.modulesRepository }}'
+      - checkout: git://$(SYSTEM.TEAMPROJECT)/$(SYSTEM.TEAMPROJECT).wiki
+        condition: eq( variables['publishWikiToAzureDevOps'], 'true')
+        fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
+        path: s/wiki
+        persistCredentials: true
+      - ${{ if ne(parameters.checkoutRepositories, '') }}:
+          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
+              - checkout: ${{ checkoutRepository }}
+                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
+                path: 's/${{ checkoutRepository }}'
+      # [Agent] Prepare environment
+      #----------------------------
+      - task: PowerShell@2
+        displayName: 'Setup agent'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(workingPath)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+            # Define PS modules to install on the runner
+            $Modules = @(
+                @{ Name = 'Az.Accounts' },
+                @{ Name = 'Az.ContainerRegistry' },
+                @{ Name = 'Az.Resources' }
+            )
+
+            # Set agent up
+            Set-EnvironmentOnAgent -PSModules $Modules
 
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
@@ -156,8 +167,8 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
@@ -167,6 +178,7 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              workingPath = '$(workingPath)'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -215,8 +227,8 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
@@ -226,6 +238,7 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              workingPath = '$(workingPath)'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -275,8 +288,8 @@ jobs:
             Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
 
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
@@ -286,6 +299,7 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              workingPath = '$(workingPath)'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -322,13 +336,14 @@ jobs:
           eq(variables['publishDocToAzureDevOpsWiki'], true),
           succeeded()
           )
+          # ONLY IN MAIN BRANCH
         inputs:
           targetType: inline
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ReadmeToDocumentRepo.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(workingPath)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ReadmeToDocumentRepo.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
@@ -338,6 +353,7 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              workingPath = '$(workingPath)'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -345,6 +361,8 @@ jobs:
 
             # Get the modified child resources
             $ReadmesToPublish = Get-ModulesToPublish @functionInput -Verbose
+
+            $wikiPath = Join-Path '$(System.DefaultWorkingDirectory)' 'wiki'
 
             # Publish the modified child resources
             foreach ($ReadmeToPublish in $ReadmesToPublish) {
@@ -362,6 +380,7 @@ jobs:
                 BicepRegistryUrl          = 'br:{0}.azurecr.io/{1}:{2}' -f '${{ parameters.bicepRegistryName }}', $ModuleRegistryIdentifier, $ReadmeToPublish.Version
                 TemplateSpecsUrl          = 'ts:{0}/{1}/{2}:{3}' -f $SubscriptionId, '${{ parameters.templateSpecsRgName }}', $TemplateSpecsIdentifier, $ReadmeToPublish.Version
                 ModuleVersion             = $ReadmeToPublish.Version
+                wikiPath                  = $wikiPath
               }
 
               Write-Verbose "Invoke Publish-ReadmeToDocumentRepo with" -Verbose
