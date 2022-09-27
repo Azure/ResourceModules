@@ -692,11 +692,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>kvvmin001"
-    }
-  }
+  "parameters": {}
 }
 ```
 
