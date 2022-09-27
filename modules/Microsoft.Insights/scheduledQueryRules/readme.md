@@ -20,12 +20,14 @@ This module deploys a scheduled query rule.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Alert. |
 | `scopes` | array | The list of resource IDs that this scheduled query rule is scoped to. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Actions to invoke when the alert fires. |

@@ -25,6 +25,7 @@ This module deploys a web or function app.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `kind` | string | `[app, functionapp, functionapp,linux]` | Type of site to deploy. |
@@ -32,6 +33,7 @@ This module deploys a web or function app.
 | `serverFarmResourceId` | string |  | The resource ID of the app service plan to use for the site. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appInsightId` | string | `''` |  | Resource ID of the app insight to leverage for this resource. |

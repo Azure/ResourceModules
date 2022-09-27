@@ -20,11 +20,13 @@ This module deploys Firewall Policies.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Firewall Policy. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `basePolicyResourceId` | string | `''` |  | Resource ID of the base policy. |

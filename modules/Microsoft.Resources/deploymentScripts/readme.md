@@ -21,11 +21,13 @@ This module deploys a deployment script.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Display name of the script to be run. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `arguments` | string | `''` |  | Command-line arguments to pass to the script. Arguments are separated by spaces. |
@@ -48,6 +50,7 @@ This module deploys a deployment script.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` | Do not provide a value! This date value is used to make sure the script run every time the template is deployed. |

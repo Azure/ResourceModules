@@ -22,11 +22,13 @@ This module deploys Network ApplicationGateways.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Application Gateway. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authenticationCertificates` | array | `[]` |  | Authentication certificates of the application gateway resource. |

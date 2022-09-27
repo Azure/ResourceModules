@@ -30,11 +30,13 @@ This template deploys a private DNS zone.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Private DNS zone name. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `a` | _[a](a/readme.md)_ array | `[]` |  | Array of A records. |

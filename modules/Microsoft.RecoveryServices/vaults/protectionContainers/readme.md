@@ -19,16 +19,19 @@ This module deploys a Protection Container for a Recovery Services Vault
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Azure Recovery Service Vault Protection Container. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupManagementType` | string | `''` | `['', AzureBackupServer, AzureIaasVM, AzureSql, AzureStorage, AzureWorkload, DefaultBackup, DPM, Invalid, MAB]` | Backup management type to execute the current Protection Container job. |
