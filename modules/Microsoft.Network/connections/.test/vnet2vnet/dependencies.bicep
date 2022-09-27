@@ -7,7 +7,7 @@ param primaryPublicIPName string
 @description('Required. The name of the primary VNET to create.')
 param primaryVirtualNetworkName string
 
-@description('Required. The name of the primary VNET Gateways to create.')
+@description('Required. The name of the primary Virtual Network Gateway to create.')
 param primaryVirtualNetworkGateway string
 
 @description('Required. The name of the secondary Public IP to create.')
