@@ -30,6 +30,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    siteName: 'dep-<<namePrefix>>-fa-${serviceShort}'
+    serverFarmName: 'dep-<<namePrefix>>-sf-${serviceShort}'
   }
 }
 
@@ -79,7 +81,7 @@ module testDeployment '../../deploy.bicep' = {
       setting: 1
     }
     linkedBackend: {
-      resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/adp-<<namePrefix>>-az-fa-001'
+      resourceId: resourceGroupResources.outputs.siteResourceId
     }
   }
 }

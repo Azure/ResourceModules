@@ -356,7 +356,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
       setting: 1
     }
     linkedBackend: {
-      resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/adp-<<namePrefix>>-az-fa-001'
+      resourceId: '<resourceId>'
     }
     lock: 'CanNotDelete'
     privateEndpoints: [
@@ -425,7 +425,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     },
     "linkedBackend": {
       "value": {
-        "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/sites/adp-<<namePrefix>>-az-fa-001"
+        "resourceId": "<resourceId>"
       }
     },
     "lock": {
