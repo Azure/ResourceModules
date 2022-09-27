@@ -16,7 +16,7 @@ param secondaryPublicIPName string
 @description('Required. The name of the secondary VNET to create.')
 param secondaryVirtualNetworkName string
 
-@description('Required. The name of the secondary VNET Gateways to create.')
+@description('Required. The name of the secondary Virtual Network Gateway to create.')
 param secondaryVirtualNetworkGateway string
 
 resource primaryVirtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
