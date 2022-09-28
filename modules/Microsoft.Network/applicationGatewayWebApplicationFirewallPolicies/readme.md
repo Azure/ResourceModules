@@ -15,7 +15,7 @@ This module deploys .
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/ApplicationGatewayWebApplicationFirewallPolicies) |
+| `Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-01-01/ApplicationGatewayWebApplicationFirewallPolicies) |
 
 ## Parameters
 
