@@ -1,7 +1,6 @@
 # `[Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies]`
 
-This module deploys .
-// TODO: Replace Resource and fill in description
+This module deploys a WAF policy.
 
 ## Navigation
 
