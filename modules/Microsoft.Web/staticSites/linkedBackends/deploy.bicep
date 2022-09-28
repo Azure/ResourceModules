@@ -41,7 +41,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-@description('The name of the static site.')
+@description('The name of the static site linked backend.')
 output name string = linkedBackend.name
 
 @description('The resource ID of the static site linked backend.')
