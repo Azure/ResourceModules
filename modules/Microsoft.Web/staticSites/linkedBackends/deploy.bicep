@@ -47,5 +47,5 @@ output name string = linkedBackend.name
 @description('The resource ID of the static site.')
 output resourceId string = linkedBackend.id
 
-@description('The resource group the static site was deployed into.')
+@description('The resource group the static site linked backend was deployed into.')
 output resourceGroupName string = resourceGroup().name
