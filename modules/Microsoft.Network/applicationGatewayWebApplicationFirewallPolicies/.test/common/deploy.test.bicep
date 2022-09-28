@@ -34,27 +34,23 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     policySettings: {
-      value: {
-        fileUploadLimitInMb: 10
-        state: 'Enabled'
-        mode: 'Prevention'
-      }
+      fileUploadLimitInMb: 10
+      state: 'Enabled'
+      mode: 'Prevention'
     }
     managedRules: {
-      value: {
-        managedRuleSets: [
-          {
-            ruleSetType: 'OWASP'
-            ruleSetVersion: '3.2'
-            ruleGroupOverrides: []
-          }
-          {
-            ruleSetType: 'Microsoft_BotManagerRuleSet'
-            ruleSetVersion: '0.1'
-            ruleGroupOverrides: []
-          }
-        ]
-      }
+      managedRuleSets: [
+        {
+          ruleSetType: 'OWASP'
+          ruleSetVersion: '3.2'
+          ruleGroupOverrides: []
+        }
+        {
+          ruleSetType: 'Microsoft_BotManagerRuleSet'
+          ruleSetVersion: '0.1'
+          ruleGroupOverrides: []
+        }
+      ]
     }
   }
 }
