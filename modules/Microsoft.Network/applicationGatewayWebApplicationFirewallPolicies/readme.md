@@ -116,27 +116,23 @@ module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/app
     name: '<<namePrefix>>wafpolicy001'
     // Non-required parameters
     managedRules: {
-      value: {
-        managedRuleSets: [
-          {
-            ruleGroupOverrides: []
-            ruleSetType: 'OWASP'
-            ruleSetVersion: '3.2'
-          }
-          {
-            ruleGroupOverrides: []
-            ruleSetType: 'Microsoft_BotManagerRuleSet'
-            ruleSetVersion: '0.1'
-          }
-        ]
-      }
+      managedRuleSets: [
+        {
+          ruleGroupOverrides: []
+          ruleSetType: 'OWASP'
+          ruleSetVersion: '3.2'
+        }
+        {
+          ruleGroupOverrides: []
+          ruleSetType: 'Microsoft_BotManagerRuleSet'
+          ruleSetVersion: '0.1'
+        }
+      ]
     }
     policySettings: {
-      value: {
-        fileUploadLimitInMb: 10
-        mode: 'Prevention'
-        state: 'Enabled'
-      }
+      fileUploadLimitInMb: 10
+      mode: 'Prevention'
+      state: 'Enabled'
     }
   }
 }
@@ -161,29 +157,25 @@ module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/app
     // Non-required parameters
     "managedRules": {
       "value": {
-        "value": {
-          "managedRuleSets": [
-            {
-              "ruleGroupOverrides": [],
-              "ruleSetType": "OWASP",
-              "ruleSetVersion": "3.2"
-            },
-            {
-              "ruleGroupOverrides": [],
-              "ruleSetType": "Microsoft_BotManagerRuleSet",
-              "ruleSetVersion": "0.1"
-            }
-          ]
-        }
+        "managedRuleSets": [
+          {
+            "ruleGroupOverrides": [],
+            "ruleSetType": "OWASP",
+            "ruleSetVersion": "3.2"
+          },
+          {
+            "ruleGroupOverrides": [],
+            "ruleSetType": "Microsoft_BotManagerRuleSet",
+            "ruleSetVersion": "0.1"
+          }
+        ]
       }
     },
     "policySettings": {
       "value": {
-        "value": {
-          "fileUploadLimitInMb": 10,
-          "mode": "Prevention",
-          "state": "Enabled"
-        }
+        "fileUploadLimitInMb": 10,
+        "mode": "Prevention",
+        "state": "Enabled"
       }
     }
   }
