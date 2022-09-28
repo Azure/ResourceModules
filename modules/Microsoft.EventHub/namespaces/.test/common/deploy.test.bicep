@@ -150,7 +150,7 @@ module testDeployment '../../deploy.bicep' = {
     }
     privateEndpoints: [
       {
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
           privateDNSResourceIds: [
             resourceGroupResources.outputs.privateDNSZoneResourceId
           ]
