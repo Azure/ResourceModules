@@ -30,6 +30,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 
 | Name | Status |
 | - | - |
+| [](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies) | [!['Network: ApplicationGatewayWebApplicationFirewallPolicies'](https://github.com/Azure/ResourceModules/workflows/Network:%20ApplicationGatewayWebApplicationFirewallPolicies/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.applicationgatewaywebapplicationfirewallpolicies.yml) |
 | [Action Groups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Insights/actionGroups) | [!['Insights: ActionGroups'](https://github.com/Azure/ResourceModules/workflows/Insights:%20ActionGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml) |
 | [Activity Log Alerts](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Insights/activityLogAlerts) | [!['Insights: ActivityLogAlerts'](https://github.com/Azure/ResourceModules/workflows/Insights:%20ActivityLogAlerts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml) |
 | [Activity Logs](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Insights/diagnosticSettings) | [!['Insights: DiagnosticSettings'](https://github.com/Azure/ResourceModules/workflows/Insights:%20DiagnosticSettings/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml) |
