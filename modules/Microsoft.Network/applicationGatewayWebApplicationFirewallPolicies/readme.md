@@ -20,11 +20,13 @@ This module deploys .
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Application Gateway WAF policy. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `customRules` | array | `[]` | The custom rules inside the policy. |
@@ -100,7 +102,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -108,29 +110,33 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ApplicationGatewayWebApplicationFirewallPolicies'
+  name: '${uniqueString(deployment().name)}-test-wafpolicy'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-apgwpolicy-x-001'
+    name: '<<namePrefix>>wafpolicy001'
     // Non-required parameters
     managedRules: {
-      managedRuleSets: [
-        {
-          ruleGroupOverrides: []
-          ruleSetType: 'OWASP'
-          ruleSetVersion: '3.2'
-        }
-        {
-          ruleGroupOverrides: []
-          ruleSetType: 'Microsoft_BotManagerRuleSet'
-          ruleSetVersion: '0.1'
-        }
-      ]
+      value: {
+        managedRuleSets: [
+          {
+            ruleGroupOverrides: []
+            ruleSetType: 'OWASP'
+            ruleSetVersion: '3.2'
+          }
+          {
+            ruleGroupOverrides: []
+            ruleSetType: 'Microsoft_BotManagerRuleSet'
+            ruleSetVersion: '0.1'
+          }
+        ]
+      }
     }
     policySettings: {
-      fileUploadLimitInMb: 10
-      mode: 'Prevention'
-      state: 'Enabled'
+      value: {
+        fileUploadLimitInMb: 10
+        mode: 'Prevention'
+        state: 'Enabled'
+      }
     }
   }
 }
@@ -150,30 +156,34 @@ module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/app
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-apgwpolicy-x-001"
+      "value": "<<namePrefix>>wafpolicy001"
     },
     // Non-required parameters
     "managedRules": {
       "value": {
-        "managedRuleSets": [
-          {
-            "ruleGroupOverrides": [],
-            "ruleSetType": "OWASP",
-            "ruleSetVersion": "3.2"
-          },
-          {
-            "ruleGroupOverrides": [],
-            "ruleSetType": "Microsoft_BotManagerRuleSet",
-            "ruleSetVersion": "0.1"
-          }
-        ]
+        "value": {
+          "managedRuleSets": [
+            {
+              "ruleGroupOverrides": [],
+              "ruleSetType": "OWASP",
+              "ruleSetVersion": "3.2"
+            },
+            {
+              "ruleGroupOverrides": [],
+              "ruleSetType": "Microsoft_BotManagerRuleSet",
+              "ruleSetVersion": "0.1"
+            }
+          ]
+        }
       }
     },
     "policySettings": {
       "value": {
-        "fileUploadLimitInMb": 10,
-        "mode": "Prevention",
-        "state": "Enabled"
+        "value": {
+          "fileUploadLimitInMb": 10,
+          "mode": "Prevention",
+          "state": "Enabled"
+        }
       }
     }
   }
