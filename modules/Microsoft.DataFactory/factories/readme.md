@@ -255,7 +255,7 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
@@ -445,7 +445,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     managedVirtualNetworkName: 'default'
     privateEndpoints: [
       {
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net'
           ]
