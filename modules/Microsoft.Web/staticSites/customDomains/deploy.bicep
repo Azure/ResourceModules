@@ -43,5 +43,5 @@ output name string = customDomain.name
 @description('The resource ID of the static site.')
 output resourceId string = customDomain.id
 
-@description('The resource group the static site was deployed into.')
+@description('The resource group the static site custom domain was deployed into.')
 output resourceGroupName string = resourceGroup().name
