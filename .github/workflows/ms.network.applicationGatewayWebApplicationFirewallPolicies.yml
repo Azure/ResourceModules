@@ -17,6 +17,7 @@ on:
     branches:
       - main
       - users/rahalan/AddWafPolicy
+      - dummy
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.applicationGatewayWebApplicationFirewallPolicies.yml'
