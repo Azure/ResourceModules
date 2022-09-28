@@ -109,10 +109,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wafpolicy'
+  name: '${uniqueString(deployment().name)}-test-nagwafpcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>wafpolicy001'
+    name: '<<namePrefix>>nagwafpcom001'
     // Non-required parameters
     managedRules: {
       managedRuleSets: [
@@ -151,7 +151,7 @@ module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/app
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>wafpolicy001"
+      "value": "<<namePrefix>>nagwafpcom001"
     },
     // Non-required parameters
     "managedRules": {
