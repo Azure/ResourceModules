@@ -17,10 +17,9 @@ on:
     branches:
       - main
       - users/rahalan/AddWafPolicy
-      - dummy
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.network.applicationGatewayWebApplicationFirewallPolicies.yml'
+      - '.github/workflows/ms.network.applicationgatewaywebapplicationfirewallpolicies.yml'
       - 'modules/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
@@ -29,7 +28,7 @@ on:
 env:
   variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies'
-  workflowPath: '.github/workflows/ms.network.applicationGatewayWebApplicationFirewallPolicies.yml'
+  workflowPath: '.github/workflows/ms.network.applicationgatewaywebapplicationfirewallpolicies.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
