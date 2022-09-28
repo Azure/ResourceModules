@@ -722,7 +722,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azure-automation.net"
             ]
@@ -731,7 +731,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         },
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azure-automation.net"
             ]

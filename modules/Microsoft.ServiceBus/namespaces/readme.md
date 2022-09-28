@@ -628,7 +628,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
             ]
@@ -782,7 +782,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
             ]

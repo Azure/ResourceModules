@@ -530,7 +530,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.webpubsub.azure.com"
             ]
@@ -622,7 +622,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.webpubsub.azure.com"
             ]

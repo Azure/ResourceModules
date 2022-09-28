@@ -472,7 +472,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
             ]
@@ -970,7 +970,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
             ]
@@ -979,7 +979,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         },
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net"
             ]
@@ -988,7 +988,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         },
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net"
             ]
@@ -997,7 +997,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         },
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net"
             ]
