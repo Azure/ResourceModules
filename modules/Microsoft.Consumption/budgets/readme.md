@@ -26,6 +26,7 @@ This module deploys budgets for subscriptions.
 | `name` | string | The name of the budget. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `actionGroups` | array | List of action group resource IDs that will receive the alert. Required if neither `contactEmails` nor `contactEmails` was provided. |
