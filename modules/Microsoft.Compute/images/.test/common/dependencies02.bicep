@@ -58,48 +58,48 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
   }
 }
 
-// Trigger VHD creation
-resource triggerImageDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-  name: triggerImageDeploymentScriptName
-  location: location
-  kind: 'AzurePowerShell'
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${managedIdentityResourceId}': {}
-    }
-  }
-  properties: {
-    azPowerShellVersion: '8.0'
-    retentionInterval: 'P1D'
-    arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\"'
-    scriptContent: loadTextContent('../.scripts/Start-ImageTemplate.ps1')
-    cleanupPreference: 'OnSuccess'
-    forceUpdateTag: baseTime
-  }
-}
+// // Trigger VHD creation
+// resource triggerImageDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+//   name: triggerImageDeploymentScriptName
+//   location: location
+//   kind: 'AzurePowerShell'
+//   identity: {
+//     type: 'UserAssigned'
+//     userAssignedIdentities: {
+//       '${managedIdentityResourceId}': {}
+//     }
+//   }
+//   properties: {
+//     azPowerShellVersion: '8.0'
+//     retentionInterval: 'P1D'
+//     arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\"'
+//     scriptContent: loadTextContent('../.scripts/Start-ImageTemplate.ps1')
+//     cleanupPreference: 'OnSuccess'
+//     forceUpdateTag: baseTime
+//   }
+// }
 
-// Copy VHD to destination storage account
-resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-  name: copyVhdDeploymentScriptName
-  location: location
-  kind: 'AzurePowerShell'
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${managedIdentityResourceId}': {}
-    }
-  }
-  properties: {
-    azPowerShellVersion: '8.0'
-    retentionInterval: 'P1D'
-    arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\" -DestinationStorageAccountName \\"${destinationStorageAccountName}\\" -VhdName \\"${imageTemplateNamePrefix}\\" -WaitForComplete'
-    scriptContent: loadTextContent('../.scripts/Copy-VhdToStorageAccount.ps1')
-    cleanupPreference: 'OnSuccess'
-    forceUpdateTag: baseTime
-  }
-  dependsOn: [ triggerImageDeploymentScript ]
-}
+// // Copy VHD to destination storage account
+// resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+//   name: copyVhdDeploymentScriptName
+//   location: location
+//   kind: 'AzurePowerShell'
+//   identity: {
+//     type: 'UserAssigned'
+//     userAssignedIdentities: {
+//       '${managedIdentityResourceId}': {}
+//     }
+//   }
+//   properties: {
+//     azPowerShellVersion: '8.0'
+//     retentionInterval: 'P1D'
+//     arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\" -DestinationStorageAccountName \\"${destinationStorageAccountName}\\" -VhdName \\"${imageTemplateNamePrefix}\\" -WaitForComplete'
+//     scriptContent: loadTextContent('../.scripts/Copy-VhdToStorageAccount.ps1')
+//     cleanupPreference: 'OnSuccess'
+//     forceUpdateTag: baseTime
+//   }
+//   dependsOn: [ triggerImageDeploymentScript ]
+// }
 
 @description('The URI of the created VHD.')
 output vhdUri string = 'https://${destinationStorageAccountName}.blob.core.windows.net/vhds/${imageTemplateNamePrefix}.vhd'
