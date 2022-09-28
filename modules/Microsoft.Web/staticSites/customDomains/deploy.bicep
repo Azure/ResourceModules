@@ -37,7 +37,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-@description('The name of the static site.')
+@description('The name of the static site custom domain.')
 output name string = customDomain.name
 
 @description('The resource ID of the static site custom domain.')
