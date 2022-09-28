@@ -28,6 +28,7 @@ This module deploys a VPN Site.
 | `virtualWanId` | string | Resource ID of the virtual WAN to link to. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `addressPrefixes` | array | An array of IP address ranges that can be used by subnets of the virtual network. Required if no bgpProperties or VPNSiteLinks are configured. |
