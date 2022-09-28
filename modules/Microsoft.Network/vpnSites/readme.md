@@ -21,6 +21,7 @@ This module deploys a VPN Site.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the VPN Site. |
@@ -33,6 +34,7 @@ This module deploys a VPN Site.
 | `bgpProperties` | object | BGP settings details. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. Required if no addressPrefixes or VPNSiteLinks are configured. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `deviceProperties` | object | `{object}` |  | List of properties of the device. |

@@ -585,7 +585,7 @@ In addition, we follow the following, file-type-specific guidelines:
     // ========== //
     // Parameters //
     // ========== //
-    @description('Optional. The name of the resource group to deploy for a testing purposes')
+    @description('Optional. The name of the resource group to deploy for testing purposes')
     @maxLength(90)
     param resourceGroupName string = 'ms.analysisservices.servers-${serviceShort}-test-rg'
 

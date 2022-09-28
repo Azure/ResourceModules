@@ -21,12 +21,14 @@ This template deploys a disk
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | The name of the disk that is being created. |
 | `sku` | string | `[Premium_LRS, Premium_ZRS, Premium_ZRS, Standard_LRS, StandardSSD_LRS, UltraSSD_LRS]` | The disks sku name. Can be . |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `acceleratedNetwork` | bool | `False` |  | True if the image from which the OS disk is created supports accelerated networking. |
