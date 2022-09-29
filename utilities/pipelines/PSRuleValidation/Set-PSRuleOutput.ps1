@@ -41,13 +41,9 @@
             ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count),
             ''
         )
-        # $headerTable += ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count)
-        # $headerTable += [System.Collections.ArrayList]@(
-        #     ''
-        # )
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $headerTable
 
-        # Failed rules
+        # List of failed rules
         $failContent = [System.Collections.ArrayList]@(
             '',
             '<details>',
@@ -85,7 +81,7 @@
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $failContent
     }
 
-    # Passed rules
+    # List of passed rules
     if (($passedRules.Count -gt 0) -and -not $skipPassedRulesReport) {
         $passContent = [System.Collections.ArrayList]@(
             '',
@@ -122,6 +118,7 @@
             '</details>',
             ''
         )
+        # Append markdown with passed rules table
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $passContent
     }
 }
