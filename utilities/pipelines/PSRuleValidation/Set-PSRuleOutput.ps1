@@ -18,28 +18,37 @@
     $passedRules += $results | Where-Object { $_.Outcome -EQ 'Pass' }
     $failedRules += $results | Where-Object { $_.Outcome -EQ 'Fail' }
 
-
-    #Create Summary table
-
-    $headerTable = [System.Collections.ArrayList]@(
-        '# Output Summary ',
-        '',
-        '| Total No. of Processed Rules| Passed Rules :white_check_mark: | Failed Rules :x: |',
-        '| :-- | :-- | :-- |'
+    #Create header and first output
+    $header = [System.Collections.ArrayList]@(
+        '# PSRule Summary ',
+        ''
     )
-
-    $headerTable += ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count)
-    $headerTable += [System.Collections.ArrayList]@(
-        '')
-
-    # Create markdown file with header table
-    Out-File -FilePath $outputFilePath -NoClobber -InputObject $headerTable
-
+    Out-File -FilePath $outputFilePath -NoClobber -InputObject $header
 
     if ($failedRules.Count -gt 0) {
+        # Create header content
+        $headerContent = [System.Collections.ArrayList]@(
+            'YAY!'
+        )
+        # Append header content
+        Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $headerContent
+    }
 
-        #Create Failing table
+    if ($failedRules.Count -gt 0) {
+        # Create header table
+        $headerTable = [System.Collections.ArrayList]@(
+            '| Total No. of Processed Rules| Passed Rules :white_check_mark: | Failed Rules :x: |',
+            '| :-- | :-- | :-- |'
+        )
+        $headerTable += ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count)
+        $headerTable += [System.Collections.ArrayList]@(
+            ''
+        )
 
+        # Append header table
+        Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $headerTable
+
+        # Create Failing table
         $failContent = [System.Collections.ArrayList]@(
             '',
             '<details>',
