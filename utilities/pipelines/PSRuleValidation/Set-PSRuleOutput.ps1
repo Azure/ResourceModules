@@ -30,11 +30,9 @@
     if ($failedRules.Count -gt 0) {
         # if ($failedRules.Count -eq 0) {
         # Create header content
-        $headerContent = [System.Collections.ArrayList]@(
-            'All $($results.Count) rules passed, YAY! :rocket:'
-        )
+        $noFailuresContent = ('All [{0}] rules passed, YAY! :rocket:' -f $results.Count)
         # Append header content
-        Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $headerContent
+        Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $noFailuresContent
     }
 
     if ($failedRules.Count -gt 0) {
@@ -132,7 +130,6 @@
         )
         #Append markdown with passed rules table
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $passContent
-
     }
 }
 
