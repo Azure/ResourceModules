@@ -29,7 +29,7 @@
 
     if ($failedRules.Count -eq 0) {
         # Create header content
-        $noFailuresContent = ('## All {0} rules passed, YAY! :rocket:' -f $results.Count)
+        $noFailuresContent = ('## :rocket: All {0} rules passed, YAY! :rocket:' -f $results.Count)
         # Append header content
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $noFailuresContent
     }
