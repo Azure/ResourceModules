@@ -25,11 +25,13 @@ This module has some known **limitations**:
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The group ID of the Management group. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `displayName` | string | `''` | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |

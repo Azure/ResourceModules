@@ -23,17 +23,23 @@
                 }
             ]
         },
-        "integrationRuntime": {
-            "value": {
-                "name": "AutoResolveIntegrationRuntime",
-                "type": "Managed",
-                "managedVirtualNetworkName": "default",
-                "typeProperties": {
-                    "computeProperties": {
-                        "location": "AutoResolve"
+        "integrationRuntimes": {
+            "value": [
+                {
+                    "name": "AutoResolveIntegrationRuntime",
+                    "type": "Managed",
+                    "managedVirtualNetworkName": "default",
+                    "typeProperties": {
+                        "computeProperties": {
+                            "location": "AutoResolve"
+                        }
                     }
+                },
+                {
+                    "name": "TestRuntime",
+                    "type": "SelfHosted"
                 }
-            }
+            ]
         },
         "publicNetworkAccess": {
             "value": "Disabled"
@@ -79,7 +85,7 @@
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
                     "service": "dataFactory",
-                    "privateDnsZoneGroups": {
+                    "privateDnsZoneGroup": {
                         "privateDNSResourceIds": [
                             "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
                         ]
