@@ -27,7 +27,7 @@
     # Set output content #
     ######################
 
-    # Header
+    # Header //TBD: Remove?
     $header = [System.Collections.ArrayList]@(
         '# PSRule pre-flight validation summary ',
         ''
