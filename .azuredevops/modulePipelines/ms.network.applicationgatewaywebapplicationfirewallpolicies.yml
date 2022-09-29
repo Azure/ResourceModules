@@ -1,4 +1,4 @@
-name: 'Network: ApplicationGatewayWebApplicationFirewallPolicies'
+name: 'Network - ApplicationGatewayWebApplicationFirewallPolicies'
 
 parameters:
   - name: removeDeployment
