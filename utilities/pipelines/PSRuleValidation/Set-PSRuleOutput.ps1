@@ -11,7 +11,10 @@
         [switch] $skipPassedRulesReport
     )
 
-    # Import CSV output and filter by results
+    ###########################################
+    # Import CSV output and filter by results #
+    ###########################################
+
     $results = Import-Csv -Path $inputFilePath
 
     $passedRules = @()
@@ -20,7 +23,10 @@
     $passedRules += $results | Where-Object { $_.Outcome -EQ 'Pass' }
     $failedRules += $results | Where-Object { $_.Outcome -EQ 'Fail' }
 
-    # Set content
+    ######################
+    # Set output content #
+    ######################
+
     # Header
     $header = [System.Collections.ArrayList]@(
         '# PSRule pre-flight validation summary ',
@@ -34,7 +40,8 @@
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $noFailuresContent
     } else {
         # Failure content
-        # Header table
+
+        ## Header table
         $headerTable = [System.Collections.ArrayList]@(
             '| Total No. of Processed Rules| Passed Rules :white_check_mark: | Failed Rules :x: |',
             '| :-- | :-- | :-- |'
@@ -43,7 +50,7 @@
         )
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $headerTable
 
-        # List of failed rules
+        ## List of failed rules
         $failContent = [System.Collections.ArrayList]@(
             '',
             '<details>',
@@ -77,12 +84,12 @@
             '</details>',
             ''
         )
-        # Append markdown with failed rules table
+        # Append to output
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $failContent
     }
 
-    # List of passed rules
     if (($passedRules.Count -gt 0) -and -not $skipPassedRulesReport) {
+        # List of passed rules
         $passContent = [System.Collections.ArrayList]@(
             '',
             '<details>',
@@ -109,7 +116,6 @@
                 Write-Warning "Unable to build url for $content.RuleName"
                 $resourceLink = $content.RuleName
             }
-
             $passContent += ('| {0} | {1} | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
 
         }
@@ -118,7 +124,7 @@
             '</details>',
             ''
         )
-        # Append markdown with passed rules table
+        # Append to output
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $passContent
     }
 }
