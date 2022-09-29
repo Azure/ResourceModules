@@ -38,11 +38,13 @@
         $headerTable = [System.Collections.ArrayList]@(
             '| Total No. of Processed Rules| Passed Rules :white_check_mark: | Failed Rules :x: |',
             '| :-- | :-- | :-- |'
-        )
-        $headerTable += ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count)
-        $headerTable += [System.Collections.ArrayList]@(
+            ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count),
             ''
         )
+        # $headerTable += ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count)
+        # $headerTable += [System.Collections.ArrayList]@(
+        #     ''
+        # )
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $headerTable
 
         # Failed rules
