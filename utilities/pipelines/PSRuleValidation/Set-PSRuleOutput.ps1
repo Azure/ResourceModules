@@ -41,10 +41,11 @@
         #Create Failing table
 
         $failContent = [System.Collections.ArrayList]@(
-            '# Failed Rules',
             '',
             '<details>',
             '<summary>List of Failed Rules</summary>',
+            '',
+            '## Failed Rules',
             '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- | :-- |'
@@ -82,11 +83,11 @@
     if ($passedRules.Count -gt 0) {
 
         $passContent = [System.Collections.ArrayList]@(
-            '# Passed Rules',
             '',
             '<details>',
             '<summary>List of Passed Rules</summary>',
             '',
+            '## Passed Rules',
             '',
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- |  :-- |'

@@ -10,8 +10,20 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
+  - stage: PSRuleValidation
+    dependsOn: []
+    displayName: PSRule validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePSRule.yml
+
   - stage: deployment
     displayName: Deployment validation
+    dependsOn:
+      - validation
+      - PSRuleValidation
+    condition:
+      | # Deployment validation will not be blocked by the failing PSRule validation stage (for the time being). <- Remove the condition block to change behavior
+      eq(dependencies.validation.result, 'Succeeded')
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:

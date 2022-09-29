@@ -18,6 +18,7 @@ This module deploys an API Management Service Cache.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `connectionString` | string | Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}}. |
@@ -25,11 +26,13 @@ This module deploys an API Management Service Cache.
 | `useFromLocation` | string | Location identifier to use cache from (should be either 'default' or valid Azure region identifier). |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `cacheDescription` | string | `''` | Cache description. |
