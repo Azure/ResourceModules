@@ -122,8 +122,9 @@ jobs:
 
             # Populate parameter input
             $ParameterInput = @{
-              inputFilePath   = '${{ env.modulesPath }}/PSRule-output.csv'
-              outputFilePath  = '${{ env.modulesPath }}/PSRule-output.md'
+              inputFilePath           = '${{ env.modulesPath }}/PSRule-output.csv'
+              outputFilePath          = '${{ env.modulesPath }}/PSRule-output.md'
+              skipPassedRulesReport   = $true
             }
 
             # Invoke function

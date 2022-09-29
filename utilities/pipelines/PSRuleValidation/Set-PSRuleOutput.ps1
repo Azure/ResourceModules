@@ -5,11 +5,13 @@
         [String] $inputFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $outputFilePath = './output.md'
+        [string] $outputFilePath = './output.md',
+
+        [Parameter(Mandatory = $false)]
+        [switch] $skipPassedRulesReport
     )
 
     # Import CSV output and filter by results
-
     $results = Import-Csv -Path $inputFilePath
 
     $passedRules = @()
@@ -89,7 +91,7 @@
     }
 
     # Create Passing table
-    if ($passedRules.Count -gt 0) {
+    if (($passedRules.Count -gt 0) -and -not $skipPassedRulesReport) {
 
         $passContent = [System.Collections.ArrayList]@(
             '',
