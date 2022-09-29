@@ -5,6 +5,7 @@ on: [pull_request]
 env:
   variablesPath: 'settings.yml'
   modulesPath: 'modules'
+  TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
 
 jobs:
   build:
@@ -83,7 +84,6 @@ jobs:
             # Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.test.bicep -Recurse -Force -Name | Join-Path $env:GITHUB_WORKSPACE '$._'
             $moduleTestFiles += Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.test.bicep -Recurse -Force -Name
             # | ForEach-Object {$_.root} | Join-Path -ChildPath "Subdir"
-
 
             # Construct Token Function Input
             $ConvertTokensInputs = @{
