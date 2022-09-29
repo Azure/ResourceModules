@@ -28,9 +28,10 @@
     Out-File -FilePath $outputFilePath -NoClobber -InputObject $header
 
     if ($failedRules.Count -gt 0) {
+        # if ($failedRules.Count -eq 0) {
         # Create header content
         $headerContent = [System.Collections.ArrayList]@(
-            'YAY!'
+            'All $($results.Count) rules passed, YAY! :rocket:'
         )
         # Append header content
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $headerContent
