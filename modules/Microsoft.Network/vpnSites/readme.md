@@ -343,10 +343,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvsicom'
+  name: '${uniqueString(deployment().name)}-test-nvscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-nvsicom'
+    name: '<<namePrefix>>-nvscom'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     deviceProperties: {
@@ -374,7 +374,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     }
     vpnSiteLinks: [
       {
-        name: '<<namePrefix>>-vSite-nvsicom'
+        name: '<<namePrefix>>-vSite-nvscom'
         properties: {
           bgpProperties: {
             asn: 65010
@@ -420,7 +420,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-nvsicom"
+      "value": "<<namePrefix>>-nvscom"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
@@ -462,7 +462,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     "vpnSiteLinks": {
       "value": [
         {
-          "name": "<<namePrefix>>-vSite-nvsicom",
+          "name": "<<namePrefix>>-vSite-nvscom",
           "properties": {
             "bgpProperties": {
               "asn": 65010,
@@ -506,10 +506,10 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
 
 ```bicep
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvsimin'
+  name: '${uniqueString(deployment().name)}-test-nvsmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-nvsimin'
+    name: '<<namePrefix>>-nvsmin'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     addressPrefixes: [
@@ -534,7 +534,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-nvsimin"
+      "value": "<<namePrefix>>-nvsmin"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
