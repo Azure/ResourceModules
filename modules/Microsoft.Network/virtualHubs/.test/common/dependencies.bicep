@@ -36,5 +36,5 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 @description('The resource ID of the created Virtual WAN.')
 output virtualWWANResourceId string = virtualWan.id
 
-@description('The resource ID of the created Virtual Network')
+@description('The resource ID of the created Virtual Network.')
 output virtualNetworkResourceId string = virtualNetwork.id
