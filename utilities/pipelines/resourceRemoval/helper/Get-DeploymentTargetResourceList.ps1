@@ -62,22 +62,6 @@ function Get-DeploymentTargetResourceListInner {
         'resourcegroup' {
             if (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue') {
                 [array]$deploymentTargets = (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource | Where-Object { $_ -ne $null }
-                # foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
-                #     Write-Verbose ('Found deployed resource [{0}]' -f $deployment) -Verbose
-                #     [array]$resultSet += $deployment
-                # }
-                # foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
-                #     Write-Verbose ('### Found deployment [{0}]' -f $deployment) -Verbose
-                #     $name = Split-Path $deployment -Leaf
-                #     if ($deployment -match '/resourceGroups/') {
-                #         $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-                #         Write-Verbose ('### Found name [{0}] and resourceGroupName [{1}]' -f $name, $resourceGroupName) -Verbose
-                #         [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourcegroup'
-                #     } else {
-                #         Write-Verbose ('### Found name [{0}]' -f $name) -Verbose
-                #         [array]$resultSet += Get-DeploymentTargetResourceListInner -name $name -Scope 'subscription'
-                #     }
-                # }
             } else {
                 # In case the resource group itself was already deleted, there is no need to try and fetch deployments from it
                 # In case we already have any such resources in the list, we should remove them
@@ -87,65 +71,14 @@ function Get-DeploymentTargetResourceListInner {
         }
         'subscription' {
             [array]$deploymentTargets = (Get-AzDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
-            # foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
-            #     Write-Verbose ('Found deployed resource [{0}]' -f $deployment) -Verbose
-            #     [array]$resultSet += $deployment
-            # }
-            # foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
-            #     [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
-            #     if ($deployment -match '/resourceGroups/') {
-            #         # Resource Group Level Child Deployments
-            #         $name = Split-Path $deployment -Leaf
-            #         $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-            #         [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourcegroup'
-            #     } else {
-            #         # Subscription Level Deployments
-            #         [array]$resultSet += Get-DeploymentTargetResourceListInner -name (Split-Path $deployment -Leaf) -Scope 'subscription'
-            #     }
-            # }
             break
         }
         'managementgroup' {
             [array]$deploymentTargets = (Get-AzManagementGroupDeploymentOperation -DeploymentName $name -ManagementGroupId $ManagementGroupId).TargetResource | Where-Object { $_ -ne $null }
-            # foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
-            #     Write-Verbose ('Found deployed resource [{0}]' -f $deployment) -Verbose
-            #     [array]$resultSet += $deployment
-            # }
-            # foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
-            #     [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
-            #     if ($deployment -match '/subscriptions/') {
-            #         # Subscription Level Child Deployments
-            #         if ($deployment -match '/resourceGroups/') {
-            #             # Resource Group Level Child Deployments (Used only if management group scope --> resource Group scope)
-            #             $name = Split-Path $deployment -Leaf
-            #             $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-            #             [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourcegroup'
-            #         } else {
-            #             [array]$resultSet += Get-DeploymentTargetResourceListInner -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
-            #         }
-            #     } else {
-            #         # Management Group Level Deployments
-            #         [array]$resultSet += Get-DeploymentTargetResourceListInner -name (Split-Path $deployment -Leaf) -scope 'managementgroup' -ManagementGroupId $ManagementGroupId
-            #     }
-            # }
             break
         }
         'tenant' {
             [array]$deploymentTargets = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
-            # foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
-            #     Write-Verbose ('Found deployed resource [{0}]' -f $deployment) -Verbose
-            #     [array]$resultSet += $deployment
-            # }
-            # foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
-            #     [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
-            #     if ($deployment -match '/managementgroups/') {
-            #         # Management Group Level Child Deployments
-            #         [array]$resultSet += Get-DeploymentTargetResourceListInner -Name (Split-Path $deployment -Leaf) -scope 'managementgroup' -ManagementGroupId $ManagementGroupId
-            #     } else {
-            #         # Tenant Level Deployments
-            #         [array]$resultSet += Get-DeploymentTargetResourceListInner -name (Split-Path $deployment -Leaf)
-            #     }
-            # }
             break
         }
     }
@@ -155,22 +88,23 @@ function Get-DeploymentTargetResourceListInner {
         [array]$resultSet += $deployment
     }
     foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
-        Write-Verbose ('Found deployment [{0}]' -f $deployment) -Verbose
         $name = Split-Path $deployment -Leaf
         if ($deployment -match '/resourceGroups/') {
             # Resource Group Level Child Deployments
+            Write-Verbose ('Found [resource group] deployment [{0}]' -f $deployment) -Verbose
             $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-            # Write-Verbose ('### Found name [{0}] and resourceGroupName [{1}]' -f $name, $resourceGroupName) -Verbose
             [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -Scope 'resourcegroup' -ResourceGroupName $ResourceGroupName
         } elseif ($deployment -match '/subscriptions/') {
             # Subscription Level Child Deployments
-            Write-Verbose ('### Found name [{0}]' -f $name) -Verbose
+            Write-Verbose ('Found [subscription] deployment [{0}]' -f $deployment) -Verbose
             [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -Scope 'subscription'
         } elseif ($deployment -match '/managementgroups/') {
             # Management Group Level Child Deployments
+            Write-Verbose ('Found [management group] deployment [{0}]' -f $deployment) -Verbose
             [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -Scope 'managementgroup' -ManagementGroupId $ManagementGroupId
         } else {
             # Tenant Level Deployments
+            Write-Verbose ('Found [tenant] deployment [{0}]' -f $deployment) -Verbose
             [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -Scope 'tenant'
         }
     }
@@ -261,7 +195,7 @@ function Get-DeploymentTargetResourceList {
         if ($targetResources) {
             break
         }
-        Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $name, $scope, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
+        Write-Verbose ('No deployment found by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $name, $scope, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
         Start-Sleep $searchRetryInterval
         $searchRetryCount++
     } while ($searchRetryCount -le $searchRetryLimit)
