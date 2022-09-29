@@ -23,7 +23,7 @@
     # Set content
     # Header
     $header = [System.Collections.ArrayList]@(
-        '# PSRule Summary ',
+        '# PSRule pre-flight validation summary ',
         ''
     )
     Out-File -FilePath $outputFilePath -NoClobber -InputObject $header
