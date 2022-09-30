@@ -40,43 +40,22 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources01 'dependencies01.bicep' = {
+module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested01'
   params: {
     managedIdentityName: managedIdentityName
     storageAccountName: destinationStorageAccountName
-  }
-}
-
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(subscription().subscriptionId, 'Contributor', managedIdentityName)
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
-    principalId: resourceGroupResources01.outputs.managedIdentityPrincipalId
-    principalType: 'ServicePrincipal'
-  }
-}
-
-module resourceGroupResources02 'dependencies02.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested02'
-  params: {
-    managedIdentityResourceId: resourceGroupResources01.outputs.managedIdentityResourceId
     imageTemplateNamePrefix: imageTemplateNamePrefix
     triggerImageDeploymentScriptName: triggerImageDeploymentScriptName
     copyVhdDeploymentScriptName: copyVhdDeploymentScriptName
     destinationStorageAccountName: destinationStorageAccountName
   }
-  dependsOn: [
-    roleAssignment
-  ]
 }
 
 // ============== //
 // Test Execution //
 // ============== //
-
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
@@ -84,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>${serviceShort}001'
     osAccountType: 'Premium_LRS'
-    osDiskBlobUri: resourceGroupResources02.outputs.vhdUri
+    osDiskBlobUri: resourceGroupResources.outputs.vhdUri
     osDiskCaching: 'ReadWrite'
     osType: 'Windows'
     // Non-required parameters
@@ -92,7 +71,7 @@ module testDeployment '../../deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          resourceGroupResources01.outputs.managedIdentityPrincipalId
+          resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
       }
