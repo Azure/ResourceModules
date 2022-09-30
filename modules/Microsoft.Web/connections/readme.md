@@ -21,12 +21,14 @@ This module deploys an Azure API connection.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `displayName` | string | Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
 | `name` | string | Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `alternativeParameterValues` | object | `{object}` |  | Alternative parameter values. |

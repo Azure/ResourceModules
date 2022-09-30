@@ -18,17 +18,20 @@ This module deploys an encryption protector for a SQL managed instance.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string | `'current'` | The name of the encryptionProtector. |
 | `serverKeyName` | string |  | The name of the SQL managed instance key. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoRotationEnabled` | bool | `False` |  | Key auto rotation opt-in flag. |

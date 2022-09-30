@@ -18,6 +18,7 @@ This module deploys an Immutability Policy for a blob container
 ## Parameters
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `blobServicesName` | string | `'default'` | The name of the parent blob service. Required if the template is used in a standalone deployment. |
@@ -25,6 +26,7 @@ This module deploys an Immutability Policy for a blob container
 | `storageAccountName` | string |  | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `allowProtectedAppendWrites` | bool | `True` | This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. |
