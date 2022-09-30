@@ -40,10 +40,8 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    // Required parameters
     displayName: 'azuremonitorlogs'
     name: 'azuremonitor'
-    // Non-required parameters
     connectionApi: {
       id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
     }
