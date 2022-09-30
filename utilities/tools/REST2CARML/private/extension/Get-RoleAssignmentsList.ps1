@@ -9,18 +9,23 @@ Leverges Microsoft Docs's [https://learn.microsoft.com/en-us/powershell/module/a
 .PARAMETER ProviderNamespace
 Mandatory. The Provider Namespace to fetch the role definitions for
 
-.EXAMPLE
-Get-RoleAssignmentsList -ProviderNamespace 'Microsoft.KeyVault'
+.PARAMETER ResourceType
+Mandatory. The ResourceType to fetch the role definitions for
 
-Fetch all available Role Definitions for ProviderNamespace [Microsoft.KeyVault]
+.EXAMPLE
+Get-RoleAssignmentsList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+
+Fetch all available Role Definitions for ProviderNamespace [Microsoft.KeyVault/vaults]
 #>
 function Get-RoleAssignmentsList {
 
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [string] $ProviderNamespace
+        [string] $ProviderNamespace,
 
+        [Parameter(Mandatory)]
+        [string] $ResourceType
     )
 
     begin {
@@ -32,9 +37,29 @@ function Get-RoleAssignmentsList {
         #################
         ##   Get Roles ##
         #################
-        $roleDefinitions = Get-AzRoleDefinition | Where-Object { !$_.IsCustom -and ($_.Actions -match $ProviderNamespace -or $_.DataActions -match $ProviderNamespace -or $_.Actions -like '`**') } | Select-Object Name, Id | ConvertTo-Json | ConvertFrom-Json
+        $roles = Get-AzRoleDefinition
+
+        # Filter Custom Roles
+        $roleDefinitions = $roles | Where-Object { -not $_.IsCustom }
+
+        $relevantRoles = [System.Collections.ArrayList]@()
+
+        # Filter Action based
+        $relevantRoles += $roleDefinitions | Where-Object {
+            $_.Actions -like "$ProviderNamespace/$ResourceType/*" -or
+            $_.Actions -like "$ProviderNamespace/`**" -or
+            $_.Actions -like '`**'
+        }
+
+        # Filter Data Action based
+        $relevantRoles += $roleDefinitions | Where-Object {
+            $_.DataActions -like "$ProviderNamespace/$ResourceType/*" -or
+            $_.DataActions -like "$ProviderNamespace/`**" -or
+            $_.DataActions -like '`**'
+        }
+
         $resBicep = [System.Collections.ArrayList]@()
-        foreach ($role in $roleDefinitions | Sort-Object -Property name) {
+        foreach ($role in $relevantRoles | Sort-Object -Property 'Name' -Unique) {
             $roleName = $role.Name
             $roleId = $role.Id
             $resBicep += "'$roleName': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '$roleId')"

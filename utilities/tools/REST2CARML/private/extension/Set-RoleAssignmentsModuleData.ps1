@@ -61,7 +61,7 @@ function Set-RoleAssignmentsModuleData {
             apiVersion           = $ServiceApiVersion
         }
 
-        $roleAssignmentList = Get-RoleAssignmentsList -ProviderNamespace $ProviderNamespace
+        $roleAssignmentList = Get-RoleAssignmentsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
 
         if (-not $roleAssignmentList) {
             return
