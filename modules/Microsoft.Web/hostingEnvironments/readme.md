@@ -219,11 +219,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-HostingEnvironments'
+  name: '${uniqueString(deployment().name)}-test-whasev2'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-appse-asev2-001'
-    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-008'
+    name: '<<namePrefix>>whasev2001'
+    subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
     clusterSettings: [
       {
@@ -231,18 +231,18 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
         value: '1'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     ipsslAddressCount: 2
     kind: 'ASEv2'
     multiSize: 'Standard_D1_V2'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -265,10 +265,10 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-appse-asev2-001"
+      "value": "<<namePrefix>>whasev2001"
     },
     "subnetResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-008"
+      "value": "<subnetResourceId>"
     },
     // Non-required parameters
     "clusterSettings": {
@@ -280,19 +280,19 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "ipsslAddressCount": {
       "value": 2
@@ -307,7 +307,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -328,11 +328,11 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
 
 ```bicep
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-HostingEnvironments'
+  name: '${uniqueString(deployment().name)}-test-whasev3'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-appse-asev3-001'
-    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-006'
+    name: '<<namePrefix>>whasev3001'
+    subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
     clusterSettings: [
       {
@@ -340,16 +340,16 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
         value: '1'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -372,10 +372,10 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-appse-asev3-001"
+      "value": "<<namePrefix>>whasev3001"
     },
     "subnetResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-006"
+      "value": "<subnetResourceId>"
     },
     // Non-required parameters
     "clusterSettings": {
@@ -387,19 +387,19 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -408,7 +408,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
