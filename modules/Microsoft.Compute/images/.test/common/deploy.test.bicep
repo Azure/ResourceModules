@@ -77,26 +77,26 @@ module resourceGroupResources02 'dependencies02.bicep' = {
 // Test Execution //
 // ============== //
 
-// module testDeployment '../../deploy.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-//   params: {
-//     // Required parameters
-//     name: '<<namePrefix>>${serviceShort}001'
-//     osAccountType: 'Premium_LRS'
-//     osDiskBlobUri: resourceGroupResources02.outputs.vhdUri
-//     osDiskCaching: 'ReadWrite'
-//     osType: 'Windows'
-//     // Non-required parameters
-//     hyperVGeneration: 'V1'
-//     roleAssignments: [
-//       {
-//         principalIds: [
-//           resourceGroupResources01.outputs.managedIdentityPrincipalId
-//         ]
-//         roleDefinitionIdOrName: 'Reader'
-//       }
-//     ]
-//     zoneResilient: true
-//   }
-// }
+module testDeployment '../../deploy.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>${serviceShort}001'
+    osAccountType: 'Premium_LRS'
+    osDiskBlobUri: resourceGroupResources02.outputs.vhdUri
+    osDiskCaching: 'ReadWrite'
+    osType: 'Windows'
+    // Non-required parameters
+    hyperVGeneration: 'V1'
+    roleAssignments: [
+      {
+        principalIds: [
+          resourceGroupResources01.outputs.managedIdentityPrincipalId
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    zoneResilient: true
+  }
+}
