@@ -20,17 +20,20 @@ This template deploys capacity pools in an Azure NetApp Files.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the capacity pool. |
 | `size` | int | Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104). |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `netAppAccountName` | string | The name of the parent NetApp account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `coolAccess` | bool | `False` |  | If enabled (true) the pool can contain cool Access enabled volumes. |

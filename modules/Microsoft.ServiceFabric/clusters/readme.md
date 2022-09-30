@@ -22,12 +22,14 @@ This module deploys a Service Fabric Cluster.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `managementEndpoint` | string | The http management endpoint of the cluster. |
 | `name` | string | Name of the Service Fabric cluster. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `addOnFeatures` | array | `[]` | `[BackupRestoreService, DnsService, RepairManager, ResourceMonitorService]` | The list of add-on features to enable in the cluster. |

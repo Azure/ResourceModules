@@ -18,16 +18,19 @@ This module deploys an Azure Automation Account Schedule.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Automation Account schedule. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `advancedSchedule` | object | `{object}` |  | The properties of the create Advanced Schedule. |
@@ -40,6 +43,7 @@ This module deploys an Azure Automation Account Schedule.
 | `timeZone` | string | `''` |  | The time zone of the schedule. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Time used as a basis for e.g. the schedule start date. |
