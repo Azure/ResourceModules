@@ -1,11 +1,36 @@
 @description('Optional. The location to deploy to.')
 param location string = resourceGroup().location
 
+@description('Required. The name of the Network Security Group to create.')
+param networkSecurityGroupName string
+
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
+
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
+  name: networkSecurityGroupName
+  location: location
+  properties: {
+    securityRules: [
+      {
+        name: 'AllowPortsForASE2'
+        properties: {
+          access: 'Allow'
+          destinationAddressPrefix: '10.0.9.0/24'
+          destinationPortRange: '454-455'
+          direction: 'Inbound'
+          priority: 1020
+          protocol: '*'
+          sourceAddressPrefix: 'AppServiceManagement'
+          sourcePortRange: '*'
+        }
+      }
+    ]
+  }
+}
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
@@ -21,6 +46,9 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
                 name: '<<namePrefix>>-az-subnet-x-008'
                 properties: {
                     addressPrefix: '10.0.9.0/24'
+                    networkSecurityGroup: {
+                        id: networkSecurityGroup.id
+                    }
                     delegations: [
                         {
                             name: 'ase'
@@ -42,7 +70,6 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
-
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
