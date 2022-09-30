@@ -12,12 +12,7 @@ param resourceGroupName string = 'ms.compute.images-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'imgcom'
-
-// TODO: discuss the following challenge: roleassignment must be a globally unique identifier (GUID). The GUID is normally generated with role + scope + identity.
-// Identity in this case is the MSI deployed in the resourceGroupResources01 module. We cannot get that as output since the resource name requires a value that can be calculated at the start of the deployment.
-// Using the msi name as a workaround. Creating var in order not to duplicate its value (roleAssignment guid + input for resourceGroupResources01 module).
-// Same for destinationStorageAccountName. Creating other vars for consistency.
+param serviceShort string = 'cicom'
 
 // ========= //
 // Variables //
@@ -42,7 +37,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested01'
+  name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: managedIdentityName
     storageAccountName: destinationStorageAccountName
@@ -58,7 +53,7 @@ module resourceGroupResources 'dependencies.bicep' = {
 // ============== //
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     // Required parameters
     name: '<<namePrefix>>${serviceShort}001'

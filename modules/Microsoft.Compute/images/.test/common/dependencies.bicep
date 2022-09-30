@@ -49,7 +49,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
 }
 
 module roleAssignment 'dependencies_rbac.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-MSI-roleAssignment'
+  name: '${deployment().name}-MSI-roleAssignment'
   scope: subscription()
   params: {
     managedIdentityPrincipalId: managedIdentity.properties.principalId
