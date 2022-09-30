@@ -43,7 +43,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
         }
         subnets: [
             {
-                name: '<<namePrefix>>-az-subnet-x-008'
+                name: '<<namePrefix>>-sub-008'
                 properties: {
                     addressPrefix: '10.0.9.0/24'
                     networkSecurityGroup: {
