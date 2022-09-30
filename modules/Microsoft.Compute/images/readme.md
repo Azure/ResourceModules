@@ -169,10 +169,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module images './Microsoft.Compute/images/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-imgcom'
+  name: '${uniqueString(deployment().name, location)}-test-cicom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>imgcom001'
+    name: '<<namePrefix>>cicom001'
     osAccountType: 'Premium_LRS'
     osDiskBlobUri: '<osDiskBlobUri>'
     osDiskCaching: 'ReadWrite'
@@ -206,7 +206,7 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>imgcom001"
+      "value": "<<namePrefix>>cicom001"
     },
     "osAccountType": {
       "value": "Premium_LRS"
