@@ -12,20 +12,26 @@ Mandatory. The Provider Namespace to fetch the role definitions for
 .PARAMETER ResourceType
 Mandatory. The ResourceType to fetch the role definitions for
 
+.PARAMETER IncludeCustomRoles
+Optional. Whether to include custom roles or not
+
 .EXAMPLE
 Get-RoleAssignmentsList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
 
-Fetch all available Role Definitions for ProviderNamespace [Microsoft.KeyVault/vaults]
+Fetch all available Role Definitions for ProviderNamespace [Microsoft.KeyVault/vaults], excluding custom roles
 #>
 function Get-RoleAssignmentsList {
 
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $false)]
         [string] $ProviderNamespace,
 
-        [Parameter(Mandatory)]
-        [string] $ResourceType
+        [Parameter(Mandatory = $false)]
+        [string] $ResourceType,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $IncludeCustomRoles
     )
 
     begin {
@@ -37,10 +43,12 @@ function Get-RoleAssignmentsList {
         #################
         ##   Get Roles ##
         #################
-        $roles = Get-AzRoleDefinition
+        $roleDefinitions = Get-AzRoleDefinition
 
         # Filter Custom Roles
-        $roleDefinitions = $roles | Where-Object { -not $_.IsCustom }
+        if (-not $IncludeCustomRoles) {
+            $roleDefinitions = $roleDefinitions | Where-Object { -not $_.IsCustom }
+        }
 
         $relevantRoles = [System.Collections.ArrayList]@()
 
@@ -59,13 +67,16 @@ function Get-RoleAssignmentsList {
         }
 
         $resBicep = [System.Collections.ArrayList]@()
+        $resArm = [System.Collections.ArrayList]@()
         foreach ($role in $relevantRoles | Sort-Object -Property 'Name' -Unique) {
-            $roleName = $role.Name
-            $roleId = $role.Id
-            $resBicep += "'$roleName': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '$roleId')"
+            $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+            $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')]`"," -f $role.Name, $role.Id
         }
 
-        return $resBicep
+        return @{
+            bicepFormat = $resBicep
+            armFormat   = $resArm
+        }
     }
 
     end {

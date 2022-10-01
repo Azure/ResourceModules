@@ -63,7 +63,7 @@ function Set-RoleAssignmentsModuleData {
 
         $roleAssignmentList = Get-RoleAssignmentsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
 
-        if (-not $roleAssignmentList) {
+        if (-not $roleAssignmentList.bicepFormat) {
             return
         }
 
@@ -105,7 +105,7 @@ function Set-RoleAssignmentsModuleData {
         $preRolesContent = ($fileContent -split '<<roleDefinitions>>')[0].Trim() -split '\n' | ForEach-Object { $_.TrimEnd() }
         $postRolesContent = ($fileContent -split '<<roleDefinitions>>')[1].Trim() -split '\n' | ForEach-Object { $_.TrimEnd() }
         ## Add roles
-        $fileContent = $preRolesContent.TrimEnd() + ($roleAssignmentList | ForEach-Object { "  $_" }) + $postRolesContent
+        $fileContent = $preRolesContent.TrimEnd() + ($roleAssignmentList.bicepFormat | ForEach-Object { "  $_" }) + $postRolesContent
 
         # Set content
         $roleTemplateFilePath = Join-Path $ModuleRootPath '.bicep' 'nested_roleAssignments.bicep'
