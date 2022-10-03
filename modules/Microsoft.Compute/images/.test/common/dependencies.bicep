@@ -4,7 +4,7 @@ param location string = resourceGroup().location
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
-@description('Required. The name of the Storage Account to create.')
+@description('Required. The name of the Storage Account to create and to copy the VHD into.')
 param storageAccountName string
 
 @description('Required. The name prefix of the Image Template to create.')
@@ -18,9 +18,6 @@ param triggerImageDeploymentScriptName string
 
 @description('Required. The name of the Deployment Script to copy the VHD to a destination storage account.')
 param copyVhdDeploymentScriptName string
-
-@description('Required. The name of the destination Storage Account to copy the created VHD to.')
-param destinationStorageAccountName string
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
   name: managedIdentityName
@@ -134,7 +131,7 @@ resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-
   properties: {
     azPowerShellVersion: '8.0'
     retentionInterval: 'P1D'
-    arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\" -DestinationStorageAccountName \\"${destinationStorageAccountName}\\" -VhdName \\"${imageTemplateNamePrefix}\\" -WaitForComplete'
+    arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\" -DestinationStorageAccountName \\"${storageAccount.name}\\" -VhdName \\"${imageTemplateNamePrefix}\\" -WaitForComplete'
     scriptContent: loadTextContent('../.scripts/Copy-VhdToStorageAccount.ps1')
     cleanupPreference: 'OnSuccess'
     forceUpdateTag: baseTime
@@ -143,7 +140,7 @@ resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-
 }
 
 @description('The URI of the created VHD.')
-output vhdUri string = 'https://${destinationStorageAccountName}.blob.core.windows.net/vhds/${imageTemplateNamePrefix}.vhd'
+output vhdUri string = 'https://${storageAccount.name}.blob.core.windows.net/vhds/${imageTemplateNamePrefix}.vhd'
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
