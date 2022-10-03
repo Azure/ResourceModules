@@ -18,17 +18,20 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the rule collection group to deploy. |
 | `priority` | int | Priority of the Firewall Policy Rule Collection Group resource. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `firewallPolicyName` | string | The name of the parent Firewall Policy. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |

@@ -64,6 +64,9 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     exportPolicyStatus: 'enabled'
+    azureADAuthenticationAsArmPolicyStatus: 'enabled'
+    softDeletePolicyStatus: 'disabled'
+    softDeletePolicyDays: 7
     lock: 'CanNotDelete'
     privateEndpoints: [
       {

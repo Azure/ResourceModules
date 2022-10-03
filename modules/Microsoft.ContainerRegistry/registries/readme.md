@@ -16,9 +16,9 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ContainerRegistry/registries` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-09-01/registries) |
-| `Microsoft.ContainerRegistry/registries/replications` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications) |
-| `Microsoft.ContainerRegistry/registries/webhooks` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/webhooks) |
+| `Microsoft.ContainerRegistry/registries` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2022-02-01-preview/registries) |
+| `Microsoft.ContainerRegistry/registries/replications` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2022-02-01-preview/registries/replications) |
+| `Microsoft.ContainerRegistry/registries/webhooks` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2022-02-01-preview/registries/webhooks) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
@@ -26,20 +26,24 @@ Azure Container Registry is a managed, private Docker registry service based on 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of your Azure container registry. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Note, CMK requires the 'acrSku' to be 'Premium'. Required if 'cMKKeyName' is not empty. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `acrAdminUserEnabled` | bool | `False` |  | Enable admin user that have push / pull permission to the registry. |
 | `acrSku` | string | `'Basic'` | `[Basic, Premium, Standard]` | Tier of your Azure container registry. |
+| `azureADAuthenticationAsArmPolicyStatus` | string | `'enabled'` | `[disabled, enabled]` | The value that indicates whether the policy for using ARM audience token for a container registr is enabled or not. Default is enabled. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Note, CMK requires the 'acrSku' to be 'Premium'. |
 | `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the 'acrSku' to be 'Premium'. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
@@ -66,6 +70,8 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `retentionPolicyDays` | int | `15` |  | The number of days to retain an untagged manifest after which it gets purged. |
 | `retentionPolicyStatus` | string | `'enabled'` | `[disabled, enabled]` | The value that indicates whether the retention policy is enabled or not. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `softDeletePolicyDays` | int | `7` |  | The number of days after which a soft-deleted item is permanently deleted. |
+| `softDeletePolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | Soft Delete policy status. Default is disabled. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `trustPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the trust policy is enabled or not. |
@@ -223,7 +229,7 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
@@ -364,6 +370,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     // Non-required parameters
     acrAdminUserEnabled: false
     acrSku: 'Premium'
+    azureADAuthenticationAsArmPolicyStatus: 'enabled'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -403,6 +410,8 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    softDeletePolicyDays: 7
+    softDeletePolicyStatus: 'disabled'
     systemAssignedIdentity: true
     trustPolicyStatus: 'enabled'
     userAssignedIdentities: {
@@ -440,6 +449,9 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     },
     "acrSku": {
       "value": "Premium"
+    },
+    "azureADAuthenticationAsArmPolicyStatus": {
+      "value": "enabled"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -503,6 +515,12 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "softDeletePolicyDays": {
+      "value": 7
+    },
+    "softDeletePolicyStatus": {
+      "value": "disabled"
     },
     "systemAssignedIdentity": {
       "value": true

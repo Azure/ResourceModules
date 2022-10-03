@@ -24,12 +24,14 @@ This template enables Azure security center - Standard tier by default, could be
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `scope` | string | All the VMs in this scope will send their security data to the mentioned workspace unless overridden by a setting with more specific scope. |
 | `workspaceId` | string | The full Azure ID of the workspace to save the data in. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appServicesPricingTier` | string | `'Free'` | `[Free, Standard]` | The pricing tier value for AppServices. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard. |

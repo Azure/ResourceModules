@@ -28,12 +28,14 @@ This module deploys a DocumentDB database account and its child resources.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `locations` | array | Locations enabled for the Cosmos DB account. |
 | `name` | string | Name of the Database Account. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticFailover` | bool | `True` |  | Enable automatic failover for regions. |

@@ -21,11 +21,13 @@ This module deploys Network Private Link Services.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the private link service to create. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoApproval` | object | `{object}` |  | The auto-approval list of the private link service. |
