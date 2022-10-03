@@ -1,4 +1,4 @@
-# Application Gateway WebApp Firewall Policy `[Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies]`
+# Application Gateway WebApp Firewall Policies `[Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies]`
 
 This module deploys a WAF policy.
 
@@ -35,10 +35,6 @@ This module deploys a WAF policy.
 | `policySettings` | object | `{object}` | The PolicySettings for policy. |
 | `tags` | object | `{object}` | Resource tags. |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `tags`
 
