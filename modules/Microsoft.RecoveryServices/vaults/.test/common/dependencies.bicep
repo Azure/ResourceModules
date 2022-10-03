@@ -57,5 +57,5 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
 
-@description('The resource ID of the created Virtual Network Subnet.')
+@description('The resource ID of the created Private DNS Zone.')
 output privateDNSResourceId string = privateDNSZone.id
