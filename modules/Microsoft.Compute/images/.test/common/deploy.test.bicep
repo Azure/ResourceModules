@@ -14,16 +14,6 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
 param serviceShort string = 'cicom'
 
-// ========= //
-// Variables //
-// ========= //
-
-var managedIdentityName = 'dep-<<namePrefix>>-msi-${serviceShort}'
-var destinationStorageAccountName = 'dep<<namePrefix>>sa${serviceShort}01'
-var imageTemplateNamePrefix = 'dep-<<namePrefix>>-imgt-${serviceShort}'
-var triggerImageDeploymentScriptName = 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
-var copyVhdDeploymentScriptName = 'dep-<<namePrefix>>-ds-${serviceShort}-copyVhdToStorage'
-
 // =========== //
 // Deployments //
 // =========== //
@@ -39,12 +29,12 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: managedIdentityName
-    storageAccountName: destinationStorageAccountName
-    imageTemplateNamePrefix: imageTemplateNamePrefix
-    triggerImageDeploymentScriptName: triggerImageDeploymentScriptName
-    copyVhdDeploymentScriptName: copyVhdDeploymentScriptName
-    destinationStorageAccountName: destinationStorageAccountName
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
+    imageTemplateNamePrefix: 'dep-<<namePrefix>>-imgt-${serviceShort}'
+    triggerImageDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
+    copyVhdDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-copyVhdToStorage'
+    destinationStorageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
   }
 }
 
