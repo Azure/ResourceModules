@@ -662,21 +662,21 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Registries'
+  name: '${uniqueString(deployment().name)}-test-crrpe'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azacrpe001'
+    name: '<<namePrefix>>crrpe001'
     // Non-required parameters
     acrSku: 'Premium'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'registry'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
   }
@@ -697,7 +697,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azacrpe001"
+      "value": "<<namePrefix>>crrpe001"
     },
     // Non-required parameters
     "acrSku": {
@@ -708,11 +708,11 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "registry",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     }
