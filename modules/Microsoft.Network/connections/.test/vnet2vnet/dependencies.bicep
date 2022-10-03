@@ -45,7 +45,7 @@ resource primaryPublicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
 }
 
 resource primaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = {
-    name: primaryVirtualNetworkGateway
+    name: primaryVirtualNetworkGatewayName
     location: location
     properties: {
         gatewayType: 'Vpn'
@@ -98,7 +98,7 @@ resource secondaryPublicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
 }
 
 resource secondaryVNETGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = {
-    name: secondaryVirtualNetworkGateway
+    name: secondaryVirtualNetworkGatewayName
     location: location
     properties: {
         gatewayType: 'Vpn'
