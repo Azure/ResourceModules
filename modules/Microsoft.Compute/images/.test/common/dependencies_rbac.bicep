@@ -1,6 +1,9 @@
 targetScope = 'subscription'
 
+@description('Required. The resource ID of the created Managed Identity.')
 param managedIdentityResourceId string
+
+@description('Required. The principal ID of the created Managed Identity.')
 param managedIdentityPrincipalId string
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
