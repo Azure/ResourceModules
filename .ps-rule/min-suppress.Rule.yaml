@@ -3,7 +3,7 @@
 apiVersion: github.com/microsoft/PSRule/v1
 kind: SuppressionGroup
 metadata:
-  name: 'Suppressmin'
+  name: 'SuppressMin'
 spec:
   rule:
    - Azure.Resource.UseTags
@@ -12,5 +12,4 @@ spec:
     name: '.'
     contains:
       - 'min'
-  
-  
+
