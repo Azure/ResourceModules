@@ -33,6 +33,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILTER_REGEX_EXCLUDE: '[module.tests.ps1|Get\-ModulesAsMarkdownTable.ps1|.*yml]'
 
+  # Discuss if running on PR to the whole repo (current implementation) or only on files changed
   psrule:
     name: PSRule
     runs-on: ubuntu-latest
