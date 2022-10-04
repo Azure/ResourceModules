@@ -467,7 +467,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       ipRules: []
       virtualNetworkRules: [
         {
-          action: 'Allow'
           id: '<id>'
         }
       ]
@@ -606,7 +605,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         "ipRules": [],
         "virtualNetworkRules": [
           {
-            "action": "Allow",
             "id": "<id>"
           }
         ]
