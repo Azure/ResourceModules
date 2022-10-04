@@ -113,7 +113,7 @@ module testDeployment '../../deploy.bicep' = {
       ipRules: []
       virtualNetworkRules: [
         {
-          action: 'Allow'
+          // action: 'Allow'
           id: resourceGroupResources.outputs.subnetResourceId
         }
       ]
