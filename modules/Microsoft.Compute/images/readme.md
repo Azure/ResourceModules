@@ -161,7 +161,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -169,12 +169,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module images './Microsoft.Compute/images/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Images'
+  name: '${uniqueString(deployment().name, location)}-test-cicom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-img-x-001'
+    name: '<<namePrefix>>cicom001'
     osAccountType: 'Premium_LRS'
-    osDiskBlobUri: 'https://adp<<namePrefix>>azsavhd001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-vhd-001.vhd'
+    osDiskBlobUri: '<osDiskBlobUri>'
     osDiskCaching: 'ReadWrite'
     osType: 'Windows'
     // Non-required parameters
@@ -182,7 +182,7 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -206,13 +206,13 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-img-x-001"
+      "value": "<<namePrefix>>cicom001"
     },
     "osAccountType": {
       "value": "Premium_LRS"
     },
     "osDiskBlobUri": {
-      "value": "https://adp<<namePrefix>>azsavhd001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-vhd-001.vhd"
+      "value": "<osDiskBlobUri>"
     },
     "osDiskCaching": {
       "value": "ReadWrite"
@@ -228,7 +228,7 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
