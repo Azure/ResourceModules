@@ -105,7 +105,7 @@ jobs:
         continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
         with:
           modules: 'PSRule.Rules.Azure'
-          inputPath: '${{ env.modulesPath }}/Microsoft.KeyVault/vaults/'
+          inputPath: '${{ env.modulesPath }}/'
           outputFormat: Csv
           outputPath: '${{ env.modulesPath }}/PSRule-output.csv'
       - name: 'Parse CSV content'
