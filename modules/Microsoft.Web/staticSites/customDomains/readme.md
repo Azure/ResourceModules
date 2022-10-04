@@ -37,9 +37,9 @@ This module deploys a Custom Domain into a Static Site.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the static site. |
-| `resourceGroupName` | string | The resource group the static site was deployed into. |
-| `resourceId` | string | The resource ID of the static site. |
+| `name` | string | The name of the static site custom domain. |
+| `resourceGroupName` | string | The resource group the static site custom domain was deployed into. |
+| `resourceId` | string | The resource ID of the static site custom domain. |
 
 ## Cross-referenced modules
 
