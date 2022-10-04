@@ -300,7 +300,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -308,40 +308,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Namespaces'
-  params: {
-
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {}
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Namespaces'
+  name: '${uniqueString(deployment().name)}-test-ehncom'
   params: {
     authorizationRules: [
       {
@@ -360,11 +327,11 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         ]
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     eventHubs: [
       {
         name: '<<namePrefix>>-az-evh-x-001'
@@ -390,7 +357,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
         captureDescriptionDestinationBlobContainer: 'eventhub'
         captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
-        captureDescriptionDestinationStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+        captureDescriptionDestinationStorageAccountResourceId: '<captureDescriptionDestinationStorageAccountResourceId>'
         captureDescriptionEnabled: true
         captureDescriptionEncoding: 'Avro'
         captureDescriptionIntervalInSeconds: 300
@@ -408,7 +375,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
             roleDefinitionIdOrName: 'Reader'
           }
@@ -417,7 +384,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>-az-evhns-x-001'
+    name: '<<namePrefix>>ehncom001'
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -430,7 +397,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       virtualNetworkRules: [
         {
           ignoreMissingVnetServiceEndpoint: true
-          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          subnetResourceId: '<subnetResourceId>'
         }
       ]
     }
@@ -438,24 +405,24 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'namespace'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -493,19 +460,19 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "eventHubs": {
       "value": [
@@ -533,7 +500,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
           "captureDescriptionDestinationArchiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}",
           "captureDescriptionDestinationBlobContainer": "eventhub",
           "captureDescriptionDestinationName": "EventHubArchive.AzureBlockBlob",
-          "captureDescriptionDestinationStorageAccountResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+          "captureDescriptionDestinationStorageAccountResourceId": "<captureDescriptionDestinationStorageAccountResourceId>",
           "captureDescriptionEnabled": true,
           "captureDescriptionEncoding": "Avro",
           "captureDescriptionIntervalInSeconds": 300,
@@ -551,7 +518,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
               "roleDefinitionIdOrName": "Reader"
             }
@@ -564,7 +531,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>-az-evhns-x-001"
+      "value": "<<namePrefix>>ehncom001"
     },
     "networkRuleSets": {
       "value": {
@@ -579,7 +546,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         "virtualNetworkRules": [
           {
             "ignoreMissingVnetServiceEndpoint": true,
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+            "subnetResourceId": "<subnetResourceId>"
           }
         ]
       }
@@ -589,11 +556,11 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "namespace",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -601,7 +568,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -612,10 +579,42 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-ehnmin'
+  params: {
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {}
 }
 ```
 
@@ -630,18 +629,18 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Namespaces'
+  name: '${uniqueString(deployment().name)}-test-ehnpe'
   params: {
-    name: '<<namePrefix>>-az-evhns-pe-001'
+    name: '<<namePrefix>>ehnpe001'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'namespace'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
   }
@@ -661,18 +660,18 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>-az-evhns-pe-001"
+      "value": "<<namePrefix>>ehnpe001"
     },
     "privateEndpoints": {
       "value": [
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "namespace",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     }
