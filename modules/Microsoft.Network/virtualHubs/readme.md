@@ -22,6 +22,7 @@ This module deploys a Virtual Hub.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `addressPrefix` | string | Address-prefix for this VirtualHub. |
@@ -29,6 +30,7 @@ This module deploys a Virtual Hub.
 | `virtualWanId` | string | Resource ID of the virtual WAN to link to. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBranchToBranchTraffic` | bool | `True` |  | Flag to control transit for VirtualRouter hub. |
@@ -113,7 +115,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -121,59 +123,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualHubs'
-  params: {
-    // Required parameters
-    addressPrefix: '10.0.0.0/16'
-    name: '<<namePrefix>>-az-vhub-min-001'
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "addressPrefix": {
-      "value": "10.0.0.0/16"
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-vhub-min-001"
-    },
-    "virtualWanId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualHubs'
+  name: '${uniqueString(deployment().name)}-test-nvhcom'
   params: {
     // Required parameters
     addressPrefix: '10.1.0.0/16'
-    name: '<<namePrefix>>-az-vhub-x-001'
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
+    name: '<<namePrefix>>-nvhcom'
+    virtualWanId: '<virtualWanId>'
     // Non-required parameters
     hubRouteTables: [
       {
@@ -183,15 +138,15 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     hubVirtualNetworkConnections: [
       {
         name: 'connection1'
-        remoteVirtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub'
+        remoteVirtualNetworkId: '<remoteVirtualNetworkId>'
         routingConfiguration: {
           associatedRouteTable: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1'
           }
           propagatedRouteTables: {
             ids: [
               {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
+                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1'
               }
             ]
             labels: [
@@ -223,10 +178,10 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       "value": "10.1.0.0/16"
     },
     "name": {
-      "value": "<<namePrefix>>-az-vhub-x-001"
+      "value": "<<namePrefix>>-nvhcom"
     },
     "virtualWanId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001"
+      "value": "<virtualWanId>"
     },
     // Non-required parameters
     "hubRouteTables": {
@@ -240,15 +195,15 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       "value": [
         {
           "name": "connection1",
-          "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub",
+          "remoteVirtualNetworkId": "<remoteVirtualNetworkId>",
           "routingConfiguration": {
             "associatedRouteTable": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1"
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1"
             },
             "propagatedRouteTables": {
               "ids": [
                 {
-                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1"
+                  "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1"
                 }
               ],
               "labels": [
@@ -261,6 +216,53 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nvhmin'
+  params: {
+    // Required parameters
+    addressPrefix: '10.0.0.0/16'
+    name: '<<namePrefix>>-nvhmin'
+    virtualWanId: '<virtualWanId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "addressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "name": {
+      "value": "<<namePrefix>>-nvhmin"
+    },
+    "virtualWanId": {
+      "value": "<virtualWanId>"
     }
   }
 }
