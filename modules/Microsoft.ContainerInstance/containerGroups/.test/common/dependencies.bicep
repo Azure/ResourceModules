@@ -9,5 +9,5 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-@description('The resource ID of the created managed identity')
+@description('The resource ID of the created managed identity.')
 output managedIdentityResourceId string = managedIdentity.id
