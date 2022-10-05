@@ -31,7 +31,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-02-01' existing = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-04-01' existing = {
   name: recoveryVaultName
 }
 

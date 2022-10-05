@@ -21,11 +21,13 @@ This module deploys a user defined route table.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name given for the hub route table. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `disableBgpRoutePropagation` | bool | `False` |  | Switch to disable BGP route propagation. |
@@ -246,7 +248,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -254,16 +256,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-RouteTables'
+  name: '${uniqueString(deployment().name)}-test-nrtcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-udr-x-001'
+    name: '<<namePrefix>>nrtcom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -296,7 +298,7 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-udr-x-001"
+      "value": "<<namePrefix>>nrtcom001"
     },
     // Non-required parameters
     "lock": {
@@ -306,7 +308,7 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -323,6 +325,43 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
           }
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nrtmin'
+  params: {
+    name: '<<namePrefix>>nrtmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>nrtmin001"
     }
   }
 }

@@ -37,7 +37,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
+resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' = {
   name: guid(roleName, managementGroupId)
   properties: {
     roleName: roleName
