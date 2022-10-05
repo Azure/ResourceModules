@@ -18,11 +18,13 @@ This module deploys API Management Service Identity Provider.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Identity provider name. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
@@ -30,6 +32,7 @@ This module deploys API Management Service Identity Provider.
 | `identityProviderClientSecret` | secureString | `''` | Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |

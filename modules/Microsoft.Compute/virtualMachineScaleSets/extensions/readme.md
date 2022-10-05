@@ -18,6 +18,7 @@ This module deploys a virtual machine scale set extension.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `autoUpgradeMinorVersion` | bool | Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true. |
@@ -28,11 +29,13 @@ This module deploys a virtual machine scale set extension.
 | `typeHandlerVersion` | string | Specifies the version of the script handler. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `virtualMachineScaleSetName` | string | The name of the parent virtual machine scale set that extension is provisioned for. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
