@@ -23,11 +23,13 @@ This module deploys Front Doors.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the frontDoor. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backendPools` | array | `[]` |  | Backend address pool of the frontdoor resource. |

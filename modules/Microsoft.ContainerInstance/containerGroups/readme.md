@@ -22,6 +22,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `containername` | string | Name for the container. |
@@ -29,6 +30,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `name` | string | Name for the container group. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cpuCores` | int | `2` |  | The number of CPU cores to allocate to the container. |
