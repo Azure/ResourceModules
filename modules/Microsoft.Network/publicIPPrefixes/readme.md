@@ -21,12 +21,14 @@ This template deploys a public IP prefix.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Public IP Prefix. |
 | `prefixLength` | int | Length of the Public IP Prefix. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -156,7 +158,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -164,17 +166,17 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PublicIPPrefixes'
+  name: '${uniqueString(deployment().name)}-test-npipcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-pippfx-x-001'
+    name: '<<namePrefix>>npipcom001'
     prefixLength: 28
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -197,7 +199,7 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-pippfx-x-001"
+      "value": "<<namePrefix>>npipcom001"
     },
     "prefixLength": {
       "value": 28
@@ -210,11 +212,54 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-npipmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>npipmin001'
+    prefixLength: 28
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>npipmin001"
+    },
+    "prefixLength": {
+      "value": 28
     }
   }
 }
