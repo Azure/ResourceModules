@@ -19,12 +19,14 @@ With this module you can perform policy assignments on a resource group level
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy assignment. Maximum length is 64 characters for resource group scope. |
 | `policyDefinitionId` | string | Specifies the ID of the policy definition or policy set definition being assigned. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string | `''` |  | This message will be part of response in case of policy violation. |
