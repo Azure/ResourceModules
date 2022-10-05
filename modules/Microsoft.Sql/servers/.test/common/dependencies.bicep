@@ -49,13 +49,13 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   }
 }
 
-@description('The principal ID of the created managed identity')
+@description('The principal ID of the created managed identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
-@description('The resource ID of the created managed identity')
+@description('The resource ID of the created managed identity.')
 output managedIdentitResourceId string = managedIdentity.id
 
-@description('The resource ID of the created virtual network subnet')
+@description('The resource ID of the created virtual network subnet.')
 output privateEndpointSubnetResourceId string = virtualNetwork.properties.subnets[0].id
 
 @description('The resource ID of the created Virtual Network Subnet.')

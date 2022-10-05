@@ -41,7 +41,7 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   }
 }
 
-@description('The resource ID of the created virtual network subnet')
+@description('The resource ID of the created virtual network subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
 @description('The resource ID of the created Virtual Network Subnet.')
