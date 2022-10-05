@@ -10,7 +10,7 @@ param serviceShort string = 'rtmin'
 // Test Execution //
 // ============== //
 
-module testDeployment '../../subscriptions/deploy.bicep' = {
+module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
   }
