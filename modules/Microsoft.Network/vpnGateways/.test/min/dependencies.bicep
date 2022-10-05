@@ -23,5 +23,5 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2022-01-01' = {
   }
 }
 
-@description('The resource ID of the created Virtual Hub')
+@description('The resource ID of the created Virtual Hub.')
 output virtualHubResourceId string = virtualHub.id
