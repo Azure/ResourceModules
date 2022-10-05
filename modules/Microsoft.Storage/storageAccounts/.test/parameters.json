@@ -22,7 +22,7 @@
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
                     "service": "blob",
-                    "privateDnsZoneGroups": {
+                    "privateDnsZoneGroup": {
                         "privateDNSResourceIds": [
                             "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
                         ]
@@ -31,7 +31,7 @@
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
                     "service": "table",
-                    "privateDnsZoneGroups": {
+                    "privateDnsZoneGroup": {
                         "privateDNSResourceIds": [
                             "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net"
                         ]
@@ -40,7 +40,7 @@
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
                     "service": "queue",
-                    "privateDnsZoneGroups": {
+                    "privateDnsZoneGroup": {
                         "privateDNSResourceIds": [
                             "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net"
                         ]
@@ -49,7 +49,7 @@
                 {
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
                     "service": "file",
-                    "privateDnsZoneGroups": {
+                    "privateDnsZoneGroup": {
                         "privateDNSResourceIds": [
                             "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net"
                         ]
