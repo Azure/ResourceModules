@@ -152,13 +152,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var networkAcls_var = {
-  bypass: !empty(networkAcls) ? networkAcls.bypass : null
-  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-  virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
-  ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
-}
-
 var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
   applicationId: contains(accessPolicy, 'applicationId') ? accessPolicy.applicationId : ''
   objectId: contains(accessPolicy, 'objectId') ? accessPolicy.objectId : ''
@@ -204,7 +197,12 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
       name: vaultSku
       family: 'A'
     }
-    networkAcls: !empty(networkAcls) ? networkAcls_var : null
+    networkAcls: !empty(networkAcls) ? {
+      bypass: contains(networkAcls, 'bypass') ? networkAcls.bypass : null
+      defaultAction: contains(networkAcls, 'defaultAction') ? networkAcls.defaultAction : null
+      virtualNetworkRules: contains(networkAcls, 'virtualNetworkRules') ? networkAcls.virtualNetworkRules : []
+      ipRules: contains(networkAcls, 'ipRules') ? networkAcls.ipRules : []
+    } : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkAcls) ? 'Disabled' : null)
   }
 }
