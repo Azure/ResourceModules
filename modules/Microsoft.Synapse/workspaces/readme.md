@@ -26,6 +26,7 @@ This module deploys a Synapse Workspace.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `defaultDataLakeStorageAccountName` | string | Name of the default ADLS Gen2 storage account. |
@@ -34,6 +35,7 @@ This module deploys a Synapse Workspace.
 | `sqlAdministratorLogin` | string | Login for administrator access to the workspace's SQL pools. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowedAadTenantIdsForLinking` | array | `[]` |  | Allowed AAD Tenant IDs For Linking. |
