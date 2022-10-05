@@ -1,7 +1,7 @@
 @description('Optional. The location to deploy to')
 param location string = resourceGroup().location
 
-@description('Required. The name of the Virtual Network to create')
+@description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
 @description('Required. The name of the Key Vault to create.')
