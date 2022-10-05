@@ -21,12 +21,14 @@ This module deploys an Azure API connection.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `displayName` | string | Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
 | `name` | string | Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `alternativeParameterValues` | object | `{object}` |  | Alternative parameter values. |
@@ -163,7 +165,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -171,7 +173,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module connections './Microsoft.Web/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Connections'
+  name: '${uniqueString(deployment().name)}-test-wccom'
   params: {
     // Required parameters
     displayName: 'azuremonitorlogs'
@@ -184,7 +186,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -225,7 +227,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
