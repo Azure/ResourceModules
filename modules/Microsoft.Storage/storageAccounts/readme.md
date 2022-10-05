@@ -158,6 +158,7 @@ roleAssignments: [
         "defaultAction": "Deny",
         "virtualNetworkRules": [
             {
+                "action": "Allow",
                 "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
             }
         ],
@@ -183,6 +184,7 @@ networkAcls: {
     defaultAction: 'Deny'
     virtualNetworkRules: [
         {
+            action: 'Allow'
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         }
     ]
