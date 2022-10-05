@@ -21,9 +21,6 @@ param lock string = ''
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
-
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object = {}
 
@@ -45,11 +42,10 @@ param type string = 'LocallyRedundant'
 @description('Optional. List of all backup policies.')
 param backupPolicies array = []
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : 'None'
 
 var identity = identityType != 'None' ? {
   type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
 var enableReferencedModulesTelemetry = false

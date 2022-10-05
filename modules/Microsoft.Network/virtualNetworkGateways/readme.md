@@ -23,6 +23,7 @@ This module deploys a virtual network gateway.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | Specifies the Virtual Network Gateway name. |
@@ -31,6 +32,7 @@ This module deploys a virtual network gateway.
 | `vNetResourceId` | string |  | Virtual Network resource ID. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `activeActive` | bool | `True` |  | Value to specify if the Gateway should be deployed in active-active or active-passive configuration. |
