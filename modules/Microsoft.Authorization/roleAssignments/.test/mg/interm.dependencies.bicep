@@ -1,13 +1,13 @@
 targetScope = 'subscription'
 
-@description('Required. The location to deploy to')
+@description('Required. The location to deploy to.')
 param location string
 
-@description('Required. The name of the resource group to deploy for testing purposes')
+@description('Required. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string
 
-@description('Required. The name of the managed identity to create')
+@description('Required. The name of the managed identity to create.')
 param managedIdentityName string
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
