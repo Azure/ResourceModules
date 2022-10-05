@@ -21,6 +21,7 @@ This template deploys a disk encryption set.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `keyName` | string | Key URL (with version) pointing to a key or secret in KeyVault. |
@@ -28,6 +29,7 @@ This template deploys a disk encryption set.
 | `name` | string | The name of the disk encryption set that is being created. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |

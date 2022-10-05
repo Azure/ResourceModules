@@ -9,14 +9,25 @@ This section shows you how you can orchestrate a deployment using multiple resou
 - [Upstream workloads](#upstream-workloads)
 - [Orchestration overview](#orchestration-overview)
   - [Publish-location considerations](#publish-location-considerations)
+    - [Outline](#outline)
+    - [Comparison](#comparison)
 - [Template-orchestration](#template-orchestration)
-  - [How to start](#how-to-start)
-  - [Examples](#examples)
+  - [To be considered](#to-be-considered)
+  - [GitHub Samples](#github-samples)
+    - [Local files](#local-files)
+    - [Bicep Registry](#bicep-registry)
+    - [Template Specs](#template-specs)
+  - [Azure DevOps Samples](#azure-devops-samples)
+    - [Azure Artifacts](#azure-artifacts)
+    - [Bicep Registry](#bicep-registry-1)
+    - [Template Specs](#template-specs-1)
 - [Pipeline-orchestration](#pipeline-orchestration)
-    - [Summary](#summary)
-    - [Repo structure](#repo-structure)
-    - [YAML pipeline](#yaml-pipeline)
-    - [Notes](#notes)
+  - [GitHub Sample](#github-sample)
+    - [Multi-repository](#multi-repository)
+    - [Repository structure](#repository-structure)
+  - [Azure DevOps Sample](#azure-devops-sample)
+    - [Multi-repository](#multi-repository-1)
+    - [Repository structure](#repository-structure-1)
 
 ---
 
@@ -101,7 +112,7 @@ With this approach, modules need to be stored in an available location, where th
 
 In an enterprise environment, the recommended approach is to store these _master templates_ in a private environment, only accessible by enterprise resources. Thus, only trusted authorities can have access to these files.
 
-## How to start
+## To be considered
 
 Once you start building a solution using this library, you may wonder how best to start. Following, you can find some points that can accelerate your experience:
 
@@ -114,10 +125,12 @@ Once you start building a solution using this library, you may wonder how best t
     1. Add the missing output to the module
     1. Reference the deployed resource using the `existing` keyword (Note: You cannot reference the same resource as both a new deployment & `existing`. To make this work, you have to move the `existing` reference into it's own `.bicep` file).
 
-## Examples
+## GitHub Samples
 
 <details>
 <summary>Referencing <b>local files</b></summary>
+
+### Local files
 
 The following example shows how you could orchestrate a deployment of multiple resources using local module references. In this example, we will deploy a resource group with a Network Security Group (NSG), and use them in a subsequent VNET deployment.
 
@@ -188,9 +201,11 @@ module vnet 'modules/Microsoft.Network/virtualNetworks/deploy.bicep' = {
 </details>
 
 <details>
-<summary>Referencing a <b>Private Bicep Registry</b></summary>
+<summary>Referencing a <b>Bicep Registry</b></summary>
 
-The following example shows how you could orchestrate a deployment of multiple resources using modules from a private Bicep Registry. In this example, we will deploy a resource group with a Network Security Group (NSG), and use them in a subsequent VNET deployment.
+### Bicep Registry
+
+The following sample shows how you could orchestrate a deployment of multiple resources using modules from a private Bicep Registry. In this example, we will deploy a resource group with a Network Security Group (NSG), and use them in a subsequent VNET deployment.
 
 > **Note**: the preferred method to publish modules to the Bicep registry is to leverage the [CI environment](./The%20CI%20environment) provided in this repository. However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%201%20Consume%20library) section). As an alternative, the same [`Publish-ModuleToPrivateBicepRegistry.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
 
@@ -278,6 +293,8 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 <details>
 <summary>Referencing <b>Template-Specs</b></summary>
 
+### Template Specs
+
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example, we will deploy a resource group with a Network Security Group (NSG), and use them in a subsequent VNET deployment.
 
 > **Note**: the preferred method to publish modules to template-specs is to leverage the [CI environment](./The%20CI%20environment) provided in this repository. However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%201%20Consume%20library) section). As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToTemplateSpec.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
@@ -364,14 +381,216 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 </details>
 <p>
 
+## Azure DevOps Samples
+
+Below, you can find samples which can be used to orchestrate deployments in Azure DevOps. Unlike the above mentioned GitHub sample all samples are using a modified and standalone version of `pipeline.deploy.yml` which can be found with working examples [here](https://github.com/segraef/Platform/blob/main/.azuredevops/pipelineTemplates/jobs.solution.deploy.yml) (`/.azuredevops/pipelineTemplates/jobs.solution.deploy.yml`) which is capable of consuming Modules via any publishing option you prefer.
+
+> Note: The following samples show Azure Pipelines stored in GitHub and use a GitHub service connection endpoint and hence get triggered externally. This is out of pure convenience and can also be stored on Azure Repos directly and be triggered in the same way.
+
+<details>
+<summary><b>Reference Samples</b></summary>
+
+All DevOps samples can be found here as a reference: [Litware/Platform](https://github.com/segraef/Platform/).
+
+</details>
+
+<details>
+<summary><b>Repository structure</b></summary>
+
+   <img src="./media/SolutionCreation/ADOSolutionTestFolderStructure.png" alt="Repository Structure" height="400">
+
+> <b>Note:</b> This repository structure mimics a Platform deployment aligned to a resource group structure like in [AzOps](https://github.com/Azure/AzOps#output). For the following samples the resource group `prfx-conn-ae-network-hub-rg` is used.
+
+</details>
+
+<details>
+<summary>Referencing <b>Azure Artifacts</b></summary>
+
+### Azure Artifacts
+
+1. The _public_ **Azure/ResourceModules** repository is being fetched and could potentially be used to leverage utilities but is not necessary since only Azure Artifacts and parameter files from this local repository are used.
+2. This sample is creating a Resource Group, an NSG, a Route Table and a Virtual Network.
+   1. Job: **WhatIf**
+      1. Verify deployment.
+   2. Job: **Deploy multi-repo solution**
+     1. Checkout 'Azure/ResourceModules' repo in a nested folder `ResourceModules`
+     2. Checkout 'Litware/Platform' repository containing the parameter files in a nested folder - `Platform`
+     3. Download specific Modules Artifacts.
+     4. Deploy resources in target Azure subscription using downloaded Artifacts.
+
+```YAML
+name: 'prfx-conn-ae-network-hub-rg (Artifacts)'
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - root (b3b845c6-2a30-6f4c-62d3-a8b417cb9173)/prfx-connectivity-ae (3e51c849-d082-4b01-9385-455f253a5729)/prfx-conn-ae-network-hub-rg/*
+
+variables:
+  - template: /settings.yml
+  - template: pipeline.variables.yml
+  - template: /.azuredevops/pipelineTemplates/jobs.artifacts.variables.yml
+
+stages:
+  - stage:
+    displayName: WhatIf
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: bicep
+          displayName: 'Bicep Deployment'
+          moduleName: $(RGModuleName)
+          moduleTestFilePath: '$(resourceGroupName)/parameters.json'
+          whatif: true
+
+  - stage:
+    displayName: Deploy
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: bicep
+          displayName: 'Bicep Deployment'
+          moduleName: $(RGModuleName)
+          moduleTestFilePath: '$(resourceGroupName)/parameters.json'
+```
+
+</details>
+
+<details>
+<summary>Referencing a <b>Bicep Registry</b></summary>
+
+### Bicep Registry
+
+1. The _public_ **Azure/ResourceModules** repository is being fetched and could potentially be used to leverage utilities but is not necessary since only Bicep Modules from the remote Bicep registry and parameter files from this local repository are used.
+2. This sample is creating a Resource Group, an NSG, a Route Table and a Virtual Network.
+   1. Job: **WhatIf**
+      1. Verify deployment.
+   2. Job: **Deploy multi-repo solution**
+     1. Checkout 'Azure/ResourceModules' repo in a nested folder `ResourceModules`
+     2. Checkout 'Litware/Platform' repository containing the parameter files in a nested folder - `Platform`
+     3. Deploy resources in target Azure subscription using remote Bicep Registry Modules.
+
+
+```YAML
+name: 'prfx-conn-ae-network-hub-rg (Bicep Registry)'
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - root (b3b845c6-2a30-6f4c-62d3-a8b417cb9173)/prfx-connectivity-ae (3e51c849-d082-4b01-9385-455f253a5729)/prfx-conn-ae-network-hub-rg/*
+
+variables:
+  - template: /settings.yml
+  - template: pipeline.variables.yml
+  - template: /.azuredevops/pipelineTemplates/jobs.artifacts.variables.yml
+
+stages:
+  - stage:
+    displayName: WhatIf
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: bicep
+          displayName: 'Bicep Deployment'
+          modulePath: '$(resourceGroupName)/deploy.br.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/parameters.json'
+          whatif: true
+
+  - stage:
+    displayName: Deploy
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: bicep
+          displayName: 'Bicep Deployment'
+          modulePath: '$(resourceGroupName)/deploy.br.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/parameters.json'
+```
+
+</details>
+
+<details>
+<summary>Referencing <b>Template Specs</b></summary>
+
+### Template Specs
+
+1. The _public_ **Azure/ResourceModules** repository is being fetched and could potentially be used to leverage utilities but is not necessary since only Template Specs and parameter files from this local repository are used.
+2. This sample is creating a Resource Group, an NSG, a Route Table and a Virtual Network.
+   1. Job: **WhatIf**
+      1. Verify deployment.
+   2. Job: **Deploy multi-repo solution**
+     1. Checkout 'Azure/ResourceModules' repo in a nested folder `ResourceModules`
+     2. Checkout 'Litware/Platform' repository containing the parameter files in a nested folder - `Platform`
+     3. Deploy resources in target Azure subscription using Template Specs.
+
+
+```YAML
+name: 'prfx-conn-ae-network-hub-rg (Template Spec)'
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - root (b3b845c6-2a30-6f4c-62d3-a8b417cb9173)/prfx-connectivity-ae (3e51c849-d082-4b01-9385-455f253a5729)/prfx-conn-ae-network-hub-rg/*
+
+variables:
+  - template: /settings.yml
+  - template: pipeline.variables.yml
+
+stages:
+  - stage:
+    displayName: WhatIf
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: bicep
+          displayName: 'Bicep Deployment'
+          modulePath: '$(resourceGroupName)/deploy.ts.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/parameters.json'
+          whatif: true
+
+  - stage:
+    displayName: Deploy
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: bicep
+          displayName: 'Bicep Deployment'
+          modulePath: '$(resourceGroupName)/deploy.ts.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/parameters.json'
+
+```
+
+</details>
+
+
 # Pipeline-orchestration
 
 The modules provided in this repo can be orchestrated to create more complex infrastructures, and as such, reusable solutions or products. To deploy resources, the pipeline-orchestration approach leverages the modules & pipeline templates of the 'ResourceModules' repository. Each pipeline job deploys one instance of a resource and the order of resources deployed in a multi-module solution is controlled by specifying dependencies in the pipeline itself.
 
-<details>
-<summary>GitHub Sample solution for <b>multi-repository approach</b></summary>
+## GitHub Sample
 
-### Summary
+<details>
+<summary><b>Multi-repository approach</b></summary>
+
+### Multi-repository
 
 1. Below, you can find an example which makes use of multiple repositories to orchestrate the deployment (also known as a _multi-repository_ approach) in GitHub.
 1. It fetches the _public_ **Azure/ResourceModules** repo for consuming bicep modules and uses the parameter files present in the _private_ **Contoso/MultiRepoTest** repo for deploying infrastructure.
@@ -384,11 +603,10 @@ The modules provided in this repo can be orchestrated to create more complex inf
         1. Deploy network security group
         1. Deploy virtual network A
 
-### Repo structure
+### Repository structure
 
-   <img src="./media/MultiRepoTestFolderStructure.png" alt="Repository Structure" height="300">
+   <img src="./media/SolutionCreation/MultiRepoTestFolderStructure.png" alt="Repository Structure" height="300">
 
-### YAML pipeline
 
 ```YAML
 name: 'Multi-Repo solution deployment'
@@ -463,9 +681,99 @@ jobs:
           removeDeployment: $(removeDeployment)
 ```
 
-### Notes
-
 > 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because GitHub Actions expect the underlying utility scripts and variables at a specific location.
 > 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder, called  "MultiRepoTestParentFolder", to distinguish it from the folders of the other repo in the agent, but can also be downloaded at the root location if desired.
+
+</details>
+
+## Azure DevOps Sample
+
+<details>
+<summary><b>Multi-repository approach</b></summary>
+
+### Multi-repository
+
+1. Fetching the _public_ **Azure/ResourceModules** repository for consuming Modules and using the parameter files present in the _private_ **Litware/Platform** repo for deploying infrastructure.
+2. This sample is creating a Resource Group, an NSG, a Route Table and a Virtual Network -
+    1. Job: **Deploy multi-repo solution**
+        1. Checkout 'Azure/ResourceModules' repo in a nested folder `ResourceModules`
+        2. Checkout 'Litware/Platform' repository containing the parameter files in a nested folder - `Platform`
+        3. Deploy resources in target Azure subscription
+
+### Repository structure
+
+   <img src="./media/SolutionCreation/ADOSolutionTestFolderStructure.png" alt="Repository Structure" height="400">
+
+> <b>Note:</b> This repository structure mimics a Platform deployment aligned to a resource group structure like in [AzOps](https://github.com/Azure/AzOps#output). For the following samples the resource group `prfx-conn-ae-network-hub-rg` is used.
+
+```YAML
+name: 'prfx-conn-ae-network-hub-rg'
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - root (b3b845c6-2a30-6f4c-62d3-a8b417cb9173)/prfx-connectivity-ae (3e51c849-d082-4b01-9385-455f253a5729)/prfx-conn-ae-network-hub-rg/*
+
+variables:
+  - template: /settings.yml
+  - template: pipeline.variables.yml
+
+resources:
+  repositories:
+  - repository: modules
+    name: $(modulesRepository)
+    ref: $(ref)
+    endpoint: segraef
+    type: github
+
+stages:
+  - stage:
+    displayName: Deploy
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Resource Group'
+          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/parameters.json'
+          checkoutRepositories:
+            - modules
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: networkSecurityGroups
+          displayName: 'Network Security Groups'
+          modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/networkSecurityGroups/parameters.json'
+          checkoutRepositories:
+            - modules
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: routeTables
+          displayName: 'Route Tables'
+          modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/routeTables/parameters.json'
+          checkoutRepositories:
+            - modules
+      - template: /.azuredevops/pipelineTemplates/jobs.solution.deploy.yml
+        parameters:
+          jobName: virtualNetworks
+          displayName: 'Virtual Networks'
+          modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
+          moduleTestFilePath: '$(resourceGroupName)/virtualNetworks/parameters.json'
+          checkoutRepositories:
+            - modules
+          dependsOn:
+            - networkSecurityGroups
+            - routeTables
+```
+
+> 1. `Azure/ResourceModules` repo has been checked out in a nested folder called `ResourceModules` (unlike in the above mentioned GitHub sample workflow and due to restrictions in order to support all publishing options in ADO.)
+> 1. `Litware/Platform` repo has been checked out in a nested folder, called `Platform`, to distinguish it from the folders of the other repo in the agent, and in order to support multiple repositories.
 
 </details>

@@ -18,17 +18,20 @@ This module deploys DocumentDB DatabaseAccounts GremlinDatabases Graphs.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the graph. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `databaseAccountName` | string | The name of the parent Database Account. Required if the template is used in a standalone deployment. |
 | `gremlinDatabaseName` | string | The name of the parent Gremlin Database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `automaticIndexing` | bool | `True` | Indicates if the indexing policy is automatic. |

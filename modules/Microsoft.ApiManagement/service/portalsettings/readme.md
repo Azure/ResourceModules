@@ -18,16 +18,19 @@ This module deploys API Management Service Portal Setting.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string | `[delegation, signin, signup]` | Portal setting name. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
