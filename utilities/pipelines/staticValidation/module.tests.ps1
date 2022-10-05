@@ -342,14 +342,12 @@ Describe 'Readme tests' -Tag Readme {
                 $expectedColumnsInOrder += @('Description')
 
                 $readMeCategoryIndex = $readMeContent | Select-String -Pattern "^\*\*$paramCategory parameters\*\*$" | ForEach-Object { $_.LineNumber }
-
                 $tableStartIndex = $readMeCategoryIndex
                 while ($readMeContent[$tableStartIndex] -notlike '*|*' -and -not ($tableStartIndex -ge $readMeContent.count)) {
                     $tableStartIndex++
                 }
 
                 $readmeCategoryColumns = ($readMeContent[$tableStartIndex] -split '\|') | ForEach-Object { $_.Trim() } | Where-Object { -not [String]::IsNullOrEmpty($_) }
-
                 $readmeCategoryColumns | Should -Be $expectedColumnsInOrder
             }
         }
@@ -1319,4 +1317,5 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -First 3
         ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
     }
+}
 }

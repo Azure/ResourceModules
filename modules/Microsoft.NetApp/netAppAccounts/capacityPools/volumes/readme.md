@@ -19,6 +19,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the pool volume. |
@@ -26,12 +27,14 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | `usageThreshold` | int | Maximum storage quota allowed for a file system in bytes. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `capacityPoolName` | string | The name of the parent capacity pool. Required if the template is used in a standalone deployment. |
 | `netAppAccountName` | string | The name of the parent NetApp account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `creationToken` | string | `[parameters('name')]` |  | A unique file path for the volume. This is the name of the volume export. A volume is mounted using the export path. File path must start with an alphabetical character and be unique within the subscription. |

@@ -28,7 +28,6 @@
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'Custom Deployment Pool'                                       |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                                                  |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                                            |
-##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                                                   |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                                  |
 ##   | moduleTestFilePath              | '$(moduleTestFilePath)'              | The path to the module Pester tests.                                                                      | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
 ##   | location                        | '$(location)'                        | The location to validate with                                                                             | 'France Central'                                               |
@@ -49,7 +48,6 @@ parameters:
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
-  checkoutRepositories: ''
   # Logic-related parameters
   modulePath: '$(modulePath)'
   moduleTestFilePath: '$(moduleTestFilePath)'
@@ -79,32 +77,6 @@ jobs:
       # [Checkout Repositories] task(s)
       #--------------------------------
       - checkout: self
-      - ${{ if ne(parameters.checkoutRepositories, '') }}:
-          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
-              - checkout: ${{ checkoutRepository }}
-                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: 's/${{ checkoutRepository }}'
-
-      # [Multi Repo] Support task
-      #--------------------------
-      - task: PowerShell@2
-        displayName: Handle Multi-Repo Invocation
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
-              Write-Verbose "Multi-Repo Checkout" -Verbose
-              $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
-              $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
-            } else {
-              Write-Verbose "No Multi-Repo Checkout" -Verbose
-              $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
-              $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
-            }
-            Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-            Write-Output "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
 
       # [Agent] Prepare environment
       #----------------------------
@@ -115,7 +87,7 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Define PS modules to install on the runner
             $Modules = @(
@@ -140,7 +112,7 @@ jobs:
           pwsh: true
           inline: |
             # Set repo root path
-            $repoRootPath = '$(moduleRepoRoot)'
+            $repoRootPath = '$(System.DefaultWorkingDirectory)'
 
             # Get Service Principal Object ID
             $context = Get-AzContext
