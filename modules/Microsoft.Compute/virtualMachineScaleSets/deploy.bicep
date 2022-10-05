@@ -350,7 +350,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
+resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2022-03-01' = {
   name: name
   location: location
   tags: tags

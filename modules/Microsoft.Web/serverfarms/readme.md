@@ -22,12 +22,14 @@ This module deploys an app service plan.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the app service plan to deploy. |
 | `sku` | object | Defines the name, tier, size, family and capacity of the App Service Plan. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appServiceEnvironmentId` | string | `''` |  | The Resource ID of the App Service Environment to use for the App Service Plan. |

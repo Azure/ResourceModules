@@ -18,16 +18,19 @@ This template deploys a storage insights configuration for a Log Analytics works
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `storageAccountId` | string | The Azure Resource Manager ID of the storage account resource. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `logAnalyticsWorkspaceName` | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `containers` | array | `[]` | The names of the blob containers that the workspace should read. |
