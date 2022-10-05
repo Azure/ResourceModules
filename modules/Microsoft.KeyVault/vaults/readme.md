@@ -179,10 +179,15 @@ tags: {
         "defaultAction": "Deny",
         "virtualNetworkRules": [
             {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+                "ignoreMissingVnetServiceEndpoint": false
             }
         ],
-        "ipRules": []
+        "ipRules": [
+            {
+                "value": "40.74.28.0/23"
+            }
+        ]
     }
 }
 ```
@@ -200,9 +205,14 @@ networkAcls: {
     virtualNetworkRules: [
         {
             id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+            ignoreMissingVnetServiceEndpoint: false
         }
     ]
-    ipRules: []
+    ipRules: [
+        {
+            value: '40.74.28.0/23'
+        }
+    ]
 }
 ```
 
@@ -439,10 +449,15 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
-      ipRules: []
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
       virtualNetworkRules: [
         {
           id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
         }
       ]
     }
@@ -577,10 +592,15 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       "value": {
         "bypass": "AzureServices",
         "defaultAction": "Deny",
-        "ipRules": [],
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
         "virtualNetworkRules": [
           {
-            "id": "<id>"
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
           }
         ]
       }
