@@ -129,7 +129,7 @@
                     "privateLinkServiceNetworkPolicies": "Disabled"
                 },
                 {
-                    "name": "<<namePrefix>>-az-subnet-x-010", // CGI subnet 1
+                    "name": "<<namePrefix>>-az-subnet-x-010", // Container Instance subnet
                     "addressPrefix": "10.0.11.0/24",
                     "privateEndpointNetworkPolicies": "Disabled",
                     "privateLinkServiceNetworkPolicies": "Disabled"
