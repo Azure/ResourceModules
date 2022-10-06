@@ -79,6 +79,5 @@ module testDeployment '../../deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-
   }
 }
