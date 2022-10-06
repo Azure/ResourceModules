@@ -274,6 +274,14 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
     // Non-required parameters
     enforceCertificateNameCheck: 'Disabled'
     lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     sendRecvTimeoutSeconds: 10
   }
 }
@@ -398,6 +406,16 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     },
     "sendRecvTimeoutSeconds": {
       "value": 10
