@@ -113,6 +113,12 @@ var encryptionProperties = !empty(encryptionVaultBaseUrl) ? {
   keyVersion: encryptionKeyVersion
 } : null
 
+var subnetIds = !empty(subnetId) ? [
+  {
+    id: subnetId
+  }
+] : null
+
 var basicContainerProperties = {
   containers: containers
     dnsConfig: dnsConfig
@@ -128,11 +134,7 @@ var basicContainerProperties = {
       ports: ipAddressPorts
     }
     sku: sku
-    subnetIds: [
-      {
-        id: subnetId
-      }
-    ]
+    subnetIds: subnetIds
     volumes: volumes
 }
 
