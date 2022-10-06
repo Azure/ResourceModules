@@ -39,6 +39,12 @@ module testDeployment '../../deploy.bicep' = {
         name: '<<namePrefix>>-az-aci-x-001'
         properties: {
           image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
           resources: {
             requests: {
               cpu: 2
@@ -46,6 +52,12 @@ module testDeployment '../../deploy.bicep' = {
             }
           }
         }
+      }
+    ]
+    ipAddressPorts: [
+      {
+        protocol: 'Tcp'
+        port: 443
       }
     ]
   }

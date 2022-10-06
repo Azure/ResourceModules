@@ -345,6 +345,12 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         name: '<<namePrefix>>-az-aci-x-001'
         properties: {
           image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
           resources: {
             requests: {
               cpu: 2
@@ -356,6 +362,12 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     ]
     name: '<<namePrefix>>cicgmin001'
     // Non-required parameters
+    ipAddressPorts: [
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+    ]
     lock: 'CanNotDelete'
   }
 }
@@ -380,6 +392,12 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
           "name": "<<namePrefix>>-az-aci-x-001",
           "properties": {
             "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
             "resources": {
               "requests": {
                 "cpu": 2,
@@ -394,6 +412,14 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": "<<namePrefix>>cicgmin001"
     },
     // Non-required parameters
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        }
+      ]
+    },
     "lock": {
       "value": "CanNotDelete"
     }
