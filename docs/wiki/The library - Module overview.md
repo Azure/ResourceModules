@@ -54,7 +54,7 @@ This section provides an overview of the library's feature set.
 | 39 | MS.Sql<p>servers | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:5] | 226 |
 | 40 | MS.Sql<p>managedInstances | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:6, L2:2] | 326 |
 | 41 | MS.ContainerService<p>managedClusters | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 504 |
-| 42 | MS.ContainerInstance<p>containerGroups |  | :white_check_mark: | :white_check_mark: |  |  |  |  | 113 |
+| 42 | MS.ContainerInstance<p>containerGroups |  | :white_check_mark: | :white_check_mark: |  |  |  |  | 84 |
 | 43 | MS.Authorization<p>roleDefinitions |  |  |  |  |  |  | [L1:3] | 91 |
 | 44 | MS.Authorization<p>policyExemptions |  |  |  |  |  |  | [L1:3] | 104 |
 | 45 | MS.Authorization<p>roleAssignments |  |  |  |  |  |  | [L1:3] | 104 |
@@ -121,7 +121,7 @@ This section provides an overview of the library's feature set.
 | 106 | MS.Resources<p>tags |  |  | :white_check_mark: |  |  |  | [L1:2] | 51 |
 | 107 | MS.Resources<p>deploymentScripts |  | :white_check_mark: | :white_check_mark: |  |  |  |  | 111 |
 | 108 | MS.Resources<p>resourceGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 64 |
-| Sum | | 84 | 82 | 93 | 49 | 21 | 2 | 148 | 18120 |
+| Sum | | 84 | 82 | 93 | 49 | 21 | 2 | 148 | 18091 |
 
 ## Legend
 
