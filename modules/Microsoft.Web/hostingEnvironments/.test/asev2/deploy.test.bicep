@@ -59,7 +59,6 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     subnetResourceId: resourceGroupResources.outputs.subnetResourceId
-    // Non-required parameters
     clusterSettings: [
       {
         name: 'DisableTls1.0'
