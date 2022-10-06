@@ -19,12 +19,14 @@ This module deploys Batch BatchAccounts Applications.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `appName` | string | Name of the application package. |
 | `batchName` | string | Name of the batch Account. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `allowUpdates` | bool | `True` | A value indicating whether packages within the application may be overwritten using the same version string. |
