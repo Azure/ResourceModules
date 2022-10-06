@@ -41,17 +41,51 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    containername: '<<namePrefix>>-az-aci-x-001'
-    image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
     lock: 'CanNotDelete'
-    ports: [
+    containers: [
       {
-        port: '80'
-        protocol: 'Tcp'
+        name: '<<namePrefix>>-az-aci-x-001'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
       }
       {
-        port: '443'
-        protocol: 'Tcp'
+        name: '<<namePrefix>>-az-aci-x-002'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '8080'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
       }
     ]
     systemAssignedIdentity: true
