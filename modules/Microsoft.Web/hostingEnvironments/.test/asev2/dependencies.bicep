@@ -7,7 +7,7 @@ param networkSecurityGroupName string
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
-@description('Required. The name of the subnet to create.')
+@description('Required. The name of the Virtual Network Subnet to create.')
 param subnetName string
 
 @description('Required. The name of the Managed Identity to create.')
