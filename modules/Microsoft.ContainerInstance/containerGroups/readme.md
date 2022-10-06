@@ -322,7 +322,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
 </details>
 <p>
 
-<h3>Example 2: Public</h3>
+<h3>Example 2: Private</h3>
 
 <details>
 
@@ -359,7 +359,222 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
           volumeMounts: [
             {
               mountPath: '/mnt/empty'
-              name: 'helloWorld'
+              name: 'my-name'
+            }
+          ]
+        }
+      }
+      {
+        name: '<<namePrefix>>-az-aci-x-002'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '8080'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: '<<namePrefix>>-az-acg-x-001'
+    // Non-required parameters
+    ipAddressPorts: [
+      {
+        port: '80'
+        protocol: 'Tcp'
+      }
+      {
+        port: '443'
+        protocol: 'Tcp'
+      }
+      {
+        port: '8080'
+        protocol: 'Tcp'
+      }
+    ]
+    ipAddressType: 'Private'
+    lock: 'CanNotDelete'
+    subnetId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-010'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    volumes: [
+      {
+        emptyDir: {}
+        name: 'my-name'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-aci-x-001",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "80",
+                "protocol": "Tcp"
+              },
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            },
+            "volumeMounts": [
+              {
+                "mountPath": "/mnt/empty",
+                "name": "my-name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "<<namePrefix>>-az-aci-x-002",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "8080",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-acg-x-001"
+    },
+    // Non-required parameters
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": "80",
+          "protocol": "Tcp"
+        },
+        {
+          "port": "443",
+          "protocol": "Tcp"
+        },
+        {
+          "port": "8080",
+          "protocol": "Tcp"
+        }
+      ]
+    },
+    "ipAddressType": {
+      "value": "Private"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "subnetId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-010"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
+    },
+    "volumes": {
+      "value": [
+        {
+          "emptyDir": {},
+          "name": "my-name"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Public</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-ContainerGroups'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: '<<namePrefix>>-az-aci-x-001'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+          volumeMounts: [
+            {
+              mountPath: '/mnt/empty'
+              name: 'my-name'
             }
           ]
         }
@@ -411,7 +626,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     volumes: [
       {
         emptyDir: {}
-        name: 'helloWorld'
+        name: 'my-name'
       }
     ]
   }
@@ -458,7 +673,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
             "volumeMounts": [
               {
                 "mountPath": "/mnt/empty",
-                "name": "helloWorld"
+                "name": "my-name"
               }
             ]
           }
@@ -526,7 +741,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": [
         {
           "emptyDir": {},
-          "name": "helloWorld"
+          "name": "my-name"
         }
       ]
     }
