@@ -226,7 +226,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: '<<namePrefix>>-az-acg-x-001'
+    name: '<<namePrefix>>-az-acg-x-004'
     // Non-required parameters
     ipAddressPorts: [
       {
@@ -286,7 +286,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-acg-x-001"
+      "value": "<<namePrefix>>-az-acg-x-004"
     },
     // Non-required parameters
     "ipAddressPorts": {

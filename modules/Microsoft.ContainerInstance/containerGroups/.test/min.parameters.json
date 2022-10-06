@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-acg-x-001"
+            "value": "<<namePrefix>>-az-acg-x-004"
         },
         "lock": {
             "value": "CanNotDelete"
