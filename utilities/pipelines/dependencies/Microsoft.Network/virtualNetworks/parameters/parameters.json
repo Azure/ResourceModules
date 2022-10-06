@@ -127,6 +127,12 @@
                     "addressPrefix": "10.0.10.0/24",
                     "privateEndpointNetworkPolicies": "Disabled",
                     "privateLinkServiceNetworkPolicies": "Disabled"
+                },
+                {
+                    "name": "<<namePrefix>>-az-subnet-x-010", // CGI subnet 1
+                    "addressPrefix": "10.0.11.0/24",
+                    "privateEndpointNetworkPolicies": "Disabled",
+                    "privateLinkServiceNetworkPolicies": "Disabled"
                 }
             ]
         }
