@@ -457,33 +457,6 @@ jobs:
             Export-ContentToBlob @functionInput -Verbose
           azPSVersion: 'latest'
 
-  job_deploy_bat:
-      runs-on: ubuntu-20.04
-      name: 'Deploy batch account'
-      env:
-        namespace: 'Microsoft.Batch\batchAccounts'
-      needs:
-        - job_deploy_sa
-      strategy:
-        fail-fast: false
-        matrix:
-          parameterFilePaths: ['parameters.json']
-      steps:
-        - name: 'Checkout'
-          uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
-        - name: 'Deploy module'
-          uses: ./.github/actions/templates/validateModuleDeployment
-          with:
-            templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-            parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-            location: '${{ env.location }}'
-            resourceGroupName: '${{ env.defaultResourceGroupName }}'
-            subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-            managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-            removeDeployment: '${{ env.removeDeployment }}'
-
   job_deploy_sig:
     runs-on: ubuntu-20.04
     name: 'Deploy shared image gallery and definition'
