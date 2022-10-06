@@ -88,6 +88,16 @@ module testDeployment '../../deploy.bicep' = {
         }
       }
     ]
+    ipAddressPorts: [
+      {
+        protocol: 'Tcp'
+        port: 80
+      }
+      {
+        protocol: 'Tcp'
+        port: 443
+      }
+    ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}

@@ -237,6 +237,16 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     ]
     name: '<<namePrefix>>cicgcom001'
     // Non-required parameters
+    ipAddressPorts: [
+      {
+        port: 80
+        protocol: 'Tcp'
+      }
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+    ]
     lock: 'CanNotDelete'
     systemAssignedIdentity: true
     userAssignedIdentities: {
@@ -311,6 +321,18 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": "<<namePrefix>>cicgcom001"
     },
     // Non-required parameters
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 80,
+          "protocol": "Tcp"
+        },
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        }
+      ]
+    },
     "lock": {
       "value": "CanNotDelete"
     },
