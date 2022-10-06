@@ -113,25 +113,8 @@ var encryptionProperties = !empty(encryptionVaultBaseUrl) ? {
   keyVersion: encryptionKeyVersion
 } : null
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
-  properties: {
-    mode: 'Incremental'
-    template: {
-      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
-      contentVersion: '1.0.0.0'
-      resources: []
-    }
-  }
-}
-
-resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01' = {
-  name: name
-  location: location
-  identity: identity
-  tags: tags
-  properties: {
-    containers: containers
+var basicContainerProperties = {
+  containers: containers
     dnsConfig: dnsConfig
     encryptionProperties: encryptionProperties
     imageRegistryCredentials: imageRegistryCredentials
@@ -151,7 +134,28 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01'
       }
     ]
     volumes: volumes
+}
+
+var containerProperties = !empty(dnsNameServers) ? union(basicContainerProperties,{ dnsConfig: dnsConfig}) : basicContainerProperties
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
   }
+}
+
+resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01' = {
+  name: name
+  location: location
+  identity: identity
+  tags: tags
+  properties: containerProperties
 }
 
 resource containergroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
