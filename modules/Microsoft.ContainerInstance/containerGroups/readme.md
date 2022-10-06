@@ -25,24 +25,20 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `containername` | string | Name for the container. |
-| `image` | string | Name of the image. |
+| `containers` | array | The containers and their respective config within the container group. |
 | `name` | string | Name for the container group. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cpuCores` | int | `2` |  | The number of CPU cores to allocate to the container. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `environmentVariables` | array | `[]` |  | Environment variables of the container group. |
 | `imageRegistryCredentials` | array | `[]` |  | The image registry credentials by which the container group is created from. |
+| `ipAddressPorts` | array | `[]` |  | Ports to open on the public IP address. Must include all ports assigned on container level. |
 | `ipAddressType` | string | `'Public'` |  | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `memoryInGB` | int | `2` |  | The amount of memory to allocate to the container in gigabytes. |
 | `osType` | string | `'Linux'` |  | The operating system type required by the containers in the container group. - Windows or Linux. |
-| `ports` | array | `[System.Collections.Hashtable]` |  | Port to open on the container and the public IP address. |
 | `restartPolicy` | string | `'Always'` |  | Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -182,7 +178,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -193,12 +189,35 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
   name: '${uniqueString(deployment().name)}-ContainerGroups'
   params: {
     // Required parameters
-    containerName: '<<namePrefix>>-az-aci-x-001'
-    image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+    containers: [
+      {
+        name: '<<namePrefix>>-az-aci-x-001'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
     name: '<<namePrefix>>-az-acg-x-001'
     // Non-required parameters
-    lock: 'CanNotDelete'
-    ports: [
+    ipAddressPorts: [
       {
         port: '80'
         protocol: 'Tcp'
@@ -208,6 +227,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         protocol: 'Tcp'
       }
     ]
+    lock: 'CanNotDelete'
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
@@ -229,20 +249,39 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "containerName": {
-      "value": "<<namePrefix>>-az-aci-x-001"
-    },
-    "image": {
-      "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
+    "containers": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-aci-x-001",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "80",
+                "protocol": "Tcp"
+              },
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
     },
     "name": {
       "value": "<<namePrefix>>-az-acg-x-001"
     },
     // Non-required parameters
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "ports": {
+    "ipAddressPorts": {
       "value": [
         {
           "port": "80",
@@ -253,6 +292,190 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
           "protocol": "Tcp"
         }
       ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-ContainerGroups'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: '<<namePrefix>>-az-aci-x-001'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+      {
+        name: '<<namePrefix>>-az-aci-x-002'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '8080'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: '<<namePrefix>>-az-acg-x-001'
+    // Non-required parameters
+    ipAddressPorts: [
+      {
+        port: '80'
+        protocol: 'Tcp'
+      }
+      {
+        port: '443'
+        protocol: 'Tcp'
+      }
+      {
+        port: '8080'
+        protocol: 'Tcp'
+      }
+    ]
+    lock: 'CanNotDelete'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-aci-x-001",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "80",
+                "protocol": "Tcp"
+              },
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        },
+        {
+          "name": "<<namePrefix>>-az-aci-x-002",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "8080",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>-az-acg-x-001"
+    },
+    // Non-required parameters
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": "80",
+          "protocol": "Tcp"
+        },
+        {
+          "port": "443",
+          "protocol": "Tcp"
+        },
+        {
+          "port": "8080",
+          "protocol": "Tcp"
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
     },
     "systemAssignedIdentity": {
       "value": true
