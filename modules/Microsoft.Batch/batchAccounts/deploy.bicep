@@ -30,12 +30,25 @@ param storageAccessIdentity string = ''
 @description('Optional. The allocation mode for creating pools in the Batch account. Determines which quota will be used.')
 param poolAllocationMode string = 'BatchService'
 
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
+
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkProfileAllowedIpRanges are not set.')
 @allowed([
   'Disabled'
   'Enabled'
 ])
-@description('Optional. The network access type for operating on the resources in the Batch account.')
 param publicNetworkAccess string = 'Enabled'
+
+@allowed([
+  'Allow'
+  'Deny'
+])
+@description('Optional. The network profile default action for endpoint access. It is only applicable when publicNetworkAccess is not explicitly disabled.')
+param networkProfileDefaultAction string = 'Deny'
+
+@description('Optional. Array of IP ranges to filter client IP address. It is only applicable when publicNetworkAccess is not explicitly disabled.')
+param networkProfileAllowedIpRanges array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -98,9 +111,6 @@ param pools array = []
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
-param privateEndpoints array = []
-
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'ServiceLog'
@@ -151,6 +161,11 @@ var identity = {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 }
 
+var networkProfileIpRules = [for networkProfileAllowedIpRange in networkProfileAllowedIpRanges: {
+  action: 'Allow'
+  value: networkProfileAllowedIpRange
+}]
+
 var nodeIdentityReference = !empty(storageAccessIdentity) ? {
   resourceId: !empty(storageAccessIdentity) ? storageAccessIdentity : null
 } : null
@@ -173,7 +188,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
+resource batchAccount 'Microsoft.Batch/batchAccounts@2022-06-01' = {
   name: name
   location: location
   tags: tags
@@ -191,8 +206,14 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
       id: keyVaultResourceId
       url: keyVaultUri
     } : null
+    networkProfile: (publicNetworkAccess == 'Disabled') || empty(networkProfileAllowedIpRanges) ? null : {
+      accountAccess: {
+        defaultAction: networkProfileDefaultAction
+        ipRules: networkProfileIpRules
+      }
+    }
     poolAllocationMode: poolAllocationMode
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkProfileAllowedIpRanges) ? 'Disabled' : null)
   }
 }
 

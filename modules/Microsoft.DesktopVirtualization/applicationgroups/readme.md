@@ -23,6 +23,7 @@ This module deploys an Azure virtual desktop application group.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `applicationGroupType` | string | `[Desktop, RemoteApp]` | The type of the Application Group to be created. Allowed values: RemoteApp or Desktop. |
@@ -30,6 +31,7 @@ This module deploys an Azure virtual desktop application group.
 | `name` | string |  | Name of the Application Group to create this application in. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `applications` | _[applications](applications/readme.md)_ array | `[]` |  | List of applications to be created in the Application Group. |
@@ -166,6 +168,7 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Min</h3>

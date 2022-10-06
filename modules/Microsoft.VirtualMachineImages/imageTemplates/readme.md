@@ -21,6 +21,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `customizationSteps` | array | Customization steps to be run when building the VM image. |
@@ -29,6 +30,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | `userMsiName` | string | Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `buildTimeoutInMinutes` | int | `0` |  | Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes. |
@@ -47,6 +49,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | `vmSize` | string | `'Standard_D2s_v3'` |  | Specifies the size for the VM. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` | Do not provide a value! This date value is used to generate a unique image template name. |
@@ -268,6 +271,7 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Parameters</h3>

@@ -19,6 +19,7 @@ This module deploys Resources Tags on a subscription or resource group scope.
 ## Parameters
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -86,6 +87,7 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Min</h3>
@@ -96,9 +98,8 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Tags'
+  name: '${uniqueString(deployment().name)}-test-rtmin'
   params: {
-
   }
 }
 ```
@@ -129,10 +130,10 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Tags'
+  name: '${uniqueString(deployment().name)}-test-rtrg'
   params: {
     onlyUpdate: false
-    resourceGroupName: 'validation-rg'
+    resourceGroupName: '<resourceGroupName>'
     tags: {
       Test: 'Yes'
       TestToo: 'No'
@@ -157,7 +158,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
       "value": false
     },
     "resourceGroupName": {
-      "value": "validation-rg"
+      "value": "<resourceGroupName>"
     },
     "tags": {
       "value": {
@@ -180,7 +181,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Tags'
+  name: '${uniqueString(deployment().name)}-test-rtsub'
   params: {
     onlyUpdate: true
     tags: {
