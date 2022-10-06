@@ -26,13 +26,17 @@ This module deploys Front Doors.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `backendPools` | array | Backend address pool of the frontdoor resource. |
+| `frontendEndpoints` | array | Frontend endpoints of the frontdoor resource. |
+| `healthProbeSettings` | array | Heath probe settings of the frontdoor resource. |
+| `loadBalancingSettings` | array | Load balancing settings of the frontdoor resource. |
 | `name` | string | The name of the frontDoor. |
+| `routingRules` | array | Routing rules settings of the frontdoor resource. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backendPools` | array | `[]` |  | Backend address pool of the frontdoor resource. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -42,16 +46,12 @@ This module deploys Front Doors.
 | `enabledState` | string | `'Enabled'` |  | State of the frontdoor resource. |
 | `enforceCertificateNameCheck` | string | `'Disabled'` |  | Enforce certificate name check of the frontdoor resource. |
 | `friendlyName` | string | `''` |  | Friendly name of the frontdoor resource. |
-| `frontendEndpoints` | array | `[]` |  | Frontend endpoints of the frontdoor resource. |
-| `healthProbeSettings` | array | `[]` |  | Heath probe settings of the frontdoor resource. |
-| `loadBalancingSettings` | array | `[]` |  | Load balancing settings of the frontdoor resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `logsToEnable` | array | `[FrontdoorAccessLog, FrontdoorWebApplicationFirewallLog]` | `[FrontdoorAccessLog, FrontdoorWebApplicationFirewallLog]` | The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `routingRules` | array | `[]` |  | Routing rules settings of the frontdoor resource. |
-| `sendRecvTimeoutSeconds` | int | `600` |  | Certificate name check time of the frontdoor resource. |
+| `sendRecvTimeoutSeconds` | int | `240` |  | Certificate name check time of the frontdoor resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
 
@@ -174,7 +174,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -182,11 +182,9 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-FrontDoors'
+  name: '${uniqueString(deployment().name)}-test-nfdcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-fd-x-001'
-    // Non-required parameters
     backendPools: [
       {
         name: 'backendPool'
@@ -207,20 +205,19 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             }
           ]
           HealthProbeSettings: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe'
           }
           LoadBalancingSettings: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer'
           }
         }
       }
     ]
-    enforceCertificateNameCheck: 'Disabled'
     frontendEndpoints: [
       {
         name: 'frontEnd'
         properties: {
-          hostName: '<<namePrefix>>-az-fd-x-001.azurefd.net'
+          hostName: '${resourceName}.azurefd.net'
           sessionAffinityEnabledState: 'Disabled'
           sessionAffinityTtlSeconds: 60
         }
@@ -248,7 +245,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
         }
       }
     ]
-    lock: 'CanNotDelete'
+    name: '<name>'
     routingRules: [
       {
         name: 'routingRule'
@@ -260,7 +257,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           enabledState: 'Enabled'
           frontendEndpoints: [
             {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd'
+              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd'
             }
           ]
           patternsToMatch: [
@@ -269,11 +266,22 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           routeConfiguration: {
             '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
             backendPool: {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool'
+              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool'
             }
             forwardingProtocol: 'MatchRequest'
           }
         }
+      }
+    ]
+    // Non-required parameters
+    enforceCertificateNameCheck: 'Disabled'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
     sendRecvTimeoutSeconds: 10
@@ -294,10 +302,6 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-fd-x-001"
-    },
-    // Non-required parameters
     "backendPools": {
       "value": [
         {
@@ -319,24 +323,21 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
               }
             ],
             "HealthProbeSettings": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe"
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe"
             },
             "LoadBalancingSettings": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer"
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer"
             }
           }
         }
       ]
-    },
-    "enforceCertificateNameCheck": {
-      "value": "Disabled"
     },
     "frontendEndpoints": {
       "value": [
         {
           "name": "frontEnd",
           "properties": {
-            "hostName": "<<namePrefix>>-az-fd-x-001.azurefd.net",
+            "hostName": "${resourceName}.azurefd.net",
             "sessionAffinityEnabledState": "Disabled",
             "sessionAffinityTtlSeconds": 60
           }
@@ -369,8 +370,8 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
         }
       ]
     },
-    "lock": {
-      "value": "CanNotDelete"
+    "name": {
+      "value": "<name>"
     },
     "routingRules": {
       "value": [
@@ -384,7 +385,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             "enabledState": "Enabled",
             "frontendEndpoints": [
               {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd"
+                "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd"
               }
             ],
             "patternsToMatch": [
@@ -393,7 +394,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             "routeConfiguration": {
               "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
               "backendPool": {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool"
+                "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool"
               },
               "forwardingProtocol": "MatchRequest"
             }
@@ -401,8 +402,232 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
         }
       ]
     },
+    // Non-required parameters
+    "enforceCertificateNameCheck": {
+      "value": "Disabled"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
     "sendRecvTimeoutSeconds": {
       "value": 10
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nfdmin'
+  params: {
+    // Required parameters
+    backendPools: [
+      {
+        name: 'backendPool'
+        properties: {
+          backends: [
+            {
+              address: 'biceptest.local'
+              backendHostHeader: 'backendAddress'
+              enabledState: 'Enabled'
+              httpPort: 80
+              httpsPort: 443
+              priority: 1
+              weight: 50
+            }
+          ]
+          HealthProbeSettings: {
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe'
+          }
+          LoadBalancingSettings: {
+            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer'
+          }
+        }
+      }
+    ]
+    frontendEndpoints: [
+      {
+        name: 'frontEnd'
+        properties: {
+          hostName: '${resourceName}.azurefd.net'
+          sessionAffinityEnabledState: 'Disabled'
+          sessionAffinityTtlSeconds: 60
+        }
+      }
+    ]
+    healthProbeSettings: [
+      {
+        name: 'heathProbe'
+        properties: {
+          intervalInSeconds: 60
+          path: '/'
+          protocol: 'Https'
+        }
+      }
+    ]
+    loadBalancingSettings: [
+      {
+        name: 'loadBalancer'
+        properties: {
+          additionalLatencyMilliseconds: 0
+          sampleSize: 50
+          successfulSamplesRequired: 1
+        }
+      }
+    ]
+    name: '<name>'
+    routingRules: [
+      {
+        name: 'routingRule'
+        properties: {
+          acceptedProtocols: [
+            'Https'
+          ]
+          enabledState: 'Enabled'
+          frontendEndpoints: [
+            {
+              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd'
+            }
+          ]
+          patternsToMatch: [
+            '/*'
+          ]
+          routeConfiguration: {
+            '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
+            backendPool: {
+              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool'
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "backendPools": {
+      "value": [
+        {
+          "name": "backendPool",
+          "properties": {
+            "backends": [
+              {
+                "address": "biceptest.local",
+                "backendHostHeader": "backendAddress",
+                "enabledState": "Enabled",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "priority": 1,
+                "weight": 50
+              }
+            ],
+            "HealthProbeSettings": {
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe"
+            },
+            "LoadBalancingSettings": {
+              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer"
+            }
+          }
+        }
+      ]
+    },
+    "frontendEndpoints": {
+      "value": [
+        {
+          "name": "frontEnd",
+          "properties": {
+            "hostName": "${resourceName}.azurefd.net",
+            "sessionAffinityEnabledState": "Disabled",
+            "sessionAffinityTtlSeconds": 60
+          }
+        }
+      ]
+    },
+    "healthProbeSettings": {
+      "value": [
+        {
+          "name": "heathProbe",
+          "properties": {
+            "intervalInSeconds": 60,
+            "path": "/",
+            "protocol": "Https"
+          }
+        }
+      ]
+    },
+    "loadBalancingSettings": {
+      "value": [
+        {
+          "name": "loadBalancer",
+          "properties": {
+            "additionalLatencyMilliseconds": 0,
+            "sampleSize": 50,
+            "successfulSamplesRequired": 1
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<name>"
+    },
+    "routingRules": {
+      "value": [
+        {
+          "name": "routingRule",
+          "properties": {
+            "acceptedProtocols": [
+              "Https"
+            ],
+            "enabledState": "Enabled",
+            "frontendEndpoints": [
+              {
+                "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd"
+              }
+            ],
+            "patternsToMatch": [
+              "/*"
+            ],
+            "routeConfiguration": {
+              "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+              "backendPool": {
+                "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool"
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }
