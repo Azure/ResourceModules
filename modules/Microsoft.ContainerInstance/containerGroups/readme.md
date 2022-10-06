@@ -38,7 +38,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `dnsSearchDomains` | string | `''` |  | DNS search domain which will be appended to each DNS lookup. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryptionKeyVersion` | string | `''` |  | If Non-Microsoft-managed encryption should be used, specify the key version. |
-| `encryptionVaultBaseUrl` | string | `''` |  | If Non-Microsoft-managed encryption should be used, specify the key vaults base url. |
+| `encryptionVaultBaseUrl` | string | `''` |  | If Non-Microsoft-managed encryption should be used, specify the key vaults base URL. |
 | `encrytionKeyName` | string | `''` |  | If Non-Microsoft-managed encryption should be used, specify the key name. |
 | `imageRegistryCredentials` | array | `[]` |  | The image registry credentials by which the container group is created from. |
 | `initContainers` | array | `[]` |  | A list of container definitions which will be executed before the application container starts. |

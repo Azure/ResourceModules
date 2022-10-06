@@ -51,7 +51,7 @@ param dnsNameLabel string = ''
 @description('Optional. Specify the Sku.')
 param sku string = 'Standard'
 
-@description('Optional. If Non-Microsoft-managed encryption should be used, specify the key vaults base url.')
+@description('Optional. If Non-Microsoft-managed encryption should be used, specify the key vaults base URL.')
 param encryptionVaultBaseUrl string = ''
 
 @description('Optional. If Non-Microsoft-managed encryption should be used, specify the key name.')
