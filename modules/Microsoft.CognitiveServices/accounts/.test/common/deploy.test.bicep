@@ -65,11 +65,16 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     lock: 'CanNotDelete'
     networkAcls: {
-      defaultAction: 'deny'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
       virtualNetworkRules: [
         {
-          action: 'Allow'
           id: resourceGroupResources.outputs.subnetResourceId
+          ignoreMissingVnetServiceEndpoint: false
         }
       ]
     }

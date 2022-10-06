@@ -110,10 +110,15 @@ module testDeployment '../../deploy.bicep' = {
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
-      ipRules: []
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
       virtualNetworkRules: [
         {
           id: resourceGroupResources.outputs.subnetResourceId
+          ignoreMissingVnetServiceEndpoint: false
         }
       ]
     }

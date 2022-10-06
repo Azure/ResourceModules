@@ -447,11 +447,16 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     lock: 'CanNotDelete'
     networkAcls: {
-      defaultAction: 'deny'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
       virtualNetworkRules: [
         {
-          action: 'Allow'
           id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
         }
       ]
     }
@@ -526,11 +531,16 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "networkAcls": {
       "value": {
-        "defaultAction": "deny",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
         "virtualNetworkRules": [
           {
-            "action": "Allow",
-            "id": "<id>"
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
           }
         ]
       }
