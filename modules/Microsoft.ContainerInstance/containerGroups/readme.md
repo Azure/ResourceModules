@@ -359,7 +359,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
           volumeMounts: [
             {
               mountPath: '/mnt/empty'
-              name: 'helloWorld'
+              name: 'my-name'
             }
           ]
         }
@@ -411,7 +411,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     volumes: [
       {
         emptyDir: {}
-        name: 'helloWorld'
+        name: 'my-name'
       }
     ]
   }
@@ -458,7 +458,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
             "volumeMounts": [
               {
                 "mountPath": "/mnt/empty",
-                "name": "helloWorld"
+                "name": "my-name"
               }
             ]
           }
@@ -526,7 +526,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": [
         {
           "emptyDir": {},
-          "name": "helloWorld"
+          "name": "my-name"
         }
       ]
     }
@@ -574,7 +574,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
           volumeMounts: [
             {
               mountPath: '/mnt/empty'
-              name: 'helloWorld'
+              name: 'my-name'
             }
           ]
         }
@@ -626,7 +626,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     volumes: [
       {
         emptyDir: {}
-        name: 'helloWorld'
+        name: 'my-name'
       }
     ]
   }
@@ -673,7 +673,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
             "volumeMounts": [
               {
                 "mountPath": "/mnt/empty",
-                "name": "helloWorld"
+                "name": "my-name"
               }
             ]
           }
@@ -741,7 +741,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": [
         {
           "emptyDir": {},
-          "name": "helloWorld"
+          "name": "my-name"
         }
       ]
     }

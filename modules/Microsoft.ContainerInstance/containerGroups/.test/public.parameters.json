@@ -33,7 +33,7 @@
                         },
                         "volumeMounts": [
                             {
-                                "name": "helloWorld",
+                                "name": "my-name",
                                 "mountPath": "/mnt/empty"
                             }
                         ],
@@ -96,7 +96,7 @@
             "value": [
                 {
                     "emptyDir": {},
-                    "name": "helloWorld"
+                    "name": "my-name"
                 }
             ]
         }
