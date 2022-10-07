@@ -15,7 +15,7 @@ Mandatory. The new content to merge into the original
 Mandatory. The identifier/header to search for. If not found, the new section is added at the end of the content array
 
 .PARAMETER ParentStartIdentifier
-Optional. Tell the function that you're currently processing a sub-section (indented by one #) by providing the parent identifier
+Optional. Tells the function that you're currently processing a sub-section (indented by one #) by providing the parent identifier
 
 .EXAMPLE
 Merge-MarkdownFileWithNewContent -OldContent @('# Title', '', '## Section 1', ...) -NewContent @('# Title', '', '## Section 1', ...) -SectionStartIdentifier '## Resource Types'
@@ -43,30 +43,17 @@ function Merge-MarkdownFileWithNewContent {
         [string] $ContentType = 'none'
     )
 
-    $startIndex = 0
-    while (-not ($OldContent[$startIndex] -eq $SectionStartIdentifier) -and -not ($startIndex -ge $OldContent.Count - 1)) {
-        $startIndex++
+    # Get start index
+    $sectionStartInputObject = @{
+        Content                = $OldContent
+        SectionStartIdentifier = $SectionStartIdentifier
     }
-
-    # In case we're processing a child section (indented by one #) we should search until the main section starts / end of file is reached
-    if ($startIndex -eq $OldContent.Count - 1 -and -not [String]::IsNullOrEmpty($ParentStartIdentifier)) {
-        $level = $ParentStartIdentifier.TrimStart().Split(' ')[0]
-
-        $parentSectionStartIndex = 0
-        while (-not ($OldContent[$parentSectionStartIndex] -like "*$ParentStartIdentifier") -and -not ($parentSectionStartIndex -ge $OldContent.Count - 1)) {
-            $parentSectionStartIndex++
-        }
-
-        $startIndex = $parentSectionStartIndex + 1
-        while (-not ($OldContent[$startIndex] -like "$level *") -and -not ($startIndex -ge $OldContent.Count - 1)) {
-            $startIndex++
-        }
-
-        if ($OldContent[$startIndex] -like "$level *") {
-            $startIndex--
-        }
+    if (-not [String]::IsNullOrEmpty($ParentStartIdentifier)) {
+        $sectionStartInputObject['ParentStartIdentifier'] = $ParentStartIdentifier
     }
+    $startIndex = Get-MarkdownSectionStartIndex @sectionStartInputObject
 
+    # Process content
     if ($startIndex -eq $OldContent.Count - 1 -and [String]::IsNullOrEmpty($ParentStartIdentifier)) {
         # Section is not existing (end of file)
         $startContent = $OldContent
