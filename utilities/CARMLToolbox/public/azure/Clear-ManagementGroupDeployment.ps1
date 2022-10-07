@@ -36,9 +36,6 @@ function Clear-ManagementGroupDeployment {
 
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Enables web reponse
 
-    # Load used functions
-    . (Join-Path $PSScriptRoot 'helper' 'Split-Array.ps1')
-
     $getInputObject = @{
         Method  = 'GET'
         Uri     = "https://management.azure.com/providers/Microsoft.Management/managementGroups/$ManagementGroupId/providers/Microsoft.Resources/deployments/?api-version=2021-04-01"

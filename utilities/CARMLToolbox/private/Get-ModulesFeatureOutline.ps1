@@ -43,7 +43,7 @@ function Get-ModulesFeatureOutline {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $ModuleFolderPath = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules'),
+        [string] $ModuleFolderPath = (Join-Path $script:repoRoot 'modules'),
 
         [Parameter(Mandatory = $false)]
         [switch] $ReturnMarkdown,

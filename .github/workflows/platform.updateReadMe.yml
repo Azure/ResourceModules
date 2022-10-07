@@ -17,8 +17,7 @@ on:
 env:
   pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
   pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
-  relativeScriptPath_SetReadMeModuleTable: 'utilities/tools/platform/Set-ReadMeModuleTable.ps1'
-  relativeScriptPath_SetModuleOverviewTable: 'utilities/tools/platform/Set-ModuleOverviewTable.ps1'
+  relativeModulePath: 'utilities/CARMLToolbox.psm1'
 
 jobs:
   job_update_readme:
@@ -34,7 +33,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMeModuleTable)
+          Import-Module $env:GITHUB_WORKSPACE '$(relativeModulePath)')
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
@@ -55,7 +54,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMeModuleTable)
+          Import-Module $env:GITHUB_WORKSPACE '$(relativeModulePath)')
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'modules'
@@ -75,7 +74,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetModuleOverviewTable)
+          Import-Module $env:GITHUB_WORKSPACE '$(relativeModulePath)')
 
           $functionInput = @{
             MarkdownFilePath = Join-Path $env:GITHUB_WORKSPACE 'docs' 'wiki' 'The library - Module overview.md'

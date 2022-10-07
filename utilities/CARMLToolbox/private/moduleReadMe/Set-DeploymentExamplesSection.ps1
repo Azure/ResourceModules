@@ -57,9 +57,6 @@ function Set-DeploymentExamplesSection {
         [string] $SectionStartIdentifier = '## Deployment examples'
     )
 
-    # Load used function(s)
-    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-ModuleTestFileList.ps1')
-
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
         'The following module usage examples are retrieved from the content of the files hosted in the module''s `.test` folder.',

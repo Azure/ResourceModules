@@ -9,6 +9,9 @@ on:
       - 'utilities/tools/ConvertTo-ARMTemplate.ps1'
       - 'utilities/tools/tests/ConvertTo-ARMTemplate**'
 
+env:
+  relativeModulePath: 'utilities/CARMLToolbox.psm1'
+
 jobs:
   job_test_convert:
     runs-on: ubuntu-latest
@@ -25,10 +28,13 @@ jobs:
       - name: 'Run Pester tests'
         shell: pwsh
         run: |
+          # Load used functions
+          Import-Module $env:GITHUB_WORKSPACE '$(relativeModulePath)')
+
           Invoke-Pester -Configuration @{
             Run        = @{
               Path = @(
-                Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'ConvertTo-ARMTemplate.Tests.ps1'
+                Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'CARMLToolbox' 'tests' 'ConvertTo-ARMTemplate.Tests.ps1'
               )
             }
             Filter     = @{
@@ -36,7 +42,7 @@ jobs:
             }
             TestResult = @{
               TestSuiteName = 'Conversion Tests'
-              OutputPath    = Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'conversion-testResults-${{ matrix.tags }}.xml'
+              OutputPath    = Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'CARMLToolbox' 'tests' 'conversion-testResults-${{ matrix.tags }}.xml'
               OutputFormat  = 'JUnitXml'
               Enabled       = $true
             }

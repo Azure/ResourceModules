@@ -48,7 +48,7 @@ function Invoke-GitHubWorkflow {
     )
 
     # Load used function
-    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-GitHubWorkflowDefaultInput.ps1')
+    . (Join-Path $script:repoRoot 'utilities' 'pipelines' 'sharedScripts' 'Get-GitHubWorkflowDefaultInput.ps1')
 
     $workflowFileName = Split-Path $WorkflowFilePath -Leaf
     $workflowParameters = Get-GitHubWorkflowDefaultInput -workflowPath $WorkflowFilePath -Verbose:$false
@@ -219,7 +219,7 @@ function Invoke-PipelinesForBranch {
         [bool] $GeneratePipelineBadges = $true,
 
         [Parameter(Mandatory = $false)]
-        [string] $RepositoryRoot = (Split-Path (Split-Path $PSScriptRoot -Parent)),
+        [string] $RepositoryRoot = $script:repoRoot,
 
         [Parameter(Mandatory = $false, ParameterSetName = 'GitHub')]
         [string] $GitHubRepositoryOwner = 'Azure',

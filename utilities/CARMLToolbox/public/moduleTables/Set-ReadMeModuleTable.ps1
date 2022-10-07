@@ -60,11 +60,6 @@ function Set-ReadMeModuleTable {
         [string] $ProjectName = ''
     )
 
-    # Load external functions
-    $toolsRoot = Split-Path $PSScriptRoot -Parent
-    . (Join-Path $toolsRoot 'helper' 'Merge-FileWithNewContent.ps1')
-    . (Join-Path $toolsRoot 'helper' 'Get-ModulesAsMarkdownTable.ps1')
-
     # Logic
     $contentArray = Get-Content -Path $FilePath
 

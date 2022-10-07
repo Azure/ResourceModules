@@ -6,7 +6,7 @@ Write-Verbose 'Load Config'
 $moduleConfigPath = Join-Path $PSScriptRoot 'ModuleConfig.psd1'
 $script:CONFIG = Import-PowerShellDataFile -Path (Resolve-Path ($moduleConfigPath))
 
-$script:repoRoot = (Get-Item $PSScriptRoot).Parent.Parent.Parent
+$script:repoRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
 $script:moduleRoot = $PSScriptRoot
 $script:src = Join-Path $PSScriptRoot 'src'
 $script:temp = Join-Path $PSScriptRoot 'temp'
@@ -24,5 +24,5 @@ foreach ($folder in $functionFolders) {
         }
     }
 }
-$publicFunctions = (Get-ChildItem -Path "$PSScriptRoot\public" -Filter '*.ps1').BaseName
+$publicFunctions = (Get-ChildItem -Path "$PSScriptRoot\public" -Filter '*.ps1' -Recurse).BaseName
 Export-ModuleMember -Function $publicFunctions

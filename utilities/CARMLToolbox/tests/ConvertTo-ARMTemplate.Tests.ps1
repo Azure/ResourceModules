@@ -6,9 +6,8 @@ param ()
 
 BeforeAll {
     # Define paths
-    $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
-    $modulesFolderPath = Join-Path $rootPath 'modules'
-    $toolsPath = Join-Path $rootPath 'utilities' 'tools'
+    $modulesFolderPath = Join-Path $script:repoRoot 'modules'
+    $toolsPath = Join-Path $script:repoRoot 'utilities' 'tools'
 
     # Collect original files
     $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -like '*.bicep' }).Count
@@ -17,7 +16,7 @@ BeforeAll {
     $deployParentBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
 
     # GitHub Workflows
-    $moduleWorkflowFiles = Get-ChildItem -Path (Join-Path $rootPath '.github' 'workflows') -Filter 'ms.*.yml' -File
+    $moduleWorkflowFiles = Get-ChildItem -Path (Join-Path $script:repoRoot '.github' 'workflows') -Filter 'ms.*.yml' -File
     $originalModuleWorkflowWithBicep = 0
     foreach ($workFlowFile in $moduleWorkflowFiles) {
         foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
@@ -29,7 +28,7 @@ BeforeAll {
     }
 
     # Azure DevOps pipelines
-    $adoModulePipelineFiles = Get-ChildItem -Path (Join-Path $rootPath '.azuredevops' 'modulePipelines') -Filter 'ms.*.yml' -File
+    $adoModulePipelineFiles = Get-ChildItem -Path (Join-Path $script:repoRoot '.azuredevops' 'modulePipelines') -Filter 'ms.*.yml' -File
     $originalModulePipelinesWithBicep = 0
     foreach ($adoModulePipelineFile in $adoModulePipelineFiles) {
         foreach ($line in (Get-Content -Path $adoModulePipelineFile.FullName)) {
@@ -44,7 +43,8 @@ BeforeAll {
 Describe 'Test default behavior' -Tag 'Default' {
 
     BeforeAll {
-        . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1') -Path $rootPath
+        Import-Module (Join-Path (Split-Path $PSScriptRoot -Parent) 'CARMLToolbox.psm1')
+        ConvertTo-ARMTemplate -Path $script:repoRoot
     }
 
     It 'All top-level deploy.bicep files are converted to deploy.json' {
@@ -105,7 +105,8 @@ Describe 'Test default behavior' -Tag 'Default' {
 Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 
     BeforeAll {
-        . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1') -Path $rootPath -ConvertChildren
+        Import-Module (Join-Path (Split-Path $PSScriptRoot -Parent) 'CARMLToolbox.psm1')
+        ConvertTo-ARMTemplate -Path $script:repoRoot -ConvertChildren
     }
 
     It 'All deploy.bicep files are converted to deploy.json' {
@@ -166,7 +167,8 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 Describe 'Test flags that skip logic' -Tag 'Skip' {
 
     BeforeAll {
-        . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1') -Path $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate
+        Import-Module (Join-Path (Split-Path $PSScriptRoot -Parent) 'CARMLToolbox.psm1')
+        ConvertTo-ARMTemplate -Path $script:repoRoot -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate
     }
 
     It 'All deploy.bicep files are converted to deploy.json' {

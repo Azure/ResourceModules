@@ -34,9 +34,6 @@ function Get-OrderedParametersJSON {
         [string[]] $RequiredParametersList = @()
     )
 
-    # Load used function(s)
-    . (Join-Path $PSScriptRoot 'helper' 'ConvertTo-OrderedHashtable.ps1')
-
     # [1/3] Get all parameters from the parameter object and order them recursively
     $orderedContentInJSONFormat = ConvertTo-OrderedHashtable -JSONInputObject $parametersJSON
 

@@ -136,7 +136,6 @@ function Test-ModuleLocally {
     )
 
     begin {
-        $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
         $ModuleName = Split-Path (Split-Path $TemplateFilePath -Parent) -Leaf
         $utilitiesFolderPath = Split-Path $PSScriptRoot -Parent
         Write-Verbose "Running local tests for [$ModuleName]"
@@ -157,7 +156,7 @@ function Test-ModuleLocally {
         }
 
         # Construct Token Configuration Input
-        $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRootPath 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $script:repoRoot 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
         $tokenConfiguration = @{
             FilePathList = $moduleTestFiles
             Tokens       = @{}
@@ -208,8 +207,8 @@ function Test-ModuleLocally {
             try {
                 Invoke-Pester -Configuration @{
                     Run    = @{
-                        Container = New-PesterContainer -Path (Join-Path $repoRootPath $PesterTestFilePath) -Data @{
-                            repoRootPath       = $repoRootPath
+                        Container = New-PesterContainer -Path (Join-Path $script:repoRoot $PesterTestFilePath) -Data @{
+                            repoRootPath       = $script:repoRoot
                             moduleFolderPaths  = Split-Path $TemplateFilePath -Parent
                             tokenConfiguration = $PesterTokenConfiguration
                         }

@@ -87,10 +87,6 @@ function Set-ModuleReadMe {
         )
     )
 
-    # Load external functions
-    . (Join-Path $PSScriptRoot 'helper' 'Merge-FileWithNewContent.ps1')
-    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
-
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
 
@@ -112,6 +108,7 @@ function Set-ModuleReadMe {
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $fullModuleIdentifier = 'Microsoft.{0}' -f $moduleRoot.Replace('\', '/').split('/Microsoft.')[1]
+    $isTopLevelModule = $fullModuleIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
@@ -202,7 +199,6 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-CrossReferencesSection @inputObject
     }
 
-    $isTopLevelModule = $fullModuleIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
     if ($SectionsToRefresh -contains 'Deployment examples' -and $isTopLevelModule) {
         # Handle [Deployment examples] section
         # ===================================
