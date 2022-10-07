@@ -13,11 +13,11 @@ Mandatory. The content array to search in
 Mandatory. The index to start the search from. Should usually be the current section's header index
 
 .EXAMPLE
-Get-EndIndex -ReadMeFileContent @('# Title', '', '## Section 1', ...) -startIndex = 13
+Get-MarkdownSectionEndIndex -ReadMeFileContent @('# Title', '', '## Section 1', ...) -startIndex = 13
 
 Start from index '13' onward for the index that concludes the current section in the given content array
 #>
-function Get-EndIndex {
+function Get-MarkdownSectionEndIndex {
 
     param(
         [Parameter(Mandatory)]

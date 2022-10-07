@@ -67,7 +67,6 @@ function Merge-FileWithNewContent {
         }
     }
 
-
     if ($startIndex -eq $OldContent.Count - 1 -and [String]::IsNullOrEmpty($ParentStartIdentifier)) {
         # Section is not existing (end of file)
         $startContent = $OldContent
@@ -97,7 +96,7 @@ function Merge-FileWithNewContent {
                         $newContent = @('', $SectionStartIdentifier) + $newContent
                     }
                 } else {
-                    $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $tableStartIndex -ContentType $ContentType
+                    $endIndex = Get-MarkdownSectionEndIndex -ReadMeFileContent $OldContent -startIndex $tableStartIndex -ContentType $ContentType
                     if ($endIndex -ne $OldContent.Count - 1) {
                         $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
                     }
@@ -122,7 +121,7 @@ function Merge-FileWithNewContent {
                         $newContent = @('', $SectionStartIdentifier) + $newContent
                     }
                 } else {
-                    $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $listStartIndex -ContentType $ContentType
+                    $endIndex = Get-MarkdownSectionEndIndex -ReadMeFileContent $OldContent -startIndex $listStartIndex -ContentType $ContentType
                     if ($endIndex -ne $OldContent.Count - 1) {
                         $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
                     }
@@ -137,7 +136,7 @@ function Merge-FileWithNewContent {
                 } else {
                     # section was found
                     $startContent = $OldContent[0..($startIndex)]
-                    $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $startIndex -ContentType $ContentType
+                    $endIndex = Get-MarkdownSectionEndIndex -ReadMeFileContent $OldContent -startIndex $startIndex -ContentType $ContentType
                     if ($endIndex -ne $OldContent.Count - 1) {
                         $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
                     }
