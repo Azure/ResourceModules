@@ -389,7 +389,7 @@ function Set-DeploymentExamplesSection {
     ######################
     if ($SectionContent) {
         if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
-            return Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier
+            return Merge-MarkdownFileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier
         }
     } else {
         return $ReadMeFileContent

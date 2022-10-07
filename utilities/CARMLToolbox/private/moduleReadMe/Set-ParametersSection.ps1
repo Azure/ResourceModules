@@ -121,7 +121,7 @@ function Set-ParametersSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+        $updatedFileContent = Merge-MarkdownFileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
     }
 
     # Build sub-section 'ParameterUsage'
@@ -141,7 +141,7 @@ function Set-ParametersSection {
                         ContentType            = 'none'
                     }
                     if ($PSCmdlet.ShouldProcess(('Original file with new parameter usage [{0}] content' -f $parameterName), 'Merge')) {
-                        $updatedFileContent = Merge-FileWithNewContent @updateParameterUsageInputObject
+                        $updatedFileContent = Merge-MarkdownFileWithNewContent @updateParameterUsageInputObject
                     }
                 }
             }

@@ -18,11 +18,11 @@ Mandatory. The identifier/header to search for. If not found, the new section is
 Optional. Tell the function that you're currently processing a sub-section (indented by one #) by providing the parent identifier
 
 .EXAMPLE
-Merge-FileWithNewContent -OldContent @('# Title', '', '## Section 1', ...) -NewContent @('# Title', '', '## Section 1', ...) -SectionStartIdentifier '## Resource Types'
+Merge-MarkdownFileWithNewContent -OldContent @('# Title', '', '## Section 1', ...) -NewContent @('# Title', '', '## Section 1', ...) -SectionStartIdentifier '## Resource Types'
 
 Update the original content of the '## Resource Types' section with the newly provided
 #>
-function Merge-FileWithNewContent {
+function Merge-MarkdownFileWithNewContent {
 
     [CmdletBinding()]
     param (
