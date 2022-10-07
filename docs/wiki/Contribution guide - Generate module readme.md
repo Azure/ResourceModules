@@ -14,7 +14,7 @@ The ReadMe generator utility aims to simplify contributing to the CARML library,
 ---
 # Location
 
-You can find the script under [`/utilities/tools/Set-ModuleReadMe.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools//Set-ModuleReadMe.ps1)
+You can find the script under [`/utilities/CARMLToolbox/public/moduleReadMeFunctions/Set-ModuleReadMe.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/CARMLToolbox/public/moduleReadMeFunctions/Set-ModuleReadMe.ps1)
 
 # How it works
 
@@ -46,4 +46,4 @@ For example, the content of the `resourceUsage-roleAssignments.md` file in the `
 # How to use it
 
 For details on how to use the function, please refer to the script's local documentation.
-> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.
+> **Note:** Before you can invoke the function, you must import its module CARMLToolbox using the command `Import-Module '/utilities/CARMLToolbox/CARMLToolbox.psm1'` from the repository's root.
