@@ -8,13 +8,55 @@
         "lock": {
             "value": "CanNotDelete"
         },
-        "containerName": {
-            "value": "<<namePrefix>>-az-aci-x-001"
+        "containers": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-aci-x-001",
+                    "properties": {
+                        "command": [],
+                        "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+                        "ports": [
+                            {
+                                "protocol": "Tcp",
+                                "port": "80"
+                            },
+                            {
+                                "protocol": "Tcp",
+                                "port": "443"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": 2,
+                                "memoryInGB": 2
+                            }
+                        },
+                        "environmentVariables": []
+                    }
+                },
+                {
+                    "name": "<<namePrefix>>-az-aci-x-002",
+                    "properties": {
+                        "command": [],
+                        "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+                        "ports": [
+                            {
+                                "protocol": "Tcp",
+                                "port": "8080"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": 2,
+                                "memoryInGB": 2
+                            }
+                        },
+                        "environmentVariables": []
+                    }
+                }
+            ]
         },
-        "image": {
-            "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
-        },
-        "ports": {
+        "ipAddressPorts": {
             "value": [
                 {
                     "protocol": "Tcp",
@@ -23,6 +65,10 @@
                 {
                     "protocol": "Tcp",
                     "port": "443"
+                },
+                {
+                    "protocol": "Tcp",
+                    "port": "8080"
                 }
             ]
         },

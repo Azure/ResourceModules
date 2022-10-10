@@ -29,6 +29,12 @@ This module deploys an event hub namespace.
 
 ## Parameters
 
+**Required parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the event hub namespace. |
+
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -49,7 +55,6 @@ This module deploys an event hub namespace.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maximumThroughputUnits` | int | `1` |  | Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
-| `name` | string | `''` |  | The name of the event hub namespace. If no name is provided, then unique name will be created. |
 | `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Configure networking options. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -310,6 +315,9 @@ The following module usage examples are retrieved from the content of the files 
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ehncom'
   params: {
+    // Required parameters
+    name: '<<namePrefix>>ehncom001'
+    // Non-required parameters
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'
@@ -384,7 +392,6 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>ehncom001'
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -440,6 +447,11 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>ehncom001"
+    },
+    // Non-required parameters
     "authorizationRules": {
       "value": [
         {
@@ -530,9 +542,6 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
-    "name": {
-      "value": "<<namePrefix>>ehncom001"
-    },
     "networkRuleSets": {
       "value": {
         "defaultAction": "Deny",
@@ -599,6 +608,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ehnmin'
   params: {
+    name: '<<namePrefix>>ehnmin001'
   }
 }
 ```
@@ -614,7 +624,11 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {}
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>ehnmin001"
+    }
+  }
 }
 ```
 
@@ -631,7 +645,9 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ehnpe'
   params: {
+    // Required parameters
     name: '<<namePrefix>>ehnpe001'
+    // Non-required parameters
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -659,9 +675,11 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>ehnpe001"
     },
+    // Non-required parameters
     "privateEndpoints": {
       "value": [
         {
