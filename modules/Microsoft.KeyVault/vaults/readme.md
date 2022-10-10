@@ -501,8 +501,8 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     }
     softDeleteRetentionInDays: 7
     tags: {
-      Test: 'Yes'
-      TestToo: 'No'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }
@@ -658,8 +658,8 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "Test": "Yes",
-        "TestToo": "No"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }
