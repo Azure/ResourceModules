@@ -75,7 +75,6 @@ module testDeployment '../../deploy.bicep' = {
         vmSize: 'Standard_DS2_v2'
       }
     ]
-    // Non-required parameters
     agentPools: [
       {
         availabilityZones: [
