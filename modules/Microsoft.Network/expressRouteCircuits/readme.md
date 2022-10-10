@@ -185,11 +185,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nercom'
+  name: '${uniqueString(deployment().name)}-test-nerccom'
   params: {
     // Required parameters
     bandwidthInMbps: 50
-    name: '<<namePrefix>>nercom001'
+    name: '<<namePrefix>>nerccom001'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
     // Non-required parameters
@@ -230,7 +230,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
       "value": 50
     },
     "name": {
-      "value": "<<namePrefix>>nercom001"
+      "value": "<<namePrefix>>nerccom001"
     },
     "peeringLocation": {
       "value": "Amsterdam"
