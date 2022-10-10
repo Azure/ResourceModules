@@ -19,12 +19,14 @@ This module controls the Network Security Group Flow Logs and analytics settings
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `storageId` | string | Resource ID of the diagnostic storage account. |
 | `targetResourceId` | string | Resource ID of the NSG that must be enabled for Flow Logs. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enabled` | bool | `True` |  | If the flow log should be enabled. |

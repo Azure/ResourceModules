@@ -24,12 +24,14 @@ This module deploys a load balancer.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `frontendIPConfigurations` | array | Array of objects containing all frontend IP configurations. |
 | `name` | string | The Proximity Placement Groups Name. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backendAddressPools` | _[backendAddressPools](backendAddressPools/readme.md)_ array | `[]` |  | Collection of backend address pools used by a load balancer. |

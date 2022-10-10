@@ -21,11 +21,13 @@ This template deploys a virtual WAN.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Virtual WAN. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBranchToBranchTraffic` | bool | `False` |  | True if branch to branch traffic is allowed. |

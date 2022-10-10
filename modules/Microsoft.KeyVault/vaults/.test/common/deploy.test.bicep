@@ -110,11 +110,15 @@ module testDeployment '../../deploy.bicep' = {
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
-      ipRules: []
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
       virtualNetworkRules: [
         {
-          action: 'Allow'
           id: resourceGroupResources.outputs.subnetResourceId
+          ignoreMissingVnetServiceEndpoint: false
         }
       ]
     }
@@ -157,5 +161,9 @@ module testDeployment '../../deploy.bicep' = {
       ]
     }
     softDeleteRetentionInDays: 7
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

@@ -32,11 +32,13 @@ This module deploys an Azure Automation Account.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Automation Account. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
@@ -180,7 +182,7 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
@@ -409,7 +411,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     ]
     privateEndpoints: [
       {
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
@@ -418,7 +420,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         subnetResourceId: '<subnetResourceId>'
       }
       {
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
@@ -618,7 +620,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
@@ -627,7 +629,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
           "subnetResourceId": "<subnetResourceId>"
         },
         {
-          "privateDnsZoneGroups": {
+          "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]

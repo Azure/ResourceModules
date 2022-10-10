@@ -21,6 +21,7 @@ This module deploys a local network gateway.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `localAddressPrefixes` | array | List of the local (on-premises) IP address ranges. |
@@ -28,6 +29,7 @@ This module deploys a local network gateway.
 | `name` | string | Name of the Local Network Gateway. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |

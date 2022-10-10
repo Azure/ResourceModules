@@ -229,10 +229,10 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
     minimumTlsVersion: minimumTlsVersion
     networkAcls: !empty(networkAcls) ? {
-      bypass: !empty(networkAcls) ? networkAcls.bypass : null
-      defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-      virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
-      ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
+      bypass: contains(networkAcls, 'bypass') ? networkAcls.bypass : null
+      defaultAction: contains(networkAcls, 'defaultAction') ? networkAcls.defaultAction : null
+      virtualNetworkRules: contains(networkAcls, 'virtualNetworkRules') ? networkAcls.virtualNetworkRules : []
+      ipRules: contains(networkAcls, 'ipRules') ? networkAcls.ipRules : []
     } : null
     allowBlobPublicAccess: allowBlobPublicAccess
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkAcls) ? 'Disabled' : null)
