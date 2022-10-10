@@ -4,7 +4,7 @@ param location string = resourceGroup().location
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
-@description('Required. Name of the Automation Account to create.')
+@description('Required. The name of the Automation Account to create.')
 param automationAccountName string
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
