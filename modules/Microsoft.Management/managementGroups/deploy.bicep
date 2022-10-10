@@ -7,7 +7,7 @@ param name string
 param displayName string = ''
 
 @description('Optional. The management group parent ID. Defaults to current scope.')
-param parentId string = ''
+param parentId string = last(split(az.managementGroup().id, '/'))
 
 @description('Optional. Location deployment metadata.')
 param location string = deployment().location
