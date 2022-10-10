@@ -52,5 +52,9 @@ module testDeployment '../../deploy.bicep' = {
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

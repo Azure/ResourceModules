@@ -730,6 +730,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -763,6 +767,12 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
