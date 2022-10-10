@@ -7,10 +7,10 @@ Fetch all available Role Definitions for the given ProviderNamespace
 Leverges Microsoft Docs's [https://learn.microsoft.com/en-us/powershell/module/az.resources/get-azroledefinition?view=azps-8.3.0] to fetch the data
 
 .PARAMETER ProviderNamespace
-Mandatory. The Provider Namespace to fetch the role definitions for
+Optional. The Provider Namespace to fetch the role definitions for
 
 .PARAMETER ResourceType
-Mandatory. The ResourceType to fetch the role definitions for
+Optional. The ResourceType to fetch the role definitions for
 
 .PARAMETER IncludeCustomRoles
 Optional. Whether to include custom roles or not
