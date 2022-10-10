@@ -98,7 +98,7 @@ module testDeployment '../../deploy.bicep' = {
     managedVirtualNetworkName: 'default'
     privateEndpoints: [
       {
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
           privateDNSResourceIds: [
             resourceGroupResources.outputs.privateDNSResourceId
           ]
