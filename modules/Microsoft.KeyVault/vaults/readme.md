@@ -500,6 +500,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       ]
     }
     softDeleteRetentionInDays: 7
+    tags: {
+      Test: 'Yes'
+      TestToo: 'No'
+    }
   }
 }
 ```
@@ -651,6 +655,12 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     },
     "softDeleteRetentionInDays": {
       "value": 7
+    },
+    "tags": {
+      "value": {
+        "Test": "Yes",
+        "TestToo": "No"
+      }
     }
   }
 }
