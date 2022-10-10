@@ -22,11 +22,13 @@ This module deploys a Logic App resource.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The logic app workflow name. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actionsAccessControlConfiguration` | object | `{object}` |  | The access control configuration for workflow actions. |

@@ -23,12 +23,14 @@ This module deploys a bastion host.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Azure Bastion resource. |
 | `vNetId` | string | Shared services Virtual Network resource identifier. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `azureBastionSubnetPublicIpId` | string | `''` |  | The public ip resource ID to associate to the azureBastionSubnet. If empty, then the public ip that is created as part of this module will be applied to the azureBastionSubnet. |

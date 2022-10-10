@@ -28,6 +28,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `adminUsername` | secureString |  |  | Administrator username. |
@@ -39,6 +40,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `vmSize` | string |  |  | Specifies the size for the VMs. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalUnattendContent` | array | `[]` |  | Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object. |
@@ -107,6 +109,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `winRM` | object | `{object}` |  | Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a registration token. |
@@ -319,7 +322,7 @@ dataDisks: [
 ### Parameter Usage: `nicConfigurations`
 
 Comments:
-- The field `nicSuffix` and `subnetId` are mandatory.
+- The field `nicSuffix` and `subnetResourceId` are mandatory.
 - If `enablePublicIP` is set to true, then `publicIpNameSuffix` is also mandatory.
 - Each IP config needs to have the mandatory field `name`.
 - If not disabled, `enableAcceleratedNetworking` is considered `true` by default and requires the VM to be deployed with a supported OS and VM size.
@@ -337,7 +340,7 @@ Comments:
       "ipConfigurations": [
         {
           "name": "ipconfig1",
-          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "subnetResourceId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
           "pipConfiguration": {
             "publicIpNameSuffix": "-pip-01",
             "roleAssignments": [
@@ -352,7 +355,7 @@ Comments:
         },
         {
           "name": "ipconfig2",
-          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "subnetResourceId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
         }
       ],
       "nsgId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/networkSecurityGroups/<nsgName>",
@@ -370,14 +373,14 @@ Comments:
       "ipConfigurations": [
         {
           "name": "ipconfig1",
-          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "subnetResourceId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
           "pipConfiguration": {
             "publicIpNameSuffix": "-pip-02"
           }
         },
         {
           "name": "ipconfig2",
-          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "subnetResourceId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
           "privateIPAllocationMethod": "Static",
           "privateIPAddress": "10.0.0.9"
         }
@@ -402,7 +405,7 @@ nicConfigurations: {
       ipConfigurations: [
         {
           name: 'ipconfig1'
-          subnetId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
+          subnetResourceId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
           pipConfiguration: {
             publicIpNameSuffix: '-pip-01'
             roleAssignments: [
@@ -417,7 +420,7 @@ nicConfigurations: {
         }
         {
           name: 'ipconfig2'
-          subnetId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
+          subnetResourceId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
         }
       ]
       nsgId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/networkSecurityGroups/<nsgName>'
@@ -435,14 +438,14 @@ nicConfigurations: {
       ipConfigurations: [
         {
           name: 'ipconfig1'
-          subnetId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
+          subnetResourceId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
           pipConfiguration: {
             publicIpNameSuffix: '-pip-02'
           }
         }
         {
           name: 'ipconfig2'
-          subnetId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
+          subnetResourceId: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>'
           privateIPAllocationMethod: 'Static'
           privateIPAddress: '10.0.0.9'
         }
