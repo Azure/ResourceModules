@@ -515,7 +515,7 @@ Describe 'Readme tests' -Tag Readme {
             $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
 
             # Load function
-            . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
+            Import-Module (Join-Path $repoRootPath 'utilities' 'CARMLToolbox' 'CARMLToolbox.psm1')
 
             # Apply update with already compiled template content
             Set-ModuleReadMe -TemplateFilePath $templateFilePath -TemplateFileContent $templateContent
