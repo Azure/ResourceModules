@@ -29,5 +29,5 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2021-06-22' 
 @description('The resource ID of the created Storage Account.')
 output storageAccountResourceId string = storageAccount.id
 
-@description('The resource ID of the deployed automation account.')
+@description('The resource ID of the created Automation Account.')
 output automationAccountResourceId string = automationAccount.id
