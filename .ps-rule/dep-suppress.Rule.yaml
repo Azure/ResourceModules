@@ -10,3 +10,4 @@ spec:
     startsWith:
       - 'dep'
       - 'ms.'
+      - 'privatelink.''
