@@ -42,7 +42,7 @@ function Update-NestedRoleAssignmentInner {
         ##  Get Roles  ##
         #################
         $roles = (Get-RoleAssignmentsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType).bicepFormat
-        $roles = $roles | ForEach-Object { "`t$_" }
+        $roles = $roles | ForEach-Object { "  $_" }
         $nestedRoles = [System.Collections.ArrayList]@(
             '',
             'var builtInRoleNames = {',
