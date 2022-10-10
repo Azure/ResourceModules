@@ -9,3 +9,4 @@ spec:
     name: '.'
     startsWith:
       - 'dep'
+      - 'ms.'
