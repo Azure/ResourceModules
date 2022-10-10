@@ -96,7 +96,7 @@ module testDeployment '../../deploy.bicep' = {
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
       }
       {
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
           privateDNSResourceIds: [
             resourceGroupResources.outputs.privateDNSZoneResourceId
           ]
