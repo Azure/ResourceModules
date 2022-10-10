@@ -79,7 +79,6 @@ module testDeployment '../../deploy.bicep' = {
         vnetSubnetID: resourceGroupResources.outputs.subnetResourceIds[0]
       }
     ]
-    // Non-required parameters
     agentPools: [
       {
         availabilityZones: [
