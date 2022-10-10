@@ -158,7 +158,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -166,16 +166,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-HealthBots'
+  name: '${uniqueString(deployment().name)}-test-hbhbcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-ahb-x-001'
+    name: '<<namePrefix>>hbhbcom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -198,7 +198,7 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-ahb-x-001"
+      "value": "<<namePrefix>>hbhbcom001"
     },
     // Non-required parameters
     "lock": {
@@ -208,11 +208,48 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-hbhbmin'
+  params: {
+    name: '<<namePrefix>>hbhbmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>hbhbmin001"
     }
   }
 }
