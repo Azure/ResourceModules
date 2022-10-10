@@ -43,7 +43,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 }
 
-@description('The principal ID of the created managed identity')
+@description('The principal ID of the created managed identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
 @description('The resource ID of the created Managed Identity.')
