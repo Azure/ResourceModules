@@ -53,4 +53,4 @@ output managedIdentityResourceId string = managedIdentity.id
 output keyVaultResourceId string = keyVault.id
 
 @description('The name of the created Key Vault secret.')
-output keyVaultSecretName string = keyVaultSecretName
+output keyVaultSecretName string = keyVault::secret.name
