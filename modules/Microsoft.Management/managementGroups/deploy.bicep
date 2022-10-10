@@ -9,7 +9,7 @@ param displayName string = ''
 @description('Optional. The management group parent ID. Defaults to current scope.')
 param parentId string = ''
 
-@sys.description('Optional. Location deployment metadata.')
+@description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
