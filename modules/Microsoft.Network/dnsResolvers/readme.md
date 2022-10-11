@@ -256,7 +256,7 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>dnsrcom001'
-    virtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002'
+    virtualNetworkId: '<virtualNetworkId>'
     // Non-required parameters
     inboundEndpoints: [
       {
@@ -291,7 +291,7 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
       "value": "<<namePrefix>>dnsrcom001"
     },
     "virtualNetworkId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002"
+      "value": "<virtualNetworkId>"
     },
     // Non-required parameters
     "inboundEndpoints": {
