@@ -119,7 +119,9 @@ function Update-NestedRoleAssignment {
             ########################################
             ## Update RBAC roles for single module #
             ########################################
+            if ($PSCmdlet.ShouldProcess("Role Assignments for module [$ProviderNamespace/$ResourceType]", 'Update')) {
             $null = Update-NestedRoleAssignmentInner -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -Verbose
+            }
         } else {
             ############################################
             ## Update RBAC roles for the whole library #
