@@ -2,7 +2,7 @@
 param actionGroupName string
 
 @description('Optional. The location to deploy to.')
-param location string = resourceGroup().location
+param location string = 'global'
 
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
