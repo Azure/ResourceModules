@@ -22,11 +22,13 @@ This module deploys a Logic App resource.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The logic app workflow name. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actionsAccessControlConfiguration` | object | `{object}` |  | The access control configuration for workflow actions. |
@@ -349,8 +351,10 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: false
-    tags: {}
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -434,11 +438,11 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": false
-    },
     "tags": {
-      "value": {}
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
