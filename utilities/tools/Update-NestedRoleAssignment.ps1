@@ -36,8 +36,6 @@ function Update-NestedRoleAssignmentInner {
 
     process {
 
-        Write-Verbose "Updating Role Definitions for [$ProviderNamespace/$ResourceType]" -Verbose
-
         #################
         ##  Get Roles  ##
         #################
