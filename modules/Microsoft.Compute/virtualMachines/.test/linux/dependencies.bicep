@@ -256,7 +256,7 @@ resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   properties: {
     azPowerShellVersion: '3.0'
     retentionInterval: 'P1D'
-    arguments: ' -StorageAccountName "${storageAccount.name}" -ResourceGroupName "${resourceGroup().name}" -ContainerName "${storageAccount::blobService::container.name}" -FileName "${storageAccountCSEFileName}"'
+    arguments: '-StorageAccountName "${storageAccount.name}" -ResourceGroupName "${resourceGroup().name}" -ContainerName "${storageAccount::blobService::container.name}" -FileName "${storageAccountCSEFileName}"'
     scriptContent: loadTextContent('../.scripts/Set-BlobContent.ps1')
   }
   dependsOn: [
@@ -277,7 +277,7 @@ resource sshDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' 
   properties: {
     azPowerShellVersion: '6.2.1'
     retentionInterval: 'P1D'
-    arguments: ' -SSHKeyName "${sshKeyName}" -ResourceGroupName "${resourceGroup().name}"'
+    arguments: '-SSHKeyName "${sshKeyName}" -ResourceGroupName "${resourceGroup().name}"'
     scriptContent: loadTextContent('../.scripts/New-SSHKey.ps1')
   }
   dependsOn: [
