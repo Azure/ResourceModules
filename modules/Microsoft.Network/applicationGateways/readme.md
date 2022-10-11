@@ -242,7 +242,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nagdef'
+  name: '${uniqueString(deployment().name)}-test-nagcom'
   params: {
     // Required parameters
     name: '<name>'
