@@ -21,4 +21,3 @@ output actionGroupResourceId string = actionGroup.id
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
-
