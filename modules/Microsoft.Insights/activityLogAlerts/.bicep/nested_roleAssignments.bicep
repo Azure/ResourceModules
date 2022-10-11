@@ -34,9 +34,6 @@ param conditionVersion string = '2.0'
 param delegatedManagedIdentityResourceId string = ''
 
 var builtInRoleNames = {
-  Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b24988ac-6180-42a0-ab88-20f7382dd24c')
-  Owner: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
-  Reader: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','acdd72a7-3385-48ef-bd42-f606fba81ae7')
   'API Management Service Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','312a565d-c81f-4fd8-895a-4e21e48d571c')
   'API Management Service Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','e022efe7-f5ba-4159-bbe4-b44f577e9b61')
   'API Management Service Reader Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','71522526-b88f-4d52-b57f-d31fc3546d0d')
@@ -78,6 +75,7 @@ var builtInRoleNames = {
   'Cognitive Services User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','a97b65f3-24c7-4388-baec-2e87135dc908')
   'Collaborative Data Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','daa9e50b-21df-454c-94a6-a8050adab352')
   'Collaborative Runtime Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','7a6f0e70-c033-4fb1-828c-08514e5f4102')
+  Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b24988ac-6180-42a0-ab88-20f7382dd24c')
   'Cosmos DB Account Reader Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','fbdf93bf-df7d-467e-a4d2-9458aa1360c8')
   'Cosmos DB Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','230815da-be43-4aae-9cb4-875f7bd000aa')
   'Data Factory Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','673868aa-7521-48a0-acc6-0f60742d39f5')
@@ -150,8 +148,10 @@ var builtInRoleNames = {
   'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','43d0d8ad-25c7-4714-9337-8ba259a9fe05')
   'Network Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','4d97b98b-1d4f-4787-a291-c67834d212e7')
   'New Relic APM Account Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','5d28c62d-5b37-4476-8438-e587778df237')
+  Owner: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Private DNS Zone Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b12aa53e-6015-4669-85d0-8515ebb3ae7f')
   'Quota Request Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','0e5f05e5-9ab9-446b-b98d-1e2157c94125')
+  Reader: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','acdd72a7-3385-48ef-bd42-f606fba81ae7')
   'Redis Cache Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','e0f68234-74aa-48ed-b826-c38b57376e17')
   'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','36243c78-bf99-498c-9df9-86d9f8d28608')
   'Role Based Access Control Administrator (Preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','f58310d9-a9f6-439a-9e8d-f62e7b41a168')

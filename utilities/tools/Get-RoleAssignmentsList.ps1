@@ -68,18 +68,20 @@ function Get-RoleAssignmentsList {
 
         # (Bicep-only) To comply with Bicep Linter Rule prefer-unquoted-property-names, remove quotes from role names not containing spaces
         $resBicep = [System.Collections.ArrayList]@()
-        $resBicepTop = [System.Collections.ArrayList]@()
-        $resBicepQuote = [System.Collections.ArrayList]@()
+        # $resBicepTop = [System.Collections.ArrayList]@()
+        # $resBicepQuote = [System.Collections.ArrayList]@()
         $resArm = [System.Collections.ArrayList]@()
         foreach ($role in $relevantRoles | Sort-Object -Property 'Name' -Unique) {
             if ($role.Name -match '\s') {
-                $resBicepQuote += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+                # $resBicepQuote += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+                $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
             } else {
-                $resBicepTop += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+                # $resBicepTop += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+                $resBicep += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
             }
             $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')]`"," -f $role.Name, $role.Id
         }
-        $resBicep = $resBicepTop + $resBicepQuote
+        # $resBicep = $resBicepTop + $resBicepQuote
 
         # Return arrays
         return @{
