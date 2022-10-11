@@ -133,7 +133,9 @@ function Update-NestedRoleAssignment {
                 $relativeFilePath = $relativeFilePath -replace '\.\\', ''
                 $relativeDirectoryPath = $relativeFilePath -replace '\\\.bicep\\nested_roleAssignments\.bicep', ''
                 $provider, $type = $relativeDirectoryPath -split '\\', 2
+                if ($PSCmdlet.ShouldProcess("Role Assignments for module [$relativeDirectoryPath]", 'Update')) {
                 $null = Update-NestedRoleAssignmentInner -ProviderNamespace $provider -ResourceType $type -Verbose
+                 }
             }
         }
     }
