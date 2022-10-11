@@ -33,7 +33,6 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    lock: 'CanNotDelete'
     containers: [
       {
         name: '<<namePrefix>>-az-aci-x-001'
