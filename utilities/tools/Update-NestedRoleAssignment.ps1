@@ -98,7 +98,7 @@ Update nested_roleassignments.bicep template for [Microsoft.KeyVault/vaults] mod
 #>
 function Update-NestedRoleAssignment {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $false)]
         [string] $ProviderNamespace,
