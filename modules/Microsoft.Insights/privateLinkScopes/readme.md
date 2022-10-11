@@ -255,10 +255,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-pls'
+  name: '${uniqueString(deployment().name)}-test-iplscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>pls001'
+    name: '<<namePrefix>>iplscom001'
     // Non-required parameters
     privateEndpoints: [
       {
@@ -303,7 +303,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>pls001"
+      "value": "<<namePrefix>>iplscom001"
     },
     // Non-required parameters
     "privateEndpoints": {
@@ -352,9 +352,9 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
 
 ```bicep
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-plsmin'
+  name: '${uniqueString(deployment().name)}-test-iplsmin'
   params: {
-    name: '<<namePrefix>>plsmin001'
+    name: '<<namePrefix>>iplsmin001'
   }
 }
 ```
@@ -372,7 +372,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>plsmin001"
+      "value": "<<namePrefix>>iplsmin001"
     }
   }
 }
