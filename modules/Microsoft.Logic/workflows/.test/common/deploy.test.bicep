@@ -73,7 +73,10 @@ module testDeployment '../../deploy.bicep' = {
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
-    tags: {}
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     workflowActions: {
       HTTP: {
         inputs: {
