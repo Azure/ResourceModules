@@ -16,7 +16,7 @@ if (-not $certificate) {
     $certPolicy = New-AzKeyVaultCertificatePolicy @policyInputObject
 
     $null = Add-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertName -CertificatePolicy $certPolicy
-    Write-Verbose ('Initated creation of certificate [{0}] in key vault [{1}]' -f $CertName, $KeyVaultName) -Verbose
+    Write-Verbose ('Initiated creation of certificate [{0}] in key vault [{1}]' -f $CertName, $KeyVaultName) -Verbose
 
     while (-not (Get-AzKeyVaultCertificateOperation -VaultName $KeyVaultName -Name $CertName).Status -eq 'completed') {
         Write-Verbose 'Waiting 10 seconds for certificate creation' -Verbose
