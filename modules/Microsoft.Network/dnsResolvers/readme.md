@@ -7,8 +7,8 @@ This module deploys Network DnsResolvers.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Deployment examples](#Deployment-examples)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -40,7 +40,6 @@ This module deploys Network DnsResolvers.
 | `outboundEndpoints` | array | `[]` |  | Outbound Endpoints for Private DNS Resolver. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-
 
 ### Parameter Usage: `inboundEndpoints`
 
@@ -233,6 +232,10 @@ tags: {
 | `resourceGroupName` | string | The resource group the Private DNS Resolver was deployed into. |
 | `resourceId` | string | The resource ID of the Private DNS Resolver. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -312,8 +315,3 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
 
 </details>
 <p>
-
-
-## Cross-referenced modules
-
-_None_
