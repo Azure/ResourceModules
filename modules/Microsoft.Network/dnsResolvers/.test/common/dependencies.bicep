@@ -49,8 +49,8 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 @description('The resource ID of the created Virtual Network')
 output virtualNetworkId string = virtualNetwork.id
 
-@description('The resource ID of the created Virtual Network Subnet.')
+@description('The resource ID of the created inbound endpoint Virtual Network Subnet.')
 output subnetResourceId_dnsIn string = virtualNetwork.properties.subnets[0].id
 
-@description('The resource ID of the created Virtual Network Subnet.')
+@description('The resource ID of the created outbound endpoint Virtual Network Subnet.')
 output subnetResourceId_dnsOut string = virtualNetwork.properties.subnets[1].id

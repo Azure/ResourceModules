@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.network.dnsResolvers-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'dnsrcom'
+param serviceShort string = 'ndrcom'
 
 // =========== //
 // Deployments //
@@ -43,7 +43,6 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     virtualNetworkId: resourceGroupResources.outputs.virtualNetworkId
-    // Non-required parameters
     inboundEndpoints: [
       {
         name: '<<namePrefix>>-az-pdnsin-x-001'

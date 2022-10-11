@@ -1,4 +1,4 @@
-name: 'Network: dnsResolvers'
+name: 'Network: DNS Resolvers'
 
 on:
   workflow_dispatch:
