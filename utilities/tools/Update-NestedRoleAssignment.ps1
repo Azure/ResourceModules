@@ -98,7 +98,7 @@ Update nested_roleassignments.bicep template for [Microsoft.KeyVault/vaults] mod
 #>
 function Update-NestedRoleAssignment {
 
-    [CmdletBinding(SupportShouldProcess = $true)]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $false)]
         [string] $ProviderNamespace,
@@ -120,7 +120,7 @@ function Update-NestedRoleAssignment {
             ## Update RBAC roles for single module #
             ########################################
             if ($PSCmdlet.ShouldProcess("Role Assignments for module [$ProviderNamespace/$ResourceType]", 'Update')) {
-            $null = Update-NestedRoleAssignmentInner -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -Verbose
+                $null = Update-NestedRoleAssignmentInner -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -Verbose
             }
         } else {
             ############################################
@@ -136,8 +136,8 @@ function Update-NestedRoleAssignment {
                 $relativeDirectoryPath = $relativeFilePath -replace '\\\.bicep\\nested_roleAssignments\.bicep', ''
                 $provider, $type = $relativeDirectoryPath -split '\\', 2
                 if ($PSCmdlet.ShouldProcess("Role Assignments for module [$relativeDirectoryPath]", 'Update')) {
-                $null = Update-NestedRoleAssignmentInner -ProviderNamespace $provider -ResourceType $type -Verbose
-                 }
+                    $null = Update-NestedRoleAssignmentInner -ProviderNamespace $provider -ResourceType $type -Verbose
+                }
             }
         }
     }
