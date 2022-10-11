@@ -390,7 +390,6 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         protocol: 'Tcp'
       }
     ]
-    lock: 'CanNotDelete'
   }
 }
 ```
@@ -441,9 +440,6 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
           "protocol": "Tcp"
         }
       ]
-    },
-    "lock": {
-      "value": "CanNotDelete"
     }
   }
 }
