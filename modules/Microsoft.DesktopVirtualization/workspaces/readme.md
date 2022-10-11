@@ -25,13 +25,13 @@ This module deploys an Azure virtual desktop workspace.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `appGroupResourceIds` | array | Resource IDs for the existing Application groups this workspace will group together. |
 | `name` | string | The name of the workspace to be attach to new Application Group. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `appGroupResourceIds` | array | `[]` |  | Resource IDs for the existing Application groups this workspace will group together. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[Checkpoint, Error, Feed, Management]` | `[Checkpoint, Error, Feed, Management]` | The name of logs that will be streamed. |
