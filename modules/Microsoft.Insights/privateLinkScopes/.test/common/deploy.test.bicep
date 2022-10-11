@@ -28,9 +28,9 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualNetworkName: 'dep-carml-vnet-${serviceShort}'
-    managedIdentityName: 'dep-carml-msi-${serviceShort}'
-    logAnalyticsWorkspaceName: 'dep-carml-la-${serviceShort}'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-la-${serviceShort}'
   }
 }
 
@@ -42,7 +42,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: 'carml${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     scopedResources: [
       {
         name: 'scoped1'
