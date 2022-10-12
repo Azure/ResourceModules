@@ -28,7 +28,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     hostPoolName: 'dep-<<namePrefix>>-hp-${serviceShort}'
   }
 }
