@@ -56,13 +56,6 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     capacity: 2
-    diagnosticLogCategoriesToEnable: [
-      'ApplicationGatewayAccessLog'
-      'ApplicationGatewayFirewallLog'
-    ]
-    diagnosticMetricsToEnable: [
-      'AllMetrics'
-    ]
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId

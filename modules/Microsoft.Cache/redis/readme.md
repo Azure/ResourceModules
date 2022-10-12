@@ -352,14 +352,7 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     capacity: 2
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogCategoriesToEnable: [
-      'ApplicationGatewayAccessLog'
-      'ApplicationGatewayFirewallLog'
-    ]
     diagnosticLogsRetentionInDays: 7
-    diagnosticMetricsToEnable: [
-      'AllMetrics'
-    ]
     diagnosticSettingsName: 'redisdiagnostics'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
@@ -415,19 +408,8 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
     },
-    "diagnosticLogCategoriesToEnable": {
-      "value": [
-        "ApplicationGatewayAccessLog",
-        "ApplicationGatewayFirewallLog"
-      ]
-    },
     "diagnosticLogsRetentionInDays": {
       "value": 7
-    },
-    "diagnosticMetricsToEnable": {
-      "value": [
-        "AllMetrics"
-      ]
     },
     "diagnosticSettingsName": {
       "value": "redisdiagnostics"
