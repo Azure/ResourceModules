@@ -664,7 +664,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
+      name: 'new-<<namePrefix>>-pip-nafcstpip'
       publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
@@ -712,7 +712,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         "diagnosticMetricsToEnable": [
           "AllMetrics"
         ],
-        "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
+        "name": "new-<<namePrefix>>-pip-nafcstpip",
         "publicIPAllocationMethod": "Static",
         "publicIPPrefixResourceId": "",
         "roleAssignments": [

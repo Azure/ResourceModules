@@ -29,7 +29,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    publicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
@@ -53,7 +52,7 @@ module testDeployment '../../deploy.bicep' = {
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
+      name: 'new-<<namePrefix>>-pip-${serviceShort}'
       publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
