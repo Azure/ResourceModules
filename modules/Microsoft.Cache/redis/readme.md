@@ -350,14 +350,19 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     name: '<<namePrefix>>crcom001'
     // Non-required parameters
     capacity: 2
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogCategoriesToEnable: [
       'ApplicationGatewayAccessLog'
       'ApplicationGatewayFirewallLog'
     ]
+    diagnosticLogsRetentionInDays: 7
     diagnosticMetricsToEnable: [
       'AllMetrics'
     ]
     diagnosticSettingsName: 'redisdiagnostics'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableNonSslPort: true
     lock: 'CanNotDelete'
     minimumTlsVersion: '1.2'
@@ -404,11 +409,20 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     "capacity": {
       "value": 2
     },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
     "diagnosticLogCategoriesToEnable": {
       "value": [
         "ApplicationGatewayAccessLog",
         "ApplicationGatewayFirewallLog"
       ]
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
     },
     "diagnosticMetricsToEnable": {
       "value": [
@@ -417,6 +431,12 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     },
     "diagnosticSettingsName": {
       "value": "redisdiagnostics"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
     },
     "enableNonSslPort": {
       "value": true
