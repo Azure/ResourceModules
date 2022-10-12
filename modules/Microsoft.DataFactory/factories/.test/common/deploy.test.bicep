@@ -107,7 +107,6 @@ module testDeployment '../../deploy.bicep' = {
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
       }
     ]
-    publicNetworkAccess: 'Disabled'
     roleAssignments: [
       {
         principalIds: [
