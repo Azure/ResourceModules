@@ -44,7 +44,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     capacityPools: [
       {
-        name: '<<namePrefix>>-az-anfcp-x-001'
+        name: '<<namePrefix>>-${serviceShort}-cp-001'
         roleAssignments: [
           {
             principalIds: [
