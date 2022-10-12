@@ -109,7 +109,8 @@ jobs:
           # inputPath: '${{ env.modulesPath }}/'
           inputPath: '${{ env.modulesPath }}/Microsoft.ApiManagement/service/'
           outputFormat: Csv
-          outputPath: '${{ env.modulesPath }}/PSRule-output.csv'
+          # outputPath: '${{ env.modulesPath }}/PSRule-output.csv'
+          outputPath: '${{ env.modulesPath }}/Microsoft.ApiManagement/service/PSRule-output.csv'
       - name: 'Parse CSV content'
         uses: azure/powershell@v1
         with:
