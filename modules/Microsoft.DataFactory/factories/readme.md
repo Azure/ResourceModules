@@ -25,13 +25,11 @@
 ## Parameters
 
 **Required parameters**
-
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Azure Factory to create. |
 
 **Optional parameters**
-
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
@@ -417,7 +415,6 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    publicNetworkAccess: 'Disabled'
     roleAssignments: [
       {
         principalIds: [
@@ -526,9 +523,6 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
-    },
-    "publicNetworkAccess": {
-      "value": "Disabled"
     },
     "roleAssignments": {
       "value": [
