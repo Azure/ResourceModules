@@ -83,7 +83,7 @@ module testDeployment '../../deploy.bicep' = {
             usageThreshold: 107374182400
           }
           {
-            name: 'anf3-vol02-nfsv3'
+            name: '<<namePrefix>>-${serviceShort}-vol-002'
             protocolTypes: [
               'NFSv3'
             ]
