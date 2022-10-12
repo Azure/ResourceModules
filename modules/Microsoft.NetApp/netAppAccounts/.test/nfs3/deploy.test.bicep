@@ -67,7 +67,7 @@ module testDeployment '../../deploy.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: 'anf3-vol01-nfsv3'
+            name: '<<namePrefix>>-${serviceShort}-vol-001'
             protocolTypes: [
               'NFSv3'
             ]
