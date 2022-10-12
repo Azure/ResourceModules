@@ -67,7 +67,7 @@ module testDeployment '../../deploy.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: 'anf4-vol01-nfsv41'
+            name: '<<namePrefix>>-${serviceShort}-vol-001'
             protocolTypes: [
               'NFSv4.1'
             ]
