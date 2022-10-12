@@ -178,7 +178,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -186,140 +186,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ContainerGroups'
-  params: {
-    // Required parameters
-    containers: [
-      {
-        name: '<<namePrefix>>-az-aci-x-001'
-        properties: {
-          command: []
-          environmentVariables: []
-          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
-          ports: [
-            {
-              port: '80'
-              protocol: 'Tcp'
-            }
-            {
-              port: '443'
-              protocol: 'Tcp'
-            }
-          ]
-          resources: {
-            requests: {
-              cpu: 2
-              memoryInGB: 2
-            }
-          }
-        }
-      }
-    ]
-    name: '<<namePrefix>>-az-acg-x-001'
-    // Non-required parameters
-    ipAddressPorts: [
-      {
-        port: '80'
-        protocol: 'Tcp'
-      }
-      {
-        port: '443'
-        protocol: 'Tcp'
-      }
-    ]
-    lock: 'CanNotDelete'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "containers": {
-      "value": [
-        {
-          "name": "<<namePrefix>>-az-aci-x-001",
-          "properties": {
-            "command": [],
-            "environmentVariables": [],
-            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
-            "ports": [
-              {
-                "port": "80",
-                "protocol": "Tcp"
-              },
-              {
-                "port": "443",
-                "protocol": "Tcp"
-              }
-            ],
-            "resources": {
-              "requests": {
-                "cpu": 2,
-                "memoryInGB": 2
-              }
-            }
-          }
-        }
-      ]
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-acg-x-001"
-    },
-    // Non-required parameters
-    "ipAddressPorts": {
-      "value": [
-        {
-          "port": "80",
-          "protocol": "Tcp"
-        },
-        {
-          "port": "443",
-          "protocol": "Tcp"
-        }
-      ]
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ContainerGroups'
+  name: '${uniqueString(deployment().name)}-test-cicgcom'
   params: {
     // Required parameters
     containers: [
@@ -368,26 +235,22 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: '<<namePrefix>>-az-acg-x-001'
+    name: '<<namePrefix>>cicgcom001'
     // Non-required parameters
     ipAddressPorts: [
       {
-        port: '80'
+        port: 80
         protocol: 'Tcp'
       }
       {
-        port: '443'
-        protocol: 'Tcp'
-      }
-      {
-        port: '8080'
+        port: 443
         protocol: 'Tcp'
       }
     ]
     lock: 'CanNotDelete'
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -455,21 +318,17 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-acg-x-001"
+      "value": "<<namePrefix>>cicgcom001"
     },
     // Non-required parameters
     "ipAddressPorts": {
       "value": [
         {
-          "port": "80",
+          "port": 80,
           "protocol": "Tcp"
         },
         {
-          "port": "443",
-          "protocol": "Tcp"
-        },
-        {
-          "port": "8080",
+          "port": 443,
           "protocol": "Tcp"
         }
       ]
@@ -482,8 +341,105 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-cicgmin'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: '<<namePrefix>>-az-aci-x-001'
+        properties: {
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: '<<namePrefix>>cicgmin001'
+    // Non-required parameters
+    ipAddressPorts: [
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-aci-x-001",
+          "properties": {
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>cicgmin001"
+    },
+    // Non-required parameters
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        }
+      ]
     }
   }
 }

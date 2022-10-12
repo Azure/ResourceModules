@@ -19,7 +19,7 @@ This section provides an overview of the library's feature set.
 | 4 | MS.VirtualMachineImages<p>imageTemplates | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 167 |
 | 5 | MS.Batch<p>batchAccounts |  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | 225 |
 | 6 | MS.MachineLearningServices<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:1] | 269 |
-| 7 | MS.Management<p>managementGroups |  |  |  |  |  |  |  | 40 |
+| 7 | MS.Management<p>managementGroups |  |  |  |  |  |  |  | 44 |
 | 8 | MS.PowerBIDedicated<p>capacities | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 83 |
 | 9 | MS.DBforPostgreSQL<p>flexibleServers | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:3] | 269 |
 | 10 | MS.DocumentDB<p>databaseAccounts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:3, L2:3] | 312 |
@@ -121,7 +121,7 @@ This section provides an overview of the library's feature set.
 | 106 | MS.Resources<p>tags |  |  | :white_check_mark: |  |  |  | [L1:2] | 51 |
 | 107 | MS.Resources<p>deploymentScripts |  | :white_check_mark: | :white_check_mark: |  |  |  |  | 111 |
 | 108 | MS.Resources<p>resourceGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 64 |
-| Sum | | 84 | 82 | 93 | 49 | 21 | 2 | 148 | 18092 |
+| Sum | | 84 | 82 | 93 | 49 | 21 | 2 | 148 | 18096 |
 
 ## Legend
 
