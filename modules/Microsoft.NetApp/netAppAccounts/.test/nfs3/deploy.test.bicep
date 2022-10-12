@@ -93,7 +93,7 @@ module testDeployment '../../deploy.bicep' = {
         ]
       }
       {
-        name: '<<namePrefix>>-az-anfcp-x-002'
+        name: '<<namePrefix>>-${serviceShort}-cp-002'
         roleAssignments: [
           {
             principalIds: [
