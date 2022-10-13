@@ -440,7 +440,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     ]
     location: '<location>'
     lock: 'CanNotDelete'
-    minimalTlsVersion: '1.2'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -548,9 +547,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "minimalTlsVersion": {
-      "value": "1.2"
     },
     "privateEndpoints": {
       "value": [

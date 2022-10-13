@@ -133,7 +133,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         ignoreMissingVnetServiceEndpoint: true
         name: 'newVnetRule1'
-        virtualNetworkSubnetId: resourceGroupResources.outputs.privateEndpointSubnetResourceId
+        virtualNetworkSubnetId: resourceGroupResources.outputs.serviceEndpointSubnetResourceId
       }
     ]
   }
