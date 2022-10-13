@@ -41,7 +41,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    azPowerShellVersion: '3.0'
+    azPowerShellVersion: '8.0'
     cleanupPreference: 'Always'
     kind: 'AzurePowerShell'
     lock: 'CanNotDelete'
