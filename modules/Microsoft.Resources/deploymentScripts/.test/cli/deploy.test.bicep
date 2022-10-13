@@ -46,7 +46,7 @@ module testDeployment '../../deploy.bicep' = {
     kind: 'AzureCLI'
     retentionInterval: 'P1D'
     runOnce: false
-    scriptContent: 'echo \'Hello from inside the script\''
+    scriptContent: 'echo \'echo echo echo\''
     timeout: 'PT30M'
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}

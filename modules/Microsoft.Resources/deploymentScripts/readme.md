@@ -167,12 +167,12 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     // Required parameters
     name: '<<namePrefix>>rdscli001'
     // Non-required parameters
-    azCliVersion: '2.15.0'
+    azCliVersion: '2.41.0'
     cleanupPreference: 'Always'
     kind: 'AzureCLI'
     retentionInterval: 'P1D'
     runOnce: false
-    scriptContent: 'echo \'Hello from inside the script\''
+    scriptContent: 'echo \'echo echo echo\''
     timeout: 'PT30M'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -199,7 +199,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     },
     // Non-required parameters
     "azCliVersion": {
-      "value": "2.15.0"
+      "value": "2.41.0"
     },
     "cleanupPreference": {
       "value": "Always"
@@ -214,7 +214,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
       "value": false
     },
     "scriptContent": {
-      "value": "echo \"Hello from inside the script\""
+      "value": "echo \"echo echo echo\""
     },
     "timeout": {
       "value": "PT30M"
@@ -244,13 +244,13 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     // Required parameters
     name: '<<namePrefix>>rdsps001'
     // Non-required parameters
-    azPowerShellVersion: '3.0'
+    azPowerShellVersion: '8.0'
     cleanupPreference: 'Always'
     kind: 'AzurePowerShell'
     lock: 'CanNotDelete'
     retentionInterval: 'P1D'
     runOnce: false
-    scriptContent: 'Write-Host \'Running PowerShell from template\''
+    scriptContent: 'Write-Host \'The cake is a lie!\''
     timeout: 'PT30M'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -277,7 +277,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     },
     // Non-required parameters
     "azPowerShellVersion": {
-      "value": "3.0"
+      "value": "8.0"
     },
     "cleanupPreference": {
       "value": "Always"
@@ -295,7 +295,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
       "value": false
     },
     "scriptContent": {
-      "value": "Write-Host \"Running PowerShell from template\""
+      "value": "Write-Host \"The cake is a lie!\""
     },
     "timeout": {
       "value": "PT30M"

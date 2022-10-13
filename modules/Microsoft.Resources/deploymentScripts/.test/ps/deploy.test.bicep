@@ -47,7 +47,7 @@ module testDeployment '../../deploy.bicep' = {
     lock: 'CanNotDelete'
     retentionInterval: 'P1D'
     runOnce: false
-    scriptContent: 'Write-Host \'Running PowerShell from template\''
+    scriptContent: 'Write-Host \'The cake is a lie!\''
     timeout: 'PT30M'
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
