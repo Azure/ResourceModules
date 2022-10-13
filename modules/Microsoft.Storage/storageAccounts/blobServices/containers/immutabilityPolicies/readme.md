@@ -13,7 +13,7 @@ This module deploys an Immutability Policy for a blob container
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-05-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
 
 ## Parameters
 

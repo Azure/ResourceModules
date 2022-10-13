@@ -11,7 +11,10 @@ param resourceGroupName string = 'ms.storage.storageaccounts-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'stsacom'
+param serviceShort string = 'stsaencr'
+
+@description('Generated. Used as a basis for unique resource names.')
+param baseTime string = utcNow('u')
 
 // =========== //
 // Deployments //
@@ -28,22 +31,10 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-  }
-}
-
-// Diagnostics
-// ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
-  params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
-    location: location
   }
 }
 
@@ -59,7 +50,6 @@ module testDeployment '../../deploy.bicep' = {
     storageAccountSku: 'Standard_LRS'
     allowBlobPublicAccess: false
     requireInfrastructureEncryption: true
-    lock: 'CanNotDelete'
     privateEndpoints: [
       {
         service: 'blob'
@@ -71,131 +61,20 @@ module testDeployment '../../deploy.bicep' = {
         }
       }
     ]
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Deny'
-      virtualNetworkRules: [
-        {
-          action: 'Allow'
-          id: resourceGroupResources.outputs.subnetResourceId
-        }
-      ]
-      ipRules: [
-        {
-          action: 'Allow'
-          value: '1.1.1.1'
-        }
-      ]
-    }
     blobServices: {
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-      diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-      diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
       containers: [
         {
-          name: 'avdscripts'
+          name: '<<namePrefix>>container'
           publicAccess: 'None'
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                resourceGroupResources.outputs.managedIdentityPrincipalId
-              ]
-            }
-          ]
-        }
-        {
-          name: 'archivecontainer'
-          publicAccess: 'None'
-          enableWORM: true
-          WORMRetention: 666
-          allowProtectedAppendWrites: false
         }
       ]
     }
-    fileServices: {
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-      diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-      diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-      shares: [
-        {
-          name: 'avdprofiles'
-          shareQuota: 5120
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                resourceGroupResources.outputs.managedIdentityPrincipalId
-              ]
-            }
-          ]
-        }
-        {
-          name: 'avdprofiles2'
-          shareQuota: 5120
-        }
-      ]
-    }
-    tableServices: {
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-      diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-      diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-      tables: [
-        'table1'
-        'table2'
-      ]
-    }
-    queueServices: {
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-      diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-      diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-      queues: [
-        {
-          name: 'queue1'
-          metadata: {
-            key1: 'value1'
-            key2: 'value2'
-          }
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                resourceGroupResources.outputs.managedIdentityPrincipalId
-              ]
-            }
-          ]
-        }
-        {
-          name: 'queue2'
-          metadata: {
-          }
-        }
-      ]
-    }
-    systemAssignedIdentity: true
+    systemAssignedIdentity: false
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
-    roleAssignments: [
-      {
-        principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
-        ]
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+    cMKKeyName: resourceGroupResources.outputs.keyName
+    cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
   }
 }
