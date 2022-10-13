@@ -51,6 +51,7 @@ module testDeployment '../../deploy.bicep' = {
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
             roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         serviceLevel: 'Premium'
@@ -77,6 +78,7 @@ module testDeployment '../../deploy.bicep' = {
                   resourceGroupResources.outputs.managedIdentityPrincipalId
                 ]
                 roleDefinitionIdOrName: 'Reader'
+                principalType: 'ServicePrincipal'
               }
             ]
             subnetResourceId: resourceGroupResources.outputs.subnetResourceId
@@ -110,6 +112,7 @@ module testDeployment '../../deploy.bicep' = {
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
             roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         serviceLevel: 'Premium'
@@ -123,6 +126,7 @@ module testDeployment '../../deploy.bicep' = {
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     tags: {
