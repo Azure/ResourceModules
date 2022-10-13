@@ -33,7 +33,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    virtualNetworkName: 'adp-<<namePrefix>>-vnet-${serviceShort}'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     location: location
   }
 }
