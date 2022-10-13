@@ -156,6 +156,85 @@ jobs:
             vstsPackageVersion: '${{ parameters.moduleVersion }}'
             downloadDirectory: '$(downloadDirectory)/$(lowerModuleName)'
 
+      # [Agent] Replace tokens
+      #-----------------------
+      - task: AzurePowerShell@5
+        displayName: 'Replace tokens in template file via connection [${{ parameters.serviceConnection }}]'
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          azurePowerShellVersion: 'latestVersion'
+          preferredAzurePowerShellVersion: ''
+          ScriptType: InlineScript
+          pwsh: true
+          inline: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'self' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
+
+            # Get Service Principal Object ID
+            $context = Get-AzContext
+            $servicePrincipalAppId = $context.Account.Id
+            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+            $servicePrincipalObjectId = $servicePrincipal.Id
+
+            # Get target files
+            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '$(modulePath)' '$(moduleTestFilePath)'
+            $targetFileList = @($moduleTestFilePath)
+
+            # Construct Token Function Input
+            $ConvertTokensInputs = @{
+                FilePathList = $targetFileList
+                Tokens       = @{}
+                TokenPrefix  = '$(tokenPrefix)'
+                TokenSuffix  = '$(tokenSuffix)'
+            }
+
+            # Add enforced tokens
+            $ConvertTokensInputs.Tokens += @{
+              resourceGroupName = '${{ parameters.resourceGroupName }}'
+              subscriptionId    = '${{ parameters.subscriptionId }}'
+              managementGroupId = '${{ parameters.managementGroupId }}'
+              tenantId          = '$(ARM_TENANT_ID)'
+              deploymentSpId    = $servicePrincipalObjectId
+            }
+
+            # Add local (source control) tokens
+            $tokenMap = @{}
+            foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+              $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+            }
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens += $tokenMap
+
+            # Swap 'namePrefix' token if empty and provided as a Azure DevOps variable
+            if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
+              Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
+              $ConvertTokensInputs.Tokens['namePrefix'] = "$(TOKEN_NAMEPREFIX)"
+            }
+
+            # Add custom tokens (passed in via the pipeline)
+            if(-not [String]::IsNullOrEmpty('${{ parameters.customParameterFileTokens }}')) {
+              $customTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+              Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
+              $ConvertTokensInputs.Tokens += $customTokens
+            }
+
+            Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
+
+            # Invoke Token Replacement Functionality [For Module]
+            $null = Convert-TokensInFileList @ConvertTokensInputs
+
+            # Get target files for modules dependencies
+            $DependencyParameterFilePaths = [System.Collections.ArrayList]@()
+            $DependencyParameterFolders = Get-ChildItem -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'self' 'utilities' 'pipelines' 'dependencies') -Recurse -Filter 'parameters' -Directory
+            foreach ($FolderPath in $DependencyParameterFolders.FullName) {
+                $DependencyParameterFilePaths += Get-ChildItem -Path $FolderPath -Recurse -Filter '*.json'
+            }
+            $ConvertTokensInputs.FilePathList = $DependencyParameterFilePaths
+
+            # Invoke Token Replacement Functionality [For Dependencies]
+            $null = Convert-TokensInFileList @ConvertTokensInputs
+
+
       # [Validation] task(s)
       #---------------------
       - ${{ if eq( parameters.whatif, true) }}:
@@ -178,7 +257,7 @@ jobs:
               $subscriptionId = '${{ parameters.subscriptionId }}'
               $managementGroupId = '${{ parameters.managementGroupId }}'
 
-              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '${{ parameters.moduleTestFilePath }}'
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
 
               # ----------- #
               # INVOKE TEST #
@@ -221,7 +300,7 @@ jobs:
               $subscriptionId = '${{ parameters.subscriptionId }}'
               $managementGroupId = '${{ parameters.managementGroupId }}'
 
-              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '${{ parameters.moduleTestFilePath }}'
+              $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'self' '$(environmentPath)' '${{ parameters.moduleTestFilePath }}'
 
               # ----------- #
               # INVOKE TEST #

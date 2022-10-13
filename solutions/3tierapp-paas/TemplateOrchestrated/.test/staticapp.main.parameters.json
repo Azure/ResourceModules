@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceGroupName": {
+            "value": "az-rg-3tierapp-01"
+        },
+        "tags": {
+            "value": {}
+        },
+        "location": {
+            "value": "northeurope"
+        },
+        "staticSiteName": {
+            "value": "az-ss-app-001"
+        },
+        "allowConfigFileUpdates": {
+            "value": true
+        },
+        "enterpriseGradeCdnStatus": {
+            "value": "Disabled"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "privateDNSResourceIds": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azurestaticapps.net"
+        },
+        "service": {
+            "value": "staticSites"
+        },
+        "subnetResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+        },
+        "principalIds": {
+            "value": "<<deploymentSpId>>"
+        },
+        "roleDefinitionIdOrName": {
+            "value": "Reader"
+        },
+        "sku": {
+            "value": "Standard"
+        },
+        "stagingEnvironmentPolicy": {
+            "value": "Enabled"
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        }
+    }
+}

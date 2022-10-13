@@ -1,0 +1,183 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceGroupName": {
+            "value": "az-rg-3tierapp-001"
+        },
+        "tags": {
+            "value": {}
+        },
+        "location": {
+            "value": "NorthEurope"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "choiceOfDatabase": {
+            "value": "All"
+        },
+        "userAssignedMIname": {
+            "value": "az-mi-3tierapp-001"
+        },
+        "keyvaultName": {
+            "value": "az-kv-3tierapp-001"
+        },
+        "enableRbacAuthorization": {
+            "value": true
+        },
+        "vaultSku": {
+            "value": "premium"
+        },
+        "keyVaultPublicNetworkAccess": {
+            "value": "Enabled"
+        },
+        "logAnalyticsWorkspaceName": {
+            "value": "az-loganalytics-3tierapp-001"
+        },
+        "publicNetworkAccessForIngestion": {
+            "value": "Enabled"
+        },
+        "publicNetworkAccessForQuery": {
+            "value": "Enabled"
+        },
+        "cosmosdbName": {
+            "value": "az-cosmosdb-3tierapp-001"
+        },
+        "locations": {
+            "value": [
+                {
+                    "locationName": "East US",
+                    "failoverPriority": 0,
+                    "isZoneRedundant": false
+                }
+            ]
+        },
+        "sqlDatabases": {
+            "value": [
+                {
+                    "name": "az-sql-x-001",
+                    "containers": [
+                        {
+                            "name": "container-001",
+                            "paths": [
+                                "/myPartitionKey"
+                            ],
+                            "kind": "Hash"
+                        }
+                    ]
+                }
+            ]
+        },
+        "capabilitiesToAdd": {
+            "value": [
+                "EnableServerless"
+            ]
+        },
+        "postgreSqlServername": {
+            "value": "az-postgresql-3tierapp-001"
+        },
+        "postgreSqlAdministratorLogin": {
+            "value": "psqladminlogin"
+        },
+        "postgreSqlAdministratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/az-rg-3tierapp-001/providers/Microsoft.KeyVault/vaults/az-kv-3tierapp-001"
+                },
+                "secretName": "psqladminlogin"
+            }
+        },
+        "postgreSqlSkuName": {
+            "value": "Standard_D2s_v3"
+        },
+        "postgreSqlTier": {
+            "value": "GeneralPurpose"
+        },
+        "postgreSqlGeoRedundantBackup": {
+            "value": "Disabled"
+        },
+        "postgreSqlStorageSizeGB": {
+            "value": 32
+        },
+        "postgreSqlDatabases": {
+            "value": [
+                {
+                    "name": "testdb1",
+                    "collation": "en_US.utf8",
+                    "charset": "UTF8"
+                }
+            ]
+        },
+        "postgreSqlFirewallRules": {
+            "value": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "endIpAddress": "0.0.0.0",
+                    "startIpAddress": "0.0.0.0"
+                }
+            ]
+        },
+        "postgreSqlAvailabilityZone": {
+            "value": "2"
+        },
+        "sqlServerName": {
+            "value": "az-sql-3tierapp-001"
+        },
+        "sqlAdministratorLogin": {
+            "value": "sqladminlogin"
+        },
+        "sqlAdministratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/az-rg-3tierapp-001/providers/Microsoft.KeyVault/vaults/az-kv-3tierapp-001"
+                },
+                "secretName": "sqladminlogin"
+            }
+        },
+        "sqlAdministrators": {
+            "value": {}
+        },
+        "sqlPublicNetworkAccess": {
+            "value": "Enabled"
+        },
+        "sqlServerDatabases": {
+            "value": [
+                {
+                    "name": "az-sqldb-3tierapp-01",
+                    "collation": "SQL_Latin1_General_CP1_CI_AS",
+                    "skuTier": "GeneralPurpose",
+                    "skuName": "GP_Gen5_2",
+                    "skuCapacity": 2,
+                    "skuFamily": "Gen5",
+                    "maxSizeBytes": 34359738368,
+                    "licenseType": "LicenseIncluded"
+                }
+            ]
+        },
+        "sqlSystemAssignedIdentity": {
+            "value": true
+        },
+        "sqlFirewallRules": {
+            "value": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "endIpAddress": "0.0.0.0",
+                    "startIpAddress": "0.0.0.0"
+                }
+            ]
+        },
+        "sqlSecurityAlertPolicies": {
+            "value": [
+                {
+                    "name": "Default",
+                    "state": "Enabled",
+                    "emailAccountAdmins": true
+                }
+            ]
+        },
+        "vulnerabilityAssessmentsObj": {
+            "value": {}
+        }
+    }
+}

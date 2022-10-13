@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentTier": {
+            "value": "web"
+        },
+        "vmLocalUserName": {
+            "value": "webtieradmin"
+        },
+        "vmLocalUserPassword": {
+            "value": "<<localUserPassword>>"
+        },
+        "subnetId": {
+            "value": "/subscriptions/<<SubscriptionName>>/resourceGroups/<<ResourceGroupName>>/providers/Microsoft.Network/virtualNetworks/<<VirtualNetworkName>>/Subnets/<<WebTierSubnetName>>"
+        },
+        "asgId": {
+            "value": "/subscriptions/<<SubscriptionID>>/resourceGroups/<<ResourceGroupName>>/providers/Microsoft.Network/applicationSecurityGroups/<<ApplicationSecurityGroupName>>"
+        }
+    }
+}

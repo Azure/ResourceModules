@@ -1,0 +1,9 @@
+variables:
+  resourceGroupName: ''
+  environmentPath: 'solutions/CoreInfra/HubAndSpoke/TemplateOrchestrated'
+  location: 'northeurope'
+  vmImage: 'ubuntu-latest'
+  poolName: ''
+  serviceConnection: 'CARML-Hack5'
+  subscriptionId: 'be5ec5d6-8bcf-4049-8a47-1beb59796b15'
+  managementGroupId: ''

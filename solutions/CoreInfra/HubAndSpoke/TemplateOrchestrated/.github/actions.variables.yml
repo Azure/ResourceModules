@@ -1,0 +1,8 @@
+variables:
+  resourceGroupName: 'solutions-ne-rg'
+  environmentPath: 'solutions/CoreInfra/HubAndSpoke/TemplateOrchestrated'
+  location: 'northeurope'
+  vmImage: 'ubuntu-latest'
+  poolName: ''
+  tokenPrefix: '<<'
+  tokenSuffix: '>>'

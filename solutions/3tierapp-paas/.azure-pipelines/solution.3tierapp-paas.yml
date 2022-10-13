@@ -1,0 +1,42 @@
+name: 'Solutions - 3TierApp - PaaS'
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - solutions/3tierapp-paas*
+
+variables:
+  - template: /settings.yml
+  - template: pipeline.variables.yml
+
+stages:
+  - stage:
+    displayName: WhatIf
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Resource Group'
+          modulePath: 'solutions/3tierapp-paas/TemplateOrchestrated/main.bicep'
+          moduleTestFilePath: 'TemplateOrchestrated/.test/main.parameters.json'
+          whatif: true
+          checkoutRepositories:
+            - self
+
+  - stage:
+    displayName: Deploy
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.solutionDeployment.yml
+        parameters:
+          jobName: resourceGroups
+          displayName: 'Resource Group'
+          modulePath: 'solutions/3tierapp-paas/TemplateOrchestrated/main.bicep'
+          moduleTestFilePath: 'TemplateOrchestrated/.test/main.parameters.json'
+          checkoutRepositories:
+            - self

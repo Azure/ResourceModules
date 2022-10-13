@@ -1,0 +1,221 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "dataFacingResourceGroupName": {
+            "value": "az-rg-hack-data-001"
+        },
+        "tags": {
+            "value": {}
+        },
+        "location": {
+            "value": "eastus"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "deploymentsToPerformFrontFacingLayer": {
+            "value": "Enable Web Static App"
+        },
+        "deploymentsToPerformDatabaseLayer": {
+            "value": "All"
+        },
+        "deploymentsToPerformApplicationLayer": {
+            "value": "All"
+        },
+        "userAssignedMIname": {
+            "value": "az-mi-hack-001"
+        },
+        "keyvaultName": {
+            "value": "azkvhack"
+        },
+        "enableRbacAuthorization": {
+            "value": true
+        },
+        "vaultSku": {
+            "value": "premium"
+        },
+        "keyVaultPublicNetworkAccess": {
+            "value": "Enabled"
+        },
+        "logAnalyticsWorkspaceName": {
+            "value": "az-law-hack-001"
+        },
+        "publicNetworkAccessForIngestion": {
+            "value": "Enabled"
+        },
+        "publicNetworkAccessForQuery": {
+            "value": "Enabled"
+        },
+        "cosmosdbName": {
+            "value": "az-cosmosdb-hack-001"
+        },
+        "locations": {
+            "value": [
+                {
+                    "locationName": "East US",
+                    "failoverPriority": 0,
+                    "isZoneRedundant": false
+                }
+            ]
+        },
+        "sqlDatabases": {
+            "value": [
+                {
+                    "name": "az-sql-hack-001",
+                    "containers": [
+                        {
+                            "name": "container-001",
+                            "paths": [
+                                "/myPartitionKey"
+                            ],
+                            "kind": "Hash"
+                        }
+                    ]
+                }
+            ]
+        },
+        "capabilitiesToAdd": {
+            "value": [
+                "EnableServerless"
+            ]
+        },
+        "postgreSqlServername": {
+            "value": "az-psql-hack-001"
+        },
+        "postgreSqlAdministratorLogin": {
+            "value": "psqladminlogin"
+        },
+        "postgreSqlSkuName": {
+            "value": "Standard_D2s_v3"
+        },
+        "postgreSqlTier": {
+            "value": "GeneralPurpose"
+        },
+        "postgreSqlGeoRedundantBackup": {
+            "value": "Disabled"
+        },
+        "postgreSqlStorageSizeGB": {
+            "value": 32
+        },
+        "postgreSqlDatabases": {
+            "value": [
+                {
+                    "name": "testdb1",
+                    "collation": "en_US.utf8",
+                    "charset": "UTF8"
+                }
+            ]
+        },
+        "postgreSqlFirewallRules": {
+            "value": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "endIpAddress": "0.0.0.0",
+                    "startIpAddress": "0.0.0.0"
+                }
+            ]
+        },
+        "postgreSqlAvailabilityZone": {
+            "value": "2"
+        },
+        "sqlServerName": {
+            "value": "az-sql-hack-001"
+        },
+        "sqlAdministratorLogin": {
+            "value": "sqladminlogin"
+        },
+        "sqlAdministrators": {
+            "value": {}
+        },
+        "sqlPublicNetworkAccess": {
+            "value": "Enabled"
+        },
+        "sqlServerDatabases": {
+            "value": [
+                {
+                    "name": "az-sqldb-3tierapp-01",
+                    "collation": "SQL_Latin1_General_CP1_CI_AS",
+                    "skuTier": "GeneralPurpose",
+                    "skuName": "GP_Gen5_2",
+                    "skuCapacity": 2,
+                    "skuFamily": "Gen5",
+                    "maxSizeBytes": 34359738368,
+                    "licenseType": "LicenseIncluded"
+                }
+            ]
+        },
+        "sqlSystemAssignedIdentity": {
+            "value": true
+        },
+        "sqlFirewallRules": {
+            "value": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "endIpAddress": "0.0.0.0",
+                    "startIpAddress": "0.0.0.0"
+                }
+            ]
+        },
+        "sqlSecurityAlertPolicies": {
+            "value": [
+                {
+                    "name": "Default",
+                    "state": "Enabled",
+                    "emailAccountAdmins": true
+                }
+            ]
+        },
+        "vulnerabilityAssessmentsObj": {
+            "value": {}
+        },
+        "frontFacingResourceGroupName": {
+            "value": "az-rg-hack-front-001"
+        },
+        "staticSiteName": {
+            "value": "az-ss-hack-001"
+        },
+        "allowConfigFileUpdates": {
+            "value": true
+        },
+        "enterpriseGradeCdnStatus": {
+            "value": "Disabled"
+        },
+        "service": {
+            "value": "staticSites"
+        },
+        "sku": {
+            "value": "Standard"
+        },
+        "stagingEnvironmentPolicy": {
+            "value": "Enabled"
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "appFacingResourceGroupName": {
+            "value": "az-rg-hack-app-001"
+        },
+        "containerGroupName": {
+            "value": "az-acg-hack-001"
+        },
+        "containerName": {
+            "value": "az-aci-hack-001"
+        },
+        "image": {
+            "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
+        },
+        "containerPorts": {
+            "value": [
+                {
+                    "protocol": "Tcp",
+                    "port": "80"
+                },
+                {
+                    "protocol": "Tcp",
+                    "port": "443"
+                }
+            ]
+        }
+    }
+}
