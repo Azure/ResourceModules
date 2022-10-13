@@ -65,7 +65,6 @@ module testDeployment '../../deploy.bicep' = {
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     location: location
-    minimalTlsVersion: '1.2'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
