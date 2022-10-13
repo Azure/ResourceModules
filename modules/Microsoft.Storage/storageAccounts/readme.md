@@ -394,10 +394,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-stsacom'
+  name: '${uniqueString(deployment().name)}-test-stscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>stsacom001'
+    name: '<<namePrefix>>stscom001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -557,7 +557,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>stsacom001"
+      "value": "<<namePrefix>>stscom001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -751,10 +751,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-stsaencr'
+  name: '${uniqueString(deployment().name)}-test-stsencr'
   params: {
     // Required parameters
-    name: '<<namePrefix>>stsaencr001'
+    name: '<<namePrefix>>stsencr001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -803,7 +803,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>stsaencr001"
+      "value": "<<namePrefix>>stsencr001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -870,10 +870,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-stsamin'
+  name: '${uniqueString(deployment().name)}-test-stsmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>stsamin001'
+    name: '<<namePrefix>>stsmin001'
     // Non-required parameters
     allowBlobPublicAccess: false
   }
@@ -894,7 +894,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>stsamin001"
+      "value": "<<namePrefix>>stsmin001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -915,10 +915,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-stsanfs'
+  name: '${uniqueString(deployment().name)}-test-stsnfs'
   params: {
     // Required parameters
-    name: '<<namePrefix>>stsanfs001'
+    name: '<<namePrefix>>stsnfs001'
     // Non-required parameters
     allowBlobPublicAccess: false
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -968,7 +968,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>stsanfs001"
+      "value": "<<namePrefix>>stsnfs001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -1044,10 +1044,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-stsav1'
+  name: '${uniqueString(deployment().name)}-test-stsv1'
   params: {
     // Required parameters
-    name: '<<namePrefix>>stsav1001'
+    name: '<<namePrefix>>stsv1001'
     // Non-required parameters
     allowBlobPublicAccess: false
     storageAccountKind: 'Storage'
@@ -1069,7 +1069,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>stsav1001"
+      "value": "<<namePrefix>>stsv1001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
