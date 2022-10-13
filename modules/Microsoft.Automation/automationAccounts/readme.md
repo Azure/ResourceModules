@@ -793,7 +793,6 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    publicNetworkAccess: 'Enabled'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -826,9 +825,6 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     },
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
     },
     "userAssignedIdentities": {
       "value": {

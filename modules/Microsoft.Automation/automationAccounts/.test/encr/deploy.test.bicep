@@ -49,7 +49,6 @@ module testDeployment '../../deploy.bicep' = {
     cMKKeyName: resourceGroupResources.outputs.keyVaultEncryptionKeyName
     cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
     cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
-    publicNetworkAccess: 'Enabled'
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
