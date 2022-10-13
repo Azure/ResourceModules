@@ -388,7 +388,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -396,7 +396,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-MetricAlerts'
+  name: '${uniqueString(deployment().name)}-test-imacom'
   params: {
     // Required parameters
     criterias: [
@@ -410,16 +410,16 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
         timeAggregation: 'Average'
       }
     ]
-    name: '<<namePrefix>>-az-ma-x-001'
+    name: '<<namePrefix>>imacom001'
     // Non-required parameters
     actions: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
+      '<actionGroupResourceId>'
     ]
     alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -458,12 +458,12 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-ma-x-001"
+      "value": "<<namePrefix>>imacom001"
     },
     // Non-required parameters
     "actions": {
       "value": [
-        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
+        "<actionGroupResourceId>"
       ]
     },
     "alertCriteriaType": {
@@ -473,7 +473,7 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }

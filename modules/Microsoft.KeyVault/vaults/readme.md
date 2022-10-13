@@ -58,7 +58,7 @@ This module deploys a key vault and its child resources.
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `secrets` | secureObject | `{object}` |  | All secrets to create. |
 | `softDeleteRetentionInDays` | int | `90` |  | softDelete data retention days. It accepts >=7 and <=90. |
@@ -179,10 +179,15 @@ tags: {
         "defaultAction": "Deny",
         "virtualNetworkRules": [
             {
-                "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+                "ignoreMissingVnetServiceEndpoint": false
             }
         ],
-        "ipRules": []
+        "ipRules": [
+            {
+                "value": "40.74.28.0/23"
+            }
+        ]
     }
 }
 ```
@@ -199,36 +204,16 @@ networkAcls: {
     defaultAction: 'Deny'
     virtualNetworkRules: [
         {
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+            ignoreMissingVnetServiceEndpoint: false
         }
     ]
-    ipRules: []
+    ipRules: [
+        {
+            value: '40.74.28.0/23'
+        }
+    ]
 }
-```
-
-</details>
-<p>
-
-### Parameter Usage: `vNetId`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"vNetId": {
-    "value": "/subscriptions/00000000/resourceGroups/resourceGroup"
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-vNetId: '/subscriptions/00000000/resourceGroups/resourceGroup'
 ```
 
 </details>
@@ -348,7 +333,7 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
@@ -464,11 +449,15 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
-      ipRules: []
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
       virtualNetworkRules: [
         {
-          action: 'Allow'
           id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
         }
       ]
     }
@@ -511,6 +500,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       ]
     }
     softDeleteRetentionInDays: 7
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -603,11 +596,15 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       "value": {
         "bypass": "AzureServices",
         "defaultAction": "Deny",
-        "ipRules": [],
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
         "virtualNetworkRules": [
           {
-            "action": "Allow",
-            "id": "<id>"
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
           }
         ]
       }
@@ -658,6 +655,12 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     },
     "softDeleteRetentionInDays": {
       "value": 7
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -695,6 +698,81 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "parameters": {
     "name": {
       "value": "<<namePrefix>>kvvmin001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Pe</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-kvvpe'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>kvvpe001'
+    // Non-required parameters
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+        }
+        service: 'vault'
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>kvvpe001"
+    },
+    // Non-required parameters
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
+          "service": "vault",
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

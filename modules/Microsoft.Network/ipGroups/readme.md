@@ -158,7 +158,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -166,10 +166,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-IpGroups'
+  name: '${uniqueString(deployment().name)}-test-nigcom'
   params: {
     // Required parameters
-    name: 'iacsGroup-servers'
+    name: '<<namePrefix>>nigcom001'
     // Non-required parameters
     ipAddresses: [
       '10.0.0.1'
@@ -179,7 +179,7 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -202,7 +202,7 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "iacsGroup-servers"
+      "value": "<<namePrefix>>nigcom001"
     },
     // Non-required parameters
     "ipAddresses": {
@@ -218,11 +218,48 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nigmin'
+  params: {
+    name: '<<namePrefix>>nigmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>nigmin001"
     }
   }
 }

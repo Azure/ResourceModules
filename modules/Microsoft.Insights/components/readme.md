@@ -162,7 +162,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -170,16 +170,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module components './Microsoft.Insights/components/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Components'
+  name: '${uniqueString(deployment().name)}-test-iccom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-appi-x-001'
-    workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-appi-001'
+    name: '<<namePrefix>>iccom001'
+    workspaceResourceId: '<workspaceResourceId>'
     // Non-required parameters
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -202,21 +202,64 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-appi-x-001"
+      "value": "<<namePrefix>>iccom001"
     },
     "workspaceResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-appi-001"
+      "value": "<workspaceResourceId>"
     },
     // Non-required parameters
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module components './Microsoft.Insights/components/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-icmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>icmin001'
+    workspaceResourceId: '<workspaceResourceId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>icmin001"
+    },
+    "workspaceResourceId": {
+      "value": "<workspaceResourceId>"
     }
   }
 }

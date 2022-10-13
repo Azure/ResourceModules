@@ -23,6 +23,7 @@ This module deploys a scheduled query rule.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `criterias` | object | The rule criteria that defines the conditions of the scheduled query rule. |
 | `name` | string | The name of the Alert. |
 | `scopes` | array | The list of resource IDs that this scheduled query rule is scoped to. |
 
@@ -33,7 +34,6 @@ This module deploys a scheduled query rule.
 | `actions` | array | `[]` |  | Actions to invoke when the alert fires. |
 | `alertDescription` | string | `''` |  | The description of the scheduled query rule. |
 | `autoMitigate` | bool | `True` |  | The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert. |
-| `criterias` | object | `{object}` |  | The rule criteria that defines the conditions of the scheduled query rule. |
 | `enabled` | bool | `True` |  | The flag which indicates whether this scheduled query rule is enabled. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `evaluationFrequency` | string | `''` |  | How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
@@ -169,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -177,13 +177,9 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ScheduledQueryRules'
+  name: '${uniqueString(deployment().name)}-test-isqrcom'
   params: {
     // Required parameters
-    name: 'myAlert01'
-    // Non-required parameters
-    alertDescription: 'My sample Alert'
-    autoMitigate: false
     criterias: {
       allOf: [
         {
@@ -205,24 +201,28 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
           ]
           metricMeasureColumn: 'AggregatedValue'
           operator: 'GreaterThan'
-          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+          query: '<query>'
           threshold: 0
           timeAggregation: 'Average'
         }
       ]
     }
+    name: '<<namePrefix>>isqrcom001'
+    scopes: [
+      '<logAnalyticsWorkspaceResourceId>'
+    ]
+    // Non-required parameters
+    alertDescription: 'My sample Alert'
+    autoMitigate: false
     evaluationFrequency: 'PT5M'
     queryTimeRange: 'PT5M'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
-    ]
-    scopes: [
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     ]
     suppressForMinutes: 'PT5M'
     windowSize: 'PT5M'
@@ -243,16 +243,6 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "name": {
-      "value": "myAlert01"
-    },
-    // Non-required parameters
-    "alertDescription": {
-      "value": "My sample Alert"
-    },
-    "autoMitigate": {
-      "value": false
-    },
     "criterias": {
       "value": {
         "allOf": [
@@ -275,12 +265,27 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
             ],
             "metricMeasureColumn": "AggregatedValue",
             "operator": "GreaterThan",
-            "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
+            "query": "<query>",
             "threshold": 0,
             "timeAggregation": "Average"
           }
         ]
       }
+    },
+    "name": {
+      "value": "<<namePrefix>>isqrcom001"
+    },
+    "scopes": {
+      "value": [
+        "<logAnalyticsWorkspaceResourceId>"
+      ]
+    },
+    // Non-required parameters
+    "alertDescription": {
+      "value": "My sample Alert"
+    },
+    "autoMitigate": {
+      "value": false
     },
     "evaluationFrequency": {
       "value": "PT5M"
@@ -292,15 +297,10 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
-      ]
-    },
-    "scopes": {
-      "value": [
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
       ]
     },
     "suppressForMinutes": {
