@@ -253,10 +253,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-splhmin'
+  name: '${uniqueString(deployment().name)}-test-splhcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>splhmin001'
+    name: '<<namePrefix>>splhcom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     privateEndpoints: [
@@ -302,7 +302,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>splhmin001"
+      "value": "<<namePrefix>>splhcom001"
     },
     // Non-required parameters
     "lock": {
