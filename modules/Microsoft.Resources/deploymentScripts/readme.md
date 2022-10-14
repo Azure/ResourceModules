@@ -167,7 +167,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     // Required parameters
     name: '<<namePrefix>>rdscli001'
     // Non-required parameters
-    azCliVersion: '2.41.0'
+    azCliVersion: '2.40.0'
     cleanupPreference: 'Always'
     kind: 'AzureCLI'
     retentionInterval: 'P1D'
@@ -199,7 +199,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     },
     // Non-required parameters
     "azCliVersion": {
-      "value": "2.41.0"
+      "value": "2.40.0"
     },
     "cleanupPreference": {
       "value": "Always"
