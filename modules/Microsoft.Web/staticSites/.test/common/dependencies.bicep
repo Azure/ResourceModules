@@ -7,6 +7,12 @@ param virtualNetworkName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+@description('Required. The name of the Function App to create.')
+param siteName string
+
+@description('Required. The name of the Server Farm to create.')
+param serverFarmName string
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
     location: location
@@ -48,6 +54,28 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
     location: location
 }
 
+resource serverFarm 'Microsoft.Web/serverfarms@2022-03-01' = {
+    name: serverFarmName
+    location: location
+    sku: {
+        name: 'S1'
+        tier: 'Standard'
+        size: 'S1'
+        family: 'S'
+        capacity: 1
+    }
+    properties: {}
+}
+
+resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
+    name: siteName
+    location: location
+    kind: 'functionapp'
+    properties: {
+        serverFarmId: serverFarm.id
+    }
+}
+
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
@@ -57,5 +85,8 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
 
-@description('The resource ID of the created private DNS zone.')
+@description('The resource ID of the created Private DNS zone.')
 output privateDNSZoneResourceId string = privateDNSZone.id
+
+@description('The resource ID of the created Function App.')
+output siteResourceId string = functionApp.id

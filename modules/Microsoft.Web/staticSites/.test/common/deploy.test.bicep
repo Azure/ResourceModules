@@ -30,6 +30,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    siteName: 'dep-<<namePrefix>>-fa-${serviceShort}'
+    serverFarmName: 'dep-<<namePrefix>>-sf-${serviceShort}'
   }
 }
 
@@ -69,6 +71,17 @@ module testDeployment '../../deploy.bicep' = {
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+    }
+    appSettings: {
+      foo: 'bar'
+      setting: 1
+    }
+    functionAppSettings: {
+      foo: 'bar'
+      setting: 1
+    }
+    linkedBackend: {
+      resourceId: resourceGroupResources.outputs.siteResourceId
     }
   }
 }

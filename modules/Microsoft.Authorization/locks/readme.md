@@ -54,7 +54,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Rg</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -62,13 +62,13 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module locks './Microsoft.Authorization/locks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Locks'
+  name: '${uniqueString(deployment().name)}-test-alcom'
   params: {
     // Required parameters
     level: 'CanNotDelete'
     // Non-required parameters
-    resourceGroupName: 'adp-<<namePrefix>>-az-locks-rg-001'
-    subscriptionId: '<<subscriptionId>>'
+    resourceGroupName: '<resourceGroupName>'
+    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -91,10 +91,10 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
     },
     // Non-required parameters
     "resourceGroupName": {
-      "value": "adp-<<namePrefix>>-az-locks-rg-001"
+      "value": "<resourceGroupName>"
     },
     "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "<subscriptionId>"
     }
   }
 }
