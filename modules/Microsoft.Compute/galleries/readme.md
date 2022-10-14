@@ -238,7 +238,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     // Non-required parameters
     images: [
       {
-        name: '<<namePrefix>>-az-imgd-x-003'
+        name: '<<namePrefix>>-cgimages-imgd-001'
       }
       {
         hyperVGeneration: 'V1'
@@ -299,7 +299,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     "images": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-imgd-x-003"
+          "name": "<<namePrefix>>-cgimages-imgd-001"
         },
         {
           "hyperVGeneration": "V1",
