@@ -1,25 +1,11 @@
 @description('Required. Name for the container group.')
 param name string
 
-@description('Required. Name for the container.')
-param containername string
+@description('Required. The containers and their respective config within the container group.')
+param containers array
 
-@description('Required. Name of the image.')
-param image string
-
-@description('Optional. Port to open on the container and the public IP address.')
-param ports array = [
-  {
-    protocol: 'TCP'
-    port: '443'
-  }
-]
-
-@description('Optional. The number of CPU cores to allocate to the container.')
-param cpuCores int = 2
-
-@description('Optional. The amount of memory to allocate to the container in gigabytes.')
-param memoryInGB int = 2
+@description('Optional. Ports to open on the public IP address. Must include all ports assigned on container level.')
+param ipAddressPorts array = []
 
 @description('Optional. The operating system type required by the containers in the container group. - Windows or Linux.')
 param osType string = 'Linux'
@@ -32,9 +18,6 @@ param ipAddressType string = 'Public'
 
 @description('Optional. The image registry credentials by which the container group is created from.')
 param imageRegistryCredentials array = []
-
-@description('Optional. Environment variables of the container group.')
-param environmentVariables array = []
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -84,29 +67,13 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01'
   identity: identity
   tags: tags
   properties: {
-    containers: [
-      {
-        name: containername
-        properties: {
-          command: []
-          image: image
-          ports: ports
-          resources: {
-            requests: {
-              cpu: cpuCores
-              memoryInGB: memoryInGB
-            }
-          }
-          environmentVariables: environmentVariables
-        }
-      }
-    ]
+    containers: containers
     imageRegistryCredentials: imageRegistryCredentials
     restartPolicy: restartPolicy
     osType: osType
     ipAddress: {
       type: ipAddressType
-      ports: ports
+      ports: ipAddressPorts
     }
   }
 }

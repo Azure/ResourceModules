@@ -18,12 +18,14 @@ With this module you can create policy exemptions on a management group level.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy exemption. Maximum length is 64 characters for management group scope. |
 | `policyAssignmentId` | string | The resource ID of the policy assignment that is being exempted. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string | `''` |  | The description of the policy exemption. |

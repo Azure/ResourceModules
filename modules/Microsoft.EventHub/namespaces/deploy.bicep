@@ -1,6 +1,6 @@
-@description('Optional. The name of the event hub namespace. If no name is provided, then unique name will be created.')
+@description('Required. The name of the event hub namespace.')
 @maxLength(50)
-param name string = ''
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -124,8 +124,6 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var uniqueEventHubNamespace = 'evhns-${uniqueString(resourceGroup().id)}'
-var name_var = empty(name) ? uniqueEventHubNamespace : name
 var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
@@ -172,7 +170,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
-  name: name_var
+  name: name
   location: location
   tags: tags
   identity: identity

@@ -52,11 +52,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing = {
+resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' existing = {
   name: registryName
 }
 
-resource webhook 'Microsoft.ContainerRegistry/registries/webhooks@2021-12-01-preview' = {
+resource webhook 'Microsoft.ContainerRegistry/registries/webhooks@2022-02-01-preview' = {
   name: name
   parent: registry
   location: location

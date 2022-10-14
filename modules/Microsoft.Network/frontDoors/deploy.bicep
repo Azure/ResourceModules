@@ -23,14 +23,15 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. Backend address pool of the frontdoor resource.')
-param backendPools array = []
+@description('Required. Backend address pool of the frontdoor resource.')
+param backendPools array
 
 @description('Optional. Enforce certificate name check of the frontdoor resource.')
 param enforceCertificateNameCheck string = 'Disabled'
 
 @description('Optional. Certificate name check time of the frontdoor resource.')
-param sendRecvTimeoutSeconds int = 600
+@maxValue(240)
+param sendRecvTimeoutSeconds int = 240
 
 @description('Optional. State of the frontdoor resource.')
 param enabledState string = 'Enabled'
@@ -38,17 +39,17 @@ param enabledState string = 'Enabled'
 @description('Optional. Friendly name of the frontdoor resource.')
 param friendlyName string = ''
 
-@description('Optional. Frontend endpoints of the frontdoor resource.')
-param frontendEndpoints array = []
+@description('Required. Frontend endpoints of the frontdoor resource.')
+param frontendEndpoints array
 
-@description('Optional. Heath probe settings of the frontdoor resource.')
-param healthProbeSettings array = []
+@description('Required. Heath probe settings of the frontdoor resource.')
+param healthProbeSettings array
 
-@description('Optional. Load balancing settings of the frontdoor resource.')
-param loadBalancingSettings array = []
+@description('Required. Load balancing settings of the frontdoor resource.')
+param loadBalancingSettings array
 
-@description('Optional. Routing rules settings of the frontdoor resource.')
-param routingRules array = []
+@description('Required. Routing rules settings of the frontdoor resource.')
+param routingRules array
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)

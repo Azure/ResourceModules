@@ -342,8 +342,13 @@ Describe 'Readme tests' -Tag Readme {
                 $expectedColumnsInOrder += @('Description')
 
                 $readMeCategoryIndex = $readMeContent | Select-String -Pattern "^\*\*$paramCategory parameters\*\*$" | ForEach-Object { $_.LineNumber }
-                $readmeCategoryColumns = ($readMeContent[$readMeCategoryIndex] -split '\|') | ForEach-Object { $_.Trim() } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
+                $tableStartIndex = $readMeCategoryIndex
+                while ($readMeContent[$tableStartIndex] -notlike '*|*' -and -not ($tableStartIndex -ge $readMeContent.count)) {
+                    $tableStartIndex++
+                }
+
+                $readmeCategoryColumns = ($readMeContent[$tableStartIndex] -split '\|') | ForEach-Object { $_.Trim() } | Where-Object { -not [String]::IsNullOrEmpty($_) }
                 $readmeCategoryColumns | Should -Be $expectedColumnsInOrder
             }
         }
@@ -725,7 +730,7 @@ Describe 'Deployment template tests' -Tag Template {
                         $deploymentTestFile_AllParameterNames = $rawContentHashtable.parameters.Keys | Sort-Object
                     } else {
                         $deploymentFileContent = az bicep build --file $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
-                        $deploymentTestFile_AllParameterNames = $deploymentFileContent.resources[-1].properties.parameters.keys | Sort-Object # The last resource should be the test
+                        $deploymentTestFile_AllParameterNames = $deploymentFileContent.resources[-1].properties.parameters.Keys | Sort-Object # The last resource should be the test
                     }
                     $testFileTestCases += @{
                         testFile_Path                        = $moduleTestFilePath
