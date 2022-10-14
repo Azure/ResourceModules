@@ -567,7 +567,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddagrm001'
+    name: '<<namePrefix>>dddagrm002'
     // Non-required parameters
     capabilitiesToAdd: [
       'EnableGremlin'
@@ -659,7 +659,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddagrm001"
+      "value": "<<namePrefix>>dddagrm002"
     },
     // Non-required parameters
     "capabilitiesToAdd": {
