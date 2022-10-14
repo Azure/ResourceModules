@@ -30,7 +30,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    subnetName: 'dep-<<namePrefix>>-subnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
