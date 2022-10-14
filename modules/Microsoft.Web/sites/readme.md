@@ -413,7 +413,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Fa</h3>
+<h3>Example 1: Functionappcommon</h3>
 
 <details>
 
@@ -421,11 +421,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wsfa'
+  name: '${uniqueString(deployment().name)}-test-wsfacom'
   params: {
     // Required parameters
     kind: 'functionapp'
-    name: '<<namePrefix>>wsfa001'
+    name: '<<namePrefix>>wsfacom001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
     appInsightId: '<appInsightId>'
@@ -553,7 +553,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "functionapp"
     },
     "name": {
-      "value": "<<namePrefix>>wsfa001"
+      "value": "<<namePrefix>>wsfacom001"
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
@@ -702,7 +702,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Fa.Min</h3>
+<h3>Example 2: Functionappmin</h3>
 
 <details>
 
@@ -759,7 +759,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Wa</h3>
+<h3>Example 3: Webappcommon</h3>
 
 <details>
 
@@ -906,7 +906,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Wa.Min</h3>
+<h3>Example 4: Webappmin</h3>
 
 <details>
 
