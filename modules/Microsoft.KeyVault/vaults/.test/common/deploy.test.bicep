@@ -161,5 +161,9 @@ module testDeployment '../../deploy.bicep' = {
       ]
     }
     softDeleteRetentionInDays: 7
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

@@ -350,17 +350,17 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Servers'
+  name: '${uniqueString(deployment().name)}-test-sqlsadmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-sqlsrv-admin-001'
+    name: '<<namePrefix>>-sqlsadmin'
     // Non-required parameters
     administrators: {
       azureADOnlyAuthentication: true
       login: 'myspn'
       principalType: 'Application'
-      sid: '<<deploymentSpId>>'
-      tenantId: '<<tenantId>>'
+      sid: '<sid>'
+      tenantId: '<tenantId>'
     }
   }
 }
@@ -380,7 +380,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-sqlsrv-admin-001"
+      "value": "<<namePrefix>>-sqlsadmin"
     },
     // Non-required parameters
     "administrators": {
@@ -388,8 +388,8 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         "azureADOnlyAuthentication": true,
         "login": "myspn",
         "principalType": "Application",
-        "sid": "<<deploymentSpId>>",
-        "tenantId": "<<tenantId>>"
+        "sid": "<sid>",
+        "tenantId": "<tenantId>"
       }
     }
   }
@@ -399,37 +399,32 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Parameters</h3>
+<h3>Example 2: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','<<resourceGroupName>>')
-}
-
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Servers'
+  name: '${uniqueString(deployment().name)}-test-sqlscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-sqlsrv-x-001'
+    name: '<<namePrefix>>-sqlscom'
     // Non-required parameters
     administratorLogin: 'adminUserName'
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
+    administratorLoginPassword: '<administratorLoginPassword>'
     databases: [
       {
         collation: 'SQL_Latin1_General_CP1_CI_AS'
-        diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-        diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+        diagnosticEventHubName: '<diagnosticEventHubName>'
         diagnosticLogsRetentionInDays: 7
-        diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-        diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: '<<namePrefix>>-az-sqldb-x-001'
+        name: '<<namePrefix>>-sqlscomdb-001'
         skuCapacity: 12
         skuFamily: 'Gen5'
         skuName: 'BC_Gen5'
@@ -443,24 +438,23 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         startIpAddress: '0.0.0.0'
       }
     ]
-    location: 'westeurope'
+    location: '<location>'
     lock: 'CanNotDelete'
-    minimalTlsVersion: '1.2'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net'
+            '<privateDNSResourceId>'
           ]
         }
         service: 'sqlServer'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -474,13 +468,13 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentitResourceId>': {}
     }
     virtualNetworkRules: [
       {
         ignoreMissingVnetServiceEndpoint: true
         name: 'newVnetRule1'
-        virtualNetworkSubnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+        virtualNetworkSubnetId: '<virtualNetworkSubnetId>'
       }
     ]
     vulnerabilityAssessmentsObj: {
@@ -491,7 +485,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         'test2@contoso.com'
       ]
       recurringScansIsEnabled: true
-      vulnerabilityAssessmentsStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
     }
   }
 }
@@ -511,32 +505,27 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-sqlsrv-x-001"
+      "value": "<<namePrefix>>-sqlscom"
     },
     // Non-required parameters
     "administratorLogin": {
       "value": "adminUserName"
     },
     "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
+      "value": "<administratorLoginPassword>"
     },
     "databases": {
       "value": [
         {
           "collation": "SQL_Latin1_General_CP1_CI_AS",
-          "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-          "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001",
+          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+          "diagnosticEventHubName": "<diagnosticEventHubName>",
           "diagnosticLogsRetentionInDays": 7,
-          "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
-          "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "<<namePrefix>>-az-sqldb-x-001",
+          "name": "<<namePrefix>>-sqlscomdb-001",
           "skuCapacity": 12,
           "skuFamily": "Gen5",
           "skuName": "BC_Gen5",
@@ -554,24 +543,21 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       ]
     },
     "location": {
-      "value": "westeurope"
+      "value": "<location>"
     },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "minimalTlsVersion": {
-      "value": "1.2"
     },
     "privateEndpoints": {
       "value": [
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"
+              "<privateDNSResourceId>"
             ]
           },
           "service": "sqlServer",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -579,7 +565,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -599,7 +585,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentitResourceId>": {}
       }
     },
     "virtualNetworkRules": {
@@ -607,7 +593,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         {
           "ignoreMissingVnetServiceEndpoint": true,
           "name": "newVnetRule1",
-          "virtualNetworkSubnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+          "virtualNetworkSubnetId": "<virtualNetworkSubnetId>"
         }
       ]
     },
@@ -620,7 +606,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "test2@contoso.com"
         ],
         "recurringScansIsEnabled": true,
-        "vulnerabilityAssessmentsStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
       }
     }
   }
@@ -637,28 +623,23 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','<<resourceGroupName>>')
-}
-
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Servers'
+  name: '${uniqueString(deployment().name)}-test-sqlspe'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-sqlsrv-pe-001'
+    name: '<<namePrefix>>-sqlspe'
     // Non-required parameters
     administratorLogin: 'adminUserName'
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
+    administratorLoginPassword: '<administratorLoginPassword>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net'
+            '<privateDNSResourceId>'
           ]
         }
         service: 'sqlServer'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
   }
@@ -679,30 +660,25 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-sqlsrv-pe-001"
+      "value": "<<namePrefix>>-sqlspe"
     },
     // Non-required parameters
     "administratorLogin": {
       "value": "adminUserName"
     },
     "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
+      "value": "<administratorLoginPassword>"
     },
     "privateEndpoints": {
       "value": [
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"
+              "<privateDNSResourceId>"
             ]
           },
           "service": "sqlServer",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     }
