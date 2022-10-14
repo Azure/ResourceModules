@@ -43,7 +43,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     images: [
       {
-        name: '<<namePrefix>>-az-imgd-x-003'
+        name: '<<namePrefix>>-${serviceShort}-imgd-001'
       }
       {
         hyperVGeneration: 'V1'
