@@ -29,7 +29,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
-    automationAccountName: 'dep<<namePrefix>>aa${serviceShort}'
+    automationAccountName: 'dep-<<namePrefix>>-auto-${serviceShort}'
   }
 }
 
