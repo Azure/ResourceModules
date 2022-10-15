@@ -20,12 +20,29 @@ To use Private Endpoint the following dependencies must be deployed:
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
-            "customDnsConfigs": [ // Optional
+            // Optional
+            "customNetworkInterfaceName": "sxx-az-pe-nic", // Optional: Default NIC name with a GUID will be generated if one is not provided here
+            "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",
                     "ipAddresses": [
                         "10.10.10.10"
                     ]
+                }
+            ],
+            "ipConfigurations": [
+                {
+                    "name": "myIPconfig",
+                    "properties": {
+                        "memberName": "<memberName>", // e.g. default, sites, blob
+                        "groupId": "<groupId>", // e.g. vault, registry, blob
+                        "privateIPAddress": "10.10.10.10"
+                    }
+                }
+            ],
+            "applicationSecurityGroups" : [
+                {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/sxx-az-asg-x-001"
                 }
             ]
         },
@@ -57,12 +74,28 @@ privateEndpoints:  [
             ]
         }
         // Optional
+        customNetworkInterfaceName: 'sxx-az-pe-nic', // Optional: Default NIC name with a GUID will be generated if one is not provided here
         customDnsConfigs: [
             {
                 fqdn: 'customname.test.local'
                 ipAddresses: [
                     '10.10.10.10'
                 ]
+            }
+        ]
+        ipConfigurations: [
+            {
+                name: 'myIPconfig'
+                properties: {
+                    memberName: '<memberName>' // e.g. default, sites, blob
+                    groupId: '<groupId>' // e.g. vault, registry, blob
+                    privateIPAddress: '10.10.10.10'
+                }
+            }
+        ]
+        applicationSecurityGroups: [
+            {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/sxx-az-asg-x-001'
             }
         ]
     }

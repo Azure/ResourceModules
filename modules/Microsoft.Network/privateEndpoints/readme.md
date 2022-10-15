@@ -298,10 +298,12 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     customNetworkInterfaceName: '<<namePrefix>>npecom001nic'
     ipConfigurations: [
       {
-        groupId: 'vault'
-        memberName: 'vault'
         name: 'myIPconfig'
-        privateIPAddress: '10.0.0.10'
+        properties: {
+          groupId: 'vault'
+          memberName: 'default'
+          privateIPAddress: '10.0.0.10'
+        }
       }
     ]
     lock: 'CanNotDelete'
@@ -363,10 +365,12 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     "ipConfigurations": {
       "value": [
         {
-          "groupId": "vault",
-          "memberName": "vault",
           "name": "myIPconfig",
-          "privateIPAddress": "10.0.0.10"
+          "properties": {
+            "groupId": "vault",
+            "memberName": "default",
+            "privateIPAddress": "10.0.0.10"
+          }
         }
       ]
     },
