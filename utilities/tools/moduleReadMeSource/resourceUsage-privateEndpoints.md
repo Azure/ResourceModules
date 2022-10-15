@@ -21,7 +21,7 @@ To use Private Endpoint the following dependencies must be deployed:
                 ]
             },
             // Optional
-            "customNetworkInterfaceName": "sxx-az-pe-nic", // Optional: Default NIC name with a GUID will be generated if one is not provided here
+            "customNetworkInterfaceName": "sxx-az-pe-nic", // Default NIC name with a GUID will be generated if one is not provided here
             "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",

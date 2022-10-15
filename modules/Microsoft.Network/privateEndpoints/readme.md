@@ -200,7 +200,7 @@ applicationSecurityGroups: [
 
 ### Parameter Usage: `customNetworkInterfaceName`
 
-You can customize the name of the private endpoint network interface instead of the default one that contains the string 'nic.GUID'. This helps with having consistent naming standards across all resources. Existing private endpoints cannot be renamed. See [documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#network-interface-rename) for mode details.
+You can customize the name of the private endpoint network interface instead of the default one that contains the string 'nic.GUID'. This helps with having consistent naming standards across all resources. Existing private endpoints cannot be renamed. See [documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#network-interface-rename) for more details.
 
 <details>
 
@@ -235,7 +235,16 @@ You can this property define a static IP address for the private endpoint instea
 
 ```json
 "customNetworkInterfaceName": {
-    "value": "myPrivateEndpointName-Nic"
+    "value": [
+      {
+          "name": "myIPconfig",
+          "properties": {
+              "memberName": "<memberName>", // e.g. default, sites, blob
+              "groupId": "<groupId>", // e.g. vault, registry, blob
+              "privateIPAddress": "10.10.10.10"
+          }
+      }
+    ]
 }
 ```
 
@@ -246,7 +255,16 @@ You can this property define a static IP address for the private endpoint instea
 <summary>Bicep format</summary>
 
 ```bicep
-customNetworkInterfaceName: 'myPrivateEndpointName-Nic'
+ipConfigurations: [
+    {
+        name: 'myIPconfig'
+        properties: {
+            memberName: '<memberName>' // e.g. default, sites, blob
+            groupId: '<groupId>' // e.g. vault, registry, blob
+            privateIPAddress: '10.10.10.10'
+        }
+    }
+]
 ```
 
 </details>
