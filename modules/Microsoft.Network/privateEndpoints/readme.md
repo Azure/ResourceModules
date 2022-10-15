@@ -227,7 +227,7 @@ customNetworkInterfaceName: 'myPrivateEndpointName-Nic'
 
 ### Parameter Usage: `ipConfigurations`
 
-You can this property define a static IP address for the private endpoint instead of the default dynamic one. To do that, first extract the `memberName` and `groupId` for the  resource type you creating the private endpoint for. Use the following [documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#determine-groupid-and-membername) for guidance. Then provide the `privateIPAddress` for the private endpoint. Note that this IP address must be within the subnet range you creating the private endpoint in. Static IP addresses [can be applied](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#custom-properties) when the private endpoint is created.
+You can use this property to define a static IP address for the private endpoint instead of the default dynamic one. To do that, first extract the `memberName` and `groupId` for the resource type you are creating the private endpoint for. See [documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#determine-groupid-and-membername) for guidance on how to do that. Also provide the `privateIPAddress` for the private endpoint from the subnet range you are creating the private endpoint in. Note that static IP addresses [can be applied](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#custom-properties) when the private endpoint is created.
 
 <details>
 
