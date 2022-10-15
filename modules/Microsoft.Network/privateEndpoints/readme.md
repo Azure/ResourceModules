@@ -157,6 +157,101 @@ roleAssignments: [
 </details>
 <p>
 
+### Parameter Usage: `applicationSecurityGroups`
+
+You can attach multiple Application Security Groups to a private endpoint resource.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"applicationSecurityGroups": {
+    "value": [
+        {
+            "id": "<applicationSecurityGroupResourceId>"
+        },
+        {
+            "id": "<applicationSecurityGroupResourceId>"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+applicationSecurityGroups: [
+    {
+        id: '<applicationSecurityGroupResourceId>'
+    }
+    {
+        id: '<applicationSecurityGroupResourceId>'
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `customNetworkInterfaceName`
+
+You can customize the name of the private endpoint network interface instead of the default one that contains the string 'nic.GUID'. This helps with having consistent naming standards across all resources. Existing private endpoints cannot be renamed. See [documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#network-interface-rename) for mode details.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"customNetworkInterfaceName": {
+    "value": "myPrivateEndpointName-Nic"
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+customNetworkInterfaceName: 'myPrivateEndpointName-Nic'
+```
+
+</details>
+<p>
+
+### Parameter Usage: `ipConfigurations`
+
+You can this property define a static IP address for the private endpoint instead of the default dynamic one. To do that, first extract the `memberName` and `groupId` for the  resource type you creating the private endpoint for. Use the following [documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#determine-groupid-and-membername) for guidance. Then provide the `privateIPAddress` for the private endpoint. Note that this IP address must be within the subnet range you creating the private endpoint in. Static IP addresses [can be applied](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#custom-properties) when the private endpoint is created.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"customNetworkInterfaceName": {
+    "value": "myPrivateEndpointName-Nic"
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+customNetworkInterfaceName: 'myPrivateEndpointName-Nic'
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |

@@ -66,9 +66,11 @@ module testDeployment '../../deploy.bicep' = {
     ipConfigurations: [
       {
         name: 'myIPconfig'
-        groupId: 'vault'
-        memberName: 'vault'
-        privateIPAddress: '10.0.0.10'
+        properties: {
+          groupId: 'vault'
+          memberName: 'default'
+          privateIPAddress: '10.0.0.10'
+        }
       }
     ]
     customNetworkInterfaceName: '<<namePrefix>>${serviceShort}001nic'
