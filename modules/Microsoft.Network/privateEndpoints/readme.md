@@ -16,8 +16,8 @@ This template deploys a private endpoint for a generic service.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ### Resource dependency
 
@@ -44,8 +44,11 @@ The following resources are required to be able to deploy this resource:
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `applicationSecurityGroups` | array | `[]` |  | Application security groups in which the private endpoint IP configuration is included. |
 | `customDnsConfigs` | array | `[]` |  | Custom DNS configurations. |
+| `customNetworkInterfaceName` | string | `''` |  | The custom name of the network interface attached to the private endpoint. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `ipConfigurations` | array | `[]` |  | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `manualPrivateLinkServiceConnections` | array | `[]` |  | Manual PrivateLink Service Connections. |
@@ -192,6 +195,20 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     serviceResourceId: '<serviceResourceId>'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
+    applicationSecurityGroups: [
+      {
+        id: '<id>'
+      }
+    ]
+    customNetworkInterfaceName: '<<namePrefix>>npecom001nic'
+    ipConfigurations: [
+      {
+        groupId: 'vault'
+        memberName: 'vault'
+        name: 'myIPconfig'
+        privateIPAddress: '10.0.0.10'
+      }
+    ]
     lock: 'CanNotDelete'
     privateDnsZoneGroup: {
       privateDNSResourceIds: [
@@ -238,6 +255,26 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       "value": "<subnetResourceId>"
     },
     // Non-required parameters
+    "applicationSecurityGroups": {
+      "value": [
+        {
+          "id": "<id>"
+        }
+      ]
+    },
+    "customNetworkInterfaceName": {
+      "value": "<<namePrefix>>npecom001nic"
+    },
+    "ipConfigurations": {
+      "value": [
+        {
+          "groupId": "vault",
+          "memberName": "vault",
+          "name": "myIPconfig",
+          "privateIPAddress": "10.0.0.10"
+        }
+      ]
+    },
     "lock": {
       "value": "CanNotDelete"
     },
