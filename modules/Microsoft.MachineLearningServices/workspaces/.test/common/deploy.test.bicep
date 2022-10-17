@@ -31,7 +31,7 @@ module resourceGroupResources 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
-    applicationInsightsName: 'dep-<<namePrefix>>-appI-${serviceShort}'
+    applicationInsightsName: 'dep-<<namePrefix>>-appi-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>st${serviceShort}'
   }
 }
