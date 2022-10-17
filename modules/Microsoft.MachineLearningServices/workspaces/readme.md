@@ -482,7 +482,6 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {
         principalIds: [
@@ -600,9 +599,6 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
     },
     "roleAssignments": {
       "value": [

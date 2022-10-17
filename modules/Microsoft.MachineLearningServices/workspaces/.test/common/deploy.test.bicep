@@ -113,7 +113,6 @@ module testDeployment '../../deploy.bicep' = {
         }
       }
     ]
-    publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {
         principalIds: [
