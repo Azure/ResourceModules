@@ -106,6 +106,11 @@ module testDeployment '../../deploy.bicep' = {
       {
         service: 'amlworkspace'
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            resourceGroupResources.outputs.privateDNSZoneResourceId
+          ]
+        }
       }
     ]
     publicNetworkAccess: 'Enabled'

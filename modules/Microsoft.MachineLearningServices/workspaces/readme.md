@@ -473,6 +473,11 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
     privateEndpoints: [
       {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSZoneResourceId>'
+          ]
+        }
         service: 'amlworkspace'
         subnetResourceId: '<subnetResourceId>'
       }
@@ -586,6 +591,11 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     "privateEndpoints": {
       "value": [
         {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          },
           "service": "amlworkspace",
           "subnetResourceId": "<subnetResourceId>"
         }

@@ -52,6 +52,3 @@ output storageAccountResourceId string = storageAccount.id
 
 @description('The resource ID of the created Key Vault.')
 output keyVaultResourceId string = keyVault.id
-
-@description('The URL of the created Key Vault.')
-output keyVaultUrl string = keyVault.properties.vaultUri
