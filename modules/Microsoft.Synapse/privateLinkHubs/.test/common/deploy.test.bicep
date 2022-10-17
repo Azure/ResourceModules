@@ -30,7 +30,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    privateDNSZoneName: '<<namePrefix>>.privatelink.azuresynapse.net'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }

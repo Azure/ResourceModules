@@ -7,9 +7,6 @@ param networkSecurityGroupName string
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
-@description('Required. The name of the Private DNS Zone to create.')
-param privateDNSZoneName string
-
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
@@ -46,11 +43,11 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name: privateDNSZoneName
+    name:  'privatelink.azuresynapse.net'
     location: 'global'
 
     resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-        name: '${split(privateDNSZoneName, '.')[0]}-vnet-link'
+        name: '${split( 'privatelink.azuresynapse.net', '.')[0]}-vnet-link'
         location: 'global'
         properties: {
             virtualNetwork: {
