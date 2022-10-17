@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.sql.managedinstances-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'sqlmimin2'
+param serviceShort string = 'sqlmimin3'
 
 @description('Optional. The password to leverage for the login.')
 @secure()
@@ -43,13 +43,13 @@ module resourceGroupResources 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-module testDeployment '../../deploy.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-  params: {
-    name: '<<namePrefix>>-${serviceShort}'
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: password
-    subnetId: resourceGroupResources.outputs.subnetResourceId
-  }
-}
+// module testDeployment '../../deploy.bicep' = {
+//   scope: resourceGroup
+//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+//   params: {
+//     name: '<<namePrefix>>-${serviceShort}'
+//     administratorLogin: 'adminUserName'
+//     administratorLoginPassword: password
+//     subnetId: resourceGroupResources.outputs.subnetResourceId
+//   }
+// }
