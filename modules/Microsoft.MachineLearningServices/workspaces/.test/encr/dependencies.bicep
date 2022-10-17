@@ -102,6 +102,22 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     kind: 'StorageV2'
 }
 
+resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+    name: 'privatelink.api.azureml.ms'
+    location: 'global'
+
+    resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+        name: '${virtualNetwork.name}-vnetlink'
+        location: 'global'
+        properties: {
+            virtualNetwork: {
+                id: virtualNetwork.id
+            }
+            registrationEnabled: false
+        }
+    }
+}
+
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
@@ -119,3 +135,6 @@ output storageAccountResourceId string = storageAccount.id
 
 @description('The name of the Key Vault Encryption Key.')
 output keyVaultEncryptionKeyName string = keyVault::key.name
+
+@description('The resource ID of the created Private DNS Zone.')
+output privateDNSZoneResourceId string = privateDNSZone.id
