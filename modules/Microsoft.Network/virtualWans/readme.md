@@ -21,11 +21,13 @@ This template deploys a virtual WAN.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Virtual WAN. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBranchToBranchTraffic` | bool | `False` |  | True if branch to branch traffic is allowed. |
@@ -159,7 +161,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -167,47 +169,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualWans'
-  params: {
-    name: '<<namePrefix>>-az-vw-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-vw-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualWans'
+  name: '${uniqueString(deployment().name)}-test-nvwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-vw-x-001'
+    name: '<<namePrefix>>nvwcom001'
     // Non-required parameters
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
@@ -216,7 +181,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -240,7 +205,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-vw-x-001"
+      "value": "<<namePrefix>>nvwcom001"
     },
     // Non-required parameters
     "allowBranchToBranchTraffic": {
@@ -259,7 +224,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -267,6 +232,43 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
     },
     "type": {
       "value": "Basic"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nvwmin'
+  params: {
+    name: '<<namePrefix>>nvwmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>nvwmin001"
     }
   }
 }

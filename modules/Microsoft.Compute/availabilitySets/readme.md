@@ -21,11 +21,13 @@ This template deploys an availability set
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the availability set that is being created. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `availabilitySetFaultDomain` | int | `2` |  | The number of fault domains to use. |
@@ -159,7 +161,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -167,54 +169,17 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-AvailabilitySets'
-  params: {
-    name: '<<namePrefix>>-az-avs-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-avs-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-AvailabilitySets'
+  name: '${uniqueString(deployment().name)}-test-cascom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-avs-x-001'
+    name: '<<namePrefix>>cascom001'
     // Non-required parameters
     lock: 'CanNotDelete'
-    proximityPlacementGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-x-001'
+    proximityPlacementGroupId: '<proximityPlacementGroupId>'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -237,24 +202,61 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-avs-x-001"
+      "value": "<<namePrefix>>cascom001"
     },
     // Non-required parameters
     "lock": {
       "value": "CanNotDelete"
     },
     "proximityPlacementGroupId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-x-001"
+      "value": "<proximityPlacementGroupId>"
     },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-casmin'
+  params: {
+    name: '<<namePrefix>>casmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>casmin001"
     }
   }
 }

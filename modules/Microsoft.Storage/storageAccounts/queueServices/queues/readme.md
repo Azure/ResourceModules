@@ -19,18 +19,21 @@ This module deploys a storage account queue
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `metadata` | object | A name-value pair that represents queue metadata. |
 | `name` | string | The name of the storage queue to deploy. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `queueServicesName` | string | `'default'` | The name of the parent queue service. Required if the template is used in a standalone deployment. |
 | `storageAccountName` | string |  | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |

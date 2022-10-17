@@ -25,6 +25,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `administratorLogin` | string |  | The administrator login name of a server. Can only be specified when the PostgreSQL server is being created. |
@@ -34,6 +35,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | `tier` | string | `[Burstable, GeneralPurpose, MemoryOptimized]` | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `availabilityZone` | string | `''` | `['', 1, 2, 3]` | Availability zone information of the server. Default will have no preference set. |

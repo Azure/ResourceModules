@@ -23,11 +23,13 @@ This template deploys a network security group (NSG) with optional security rule
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Network Security Group. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -165,7 +167,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -173,58 +175,21 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-NetworkSecurityGroups'
-  params: {
-    name: '<<namePrefix>>-az-nsg-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-nsg-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-NetworkSecurityGroups'
+  name: '${uniqueString(deployment().name)}-test-nnsgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-nsg-x-001'
+    name: '<<namePrefix>>nnsgcom001'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -277,7 +242,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
           description: 'Allow inbound access on TCP 8082'
           destinationApplicationSecurityGroups: [
             {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+              id: '<id>'
             }
           ]
           destinationPortRange: '8082'
@@ -286,7 +251,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
           protocol: '*'
           sourceApplicationSecurityGroups: [
             {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+              id: '<id>'
             }
           ]
           sourcePortRange: '*'
@@ -311,23 +276,23 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-nsg-x-001"
+      "value": "<<namePrefix>>nnsgcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -336,7 +301,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -391,7 +356,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
             "description": "Allow inbound access on TCP 8082",
             "destinationApplicationSecurityGroups": [
               {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+                "id": "<id>"
               }
             ],
             "destinationPortRange": "8082",
@@ -400,13 +365,50 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
             "protocol": "*",
             "sourceApplicationSecurityGroups": [
               {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+                "id": "<id>"
               }
             ],
             "sourcePortRange": "*"
           }
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nnsgmin'
+  params: {
+    name: '<<namePrefix>>nnsgmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>nnsgmin001"
     }
   }
 }

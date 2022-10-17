@@ -18,17 +18,20 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Long Term Retention backup policy. For example "default". |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `databaseName` | string | The name of the parent managed instance database. Required if the template is used in a standalone deployment. |
 | `managedInstanceName` | string | The name of the parent managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |

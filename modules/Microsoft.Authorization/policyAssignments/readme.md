@@ -21,12 +21,14 @@ With this module you can perform policy assignments across the management group,
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy assignment. Maximum length is 24 characters for management group scope, 64 characters for subscription and resource group scopes. |
 | `policyDefinitionId` | string | Specifies the ID of the policy definition or policy set definition being assigned. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string | `''` |  | This message will be part of response in case of policy violation. |

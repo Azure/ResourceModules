@@ -24,6 +24,7 @@ The following resources are required to be able to deploy this resource.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `authorizationEndpoint` | string | OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>. |
@@ -33,11 +34,13 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | Identifier of the authorization server. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `authorizationMethods` | array | `[GET]` | HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE. |

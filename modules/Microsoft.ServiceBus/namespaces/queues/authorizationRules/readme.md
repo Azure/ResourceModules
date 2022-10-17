@@ -18,17 +18,20 @@ This module deploys an authorization rule for a service bus namespace queue.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the service bus namepace queue. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `namespaceName` | string | The name of the parent Service Bus Namespace. Required if the template is used in a standalone deployment. |
 | `queueName` | string | The name of the parent Service Bus Namespace Queue. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |

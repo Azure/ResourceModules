@@ -17,16 +17,19 @@
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the SQL database . |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `databaseAccountName` | string | The name of the parent Database Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `containers` | _[containers](containers/readme.md)_ array | `[]` | Array of containers to deploy in the SQL database. |

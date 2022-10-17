@@ -18,6 +18,7 @@ This module deploys Network Security Group Security Rules.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `direction` | string | `[Inbound, Outbound]` | The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic. |
@@ -26,11 +27,13 @@ This module deploys Network Security Group Security Rules.
 | `protocol` | string | `[*, Ah, Esp, Icmp, Tcp, Udp]` | Network protocol this rule applies to. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `networkSecurityGroupName` | string | The name of the parent network security group to deploy the security rule into. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `access` | string | `'Deny'` | `[Allow, Deny]` | Whether network traffic is allowed or denied. |
