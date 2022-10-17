@@ -32,6 +32,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
     routeTableName: 'dep-<<namePrefix>>-rt-${serviceShort}'
@@ -56,6 +58,86 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // ============== //
 // Test Execution //
 // ============== //
+
+// module testDeployment '../../deploy.bicep' = {
+//   scope: resourceGroup
+//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+//   params: {
+//     name: '<<namePrefix>>-${serviceShort}'
+//     administratorLogin: 'adminUserName'
+//     administratorLoginPassword: password
+//     subnetId: resourceGroupResources.outputs.subnetResourceId
+//     collation: 'SQL_Latin1_General_CP1_CI_AS'
+//     databases: [
+//       {
+//         backupLongTermRetentionPolicies: {
+//           name: 'default'
+//         }
+//         backupShortTermRetentionPolicies: {
+//           name: 'default'
+//         }
+//         name: '<<namePrefix>>-${serviceShort}-db-001'
+//       }
+//     ]
+//     diagnosticLogsRetentionInDays: 7
+//     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+//     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+//     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+//     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+
+//     dnsZonePartner: ''
+//     encryptionProtectorObj: {
+//       serverKeyName: resourceGroupResources.outputs.keyVaultKeyName
+//       serverKeyType: 'AzureKeyVault'
+//     }
+//     hardwareFamily: 'Gen5'
+//     keys: [
+//       {
+//         name: resourceGroupResources.outputs.keyVaultKeyName
+//         serverKeyType: 'AzureKeyVault'
+//         uri: resourceGroupResources.outputs.keyVaultUri
+//       }
+//     ]
+//     licenseType: 'LicenseIncluded'
+//     lock: 'CanNotDelete'
+//     primaryUserAssignedIdentityId: resourceGroupResources.outputs.managedIdentityResourceId
+//     proxyOverride: 'Proxy'
+//     publicDataEndpointEnabled: false
+//     roleAssignments: [
+//       {
+//         roleDefinitionIdOrName: 'Reader'
+//         principalIds: [
+//           resourceGroupResources.outputs.managedIdentityPrincipalId
+//         ]
+//       }
+//     ]
+//     securityAlertPoliciesObj: {
+//       emailAccountAdmins: true
+//       name: 'default'
+//       state: 'Enabled'
+//     }
+//     servicePrincipal: 'SystemAssigned'
+//     skuName: 'GP_Gen5'
+//     skuTier: 'GeneralPurpose'
+//     storageSizeInGB: 32
+//     systemAssignedIdentity: true
+//     timezoneId: 'UTC'
+//     userAssignedIdentities: {
+//       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+//     }
+//     vCores: 4
+//     vulnerabilityAssessmentsObj: {
+//       emailSubscriptionAdmins: true
+//       name: 'default'
+//       recurringScansEmails: [
+//         'test1@contoso.com'
+//         'test2@contoso.com'
+//       ]
+//       recurringScansIsEnabled: true
+//       vulnerabilityAssessmentsStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+//     }
+//   }
+// }
 
 // module testDeployment '../../deploy.bicep' = {
 //   scope: resourceGroup
