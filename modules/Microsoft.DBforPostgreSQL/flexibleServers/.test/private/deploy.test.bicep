@@ -34,7 +34,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    privateDNSZoneName: '<<namePrefix>>.postgres.database.azure.com'
   }
 }
 

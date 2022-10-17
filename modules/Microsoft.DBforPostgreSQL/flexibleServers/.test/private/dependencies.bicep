@@ -7,9 +7,6 @@ param virtualNetworkName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
-@description('Required. The name of the Private DNS Zone to create.')
-param privateDNSZoneName string
-
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
     location: location
@@ -39,11 +36,11 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name: privateDNSZoneName
+    name: 'postgres.database.azure.com'
     location: 'global'
 
     resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-        name: '${split(privateDNSZoneName, '.')[0]}-vnet-link'
+        name: '${virtualNetwork.name}-vnetlink'
         location: 'global'
         properties: {
             virtualNetwork: {
