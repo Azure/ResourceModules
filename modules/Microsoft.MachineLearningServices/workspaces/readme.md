@@ -637,13 +637,13 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
 
 ```bicep
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mlswenr'
+  name: '${uniqueString(deployment().name)}-test-mlswencr'
   params: {
     // Required parameters
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
     associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
     associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: '<<namePrefix>>mlswenr001'
+    name: '<<namePrefix>>mlswencr001'
     sku: 'Basic'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
@@ -687,7 +687,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       "value": "<associatedStorageAccountResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>mlswenr001"
+      "value": "<<namePrefix>>mlswencr001"
     },
     "sku": {
       "value": "Basic"
