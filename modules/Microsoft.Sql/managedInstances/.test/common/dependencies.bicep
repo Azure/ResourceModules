@@ -84,9 +84,6 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-0
 resource routeTable 'Microsoft.Network/routeTables@2021-08-01' = {
   name: routeTableName
   location: location
-  properties: {
-    disableBgpRoutePropagation: false
-  }
 }
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
