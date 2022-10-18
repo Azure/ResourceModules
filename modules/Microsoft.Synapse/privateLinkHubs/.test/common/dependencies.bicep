@@ -66,7 +66,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
-@description('The resource ID of the created Virtual Network Subnet.')
+@description('The resource ID of the created Private DNS Zone.')
 output privateDNSResourceId string = privateDNSZone.id
 
 @description('The principal ID of the created Managed Identity.')
