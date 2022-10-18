@@ -47,7 +47,7 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
     location: 'global'
 
     resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-        name: '${split( 'privatelink.azuresynapse.net', '.')[0]}-vnet-link'
+        name: '${virtualNetwork.name}-vnetlink'
         location: 'global'
         properties: {
             virtualNetwork: {
