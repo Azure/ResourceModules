@@ -30,7 +30,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
             {
                 name: 'defaultSubnet'
                 properties: {
-                    addressPrefix: '10.0.6.0/24'
+                    addressPrefix: '10.0.0.0/24'
                     networkSecurityGroup: {
                         id: networkSecurityGroup.id
                     }
@@ -47,7 +47,7 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
     location: 'global'
 
     resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-        name: '${split( 'privatelink.azuresynapse.net', '.')[0]}-vnet-link'
+        name: '${virtualNetwork.name}-vnetlink'
         location: 'global'
         properties: {
             virtualNetwork: {
