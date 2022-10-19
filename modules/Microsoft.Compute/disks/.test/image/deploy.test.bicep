@@ -61,3 +61,16 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 //     zoneResilient: true
 //   }
 // }
+
+// ============== //
+// Test Execution //
+// ============== //
+module testDeployment '../../deploy.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  params: {
+    name: '<<namePrefix>>-${serviceShort}001'
+    sku: 'Standard_LRS'
+    diskSizeGB: 1
+  }
+}

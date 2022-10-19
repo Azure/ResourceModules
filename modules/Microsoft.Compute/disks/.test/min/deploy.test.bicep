@@ -34,5 +34,6 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-${serviceShort}001'
     sku: 'Standard_LRS'
+    diskSizeGB: 1
   }
 }

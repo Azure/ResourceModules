@@ -25,39 +25,23 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-// module resourceGroupResources 'dependencies.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name, location)}-paramNested'
-//   params: {
-//     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-//     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
-//     imageTemplateNamePrefix: 'dep-<<namePrefix>>-imgt-${serviceShort}'
-//     triggerImageDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
-//     copyVhdDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-copyVhdToStorage'
-//   }
-// }
+module resourceGroupResources 'dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-paramNested'
+  params: {
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+  }
+}
 
-// // ============== //
-// // Test Execution //
-// // ============== //
-// module testDeployment '../../deploy.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
-//   params: {
-//     name: '<<namePrefix>>${serviceShort}001'
-//     osAccountType: 'Premium_LRS'
-//     osDiskBlobUri: resourceGroupResources.outputs.vhdUri
-//     osDiskCaching: 'ReadWrite'
-//     osType: 'Windows'
-//     hyperVGeneration: 'V1'
-//     roleAssignments: [
-//       {
-//         principalIds: [
-//           resourceGroupResources.outputs.managedIdentityPrincipalId
-//         ]
-//         roleDefinitionIdOrName: 'Reader'
-//       }
-//     ]
-//     zoneResilient: true
-//   }
-// }
+// ============== //
+// Test Execution //
+// ============== //
+module testDeployment '../../deploy.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  params: {
+    name: '<<namePrefix>>-${serviceShort}001'
+    sku: 'Standard_LRS'
+    diskSizeGB: 1
+  }
+}
