@@ -534,12 +534,12 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
 
 ```bicep
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlmimin3'
+  name: '${uniqueString(deployment().name)}-test-sqlmimin'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>-sqlmimin3'
+    name: '<<namePrefix>>-sqlmimin'
     subnetId: '<subnetId>'
   }
 }
@@ -565,7 +565,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-sqlmimin3"
+      "value": "<<namePrefix>>-sqlmimin"
     },
     "subnetId": {
       "value": "<subnetId>"
