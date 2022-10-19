@@ -51,6 +51,7 @@ This module deploys a web or function app.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `httpsOnly` | bool | `True` |  | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
+| `keyVaultAccessIdentityResourceId` | string | `''` |  | The resource ID of the assigned identity to be used to access a key vault with. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
@@ -502,6 +503,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
@@ -648,6 +650,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "keyVaultAccessIdentityResourceId": {
+      "value": "<keyVaultAccessIdentityResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"

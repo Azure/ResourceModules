@@ -156,6 +156,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     setAzureWebJobsDashboard: true
+    keyVaultAccessIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
     siteConfig: {
       alwaysOn: true
       use32BitWorkerProcess: false
