@@ -503,6 +503,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
@@ -649,6 +650,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "keyVaultAccessIdentityResourceId": {
+      "value": "<keyVaultAccessIdentityResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
