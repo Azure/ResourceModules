@@ -37,31 +37,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   }
 }
 
-// // ============== //
-// // Test Execution //
-// // ============== //
-// module testDeployment '../../deploy.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
-//   params: {
-//     name: '<<namePrefix>>${serviceShort}001'
-//     osAccountType: 'Premium_LRS'
-//     osDiskBlobUri: resourceGroupResources.outputs.vhdUri
-//     osDiskCaching: 'ReadWrite'
-//     osType: 'Windows'
-//     hyperVGeneration: 'V1'
-//     roleAssignments: [
-//       {
-//         principalIds: [
-//           resourceGroupResources.outputs.managedIdentityPrincipalId
-//         ]
-//         roleDefinitionIdOrName: 'Reader'
-//       }
-//     ]
-//     zoneResilient: true
-//   }
-// }
-
 // ============== //
 // Test Execution //
 // ============== //
