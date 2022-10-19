@@ -41,8 +41,14 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>-${serviceShort}001'
-    sku: 'Standard_LRS'
-    diskSizeGB: 1
+    sku: 'UltraSSD_LRS'
+    diskIOPSReadWrite: 500
+    diskMBpsReadWrite: 60
+    diskSizeGB: 128
+    lock: 'CanNotDelete'
+    logicalSectorSize: 512
+    osType: 'Windows'
+    publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

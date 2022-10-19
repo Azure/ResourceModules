@@ -43,7 +43,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>-${serviceShort}001'
     sku: 'Standard_LRS'
     createOption: 'FromImage'
-    imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
+    imageReferenceId: '${subscription().id}/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
