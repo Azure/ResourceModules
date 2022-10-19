@@ -43,5 +43,13 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>-${serviceShort}001'
     sku: 'Standard_LRS'
     diskSizeGB: 1
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+      }
+    ]
   }
 }
