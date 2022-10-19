@@ -106,14 +106,14 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
-@description('The principal ID of the created managed identity.')
+@description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
-@description('The resource ID of the created managed identity.')
+@description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
-
-@description('The name of the created Key Vault encryption key.')
-output keyVaultKeyName string = keyVault::key.name
 
 @description('The vault URI of the created Key Vault.')
 output keyVaultUri string = keyVault.properties.vaultUri
+
+@description('The name of the created Key Vault encryption key.')
+output keyVaultKeyName string = keyVault::key.name
