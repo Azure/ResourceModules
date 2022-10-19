@@ -25,17 +25,17 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-// module resourceGroupResources 'dependencies.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name, location)}-paramNested'
-//   params: {
-//     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-//     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
-//     imageTemplateNamePrefix: 'dep-<<namePrefix>>-imgt-${serviceShort}'
-//     triggerImageDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
-//     copyVhdDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-copyVhdToStorage'
-//   }
-// }
+module resourceGroupResources 'dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-paramNested'
+  params: {
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
+    imageTemplateNamePrefix: 'dep-<<namePrefix>>-imgt-${serviceShort}'
+    triggerImageDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
+    copyVhdDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-copyVhdToStorage'
+  }
+}
 
 // // ============== //
 // // Test Execution //
@@ -62,14 +62,25 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 //   }
 // }
 
-// // ============== //
-// // Test Execution //
-// // ============== //
-// module testDeployment '../../deploy.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
-//   params: {
-//     name: '<<namePrefix>>-${serviceShort}001'
-//     sku: 'Standard_LRS'
-//   }
-// }
+// ============== //
+// Test Execution //
+// ============== //
+module testDeployment '../../deploy.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  params: {
+    name: '<<namePrefix>>-${serviceShort}001'
+    sku: 'Standard_LRS'
+    createOption: 'Import'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+      }
+    ]
+    sourceUri: resourceGroupResources.outputs.vhdUri
+    storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
+  }
+}

@@ -51,7 +51,7 @@ param sourceResourceId string = ''
 @description('Optional. If create option is Import, this is the URI of a blob to be imported into a managed disk.')
 param sourceUri string = ''
 
-@description('Conditional. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk. Required if create option is Import.')
+@description('Conditional. The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import.')
 param storageAccountId string = ''
 
 @description('Optional. If create option is Upload, this is the size of the contents of the upload including the VHD footer.')
