@@ -43,13 +43,13 @@ module resourceGroupResources 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-module testDeployment '../../deploy.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-  params: {
-    name: '<<namePrefix>>-${serviceShort}'
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: password
-    subnetId: resourceGroupResources.outputs.subnetResourceId
-  }
-}
+// module testDeployment '../../deploy.bicep' = {
+//   scope: resourceGroup
+//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+//   params: {
+//     name: '<<namePrefix>>-${serviceShort}'
+//     administratorLogin: 'adminUserName'
+//     administratorLoginPassword: password
+//     subnetId: resourceGroupResources.outputs.subnetResourceId
+//   }
+// }
