@@ -51,13 +51,13 @@ param sourceResourceId string = ''
 @description('Optional. If create option is Import, this is the URI of a blob to be imported into a managed disk.')
 param sourceUri string = ''
 
-@description('Optional. Required if create option is Import. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk.')
+@description('Conditional. The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import.')
 param storageAccountId string = ''
 
 @description('Optional. If create option is Upload, this is the size of the contents of the upload including the VHD footer.')
 param uploadSizeBytes int = 20972032
 
-@description('Optional. If create option is empty, this field is mandatory and it indicates the size of the disk to create.')
+@description('Conditional. The size of the disk to create. Required if create option is Empty.')
 param diskSizeGB int = 0
 
 @description('Optional. The number of IOPS allowed for this disk; only settable for UltraSSD disks.')
