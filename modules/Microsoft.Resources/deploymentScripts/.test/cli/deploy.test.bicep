@@ -41,7 +41,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    azCliVersion: '2.41.0'
+    azCliVersion: '2.40.0'
     cleanupPreference: 'Always'
     kind: 'AzureCLI'
     retentionInterval: 'P1D'
