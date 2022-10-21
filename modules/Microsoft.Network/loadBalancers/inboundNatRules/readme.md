@@ -18,6 +18,7 @@ This module deploys load balancers inbound NAT rules.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `frontendIPConfigurationName` | string | The name of the frontend IP address to set for the inbound NAT rule. |
@@ -25,11 +26,13 @@ This module deploys load balancers inbound NAT rules.
 | `name` | string | The name of the inbound NAT rule. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `loadBalancerName` | string | The name of the parent load balancer. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backendAddressPoolName` | string | `''` |  | Name of the backend address pool. |

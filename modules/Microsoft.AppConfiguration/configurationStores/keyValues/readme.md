@@ -18,17 +18,20 @@ This module deploys an App Configuration Store.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the key. |
 | `value` | string | Name of the value. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `appConfigurationName` | string | The name of the parent app configuration store. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `contentType` | string | `''` | The content type of the key-values value. Providing a proper content-type can enable transformations of values when they are retrieved by applications. |

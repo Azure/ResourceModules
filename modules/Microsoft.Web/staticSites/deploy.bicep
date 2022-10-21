@@ -10,10 +10,10 @@ param name string
 @description('Optional. Type of static site to deploy.')
 param sku string = 'Free'
 
-@description('Optional. If config file is locked for this static web app.')
+@description('Optional. False if config file is locked for this static web app; otherwise, true.')
 param allowConfigFileUpdates bool = true
 
-@description('Optional. Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2.')
+@description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
 @allowed([
@@ -65,7 +65,7 @@ param userAssignedIdentities object = {}
 @description('Optional. Specify the type of lock.')
 param lock string = ''
 
-@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Note, requires the \'sku\' to be \'Standard\'.')
 param privateEndpoints array = []
 
 @description('Optional. Tags of the resource.')
@@ -76,6 +76,18 @@ param enableDefaultTelemetry bool = true
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
+
+@description('Optional. Object with "resourceId" and "location" of the a user defined function app.')
+param linkedBackend object = {}
+
+@description('Optional. Static site app settings.')
+param appSettings object = {}
+
+@description('Optional. Function app settings.')
+param functionAppSettings object = {}
+
+@description('Optional. The custom domains associated with this static site. The deployment will fail as long as the validation records are not present.')
+param customDomains array = []
 
 var enableReferencedModulesTelemetry = false
 
@@ -119,6 +131,46 @@ resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
     templateProperties: !empty(templateProperties) ? templateProperties : null
   }
 }
+
+module staticSite_linkedBackend 'linkedBackends/deploy.bicep' = if (!empty(linkedBackend)) {
+  name: '${uniqueString(deployment().name, location)}-StaticSite-UserDefinedFunction'
+  params: {
+    staticSiteName: staticSite.name
+    backendResourceId: linkedBackend.resourceId
+    region: contains(linkedBackend, 'location') ? linkedBackend.location : location
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
+module staticSite_appSettings 'config/deploy.bicep' = if (!empty(appSettings)) {
+  name: '${uniqueString(deployment().name, location)}-StaticSite-appSettings'
+  params: {
+    kind: 'appsettings'
+    staticSiteName: staticSite.name
+    properties: appSettings
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
+module staticSite_functionAppSettings 'config/deploy.bicep' = if (!empty(functionAppSettings)) {
+  name: '${uniqueString(deployment().name, location)}-StaticSite-functionAppSettings'
+  params: {
+    kind: 'functionappsettings'
+    staticSiteName: staticSite.name
+    properties: functionAppSettings
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
+module staticSite_customDomains 'customDomains/deploy.bicep' = [for (customDomain, index) in customDomains: {
+  name: '${uniqueString(deployment().name, location)}-StaticSite-customDomains-${index}'
+  params: {
+    name: customDomain
+    staticSiteName: staticSite.name
+    validationMethod: indexOf(customDomain, '.') == lastIndexOf(customDomain, '.') ? 'dns-txt-token' : 'cname-delegation'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 resource staticSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${staticSite.name}-${lock}-lock'
