@@ -338,7 +338,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
     ipConfigurations: [
       {
         name: 'ipconfig01'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     name: '<<namePrefix>>nnimin001'
@@ -363,7 +363,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
       "value": [
         {
           "name": "ipconfig01",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
