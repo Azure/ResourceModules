@@ -119,14 +119,10 @@ param diagnosticEventHubName string = ''
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
-  'ApplicationGatewayAccessLog'
-  'ApplicationGatewayPerformanceLog'
-  'ApplicationGatewayFirewallLog'
+  'ConnectedClientList'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ApplicationGatewayAccessLog'
-  'ApplicationGatewayPerformanceLog'
-  'ApplicationGatewayFirewallLog'
+  'ConnectedClientList'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
