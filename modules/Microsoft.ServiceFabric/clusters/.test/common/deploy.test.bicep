@@ -112,8 +112,10 @@ module testDeployment '../../deploy.bicep' = {
     managementEndpoint: 'https://<<namePrefix>>${serviceShort}001.westeurope.cloudapp.azure.com:19080'
     reliabilityLevel: 'Silver'
     certificate: {
-      thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130' // Mutual exclusive with the other cert specs
+
+      thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
       x509StoreName: 'My'
+
     }
     nodeTypes: [
       {

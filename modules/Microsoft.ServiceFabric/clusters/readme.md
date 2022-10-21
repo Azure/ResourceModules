@@ -248,11 +248,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Clusters'
+  name: '${uniqueString(deployment().name)}-test-sfccer'
   params: {
     // Required parameters
-    managementEndpoint: 'https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080'
-    name: '<<namePrefix>>-az-sfc-cert-001'
+    managementEndpoint: 'https://<<namePrefix>>sfccer001.westeurope.cloudapp.azure.com:19080'
+    name: '<<namePrefix>>sfccer001'
     reliabilityLevel: 'None'
     // Non-required parameters
     certificate: {
@@ -294,10 +294,10 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080"
+      "value": "https://<<namePrefix>>sfccer001.westeurope.cloudapp.azure.com:19080"
     },
     "name": {
-      "value": "<<namePrefix>>-az-sfc-cert-001"
+      "value": "<<namePrefix>>sfccer001"
     },
     "reliabilityLevel": {
       "value": "None"
@@ -335,7 +335,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Full</h3>
+<h3>Example 2: Common</h3>
 
 <details>
 
@@ -343,11 +343,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Clusters'
+  name: '${uniqueString(deployment().name)}-test-sfccom'
   params: {
     // Required parameters
-    managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
-    name: '<<namePrefix>>-az-sfc-full-001'
+    managementEndpoint: 'https://<<namePrefix>>sfccom001.westeurope.cloudapp.azure.com:19080'
+    name: '<<namePrefix>>sfccom001'
     reliabilityLevel: 'Silver'
     // Non-required parameters
     addOnFeatures: [
@@ -365,6 +365,10 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       clientApplication: '<<deploymentSpId>>'
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
       tenantId: '<<tenantId>>'
+    }
+    certificate: {
+      thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
+      x509StoreName: 'My'
     }
     certificateCommonNames: {
       commonNames: [
@@ -432,7 +436,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
           endPort: 30000
           startPort: 20000
         }
-        capacities: {}
         clientConnectionEndpointPort: 19000
         durabilityLevel: 'Silver'
         ephemeralPorts: {
@@ -457,12 +460,12 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         durabilityLevel: 'Bronze'
         ephemeralPorts: {
           endPort: 64000
+          httpGatewayEndpointPort: 19007
+          isPrimary: true
+          name: 'Node02'
           startPort: 49000
+          vmInstanceCount: 5
         }
-        httpGatewayEndpointPort: 19007
-        isPrimary: true
-        name: 'Node02'
-        vmInstanceCount: 5
       }
     ]
     notifications: [
@@ -489,7 +492,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     tags: {
-      clusterName: '<<namePrefix>>-az-sfc-full-001'
+      clusterName: '<<namePrefix>>sfccom001'
       resourceType: 'Service Fabric'
     }
     upgradeDescription: {
@@ -507,7 +510,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         maxPercentUnhealthyNodes: 0
       }
       upgradeDomainTimeout: '02:00:00'
-      upgradeReplicaSetCheckTimeout: '1.00:00:00'
+      upgradeReplicaSetCheckTimeout: '<upgradeReplicaSetCheckTimeout>'
       upgradeTimeout: '02:00:00'
     }
     vmImage: 'Linux'
@@ -529,10 +532,10 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080"
+      "value": "https://<<namePrefix>>sfccom001.westeurope.cloudapp.azure.com:19080"
     },
     "name": {
-      "value": "<<namePrefix>>-az-sfc-full-001"
+      "value": "<<namePrefix>>sfccom001"
     },
     "reliabilityLevel": {
       "value": "Silver"
@@ -558,6 +561,12 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         "clientApplication": "<<deploymentSpId>>",
         "clusterApplication": "cf33fea8-b30f-424f-ab73-c48d99e0b222",
         "tenantId": "<<tenantId>>"
+      }
+    },
+    "certificate": {
+      "value": {
+        "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
+        "x509StoreName": "My"
       }
     },
     "certificateCommonNames": {
@@ -641,7 +650,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
             "endPort": 30000,
             "startPort": 20000
           },
-          "capacities": {},
           "clientConnectionEndpointPort": 19000,
           "durabilityLevel": "Silver",
           "ephemeralPorts": {
@@ -666,12 +674,12 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
           "durabilityLevel": "Bronze",
           "ephemeralPorts": {
             "endPort": 64000,
-            "startPort": 49000
-          },
-          "httpGatewayEndpointPort": 19007,
-          "isPrimary": true,
-          "name": "Node02",
-          "vmInstanceCount": 5
+            "httpGatewayEndpointPort": 19007,
+            "isPrimary": true,
+            "name": "Node02",
+            "startPort": 49000,
+            "vmInstanceCount": 5
+          }
         }
       ]
     },
@@ -704,7 +712,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "clusterName": "<<namePrefix>>-az-sfc-full-001",
+        "clusterName": "<<namePrefix>>sfccom001",
         "resourceType": "Service Fabric"
       }
     },
@@ -724,7 +732,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
           "maxPercentUnhealthyNodes": 0
         },
         "upgradeDomainTimeout": "02:00:00",
-        "upgradeReplicaSetCheckTimeout": "1.00:00:00",
+        "upgradeReplicaSetCheckTimeout": "<upgradeReplicaSetCheckTimeout>",
         "upgradeTimeout": "02:00:00"
       }
     },
@@ -746,11 +754,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Clusters'
+  name: '${uniqueString(deployment().name)}-test-sfcmin'
   params: {
     // Required parameters
-    managementEndpoint: 'https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080'
-    name: '<<namePrefix>>-az-sfc-min-001'
+    managementEndpoint: 'https://<<namePrefix>>sfcmin001.westeurope.cloudapp.azure.com:19080'
+    name: '<<namePrefix>>sfcmin001'
     reliabilityLevel: 'None'
     // Non-required parameters
     nodeTypes: [
@@ -788,10 +796,10 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080"
+      "value": "https://<<namePrefix>>sfcmin001.westeurope.cloudapp.azure.com:19080"
     },
     "name": {
-      "value": "<<namePrefix>>-az-sfc-min-001"
+      "value": "<<namePrefix>>sfcmin001"
     },
     "reliabilityLevel": {
       "value": "None"
