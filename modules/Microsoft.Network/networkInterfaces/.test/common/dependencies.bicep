@@ -50,9 +50,52 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
         name: 'Standard'
     }
 
-    resource backendPoolName 'backendAddressPools@2022-01-01' = {
+    properties: {
+        frontendIPConfigurations: [
+            {
+                name: 'privateIPConfig1'
+                properties: {
+                    subnet: {
+                        id: virtualNetwork.properties.subnets[0].id
+                    }
+                }
+            }
+        ]
+    }
+
+    resource backendPool 'backendAddressPools@2022-01-01' = {
         name: 'default'
     }
+}
+
+resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-08-01' = {
+    name: 'inboundNatRule1'
+    properties: {
+        frontendPort: 443
+        backendPort: 443
+        enableFloatingIP: false
+        enableTcpReset: false
+        frontendIPConfiguration: {
+            id: loadBalancer.properties.frontendIPConfigurations[0].id
+        }
+        idleTimeoutInMinutes: 4
+        protocol: 'Tcp'
+    }
+    parent: loadBalancer
+}
+
+resource inboundNatRule2 'Microsoft.Network/loadBalancers/inboundNatRules@2021-08-01' = {
+    name: 'inboundNatRule2'
+    properties: {
+        frontendPort: 3389
+        backendPort: 3389
+        frontendIPConfiguration: {
+            id: loadBalancer.properties.frontendIPConfigurations[0].id
+        }
+        idleTimeoutInMinutes: 4
+        protocol: 'Tcp'
+    }
+    parent: loadBalancer
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')
@@ -65,4 +108,4 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 output applicationSecurityGroupResourceId string = applicationSecurityGroup.id
 
 @description('The resource ID of the created Load Balancer Backend Pool Name.')
-output loadBalancerBackendPoolResourceId string = loadBalancer::backendPoolName.id
+output loadBalancerBackendPoolResourceId string = loadBalancer::backendPool.id
