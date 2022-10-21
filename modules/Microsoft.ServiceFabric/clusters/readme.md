@@ -366,10 +366,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
       tenantId: '<<tenantId>>'
     }
-    certificate: {
-      thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
-      x509StoreName: 'My'
-    }
     certificateCommonNames: {
       commonNames: [
         {
@@ -561,12 +557,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         "clientApplication": "<<deploymentSpId>>",
         "clusterApplication": "cf33fea8-b30f-424f-ab73-c48d99e0b222",
         "tenantId": "<<tenantId>>"
-      }
-    },
-    "certificate": {
-      "value": {
-        "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
-        "x509StoreName": "My"
       }
     },
     "certificateCommonNames": {
