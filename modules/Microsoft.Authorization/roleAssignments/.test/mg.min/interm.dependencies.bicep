@@ -23,5 +23,5 @@ module resourceGroupResources 'dependencies.bicep' = {
   }
 }
 
-@description('The principal ID of the created managed identity')
+@description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = resourceGroupResources.outputs.managedIdentityPrincipalId
