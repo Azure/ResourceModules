@@ -181,7 +181,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg</h3>
+<h3>Example 1: Mg.Common</h3>
 
 <details>
 
@@ -307,7 +307,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 3: Rg</h3>
+<h3>Example 3: Rg.Common</h3>
 
 <details>
 
@@ -449,7 +449,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 5: Sub</h3>
+<h3>Example 5: Sub.Common</h3>
 
 <details>
 
