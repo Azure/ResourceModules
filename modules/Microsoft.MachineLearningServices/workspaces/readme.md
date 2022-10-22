@@ -17,8 +17,8 @@ This module deploys a Machine Learning Services Workspace.
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.MachineLearningServices/workspaces` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2021-07-01/workspaces) |
-| `Microsoft.MachineLearningServices/workspaces/computes` | [2022-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-01-01-preview/workspaces/computes) |
+| `Microsoft.MachineLearningServices/workspaces` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-05-01/workspaces) |
+| `Microsoft.MachineLearningServices/workspaces/computes` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-05-01/workspaces/computes) |
 | `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
 
@@ -32,7 +32,7 @@ This module deploys a Machine Learning Services Workspace.
 | `associatedKeyVaultResourceId` | string |  | The resource ID of the associated Key Vault. |
 | `associatedStorageAccountResourceId` | string |  | The resource ID of the associated Storage Account. |
 | `name` | string |  | The name of the machine learning workspace. |
-| `sku` | string | `[Basic, Enterprise]` | Specifies the SKU, also referred as 'edition' of the Azure Machine Learning workspace. |
+| `sku` | string | `[Basic, Enterprise, Free, Standard]` | Specifies the SKU, also referred as 'edition' of the Azure Machine Learning workspace. |
 
 **Conditional parameters**
 
@@ -71,6 +71,8 @@ This module deploys a Machine Learning Services Workspace.
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `serviceManagedResourcesSettings` | object | `{object}` |  | The service managed resource settings. |
+| `sharedPrivateLinkResources` | array | `[]` |  | The list of shared private link resources in this workspace. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
 
@@ -636,13 +638,13 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
 
 ```bicep
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mlswencr'
+  name: '${uniqueString(deployment().name)}-test-mlswecr'
   params: {
     // Required parameters
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
     associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
     associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: '<<namePrefix>>mlswencr001'
+    name: '<<namePrefix>>mlswecr001'
     sku: 'Basic'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
@@ -691,7 +693,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       "value": "<associatedStorageAccountResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>mlswencr001"
+      "value": "<<namePrefix>>mlswecr001"
     },
     "sku": {
       "value": "Basic"
