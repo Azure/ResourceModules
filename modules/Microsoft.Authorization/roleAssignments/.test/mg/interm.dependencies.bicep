@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
 @description('Optional. The location to deploy resources to.')
-param location string
+param location string = deployment().location
 
 @description('Required. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
