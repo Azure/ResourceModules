@@ -1,6 +1,6 @@
 targetScope = 'subscription'
 
-@description('Required. The location to deploy to.')
+@description('Optional. The location to deploy resources to.')
 param location string
 
 @description('Required. The name of the resource group to deploy for testing purposes.')
