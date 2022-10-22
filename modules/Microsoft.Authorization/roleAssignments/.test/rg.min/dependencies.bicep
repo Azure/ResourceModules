@@ -1,4 +1,4 @@
-@description('Required. The name of the managed identity to create.')
+@description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
 @description('Optional. The location to deploy resources to.')
