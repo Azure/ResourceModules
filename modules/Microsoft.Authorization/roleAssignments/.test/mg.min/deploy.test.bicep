@@ -19,7 +19,7 @@ param serviceShort string = 'aramgmin'
 
 // General resources
 // =================
-module resourceGroupResources 'interm.dependencies.bicep' = {
+module resourceGroupResources 'interim.dependencies.bicep' = {
   scope: subscription('<<subscriptionId>>')
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
