@@ -7,7 +7,7 @@ param location string = deployment().location
 @maxLength(90)
 param resourceGroupName string
 
-@description('Required. The name of the managed identity to create.')
+@description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
