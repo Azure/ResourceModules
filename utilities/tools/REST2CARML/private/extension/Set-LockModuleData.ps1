@@ -5,7 +5,7 @@ Populate the provided ModuleData with all parameters, variables & resources requ
 .DESCRIPTION
 Populate the provided ModuleData with all parameters, variables & resources required for locks.
 
-.PARAMETER JSONKeyPath
+.PARAMETER UrlPath
 Mandatory. The JSON key path (of the API Specs) to use when determining if locks are supported or not
 
 .PARAMETER ResourceType
@@ -15,7 +15,7 @@ Mandatory. The resource type to check if lock are supported.
 Mandatory. The ModuleData object to populate.
 
 .EXAMPLE
-Set-LockModuleData -JSONKeyPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
+Set-LockModuleData -UrlPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
 
 Add the lock module data of the resource type [vaults] to the provided module data object
 #>
@@ -24,7 +24,7 @@ function Set-LockModuleData {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $JSONKeyPath,
+        [string] $UrlPath,
 
         [Parameter(Mandatory = $true)]
         [string] $ResourceType,
@@ -41,7 +41,7 @@ function Set-LockModuleData {
 
         $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
 
-        if (-not (Get-SupportsLock -JSONKeyPath $JSONKeyPath)) {
+        if (-not (Get-SupportsLock -UrlPath $UrlPath)) {
             return
         }
 

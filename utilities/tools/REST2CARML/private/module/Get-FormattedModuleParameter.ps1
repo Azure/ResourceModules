@@ -25,7 +25,8 @@ function Get-FormattedModuleParameter {
     # description (optional)
     # ----------------------
     if ($ParameterData.description) {
-        $result += "@description('{0}. {1}')" -f (($ParameterData.required) ? 'Required' : 'Optional'), $ParameterData.description
+        # For the description we have to escape any single quote that is not already escaped (i.e., negative lookbehind)
+        $result += "@description('{0}. {1}')" -f (($ParameterData.required) ? 'Required' : 'Optional'), ($ParameterData.description -replace "(?<!\\)'", "\'")
     }
 
     # secure (optional)

@@ -17,11 +17,11 @@ Mandatory. The module data (e.g. parameters) to add to the template.
 .PARAMETER JSONFilePath
 Mandatory. The service specification file to process.
 
-.PARAMETER JSONKeyPath
+.PARAMETER UrlPath
 Mandatory. The API Path in the JSON specification file to process
 
 .EXAMPLE
-Set-Module -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -JSONKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+Set-Module -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
 
 Update the module [Microsoft.KeyVault/vaults] with the provided module data.
 #>
@@ -42,7 +42,7 @@ function Set-Module {
         [string] $JSONFilePath,
 
         [Parameter(Mandatory = $true)]
-        [string] $JSONKeyPath
+        [string] $UrlPath
     )
 
     begin {
@@ -89,7 +89,7 @@ function Set-Module {
 
         ## Set Locks data
         $lockInputObject = @{
-            JSONKeyPath  = $JSONKeyPath
+            urlPath      = $UrlPath
             ResourceType = $ResourceType
             ModuleData   = $ModuleData
         }
@@ -104,7 +104,7 @@ function Set-Module {
             ResourceType      = $ResourceType
             ModuleData        = $ModuleData
             JSONFilePath      = $JSONFilePath
-            JSONKeyPath       = $JSONKeyPath
+            urlPath           = $UrlPath
         }
         Set-ModuleTemplate @moduleTemplateContentInputObject
 

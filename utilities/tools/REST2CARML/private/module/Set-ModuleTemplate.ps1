@@ -17,11 +17,11 @@ Mandatory. The module data (e.g. parameters) to add to the template.
 .PARAMETER JSONFilePath
 Mandatory. The service specification file to process.
 
-.PARAMETER JSONKeyPath
+.PARAMETER UrlPath
 Mandatory. The API Path in the JSON specification file to process
 
 .EXAMPLE
-Set-ModuleTemplate -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -JSONKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+Set-ModuleTemplate -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
 
 Update the module [Microsoft.KeyVault/vaults] with the provided module data.
 #>
@@ -42,7 +42,7 @@ function Set-ModuleTemplate {
         [string] $JSONFilePath,
 
         [Parameter(Mandatory = $true)]
-        [string] $JSONKeyPath
+        [string] $UrlPath
     )
 
     begin {
@@ -59,7 +59,7 @@ function Set-ModuleTemplate {
         ##  PARAMETERS  ##
         ##################
 
-        $targetScope = Get-TargetScope -JSONKeyPath $JSONKeyPath
+        $targetScope = Get-TargetScope -UrlPath $UrlPath
 
         $templateContent = @(
             "targetScope = '{0}'" -f $targetScope

@@ -5,40 +5,44 @@ Extract all parameters from the given API spec parameter root
 .DESCRIPTION
 Extract all parameters from the given API spec parameter root (e.g., PUT parameters)
 
+.PARAMETER JSONFilePath
+Mandatory. The service specification file to process.
+
 .PARAMETER SpecificationData
 Mandatory. The source content to crawl for data.
 
 .PARAMETER RelevantParamRoot
 Mandatory. The array of root parameters to process (e.g., PUT parameters).
 
-.PARAMETER JSONKeyPath
+.PARAMETER UrlPath
 Mandatory. The API Path in the JSON specification file to process
 
 .PARAMETER ResourceType
 Mandatory. The Resource Type to investigate
 
 .EXAMPLE
-Get-ParametersFromRoot -SpecificationData @{ paths = @(...); definitions = @{...} } -RelevantParamRoot @(@{ $ref: "../(...)"}) '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' -ResourceType 'vaults'
+Get-SpecsPropertiesAsParameterList -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -RelevantParamRoot @(@{ $ref: "../(...)"}) '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' -ResourceType 'vaults'
 
 Fetch all parameters (e.g., PUT) from the KeyVault REST path.
 #>
-function Get-ParametersFromRoot {
+function Get-SpecsPropertiesAsParameterList {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [hashtable] $SpecificationData,
+        [string] $JSONFilePath,
 
         [Parameter(Mandatory = $true)]
         [array] $RelevantParamRoot,
 
         [Parameter(Mandatory = $true)]
-        [string] $JSONKeyPath,
+        [string] $UrlPath,
 
         [Parameter(Mandatory = $true)]
         [string] $ResourceType
     )
 
+    $specificationData = Get-Content -Path $JSONFilePath -Raw | ConvertFrom-Json -AsHashtable
     $definitions = $specificationData.definitions
     $specParameters = $specificationData.parameters
 
@@ -55,13 +59,24 @@ function Get-ParametersFromRoot {
         $matchingPathObjectParametersRef = ($relevantParamRoot | Where-Object { $_.name -eq ($ResourceType.Substring(0, $ResourceType.Length - 1)) }).schema.'$ref'
     }
 
+    if ($matchingPathObjectParametersRef -like '*.*') {
+        # if the reference directly points to another file
+        $resolvedParameterRef = Resolve-SpecPropertyReference -JSONFilePath $JSONFilePath -SpecificationData $specificationData -Parameter @{ '$ref' = $matchingPathObjectParametersRef }
+
+        # Overwrite data to process
+        $specificationData = $resolvedParameterRef.specificationData
+        $definitions = $specificationData.definitions
+        $specParameters = $specificationData.parameters
+    }
+
+    # Get top-most parameters
     $outerParameters = $definitions[(Split-Path $matchingPathObjectParametersRef -Leaf)]
 
     # Handle resource name
     # --------------------
     # Note: The name can be specified in different locations like the PUT statement, but also in the spec's 'parameters' object as a reference
     # Case: The name in the url is also a parameter of the PUT statement
-    $pathServiceName = (Split-Path $JSONKeyPath -Leaf) -replace '{|}', ''
+    $pathServiceName = (Split-Path $UrlPath -Leaf) -replace '{|}', ''
     if ($relevantParamRoot.name -contains $pathServiceName) {
         $param = $relevantParamRoot | Where-Object { $_.name -eq $pathServiceName }
 
@@ -96,20 +111,18 @@ function Get-ParametersFromRoot {
     $templateData += $parameterObject
 
     # Process outer properties
-    # ------------------------
-    foreach ($outerParameter in $outerParameters.properties.Keys | Where-Object { $_ -ne 'properties' -and -not $outerParameters.properties[$_].readOnly }) {
-        $param = $outerParameters.properties[$outerParameter]
-        $parameterObject = @{
-            level       = 0
-            name        = $outerParameter
-            type        = $param.keys -contains 'type' ? $param.type : 'object'
-            description = $param.description
-            required    = $outerParameters.required -contains $outerParameter
+    # ------------------------0
+    foreach ($outerParameter in $outerParameters.properties.Keys | Where-Object { $_ -notin @('location') -and -not $outerParameters.properties[$_].readOnly } | Sort-Object ) {
+        $innerParamInputObject = @{
+            JSONFilePath              = $JSONFilePath
+            Parameter                 = $outerParameters.properties[$outerParameter]
+            SpecificationData         = $SpecificationData
+            Level                     = 0
+            Name                      = $outerParameter
+            Parent                    = ''
+            RequiredParametersOnLevel = $outerParameters.required
         }
-
-        $parameterObject = Set-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
-
-        $templateData += $parameterObject
+        $templateData += Get-SpecsPropertyAsParameter @innerParamInputObject
     }
 
     # Special case: Location
@@ -121,30 +134,8 @@ function Get-ParametersFromRoot {
             type        = 'string'
             description = 'Location for all Resources.'
             required    = $false
-            default     = ($JSONKeyPath -like '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/*') ? 'resourceGroup().location' : 'deployment().location'
+            default     = ($UrlPath -like '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/*') ? 'resourceGroup().location' : 'deployment().location'
         }
-
-        # param location string = resourceGroup().location
-        $templateData += $parameterObject
-    }
-
-    # Process inner properties
-    # ------------------------
-    $innerRef = $outerParameters.properties.properties.'$ref'
-    $innerParameters = $definitions[(Split-Path $innerRef -Leaf)].properties
-
-    foreach ($innerParameter in ($innerParameters.Keys | Where-Object { -not $innerParameters[$_].readOnly })) {
-        $param = $innerParameters[$innerParameter]
-        $parameterObject = @{
-            level       = 1
-            name        = $innerParameter
-            type        = $param.keys -contains 'type' ? $param.type : 'object'
-            description = $param.description
-            required    = $innerParameters.required -contains $innerParameter
-        }
-
-        $parameterObject = Set-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
-
         $templateData += $parameterObject
     }
 

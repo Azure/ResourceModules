@@ -1,9 +1,9 @@
 ﻿<#
 .SYNOPSIS
-Get the latest API spec file path & service path (in file) for a given ProviderNamespace - ResourceType combination.
+Get the latest API spec file paths & service/url-PUT paths (in file) for a given ProviderNamespace - ResourceType combination. This includes also child-resources.
 
 .DESCRIPTION
-Get the latest API spec file path & service path (in file) for a given ProviderNamespace - ResourceType combination.
+Get the latest API spec file path & service/url-PUT path (in file) for a given ProviderNamespace - ResourceType combination. This includes also child-resources.
 
 .PARAMETER ProviderNamespace
 Mandatory. The provider namespace to query the data for
@@ -20,7 +20,29 @@ Optional. Set to also consider 'preview' versions for the request.
 .EXAMPLE
 Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Keyvault' -ResourceType 'vaults' -RepositoryPath './temp/azure-rest-api-specs' -IncludePreview
 
-Get the latest API spec file path & service path for the resource type [Microsoft.KeyVault/vaults] - including the latest preview version (if any)
+Get the latest API spec file path & service path for the resource type [Microsoft.KeyVault/vaults] - including the latest preview version (if any). Would return (without the JSON format):
+[
+    {
+        "urlPath": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}",
+        "jsonFilePath": "azure-rest-api-specs/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keys.json"
+    },
+    {
+        "urlPath": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/accessPolicies/{operationKind}",
+        "jsonFilePath": "azure-rest-api-specs/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json"
+    },
+    {
+        "urlPath": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}",
+        "jsonFilePath": "azure-rest-api-specs/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json"
+    },
+    {
+        "urlPath": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}",
+        "jsonFilePath": "azure-rest-api-specs/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json"
+    },
+    {
+        "urlPath": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}",
+        "jsonFilePath": "azure-rest-api-specs/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2022-07-01/secrets.json"
+    }
+]
 #>
 function Get-ServiceSpecPathData {
 
@@ -39,148 +61,102 @@ function Get-ServiceSpecPathData {
         [switch] $IncludePreview
     )
 
-    try {
-        #find the resource provider folder
-        $resourceProviderFolders = Get-FolderList -rootFolder (Join-Path $RepositoryPath 'specification') -ProviderNamespace $ProviderNamespace
+    #find the resource provider folder
+    $resourceProviderFolders = Get-FolderList -rootFolder (Join-Path $RepositoryPath 'specification') -ProviderNamespace $ProviderNamespace
 
-        $resultArr = @()
-        foreach ($resourceProviderFolder in $resourceProviderFolders) {
-            Write-Verbose ('Processing Resource provider folder [{0}]' -f $resourceProviderFolder)
-            # TODO: Get highest API version (preview/non-preview)
-            $apiVersionFoldersArr = @()
-            if (Test-Path -Path $(Join-Path $resourceProviderFolder 'stable')) { $apiVersionFoldersArr += Get-ChildItem -Path $(Join-Path $resourceProviderFolder 'stable') }
-            if ($IncludePreview) {
-                # adding preview API versions if allowed
-                if (Test-Path -Path $(Join-Path $resourceProviderFolder 'preview')) { $apiVersionFoldersArr += Get-ChildItem -Path $(Join-Path $resourceProviderFolder 'preview') }
+    $pathData = @()
+    foreach ($resourceProviderFolder in $resourceProviderFolders) {
+        Write-Verbose ('Processing Resource provider folder [{0}]' -f $resourceProviderFolder)
+        $apiVersionFolders = @()
+
+        $stablePath = Join-Path $resourceProviderFolder 'stable'
+        if (Test-Path -Path $stablePath) {
+            $apiVersionFolders += (Get-ChildItem -Path $stablePath).FullName
+        }
+        if ($IncludePreview) {
+            # adding preview API versions
+            $previewPath = Join-Path $resourceProviderFolder 'preview'
+            if (Test-Path -Path $previewPath) {
+                $apiVersionFolders += (Get-ChildItem -Path $previewPath).FullName
             }
+        }
 
-            # sorting all API version from the newest to the oldest
-            $apiVersionFoldersArr = $apiVersionFoldersArr | Sort-Object -Property Name -Descending
-            if ($apiVersionFoldersArr.Count -eq 0) {
-                Write-Warning ('No API folder found in folder [{0}]' -f $resourceProviderFolder)
-                continue
+        # sorting all API version from the newest to the oldest
+        $apiVersionFolders = $apiVersionFolders | Sort-Object -Descending
+        if ($apiVersionFolders.Count -eq 0) {
+            Write-Warning ('No API folder found in folder [{0}]' -f $resourceProviderFolder)
+            continue
+        }
+
+        # Get one unique instance of each file - with 'newer' files taking priority
+        $specFilePaths = [System.Collections.ArrayList]@()
+        foreach ($apiVersionFolder in $apiVersionFolders) {
+            $filePaths = (Get-ChildItem $apiVersionFolder -Filter '*.json').FullName | Where-Object { (Split-Path $_ -Leaf) -notin @('common.json') }
+            $alreadyIncludedFileNames = $specFilePaths | ForEach-Object { Split-Path $_ -LeafBase }
+            foreach ($filePath in ($filePaths | Where-Object { (Split-Path $_ -LeafBase) -notin @($alreadyIncludedFileNames) })) {
+                $specFilePaths += $filePath
             }
+        }
 
-            foreach ($apiversionFolder in $apiVersionFoldersArr) {
-                $putMethods = @()
-                foreach ($jsonFile in $(Get-ChildItem -Path $apiversionFolder -Filter *.json)) {
-                    $jsonPaths = (ConvertFrom-Json (Get-Content -Raw -Path $jsonFile)).paths
-                    $jsonPaths.PSObject.Properties | ForEach-Object {
-                        $put = $_.value.put
-                        # if ($_.Name -contains $ResourceType) {
-                        #     Write-Verbose ('File: [{0}], API: [{1}] JsonKeyPath: [{2}]' -f $jsonFile.Name, $apiversionFolder.Name, $_.Name) -Verbose
-                        # }
-                        if ($put) {
-                            $pathSplit = $_.Name.Split('/')
-                            if (($pathSplit[$pathSplit.Count - 3] -eq $ProviderNamespace) -and ($pathSplit[$pathSplit.Count - 2] -eq $ResourceType)) {
-                                $arrItem = [pscustomobject] @{}
-                                $arrItem | Add-Member -MemberType NoteProperty -Name 'jsonFilePath' -Value $jsonFile.FullName
-                                $arrItem | Add-Member -MemberType NoteProperty -Name 'jsonKeyPath' -Value $_.Name
-                                # $arrItem | Add-Member -MemberType NoteProperty -Name 'putMethod' -Value $_.value.put
-                                $putMethods += $arrItem
-                            }
-                        }
-                    }
+        # Of those paths, get only those that contain a 'put' statement
+
+        foreach ($specFilePath in $specFilePaths) {
+
+            $UrlPathsOfFile = (ConvertFrom-Json (Get-Content -Raw -Path $specFilePath) -AsHashtable).paths
+            $urlPUTPathsInFile = $UrlPathsOfFile.Keys | Where-Object { $UrlPathsOfFile[$_].Keys -contains 'put' }
+
+            foreach ($urlPUTPath in $urlPUTPathsInFile) {
+
+                # Todo create regex dynamic based on count of '/' in RT
+                # Build regex based in input
+                $formattedProviderNamespace =  $ProviderNamespace -replace '\.', '\.'
+                if(($ResourceType -split '/').Count -gt 1) {
+                    # Provided a concatinated resource type like 'vaults/secrets'
+                    $resourceTypeElements = $ResourceType -split '/'
+                    $relevantPathRegex = ".*\/$formattedProviderNamespace\/"
+                    # Add each element and incorporate a theoretical 'name' in the path as it is part of each url (e.g. vaults/{vaultName}/keys/{keyName})
+                    # '?' is introduced for urls where a hardcoded name (like 'default') is part of it
+                    $relevantPathRegex += $resourceTypeElements -join '\/\{?\w+}?\/'
+                    $relevantPathRegex += '.*'
+                } else {
+                    $relevantPathRegex = ".*\/{0}\/{1}\/.*" -f $formattedProviderNamespace, $ResourceType
                 }
-                if ($putMethods.Count -gt 0) { break } # no scanning of older API folders if a put method already found
+
+                # Filter down to Provider Namespace & Resource Type (or children)
+                if($urlPUTPath -notmatch $relevantPathRegex) {
+                    Write-Debug "Ignoring Path PUT URL [$urlPUTPath]"
+                    continue
+                }
+
+                # Populate result
+                $pathData += @{
+                    urlPath      = $urlPUTPath
+                    jsonFilePath = $specFilePath
+                }
             }
-            $resultArr += $putMethods # adding result of this provider folder to the overall result array
         }
-    } catch {
-        Write-Error "Error processing [$ProviderNamespace/$ResourceType]: $_"
-        return -2
     }
 
-    try {
-        Set-Location $initialLocation
+    # Add parent pointers for later reference
+    foreach($UrlPathBlock in $pathData) {
+        $pathElements = $UrlPathBlock.urlPath -split '/'
+        $rawparentUrlPath = $pathElements[0..($pathElements.Count-3)] -join '/'
 
-        ## Remove temp folder again
-        # $null = Remove-Item $tempFolderPath -Recurse -Force
-
-        if ($resultArr.Count -ge 1) {
-            return $resultArr
+        if($pathElements[-3] -like "Microsoft.*") {
+            # Top-most element. No parent
+            $parentUrlPath = ''
+        }
+        elseif($rawparentUrlPath -notlike "*}") {
+            # Special case: Parent has a default value in url (e.g. 'default'). In this case we need to find a match in the other urls
+            $shortenedRef = $pathElements[0..($pathElements.Count-4)] -join '/'
+            $formattedRef =  [regex]::Escape($shortenedRef) -replace '\/', '\/'
+            $parentUrlPath = $pathData.urlPath | Where-Object { $_ -match "^$formattedRef\/\{\w+\}$"}
         } else {
-            Write-Error 'No results found'
-            return $resultArr
+            $parentUrlPath = $rawparentUrlPath
         }
 
-    } catch {
-        Write-Error "Error processing [$ProviderNamespace/$ResourceType]: $_"
-        return -2
+        $UrlPathBlock['parentUrlPath'] = $parentUrlPath
     }
+
+    return $pathData
 }
-
-# Example call for further processing
-# $result = Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' | Format-List
-# $result | Format-List
-
-# Kris: the below code is for debugging only and will be deleted later.
-## It is commented out and doesn't run, so it can be ignored
-
-# test function calls
-# two examples of working calls for testing
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Compute' -ResourceType 'virtualMachines' | Format-List
-
-# working, multiple results
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'locks' | Format-List # no results, special case
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'policyDefinitions' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'policySetDefinitions' | Format-List
-
-# no results (different ResourceId schema, to be repaired)
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Resources' -ResourceType 'resourceGroups' | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Security' -ResourceType 'azureSecurityCenter' | Format-List
-
-# working with preview only
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'policyExemptions' -IncludePreview | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Insights' -ResourceType 'privateLinkScopes' -IncludePreview | Format-List
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.OperationsManagement' -ResourceType 'solutions' -IncludePreview | Format-List
-
-# working. If run without preview, returning one result, with preview: four results
-# Get-ServiceSpecPathData -ProviderNamespace 'Microsoft.Insights' -ResourceType 'diagnosticSettings' -IncludePreview | Format-List
-
-
-
-# running the function against the CARML modules folder
-# to collect some statistics.
-# It requires some modifications of the function Get-ServiceSpecPathData, so please don't use it.
-# below code is temporary and will be deleted later
-# exit # protecting from unnecessary run
-# $carmlModulesRoot = Join-Path $PSScriptRoot '..' '..' '..' 'modules'
-# $resArray = @()
-# foreach ($providerFolder in $(Get-ChildItem -Path $carmlModulesRoot -Filter 'Microsoft.*')) {
-#     foreach ($resourceFolder in $(Get-ChildItem -Path $(Join-Path $carmlModulesRoot $providerFolder.Name) -Directory)) {
-#         Write-Host ('Processing [{0}/{1}]...' -f $providerFolder.Name, $resourceFolder.Name)
-#         $res = Get-ServiceSpecPathData -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name -IncludePreview
-#         # Get-ServiceSpecPathData -ProviderNamespace $providerFolder.Name -ResourceType $resourceFolder.Name
-
-#         $resArrItem = [pscustomobject] @{}
-#         $resArrItem | Add-Member -MemberType NoteProperty -Name 'Provider' -Value $providerFolder.Name
-#         $resArrItem | Add-Member -MemberType NoteProperty -Name 'ResourceType' -Value $resourceFolder.Name
-#         if ($null -eq $res) {
-#             $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value 0
-#         } elseif ($res -is [array]) {
-#             $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value $res.Count
-#         } elseif ($res.GetType().Name -eq 'pscustomobject') {
-#             $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value 1
-#         } else {
-#             $resArrItem | Add-Member -MemberType NoteProperty -Name 'Result' -Value $res
-#         }
-#         $resArray += $resArrItem
-#     }
-# }
-
-
-
-# # statistics
-
-# $count = $resArray.Count
-# $resArray | ConvertTo-Json -Depth 99
-
-# Write-Host ('Success, more than one result: {0} of {1}' -f ((($resArray | Where-Object { $_.Result -gt 1 }).Count), $count ))
-# Write-Host ('Success, one result: {0} of {1}' -f ((($resArray | Where-Object { $_.Result -eq 1 }).Count), $count))
-# Write-Host ('No Results: {0} of {1}' -f ((($resArray | Where-Object { $_.Result -eq 0 }).Count), $count))
-# Write-Host ('RT Error  : {0} of {1}' -f ((($resArray | Where-Object { $_.Result -eq -2 }).Count), $count))
-
-

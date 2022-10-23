@@ -5,14 +5,14 @@ Check if the given service specification supports resource locks
 .DESCRIPTION
 Check if the given service specification supports resource locks
 
-.PARAMETER JSONKeyPath
+.PARAMETER UrlPath
 Mandatory. The file path to the service specification to check
 
 .PARAMETER ProvidersToIgnore
 Optional. Providers to ignore because they fundamentally don't support locks (e.g. 'Microsoft.Authorization')
 
 .EXAMPLE
-Get-SupportsLock -JSONKeyPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}'
+Get-SupportsLock -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}'
 
 Check if the storage service supports locks.
 #>
@@ -22,7 +22,7 @@ function Get-SupportsLock {
     [OutputType('System.Boolean')]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $JSONKeyPath,
+        [string] $UrlPath,
 
         [Parameter(Mandatory = $false)]
         [array] $ProvidersToIgnore = @('Microsoft.Authorization')
@@ -36,12 +36,12 @@ function Get-SupportsLock {
 
         # If the Specification URI contains any of the namespaces to ignore, no Lock is supported
         foreach ($ProviderToIgnore in $ProvidersToIgnore) {
-            if ($JSONKeyPath.Contains($ProviderToIgnore)) {
+            if ($UrlPath.Contains($ProviderToIgnore)) {
                 return $false
             }
         }
 
-        return ($JSONKeyPath -split '\/').Count -le 9
+        return ($UrlPath -split '\/').Count -le 9
     }
 
     end {
