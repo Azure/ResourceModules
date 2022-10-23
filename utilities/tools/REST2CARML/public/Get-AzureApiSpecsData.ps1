@@ -92,7 +92,6 @@ function Get-AzureApiSpecsData {
         # Build result
         $moduleData += @{
             data       = $resolvedParameters
-            # identifier = ($pathBlock.urlPath -split '\/providers\/')[1]
             identifier = $identifier
             metadata   = @{
                 urlPath       = $pathBlock.urlPath
