@@ -36,7 +36,7 @@ function Get-SpecsPropertiesAsParameterList {
         [array] $RelevantParamRoot,
 
         [Parameter(Mandatory = $true)]
-        [string] $urlPath,
+        [string] $UrlPath,
 
         [Parameter(Mandatory = $true)]
         [string] $ResourceType

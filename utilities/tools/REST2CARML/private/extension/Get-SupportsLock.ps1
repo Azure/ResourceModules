@@ -22,7 +22,7 @@ function Get-SupportsLock {
     [OutputType('System.Boolean')]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $urlPath,
+        [string] $UrlPath,
 
         [Parameter(Mandatory = $false)]
         [array] $ProvidersToIgnore = @('Microsoft.Authorization')

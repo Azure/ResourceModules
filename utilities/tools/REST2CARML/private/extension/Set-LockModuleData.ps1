@@ -24,7 +24,7 @@ function Set-LockModuleData {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $urlPath,
+        [string] $UrlPath,
 
         [Parameter(Mandatory = $true)]
         [string] $ResourceType,
