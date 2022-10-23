@@ -14,7 +14,7 @@ Mandatory. The source content to crawl for data.
 .PARAMETER RelevantParamRoot
 Mandatory. The array of root parameters to process (e.g., PUT parameters).
 
-.PARAMETER urlPath
+.PARAMETER UrlPath
 Mandatory. The API Path in the JSON specification file to process
 
 .PARAMETER ResourceType
@@ -89,8 +89,7 @@ function Get-SpecsPropertiesAsParameterList {
         }
 
         $parameterObject = Set-OptionalParameter -SourceParameterObject $param -TargetObject $parameterObject
-    }
-    else {
+    } else {
         # Case: The name is a ref in the spec's 'parameters' object. E.g., { "$ref": "#/parameters/BlobServicesName" }
         # For this, we need to find the correct ref, as there can be multiple
         $nonDefaultParameter = $relevantParamRoot.'$ref' | Where-Object { $_ -like '#/parameters/*' } | Where-Object { $specParameters[(Split-Path $_ -Leaf)].name -eq $pathServiceName }

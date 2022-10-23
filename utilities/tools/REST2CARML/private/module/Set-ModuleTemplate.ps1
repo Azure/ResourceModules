@@ -17,7 +17,7 @@ Mandatory. The module data (e.g. parameters) to add to the template.
 .PARAMETER JSONFilePath
 Mandatory. The service specification file to process.
 
-.PARAMETER urlPath
+.PARAMETER UrlPath
 Mandatory. The API Path in the JSON specification file to process
 
 .EXAMPLE

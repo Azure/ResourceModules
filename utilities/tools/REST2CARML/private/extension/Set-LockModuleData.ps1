@@ -5,7 +5,7 @@ Populate the provided ModuleData with all parameters, variables & resources requ
 .DESCRIPTION
 Populate the provided ModuleData with all parameters, variables & resources required for locks.
 
-.PARAMETER urlPath
+.PARAMETER UrlPath
 Mandatory. The JSON key path (of the API Specs) to use when determining if locks are supported or not
 
 .PARAMETER ResourceType

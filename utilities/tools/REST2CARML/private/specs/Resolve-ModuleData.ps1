@@ -8,7 +8,7 @@ Extract the outer (top-level) and inner (property-level) parameters for a given 
 .PARAMETER JSONFilePath
 Mandatory. The service specification file to process.
 
-.PARAMETER urlPath
+.PARAMETER UrlPath
 Mandatory. The API Path in the JSON specification file to process
 
 .PARAMETER ResourceType
@@ -44,7 +44,7 @@ function Resolve-ModuleData {
     $putParametersInputObject = @{
         JSONFilePath      = $JSONFilePath
         RelevantParamRoot = $specificationData.paths[$urlPath].put.parameters
-        urlPath       = $urlPath
+        urlPath           = $urlPath
         ResourceType      = $ResourceType
     }
     $templateData += Get-SpecsPropertiesAsParameterList @putParametersInputObject
@@ -54,7 +54,7 @@ function Resolve-ModuleData {
         $putParametersInputObject = @{
             JSONFilePath      = $JSONFilePath
             RelevantParamRoot = $specificationData.paths[$urlPath].patch.parameters
-            urlPath       = $urlPath
+            urlPath           = $urlPath
             ResourceType      = $ResourceType
         }
         $templateData += Get-SpecsPropertiesAsParameterList @putParametersInputObject

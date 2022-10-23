@@ -5,7 +5,7 @@ Check if the given service specification supports resource locks
 .DESCRIPTION
 Check if the given service specification supports resource locks
 
-.PARAMETER urlPath
+.PARAMETER UrlPath
 Mandatory. The file path to the service specification to check
 
 .PARAMETER ProvidersToIgnore

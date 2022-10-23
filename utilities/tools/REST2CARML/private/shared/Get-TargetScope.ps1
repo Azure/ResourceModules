@@ -5,7 +5,7 @@ Get the target scope (bicep) of a given key path.
 .DESCRIPTION
 Get the target scope (bicep) of a given key path. For example 'resourceGroup'.
 
-.PARAMETER urlPath
+.PARAMETER UrlPath
 Mandatory. The key path to check for its scope.
 
 .EXAMPLE
