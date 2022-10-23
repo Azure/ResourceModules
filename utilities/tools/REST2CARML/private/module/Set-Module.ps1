@@ -89,7 +89,7 @@ function Set-Module {
 
         ## Set Locks data
         $lockInputObject = @{
-            urlPath  = $urlPath
+            urlPath      = $urlPath
             ResourceType = $ResourceType
             ModuleData   = $ModuleData
         }
@@ -104,7 +104,7 @@ function Set-Module {
             ResourceType      = $ResourceType
             ModuleData        = $ModuleData
             JSONFilePath      = $JSONFilePath
-            urlPath       = $urlPath
+            urlPath           = $urlPath
         }
         Set-ModuleTemplate @moduleTemplateContentInputObject
 
