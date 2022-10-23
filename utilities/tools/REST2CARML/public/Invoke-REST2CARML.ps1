@@ -109,19 +109,19 @@ function Invoke-REST2CARML {
             }
             $moduleData = Get-AzureApiSpecsData @apiSpecsInputObject
 
+            # TODO: Check if 'Location' is also fetched (seemed to be missing)
 
             ###########################################
             ##   Generate initial module structure   ##
             ###########################################
-            # if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
-            #     # TODO: Consider child modules. BUT be aware that pipelines are only generated for the top-level resource
-            #     Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
-            # }
+            if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
+                # TODO: Consider child modules. BUT be aware that pipelines are only generated for the top-level resource
+                Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+            }
 
             ############################
             ##   Set module content   ##
             ############################
-
 
             # TODO: Remove [0] reference as only temp: Get only one module block for processing
             $moduleTemplateInputObject = @{
