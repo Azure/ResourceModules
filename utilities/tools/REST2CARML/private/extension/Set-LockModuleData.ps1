@@ -15,7 +15,7 @@ Mandatory. The resource type to check if lock are supported.
 Mandatory. The ModuleData object to populate.
 
 .EXAMPLE
-Set-LockModuleData -urlPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
+Set-LockModuleData -UrlPath = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
 
 Add the lock module data of the resource type [vaults] to the provided module data object
 #>
@@ -41,7 +41,7 @@ function Set-LockModuleData {
 
         $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
 
-        if (-not (Get-SupportsLock -urlPath $UrlPath)) {
+        if (-not (Get-SupportsLock -UrlPath $UrlPath)) {
             return
         }
 

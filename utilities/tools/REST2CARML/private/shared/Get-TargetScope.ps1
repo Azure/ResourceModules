@@ -9,7 +9,7 @@ Get the target scope (bicep) of a given key path. For example 'resourceGroup'.
 Mandatory. The key path to check for its scope.
 
 .EXAMPLE
-Get-TargetScope -urlPath 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+Get-TargetScope -UrlPath 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
 
 Check the given KeyPath for its scope. Would return 'resourceGroup'.
 #>

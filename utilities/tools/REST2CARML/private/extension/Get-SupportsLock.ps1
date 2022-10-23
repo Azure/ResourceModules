@@ -12,7 +12,7 @@ Mandatory. The file path to the service specification to check
 Optional. Providers to ignore because they fundamentally don't support locks (e.g. 'Microsoft.Authorization')
 
 .EXAMPLE
-Get-SupportsLock -urlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}'
+Get-SupportsLock -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}'
 
 Check if the storage service supports locks.
 #>
