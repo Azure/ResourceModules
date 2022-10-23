@@ -109,8 +109,6 @@ function Invoke-REST2CARML {
             }
             $moduleData = Get-AzureApiSpecsData @apiSpecsInputObject
 
-            # TODO: Check if 'Location' is also fetched (seemed to be missing)
-
             ###########################################
             ##   Generate initial module structure   ##
             ###########################################
@@ -123,7 +121,7 @@ function Invoke-REST2CARML {
             ##   Set module content   ##
             ############################
 
-            # TODO: Remove [0] reference as only temp: Get only one module block for processing
+            # TODO: Remove [0] reference as only temp. The logic is currently NOT capabale of handling child resources
             $moduleTemplateInputObject = @{
                 ProviderNamespace = $ProviderNamespace
                 ResourceType      = $ResourceType
