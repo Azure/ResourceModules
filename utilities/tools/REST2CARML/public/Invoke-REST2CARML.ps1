@@ -12,6 +12,10 @@ Mandatory. The provider namespace to query the data for
 .PARAMETER ResourceType
 Mandatory. The resource type to query the data for
 
+.PARAMETER ExcludeChildren
+Optional. Don't include child resource types in the result
+
+
 .PARAMETER IncludePreview
 Mandatory. Include preview API versions
 
@@ -32,6 +36,11 @@ Generate/Update a CARML module for [Microsoft.AVS/privateClouds] and do not dele
 Invoke-REST2CARML -ProviderNamespace 'Microsoft.Keyvault' -ResourceType 'vaults' -KeepArtifacts
 
 Generate/Update a CARML module for [Microsoft.Keyvault/vaults] and do not delete any downloaded/cloned artifact.
+
+.EXAMPLE
+Invoke-AzureApiCrawler -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts/blobServices/containers' -Verbose -KeepArtifacts
+
+Generate/Update a CARML module for [Microsoft.Storage/storageAccounts/blobServices/containers] and do not delete any downloaded/cloned artifact.
 #>
 function Invoke-REST2CARML {
 
@@ -42,6 +51,9 @@ function Invoke-REST2CARML {
 
         [Parameter(Mandatory = $true)]
         [string] $ResourceType,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $ExcludeChildren,
 
         [Parameter(Mandatory = $false)]
         [switch] $IncludePreview,
@@ -84,41 +96,40 @@ function Invoke-REST2CARML {
         Set-Location $initialLocation
 
         try {
-            ###########################
-            ##   Fetch module data   ##
-            ###########################
-            $getPathDataInputObject = @{
+            ############################################
+            ##   Extract module data from API specs   ##
+            ############################################
+
+            $apiSpecsInputObject = @{
                 ProviderNamespace = $ProviderNamespace
                 ResourceType      = $ResourceType
-                RepositoryPath    = Join-Path $script:temp $repoName
+                RepositoryPath    = (Join-Path $script:temp $repoName)
+                ExcludeChildren   = $ExcludeChildren
                 IncludePreview    = $IncludePreview
             }
-            $pathData = Get-ServiceSpecPathData @getPathDataInputObject
+            $moduleData = Get-AzureApiSpecsData @apiSpecsInputObject
 
-            $resolveInputObject = @{
-                JSONFilePath = $pathData.jsonFilePath
-                JSONKeyPath  = $pathData.jsonKeyPath
-                ResourceType = $ResourceType
-            }
-            $moduleData = Resolve-ModuleData @resolveInputObject
 
             ###########################################
             ##   Generate initial module structure   ##
             ###########################################
-            if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
-                # TODO: Consider child modules. BUT be aware that pipelines are only generated for the top-level resource
-                Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
-            }
+            # if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
+            #     # TODO: Consider child modules. BUT be aware that pipelines are only generated for the top-level resource
+            #     Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
+            # }
 
             ############################
             ##   Set module content   ##
             ############################
+
+
+            # TODO: Remove [0] reference as only temp: Get only one module block for processing
             $moduleTemplateInputObject = @{
                 ProviderNamespace = $ProviderNamespace
                 ResourceType      = $ResourceType
-                JSONFilePath      = $pathData.jsonFilePath
-                JSONKeyPath       = $pathData.jsonKeyPath
-                ModuleData        = $moduleData
+                JSONFilePath      = $moduleData[0].metadata.jsonFilePath
+                UrlPath           = $moduleData[0].metadata.urlPath
+                ModuleData        = $moduleData[0].data
             }
             if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
                 Set-Module @moduleTemplateInputObject
