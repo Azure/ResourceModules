@@ -56,7 +56,7 @@ function Set-PrivateEndpointModuleData {
         )
 
         $ModuleData.resources += @(
-            "module {0}_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint,index) in privateEndpoints: {" -f $resourceTypeSingular
+            "module $($resourceTypeSingular)_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint,index) in privateEndpoints: {"
             "  name: '`${uniqueString(deployment().name, location)}-$resourceTypeSingular-PrivateEndpoint-`${index}'"
             '  params: {'
             '    groupIds: ['

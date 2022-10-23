@@ -64,86 +64,48 @@ function Invoke-REST2CARML {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
-
         Write-Verbose ('Processing module [{0}/{1}]' -f $ProviderNamespace, $ResourceType) -Verbose
-
-        $initialLocation = (Get-Location).Path
     }
 
     process {
 
-        #########################################
-        ##   Temp Clone API Specs Repository   ##
-        #########################################
-        $repoUrl = $script:CONFIG.url_CloneRESTAPISpecRepository
-        $repoName = Split-Path $repoUrl -LeafBase
+        ############################################
+        ##   Extract module data from API specs   ##
+        ############################################
 
-        # Clone repository
-        ## Create temp folder
-        if (-not (Test-Path $script:temp)) {
-            $null = New-Item -Path $script:temp -ItemType 'Directory'
+        $apiSpecsInputObject = @{
+            ProviderNamespace = $ProviderNamespace
+            ResourceType      = $ResourceType
+            ExcludeChildren   = $ExcludeChildren
+            IncludePreview    = $IncludePreview
+            KeepArtifacts     = $KeepArtifacts
         }
-        ## Switch to temp folder
-        Set-Location $script:temp
+        $moduleData = Get-AzureApiSpecsData @apiSpecsInputObject
 
-        ## Clone repository into temp folder
-        if (-not (Test-Path (Join-Path $script:temp $repoName))) {
-            git clone --depth=1 --single-branch --branch=main --filter=tree:0 $repoUrl
-        } else {
-            Write-Verbose "Repository [$repoName] already cloned"
+        ###########################################
+        ##   Generate initial module structure   ##
+        ###########################################
+        if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
+            # TODO: Consider child modules. BUT be aware that pipelines are only generated for the top-level resource
+            Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
         }
 
-        Set-Location $initialLocation
+        ############################
+        ##   Set module content   ##
+        ############################
 
-        try {
-            ############################################
-            ##   Extract module data from API specs   ##
-            ############################################
+        # TODO: Remove reduced reference as only temp. The logic is currently NOT capabale of handling child resources
+        $moduleData = $moduleData | Where-Object { -not $_.metadata.parentUrlPath }
 
-            $apiSpecsInputObject = @{
-                ProviderNamespace = $ProviderNamespace
-                ResourceType      = $ResourceType
-                RepositoryPath    = (Join-Path $script:temp $repoName)
-                ExcludeChildren   = $ExcludeChildren
-                IncludePreview    = $IncludePreview
-            }
-            $moduleData = Get-AzureApiSpecsData @apiSpecsInputObject
-
-            ###########################################
-            ##   Generate initial module structure   ##
-            ###########################################
-            if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
-                # TODO: Consider child modules. BUT be aware that pipelines are only generated for the top-level resource
-                Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
-            }
-
-            ############################
-            ##   Set module content   ##
-            ############################
-
-            # TODO: Remove reduced reference as only temp. The logic is currently NOT capabale of handling child resources
-            $moduleData = $moduleData | Where-Object { -not $_.metadata.parentUrlPath }
-
-            $moduleTemplateInputObject = @{
-                ProviderNamespace = $ProviderNamespace
-                ResourceType      = $ResourceType
-                JSONFilePath      = $moduleData.metadata.jsonFilePath
-                UrlPath           = $moduleData.metadata.urlPath
-                ModuleData        = $moduleData.data
-            }
-            if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
-                Set-Module @moduleTemplateInputObject
-            }
-        } catch {
-            throw $_
-        } finally {
-            ##########################
-            ##   Remove Artifacts   ##
-            ##########################
-            if (-not $KeepArtifacts) {
-                Write-Verbose ('Deleting temp folder [{0}]' -f $script:temp)
-                $null = Remove-Item $script:temp -Recurse -Force
-            }
+        $moduleTemplateInputObject = @{
+            ProviderNamespace = $ProviderNamespace
+            ResourceType      = $ResourceType
+            JSONFilePath      = $moduleData.metadata.jsonFilePath
+            UrlPath           = $moduleData.metadata.urlPath
+            ModuleData        = $moduleData.data
+        }
+        if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
+            Set-Module @moduleTemplateInputObject
         }
     }
 

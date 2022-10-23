@@ -12,9 +12,6 @@ Mandatory. The provider namespace to query the data for
 .PARAMETER ResourceType
 Mandatory. The resource type to query the data for
 
-.PARAMETER RepositoryPath
-Mandatory. The path to the API Specs repository to fetch the data from.
-
 .PARAMETER ExcludeChildren
 Optional. Don't include child resource types in the result
 
@@ -22,9 +19,39 @@ Optional. Don't include child resource types in the result
 Optional. Include preview API versions
 
 .EXAMPLE
-Get-AzureApiSpecsData -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts/blobServices/containers' -RepositoryPath (Join-Path $script:temp $repoName)
+Get-AzureApiSpecsData -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts/blobServices/containers'
 
 Get the data for [Microsoft.Storage/storageAccounts/blobServices/containers] based on the data stored in the provided API Specs rpository path
+
+.EXAMPLE
+# Get the Storage Account resource data (and the one of all its child-resources)
+$out = Get-AzureApiSpecsData -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts' -Verbose -KeepArtifacts
+
+# The object looks somewhat like:
+# Name                           Value
+# ----                           -----
+# data                           {outputs, parameters, resources, variables…}
+# identifier                     Microsoft.Storage/storageAccounts
+# metadata                       {parentUrlPath, urlPath}
+#
+# data                           {outputs, parameters, resources, variables…}
+# identifier                     Microsoft.Storage/storageAccounts/localUsers
+# metadata                       {parentUrlPath, urlPath}
+
+# Filter the list down to only the Storage Account itself
+$storageAccountResource = $out | Where-Object { $_.identifier -eq 'Microsoft.Storage/storageAccounts' }
+
+# Print a simple outline similar to the Azure Resource reference:
+$storageAccountResource.data.parameters | ForEach-Object { '{0}{1}:{2}' -f ('  ' * $_.level), $_.name, $_.type  }
+
+# Filter parameters down to those containing the keyword 'network'
+$storageAccountResource.data.parameters | Where-Object { $_.description -like "*network*" } | ConvertTo-Json
+
+# Use the Grid-View to enable dynamic UI processing using a table format
+$storageAccountResource.data.parameters | Where-Object { $_.type -notin @('object','array') } | ForEach-Object { [PSCustomObject]@{ Name = $_.name; Description = $_.description  }  } | Out-GridView
+
+# Get data for a specific child-resource type
+$out = Get-AzureApiSpecsData -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts/blobServices/containers' -Verbose -KeepArtifacts
 #>
 function Get-AzureApiSpecsData {
 
@@ -36,70 +63,102 @@ function Get-AzureApiSpecsData {
         [Parameter(Mandatory = $true)]
         [string] $ResourceType,
 
-        [Parameter(Mandatory = $true)]
-        [string] $RepositoryPath,
-
         [Parameter(Mandatory = $false)]
         [switch] $ExcludeChildren,
 
         [Parameter(Mandatory = $false)]
-        [switch] $IncludePreview
+        [switch] $IncludePreview,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $KeepArtifacts
     )
 
-    ##############################################
-    ##   Find relevant Spec-Files & URL Paths   ##
-    ##############################################
-    $getPathDataInputObject = @{
-        ProviderNamespace = $ProviderNamespace
-        ResourceType      = $ResourceType
-        RepositoryPath    = $RepositoryPath
-        IncludePreview    = $IncludePreview
-    }
-    $pathData = Get-ServiceSpecPathData @getPathDataInputObject
-
-    # Filter Children if desired
-    if ($ExcludeChildren) {
-        $pathData = $pathData | Where-Object { [String]::IsNullOrEmpty($_.parentUrlPath) }
+    begin {
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
     }
 
-    #################################################################
-    #   Iterate through parent & child-paths and extract the data   #
-    #################################################################
-    $moduleData = @()
-    foreach ($pathBlock in $pathData) {
-        $resolveInputObject = @{
-            JSONFilePath = $pathBlock.jsonFilePath
-            urlPath      = $pathBlock.urlPath
-            ResourceType = $ResourceType
-        }
-        $resolvedParameters = Resolve-ModuleData @resolveInputObject
+    process {
 
-        # Calculate simplified identifier
-        $identifier = ($pathBlock.urlPath -split '\/providers\/')[1]
-        $identifierElem = $identifier -split '\/'
-        $identifier = $identifierElem[0] # E.g. Microsoft.Storage
+        #########################################
+        ##   Temp Clone API Specs Repository   ##
+        #########################################
+        $repoUrl = $script:CONFIG.url_CloneRESTAPISpecRepository
+        $repoName = Split-Path $repoUrl -LeafBase
+        $repositoryPath = (Join-Path $script:temp $repoName)
 
-        if ($identifierElem.Count -gt 1) {
-            # Add the remaining elements (every 2nd as everything in between represents a 'name')
-            $remainingRelevantElem = $identifierElem[1..($identifierElem.Count)]
-            for ($index = 0; $index -lt $remainingRelevantElem.Count; $index++) {
-                if ($index % 2 -eq 0) {
-                    $identifier += ('/{0}' -f $remainingRelevantElem[$index])
+        Copy-CustomRepository -RepoUrl $repoUrl -RepoName $repoName
+
+        try {
+            ##############################################
+            ##   Find relevant Spec-Files & URL Paths   ##
+            ##############################################
+            $getPathDataInputObject = @{
+                ProviderNamespace = $ProviderNamespace
+                ResourceType      = $ResourceType
+                RepositoryPath    = $RepositoryPath
+                IncludePreview    = $IncludePreview
+            }
+            $pathData = Get-ServiceSpecPathData @getPathDataInputObject
+
+            # Filter Children if desired
+            if ($ExcludeChildren) {
+                $pathData = $pathData | Where-Object { [String]::IsNullOrEmpty($_.parentUrlPath) }
+            }
+
+            #################################################################
+            #   Iterate through parent & child-paths and extract the data   #
+            #################################################################
+            $moduleData = @()
+            foreach ($pathBlock in $pathData) {
+                $resolveInputObject = @{
+                    JSONFilePath = $pathBlock.jsonFilePath
+                    urlPath      = $pathBlock.urlPath
+                    ResourceType = $ResourceType
+                }
+                $resolvedParameters = Resolve-ModuleData @resolveInputObject
+
+                # Calculate simplified identifier
+                $identifier = ($pathBlock.urlPath -split '\/providers\/')[1]
+                $identifierElem = $identifier -split '\/'
+                $identifier = $identifierElem[0] # E.g. Microsoft.Storage
+
+                if ($identifierElem.Count -gt 1) {
+                    # Add the remaining elements (every 2nd as everything in between represents a 'name')
+                    $remainingRelevantElem = $identifierElem[1..($identifierElem.Count)]
+                    for ($index = 0; $index -lt $remainingRelevantElem.Count; $index++) {
+                        if ($index % 2 -eq 0) {
+                            $identifier += ('/{0}' -f $remainingRelevantElem[$index])
+                        }
+                    }
+                }
+
+                # Build result
+                $moduleData += @{
+                    data       = $resolvedParameters
+                    identifier = $identifier
+                    metadata   = @{
+                        urlPath       = $pathBlock.urlPath
+                        jsonFilePath  = $pathBlock.jsonFilePath
+                        parentUrlPath = $pathBlock.parentUrlPath
+                    }
                 }
             }
-        }
 
-        # Build result
-        $moduleData += @{
-            data       = $resolvedParameters
-            identifier = $identifier
-            metadata   = @{
-                urlPath       = $pathBlock.urlPath
-                jsonFilePath  = $pathBlock.jsonFilePath
-                parentUrlPath = $pathBlock.parentUrlPath
+            return $moduleData
+        } catch {
+            throw $_
+        } finally {
+            ##########################
+            ##   Remove Artifacts   ##
+            ##########################
+            if (-not $KeepArtifacts) {
+                Write-Verbose ('Deleting temp folder [{0}]' -f $script:temp)
+                $null = Remove-Item $script:temp -Recurse -Force
             }
         }
     }
 
-    return $moduleData
+    end {
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
+    }
 }

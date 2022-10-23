@@ -70,8 +70,8 @@ function Set-ModuleTemplate {
             ''
         )
 
-        # Add primary (service) parameters
-        foreach ($parameter in $ModuleData.parameters) {
+        # Add primary (service) parameters (i.e. top-level and those in the properties)
+        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.Level -in @(0, 1) -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') })) {
             $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
         }
         # Add additional (extension) parameters
@@ -122,12 +122,12 @@ function Set-ModuleTemplate {
         $serviceAPIVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
         $templateContent += "resource $resourceTypeSingular '$ProviderNamespace/$ResourceType@$serviceAPIVersion' = {"
 
-        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 0 })) {
+        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 0 -and $_.name -ne 'properties' })) {
             $templateContent += '  {0}: {0}' -f $parameter.name
         }
 
         $templateContent += '  properties: {'
-        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 1 })) {
+        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 1 -and $_.Parent -eq 'properties' })) {
             $templateContent += '    {0}: {0}' -f $parameter.name
         }
 
