@@ -121,13 +121,15 @@ function Invoke-REST2CARML {
             ##   Set module content   ##
             ############################
 
-            # TODO: Remove [0] reference as only temp. The logic is currently NOT capabale of handling child resources
+            # TODO: Remove reduced reference as only temp. The logic is currently NOT capabale of handling child resources
+            $moduleData = $moduleData | Where-Object { -not $_.metadata.parentUrlPath }
+
             $moduleTemplateInputObject = @{
                 ProviderNamespace = $ProviderNamespace
                 ResourceType      = $ResourceType
-                JSONFilePath      = $moduleData[0].metadata.jsonFilePath
-                UrlPath           = $moduleData[0].metadata.urlPath
-                ModuleData        = $moduleData[0].data
+                JSONFilePath      = $moduleData.metadata.jsonFilePath
+                UrlPath           = $moduleData.metadata.urlPath
+                ModuleData        = $moduleData.data
             }
             if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
                 Set-Module @moduleTemplateInputObject
