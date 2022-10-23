@@ -43,18 +43,18 @@ function Resolve-ModuleData {
     # Get PUT parameters
     $putParametersInputObject = @{
         JSONFilePath      = $JSONFilePath
-        RelevantParamRoot = $specificationData.paths[$urlPath].put.parameters
-        urlPath           = $urlPath
+        RelevantParamRoot = $specificationData.paths[$UrlPath].put.parameters
+        urlPath           = $UrlPath
         ResourceType      = $ResourceType
     }
     $templateData += Get-SpecsPropertiesAsParameterList @putParametersInputObject
 
     # Get PATCH parameters (as the REST command actually always is Create or Update)
-    if ($specificationData.paths[$urlPath].patch) {
+    if ($specificationData.paths[$UrlPath].patch) {
         $putParametersInputObject = @{
             JSONFilePath      = $JSONFilePath
-            RelevantParamRoot = $specificationData.paths[$urlPath].patch.parameters
-            urlPath           = $urlPath
+            RelevantParamRoot = $specificationData.paths[$UrlPath].patch.parameters
+            urlPath           = $UrlPath
             ResourceType      = $ResourceType
         }
         $templateData += Get-SpecsPropertiesAsParameterList @putParametersInputObject

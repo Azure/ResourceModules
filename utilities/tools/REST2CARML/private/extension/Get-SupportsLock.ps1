@@ -36,12 +36,12 @@ function Get-SupportsLock {
 
         # If the Specification URI contains any of the namespaces to ignore, no Lock is supported
         foreach ($ProviderToIgnore in $ProvidersToIgnore) {
-            if ($urlPath.Contains($ProviderToIgnore)) {
+            if ($UrlPath.Contains($ProviderToIgnore)) {
                 return $false
             }
         }
 
-        return ($urlPath -split '\/').Count -le 9
+        return ($UrlPath -split '\/').Count -le 9
     }
 
     end {

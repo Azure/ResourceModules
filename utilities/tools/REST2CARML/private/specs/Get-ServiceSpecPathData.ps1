@@ -70,14 +70,14 @@ function Get-ServiceSpecPathData {
         $apiVersionFolders = @()
 
         $stablePath = Join-Path $resourceProviderFolder 'stable'
-        if (Test-Path -Path $stablePath) { 
+        if (Test-Path -Path $stablePath) {
             $apiVersionFolders += (Get-ChildItem -Path $stablePath).FullName
         }
         if ($IncludePreview) {
             # adding preview API versions
             $previewPath = Join-Path $resourceProviderFolder 'preview'
-            if (Test-Path -Path $previewPath) { 
-                $apiVersionFolders += (Get-ChildItem -Path $previewPath).FullName 
+            if (Test-Path -Path $previewPath) {
+                $apiVersionFolders += (Get-ChildItem -Path $previewPath).FullName
             }
         }
 
@@ -102,8 +102,8 @@ function Get-ServiceSpecPathData {
 
         foreach ($specFilePath in $specFilePaths) {
 
-            $urlPathsOfFile = (ConvertFrom-Json (Get-Content -Raw -Path $specFilePath) -AsHashtable).paths
-            $urlPUTPathsInFile = $urlPathsOfFile.Keys | Where-Object { $urlPathsOfFile[$_].Keys -contains 'put' }
+            $UrlPathsOfFile = (ConvertFrom-Json (Get-Content -Raw -Path $specFilePath) -AsHashtable).paths
+            $urlPUTPathsInFile = $UrlPathsOfFile.Keys | Where-Object { $UrlPathsOfFile[$_].Keys -contains 'put' }
 
             foreach ($urlPUTPath in $urlPUTPathsInFile) {
 
@@ -138,8 +138,8 @@ function Get-ServiceSpecPathData {
     }
 
     # Add parent pointers for later reference
-    foreach($urlPathBlock in $pathData) {
-        $pathElements = $urlPathBlock.urlPath -split '/'
+    foreach($UrlPathBlock in $pathData) {
+        $pathElements = $UrlPathBlock.urlPath -split '/'
         $rawparentUrlPath = $pathElements[0..($pathElements.Count-3)] -join '/'
 
         if($pathElements[-3] -like "Microsoft.*") {
@@ -155,8 +155,8 @@ function Get-ServiceSpecPathData {
             $parentUrlPath = $rawparentUrlPath
         }
 
-        $urlPathBlock['parentUrlPath'] = $parentUrlPath
+        $UrlPathBlock['parentUrlPath'] = $parentUrlPath
     }
 
     return $pathData
-} 
+}

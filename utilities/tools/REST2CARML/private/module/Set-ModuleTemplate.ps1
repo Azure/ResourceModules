@@ -42,7 +42,7 @@ function Set-ModuleTemplate {
         [string] $JSONFilePath,
 
         [Parameter(Mandatory = $true)]
-        [string] $urlPath
+        [string] $UrlPath
     )
 
     begin {
@@ -59,7 +59,7 @@ function Set-ModuleTemplate {
         ##  PARAMETERS  ##
         ##################
 
-        $targetScope = Get-TargetScope -urlPath $urlPath
+        $targetScope = Get-TargetScope -urlPath $UrlPath
 
         $templateContent = @(
             "targetScope = '{0}'" -f $targetScope

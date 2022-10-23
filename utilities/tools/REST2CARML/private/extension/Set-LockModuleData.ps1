@@ -41,7 +41,7 @@ function Set-LockModuleData {
 
         $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
 
-        if (-not (Get-SupportsLock -urlPath $urlPath)) {
+        if (-not (Get-SupportsLock -urlPath $UrlPath)) {
             return
         }
 

@@ -18,10 +18,10 @@ function Get-TargetScope {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $urlPath
+        [string] $UrlPath
     )
 
-    switch ($urlPath) {
+    switch ($UrlPath) {
         { $PSItem -like '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/*' } { return 'resourceGroup' }
         { $PSItem -like '/subscriptions/{subscriptionId}/*' } { return 'subscription' }
         { $PSItem -like 'providers/Microsoft.Management/managementGroups/*' } { return 'managementGroup' }

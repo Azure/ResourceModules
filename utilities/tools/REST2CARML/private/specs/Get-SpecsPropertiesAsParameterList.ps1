@@ -76,7 +76,7 @@ function Get-SpecsPropertiesAsParameterList {
     # --------------------
     # Note: The name can be specified in different locations like the PUT statement, but also in the spec's 'parameters' object as a reference
     # Case: The name in the url is also a parameter of the PUT statement
-    $pathServiceName = (Split-Path $urlPath -Leaf) -replace '{|}', ''
+    $pathServiceName = (Split-Path $UrlPath -Leaf) -replace '{|}', ''
     if ($relevantParamRoot.name -contains $pathServiceName) {
         $param = $relevantParamRoot | Where-Object { $_.name -eq $pathServiceName }
 
@@ -134,7 +134,7 @@ function Get-SpecsPropertiesAsParameterList {
             type        = 'string'
             description = 'Location for all Resources.'
             required    = $false
-            default     = ($urlPath -like '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/*') ? 'resourceGroup().location' : 'deployment().location'
+            default     = ($UrlPath -like '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/*') ? 'resourceGroup().location' : 'deployment().location'
         }
         $templateData += $parameterObject
     }
