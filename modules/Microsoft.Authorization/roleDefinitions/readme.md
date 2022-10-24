@@ -189,10 +189,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardmg'
+  name: '${uniqueString(deployment().name)}-test-ardmgcom'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardmg'
+    roleName: '<<namePrefix>>-testRole-ardmgcom'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
@@ -225,7 +225,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardmg"
+      "value": "<<namePrefix>>-testRole-ardmgcom"
     },
     // Non-required parameters
     "actions": {
@@ -315,10 +315,10 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardrg'
+  name: '${uniqueString(deployment().name)}-test-ardrgcom'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardrg'
+    roleName: '<<namePrefix>>-testRole-ardrgcom'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
@@ -357,7 +357,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardrg"
+      "value": "<<namePrefix>>-testRole-ardrgcom"
     },
     // Non-required parameters
     "actions": {
@@ -457,10 +457,10 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardsub'
+  name: '${uniqueString(deployment().name)}-test-ardsubcom'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardsub'
+    roleName: '<<namePrefix>>-testRole-ardsubcom'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
@@ -499,7 +499,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardsub"
+      "value": "<<namePrefix>>-testRole-ardsubcom"
     },
     // Non-required parameters
     "actions": {
