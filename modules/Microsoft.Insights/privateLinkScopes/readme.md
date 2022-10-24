@@ -24,11 +24,13 @@ This module deploys an Azure Monitor Private Link Scope.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the private link scope. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -117,10 +119,10 @@ To use Private Endpoint the following dependencies must be deployed:
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<<serviceName>>", // e.g. vault, registry, file, blob, queue, table etc.
+            "service": "<serviceName>", // e.g. vault, registry, blob
             "privateDnsZoneGroup": {
                 "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
             "customDnsConfigs": [ // Optional
@@ -135,7 +137,7 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing only mandatory fields
         {
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<<serviceName>>" // e.g. vault, registry, file, blob, queue, table etc.
+            "service": "<serviceName>" // e.g. vault, registry, blob
         }
     ]
 }
@@ -153,10 +155,10 @@ privateEndpoints:  [
     {
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
-        privateDnsZoneGroups: {
+        service: '<serviceName>' // e.g. vault, registry, blob
+        privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
+                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
         // Optional
@@ -172,7 +174,7 @@ privateEndpoints:  [
     // Example showing only mandatory fields
     {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<<serviceName>>' // e.g. vault registry file blob queue table etc.
+        service: '<serviceName>' // e.g. vault, registry, blob
     }
 ]
 ```
@@ -242,9 +244,10 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -252,29 +255,33 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateLinkScopes'
+  name: '${uniqueString(deployment().name)}-test-iplscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-pls-x-001'
+    name: '<<namePrefix>>iplscom001'
     // Non-required parameters
-    lock: 'CanNotDelete'
     privateEndpoints: [
       {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+        }
         service: 'azuremonitor'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     scopedResources: [
       {
-        linkedResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+        linkedResourceId: '<linkedResourceId>'
         name: 'scoped1'
       }
     ]
@@ -296,17 +303,19 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-pls-x-001"
+      "value": "<<namePrefix>>iplscom001"
     },
     // Non-required parameters
-    "lock": {
-      "value": "CanNotDelete"
-    },
     "privateEndpoints": {
       "value": [
         {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
           "service": "azuremonitor",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -314,7 +323,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -323,10 +332,47 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
     "scopedResources": {
       "value": [
         {
-          "linkedResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+          "linkedResourceId": "<linkedResourceId>",
           "name": "scoped1"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-iplsmin'
+  params: {
+    name: '<<namePrefix>>iplsmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>iplsmin001"
     }
   }
 }

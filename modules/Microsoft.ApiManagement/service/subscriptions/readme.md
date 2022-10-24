@@ -18,16 +18,19 @@ This module deploys API Management Subscriptions.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Subscription name. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `allowTracing` | bool | `True` | Determines whether tracing can be enabled. |

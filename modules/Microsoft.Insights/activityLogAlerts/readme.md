@@ -20,12 +20,14 @@ This module deploys an Alert based on Activity Log.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `conditions` | array | The condition that will cause this alert to activate. Array of objects. |
 | `name` | string | The name of the alert. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` | The list of actions to take when alert triggers. |
@@ -401,6 +403,7 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Parameters</h3>

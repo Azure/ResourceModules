@@ -166,6 +166,7 @@ function Set-ParametersSection {
         # 2. Create header including optional columns
         $newSectionContent += @(
             ('**{0} parameters**' -f $category),
+            '',
             ('| Parameter Name | Type | {0}{1}Description |' -f ($hasDefault ? 'Default Value | ' : ''), ($hasAllowed ? 'Allowed Values | ' : '')),
             ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefault ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
         )
@@ -310,6 +311,12 @@ Add module references (cross-references) to the module's readme
 .DESCRIPTION
 Add module references (cross-references) to the module's readme. This includes both local (i.e., file path), as well as remote references (e.g., ACR)
 
+.PARAMETER ModuleRoot
+Mandatory. The file path to the module's root
+
+.PARAMETER FullModuleIdentifier
+Mandatory. The full identifier of the module (i.e., ProviderNamespace + ResourceType)
+
 .PARAMETER TemplateFileContent
 Mandatory. The template file content object to crawl data from
 
@@ -320,13 +327,19 @@ Mandatory. The readme file content array to update
 Optional. The identifier of the 'outputs' section. Defaults to '## Cross-referenced modules'
 
 .EXAMPLE
-Set-CrossReferencesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-CrossReferencesSection -ModuleRoot 'C:/Microsoft.KeyVault/vaults' -FullModuleIdentifier 'Microsoft.KeyVault/vaults' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 Update the given readme file's 'Cross-referenced modules' section based on the given template file content
 #>
 function Set-CrossReferencesSection {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
+        [Parameter(Mandatory = $true)]
+        [string] $ModuleRoot,
+
+        [Parameter(Mandatory = $true)]
+        [string] $FullModuleIdentifier,
+
         [Parameter(Mandatory)]
         [hashtable] $TemplateFileContent,
 
@@ -339,9 +352,6 @@ function Set-CrossReferencesSection {
 
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'tools' 'Get-CrossReferencedModuleList.ps1')
 
-    $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $resourceTypeIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
-
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
         'This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).',
@@ -350,7 +360,7 @@ function Set-CrossReferencesSection {
         '| :-- | :-- |'
     )
 
-    $dependencies = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
+    $dependencies = (Get-CrossReferencedModuleList)[$FullModuleIdentifier]
 
     if ($dependencies.Keys -contains 'localPathReferences' -and $dependencies['localPathReferences']) {
         foreach ($reference in ($dependencies['localPathReferences'] | Sort-Object)) {
@@ -618,8 +628,11 @@ Convert the given Bicep parameter block to JSON parameter block
 .PARAMETER BicepParamBlock
 Mandatory. The Bicep parameter block to process
 
+.PARAMETER CurrentFilePath
+Mandatory. The Path of the file containing the param block
+
 .EXAMPLE
-ConvertTo-FormattedJSONParameterObject -BicepParamBlock "name: 'carml'\nlock: 'CanNotDelete'"
+ConvertTo-FormattedJSONParameterObject -BicepParamBlock "name: 'carml'\nlock: 'CanNotDelete'" -CurrentFilePath 'c:/deploy.test.bicep'
 
 Convert the Bicep string "name: 'carml'\nlock: 'CanNotDelete'" into a parameter JSON object. Would result into:
 
@@ -637,8 +650,16 @@ function ConvertTo-FormattedJSONParameterObject {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string] $BicepParamBlock
+        [string] $BicepParamBlock,
+
+        [Parameter()]
+        [string] $CurrentFilePath
     )
+
+    if ([String]::IsNullOrEmpty($BicepParamBlock)) {
+        # Case: No mandatory parameters
+        return @{}
+    }
 
     # [1/4] Detect top level params for later processing
     $bicepParamBlockArray = $BicepParamBlock -split '\n'
@@ -721,8 +742,11 @@ function ConvertTo-FormattedJSONParameterObject {
     }
 
     # [2.7] Format the final JSON string to an object to enable processing
-    $paramInJsonFormatObject = $paramInJSONFormatArray | Out-String | ConvertFrom-Json -AsHashtable -Depth 99
-
+    try {
+        $paramInJsonFormatObject = $paramInJSONFormatArray | Out-String | ConvertFrom-Json -AsHashtable -Depth 99 -ErrorAction 'Stop'
+    } catch {
+        throw ('Failed to process file [{0}]. Please check if it properly formatted. Original error message: [{1}]' -f $CurrentFilePath, $_.Exception.Message)
+    }
     # [3/4] Inject top-level 'value`' properties
     $paramInJsonFormatObjectWithValue = @{}
     foreach ($paramKey in $topLevelParams) {
@@ -823,14 +847,14 @@ Generate 'Deployment examples' for the ReadMe out of the parameter files current
 .DESCRIPTION
 Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
 
-.PARAMETER TemplateFilePath
-Mandatory. The path to the template file
+.PARAMETER ModuleRoot
+Mandatory. The file path to the module's root
+
+.PARAMETER FullModuleIdentifier
+Mandatory. The full identifier of the module (i.e., ProviderNamespace + ResourceType)
 
 .PARAMETER TemplateFileContent
 Mandatory. The template file content object to crawl data from
-
-.PARAMETER TemplateFilePath
-Mandatory. The path to the template file
 
 .PARAMETER ReadMeFileContent
 Mandatory. The readme file content array to update
@@ -845,7 +869,7 @@ Optional. A switch to control whether or not to add a ARM-JSON-Parameter file ex
 Optional. A switch to control whether or not to add a Bicep deployment example. Defaults to true.
 
 .EXAMPLE
-Set-DeploymentExamplesSection -TemplateFileContent @{ resource = @{}; ... } -TemplateFilePath 'C:/deploy.bicep' -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-DeploymentExamplesSection -ModuleRoot 'C:/Microsoft.KeyVault/vaults' -FullModuleIdentifier 'Microsoft.KeyVault/vaults' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 
 Update the given readme file's 'Deployment Examples' section based on the given template file content
 #>
@@ -854,7 +878,10 @@ function Set-DeploymentExamplesSection {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $TemplateFilePath,
+        [string] $ModuleRoot,
+
+        [Parameter(Mandatory = $true)]
+        [string] $FullModuleIdentifier,
 
         [Parameter(Mandatory)]
         [hashtable] $TemplateFileContent,
@@ -879,19 +906,17 @@ function Set-DeploymentExamplesSection {
     $SectionContent = [System.Collections.ArrayList]@(
         'The following module usage examples are retrieved from the content of the files hosted in the module''s `.test` folder.',
         '   >**Note**: The name of each example is based on the name of the file from which it is taken.',
+        '',
         '   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
         ''
     )
 
-    $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $fullIdentifier = $moduleRoot.Replace('\', '/').Split('/modules/')[1].TrimStart('/')
-
     # Get resource type and make first letter upper case. Requires manual handling as ToTitleCase lowercases everything but the first letter
-    $providerNamespace = ($fullIdentifier.Split('/')[0] -split '\.' | ForEach-Object { $_.Substring(0, 1).ToUpper() + $_.Substring(1) }) -join '.'
-    $resourceType = $fullIdentifier.Split('/')[1]
+    $providerNamespace = ($fullModuleIdentifier.Split('/')[0] -split '\.' | ForEach-Object { $_.Substring(0, 1).ToUpper() + $_.Substring(1) }) -join '.'
+    $resourceType = $fullModuleIdentifier.Split('/')[1]
     $resourceTypeUpper = $resourceType.Substring(0, 1).ToUpper() + $resourceType.Substring(1)
 
-    $resourceTypeIdentifier = "$providerNamespace/$resourceType"
+    $FullModuleIdentifier = "$providerNamespace/$resourceType"
 
     $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleRoot | ForEach-Object { Join-Path $moduleRoot $_ }
 
@@ -948,19 +973,26 @@ function Set-DeploymentExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
+            $rawBicepExample[0] = "module $resourceType './$FullModuleIdentifier/deploy.bicep' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # [4/6] Extract param block
             $rawBicepExampleArray = $rawBicepExample -split '\n'
             $moduleDeploymentPropertyIndent = ([regex]::Match($rawBicepExampleArray[1], '^(\s+).*')).Captures.Groups[1].Value.Length
             $paramsStartIndex = ($rawBicepExampleArray | Select-String ("^[\s]{$moduleDeploymentPropertyIndent}params:[\s]*\{") | ForEach-Object { $_.LineNumber - 1 })[0] + 1
-            $paramsEndIndex = ($rawBicepExampleArray[($paramsStartIndex + 1)..($rawBicepExampleArray.Count)] | Select-String "^[\s]{$moduleDeploymentPropertyIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + $paramsStartIndex
-            $paramBlock = ($rawBicepExampleArray[$paramsStartIndex..$paramsEndIndex] | Out-String).TrimEnd()
+            if ($rawBicepExampleArray[$paramsStartIndex].Trim() -ne '}') {
+                # Handle case where param block is empty
+                $paramsEndIndex = ($rawBicepExampleArray[($paramsStartIndex + 1)..($rawBicepExampleArray.Count)] | Select-String "^[\s]{$moduleDeploymentPropertyIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + $paramsStartIndex
+                $paramBlock = ($rawBicepExampleArray[$paramsStartIndex..$paramsEndIndex] | Out-String).TrimEnd()
+            } else {
+                $paramBlock = ''
+                $paramsEndIndex = $paramsStartIndex
+            }
 
             # [5/6] Convert Bicep parameter block to JSON parameter block to enable processing
             $conversionInputObject = @{
                 BicepParamBlock = $paramBlock
+                CurrentFilePath = $testFilePath
             }
             $paramsInJSONFormat = ConvertTo-FormattedJSONParameterObject @conversionInputObject
 
@@ -976,8 +1008,28 @@ function Set-DeploymentExamplesSection {
             # --------------------- #
             if ($addBicep) {
 
-                $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + ($bicepExample -split '\n') + $rawBicepExample[($paramsEndIndex + 1)..($rawBicepExample.Count)]
+                if ([String]::IsNullOrEmpty($paramBlock)) {
+                    # Handle case where param block is empty
+                    $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + $rawBicepExample[($paramsEndIndex)..($rawBicepExample.Count)]
+                } else {
+                    $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + ($bicepExample -split '\n') + $rawBicepExample[($paramsEndIndex + 1)..($rawBicepExample.Count)]
+                }
 
+                # Remove any dependsOn as it it test specific
+                if ($detected = ($formattedBicepExample | Select-String '^\s*dependsOn:\s*\[\s*$' | ForEach-Object { $_.LineNumber - 1 })) {
+                    $dependsOnStartIndex = $detected[0]
+
+                    # Find out where the 'dependsOn' ends
+                    $dependsOnEndIndex = $dependsOnStartIndex
+                    do {
+                        $dependsOnEndIndex++
+                    } while ($formattedBicepExample[$dependsOnEndIndex] -notmatch '^\s*\]\s*$')
+
+                    # Cut the 'dependsOn' block out
+                    $formattedBicepExample = $formattedBicepExample[0..($dependsOnStartIndex - 1)] + $formattedBicepExample[($dependsOnEndIndex + 1)..($formattedBicepExample.Count)]
+                }
+
+                # Build result
                 $SectionContent += @(
                     '',
                     '<details>'
@@ -1144,7 +1196,7 @@ function Set-DeploymentExamplesSection {
                     ''
                     '```bicep',
                     $extendedKeyVaultReferences,
-                    "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
+                    "module $resourceType './$FullModuleIdentifier/deploy.bicep' = {"
                     "  name: '`${uniqueString(deployment().name)}-$resourceTypeUpper'"
                     '  params: {'
                     $bicepExample.TrimEnd(),
@@ -1373,20 +1425,21 @@ function Set-ModuleReadMe {
         throw "Failed to compile [$TemplateFilePath]"
     }
 
-    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/modules/')[1]
+    $moduleRoot = Split-Path $TemplateFilePath -Parent
+    $fullModuleIdentifier = 'Microsoft.{0}' -f $moduleRoot.Replace('\', '/').split('/Microsoft.')[1]
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
         # Create new readme file
 
         # Build resource name
-        $serviceIdentifiers = $fullResourcePath.Replace('Microsoft.', '').Replace('/.', '/').Split('/')
+        $serviceIdentifiers = $fullModuleIdentifier.Replace('Microsoft.', '').Replace('/.', '/').Split('/')
         $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
         $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_ -creplace '(?<=\w)([A-Z])', '$1' }
         $assumedResourceName = $serviceIdentifiers -join ' '
 
         $initialContent = @(
-            "# $assumedResourceName ``[$fullResourcePath]``",
+            "# $assumedResourceName ``[$fullModuleIdentifier]``",
             '',
             "This module deploys $assumedResourceName."
             '// TODO: Replace Resource and fill in description',
@@ -1408,14 +1461,14 @@ function Set-ModuleReadMe {
     }
 
     # Update title
-    if ($TemplateFilePath.Replace('\', '/') -like '*/modules/*') {
+    if ($TemplateFilePath.Replace('\', '/') -like '*/deploy.*') {
 
-        if ($readMeFileContent[0] -notlike "*``[$fullResourcePath]``") {
+        if ($readMeFileContent[0] -notlike "*``[$fullModuleIdentifier]``") {
             # Cut outdated
             $readMeFileContent[0] = $readMeFileContent[0].Split('`[')[0]
 
             # Add latest
-            $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullResourcePath
+            $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullModuleIdentifier
         }
         # Remove excess whitespace
         $readMeFileContent[0] = $readMeFileContent[0] -replace '\s+', ' '
@@ -1456,20 +1509,23 @@ function Set-ModuleReadMe {
         # Handle [CrossReferences] section
         # ========================
         $inputObject = @{
-            ReadMeFileContent   = $readMeFileContent
-            TemplateFileContent = $templateFileContent
+            ModuleRoot           = $ModuleRoot
+            FullModuleIdentifier = $fullModuleIdentifier
+            ReadMeFileContent    = $readMeFileContent
+            TemplateFileContent  = $templateFileContent
         }
         $readMeFileContent = Set-CrossReferencesSection @inputObject
     }
 
-    $isTopLevelModule = $TemplateFilePath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 3 # <provider>/<resourceType>/deploy.*
+    $isTopLevelModule = $fullModuleIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
     if ($SectionsToRefresh -contains 'Deployment examples' -and $isTopLevelModule) {
         # Handle [Deployment examples] section
         # ===================================
         $inputObject = @{
-            ReadMeFileContent   = $readMeFileContent
-            TemplateFilePath    = $TemplateFilePath
-            TemplateFileContent = $templateFileContent
+            ModuleRoot           = $ModuleRoot
+            FullModuleIdentifier = $fullModuleIdentifier
+            ReadMeFileContent    = $readMeFileContent
+            TemplateFileContent  = $templateFileContent
         }
         $readMeFileContent = Set-DeploymentExamplesSection @inputObject
     }

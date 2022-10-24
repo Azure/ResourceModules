@@ -75,6 +75,7 @@ param purviewResourceID string = ''
 param sqlAdministratorLogin string
 
 @description('Optional. Password for administrator access to the workspace\'s SQL pools. If you don\'t provide a password, one will be automatically generated. You can change the password later.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param sqlAdministratorLoginPassword string = ''
 
 @description('Optional. The ID(s) to assign to the resource.')
@@ -257,7 +258,7 @@ resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(
 }
 
 // RBAC
-module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module workspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Workspace-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds

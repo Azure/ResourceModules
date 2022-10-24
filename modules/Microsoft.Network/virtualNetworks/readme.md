@@ -25,12 +25,14 @@ This template deploys a virtual network (vNet).
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `addressPrefixes` | array | An Array of 1 or more IP Address Prefixes for the Virtual Network. |
 | `name` | string | The Virtual Network (vNet) Name. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `ddosProtectionPlanId` | string | `''` |  | Resource ID of the DDoS protection plan to assign the VNET to. If it's left blank, DDoS protection will not be configured. If it's provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription. |
@@ -355,9 +357,10 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -365,66 +368,19 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualNetworks'
+  name: '${uniqueString(deployment().name)}-test-nvncom'
   params: {
     // Required parameters
     addressPrefixes: [
       '10.0.0.0/16'
     ]
-    name: '<<namePrefix>>-az-vnet-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "addressPrefixes": {
-      "value": [
-        "10.0.0.0/16"
-      ]
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-vnet-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualNetworks'
-  params: {
-    // Required parameters
-    addressPrefixes: [
-      '10.0.0.0/16'
-    ]
-    name: '<<namePrefix>>-az-vnet-x-001'
+    name: '<<namePrefix>>nvncom001'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     dnsServers: [
       '10.0.1.4'
       '10.0.1.5'
@@ -433,7 +389,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -446,16 +402,16 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       {
         addressPrefix: '10.0.0.0/24'
         name: '<<namePrefix>>-az-subnet-x-001'
-        networkSecurityGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'
+        networkSecurityGroupId: '<networkSecurityGroupId>'
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
             roleDefinitionIdOrName: 'Reader'
           }
         ]
-        routeTableId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001'
+        routeTableId: '<routeTableId>'
         serviceEndpoints: [
           {
             service: 'Microsoft.Storage'
@@ -507,23 +463,23 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-vnet-x-001"
+      "value": "<<namePrefix>>nvncom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "dnsServers": {
       "value": [
@@ -538,7 +494,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -553,16 +509,16 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         {
           "addressPrefix": "10.0.0.0/24",
           "name": "<<namePrefix>>-az-subnet-x-001",
-          "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001",
+          "networkSecurityGroupId": "<networkSecurityGroupId>",
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
               "roleDefinitionIdOrName": "Reader"
             }
           ],
-          "routeTableId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001",
+          "routeTableId": "<routeTableId>",
           "serviceEndpoints": [
             {
               "service": "Microsoft.Storage"
@@ -599,6 +555,53 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 </details>
 <p>
 
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nvnmin'
+  params: {
+    // Required parameters
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    name: '<<namePrefix>>nvnmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "addressPrefixes": {
+      "value": [
+        "10.0.0.0/16"
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>nvnmin001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 <h3>Example 3: Vnetpeering</h3>
 
 <details>
@@ -607,19 +610,14 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualNetworks'
+  name: '${uniqueString(deployment().name)}-test-nvnpeer'
   params: {
     // Required parameters
     addressPrefixes: [
       '10.0.0.0/24'
     ]
-    name: '<<namePrefix>>-az-vnet-peer-001'
+    name: '<<namePrefix>>nvnpeer001'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     subnets: [
       {
         addressPrefix: '10.0.0.0/26'
@@ -635,7 +633,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         remotePeeringAllowVirtualNetworkAccess: true
         remotePeeringEnabled: true
         remotePeeringName: 'customName'
-        remoteVirtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-peer01'
+        remoteVirtualNetworkId: '<remoteVirtualNetworkId>'
         useRemoteGateways: false
       }
     ]
@@ -662,24 +660,9 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-vnet-peer-001"
+      "value": "<<namePrefix>>nvnpeer001"
     },
     // Non-required parameters
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-    },
-    "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-    },
     "subnets": {
       "value": [
         {
@@ -698,7 +681,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
           "remotePeeringAllowVirtualNetworkAccess": true,
           "remotePeeringEnabled": true,
           "remotePeeringName": "customName",
-          "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-peer01",
+          "remoteVirtualNetworkId": "<remoteVirtualNetworkId>",
           "useRemoteGateways": false
         }
       ]

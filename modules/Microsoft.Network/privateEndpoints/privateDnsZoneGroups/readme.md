@@ -18,16 +18,19 @@ This module deploys a private endpoint private DNS zone group
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `privateDNSResourceIds` | array | Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `privateEndpointName` | string | The name of the parent private endpoint. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |

@@ -22,11 +22,13 @@ This module deploys an Azure virtual desktop host pool.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Host Pool. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `customRdpProperty` | string | `'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'` |  | Host Pool RDP properties. |
@@ -55,6 +57,7 @@ This module deploys an Azure virtual desktop host pool.
 | `vmTemplate` | object | `{object}` |  | The necessary information for adding more VMs to this Host Pool. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a registration token. |
@@ -262,9 +265,10 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -272,41 +276,41 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Hostpools'
+  name: '${uniqueString(deployment().name)}-test-dvhpcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-avdhp-x-001'
+    name: '<<namePrefix>>dvhpcom001'
     // Non-required parameters
     customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     hostpoolDescription: 'My first AVD Host Pool'
     hostpoolFriendlyName: 'AVDv2'
     hostpoolType: 'Pooled'
     loadBalancerType: 'BreadthFirst'
-    location: 'westeurope'
+    location: '<location>'
     lock: 'CanNotDelete'
     maxSessionLimit: 99999
     personalDesktopAssignmentType: 'Automatic'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     vmTemplate: {
-      customImageId: null
+      customImageId: '<customImageId>'
       domain: 'domainname.onmicrosoft.com'
       galleryImageOffer: 'office-365'
       galleryImagePublisher: 'microsoftwindowsdesktop'
       galleryImageSKU: '20h1-evd-o365pp'
       imageType: 'Gallery'
-      imageUri: null
+      imageUri: '<imageUri>'
       namePrefix: 'avdv2'
       osDiskType: 'StandardSSD_LRS'
       useManagedDisks: true
@@ -334,26 +338,26 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-avdhp-x-001"
+      "value": "<<namePrefix>>dvhpcom001"
     },
     // Non-required parameters
     "customRdpProperty": {
       "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "hostpoolDescription": {
       "value": "My first AVD Host Pool"
@@ -368,7 +372,7 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
       "value": "BreadthFirst"
     },
     "location": {
-      "value": "westeurope"
+      "value": "<location>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -383,7 +387,7 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -391,13 +395,13 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
     },
     "vmTemplate": {
       "value": {
-        "customImageId": null,
+        "customImageId": "<customImageId>",
         "domain": "domainname.onmicrosoft.com",
         "galleryImageOffer": "office-365",
         "galleryImagePublisher": "microsoftwindowsdesktop",
         "galleryImageSKU": "20h1-evd-o365pp",
         "imageType": "Gallery",
-        "imageUri": null,
+        "imageUri": "<imageUri>",
         "namePrefix": "avdv2",
         "osDiskType": "StandardSSD_LRS",
         "useManagedDisks": true,

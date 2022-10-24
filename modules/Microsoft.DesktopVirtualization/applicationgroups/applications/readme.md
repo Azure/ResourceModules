@@ -18,6 +18,7 @@ This module deploys AVD Applications.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `filePath` | string | Specifies a path for the executable file for the application. |
@@ -25,11 +26,13 @@ This module deploys AVD Applications.
 | `name` | string | Name of the Application to be created in the Application Group. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `appGroupName` | string | The name of the parent Application Group to create the application(s) in. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `commandLineArguments` | string | `''` |  | Command-Line Arguments for Application. |

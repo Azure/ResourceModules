@@ -84,6 +84,7 @@ param aadProfileClientAppID string = ''
 param aadProfileServerAppID string = ''
 
 @description('Optional. The server AAD application secret.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param aadProfileServerAppSecret string = ''
 
 @description('Optional. Specifies the tenant ID of the Azure Active Directory used by the AKS cluster for authentication.')
@@ -95,8 +96,11 @@ param aadProfileAdminGroupObjectIDs array = []
 @description('Optional. Specifies whether to enable managed AAD integration.')
 param aadProfileManaged bool = true
 
+@description('Optional. Whether to enable Kubernetes Role-Based Access Control.')
+param enableRBAC bool = true
+
 @description('Optional. Specifies whether to enable Azure RBAC for Kubernetes authorization.')
-param aadProfileEnableAzureRBAC bool = true
+param aadProfileEnableAzureRBAC bool = enableRBAC
 
 @description('Optional. If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled.')
 param disableLocalAccounts bool = false
@@ -147,6 +151,7 @@ param azurePolicyVersion string = 'v2'
 param kubeDashboardEnabled bool = false
 
 @description('Optional. Specifies whether the KeyvaultSecretsProvider add-on is enabled or not.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param enableKeyvaultSecretsProvider bool = false
 
 @allowed([
@@ -154,6 +159,7 @@ param enableKeyvaultSecretsProvider bool = false
   'true'
 ])
 @description('Optional. Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param enableSecretRotation string = 'false'
 
 @description('Optional. Specifies the scan interval of the auto-scaler of the AKS cluster.')
@@ -286,7 +292,7 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. The resource ID of the disc encryption set to apply to the clsuter. For security reasons, this value should be provided.')
+@description('Optional. The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided.')
 param diskEncryptionSetID string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -378,7 +384,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-04-02-preview' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -433,7 +439,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-04-02-p
     oidcIssuerProfile: enableOidcIssuerProfile ? {
       enabled: enableOidcIssuerProfile
     } : null
-    enableRBAC: aadProfileEnableAzureRBAC
+    enableRBAC: enableRBAC
     disableLocalAccounts: disableLocalAccounts
     nodeResourceGroup: nodeResourceGroup
     enablePodSecurityPolicy: enablePodSecurityPolicy

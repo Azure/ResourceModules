@@ -21,11 +21,13 @@ This template deploys a DDoS protection plan.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the DDoS protection plan to assign the VNET to. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -152,9 +154,10 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -162,16 +165,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DdosProtectionPlans'
+  name: '${uniqueString(deployment().name)}-test-ndppcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-ddos-x-001'
+    name: '<<namePrefix>>ndppcom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -194,7 +197,7 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-ddos-x-001"
+      "value": "<<namePrefix>>ndppcom001"
     },
     // Non-required parameters
     "lock": {
@@ -204,11 +207,48 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-ndppmin'
+  params: {
+    name: '<<namePrefix>>ndppmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>ndppmin001"
     }
   }
 }

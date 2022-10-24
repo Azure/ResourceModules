@@ -13,21 +13,24 @@ This module deploys a security alert policy for a SQL managed instance.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/managedInstances/securityAlertPolicies` | [2017-03-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/securityAlertPolicies) |
+| `Microsoft.Sql/managedInstances/securityAlertPolicies` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/securityAlertPolicies) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the security alert policy. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `emailAccountAdmins` | bool | `False` |  | Specifies that the schedule scan notification will be is sent to the subscription administrators. |

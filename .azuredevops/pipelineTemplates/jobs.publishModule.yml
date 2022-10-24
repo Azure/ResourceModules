@@ -45,7 +45,6 @@
 
 parameters:
   # Pipeline-related parameters
-  checkoutRepositories: ''
   displayName: 'Publishing'
   serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
@@ -92,11 +91,7 @@ jobs:
       # [Checkout Repositories] task(s)
       #--------------------------------
       - checkout: self
-      - ${{ if ne(parameters.checkoutRepositories, '') }}:
-          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
-              - checkout: ${{ checkoutRepository }}
-                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: 's/${{ checkoutRepository }}'
+        fetchDepth: 0
 
       # [Agent] Prepare environment
       #----------------------------
@@ -119,28 +114,6 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
-      # [Multi Repo] Support task
-      #--------------------------
-      - task: PowerShell@2
-        displayName: Handle Multi-Repo Invocation
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # ---------------------------- #
-            # HANDLE MULTI-REPO INVOCATION #
-            # ---------------------------- #
-
-            # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
-              Write-Verbose "Multi-Repo Checkout" -Verbose
-              $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)' '${{ parameters.modulePath }}'
-            } else {
-              Write-Verbose "No Multi-Repo Checkout" -Verbose
-              $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
-            }
-            Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
-
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
       - task: PowerShell@2
@@ -159,9 +132,9 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
 
             #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.json'
+              $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
 
             $functionInput = @{
@@ -218,9 +191,9 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
             #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.json'
+              $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
 
             $functionInput = @{
@@ -278,9 +251,9 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
             #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.json'
+              $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
 
             $functionInput = @{

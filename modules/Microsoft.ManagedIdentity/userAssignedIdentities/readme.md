@@ -21,6 +21,7 @@ This module deploys a user assigned identity.
 ## Parameters
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -149,9 +150,10 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -159,18 +161,22 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-UserAssignedIdentities'
+  name: '${uniqueString(deployment().name)}-test-miuaicom'
   params: {
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>-az-msi-x-001'
+    name: '<<namePrefix>>miuaicom001'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -191,17 +197,23 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>-az-msi-x-001"
+      "value": "<<namePrefix>>miuaicom001"
     },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

@@ -21,11 +21,13 @@ This module deploys an application security group.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Application Security Group. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -152,9 +154,10 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -162,16 +165,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ApplicationSecurityGroups'
+  name: '${uniqueString(deployment().name)}-test-nasgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-asg-x-001'
+    name: '<<namePrefix>>nasgcom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -194,7 +197,7 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-asg-x-001"
+      "value": "<<namePrefix>>nasgcom001"
     },
     // Non-required parameters
     "lock": {
@@ -204,7 +207,7 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }

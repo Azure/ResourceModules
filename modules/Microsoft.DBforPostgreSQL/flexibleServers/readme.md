@@ -25,6 +25,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `administratorLogin` | string |  | The administrator login name of a server. Can only be specified when the PostgreSQL server is being created. |
@@ -34,6 +35,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | `tier` | string | `[Burstable, GeneralPurpose, MemoryOptimized]` | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `availabilityZone` | string | `''` | `['', 1, 2, 3]` | Availability zone information of the server. Default will have no preference set. |
@@ -326,6 +328,7 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Min</h3>
@@ -335,18 +338,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-FlexibleServers'
+  name: '${uniqueString(deployment().name)}-test-dfpsfsmin'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-postgresqlflexserver-min-001'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: '<<namePrefix>>dfpsfsmin001'
     skuName: 'Standard_B2s'
     tier: 'Burstable'
   }
@@ -370,15 +368,10 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "adminUserName"
     },
     "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
+      "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-az-postgresqlflexserver-min-001"
+      "value": "<<namePrefix>>dfpsfsmin001"
     },
     "skuName": {
       "value": "Standard_B2s"
@@ -400,18 +393,13 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-FlexibleServers'
+  name: '${uniqueString(deployment().name)}-test-dfpsfspvt'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-postgresqlflexserver-private-001'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: '<<namePrefix>>dfpsfspvt001'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -437,14 +425,14 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
         name: 'testdb2'
       }
     ]
-    delegatedSubnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-postgres/subnets/<<namePrefix>>-az-subnet-x-postgres'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    delegatedSubnetResourceId: '<delegatedSubnetResourceId>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     geoRedundantBackup: 'Enabled'
-    privateDnsZoneArmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<<namePrefix>>.postgres.database.azure.com'
+    privateDnsZoneArmResourceId: '<privateDnsZoneArmResourceId>'
   }
 }
 ```
@@ -466,15 +454,10 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "adminUserName"
     },
     "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
+      "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-az-postgresqlflexserver-private-001"
+      "value": "<<namePrefix>>dfpsfspvt001"
     },
     "skuName": {
       "value": "Standard_D2s_v3"
@@ -510,28 +493,28 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       ]
     },
     "delegatedSubnetResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-postgres/subnets/<<namePrefix>>-az-subnet-x-postgres"
+      "value": "<delegatedSubnetResourceId>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "geoRedundantBackup": {
       "value": "Enabled"
     },
     "privateDnsZoneArmResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<<namePrefix>>.postgres.database.azure.com"
+      "value": "<privateDnsZoneArmResourceId>"
     }
   }
 }
@@ -547,18 +530,13 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-FlexibleServers'
+  name: '${uniqueString(deployment().name)}-test-dfpsfspub'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-postgresqlflexserver-public-001'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: '<<namePrefix>>dfpsfspub002'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -581,11 +559,11 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
         name: 'testdb2'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     firewallRules: [
       {
         endIpAddress: '0.0.0.0'
@@ -605,7 +583,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     ]
     geoRedundantBackup: 'Enabled'
     highAvailability: 'SameZone'
-    location: 'westeurope'
+    location: '<location>'
     storageSizeGB: 1024
     version: '14'
   }
@@ -629,15 +607,10 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "adminUserName"
     },
     "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
+      "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-az-postgresqlflexserver-public-001"
+      "value": "<<namePrefix>>dfpsfspub002"
     },
     "skuName": {
       "value": "Standard_D2s_v3"
@@ -674,19 +647,19 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "firewallRules": {
       "value": [
@@ -714,7 +687,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "SameZone"
     },
     "location": {
-      "value": "westeurope"
+      "value": "<location>"
     },
     "storageSizeGB": {
       "value": 1024

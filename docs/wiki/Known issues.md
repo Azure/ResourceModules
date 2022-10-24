@@ -17,7 +17,9 @@ This section provides an overview of the most impactful limitations and known is
   - [Static validation](#static-validation)
   - [Deployment validation](#deployment-validation)
     - [Limited module test file set](#limited-module-test-file-set)
+    - [Limited job execution time](#limited-job-execution-time)
   - [Publishing](#publishing)
+  - [Dependencies pipeline](#dependencies-pipeline)
 
 ---
 
@@ -95,8 +97,26 @@ The deployment validation step aims to validate multiple configurations for each
 
 The first planned step for each module is to provide a 'minimum-set' module test file, limited to the top-level resource required parameters, vs. a 'maximum-set' module test file, including all possible properties, child resources and extension resources. Some of the modules are still tested through one module test file only. This is tracked by issue [#401](https://github.com/Azure/ResourceModules/issues/401).
 
+### Limited job execution time
+
+GitHub workflows used to validate CARML modules are running on GitHub-hosted runners.
+
+In such a scenario, as documented in the [Usage limits for GitHub Actions workflows](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits), if a job reaches a limit of 6 hours of execution time, the job is terminated and fails to complete.
+
+For modules that can take more than 6 hours to deploy, this restriction applies. In these cases, the corresponding deployment validation job may be terminated before completion, causing the entire module validation pipeline to fail. One module where this can happen is the **Microsoft.Sql\managedInstances** module.
+
 ## Publishing
 
 This section outlines known issues that currently affect the CI environment publishing step.
+
+## Dependencies pipeline
+
+The dependencies pipeline currently fails on the Disk Encryption Set resource creation when deployed more than once.
+
+In the majority of cases you will only need to run the dependencies pipeline just once, as a prerequisite before using the module pipelines. It is then possible you will not experience this problem.
+
+> **Workaround**: In case you need to rerun the dependencies pipeline on top of existing resources created by the first run, please delete the Disk Encription Set resource before the rerun.
+
+Further details are tracked in issue [#1727](https://github.com/Azure/ResourceModules/issues/1727).
 
 ---

@@ -22,11 +22,13 @@ This module deploys a resource group.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Resource Group. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -160,9 +162,10 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -170,16 +173,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ResourceGroups'
+  name: '${uniqueString(deployment().name)}-test-rrgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-rg-x-001'
+    name: '<<namePrefix>>rrgcom001'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -205,7 +208,7 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-rg-x-001"
+      "value": "<<namePrefix>>rrgcom001"
     },
     // Non-required parameters
     "lock": {
@@ -215,7 +218,7 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -225,6 +228,43 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
       "value": {
         "Test": "Yes"
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-rrgmin'
+  params: {
+    name: '<<namePrefix>>rrgmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>rrgmin001"
     }
   }
 }

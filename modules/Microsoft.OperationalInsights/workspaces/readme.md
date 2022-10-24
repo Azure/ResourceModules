@@ -28,16 +28,19 @@ This template deploys a log analytics workspace.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Log Analytics workspace. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `linkedStorageAccounts` | _[linkedStorageAccounts](linkedStorageAccounts/readme.md)_ array | List of Storage Accounts to be linked. Required if 'forceCmkForQuery' is set to 'true' and 'savedSearches' is not empty. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `dailyQuotaGb` | int | `-1` |  | The workspace daily quota for ingestion. |
@@ -458,9 +461,10 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -468,47 +472,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Workspaces'
-  params: {
-    name: '<<namePrefix>>-az-law-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-law-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Workspaces'
+  name: '${uniqueString(deployment().name)}-test-oiwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-law-x-001'
+    name: '<<namePrefix>>oiwcom001'
     // Non-required parameters
     dailyQuotaGb: 10
     dataSources: [
@@ -601,11 +568,11 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         state: 'Enabled'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     gallerySolutions: [
       {
         name: 'AzureAutomation'
@@ -616,13 +583,13 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     linkedServices: [
       {
         name: 'Automation'
-        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001'
+        resourceId: '<resourceId>'
       }
     ]
     linkedStorageAccounts: [
       {
         name: 'Query'
-        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
+        resourceId: '<resourceId>'
       }
     ]
     lock: 'CanNotDelete'
@@ -633,12 +600,12 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         category: 'VDC Saved Searches'
         displayName: 'VMSS Instance Count2'
         name: 'VMSSQueries'
-        query: 'Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer'
+        query: 'Event | where Source == ServiceFabricNodeBootstrapAgent | summarize AggregatedValue = count() by Computer'
       }
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
+        storageAccountId: '<storageAccountId>'
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'
@@ -666,7 +633,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-law-x-001"
+      "value": "<<namePrefix>>oiwcom001"
     },
     // Non-required parameters
     "dailyQuotaGb": {
@@ -765,19 +732,19 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "gallerySolutions": {
       "value": [
@@ -792,7 +759,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
       "value": [
         {
           "name": "Automation",
-          "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001"
+          "resourceId": "<resourceId>"
         }
       ]
     },
@@ -800,7 +767,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
       "value": [
         {
           "name": "Query",
-          "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001"
+          "resourceId": "<resourceId>"
         }
       ]
     },
@@ -819,14 +786,14 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
           "category": "VDC Saved Searches",
           "displayName": "VMSS Instance Count2",
           "name": "VMSSQueries",
-          "query": "Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer"
+          "query": "Event | where Source == ServiceFabricNodeBootstrapAgent | summarize AggregatedValue = count() by Computer"
         }
       ]
     },
     "storageInsightsConfigs": {
       "value": [
         {
-          "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001",
+          "storageAccountId": "<storageAccountId>",
           "tables": [
             "LinuxsyslogVer2v0",
             "WADETWEventTable",
@@ -838,6 +805,43 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     },
     "useResourcePermissions": {
       "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-oiwmin'
+  params: {
+    name: '<<namePrefix>>oiwmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>oiwmin001"
     }
   }
 }

@@ -9,7 +9,9 @@ param location string = resourceGroup().location
 
 @sys.description('Required. Specifies the SKU, also referred as \'edition\' of the Azure Machine Learning workspace.')
 @allowed([
+  'Free'
   'Basic'
+  'Standard'
   'Enterprise'
 ])
 param sku string
@@ -131,6 +133,12 @@ param imageBuildCompute string = ''
 @sys.description('Conditional. The user assigned identity resource ID that represents the workspace identity. Required if \'userAssignedIdentities\' is not empty and may not be used if \'systemAssignedIdentity\' is enabled.')
 param primaryUserAssignedIdentity string = ''
 
+@sys.description('Optional. The service managed resource settings.')
+param serviceManagedResourcesSettings object = {}
+
+@sys.description('Optional. The list of shared private link resources in this workspace.')
+param sharedPrivateLinkResources array = []
+
 @sys.description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
   ''
@@ -190,7 +198,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
+resource workspace 'Microsoft.MachineLearningServices/workspaces@2022-05-01' = {
   name: name
   location: location
   tags: tags
@@ -222,6 +230,8 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     imageBuildCompute: imageBuildCompute
     primaryUserAssignedIdentity: primaryUserAssignedIdentity
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : 'Enabled')
+    serviceManagedResourcesSettings: serviceManagedResourcesSettings
+    sharedPrivateLinkResources: sharedPrivateLinkResources
   }
 }
 
