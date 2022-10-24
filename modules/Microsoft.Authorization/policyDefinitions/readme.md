@@ -136,7 +136,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg</h3>
+<h3>Example 1: Mg.Common</h3>
 
 <details>
 
@@ -144,10 +144,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apdmg'
+  name: '${uniqueString(deployment().name)}-test-apdmgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apdmg001'
+    name: '<<namePrefix>>apdmgcom001'
     policyRule: {
       if: {
         allOf: [
@@ -218,7 +218,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apdmg001"
+      "value": "<<namePrefix>>apdmgcom001"
     },
     "policyRule": {
       "value": {
@@ -380,7 +380,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 </details>
 <p>
 
-<h3>Example 3: Sub</h3>
+<h3>Example 3: Sub.Common</h3>
 
 <details>
 
@@ -388,10 +388,10 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apdsub'
+  name: '${uniqueString(deployment().name)}-test-apdsubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apdsub001'
+    name: '<<namePrefix>>apdsubcom001'
     policyRule: {
       if: {
         allOf: [
@@ -462,7 +462,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apdsub001"
+      "value": "<<namePrefix>>apdsubcom001"
     },
     "policyRule": {
       "value": {
