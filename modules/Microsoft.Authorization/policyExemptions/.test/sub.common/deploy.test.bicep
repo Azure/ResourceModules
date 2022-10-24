@@ -3,15 +3,11 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
-@description('Optional. The name of the resource group to deploy for testing purposes.')
-@maxLength(90)
-param resourceGroupName string = 'ms.authorization.policyexemptions-${serviceShort}-rg'
-
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'aperg'
+param serviceShort string = 'apesubcom'
 
 // =========== //
 // Deployments //
@@ -19,11 +15,6 @@ param serviceShort string = 'aperg'
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: resourceGroupName
-  location: location
-}
-
 resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
   name: 'dep-<<namePrefix>>-${serviceShort}-rgloc'
   location: location
@@ -37,19 +28,17 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
 // Test Execution //
 // ============== //
 
-module testDeployment '../../resourceGroup/deploy.bicep' = {
-  scope: resourceGroup
+module testDeployment '../../subscription/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     policyAssignmentId: policyAssignment.id
-    displayName: '[Display Name] policy exempt (resource group scope)'
+    displayName: '[Display Name] policy exempt (subscription scope)'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     metadata: {
       category: 'Security'
     }
-    resourceGroupName: resourceGroup.name
     subscriptionId: subscription().subscriptionId
   }
 }

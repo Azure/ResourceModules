@@ -159,7 +159,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg</h3>
+<h3>Example 1: Mg.Common</h3>
 
 <details>
 
@@ -167,10 +167,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apemg'
+  name: '${uniqueString(deployment().name)}-test-apemgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apemg001'
+    name: '<<namePrefix>>apemgcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     displayName: '[Display Name] policy exempt (management group scope)'
@@ -198,7 +198,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apemg001"
+      "value": "<<namePrefix>>apemgcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -271,7 +271,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 </details>
 <p>
 
-<h3>Example 3: Rg</h3>
+<h3>Example 3: Rg.Common</h3>
 
 <details>
 
@@ -279,10 +279,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aperg'
+  name: '${uniqueString(deployment().name)}-test-apergcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>aperg001'
+    name: '<<namePrefix>>apergcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     displayName: '[Display Name] policy exempt (resource group scope)'
@@ -311,7 +311,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>aperg001"
+      "value": "<<namePrefix>>apergcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -397,7 +397,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 </details>
 <p>
 
-<h3>Example 5: Sub</h3>
+<h3>Example 5: Sub.Common</h3>
 
 <details>
 
@@ -405,10 +405,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apesub'
+  name: '${uniqueString(deployment().name)}-test-apesubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apesub001'
+    name: '<<namePrefix>>apesubcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     displayName: '[Display Name] policy exempt (subscription scope)'
@@ -436,7 +436,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apesub001"
+      "value": "<<namePrefix>>apesubcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"

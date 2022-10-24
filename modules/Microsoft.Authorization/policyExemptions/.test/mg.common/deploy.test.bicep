@@ -1,4 +1,4 @@
-targetScope = 'subscription'
+targetScope = 'managementGroup'
 
 // ========== //
 // Parameters //
@@ -7,7 +7,7 @@ targetScope = 'subscription'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'apesub'
+param serviceShort string = 'apemgcom'
 
 // =========== //
 // Deployments //
@@ -15,6 +15,7 @@ param serviceShort string = 'apesub'
 
 // General resources
 // =================
+
 resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
   name: 'dep-<<namePrefix>>-${serviceShort}-rgloc'
   location: location
@@ -28,17 +29,17 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
 // Test Execution //
 // ============== //
 
-module testDeployment '../../subscription/deploy.bicep' = {
+module testDeployment '../../managementGroup/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     policyAssignmentId: policyAssignment.id
-    displayName: '[Display Name] policy exempt (subscription scope)'
+    displayName: '[Display Name] policy exempt (management group scope)'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
+    managementGroupId: last(split(managementGroup().id, '/'))
     metadata: {
       category: 'Security'
     }
-    subscriptionId: subscription().subscriptionId
   }
 }
