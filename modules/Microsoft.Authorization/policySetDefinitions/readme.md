@@ -142,7 +142,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg</h3>
+<h3>Example 1: Mg.Common</h3>
 
 <details>
 
@@ -150,10 +150,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apsdmg'
+  name: '${uniqueString(deployment().name)}-test-apsdmgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apsdmg001'
+    name: '<<namePrefix>>apsdmgcom001'
     policyDefinitions: [
       {
         groupNames: [
@@ -218,7 +218,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apsdmg001"
+      "value": "<<namePrefix>>apsdmgcom001"
     },
     "policyDefinitions": {
       "value": [
@@ -350,7 +350,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 </details>
 <p>
 
-<h3>Example 3: Sub</h3>
+<h3>Example 3: Sub.Common</h3>
 
 <details>
 
@@ -358,10 +358,10 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 ```bicep
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apsdsub'
+  name: '${uniqueString(deployment().name)}-test-apsdsubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apsdsub001'
+    name: '<<namePrefix>>apsdsubcom001'
     policyDefinitions: [
       {
         groupNames: [
@@ -426,7 +426,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apsdsub001"
+      "value": "<<namePrefix>>apsdsubcom001"
     },
     "policyDefinitions": {
       "value": [

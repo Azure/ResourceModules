@@ -1,16 +1,16 @@
-targetScope = 'managementGroup'
+targetScope = 'subscription'
 
 // ========== //
 // Parameters //
 // ========== //
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'apsdmg'
+param serviceShort string = 'apsdsubcom'
 
 // ============== //
 // Test Execution //
 // ============== //
 
-module testDeployment '../../managementGroup/deploy.bicep' = {
+module testDeployment '../../subscription/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
@@ -45,9 +45,8 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
       }
     ]
     // Non-required parameters
-    description: '[Description] This policy set definition is deployed at management group scope'
-    displayName: '[DisplayName] This policy set definition is deployed at management group scope'
-    managementGroupId: last(split(managementGroup().id, '/'))
+    description: '[Description] This policy set definition is deployed at subscription scope'
+    displayName: '[DisplayName] This policy set definition is deployed at subscription scope'
     metadata: {
       category: 'Security'
       version: '1'
@@ -60,5 +59,6 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
         name: 'ARM'
       }
     ]
+    subscriptionId: subscription().subscriptionId
   }
 }
