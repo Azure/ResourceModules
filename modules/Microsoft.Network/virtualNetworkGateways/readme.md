@@ -264,7 +264,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-gw-vpn-001'
+    name: '<<namePrefix>>-az-gw-aadvpn-001'
     virtualNetworkGatewaySku: 'VpnGw2AZ'
     virtualNetworkGatewayType: 'Vpn'
     vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
@@ -320,7 +320,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-gw-vpn-001"
+      "value": "<<namePrefix>>-az-gw-aadvpn-001"
     },
     "virtualNetworkGatewaySku": {
       "value": "VpnGw2AZ"

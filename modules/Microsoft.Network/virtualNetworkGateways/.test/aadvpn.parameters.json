@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-gw-vpn-001"
+            "value": "<<namePrefix>>-az-gw-aadvpn-001"
         },
         "lock": {
             "value": "CanNotDelete"
