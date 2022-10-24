@@ -311,7 +311,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Contributor'
       }
     ]
     sigImageDefinitionId: '<sigImageDefinitionId>'
@@ -381,7 +381,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Contributor"
         }
       ]
     },
