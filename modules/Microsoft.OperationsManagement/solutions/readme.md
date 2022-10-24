@@ -67,7 +67,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
-    name: '<<namePrefix>>omsmin001'
+    name: 'Updates'
   }
 }
 ```
@@ -89,7 +89,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
       "value": "<logAnalyticsWorkspaceName>"
     },
     "name": {
-      "value": "<<namePrefix>>omsmin001"
+      "value": "Updates"
     }
   }
 }
@@ -110,7 +110,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
-    name: '<<namePrefix>>omsms001'
+    name: 'AzureAutomation'
     // Non-required parameters
     product: 'OMSGallery'
     publisher: 'Microsoft'
@@ -135,7 +135,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
       "value": "<logAnalyticsWorkspaceName>"
     },
     "name": {
-      "value": "<<namePrefix>>omsms001"
+      "value": "AzureAutomation"
     },
     // Non-required parameters
     "product": {
