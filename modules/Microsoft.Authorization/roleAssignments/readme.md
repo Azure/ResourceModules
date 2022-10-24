@@ -185,7 +185,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aramg'
+  name: '${uniqueString(deployment().name)}-test-aramgcom'
   params: {
     // Required parameters
     principalId: '<principalId>'
@@ -285,7 +285,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ararg'
+  name: '${uniqueString(deployment().name)}-test-arargcom'
   params: {
     // Required parameters
     principalId: '<principalId>'
@@ -399,7 +399,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 
 ```bicep
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-arasub'
+  name: '${uniqueString(deployment().name)}-test-arasubcom'
   params: {
     // Required parameters
     principalId: '<principalId>'
