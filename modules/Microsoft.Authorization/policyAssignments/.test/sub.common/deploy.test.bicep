@@ -5,13 +5,13 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(80)
-param resourceGroupName string = 'ms.xxx.xxx-${serviceShort}-rg'
+param resourceGroupName string = 'ms.authorization.policyassignments-${serviceShort}-rg'
+
+@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
+param serviceShort string = 'apasubcom'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
-
-@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'apargdef'
 
 // =========== //
 // Deployments //
@@ -29,7 +29,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
   }
 }
 
@@ -37,14 +36,13 @@ module resourceGroupResources 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-module testDeployment '../../resourceGroup/deploy.bicep' = {
-  scope: resourceGroup
+module testDeployment '../../subscription/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
-    description: '[Description] Policy Assignment at the resource group scope'
-    displayName: '[Display Name] Policy Assignment at the resource group scope'
+    description: '[Description] Policy Assignment at the subscription scope'
+    displayName: '[Display Name] Policy Assignment at the subscription scope'
     enforcementMode: 'DoNotEnforce'
     identity: 'UserAssigned'
     location: location
@@ -58,7 +56,7 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
       }
     ]
     notScopes: [
-      resourceGroupResources.outputs.keyVaultResourceId
+      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
     ]
     parameters: {
       tagName: {
@@ -68,7 +66,6 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
         value: 'prod'
       }
     }
-    resourceGroupName: resourceGroup.name
     roleDefinitionIds: [
       '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
     ]

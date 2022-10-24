@@ -178,7 +178,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg</h3>
+<h3>Example 1: Mg.Common</h3>
 
 <details>
 
@@ -186,10 +186,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apamgdef'
+  name: '${uniqueString(deployment().name)}-test-apamgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apamgdef001'
+    name: '<<namePrefix>>apamgcom001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     // Non-required parameters
     description: '[Description] Policy Assignment at the management group scope'
@@ -239,7 +239,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apamgdef001"
+      "value": "<<namePrefix>>apamgcom001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
@@ -346,7 +346,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 </details>
 <p>
 
-<h3>Example 3: Rg</h3>
+<h3>Example 3: Rg.Common</h3>
 
 <details>
 
@@ -354,10 +354,10 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apargdef'
+  name: '${uniqueString(deployment().name)}-test-apargcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apargdef001'
+    name: '<<namePrefix>>apargcom001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     // Non-required parameters
     description: '[Description] Policy Assignment at the resource group scope'
@@ -409,7 +409,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apargdef001"
+      "value": "<<namePrefix>>apargcom001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
@@ -528,7 +528,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 </details>
 <p>
 
-<h3>Example 5: Sub</h3>
+<h3>Example 5: Sub.Common</h3>
 
 <details>
 
@@ -536,10 +536,10 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apasubdef'
+  name: '${uniqueString(deployment().name)}-test-apasubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apasubdef001'
+    name: '<<namePrefix>>apasubcom001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     // Non-required parameters
     description: '[Description] Policy Assignment at the subscription scope'
@@ -590,7 +590,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apasubdef001"
+      "value": "<<namePrefix>>apasubcom001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
