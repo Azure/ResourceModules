@@ -64,6 +64,7 @@ This module deploys a virtual network gateway.
 | `vpnClientAddressPoolPrefix` | string | `''` |  | The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
 | `vpnType` | string | `'RouteBased'` | `[PolicyBased, RouteBased]` | Specifies the VPN type. |
 
+
 ### Parameter Usage: `subnets`
 
 The `subnets` parameter accepts a JSON Array of `subnet` objects to deploy to the Virtual Network.
@@ -259,8 +260,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Virtualnetworkgateways'
+module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-gw-vpn-001'
@@ -402,8 +403,8 @@ module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy
 <summary>via Bicep module</summary>
 
 ```bicep
-module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Virtualnetworkgateways'
+module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-gw-er-001'
@@ -523,8 +524,8 @@ module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy
 <summary>via Bicep module</summary>
 
 ```bicep
-module Virtualnetworkgateways './Microsoft.Network/Virtualnetworkgateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Virtualnetworkgateways'
+module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-gw-vpn-001'
