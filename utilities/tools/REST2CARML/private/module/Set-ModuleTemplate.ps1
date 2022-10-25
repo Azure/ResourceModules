@@ -61,9 +61,12 @@ function Set-ModuleTemplate {
 
         $targetScope = Get-TargetScope -UrlPath $UrlPath
 
-        $templateContent = @(
-            "targetScope = '{0}'" -f $targetScope
+        $templateContent = ($targetScope -ne 'resourceGroup') ? @(
+            "targetScope = '{0}'" -f $targetScope,
             ''
+        ) : @()
+
+        $templateContent += @(
             '// ============== //'
             '//   Parameters   //'
             '// ============== //'
@@ -71,7 +74,7 @@ function Set-ModuleTemplate {
         )
 
         # Add primary (service) parameters (i.e. top-level and those in the properties)
-        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.Level -in @(0, 1) -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') })) {
+        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') })) {
             $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
         }
         # Add additional (extension) parameters

@@ -59,6 +59,19 @@ function Set-OptionalParameter {
     # Default value
     if ($SourceParameterObject.Keys -contains 'default') {
         $TargetObject['default'] = $SourceParameterObject.default
+    } elseif ($TargetObject.Required -eq $false) {
+        # If no default is specified, but we know the value is optional, we can set it as per its type
+        switch ($TargetObject.Type) {
+            'object' { $TargetObject['default'] = @{} }
+            'array' { $TargetObject['default'] = @() }
+            'boolean' { $TargetObject['default'] = $null } # Unkown
+            'number' { $TargetObject['default'] = $null } # Unkown
+            'integer' { $TargetObject['default'] = $null } # Unkown
+            'string' { $TargetObject['default'] = '' }
+            Default {
+                throw ('Missing type handling for type [{0}]' -f $TargetObject.Type)
+            }
+        }
     }
 
     # Pattern

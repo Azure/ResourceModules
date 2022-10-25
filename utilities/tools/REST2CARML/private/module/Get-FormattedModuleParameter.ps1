@@ -98,7 +98,6 @@ function Get-FormattedModuleParameter {
 
     if ($ParameterData.default) {
 
-
         if ($ParameterData.default -like '*()*') {
             # Handle functions
             $result += "$paramLine = {0}" -f ($ParameterData.default -replace '"', '')
@@ -131,6 +130,16 @@ function Get-FormattedModuleParameter {
                 }
                 'int' {
                     $result += "$paramLine = {0}" -f $ParameterData.default
+                    break
+                }
+                'object' {
+                    if ($ParameterData.default.Keys.count -eq 0) {
+                        # Empty default
+                        $result += "$paramLine = {}"
+                    } else {
+                        throw 'Handling of default objects not yet implemented'
+                    }
+                    break
                 }
                 default {
                     throw ('Unhandled parameter type [{0}]' -f $ParameterData.type)
