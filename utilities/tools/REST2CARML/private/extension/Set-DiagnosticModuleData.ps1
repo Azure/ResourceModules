@@ -41,7 +41,7 @@ function Set-DiagnosticModuleData {
         $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
         $diagnosticOptions = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
 
-        if (-not $diagnosticOptions) {
+        if (-not ($diagnosticOptions.Logs -and $diagnosticOptions.Metrics)) {
             return
         }
 

@@ -56,44 +56,21 @@ function Set-Module {
     }
 
     process {
-
-        #################################
-        ##   Collect additional data   ##
-        #################################
-
-        # Set diagnostic data
-        $diagInputObject = @{
-            ProviderNamespace = $ProviderNamespace
-            ResourceType      = $ResourceType
-            ModuleData        = $ModuleData
+        #############################
+        ##   Update Support Files   #
+        #############################
+        foreach ($fileDefinition in $ModuleData.additionalFiles) {
+            $supportFilePath = Join-Path $ModuleRootPath $fileDefinition.relativeFilePath
+            if (-not (Test-Path $supportFilePath)) {
+                if ($PSCmdlet.ShouldProcess(('File [{0}].' -f (Split-Path $supportFilePath -Leaf)), 'Create')) {
+                    $null = New-Item -Path $supportFilePath -ItemType 'File' -Value $fileDefinition.fileContent
+                }
+            } else {
+                if ($PSCmdlet.ShouldProcess(('File [{0}].' -f (Split-Path $supportFilePath -Leaf)), 'Update')) {
+                    $null = Set-Content -Path $supportFilePath -Value $fileDefinition.fileContent
+                }
+            }
         }
-        Set-DiagnosticModuleData @diagInputObject
-
-        # Set Endpoint data
-        $endpInputObject = @{
-            JSONFilePath = $JSONFilePath
-            ResourceType = $ResourceType
-            ModuleData   = $ModuleData
-        }
-        Set-PrivateEndpointModuleData @endpInputObject
-
-        ## Set RBAC data
-        $rbacInputObject = @{
-            ProviderNamespace = $ProviderNamespace
-            ResourceType      = $ResourceType
-            ModuleData        = $ModuleData
-            ModuleRootPath    = $moduleRootPath
-            ServiceApiVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
-        }
-        Set-RoleAssignmentsModuleData @rbacInputObject
-
-        ## Set Locks data
-        $lockInputObject = @{
-            urlPath      = $UrlPath
-            ResourceType = $ResourceType
-            ModuleData   = $ModuleData
-        }
-        Set-LockModuleData @lockInputObject
 
         #############################
         ##   Update Template File   #

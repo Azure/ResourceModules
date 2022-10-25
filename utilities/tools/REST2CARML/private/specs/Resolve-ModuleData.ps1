@@ -44,7 +44,7 @@ function Resolve-ModuleData {
     $putParametersInputObject = @{
         JSONFilePath      = $JSONFilePath
         RelevantParamRoot = $specificationData.paths[$UrlPath].put.parameters
-        urlPath           = $UrlPath
+        UrlPath           = $UrlPath
         ResourceType      = $ResourceType
     }
     $templateData += Get-SpecsPropertiesAsParameterList @putParametersInputObject
@@ -54,7 +54,7 @@ function Resolve-ModuleData {
         $putParametersInputObject = @{
             JSONFilePath      = $JSONFilePath
             RelevantParamRoot = $specificationData.paths[$UrlPath].patch.parameters
-            urlPath           = $UrlPath
+            UrlPath           = $UrlPath
             ResourceType      = $ResourceType
         }
         $templateData += Get-SpecsPropertiesAsParameterList @putParametersInputObject
@@ -68,11 +68,51 @@ function Resolve-ModuleData {
         }
     }
 
-    return @{
+    $moduleData = @{
         parameters           = $filteredList
         additionalParameters = @()
         resources            = @()
         variables            = @()
         outputs              = @()
+        additionalFiles      = @()
     }
+
+    #################################
+    ##   Collect additional data   ##
+    #################################
+
+    # Set diagnostic data
+    $diagInputObject = @{
+        ProviderNamespace = $ProviderNamespace
+        ResourceType      = $ResourceType
+        ModuleData        = $ModuleData
+    }
+    Set-DiagnosticModuleData @diagInputObject
+
+    # Set Endpoint data
+    $endpInputObject = @{
+        JSONFilePath = $JSONFilePath
+        ResourceType = $ResourceType
+        ModuleData   = $ModuleData
+    }
+    Set-PrivateEndpointModuleData @endpInputObject
+
+    ## Set RBAC data
+    $rbacInputObject = @{
+        ProviderNamespace = $ProviderNamespace
+        ResourceType      = $ResourceType
+        ModuleData        = $ModuleData
+        ServiceApiVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
+    }
+    Set-RoleAssignmentsModuleData @rbacInputObject
+
+    ## Set Locks data
+    $lockInputObject = @{
+        urlPath      = $UrlPath
+        ResourceType = $ResourceType
+        ModuleData   = $ModuleData
+    }
+    Set-LockModuleData @lockInputObject
+
+    return $moduleData
 }

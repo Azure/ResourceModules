@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-Fetch all available roles for a given resource type, generate the corresponding nested_roleAssignment.bicep file in the given module path & add any additional required parameters, variables & resources to the provide module data object.
+Fetch all available roles for a given resource type, store the content of the the corresponding nested_roleAssignment.bicep file in the given 'additionalFiles' array of the provided module data object & add any additional required parameters, variables & resources to the provide module data object.
 
 .DESCRIPTION
-Fetch all available roles for a given resource type, generate the corresponding nested_roleAssignment.bicep file in the given module path & add any additional required parameters, variables & resources to the provide module data object.
+Fetch all available roles for a given resource type, store the content of the the corresponding nested_roleAssignment.bicep file in the given 'additionalFiles' array of the provided module data object & add any additional required parameters, variables & resources to the provide module data object.
 
 .PARAMETER ProviderNamespace
 Mandatory. The ProviderNamespace to fetch the available role options for.
@@ -17,11 +17,8 @@ Mandatory. The API version of the module to generate the RBAC module file for
 .PARAMETER ModuleData
 Mandatory. The ModuleData object to populate.
 
-.PARAMETER ModuleRootPath
-Mandatory. The path to the generated module to add the RBAC module file to.
-
 .EXAMPLE
-Set-RoleAssignmentsModuleData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ServiceApiVersion '10-10-2022' -ModuleData @{ parameters = @(...); resources = @(...); (...) } -ModuleRootPath 'C:/ResourceModules/modules/Microsoft.KeyVault/vaults'
+Set-RoleAssignmentsModuleData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ServiceApiVersion '10-10-2022' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
 
 Generate the nested_roleAssignment.bicep file in the [Microsoft.KeyVault/vaults]'s module path and add any additional required data to the provided module data object.
 #>
@@ -39,10 +36,7 @@ function Set-RoleAssignmentsModuleData {
         [string] $ServiceApiVersion,
 
         [Parameter(Mandatory = $true)]
-        [Hashtable] $ModuleData,
-
-        [Parameter(Mandatory = $true)]
-        [string] $ModuleRootPath
+        [Hashtable] $ModuleData
     )
 
     begin {
@@ -108,14 +102,15 @@ function Set-RoleAssignmentsModuleData {
         $fileContent = $preRolesContent.TrimEnd() + ($roleAssignmentList.bicepFormat | ForEach-Object { "  $_" }) + $postRolesContent
 
         # Set content
-        $roleTemplateFilePath = Join-Path $ModuleRootPath '.bicep' 'nested_roleAssignments.bicep'
-        if (-not (Test-Path $roleTemplateFilePath)) {
-            if ($PSCmdlet.ShouldProcess(('RBAC file [{0}].' -f (Split-Path $roleTemplateFilePath -Leaf)), 'Create')) {
-                $null = New-Item -Path $roleTemplateFilePath -ItemType 'File' -Value ($fileContent | Out-String).Trim()
-            }
-        } else {
-            if ($PSCmdlet.ShouldProcess(('RBAC file [{0}].' -f (Split-Path $roleTemplateFilePath -Leaf)), 'Update')) {
-                $null = Set-Content -Path $roleTemplateFilePath -Value ($fileContent | Out-String).Trim()
+        $roleTemplateFilePath = Join-Path '.bicep' 'nested_roleAssignments.bicep'
+
+        if ($PSCmdlet.ShouldProcess("RBAC data for file in path [$roleTemplateFilePath]", "Set")) {
+            $ModuleData.additionalFiles += @{
+                type                    = 'roleAssignments'
+                relativeFilePath        = $roleTemplateFilePath
+                fileContent             = ($fileContent | Out-String).Trim()
+                onlyRoleDefinitionIds   = $roleAssignmentList.onlyRoleDefinitionIds
+                onlyRoleDefinitionNames = $roleAssignmentList.onlyRoleDefinitionNames
             }
         }
     }

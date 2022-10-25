@@ -110,12 +110,6 @@ function Get-AzureApiSpecsData {
             #################################################################
             $moduleData = @()
             foreach ($pathBlock in $pathData) {
-                $resolveInputObject = @{
-                    JSONFilePath = $pathBlock.jsonFilePath
-                    urlPath      = $pathBlock.urlPath
-                    ResourceType = $ResourceType
-                }
-                $resolvedParameters = Resolve-ModuleData @resolveInputObject
 
                 # Calculate simplified identifier
                 $identifier = ($pathBlock.urlPath -split '\/providers\/')[1]
@@ -131,6 +125,13 @@ function Get-AzureApiSpecsData {
                         }
                     }
                 }
+
+                $resolveInputObject = @{
+                    JSONFilePath = $pathBlock.jsonFilePath
+                    UrlPath      = $pathBlock.urlPath
+                    ResourceType = $identifier -replace "$ProviderNamespace/", '' # Using pathBlock-based identifier to support also child-resources
+                }
+                $resolvedParameters = Resolve-ModuleData @resolveInputObject
 
                 # Build result
                 $moduleData += @{
