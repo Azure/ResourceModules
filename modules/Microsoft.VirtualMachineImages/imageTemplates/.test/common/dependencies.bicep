@@ -22,6 +22,15 @@ resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
     }
   }
 
+  module roleAssignment 'dependencies_rbac.bicep' = {
+    name: '${deployment().name}-MSI-roleAssignment'
+    scope: subscription()
+    params: {
+      managedIdentityPrincipalId: managedIdentity.properties.principalId
+      managedIdentityResourceId: managedIdentity.id
+    }
+  }
+
 resource galleryImageDefinition 'Microsoft.Compute/galleries/images@2022-03-03' = {
   name: sigImageDefinitionName
   location: location
