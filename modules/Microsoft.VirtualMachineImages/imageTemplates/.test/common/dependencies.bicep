@@ -11,25 +11,16 @@ param sigImageDefinitionName string
 param managedIdentityName string
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
+  name: managedIdentityName
+  location: location
 }
 
 resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
-    name: galleryName
-    location: location
-    properties: {
-    }
+  name: galleryName
+  location: location
+  properties: {
   }
-
-  module roleAssignment 'dependencies_rbac.bicep' = {
-    name: '${deployment().name}-MSI-roleAssignment'
-    scope: subscription()
-    params: {
-      managedIdentityPrincipalId: managedIdentity.properties.principalId
-      managedIdentityResourceId: managedIdentity.id
-    }
-  }
+}
 
 resource galleryImageDefinition 'Microsoft.Compute/galleries/images@2022-03-03' = {
   name: sigImageDefinitionName
@@ -66,4 +57,3 @@ output managedIdentityName string = managedIdentity.name
 
 @description('The resource ID of the created Image Definition.')
 output sigImageDefinitionId string = galleryImageDefinition.id
-
