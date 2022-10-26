@@ -69,7 +69,7 @@ module testDeployment '../../deploy.bicep' = {
     buildTimeoutInMinutes: 0
     imageReplicationRegions: []
     lock: 'CanNotDelete'
-    managedImageName: '<<namePrefix>>-az-mi-x-${serviceShort}-001'
+    managedImageName: '<<namePrefix>>-mi-${serviceShort}-001'
     osDiskSizeGB: 127
     roleAssignments: [
       {
