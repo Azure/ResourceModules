@@ -304,19 +304,19 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     buildTimeoutInMinutes: 0
     imageReplicationRegions: []
     lock: 'CanNotDelete'
-    managedImageName: '<<namePrefix>>-az-mi-x-vmicom-001'
+    managedImageName: '<<namePrefix>>-mi-vmicom-001'
     osDiskSizeGB: 127
     roleAssignments: [
       {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
-        roleDefinitionIdOrName: 'Contributor'
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
     sigImageDefinitionId: '<sigImageDefinitionId>'
     subnetId: ''
-    unManagedImageName: '<<namePrefix>>-az-umi-x-vmicom-001'
+    unManagedImageName: '<<namePrefix>>-umi-vmicom-001'
     userMsiResourceGroup: '<userMsiResourceGroup>'
     vmSize: 'Standard_D2s_v3'
   }
@@ -370,7 +370,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": "CanNotDelete"
     },
     "managedImageName": {
-      "value": "<<namePrefix>>-az-mi-x-vmicom-001"
+      "value": "<<namePrefix>>-mi-vmicom-001"
     },
     "osDiskSizeGB": {
       "value": 127
@@ -381,7 +381,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "roleDefinitionIdOrName": "Contributor"
+          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
@@ -392,7 +392,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": ""
     },
     "unManagedImageName": {
-      "value": "<<namePrefix>>-az-umi-x-vmicom-001"
+      "value": "<<namePrefix>>-umi-vmicom-001"
     },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"
