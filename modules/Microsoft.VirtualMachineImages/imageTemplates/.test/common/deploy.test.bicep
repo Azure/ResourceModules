@@ -73,7 +73,7 @@ module testDeployment '../../deploy.bicep' = {
     osDiskSizeGB: 127
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Contributor'
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
