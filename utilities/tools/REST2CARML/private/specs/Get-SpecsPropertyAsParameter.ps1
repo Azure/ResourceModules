@@ -1,10 +1,10 @@
 
 <#
 .SYNOPSIS
-Get the given API Specs property as a flat parameter with its attributes in a list together with any nested & also resolved property 
+Get the given API Specs property as a flat parameter with its attributes in a list together with any nested & also resolved property
 
 .DESCRIPTION
-Get the given API Specs property as a flat parameter with its attributes in a list together with any nested & also resolved property 
+Get the given API Specs property as a flat parameter with its attributes in a list together with any nested & also resolved property
 
 .PARAMETER JSONFilePath
 Mandatory. The path to the API Specs JSON file hosting the data
@@ -93,7 +93,7 @@ function Get-SpecsPropertyAsParameter {
 
         [Parameter(Mandatory = $true)]
         [int] $Level,
-        
+
         [Parameter(Mandatory = $false)]
         [boolean] $SkipLevel = $false
     )
@@ -110,11 +110,11 @@ function Get-SpecsPropertyAsParameter {
         $resolvedReference = Resolve-SpecPropertyReference @inputObject
         $parameter = $resolvedReference.parameter
         $specificationData = $resolvedReference.SpecificationData
-        
+
         if ($Parameter.Keys -contains 'properties') {
             # Parameter is an object
             if (-not $SkipLevel) {
-                $refObjects += @{
+                $parameterObject = @{
                     level       = $Level
                     name        = $Name
                     type        = 'object'
@@ -122,6 +122,7 @@ function Get-SpecsPropertyAsParameter {
                     required    = $RequiredParametersOnLevel -contains $Name
                     Parent      = $Parent
                 }
+                $refObjects += Set-OptionalParameter -SourceParameterObject $Parameter -TargetObject $parameterObject
             }
 
             foreach ($property in $Parameter['properties'].Keys) {
@@ -136,8 +137,7 @@ function Get-SpecsPropertyAsParameter {
                 }
                 $refObjects += Get-SpecsPropertyAsParameter @recursiveInputObject
             }
-        }
-        else {
+        } else {
             $recursiveInputObject = @{
                 JSONFilePath              = $JSONFilePath
                 SpecificationData         = $SpecificationData
@@ -149,12 +149,11 @@ function Get-SpecsPropertyAsParameter {
             }
             $refObjects += Get-SpecsPropertyAsParameter @recursiveInputObject
         }
-    }
-    elseif ($Parameter.Keys -contains 'items') {
+    } elseif ($Parameter.Keys -contains 'items') {
         # Parameter is an array
         if ($Parameter.items.Keys -contains '$ref') {
             # Each item is an object/array
-            $refObjects += @{
+            $parameterObject = @{
                 level       = $Level
                 name        = $Name
                 type        = 'array'
@@ -162,6 +161,7 @@ function Get-SpecsPropertyAsParameter {
                 required    = $RequiredParametersOnLevel -contains $Name
                 Parent      = $Parent
             }
+            $refObjects += Set-OptionalParameter -SourceParameterObject $Parameter -TargetObject $parameterObject
 
             $recursiveInputObject = @{
                 JSONFilePath              = $JSONFilePath
@@ -174,8 +174,7 @@ function Get-SpecsPropertyAsParameter {
                 SkipLevel                 = $true
             }
             $refObjects += Get-SpecsPropertyAsParameter @recursiveInputObject
-        }
-        else {
+        } else {
             # Each item has a primitive type
             $refObjects += @{
                 level       = $Level
@@ -186,8 +185,7 @@ function Get-SpecsPropertyAsParameter {
                 Parent      = $Parent
             }
         }
-    }
-    elseif ($parameter.Keys -contains 'properties') {
+    } elseif ($parameter.Keys -contains 'properties') {
         # The case if a definition reference should have been created, but the RP implemented it another way.
         # Example "TableServiceProperties": { "properties": { "properties": { "properties": { "cors": {...}}}}}
         $refObjects += @{
@@ -198,7 +196,7 @@ function Get-SpecsPropertyAsParameter {
             required    = $RequiredParametersOnLevel -contains $Name
             Parent      = $Parent
         }
-        
+
         foreach ($property in $Parameter['properties'].Keys) {
             $recursiveInputObject = @{
                 JSONFilePath              = $JSONFilePath
@@ -211,8 +209,7 @@ function Get-SpecsPropertyAsParameter {
             }
             $refObjects += Get-SpecsPropertyAsParameter @recursiveInputObject
         }
-    }
-    else {
+    } else {
         # Parameter is a 'simple' leaf - that is, not an object/array and does not reference any other specification
         if ($parameter.readOnly) {
             return @()

@@ -85,7 +85,7 @@ function Set-ModuleTemplate {
         $templateContent += Get-FormattedModuleParameter -ParameterData @{
             level       = 0
             name        = 'enableDefaultTelemetry'
-            type        = 'bool'
+            type        = 'boolean'
             default     = $true
             description = 'Enable telemetry via the Customer Usage Attribution ID (GUID).'
             required    = $false

@@ -96,15 +96,16 @@ function Get-FormattedModuleParameter {
     }
     $paramLine = 'param {0} {1}' -f $ParameterData.name, $parameterType
 
-    if ($ParameterData.default) {
+    if ($ParameterData.Keys -contains 'default') {
 
         if ($ParameterData.default -like '*()*') {
             # Handle functions
             $result += "$paramLine = {0}" -f ($ParameterData.default -replace '"', '')
         } else {
             switch ($ParameterData.type) {
-                'bool' {
-                    $result += "$paramLine = {0}" -f $ParameterData.default.ToString().ToLower() # boolean 'True' must be lower-cased
+                'boolean' {
+                    $value = [String]::IsNullOrEmpty($ParameterData.default) ? "''" : $ParameterData.default.ToString().ToLower() # boolean 'True' must be lower-cased
+                    $result += "$paramLine = $value"
                     break
                 }
                 'string' {

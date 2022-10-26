@@ -64,9 +64,9 @@ function Set-OptionalParameter {
         switch ($TargetObject.Type) {
             'object' { $TargetObject['default'] = @{} }
             'array' { $TargetObject['default'] = @() }
-            'boolean' { $TargetObject['default'] = $null } # Unkown
-            'number' { $TargetObject['default'] = $null } # Unkown
-            'integer' { $TargetObject['default'] = $null } # Unkown
+            'boolean' { $TargetObject['default'] = '' } # Unkown
+            'number' { $TargetObject['default'] = '' } # Unkown
+            'integer' { $TargetObject['default'] = '' } # Unkown
             'string' { $TargetObject['default'] = '' }
             Default {
                 throw ('Missing type handling for type [{0}]' -f $TargetObject.Type)
