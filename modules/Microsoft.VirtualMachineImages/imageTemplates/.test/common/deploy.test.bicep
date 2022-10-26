@@ -81,7 +81,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     sigImageDefinitionId: resourceGroupResources.outputs.sigImageDefinitionId
     subnetId: ''
-    unManagedImageName: '<<namePrefix>>-az-umi-x-${serviceShort}-001'
+    unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
     userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
   }
