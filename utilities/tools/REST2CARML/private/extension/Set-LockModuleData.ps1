@@ -53,8 +53,8 @@ function Set-LockModuleData {
                 required      = $false
                 default       = ''
                 allowedValues = @(
-                    ''
-                    'CanNotDelete'
+                    '',
+                    'CanNotDelete',
                     'ReadOnly'
                 )
             }

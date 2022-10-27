@@ -6,11 +6,8 @@ Get module configuration data based on the latest API information available
 .DESCRIPTION
 Get module configuration data based on the latest API information available. If you want to use a nested resource type, just concatinate the identifiers like 'storageAccounts/blobServices/containers'
 
-.PARAMETER ProviderNamespace
-Mandatory. The provider namespace to query the data for
-
-.PARAMETER ResourceType
-Mandatory. The resource type to query the data for
+.PARAMETER FullResourceType
+Mandatory. The full resource type including the provider namespace to query the data for (e.g., Microsoft.Storage/storageAccounts)
 
 .PARAMETER ExcludeChildren
 Optional. Don't include child resource types in the result
@@ -19,13 +16,13 @@ Optional. Don't include child resource types in the result
 Optional. Include preview API versions
 
 .EXAMPLE
-Get-AzureApiSpecsData -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts/blobServices/containers'
+Get-AzureApiSpecsData -FullResourceType 'Microsoft.Storage/storageAccounts/blobServices/containers'
 
 Get the data for [Microsoft.Storage/storageAccounts/blobServices/containers] based on the data stored in the provided API Specs rpository path
 
 .EXAMPLE
 # Get the Storage Account resource data (and the one of all its child-resources)
-$out = Get-AzureApiSpecsData -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts' -Verbose -KeepArtifacts
+$out = Get-AzureApiSpecsData -FullResourceType 'Microsoft.Storage/storageAccounts' -Verbose -KeepArtifacts
 
 # The object looks somewhat like:
 # Name                           Value
@@ -51,17 +48,14 @@ $storageAccountResource.data.parameters | Where-Object { $_.description -like "*
 $storageAccountResource.data.parameters | Where-Object { $_.type -notin @('object','array') } | ForEach-Object { [PSCustomObject]@{ Name = $_.name; Description = $_.description  }  } | Out-GridView
 
 # Get data for a specific child-resource type
-$out = Get-AzureApiSpecsData -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts/blobServices/containers' -Verbose -KeepArtifacts
+$out = Get-AzureApiSpecsData -FullResourceType 'Microsoft.Storage/storageAccounts/blobServices/containers' -Verbose -KeepArtifacts
 #>
 function Get-AzureApiSpecsData {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $ProviderNamespace,
-
-        [Parameter(Mandatory = $true)]
-        [string] $ResourceType,
+        [string] $FullResourceType,
 
         [Parameter(Mandatory = $false)]
         [switch] $ExcludeChildren,
@@ -75,6 +69,9 @@ function Get-AzureApiSpecsData {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
+
+        $providerNamespace = ($FullResourceType -split '/')[0]
+        $resourceType = $FullResourceType -replace "$providerNamespace/", ''
     }
 
     process {

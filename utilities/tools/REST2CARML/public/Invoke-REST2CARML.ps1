@@ -6,15 +6,11 @@ Create/Update a CARML module based on the latest API information available
 Create/Update a CARML module based on the latest API information available.
 NOTE: As we query some data from Azure, you must be connected to an Azure Context to use this function
 
-.PARAMETER ProviderNamespace
-Mandatory. The provider namespace to query the data for
-
-.PARAMETER ResourceType
-Mandatory. The resource type to query the data for
+.PARAMETER FullResourceType
+Mandatory. The full resource type including the provider namespace to query the data for (e.g., Microsoft.Storage/storageAccounts)
 
 .PARAMETER ExcludeChildren
 Optional. Don't include child resource types in the result
-
 
 .PARAMETER IncludePreview
 Mandatory. Include preview API versions
@@ -23,22 +19,22 @@ Mandatory. Include preview API versions
 Optional. Skip the removal of downloaded/cloned artifacts (e.g. the API-Specs repository). Useful if you want to run the function multiple times in a row.
 
 .EXAMPLE
-Invoke-REST2CARML -ProviderNamespace 'Microsoft.Keyvault' -ResourceType 'vaults'
+Invoke-REST2CARML -FullResourceType 'Microsoft.Keyvault/vaults'
 
 Generate/Update a CARML module for [Microsoft.Keyvault/vaults]
 
 .EXAMPLE
-Invoke-REST2CARML -ProviderNamespace 'Microsoft.AVS' -ResourceType 'privateClouds' -Verbose -KeepArtifacts
+Invoke-REST2CARML -FullResourceType 'Microsoft.AVS/privateClouds' -Verbose -KeepArtifacts
 
 Generate/Update a CARML module for [Microsoft.AVS/privateClouds] and do not delete any downloaded/cloned artifact.
 
 .EXAMPLE
-Invoke-REST2CARML -ProviderNamespace 'Microsoft.Keyvault' -ResourceType 'vaults' -KeepArtifacts
+Invoke-REST2CARML -FullResourceType 'Microsoft.Keyvault/vaults' -KeepArtifacts
 
 Generate/Update a CARML module for [Microsoft.Keyvault/vaults] and do not delete any downloaded/cloned artifact.
 
 .EXAMPLE
-Invoke-AzureApiCrawler -ProviderNamespace 'Microsoft.Storage' -ResourceType 'storageAccounts/blobServices/containers' -Verbose -KeepArtifacts
+Invoke-AzureApiCrawler -FullResourceType 'Microsoft.Storage/storageAccounts/blobServices/containers' -Verbose -KeepArtifacts
 
 Generate/Update a CARML module for [Microsoft.Storage/storageAccounts/blobServices/containers] and do not delete any downloaded/cloned artifact.
 #>
@@ -47,10 +43,7 @@ function Invoke-REST2CARML {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $ProviderNamespace,
-
-        [Parameter(Mandatory = $true)]
-        [string] $ResourceType,
+        [string] $FullResourceType,
 
         [Parameter(Mandatory = $false)]
         [switch] $ExcludeChildren,
@@ -64,7 +57,7 @@ function Invoke-REST2CARML {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
-        Write-Verbose ('Processing module [{0}/{1}]' -f $ProviderNamespace, $ResourceType) -Verbose
+        Write-Verbose ('Processing module [{0}]' -f $FullResourceType) -Verbose
     }
 
     process {
@@ -74,11 +67,10 @@ function Invoke-REST2CARML {
         ############################################
 
         $apiSpecsInputObject = @{
-            ProviderNamespace = $ProviderNamespace
-            ResourceType      = $ResourceType
-            ExcludeChildren   = $ExcludeChildren
-            IncludePreview    = $IncludePreview
-            KeepArtifacts     = $KeepArtifacts
+            FullResourceType = $FullResourceType
+            ExcludeChildren  = $ExcludeChildren
+            IncludePreview   = $IncludePreview
+            KeepArtifacts    = $KeepArtifacts
         }
         $moduleData = Get-AzureApiSpecsData @apiSpecsInputObject
 

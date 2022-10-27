@@ -50,6 +50,8 @@ function Get-FormattedModuleParameter {
             } elseif ($_ -match '\d') {
                 # Any number value (e.g., 3)
                 "  $_"
+            } elseif ($_ -match '') {
+                "  ''"
             }
         }
         $result += '])'

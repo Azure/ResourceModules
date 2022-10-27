@@ -43,11 +43,13 @@ function Set-ModuleTemplate {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         $templatePath = Join-Path $script:repoRoot 'modules' $FullResourceType 'deploy.bicep'
+        $providerNamespace = ($FullResourceType -split '/')[0]
+        $resourceType = $FullResourceType -replace "$providerNamespace/", ''
     }
 
     process {
 
-        $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
+        $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
         ##################
         ##  PARAMETERS  ##
@@ -138,7 +140,7 @@ function Set-ModuleTemplate {
         # Other collected resources
         $templateContent += $ModuleData.resources
 
-        # TODO: Add children if applicable
+        # TODO: Add children references if applicable
 
         #######################################
         ##  Create template outputs section  ##
