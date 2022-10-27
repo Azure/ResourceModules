@@ -69,7 +69,7 @@ function Set-Module {
         if (-not (Test-Path $versionFilePath)) {
             if ($PSCmdlet.ShouldProcess(('Version file [{0}]' -f ($versionFilePath -replace ($script:repoRoot -replace '\\', '\\'), '')), 'Create')) {
                 $versionFileContent = Get-Content (Join-Path $script:src 'moduleVersion.json') -Raw
-                $null = New-Item -Path $versionFilePath -ItemType 'File' -Value $versionFileContent
+                $null = New-Item -Path $versionFilePath -ItemType 'File' -Value $versionFileContent -Force
             }
         } else {
             Write-Verbose ('Version file [{0}] already exists.' -f ($versionFilePath -replace ($script:repoRoot -replace '\\', '\\'), ''))

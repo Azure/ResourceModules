@@ -168,7 +168,7 @@ function Set-ModuleTemplate {
 
         # Update file
         # -----------
-        Set-Content -Path $templatePath -Value ($templateContent | Out-String).TrimEnd()
+        Set-Content -Path $templatePath -Value ($templateContent | Out-String).TrimEnd() -Force
     }
 
     end {
