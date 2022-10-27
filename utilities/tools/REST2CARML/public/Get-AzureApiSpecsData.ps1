@@ -88,7 +88,6 @@ function Get-AzureApiSpecsData {
             #################################################################
             $moduleData = @()
             foreach ($pathBlock in $pathData) {
-
                 # Calculate simplified identifier
                 $identifier = ($pathBlock.urlPath -split '\/providers\/')[1]
                 $identifierElem = $identifier -split '\/'
@@ -124,6 +123,7 @@ function Get-AzureApiSpecsData {
             }
 
             return $moduleData
+
         } catch {
             throw $_
         } finally {
