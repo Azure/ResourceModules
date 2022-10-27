@@ -2,7 +2,6 @@
 .SYNOPSIS
 Get module configuration data based on the latest API information available
 
-
 .DESCRIPTION
 Get module configuration data based on the latest API information available. If you want to use a nested resource type, just concatinate the identifiers like 'storageAccounts/blobServices/containers'
 
@@ -72,9 +71,9 @@ function Get-AzureApiSpecsData {
             ##   Find relevant Spec-Files & URL Paths   ##
             ##############################################
             $getPathDataInputObject = @{
-                ProviderNamespace = $ProviderNamespace
-                ResourceType      = $ResourceType
-                RepositoryPath    = $RepositoryPath
+                ProviderNamespace = $providerNamespace
+                ResourceType      = $resourceType
+                RepositoryPath    = $repositoryPath
                 IncludePreview    = $IncludePreview
             }
             $pathData = Get-ServiceSpecPathData @getPathDataInputObject
