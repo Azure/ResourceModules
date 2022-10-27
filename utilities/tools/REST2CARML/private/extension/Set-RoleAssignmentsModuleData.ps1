@@ -45,7 +45,7 @@ function Set-RoleAssignmentsModuleData {
 
     process {
 
-        $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
+        $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
         # Tokens to replace in files
         $tokens = @{

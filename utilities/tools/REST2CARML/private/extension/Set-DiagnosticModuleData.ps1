@@ -38,7 +38,7 @@ function Set-DiagnosticModuleData {
     }
 
     process {
-        $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
+        $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
         $diagnosticOptions = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
 
         if (-not ($diagnosticOptions.Logs -and $diagnosticOptions.Metrics)) {

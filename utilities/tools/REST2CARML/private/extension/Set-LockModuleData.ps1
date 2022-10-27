@@ -39,7 +39,7 @@ function Set-LockModuleData {
 
     process {
 
-        $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
+        $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
         if (-not (Get-SupportsLock -UrlPath $UrlPath)) {
             return

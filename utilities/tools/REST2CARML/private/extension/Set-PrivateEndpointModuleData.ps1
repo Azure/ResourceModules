@@ -39,7 +39,7 @@ function Set-PrivateEndpointModuleData {
 
     process {
 
-        $resourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $ResourceType
+        $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
         if (-not (Get-SupportsPrivateEndpoint -JSONFilePath $JSONFilePath)) {
             return
