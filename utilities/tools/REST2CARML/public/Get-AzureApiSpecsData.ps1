@@ -69,7 +69,6 @@ function Get-AzureApiSpecsData {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
-
         $providerNamespace = ($FullResourceType -split '/')[0]
         $resourceType = $FullResourceType -replace "$providerNamespace/", ''
     }
