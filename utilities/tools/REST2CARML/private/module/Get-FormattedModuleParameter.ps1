@@ -129,7 +129,7 @@ function Get-FormattedModuleParameter {
                     $result += ']'
                     break
                 }
-                'int' {
+                'integer' {
                     $result += "$paramLine = {0}" -f $ParameterData.default
                     break
                 }

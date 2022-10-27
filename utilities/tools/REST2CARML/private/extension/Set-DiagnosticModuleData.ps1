@@ -48,7 +48,7 @@ function Set-DiagnosticModuleData {
         $ModuleData.additionalParameters += @(
             @{
                 name        = 'diagnosticLogsRetentionInDays'
-                type        = 'int'
+                type        = 'integer'
                 description = 'Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.'
                 required    = $false
                 default     = 365

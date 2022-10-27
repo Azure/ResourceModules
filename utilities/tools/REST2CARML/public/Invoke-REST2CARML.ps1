@@ -82,30 +82,20 @@ function Invoke-REST2CARML {
         }
         $moduleData = Get-AzureApiSpecsData @apiSpecsInputObject
 
-        ###########################################
-        ##   Generate initial module structure   ##
-        ###########################################
-        if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] structure' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
-            # TODO: Consider child modules. BUT be aware that pipelines are only generated for the top-level resource
-            Set-ModuleFileStructure -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
-        }
-
         ############################
         ##   Set module content   ##
         ############################
-
-        # TODO: Remove reduced reference as only temp. The logic is currently NOT capabale of handling child resources
-        $moduleData = $moduleData | Where-Object { -not $_.metadata.parentUrlPath }
-
-        $moduleTemplateInputObject = @{
-            ProviderNamespace = $ProviderNamespace
-            ResourceType      = $ResourceType
-            JSONFilePath      = $moduleData.metadata.jsonFilePath
-            UrlPath           = $moduleData.metadata.urlPath
-            ModuleData        = $moduleData.data
-        }
-        if ($PSCmdlet.ShouldProcess(('Module [{0}/{1}] files' -f $ProviderNamespace, $ResourceType), 'Create/Update')) {
-            Set-Module @moduleTemplateInputObject
+        foreach ($moduleDataBlock in ($moduleData | Sort-Object -Property 'Identifier')) {
+            # Sort shortest to longest path
+            $moduleTemplateInputObject = @{
+                FullResourceType = $moduleDataBlock.identifier
+                JSONFilePath     = $moduleDataBlock.metadata.jsonFilePath
+                UrlPath          = $moduleDataBlock.metadata.urlPath
+                ModuleData       = $moduleDataBlock.data
+            }
+            if ($PSCmdlet.ShouldProcess(('Module [{0}] files' -f $moduleDataBlock.identifier), 'Create/Update')) {
+                Set-Module @moduleTemplateInputObject
+            }
         }
     }
 

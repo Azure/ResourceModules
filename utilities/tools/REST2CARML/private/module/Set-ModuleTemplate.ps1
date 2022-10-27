@@ -5,11 +5,8 @@ Update the module's primary template (deploy.bicep) as per the provided module d
 .DESCRIPTION
 Update the module's primary template (deploy.bicep) as per the provided module data.
 
-.PARAMETER ProviderNamespace
-Mandatory. The ProviderNamespace to update the template for.
-
-.PARAMETER ResourceType
-Mandatory. The ResourceType to update the template for.
+.PARAMETER FullResourceType
+Mandatory. The complete ResourceType identifier to update the template for (e.g. 'Microsoft.Storage/storageAccounts').
 
 .PARAMETER ModuleData
 Mandatory. The module data (e.g. parameters) to add to the template.
@@ -21,7 +18,7 @@ Mandatory. The service specification file to process.
 Mandatory. The API Path in the JSON specification file to process
 
 .EXAMPLE
-Set-ModuleTemplate -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+Set-ModuleTemplate -FullResourceType 'Microsoft.KeyVault/vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
 
 Update the module [Microsoft.KeyVault/vaults] with the provided module data.
 #>
@@ -30,10 +27,7 @@ function Set-ModuleTemplate {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $ProviderNamespace,
-
-        [Parameter(Mandatory = $true)]
-        [string] $ResourceType,
+        [string] $FullResourceType,
 
         [Parameter(Mandatory = $true)]
         [array] $ModuleData,
@@ -48,7 +42,7 @@ function Set-ModuleTemplate {
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
-        $templatePath = Join-Path $script:repoRoot 'modules' $ProviderNamespace $ResourceType 'deploy.bicep'
+        $templatePath = Join-Path $script:repoRoot 'modules' $FullResourceType 'deploy.bicep'
     }
 
     process {
@@ -123,7 +117,7 @@ function Set-ModuleTemplate {
 
         # Deployment resource declaration line
         $serviceAPIVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
-        $templateContent += "resource $resourceTypeSingular '$ProviderNamespace/$ResourceType@$serviceAPIVersion' = {"
+        $templateContent += "resource $resourceTypeSingular '$FullResourceType@$serviceAPIVersion' = {"
 
         foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 0 -and $_.name -ne 'properties' })) {
             $templateContent += '  {0}: {0}' -f $parameter.name
@@ -174,7 +168,7 @@ function Set-ModuleTemplate {
 
         # Update file
         # -----------
-        Set-Content -Path $templatePath -Value $templateContent.TrimEnd()
+        Set-Content -Path $templatePath -Value ($templateContent | Out-String).TrimEnd()
     }
 
     end {
