@@ -15,6 +15,9 @@ Optional. Don't include child resource types in the result
 .PARAMETER IncludePreview
 Optional. Include preview API versions
 
+.PARAMETER KeepArtifacts
+Optional. Skip the removal of downloaded/cloned artifacts (e.g. the API-Specs repository). Useful if you want to run the function multiple times in a row.
+
 .EXAMPLE
 Get-AzureApiSpecsData -FullResourceType 'Microsoft.Keyvault/vaults'
 
