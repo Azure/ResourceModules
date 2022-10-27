@@ -16,39 +16,19 @@ Optional. Don't include child resource types in the result
 Optional. Include preview API versions
 
 .EXAMPLE
-Get-AzureApiSpecsData -FullResourceType 'Microsoft.Storage/storageAccounts/blobServices/containers'
+Get-AzureApiSpecsData -FullResourceType 'Microsoft.Keyvault/vaults'
 
-Get the data for [Microsoft.Storage/storageAccounts/blobServices/containers] based on the data stored in the provided API Specs rpository path
+Get the data for [Microsoft.Keyvault/vaults]
 
 .EXAMPLE
-# Get the Storage Account resource data (and the one of all its child-resources)
-$out = Get-AzureApiSpecsData -FullResourceType 'Microsoft.Storage/storageAccounts' -Verbose -KeepArtifacts
+Get-AzureApiSpecsData -FullResourceType 'Microsoft.AVS/privateClouds' -Verbose -KeepArtifacts
 
-# The object looks somewhat like:
-# Name                           Value
-# ----                           -----
-# data                           {outputs, parameters, resources, variables…}
-# identifier                     Microsoft.Storage/storageAccounts
-# metadata                       {parentUrlPath, urlPath}
-#
-# data                           {outputs, parameters, resources, variables…}
-# identifier                     Microsoft.Storage/storageAccounts/localUsers
-# metadata                       {parentUrlPath, urlPath}
+Get the data for [Microsoft.AVS/privateClouds] and do not delete any downloaded/cloned artifact.
 
-# Filter the list down to only the Storage Account itself
-$storageAccountResource = $out | Where-Object { $_.identifier -eq 'Microsoft.Storage/storageAccounts' }
+.EXAMPLE
+Get-AzureApiSpecsData -FullResourceType 'Microsoft.Storage/storageAccounts/blobServices/containers' -Verbose -KeepArtifacts
 
-# Print a simple outline similar to the Azure Resource reference:
-$storageAccountResource.data.parameters | ForEach-Object { '{0}{1}:{2}' -f ('  ' * $_.level), $_.name, $_.type  }
-
-# Filter parameters down to those containing the keyword 'network'
-$storageAccountResource.data.parameters | Where-Object { $_.description -like "*network*" } | ConvertTo-Json
-
-# Use the Grid-View to enable dynamic UI processing using a table format
-$storageAccountResource.data.parameters | Where-Object { $_.type -notin @('object','array') } | ForEach-Object { [PSCustomObject]@{ Name = $_.name; Description = $_.description  }  } | Out-GridView
-
-# Get data for a specific child-resource type
-$out = Get-AzureApiSpecsData -FullResourceType 'Microsoft.Storage/storageAccounts/blobServices/containers' -Verbose -KeepArtifacts
+Get the data for [Microsoft.Storage/storageAccounts/blobServices/containers] and do not delete any downloaded/cloned artifact.
 #>
 function Get-AzureApiSpecsData {
 
