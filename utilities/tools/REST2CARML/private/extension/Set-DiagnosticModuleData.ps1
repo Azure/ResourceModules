@@ -166,9 +166,13 @@ function Set-DiagnosticModuleData {
 
         # Other variables
         $ModuleData.additionalParameters += @(
-            "@description('Optional. The name of the diagnostic setting, if deployed.')",
-            "param diagnosticSettingsName string = '`${name}-diagnosticSettings'",
-            ''
+            @{
+                name        = 'diagnosticSettingsName'
+                type        = 'string'
+                description = 'The name of the diagnostic setting, if deployed.'
+                required    = $false
+                default     = '${name}-diagnosticSettings'
+            }
         )
     }
 
