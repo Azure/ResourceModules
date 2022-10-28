@@ -23,10 +23,11 @@ This module deploys a Service Fabric Cluster.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `managementEndpoint` | string | The http management endpoint of the cluster. |
-| `name` | string | Name of the Service Fabric cluster. |
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `managementEndpoint` | string |  | The http management endpoint of the cluster. |
+| `name` | string |  | Name of the Service Fabric cluster. |
+| `reliabilityLevel` | string | `[Bronze, Gold, None, Platinum, Silver]` | The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
 
 **Optional parameters**
 
@@ -50,7 +51,6 @@ This module deploys a Service Fabric Cluster.
 | `maxUnusedVersionsToKeep` | int | `3` |  | Number of unused versions per application type to keep. |
 | `nodeTypes` | array | `[]` |  | The list of node types in the cluster. |
 | `notifications` | array | `[]` |  | Indicates a list of notification channels for cluster events. |
-| `reliabilityLevel` | string |  | `[Bronze, Gold, None, Platinum, Silver]` | The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
 | `reverseProxyCertificate` | object | `{object}` |  | Describes the certificate details. |
 | `reverseProxyCertificateCommonNames` | object | `{object}` |  | Describes a list of server certificates referenced by common name that are used to secure the cluster. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -482,7 +482,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -694,7 +694,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -750,24 +750,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     managementEndpoint: 'https://<<namePrefix>>sfcmin001.westeurope.cloudapp.azure.com:19080'
     name: '<<namePrefix>>sfcmin001'
     reliabilityLevel: 'None'
-    // Non-required parameters
-    nodeTypes: [
-      {
-        applicationPorts: {
-          endPort: 30000
-          startPort: 20000
-        }
-        clientConnectionEndpointPort: 19000
-        durabilityLevel: 'Bronze'
-        ephemeralPorts: {
-          endPort: 65534
-          startPort: 49152
-        }
-        httpGatewayEndpointPort: 19080
-        isPrimary: true
-        name: 'Node01'
-      }
-    ]
   }
 }
 ```
@@ -793,26 +775,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "reliabilityLevel": {
       "value": "None"
-    },
-    // Non-required parameters
-    "nodeTypes": {
-      "value": [
-        {
-          "applicationPorts": {
-            "endPort": 30000,
-            "startPort": 20000
-          },
-          "clientConnectionEndpointPort": 19000,
-          "durabilityLevel": "Bronze",
-          "ephemeralPorts": {
-            "endPort": 65534,
-            "startPort": 49152
-          },
-          "httpGatewayEndpointPort": 19080,
-          "isPrimary": true,
-          "name": "Node01"
-        }
-      ]
     }
   }
 }
