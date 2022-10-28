@@ -67,6 +67,9 @@ function Set-ModuleTemplate {
             $parentResourceTypes = @()
         }
 
+        # Collect all parent references for 'exiting' resource references
+        $fullParentResourceStack = Get-ParentResourceTypeList -ResourceType $FullResourceType
+
         # Get the singular version of the current resource type for proper naming
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
@@ -162,12 +165,37 @@ function Set-ModuleTemplate {
         $templateContent += Get-Content -Path (Join-Path $Script:src 'telemetry.bicep')
         $templateContent += ''
 
-        # TODO: Add recursive parent reference (if any)
-        # TODO: Also add 'scope' statement for main resource (linking to the existing parent ref)
+        $existingResourceIndent = 0
+        $orderedParentResourceTypes = $fullParentResourceStack | Where-Object { $_ -notlike $FullResourceType } | Sort-Object
+        foreach ($parentResourceType in $orderedParentResourceTypes) {
+            $singularParent = ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
+            $levedParentResourceType = ($parentResourceType -ne $orderedParentResourceTypes[0]) ? (Split-Path $parentResourceType -Leaf) : $parentResourceType
+            $parentResourceAPI = Split-Path (Split-Path ($FullModuleData | Where-Object { $_.identifier -eq $parentResourceType }).Metadata.JSONFilePath -Parent) -Leaf
+            $templateContent += @(
+                "$(' ' * $existingResourceIndent)resource $($singularParent) '$($levedParentResourceType)@$($parentResourceAPI)' existing = {",
+                "$(' ' * $existingResourceIndent)    name: $($singularParent)Name"
+            )
+            if ($parentResourceType -ne $orderedParentResourceTypes[-1]) {
+                # Only add an empty line if there is more content to add
+                $templateContent += ''
+            }
+            $existingResourceIndent += 4
+        }
+        # Add closing brakets
+        foreach ($parentResourceType in ($fullParentResourceStack | Where-Object { $_ -notlike $FullResourceType } | Sort-Object)) {
+            $existingResourceIndent -= 4
+            $templateContent += "$(' ' * $existingResourceIndent)}"
+        }
+        $templateContent += ''
 
         # Deployment resource declaration line
         $serviceAPIVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
         $templateContent += "resource $resourceTypeSingular '$FullResourceType@$serviceAPIVersion' = {"
+
+        if (($FullResourceType -split '/').Count -ne 2) {
+            # In case of children, we set the 'parent' to the next parent
+            $templateContent += ('  parent: {0}' -f (($parentResourceTypes | ForEach-Object { Get-ResourceTypeSingularName -ResourceType $_ }) -join '::'))
+        }
 
         foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 0 -and $_.name -ne 'properties' })) {
             $templateContent += '  {0}: {0}' -f $parameter.name
