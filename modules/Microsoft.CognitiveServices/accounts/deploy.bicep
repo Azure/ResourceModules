@@ -131,6 +131,9 @@ param cMKUserAssignedIdentityResourceId string = ''
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
 param cMKKeyVersion string = ''
 
+@description('Optional. The flag to enable dynamic throttling.')
+param dynamicThrottlingEnabled bool = false
+
 @description('Optional. Resource migration token.')
 param migrationToken string = ''
 
@@ -217,7 +220,7 @@ resource cmkUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentiti
   scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
 }
 
-resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
+resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2022-10-01' = {
   name: name
   kind: kind
   identity: identity
@@ -254,6 +257,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
     restore: restore
     restrictOutboundNetworkAccess: restrictOutboundNetworkAccess
     userOwnedStorage: !empty(userOwnedStorage) ? userOwnedStorage : null
+    dynamicThrottlingEnabled: dynamicThrottlingEnabled
   }
 }
 
