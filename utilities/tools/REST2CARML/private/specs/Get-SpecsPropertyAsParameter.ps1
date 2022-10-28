@@ -100,6 +100,10 @@ function Get-SpecsPropertyAsParameter {
 
     $refObjects = @()
 
+    if ($Parameter.readOnly) {
+        return @()
+    }
+
     if ($Parameter.Keys -contains '$ref') {
         # Parameter contains a reference to another specification
         $inputObject = @{

@@ -115,20 +115,26 @@ function Get-FormattedModuleParameter {
                     break
                 }
                 'array' {
-                    $result += "$paramLine = ["
-                    $result += $ParameterData.default | ForEach-Object {
-                        if ($ParameterData.type -eq 'boolean') {
-                            # Any boolean type (e.g., True)
-                            "  '{0}'" -f $_.ToLower()
-                        } elseif ($_ -match '\w') {
-                            # Any string value (e.g., 'Enabled')
-                            "  '$_'"
-                        } elseif ($_ -match '\d') {
-                            # Any number value (e.g., 3)
-                            "  $_"
+                    if ($ParameterData.default.Count -eq 0) {
+                        $result += "$paramLine = []"
+                    } else {
+                        $result += "$paramLine = ["
+                        $result += $ParameterData.default | ForEach-Object {
+                            if ($ParameterData.type -eq 'boolean') {
+                                # Any boolean type (e.g., True)
+                                "  '{0}'" -f $_.ToLower()
+                            } elseif ($_ -match '\w') {
+                                # Any string value (e.g., 'Enabled')
+                                "  '$_'"
+                            } elseif ($_ -match '\d') {
+                                # Any number value (e.g., 3)
+                                "  $_"
+                            } else {
+                                throw 'Not handled when formatting object'
+                            }
                         }
+                        $result += ']'
                     }
-                    $result += ']'
                     break
                 }
                 'integer' {

@@ -112,7 +112,7 @@ function Get-SpecsPropertiesAsParameterList {
 
     # Process outer properties
     # ------------------------0
-    foreach ($outerParameter in $outerParameters.properties.Keys | Where-Object { $_ -notin @('location') -and -not $outerParameters.properties[$_].readOnly } | Sort-Object ) {
+    foreach ($outerParameter in $outerParameters.properties.Keys | Where-Object { $_ -notin @('location') -and -not $outerParameters.properties[$_].readOnly } | Sort-Object) {
         $innerParamInputObject = @{
             JSONFilePath              = $JSONFilePath
             Parameter                 = $outerParameters.properties[$outerParameter]
@@ -127,7 +127,7 @@ function Get-SpecsPropertiesAsParameterList {
 
     # Special case: Location
     # The location parameter is not explicitely documented at this place (even though it should). It is however referenced as 'required' and must be included
-    if ($outerParameters.required -contains 'location') {
+    if ($outerParameters.required -contains 'location' -or $outerParameters.properties.Keys -contains 'location') {
         $parameterObject = @{
             level       = 0
             name        = 'location'

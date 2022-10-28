@@ -55,8 +55,7 @@ function Set-ModuleTemplate {
 
     process {
         $directChildren = $fullmoduleData | Where-Object {
-            # direct children are only those with one more '/' in the path
-            (($_.identifier -replace $FullResourceType, '') -split '/').Count -eq 2
+            ($_.identifier -split '/').Count -gt ($FullResourceType -split '/').count
         }
 
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
@@ -179,23 +178,34 @@ function Set-ModuleTemplate {
                 "name: '`${uniqueString(deployment().name, location)}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'",
                 'params: {'
             )
-            # TODO : Generate resource based on path + top-level properties
 
             # TODO: Add parent name(s) to be passed down too
 
             # Add primary child parameters
-            foreach ($parameter in ($dataBlock.data.parameters | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') })) {
-                # TODO handle required vs. non required
-                $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter
-                $wouldBeParameter
-            }
-            # Add additional (extension) parameters
-            foreach ($parameter in $dataBlock.data.additionalParameters) {
-                # TODO handle required vs. non required
-                $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter
+            $allParam = $dataBlock.data.parameters + $dataBlock.data.additionalParameters
+            foreach ($parameter in ($allParam | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') })) {
+                $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter | Where-Object { $_ -like 'param *' } | ForEach-Object { $_ -replace 'param ', '' }
+                $wouldBeParamElem = $wouldBeParameter -split ' = '
+                $parameter.name = ($wouldBeParamElem -split ' ')[0]
+                if ($wouldBeParamElem.count -gt 1) {
+                    # With default
+
+                    if ($parameter.name -eq 'lock') {
+                        # Special handling as we pass the parameter down to the child
+                        $templateContent += "    lock: contains($($childResourceTypeSingular), 'lock') ? $($childResourceTypeSingular).lock : lock"
+                        continue
+                    }
+
+                    $wouldBeParamValue = $wouldBeParamElem[1]
+                    $templateContent += "    $($parameter.name): contains($($childResourceTypeSingular), '$($parameter.name)') ? $($childResourceTypeSingular).$($parameter.name) : $($wouldBeParamValue)"
+                } else {
+                    # No default
+                    $templateContent += "    $($parameter.name): $($childResourceTypeSingular).$($parameter.name)"
+                }
             }
 
             $templateContent += @(
+                # Special handling as we pass the variable down to the child
                 '    enableDefaultTelemetry: enableReferencedModulesTelemetry'
                 '  }'
                 '}]'
