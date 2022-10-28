@@ -63,8 +63,8 @@ param infrastructureServiceManager bool = false
 @description('Required. The http management endpoint of the cluster.')
 param managementEndpoint string
 
-@description('Optional. The list of node types in the cluster.')
-param nodeTypes array = []
+@description('Required. The list of node types in the cluster.')
+param nodeTypes array
 
 @description('Optional. Indicates a list of notification channels for cluster events.')
 param notifications array = []
