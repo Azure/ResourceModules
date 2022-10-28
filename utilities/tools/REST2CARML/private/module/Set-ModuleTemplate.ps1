@@ -163,6 +163,7 @@ function Set-ModuleTemplate {
         $templateContent += ''
 
         # TODO: Add recursive parent reference (if any)
+        # TODO: Also add 'scope' statement for main resource (linking to the existing parent ref)
 
         # Deployment resource declaration line
         $serviceAPIVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
