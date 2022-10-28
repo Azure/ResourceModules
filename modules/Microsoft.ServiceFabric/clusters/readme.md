@@ -750,6 +750,24 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     managementEndpoint: 'https://<<namePrefix>>sfcmin001.westeurope.cloudapp.azure.com:19080'
     name: '<<namePrefix>>sfcmin001'
     reliabilityLevel: 'None'
+    // Non-required parameters
+    nodeTypes: [
+      {
+        applicationPorts: {
+          endPort: 30000
+          startPort: 20000
+        }
+        clientConnectionEndpointPort: 19000
+        durabilityLevel: 'Bronze'
+        ephemeralPorts: {
+          endPort: 65534
+          startPort: 49152
+        }
+        httpGatewayEndpointPort: 19080
+        isPrimary: true
+        name: 'Node01'
+      }
+    ]
   }
 }
 ```
@@ -775,6 +793,26 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "reliabilityLevel": {
       "value": "None"
+    },
+    // Non-required parameters
+    "nodeTypes": {
+      "value": [
+        {
+          "applicationPorts": {
+            "endPort": 30000,
+            "startPort": 20000
+          },
+          "clientConnectionEndpointPort": 19000,
+          "durabilityLevel": "Bronze",
+          "ephemeralPorts": {
+            "endPort": 65534,
+            "startPort": 49152
+          },
+          "httpGatewayEndpointPort": 19080,
+          "isPrimary": true,
+          "name": "Node01"
+        }
+      ]
     }
   }
 }
