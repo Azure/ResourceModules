@@ -35,6 +35,7 @@ This module deploys different kinds of cognitive services resources
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
 | `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' or 'privateEndpoints' are set. |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
 
@@ -44,6 +45,9 @@ This module deploys different kinds of cognitive services resources
 | :-- | :-- | :-- | :-- | :-- |
 | `allowedFqdnList` | array | `[]` |  | List of allowed FQDN. |
 | `apiProperties` | object | `{object}` |  | The API properties for special APIs. |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled. |
+| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
+| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[Audit, RequestResponse]` | `[Audit, RequestResponse]` | The name of logs that will be streamed. |
@@ -54,7 +58,7 @@ This module deploys different kinds of cognitive services resources
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | Allow only Azure AD authentication. Should be enabled for security reasons. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `encryption` | object | `{object}` |  | Properties to configure encryption. |
+| `enableEncryption` | bool | `True` |  | Enable service encryption. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationToken` | string | `''` |  | Resource migration token. |
@@ -600,15 +604,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     kind: 'SpeechServices'
     name: '<<namePrefix>>csaencr001'
     // Non-required parameters
-    encryption: {
-      keySource: 'Microsoft.KeyVault'
-      keyVaultProperties: {
-        identityClientId: '<identityClientId>'
-        keyName: '<keyName>'
-        keyVaultUri: '<keyVaultUri>'
-        keyversion: '<keyversion>'
-      }
-    }
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     publicNetworkAccess: 'Enabled'
     sku: 'S0'
     userAssignedIdentities: {
@@ -638,16 +636,14 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "<<namePrefix>>csaencr001"
     },
     // Non-required parameters
-    "encryption": {
-      "value": {
-        "keySource": "Microsoft.KeyVault",
-        "keyVaultProperties": {
-          "identityClientId": "<identityClientId>",
-          "keyName": "<keyName>",
-          "keyVaultUri": "<keyVaultUri>",
-          "keyversion": "<keyversion>"
-        }
-      }
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
     },
     "publicNetworkAccess": {
       "value": "Enabled"
