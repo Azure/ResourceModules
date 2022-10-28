@@ -36,7 +36,7 @@ function Set-ModuleTestFile {
         ) | ForEach-Object {
             if (-not (Test-Path $_)) {
                 if ($PSCmdlet.ShouldProcess(('File [{0}]' -f ($_ -replace ($script:repoRoot -replace '\\', '\\'), '')), 'Create')) {
-                    $null = New-Item -Path $_ -ItemType 'File'
+                    $null = New-Item -Path $_ -ItemType 'File' -Force
                 }
             } else {
                 Write-Verbose "File [$_] already exists."

@@ -11,6 +11,9 @@ Mandatory. The complete ResourceType identifier to update the template for (e.g.
 .PARAMETER ModuleData
 Mandatory. The module data (e.g. parameters) to add to the template.
 
+.PARAMETER FullModuleData
+Mandatory. The full stack of module data of all modules included in the original invocation. May be used for parent-child references.
+
 .PARAMETER JSONFilePath
 Mandatory. The service specification file to process.
 
@@ -18,7 +21,7 @@ Mandatory. The service specification file to process.
 Mandatory. The API Path in the JSON specification file to process
 
 .EXAMPLE
-Set-ModuleTemplate -FullResourceType 'Microsoft.KeyVault/vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+Set-ModuleTemplate -FullResourceType 'Microsoft.KeyVault/vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' -FullModuleData @(@{ parameters = @(...); resource = @(...); (...) }, @{...})
 
 Update the module [Microsoft.KeyVault/vaults] with the provided module data.
 #>
@@ -31,6 +34,9 @@ function Set-ModuleTemplate {
 
         [Parameter(Mandatory = $true)]
         [array] $ModuleData,
+
+        [Parameter(Mandatory = $true)]
+        [array] $FullModuleData,
 
         [Parameter(Mandatory = $true)]
         [string] $JSONFilePath,
@@ -48,6 +54,10 @@ function Set-ModuleTemplate {
     }
 
     process {
+        $directChildren = $fullmoduleData | Where-Object {
+            # direct children are only those with one more '/' in the path
+            (($_.identifier -replace $FullResourceType, '') -split '/').Count -eq 2
+        }
 
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
@@ -77,6 +87,23 @@ function Set-ModuleTemplate {
         foreach ($parameter in $ModuleData.additionalParameters) {
             $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
         }
+
+        # Child module references
+        foreach ($dataBlock in $directChildren) {
+            $childResourceType = ($dataBlock.identifier -split '/')[-1]
+
+            $templateContent += Get-FormattedModuleParameter -ParameterData @{
+                level       = 0
+                name        = $childResourceType
+                type        = 'array'
+                default     = @()
+                description = "The $childResourceType to create as part of the $resourceTypeSingular."
+                required    = $false
+            }
+        }
+
+        # TODO: Add parent name(s) if any
+
         # Add telemetry parameter
         $templateContent += Get-FormattedModuleParameter -ParameterData @{
             level       = 0
@@ -95,11 +122,12 @@ function Set-ModuleTemplate {
             $templateContent += $variable
         }
         # Add telemetry variable
-        # TODO: Should only be added if module has children)
-        $templateContent += @(
-            'var enableReferencedModulesTelemetry = false'
-            ''
-        )
+        if ($directChildren.Count -gt 0) {
+            $templateContent += @(
+                'var enableReferencedModulesTelemetry = false'
+                ''
+            )
+        }
 
         ###################
         ##  DEPLOYMENTS  ##
@@ -116,6 +144,8 @@ function Set-ModuleTemplate {
         # Telemetry
         $templateContent += Get-Content -Path (Join-Path $Script:src 'telemetry.bicep')
         $templateContent += ''
+
+        # TODO: Add recursive parent reference (if any)
 
         # Deployment resource declaration line
         $serviceAPIVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
@@ -140,7 +170,38 @@ function Set-ModuleTemplate {
         # Other collected resources
         $templateContent += $ModuleData.resources
 
-        # TODO: Add children references if applicable
+        # Child-module references
+        foreach ($dataBlock in $directChildren) {
+            $childResourceType = ($dataBlock.identifier -split '/')[-1]
+            $childResourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $childResourceType
+            $templateContent += @(
+                "module $($resourceTypeSingular)_$($childResourceType) '$($childResourceType)/deploy.bicep' = [for ($($childResourceTypeSingular), index) in $($childResourceType): {",
+                "name: '`${uniqueString(deployment().name, location)}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'",
+                'params: {'
+            )
+            # TODO : Generate resource based on path + top-level properties
+
+            # TODO: Add parent name(s) to be passed down too
+
+            # Add primary child parameters
+            foreach ($parameter in ($dataBlock.data.parameters | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') })) {
+                # TODO handle required vs. non required
+                $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter
+                $wouldBeParameter
+            }
+            # Add additional (extension) parameters
+            foreach ($parameter in $dataBlock.data.additionalParameters) {
+                # TODO handle required vs. non required
+                $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter
+            }
+
+            $templateContent += @(
+                '    enableDefaultTelemetry: enableReferencedModulesTelemetry'
+                '  }'
+                '}]'
+                ''
+            )
+        }
 
         #######################################
         ##  Create template outputs section  ##

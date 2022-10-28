@@ -11,6 +11,9 @@ Mandatory. The complete ResourceType identifier to update the template for (e.g.
 .PARAMETER ModuleData
 Mandatory. The module data (e.g. parameters) to add to the template.
 
+.PARAMETER FullModuleData
+Mandatory. The full stack of module data of all modules included in the original invocation. May be used for parent-child references.
+
 .PARAMETER JSONFilePath
 Mandatory. The service specification file to process.
 
@@ -18,7 +21,7 @@ Mandatory. The service specification file to process.
 Mandatory. The API Path in the JSON specification file to process
 
 .EXAMPLE
-Set-Module -FullResourceType 'Microsoft.KeyVault/vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}'
+Set-Module -FullResourceType 'Microsoft.KeyVault/vaults' -ModuleData @{ parameters = @(...); resource = @(...); (...) } -JSONFilePath '(...)/resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json' -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}' -FullModuleData @(@{ parameters = @(...); resource = @(...); (...) }, @{...})
 
 Update the module [Microsoft.KeyVault/vaults] with the provided module data.
 #>
@@ -33,6 +36,9 @@ function Set-Module {
         [Hashtable] $ModuleData,
 
         [Parameter(Mandatory = $true)]
+        [array] $FullModuleData,
+
+        [Parameter(Mandatory = $true)]
         [string] $JSONFilePath,
 
         [Parameter(Mandatory = $true)]
@@ -44,6 +50,7 @@ function Set-Module {
 
         $moduleRootPath = Join-Path $script:repoRoot 'modules' $FullResourceType
         $templatePath = Join-Path $moduleRootPath 'deploy.bicep'
+        $isTopLevelModule = ($FullResourceType -split '\/').Count -eq 2
 
         # Load external functions
         . (Join-Path $script:repoRoot 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
@@ -54,13 +61,9 @@ function Set-Module {
         ##   Update Support Files   #
         #############################
 
-        # Pipeline files (top-level module only)
-        if (($FullResourceType -split '/').count -eq 1) {
+        # Pipeline & test files (top-level module only)
+        if ($isTopLevelModule) {
             Set-ModulePipelineFile -FullResourceType $FullResourceType
-        }
-
-        # Test files (top-level module only)
-        if (($FullResourceType -split '/').count -eq 1) {
             Set-ModuleTestFile -FullResourceType $FullResourceType
         }
 
@@ -92,10 +95,10 @@ function Set-Module {
         #############################
         ##   Update Template File   #
         #############################
-
         $moduleTemplateContentInputObject = @{
             FullResourceType = $FullResourceType
             ModuleData       = $ModuleData
+            FullModuleData   = $FullModuleData
             JSONFilePath     = $JSONFilePath
             urlPath          = $UrlPath
         }
