@@ -54,10 +54,20 @@ function Set-ModuleTemplate {
     }
 
     process {
+        # Collect any children of the current resource to create references
         $directChildren = $fullmoduleData | Where-Object {
             ($_.identifier -split '/').Count -gt ($FullResourceType -split '/').count
         }
 
+        # Collect parent resources to use for parent type references
+        $typeElem = $FullResourceType -split '/'
+        if ($typeElem.Count -gt 2) {
+            $parentResourceTypes = $typeElem[1..($typeElem.Count - 2)]
+        } else {
+            $parentResourceTypes = @()
+        }
+
+        # Get the singular version of the current resource type for proper naming
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
         ##################
@@ -77,6 +87,16 @@ function Set-ModuleTemplate {
             '// ============== //'
             ''
         )
+
+        foreach ($parentResourceType in $parentResourceTypes) {
+            $templateContent += Get-FormattedModuleParameter -ParameterData @{
+                level       = 0
+                name        = '{0}Name' -f (Get-ResourceTypeSingularName -ResourceType $parentResourceType)
+                type        = 'string'
+                description = 'Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.'
+                required    = $false
+            }
+        }
 
         # Add primary (service) parameters (i.e. top-level and those in the properties)
         foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') })) {
@@ -100,8 +120,6 @@ function Set-ModuleTemplate {
                 required    = $false
             }
         }
-
-        # TODO: Add parent name(s) if any
 
         # Add telemetry parameter
         $templateContent += Get-FormattedModuleParameter -ParameterData @{
@@ -179,7 +197,10 @@ function Set-ModuleTemplate {
                 'params: {'
             )
 
-            # TODO: Add parent name(s) to be passed down too
+            foreach ($parentResourceType in $parentResourceTypes) {
+                $templateContent += '    {0}Name: {0}Name' -f ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
+            }
+            $templateContent += '    {0}Name: name' -f ((Get-ResourceTypeSingularName -ResourceType ($FullResourceType -split '/')[-1]) -split '/')[-1]
 
             # Add primary child parameters
             $allParam = $dataBlock.data.parameters + $dataBlock.data.additionalParameters
