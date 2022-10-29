@@ -262,10 +262,18 @@ function Set-ModuleTemplate {
                 'params: {'
             )
 
+            # All param names of parents
             foreach ($parentResourceType in $parentResourceTypes) {
                 $templateContent += '    {0}Name: {0}Name' -f ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
             }
+            # Itself
             $templateContent += '    {0}Name: name' -f ((Get-ResourceTypeSingularName -ResourceType ($FullResourceType -split '/')[-1]) -split '/')[-1]
+
+            # Any proxy default if any
+            if ($hasProxyParent) {
+                $proxyDefaultValue = ($dataBlock.metadata.urlPath -split '\/')[-3]
+                $templateContent += "    {0}Name: '{1}'" -f (Get-ResourceTypeSingularName -ResourceType ($proxyParentName -split '/')[-1]), $proxyDefaultValue
+            }
 
             # Add primary child parameters
             $allParam = $dataBlock.data.parameters + $dataBlock.data.additionalParameters

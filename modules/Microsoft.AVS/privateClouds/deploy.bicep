@@ -318,6 +318,7 @@ module workloadNetworks_privateCloud_publicIPs 'workloadNetworks/publicIPs/deplo
 name: '${uniqueString(deployment().name, location)}-privateCloud-publicIP-${index}'
 params: {
     privateCloudName: name
+    workloadNetworkName: 'default'
     name: publicIP.name
     numberOfPublicIPs: contains(publicIP, 'numberOfPublicIPs') ? publicIP.numberOfPublicIPs : 
     displayName: contains(publicIP, 'displayName') ? publicIP.displayName : ''
@@ -329,6 +330,7 @@ module workloadNetworks_privateCloud_dnsZones 'workloadNetworks/dnsZones/deploy.
 name: '${uniqueString(deployment().name, location)}-privateCloud-dnsZone-${index}'
 params: {
     privateCloudName: name
+    workloadNetworkName: 'default'
     name: dnsZone.name
     domain: contains(dnsZone, 'domain') ? dnsZone.domain : []
     sourceIp: contains(dnsZone, 'sourceIp') ? dnsZone.sourceIp : ''
@@ -344,6 +346,7 @@ module workloadNetworks_privateCloud_portMirroringProfiles 'workloadNetworks/por
 name: '${uniqueString(deployment().name, location)}-privateCloud-portMirroringProfile-${index}'
 params: {
     privateCloudName: name
+    workloadNetworkName: 'default'
     name: portMirroringProfile.name
     direction: contains(portMirroringProfile, 'direction') ? portMirroringProfile.direction : ''
     source: contains(portMirroringProfile, 'source') ? portMirroringProfile.source : ''
@@ -358,6 +361,7 @@ module workloadNetworks_privateCloud_vmGroups 'workloadNetworks/vmGroups/deploy.
 name: '${uniqueString(deployment().name, location)}-privateCloud-vmGroup-${index}'
 params: {
     privateCloudName: name
+    workloadNetworkName: 'default'
     name: vmGroup.name
     members: contains(vmGroup, 'members') ? vmGroup.members : []
     revision: contains(vmGroup, 'revision') ? vmGroup.revision : 
@@ -370,6 +374,7 @@ module workloadNetworks_privateCloud_segments 'workloadNetworks/segments/deploy.
 name: '${uniqueString(deployment().name, location)}-privateCloud-segment-${index}'
 params: {
     privateCloudName: name
+    workloadNetworkName: 'default'
     name: segment.name
     subnet: contains(segment, 'subnet') ? segment.subnet : {}
     connectedGateway: contains(segment, 'connectedGateway') ? segment.connectedGateway : ''
@@ -383,6 +388,7 @@ module workloadNetworks_privateCloud_dnsServices 'workloadNetworks/dnsServices/d
 name: '${uniqueString(deployment().name, location)}-privateCloud-dnsService-${index}'
 params: {
     privateCloudName: name
+    workloadNetworkName: 'default'
     name: dnsService.name
     displayName: contains(dnsService, 'displayName') ? dnsService.displayName : ''
     defaultDnsZone: contains(dnsService, 'defaultDnsZone') ? dnsService.defaultDnsZone : ''
@@ -398,6 +404,7 @@ module workloadNetworks_privateCloud_dhcpConfigurations 'workloadNetworks/dhcpCo
 name: '${uniqueString(deployment().name, location)}-privateCloud-dhcpConfiguration-${index}'
 params: {
     privateCloudName: name
+    workloadNetworkName: 'default'
     name: dhcpConfiguration.name
     revision: contains(dhcpConfiguration, 'revision') ? dhcpConfiguration.revision : 
     dhcpType: contains(dhcpConfiguration, 'dhcpType') ? dhcpConfiguration.dhcpType : ''
