@@ -2,26 +2,20 @@
 //   Parameters   //
 // ============== //
 
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param privateCloudName string
-
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param workloadNetworkName string
-
-@description('Required. NSX DNS Service identifier. Generally the same as the DNS Service\'s display name')
-param name string
+@description('Optional. Default DNS zone of the DNS Service.')
+param defaultDnsZone string = ''
 
 @description('Optional. Display name of the DNS Service.')
 param displayName string = ''
 
-@description('Optional. Default DNS zone of the DNS Service.')
-param defaultDnsZone string = ''
+@description('Optional. DNS service IP of the DNS Service.')
+param dnsServiceIp string = ''
+
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. FQDN zones of the DNS Service.')
 param fqdnZones array = []
-
-@description('Optional. NSX revision number.')
-param revision int = 
 
 @description('Optional. DNS Service log level.')
 @allowed([
@@ -33,11 +27,17 @@ param revision int =
 ])
 param logLevel string = ''
 
-@description('Optional. DNS service IP of the DNS Service.')
-param dnsServiceIp string = ''
+@description('Required. NSX DNS Service identifier. Generally the same as the DNS Service\'s display name')
+param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = true
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string = 'default'
+
+@description('Optional. NSX revision number.')
+param revision int = 
+
+@description('Conditional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
+param workloadNetworkName string = 'default'
 
 
 // =============== //
@@ -68,12 +68,12 @@ resource dnsService 'Microsoft.AVS/privateClouds/workloadNetworks/dnsServices@20
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    displayName: displayName
-    defaultDnsZone: defaultDnsZone
-    fqdnZones: fqdnZones
-    revision: revision
     logLevel: logLevel
+    fqdnZones: fqdnZones
+    defaultDnsZone: defaultDnsZone
     dnsServiceIp: dnsServiceIp
+    revision: revision
+    displayName: displayName
   }
 }
 

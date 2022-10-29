@@ -54,7 +54,12 @@ function Set-ModuleTemplate {
     }
 
     process {
-        # Collect any children of the current resource to create references
+
+        #####################
+        ##   Collect Data   #
+        #####################
+
+        # Collect child-resource information
         $linkedChildren = $fullmoduleData | Where-Object {
             # Is nested
             $_.identifier -like "$FullResourceType/*" -and
@@ -62,7 +67,7 @@ function Set-ModuleTemplate {
             (($_.identifier -split '/').Count -eq (($FullResourceType -split '/').Count + 1)
             )
         }
-        # Add indirect child (via proxy resource) (i.e. it's a nested-nested resources who's parent has no individual specification/JSONFilePath). TODO: Is that always true? What if the data is specified in one file?x`
+        ##  Add indirect child (via proxy resource) (i.e. it's a nested-nested resources who's parent has no individual specification/JSONFilePath). TODO: Is that always true? What if the data is specified in one file?x`
         $indirectChildren = $FullModuleData | Where-Object {
             # Is nested
             $_.identifier -like "$FullResourceType/*" -and
@@ -88,6 +93,10 @@ function Set-ModuleTemplate {
         # Get the singular version of the current resource type for proper naming
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
+        # Handle parent proxy, if any
+        $hasAProxyParent = $FullModuleData.identifier -notContains ((Split-Path $FullResourceType -Parent) -replace '\\', '/')
+        $parentProxyName = $hasAProxyParent ? ($UrlPath -split '\/')[-3] : ''
+
         ##################
         ##  PARAMETERS  ##
         ##################
@@ -106,30 +115,39 @@ function Set-ModuleTemplate {
             ''
         )
 
-        foreach ($parentResourceType in $parentResourceTypes) {
-            $templateContent += Get-FormattedModuleParameter -ParameterData @{
+        # Collect parameters to create
+        # ----------------------------
+        $parametersToAdd = @()
+
+        # Add parent parameters
+        foreach ($parentResourceType in ($parentResourceTypes | Sort-Object)) {
+            $parentParamData = @{
                 level       = 0
                 name        = '{0}Name' -f (Get-ResourceTypeSingularName -ResourceType $parentResourceType)
                 type        = 'string'
-                description = 'Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.'
+                description = "Conditional. The name of the parent $parentResourceType. Required if the template is used in a standalone deployment."
                 required    = $false
             }
+
+            if ($hasAProxyParent) {
+                # Handle proxy parents (i.e., empty containers with only a default value name)
+                $parentParamData['default'] = $parentProxyName
+            }
+
+            $parametersToAdd += $parentParamData
         }
 
         # Add primary (service) parameters (i.e. top-level and those in the properties)
-        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') })) {
-            $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
-        }
+        $parametersToAdd += @() + ($ModuleData.parameters | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') })
+
+
         # Add additional (extension) parameters
-        foreach ($parameter in $ModuleData.additionalParameters) {
-            $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
-        }
+        $parametersToAdd += $ModuleData.additionalParameters
 
-        # Child module references
-        foreach ($dataBlock in $linkedChildren) {
+        # Add child module references
+        foreach ($dataBlock in ($linkedChildren | Sort-Object -Property 'identifier')) {
             $childResourceType = ($dataBlock.identifier -split '/')[-1]
-
-            $templateContent += Get-FormattedModuleParameter -ParameterData @{
+            $parametersToAdd += @{
                 level       = 0
                 name        = $childResourceType
                 type        = 'array'
@@ -140,7 +158,7 @@ function Set-ModuleTemplate {
         }
 
         # Add telemetry parameter
-        $templateContent += Get-FormattedModuleParameter -ParameterData @{
+        $parametersToAdd += @{
             level       = 0
             name        = 'enableDefaultTelemetry'
             type        = 'boolean'
@@ -149,7 +167,11 @@ function Set-ModuleTemplate {
             required    = $false
         }
 
-        $locationParameterExists = ($templateContent | Where-Object { $_ -like 'param location *' }).Count -gt 0
+        # Create collected parameters
+        # ---------------------------
+        foreach ($parameter in ($parametersToAdd | Sort-Object -Property 'Name')) {
+            $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
+        }
 
         #################
         ##  VARIABLES  ##
@@ -170,6 +192,8 @@ function Set-ModuleTemplate {
         ##  DEPLOYMENTS  ##
         ###################
 
+        $locationParameterExists = ($templateContent | Where-Object { $_ -like 'param location *' }).Count -gt 0
+
         $templateContent += @(
             ''
             '// =============== //'
@@ -178,7 +202,8 @@ function Set-ModuleTemplate {
             ''
         )
 
-        # Telemetry
+        # Add telemetry resource
+        # ----------------------
         $telemetryTemplate = Get-Content -Path (Join-Path $Script:src 'telemetry.bicep')
         if (-not $locationParameterExists) {
             # Remove the location from the deployment name if the template has no such parameter
@@ -187,6 +212,8 @@ function Set-ModuleTemplate {
         $templateContent += $telemetryTemplate
         $templateContent += ''
 
+        # Add 'existing' parents (if any)
+        # -------------------------------
         $existingResourceIndent = 0
         $orderedParentResourceTypes = $fullParentResourceStack | Where-Object { $_ -notlike $FullResourceType } | Sort-Object
         foreach ($parentResourceType in $orderedParentResourceTypes) {
@@ -218,6 +245,8 @@ function Set-ModuleTemplate {
         }
         $templateContent += ''
 
+        # Add primary resource
+        # --------------------
         # Deployment resource declaration line
         $serviceAPIVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
         $templateContent += "resource $resourceTypeSingular '$FullResourceType@$serviceAPIVersion' = {"
@@ -243,10 +272,13 @@ function Set-ModuleTemplate {
         )
 
 
+        # Add additional resources such as extensions (like RBAC)
+        # -------------------------------------------------------
         # Other collected resources
         $templateContent += $ModuleData.resources
 
-        # Child-module references
+        # Add child-module references
+        # ---------------------------
         foreach ($dataBlock in $linkedChildren) {
             $childResourceType = ($dataBlock.identifier -split '/')[-1]
             $childResourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $childResourceType

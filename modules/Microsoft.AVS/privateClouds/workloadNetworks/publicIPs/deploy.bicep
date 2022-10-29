@@ -2,11 +2,11 @@
 //   Parameters   //
 // ============== //
 
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param privateCloudName string
+@description('Optional. Display name of the Public IP Block.')
+param displayName string = ''
 
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param workloadNetworkName string
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Required. NSX Public IP Block identifier. Generally the same as the Public IP Block\'s display name')
 param name string
@@ -14,11 +14,11 @@ param name string
 @description('Optional. Number of Public IPs requested.')
 param numberOfPublicIPs int = 
 
-@description('Optional. Display name of the Public IP Block.')
-param displayName string = ''
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string = 'default'
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = true
+@description('Conditional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
+param workloadNetworkName string = 'default'
 
 
 // =============== //
@@ -49,8 +49,8 @@ resource publicIP 'Microsoft.AVS/privateClouds/workloadNetworks/publicIPs@2022-0
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    numberOfPublicIPs: numberOfPublicIPs
     displayName: displayName
+    numberOfPublicIPs: numberOfPublicIPs
   }
 }
 

@@ -28,8 +28,8 @@ This module deploys AVS PrivateClouds Clusters Datastores.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `clusterName` | string | The name of the parent key vault. Required if the template is used in a standalone deployment. |
-| `privateCloudName` | string | The name of the parent key vault. Required if the template is used in a standalone deployment. |
+| `clusterName` | string | The name of the parent clusters. Required if the template is used in a standalone deployment. |
+| `privateCloudName` | string | The name of the parent privateClouds. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

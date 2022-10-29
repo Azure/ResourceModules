@@ -2,18 +2,6 @@
 //   Parameters   //
 // ============== //
 
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param privateCloudName string
-
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param workloadNetworkName string
-
-@description('Required. NSX DHCP identifier. Generally the same as the DHCP display name')
-param name string
-
-@description('Optional. NSX revision number.')
-param revision int = 
-
 @description('Optional. Type of DHCP: SERVER or RELAY.')
 @allowed([
   'SERVER'
@@ -26,6 +14,18 @@ param displayName string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Required. NSX DHCP identifier. Generally the same as the DHCP display name')
+param name string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string = 'default'
+
+@description('Optional. NSX revision number.')
+param revision int = 
+
+@description('Conditional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
+param workloadNetworkName string = 'default'
 
 
 // =============== //
@@ -56,9 +56,9 @@ resource dhcpConfiguration 'Microsoft.AVS/privateClouds/workloadNetworks/dhcpCon
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    revision: revision
-    dhcpType: dhcpType
     displayName: displayName
+    dhcpType: dhcpType
+    revision: revision
   }
 }
 

@@ -2,14 +2,14 @@
 //   Parameters   //
 // ============== //
 
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param privateCloudName string
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Required. Name of the HCX Enterprise Site in the private cloud')
 param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = true
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
 
 
 // =============== //

@@ -2,34 +2,12 @@
 //   Parameters   //
 // ============== //
 
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param privateCloudName string
-
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param clusterName string
-
-@description('Required. Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy')
-param name string
-
-@description('Optional. placement policy type')
+@description('Optional. VM-Host placement policy affinity strength (should/must)')
 @allowed([
-  'VmVm'
-  'VmHost'
+  'Should'
+  'Must'
 ])
-param type string = ''
-
-@description('Optional. Whether the placement policy is enabled or disabled')
-@allowed([
-  'Enabled'
-  'Disabled'
-])
-param state string = ''
-
-@description('Optional. Display name of the placement policy')
-param displayName string = ''
-
-@description('Optional. Host members list')
-param hostMembers array = []
+param affinityStrength string = ''
 
 @description('Optional. Placement policy hosts opt-in Azure Hybrid Benefit type')
 @allowed([
@@ -38,18 +16,40 @@ param hostMembers array = []
 ])
 param azureHybridBenefitType string = ''
 
-@description('Optional. VM-Host placement policy affinity strength (should/must)')
-@allowed([
-  'Should'
-  'Must'
-])
-param affinityStrength string = ''
+@description('Conditional. The name of the parent clusters. Required if the template is used in a standalone deployment.')
+param clusterName string
 
-@description('Optional. Virtual machine members list')
-param vmMembers array = []
+@description('Optional. Display name of the placement policy')
+param displayName string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Optional. Host members list')
+param hostMembers array = []
+
+@description('Required. Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy')
+param name string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
+
+@description('Optional. Whether the placement policy is enabled or disabled')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+param state string = ''
+
+@description('Optional. placement policy type')
+@allowed([
+  'VmVm'
+  'VmHost'
+])
+param type string = ''
+
+@description('Optional. Virtual machine members list')
+param vmMembers array = []
 
 
 // =============== //
@@ -80,13 +80,13 @@ resource placementPolicy 'Microsoft.AVS/privateClouds/clusters/placementPolicies
   parent: privateCloud::cluster
   name: name
   properties: {
-    type: type
     state: state
+    type: type
     displayName: displayName
-    hostMembers: hostMembers
-    azureHybridBenefitType: azureHybridBenefitType
     affinityStrength: affinityStrength
+    azureHybridBenefitType: azureHybridBenefitType
     vmMembers: vmMembers
+    hostMembers: hostMembers
   }
 }
 

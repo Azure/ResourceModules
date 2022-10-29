@@ -2,35 +2,35 @@
 //   Parameters   //
 // ============== //
 
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param privateCloudName string
-
-@description('Conditional. The name of the parent key vault. Required if the template is used in a standalone deployment.')
-param workloadNetworkName string
-
-@description('Required. NSX DNS Zone identifier. Generally the same as the DNS Zone\'s display name')
-param name string
-
-@description('Optional. Domain names of the DNS Zone.')
-param domain array = []
-
-@description('Optional. Source IP of the DNS Zone.')
-param sourceIp string = ''
-
-@description('Optional. NSX revision number.')
-param revision int = 
+@description('Optional. Display name of the DNS Zone.')
+param displayName string = ''
 
 @description('Optional. DNS Server IP array of the DNS Zone.')
 param dnsServerIps array = []
 
-@description('Optional. Display name of the DNS Zone.')
-param displayName string = ''
-
 @description('Optional. Number of DNS Services using the DNS zone.')
 param dnsServices int = 
 
+@description('Optional. Domain names of the DNS Zone.')
+param domain array = []
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Required. NSX DNS Zone identifier. Generally the same as the DNS Zone\'s display name')
+param name string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string = 'default'
+
+@description('Optional. NSX revision number.')
+param revision int = 
+
+@description('Optional. Source IP of the DNS Zone.')
+param sourceIp string = ''
+
+@description('Conditional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
+param workloadNetworkName string = 'default'
 
 
 // =============== //
@@ -61,12 +61,12 @@ resource dnsZone 'Microsoft.AVS/privateClouds/workloadNetworks/dnsZones@2022-05-
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    domain: domain
-    sourceIp: sourceIp
     revision: revision
-    dnsServerIps: dnsServerIps
     displayName: displayName
     dnsServices: dnsServices
+    dnsServerIps: dnsServerIps
+    sourceIp: sourceIp
+    domain: domain
   }
 }
 

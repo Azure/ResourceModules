@@ -28,7 +28,7 @@ This module deploys AVS PrivateClouds ScriptExecutions.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateCloudName` | string | The name of the parent key vault. Required if the template is used in a standalone deployment. |
+| `privateCloudName` | string | The name of the parent privateClouds. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
