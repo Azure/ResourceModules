@@ -21,6 +21,7 @@ This module provides you with the ability to generate most of a CARML module's c
 # In scope
 
 - Module itself with parameters, resource & outputs
+- Child-modules with references via their parent
 - Azure DevOps pipeline & GitHub workflow
 - Extension code such as
   - Diagnostic Settings
@@ -30,5 +31,7 @@ This module provides you with the ability to generate most of a CARML module's c
 
 # Out of scope
 
-- Child-Modules: Generate not only the module's code, but also that of it's children and reference them in their parent (**_can be implemented later_**).
 - Idempotency: Run the module on existing code without overwriting any un-related content (**_can be implemented later_**).
+  - Notes:
+    - Should not update `params` that are already set (as we might have defined a custom default value)
+    - Should not update `properties`/`params` of resources/modules as we might have implemented custom logic

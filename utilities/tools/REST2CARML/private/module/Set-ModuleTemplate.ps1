@@ -178,7 +178,15 @@ function Set-ModuleTemplate {
         foreach ($parentResourceType in $orderedParentResourceTypes) {
             $singularParent = ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
             $levedParentResourceType = ($parentResourceType -ne (@() + $orderedParentResourceTypes)[0]) ? (Split-Path $parentResourceType -Leaf) : $parentResourceType
-            $parentResourceAPI = Split-Path (Split-Path ($FullModuleData | Where-Object { $_.identifier -eq $parentResourceType }).Metadata.JSONFilePath -Parent) -Leaf
+            $parentJSONPath = ($FullModuleData | Where-Object { $_.identifier -eq $parentResourceType }).Metadata.JSONFilePath
+            # TODO: Handle case where parent is a proxy resource without its own resource PUT deployment (e.g. 'Microsoft.AVS/privateClouds/workloadNetworks' is not existing as a parent for 'Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations')
+            if ([String]::IsNullOrEmpty($parentJSONPath)) {
+                # Case: A child who's parent resource does not exist (i.e., is a proxy). In this case we use the current API paths as a fallback
+                # Example: 'Microsoft.AVS/privateClouds/workloadNetworks' is not actually existing as a parent for 'Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations'
+                $parentJSONPath = $JSONFilePath
+            }
+
+            $parentResourceAPI = Split-Path (Split-Path $parentJSONPath -Parent) -Leaf
             $templateContent += @(
                 "$(' ' * $existingResourceIndent)resource $($singularParent) '$($levedParentResourceType)@$($parentResourceAPI)' existing = {",
                 "$(' ' * $existingResourceIndent)    name: $($singularParent)Name"
@@ -225,6 +233,7 @@ function Set-ModuleTemplate {
         $templateContent += $ModuleData.resources
 
         # Child-module references
+        # TODO: Handle case where parent is a proxy resource without its own resource PUT deployment (e.g. 'Microsoft.AVS/privateClouds/workloadNetworks' is not existing as a parent for 'Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations'). I.e. 'indirect children'
         foreach ($dataBlock in $directChildren) {
             $childResourceType = ($dataBlock.identifier -split '/')[-1]
             $childResourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $childResourceType
