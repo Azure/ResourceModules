@@ -180,19 +180,21 @@ function Get-SpecsPropertyAsParameter {
             $refObjects += Get-SpecsPropertyAsParameter @recursiveInputObject
         } else {
             # Each item has a primitive type
-            $refObjects += @{
+            $parameterObject = @{
                 level       = $Level
                 name        = $Name
-                type        = '{0}[]' -f $Parameter.items.type
+                type        = 'array'
                 description = $Parameter.description
                 required    = $RequiredParametersOnLevel -contains $Name
                 Parent      = $Parent
             }
+            $refObjects += Set-OptionalParameter -SourceParameterObject $Parameter -TargetObject $parameterObject
+
         }
     } elseif ($parameter.Keys -contains 'properties') {
         # The case if a definition reference should have been created, but the RP implemented it another way.
         # Example "TableServiceProperties": { "properties": { "properties": { "properties": { "cors": {...}}}}}
-        $refObjects += @{
+        $parameterObject = @{
             level       = $Level
             name        = $Name
             type        = 'object'
@@ -200,6 +202,7 @@ function Get-SpecsPropertyAsParameter {
             required    = $RequiredParametersOnLevel -contains $Name
             Parent      = $Parent
         }
+        $refObjects += Set-OptionalParameter -SourceParameterObject $Parameter -TargetObject $parameterObject
 
         foreach ($property in $Parameter['properties'].Keys) {
             $recursiveInputObject = @{
@@ -227,7 +230,6 @@ function Get-SpecsPropertyAsParameter {
             required    = $RequiredParametersOnLevel -contains $Name
             Parent      = $Parent
         }
-
         $refObjects += Set-OptionalParameter -SourceParameterObject $Parameter -TargetObject $parameterObject
     }
 

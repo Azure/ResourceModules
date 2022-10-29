@@ -56,7 +56,8 @@ function Set-ModuleTemplate {
     process {
         # Collect any children of the current resource to create references
         $directChildren = $fullmoduleData | Where-Object {
-            ($_.identifier -split '/').Count -gt ($FullResourceType -split '/').count
+            (($_.identifier -split '/').Count -eq (($FullResourceType -split '/').Count + 1)) -and
+            $_.identifier -like "$FullResourceType/*"
         }
 
         # Collect parent resources to use for parent type references
