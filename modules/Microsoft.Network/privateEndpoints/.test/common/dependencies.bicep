@@ -10,6 +10,9 @@ param keyVaultName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+@description('Required. The name of the Application Security Group to create.')
+param applicationSecurityGroupName string
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
     location: location
@@ -48,6 +51,11 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
 }
 
+resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2022-05-01' = {
+    name: applicationSecurityGroupName
+    location: location
+}
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
     location: location
@@ -80,3 +88,6 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 
 @description('The resource ID of the created Private DNS Zone.')
 output privateDNSZoneResourceId string = privateDNSZone.id
+
+@description('The resource ID of the created Application Security Group.')
+output applicationSecurityGroupResourceId string = applicationSecurityGroup.id
