@@ -55,10 +55,24 @@ function Set-ModuleTemplate {
 
     process {
         # Collect any children of the current resource to create references
-        $directChildren = $fullmoduleData | Where-Object {
-            (($_.identifier -split '/').Count -eq (($FullResourceType -split '/').Count + 1)) -and
-            $_.identifier -like "$FullResourceType/*"
+        $linkedChildren = $fullmoduleData | Where-Object {
+            # Is nested
+            $_.identifier -like "$FullResourceType/*" -and
+            # Is direct child
+            (($_.identifier -split '/').Count -eq (($FullResourceType -split '/').Count + 1)
+            )
         }
+        # Add indirect child (via proxy resource) (i.e. it's a nested-nested resources who's parent has no individual specification/JSONFilePath). TODO: Is that always true? What if the data is specified in one file?x`
+        $indirectChildren = $FullModuleData | Where-Object {
+            # Is nested
+            $_.identifier -like "$FullResourceType/*" -and
+            # Is indirect child
+            (($_.identifier -split '/').Count -eq (($FullResourceType -split '/').Count + 2))
+        } | Where-Object {
+            # If the child's parent's parentUrlPath is empty, this parent has no PUT rest command which indicates it cannot be created independently
+            [String]::IsNullOrEmpty($_.metadata.parentUrlPath)
+        }
+        $linkedChildren += $indirectChildren
 
         # Collect parent resources to use for parent type references
         $typeElem = $FullResourceType -split '/'
@@ -112,7 +126,7 @@ function Set-ModuleTemplate {
         }
 
         # Child module references
-        foreach ($dataBlock in $directChildren) {
+        foreach ($dataBlock in $linkedChildren) {
             $childResourceType = ($dataBlock.identifier -split '/')[-1]
 
             $templateContent += Get-FormattedModuleParameter -ParameterData @{
@@ -145,7 +159,7 @@ function Set-ModuleTemplate {
             $templateContent += $variable
         }
         # Add telemetry variable
-        if ($directChildren.Count -gt 0) {
+        if ($linkedChildren.Count -gt 0) {
             $templateContent += @(
                 'var enableReferencedModulesTelemetry = false'
                 ''
@@ -179,7 +193,7 @@ function Set-ModuleTemplate {
             $singularParent = ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
             $levedParentResourceType = ($parentResourceType -ne (@() + $orderedParentResourceTypes)[0]) ? (Split-Path $parentResourceType -Leaf) : $parentResourceType
             $parentJSONPath = ($FullModuleData | Where-Object { $_.identifier -eq $parentResourceType }).Metadata.JSONFilePath
-            # TODO: Handle case where parent is a proxy resource without its own resource PUT deployment (e.g. 'Microsoft.AVS/privateClouds/workloadNetworks' is not existing as a parent for 'Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations')
+
             if ([String]::IsNullOrEmpty($parentJSONPath)) {
                 # Case: A child who's parent resource does not exist (i.e., is a proxy). In this case we use the current API paths as a fallback
                 # Example: 'Microsoft.AVS/privateClouds/workloadNetworks' is not actually existing as a parent for 'Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations'
@@ -233,12 +247,17 @@ function Set-ModuleTemplate {
         $templateContent += $ModuleData.resources
 
         # Child-module references
-        # TODO: Handle case where parent is a proxy resource without its own resource PUT deployment (e.g. 'Microsoft.AVS/privateClouds/workloadNetworks' is not existing as a parent for 'Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations'). I.e. 'indirect children'
-        foreach ($dataBlock in $directChildren) {
+        foreach ($dataBlock in $linkedChildren) {
             $childResourceType = ($dataBlock.identifier -split '/')[-1]
             $childResourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $childResourceType
+
+            $hasProxyParent = [String]::IsNullOrEmpty($dataBlock.metadata.parentUrlPath)
+            if ($hasProxyParent) {
+                $proxyParentName = Split-Path (Split-Path $dataBlock.identifier -Parent) -Leaf
+            }
+
             $templateContent += @(
-                "module $($resourceTypeSingular)_$($childResourceType) '$($childResourceType)/deploy.bicep' = [for ($($childResourceTypeSingular), index) in $($childResourceType): {",
+                "module $($hasProxyParent ? "$($proxyParentName)_" : '')$($resourceTypeSingular)_$($childResourceType) '$($hasProxyParent ? "$proxyParentName/" : '')$($childResourceType)/deploy.bicep' = [for ($($childResourceTypeSingular), index) in $($childResourceType): {",
                 "name: '`${uniqueString(deployment().name$($locationParameterExists ? ', location' : ''))}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'",
                 'params: {'
             )

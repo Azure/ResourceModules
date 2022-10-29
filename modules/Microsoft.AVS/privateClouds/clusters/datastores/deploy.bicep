@@ -11,11 +11,11 @@ param clusterName string
 @description('Required. Name of the datastore in the private cloud cluster')
 param name string
 
-@description('Optional. An iSCSI volume from Microsoft.StoragePool provider')
-param diskPoolVolume object = {}
-
 @description('Optional. An Azure NetApp Files volume from Microsoft.NetApp provider')
 param netAppVolume object = {}
+
+@description('Optional. An iSCSI volume from Microsoft.StoragePool provider')
+param diskPoolVolume object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -49,8 +49,8 @@ resource datastore 'Microsoft.AVS/privateClouds/clusters/datastores@2022-05-01' 
   parent: privateCloud::cluster
   name: name
   properties: {
-    diskPoolVolume: diskPoolVolume
     netAppVolume: netAppVolume
+    diskPoolVolume: diskPoolVolume
   }
 }
 

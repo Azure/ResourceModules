@@ -11,11 +11,11 @@ param workloadNetworkName string
 @description('Required. NSX Public IP Block identifier. Generally the same as the Public IP Block\'s display name')
 param name string
 
-@description('Optional. Display name of the Public IP Block.')
-param displayName string = ''
-
 @description('Optional. Number of Public IPs requested.')
 param numberOfPublicIPs int = 
+
+@description('Optional. Display name of the Public IP Block.')
+param displayName string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -49,8 +49,8 @@ resource publicIP 'Microsoft.AVS/privateClouds/workloadNetworks/publicIPs@2022-0
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    displayName: displayName
     numberOfPublicIPs: numberOfPublicIPs
+    displayName: displayName
   }
 }
 

@@ -11,14 +11,14 @@ param workloadNetworkName string
 @description('Required. NSX VM Group identifier. Generally the same as the VM Group\'s display name')
 param name string
 
-@description('Optional. Display name of the VM group.')
-param displayName string = ''
-
 @description('Optional. Virtual machine members of this group.')
 param members array = []
 
 @description('Optional. NSX revision number.')
 param revision int = 
+
+@description('Optional. Display name of the VM group.')
+param displayName string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -52,9 +52,9 @@ resource vmGroup 'Microsoft.AVS/privateClouds/workloadNetworks/vmGroups@2022-05-
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    displayName: displayName
     members: members
     revision: revision
+    displayName: displayName
   }
 }
 

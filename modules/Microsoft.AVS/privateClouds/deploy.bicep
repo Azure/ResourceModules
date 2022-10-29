@@ -8,15 +8,8 @@ param name string
 @description('Optional. Identity for the virtual machine.')
 param identity object = {}
 
-@description('Optional. Optionally, set the vCenter admin password when the private cloud is created')
-@secure()
-param vcenterPassword string = ''
-
 @description('Optional. The block of addresses should be unique across VNet in your subscription as well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X is between 0 and 22')
 param networkBlock string = ''
-
-@description('Optional. An ExpressRoute Circuit')
-param circuit object = {}
 
 @description('Optional. An ExpressRoute Circuit')
 param secondaryCircuit object = {}
@@ -25,11 +18,27 @@ param secondaryCircuit object = {}
 @secure()
 param nsxtPassword string = ''
 
+@description('Optional. Optionally, set the vCenter admin password when the private cloud is created')
+@secure()
+param vcenterPassword string = ''
+
+@description('Optional. An ExpressRoute Circuit')
+param circuit object = {}
+
 @description('Required. The resource model definition representing SKU')
 param sku object
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
+
+@description('Optional. The properties describing private cloud availability zone distribution')
+param availability object = {}
+
+@description('Optional. vCenter Single Sign On Identity Sources')
+param identitySources array = []
+
+@description('Optional. The properties of a management cluster')
+param managementCluster object = {}
 
 @description('Optional. Connectivity to internet is enabled or disabled')
 @allowed([
@@ -38,17 +47,8 @@ param location string = resourceGroup().location
 ])
 param internet string = 'Disabled'
 
-@description('Optional. vCenter Single Sign On Identity Sources')
-param identitySources array = []
-
-@description('Optional. The properties describing private cloud availability zone distribution')
-param availability object = {}
-
 @description('Optional. The properties of customer managed encryption key')
 param encryption object = {}
-
-@description('Optional. The properties of a management cluster')
-param managementCluster object = {}
 
 @description('Optional. Resource tags')
 param tags object = {}
@@ -112,23 +112,44 @@ param lock string = ''
 @description('Optional. The hcxEnterpriseSites to create as part of the privateCloud.')
 param hcxEnterpriseSites array = []
 
+@description('Optional. The authorizations to create as part of the privateCloud.')
+param authorizations array = []
+
 @description('Optional. The cloudLinks to create as part of the privateCloud.')
 param cloudLinks array = []
-
-@description('Optional. The addons to create as part of the privateCloud.')
-param addons array = []
 
 @description('Optional. The scriptExecutions to create as part of the privateCloud.')
 param scriptExecutions array = []
 
-@description('Optional. The globalReachConnections to create as part of the privateCloud.')
-param globalReachConnections array = []
+@description('Optional. The addons to create as part of the privateCloud.')
+param addons array = []
 
 @description('Optional. The clusters to create as part of the privateCloud.')
 param clusters array = []
 
-@description('Optional. The authorizations to create as part of the privateCloud.')
-param authorizations array = []
+@description('Optional. The globalReachConnections to create as part of the privateCloud.')
+param globalReachConnections array = []
+
+@description('Optional. The publicIPs to create as part of the privateCloud.')
+param publicIPs array = []
+
+@description('Optional. The dnsZones to create as part of the privateCloud.')
+param dnsZones array = []
+
+@description('Optional. The portMirroringProfiles to create as part of the privateCloud.')
+param portMirroringProfiles array = []
+
+@description('Optional. The vmGroups to create as part of the privateCloud.')
+param vmGroups array = []
+
+@description('Optional. The segments to create as part of the privateCloud.')
+param segments array = []
+
+@description('Optional. The dnsServices to create as part of the privateCloud.')
+param dnsServices array = []
+
+@description('Optional. The dhcpConfigurations to create as part of the privateCloud.')
+param dhcpConfigurations array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -179,16 +200,16 @@ resource privateCloud 'Microsoft.AVS/privateClouds@2022-05-01' = {
   location: location
   tags: tags
   properties: {
-    vcenterPassword: vcenterPassword
     networkBlock: networkBlock
-    circuit: circuit
     secondaryCircuit: secondaryCircuit
     nsxtPassword: nsxtPassword
-    internet: internet
-    identitySources: identitySources
+    vcenterPassword: vcenterPassword
+    circuit: circuit
     availability: availability
-    encryption: encryption
+    identitySources: identitySources
     managementCluster: managementCluster
+    internet: internet
+    encryption: encryption
   }
 }
 
@@ -223,12 +244,38 @@ params: {
   }
 }]
 
+module privateCloud_authorizations 'authorizations/deploy.bicep' = [for (authorization, index) in authorizations: {
+name: '${uniqueString(deployment().name, location)}-privateCloud-authorization-${index}'
+params: {
+    privateCloudName: name
+    name: authorization.name
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 module privateCloud_cloudLinks 'cloudLinks/deploy.bicep' = [for (cloudLink, index) in cloudLinks: {
 name: '${uniqueString(deployment().name, location)}-privateCloud-cloudLink-${index}'
 params: {
     privateCloudName: name
     name: cloudLink.name
     linkedCloud: contains(cloudLink, 'linkedCloud') ? cloudLink.linkedCloud : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module privateCloud_scriptExecutions 'scriptExecutions/deploy.bicep' = [for (scriptExecution, index) in scriptExecutions: {
+name: '${uniqueString(deployment().name, location)}-privateCloud-scriptExecution-${index}'
+params: {
+    privateCloudName: name
+    name: scriptExecution.name
+    hiddenParameters: contains(scriptExecution, 'hiddenParameters') ? scriptExecution.hiddenParameters : []
+    parameters: contains(scriptExecution, 'parameters') ? scriptExecution.parameters : []
+    failureReason: contains(scriptExecution, 'failureReason') ? scriptExecution.failureReason : ''
+    retention: contains(scriptExecution, 'retention') ? scriptExecution.retention : ''
+    timeout: contains(scriptExecution, 'timeout') ? scriptExecution.timeout : ''
+    scriptCmdletId: contains(scriptExecution, 'scriptCmdletId') ? scriptExecution.scriptCmdletId : ''
+    namedOutputs: contains(scriptExecution, 'namedOutputs') ? scriptExecution.namedOutputs : {}
+    output: contains(scriptExecution, 'output') ? scriptExecution.output : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -243,19 +290,14 @@ params: {
   }
 }]
 
-module privateCloud_scriptExecutions 'scriptExecutions/deploy.bicep' = [for (scriptExecution, index) in scriptExecutions: {
-name: '${uniqueString(deployment().name, location)}-privateCloud-scriptExecution-${index}'
+module privateCloud_clusters 'clusters/deploy.bicep' = [for (cluster, index) in clusters: {
+name: '${uniqueString(deployment().name, location)}-privateCloud-cluster-${index}'
 params: {
     privateCloudName: name
-    name: scriptExecution.name
-    retention: contains(scriptExecution, 'retention') ? scriptExecution.retention : ''
-    output: contains(scriptExecution, 'output') ? scriptExecution.output : []
-    failureReason: contains(scriptExecution, 'failureReason') ? scriptExecution.failureReason : ''
-    parameters: contains(scriptExecution, 'parameters') ? scriptExecution.parameters : []
-    hiddenParameters: contains(scriptExecution, 'hiddenParameters') ? scriptExecution.hiddenParameters : []
-    scriptCmdletId: contains(scriptExecution, 'scriptCmdletId') ? scriptExecution.scriptCmdletId : ''
-    namedOutputs: contains(scriptExecution, 'namedOutputs') ? scriptExecution.namedOutputs : {}
-    timeout: contains(scriptExecution, 'timeout') ? scriptExecution.timeout : ''
+    name: cluster.name
+    sku: cluster.sku
+    hosts: contains(cluster, 'hosts') ? cluster.hosts : []
+    clusterSize: contains(cluster, 'clusterSize') ? cluster.clusterSize : 
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -272,23 +314,94 @@ params: {
   }
 }]
 
-module privateCloud_clusters 'clusters/deploy.bicep' = [for (cluster, index) in clusters: {
-name: '${uniqueString(deployment().name, location)}-privateCloud-cluster-${index}'
+module workloadNetworks_privateCloud_publicIPs 'workloadNetworks/publicIPs/deploy.bicep' = [for (publicIP, index) in publicIPs: {
+name: '${uniqueString(deployment().name, location)}-privateCloud-publicIP-${index}'
 params: {
     privateCloudName: name
-    name: cluster.name
-    sku: cluster.sku
-    clusterSize: contains(cluster, 'clusterSize') ? cluster.clusterSize : 
-    hosts: contains(cluster, 'hosts') ? cluster.hosts : []
+    name: publicIP.name
+    numberOfPublicIPs: contains(publicIP, 'numberOfPublicIPs') ? publicIP.numberOfPublicIPs : 
+    displayName: contains(publicIP, 'displayName') ? publicIP.displayName : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-module privateCloud_authorizations 'authorizations/deploy.bicep' = [for (authorization, index) in authorizations: {
-name: '${uniqueString(deployment().name, location)}-privateCloud-authorization-${index}'
+module workloadNetworks_privateCloud_dnsZones 'workloadNetworks/dnsZones/deploy.bicep' = [for (dnsZone, index) in dnsZones: {
+name: '${uniqueString(deployment().name, location)}-privateCloud-dnsZone-${index}'
 params: {
     privateCloudName: name
-    name: authorization.name
+    name: dnsZone.name
+    domain: contains(dnsZone, 'domain') ? dnsZone.domain : []
+    sourceIp: contains(dnsZone, 'sourceIp') ? dnsZone.sourceIp : ''
+    revision: contains(dnsZone, 'revision') ? dnsZone.revision : 
+    dnsServerIps: contains(dnsZone, 'dnsServerIps') ? dnsZone.dnsServerIps : []
+    displayName: contains(dnsZone, 'displayName') ? dnsZone.displayName : ''
+    dnsServices: contains(dnsZone, 'dnsServices') ? dnsZone.dnsServices : 
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module workloadNetworks_privateCloud_portMirroringProfiles 'workloadNetworks/portMirroringProfiles/deploy.bicep' = [for (portMirroringProfile, index) in portMirroringProfiles: {
+name: '${uniqueString(deployment().name, location)}-privateCloud-portMirroringProfile-${index}'
+params: {
+    privateCloudName: name
+    name: portMirroringProfile.name
+    direction: contains(portMirroringProfile, 'direction') ? portMirroringProfile.direction : ''
+    source: contains(portMirroringProfile, 'source') ? portMirroringProfile.source : ''
+    destination: contains(portMirroringProfile, 'destination') ? portMirroringProfile.destination : ''
+    revision: contains(portMirroringProfile, 'revision') ? portMirroringProfile.revision : 
+    displayName: contains(portMirroringProfile, 'displayName') ? portMirroringProfile.displayName : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module workloadNetworks_privateCloud_vmGroups 'workloadNetworks/vmGroups/deploy.bicep' = [for (vmGroup, index) in vmGroups: {
+name: '${uniqueString(deployment().name, location)}-privateCloud-vmGroup-${index}'
+params: {
+    privateCloudName: name
+    name: vmGroup.name
+    members: contains(vmGroup, 'members') ? vmGroup.members : []
+    revision: contains(vmGroup, 'revision') ? vmGroup.revision : 
+    displayName: contains(vmGroup, 'displayName') ? vmGroup.displayName : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module workloadNetworks_privateCloud_segments 'workloadNetworks/segments/deploy.bicep' = [for (segment, index) in segments: {
+name: '${uniqueString(deployment().name, location)}-privateCloud-segment-${index}'
+params: {
+    privateCloudName: name
+    name: segment.name
+    subnet: contains(segment, 'subnet') ? segment.subnet : {}
+    connectedGateway: contains(segment, 'connectedGateway') ? segment.connectedGateway : ''
+    revision: contains(segment, 'revision') ? segment.revision : 
+    displayName: contains(segment, 'displayName') ? segment.displayName : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module workloadNetworks_privateCloud_dnsServices 'workloadNetworks/dnsServices/deploy.bicep' = [for (dnsService, index) in dnsServices: {
+name: '${uniqueString(deployment().name, location)}-privateCloud-dnsService-${index}'
+params: {
+    privateCloudName: name
+    name: dnsService.name
+    displayName: contains(dnsService, 'displayName') ? dnsService.displayName : ''
+    defaultDnsZone: contains(dnsService, 'defaultDnsZone') ? dnsService.defaultDnsZone : ''
+    fqdnZones: contains(dnsService, 'fqdnZones') ? dnsService.fqdnZones : []
+    revision: contains(dnsService, 'revision') ? dnsService.revision : 
+    logLevel: contains(dnsService, 'logLevel') ? dnsService.logLevel : ''
+    dnsServiceIp: contains(dnsService, 'dnsServiceIp') ? dnsService.dnsServiceIp : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module workloadNetworks_privateCloud_dhcpConfigurations 'workloadNetworks/dhcpConfigurations/deploy.bicep' = [for (dhcpConfiguration, index) in dhcpConfigurations: {
+name: '${uniqueString(deployment().name, location)}-privateCloud-dhcpConfiguration-${index}'
+params: {
+    privateCloudName: name
+    name: dhcpConfiguration.name
+    revision: contains(dhcpConfiguration, 'revision') ? dhcpConfiguration.revision : 
+    dhcpType: contains(dhcpConfiguration, 'dhcpType') ? dhcpConfiguration.dhcpType : ''
+    displayName: contains(dhcpConfiguration, 'displayName') ? dhcpConfiguration.displayName : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

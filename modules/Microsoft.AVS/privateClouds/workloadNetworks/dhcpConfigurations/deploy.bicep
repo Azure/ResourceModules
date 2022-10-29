@@ -11,8 +11,8 @@ param workloadNetworkName string
 @description('Required. NSX DHCP identifier. Generally the same as the DHCP display name')
 param name string
 
-@description('Optional. Display name of the DHCP entity.')
-param displayName string = ''
+@description('Optional. NSX revision number.')
+param revision int = 
 
 @description('Optional. Type of DHCP: SERVER or RELAY.')
 @allowed([
@@ -21,8 +21,8 @@ param displayName string = ''
 ])
 param dhcpType string = ''
 
-@description('Optional. NSX revision number.')
-param revision int = 
+@description('Optional. Display name of the DHCP entity.')
+param displayName string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -56,9 +56,9 @@ resource dhcpConfiguration 'Microsoft.AVS/privateClouds/workloadNetworks/dhcpCon
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    displayName: displayName
-    dhcpType: dhcpType
     revision: revision
+    dhcpType: dhcpType
+    displayName: displayName
   }
 }
 

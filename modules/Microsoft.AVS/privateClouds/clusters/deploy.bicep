@@ -11,11 +11,11 @@ param name string
 @description('Required. The resource model definition representing SKU')
 param sku object
 
-@description('Optional. The cluster size')
-param clusterSize int = 
-
 @description('Optional. The hosts')
 param hosts array = []
+
+@description('Optional. The cluster size')
+param clusterSize int = 
 
 @description('Optional. The placementPolicies to create as part of the cluster.')
 param placementPolicies array = []
@@ -55,8 +55,8 @@ resource cluster 'Microsoft.AVS/privateClouds/clusters@2022-05-01' = {
   name: name
   sku: sku
   properties: {
-    clusterSize: clusterSize
     hosts: hosts
+    clusterSize: clusterSize
   }
 }
 
@@ -69,10 +69,10 @@ params: {
     type: contains(placementPolicy, 'type') ? placementPolicy.type : ''
     state: contains(placementPolicy, 'state') ? placementPolicy.state : ''
     displayName: contains(placementPolicy, 'displayName') ? placementPolicy.displayName : ''
-    vmMembers: contains(placementPolicy, 'vmMembers') ? placementPolicy.vmMembers : []
+    hostMembers: contains(placementPolicy, 'hostMembers') ? placementPolicy.hostMembers : []
     azureHybridBenefitType: contains(placementPolicy, 'azureHybridBenefitType') ? placementPolicy.azureHybridBenefitType : ''
     affinityStrength: contains(placementPolicy, 'affinityStrength') ? placementPolicy.affinityStrength : ''
-    hostMembers: contains(placementPolicy, 'hostMembers') ? placementPolicy.hostMembers : []
+    vmMembers: contains(placementPolicy, 'vmMembers') ? placementPolicy.vmMembers : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -83,8 +83,8 @@ params: {
     privateCloudName: privateCloudName
     clusterName: name
     name: datastore.name
-    diskPoolVolume: contains(datastore, 'diskPoolVolume') ? datastore.diskPoolVolume : {}
     netAppVolume: contains(datastore, 'netAppVolume') ? datastore.netAppVolume : {}
+    diskPoolVolume: contains(datastore, 'diskPoolVolume') ? datastore.diskPoolVolume : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

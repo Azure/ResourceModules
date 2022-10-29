@@ -11,9 +11,6 @@ param workloadNetworkName string
 @description('Required. NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name')
 param name string
 
-@description('Optional. Destination VM Group.')
-param destination string = ''
-
 @description('Optional. Direction of port mirroring profile.')
 @allowed([
   'INGRESS'
@@ -22,14 +19,17 @@ param destination string = ''
 ])
 param direction string = ''
 
-@description('Optional. Display name of the port mirroring profile.')
-param displayName string = ''
-
 @description('Optional. Source VM Group.')
 param source string = ''
 
+@description('Optional. Destination VM Group.')
+param destination string = ''
+
 @description('Optional. NSX revision number.')
 param revision int = 
+
+@description('Optional. Display name of the port mirroring profile.')
+param displayName string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -63,11 +63,11 @@ resource portMirroringProfile 'Microsoft.AVS/privateClouds/workloadNetworks/port
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    destination: destination
     direction: direction
-    displayName: displayName
     source: source
+    destination: destination
     revision: revision
+    displayName: displayName
   }
 }
 

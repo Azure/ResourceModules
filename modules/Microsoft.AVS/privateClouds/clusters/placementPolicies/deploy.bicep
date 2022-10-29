@@ -28,8 +28,8 @@ param state string = ''
 @description('Optional. Display name of the placement policy')
 param displayName string = ''
 
-@description('Optional. Virtual machine members list')
-param vmMembers array = []
+@description('Optional. Host members list')
+param hostMembers array = []
 
 @description('Optional. Placement policy hosts opt-in Azure Hybrid Benefit type')
 @allowed([
@@ -45,8 +45,8 @@ param azureHybridBenefitType string = ''
 ])
 param affinityStrength string = ''
 
-@description('Optional. Host members list')
-param hostMembers array = []
+@description('Optional. Virtual machine members list')
+param vmMembers array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -83,10 +83,10 @@ resource placementPolicy 'Microsoft.AVS/privateClouds/clusters/placementPolicies
     type: type
     state: state
     displayName: displayName
-    vmMembers: vmMembers
+    hostMembers: hostMembers
     azureHybridBenefitType: azureHybridBenefitType
     affinityStrength: affinityStrength
-    hostMembers: hostMembers
+    vmMembers: vmMembers
   }
 }
 

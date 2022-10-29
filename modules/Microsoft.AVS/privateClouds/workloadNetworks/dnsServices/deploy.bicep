@@ -11,6 +11,18 @@ param workloadNetworkName string
 @description('Required. NSX DNS Service identifier. Generally the same as the DNS Service\'s display name')
 param name string
 
+@description('Optional. Display name of the DNS Service.')
+param displayName string = ''
+
+@description('Optional. Default DNS zone of the DNS Service.')
+param defaultDnsZone string = ''
+
+@description('Optional. FQDN zones of the DNS Service.')
+param fqdnZones array = []
+
+@description('Optional. NSX revision number.')
+param revision int = 
+
 @description('Optional. DNS Service log level.')
 @allowed([
   'DEBUG'
@@ -23,18 +35,6 @@ param logLevel string = ''
 
 @description('Optional. DNS service IP of the DNS Service.')
 param dnsServiceIp string = ''
-
-@description('Optional. Display name of the DNS Service.')
-param displayName string = ''
-
-@description('Optional. Default DNS zone of the DNS Service.')
-param defaultDnsZone string = ''
-
-@description('Optional. NSX revision number.')
-param revision int = 
-
-@description('Optional. FQDN zones of the DNS Service.')
-param fqdnZones array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -68,12 +68,12 @@ resource dnsService 'Microsoft.AVS/privateClouds/workloadNetworks/dnsServices@20
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    logLevel: logLevel
-    dnsServiceIp: dnsServiceIp
     displayName: displayName
     defaultDnsZone: defaultDnsZone
-    revision: revision
     fqdnZones: fqdnZones
+    revision: revision
+    logLevel: logLevel
+    dnsServiceIp: dnsServiceIp
   }
 }
 

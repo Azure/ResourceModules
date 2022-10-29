@@ -11,14 +11,8 @@ param workloadNetworkName string
 @description('Required. NSX DNS Zone identifier. Generally the same as the DNS Zone\'s display name')
 param name string
 
-@description('Optional. Number of DNS Services using the DNS zone.')
-param dnsServices int = 
-
-@description('Optional. Display name of the DNS Zone.')
-param displayName string = ''
-
-@description('Optional. DNS Server IP array of the DNS Zone.')
-param dnsServerIps array = []
+@description('Optional. Domain names of the DNS Zone.')
+param domain array = []
 
 @description('Optional. Source IP of the DNS Zone.')
 param sourceIp string = ''
@@ -26,8 +20,14 @@ param sourceIp string = ''
 @description('Optional. NSX revision number.')
 param revision int = 
 
-@description('Optional. Domain names of the DNS Zone.')
-param domain array = []
+@description('Optional. DNS Server IP array of the DNS Zone.')
+param dnsServerIps array = []
+
+@description('Optional. Display name of the DNS Zone.')
+param displayName string = ''
+
+@description('Optional. Number of DNS Services using the DNS zone.')
+param dnsServices int = 
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -61,12 +61,12 @@ resource dnsZone 'Microsoft.AVS/privateClouds/workloadNetworks/dnsZones@2022-05-
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    dnsServices: dnsServices
-    displayName: displayName
-    dnsServerIps: dnsServerIps
+    domain: domain
     sourceIp: sourceIp
     revision: revision
-    domain: domain
+    dnsServerIps: dnsServerIps
+    displayName: displayName
+    dnsServices: dnsServices
   }
 }
 

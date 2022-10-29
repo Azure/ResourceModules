@@ -14,14 +14,14 @@ param name string
 @description('Optional. Subnet configuration for segment')
 param subnet object = {}
 
-@description('Optional. Display name of the segment.')
-param displayName string = ''
-
 @description('Optional. Gateway which to connect segment to.')
 param connectedGateway string = ''
 
 @description('Optional. NSX revision number.')
 param revision int = 
+
+@description('Optional. Display name of the segment.')
+param displayName string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -56,9 +56,9 @@ resource segment 'Microsoft.AVS/privateClouds/workloadNetworks/segments@2022-05-
   name: name
   properties: {
     subnet: subnet
-    displayName: displayName
     connectedGateway: connectedGateway
     revision: revision
+    displayName: displayName
   }
 }
 
