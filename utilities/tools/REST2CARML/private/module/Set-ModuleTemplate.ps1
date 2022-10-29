@@ -166,6 +166,7 @@ function Set-ModuleTemplate {
         # Telemetry
         $telemetryTemplate = Get-Content -Path (Join-Path $Script:src 'telemetry.bicep')
         if (-not $locationParameterExists) {
+            # Remove the location from the deployment name if the template has no such parameter
             $telemetryTemplate = $telemetryTemplate -replace ', location', ''
         }
         $templateContent += $telemetryTemplate
