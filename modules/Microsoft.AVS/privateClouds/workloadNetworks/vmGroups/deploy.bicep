@@ -2,6 +2,12 @@
 //   Parameters   //
 // ============== //
 
+@description('Required. NSX VM Group identifier. Generally the same as the VM Group\'s display name')
+param name string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
+
 @description('Optional. Display name of the VM group.')
 param displayName string = ''
 
@@ -11,16 +17,10 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Virtual machine members of this group.')
 param members array = []
 
-@description('Required. NSX VM Group identifier. Generally the same as the VM Group\'s display name')
-param name string
-
-@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
-param privateCloudName string = 'default'
-
 @description('Optional. NSX revision number.')
 param revision int = 
 
-@description('Conditional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
+@description('Optional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
 param workloadNetworkName string = 'default'
 
 

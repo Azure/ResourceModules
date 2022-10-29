@@ -2,6 +2,12 @@
 //   Parameters   //
 // ============== //
 
+@description('Required. Name of the private cloud')
+param name string
+
+@description('Required. The resource model definition representing SKU')
+param sku object
+
 @description('Optional. The addons to create as part of the privateCloud.')
 param addons array = []
 
@@ -116,9 +122,6 @@ param lock string = ''
 @description('Optional. The properties of a management cluster')
 param managementCluster object = {}
 
-@description('Required. Name of the private cloud')
-param name string
-
 @description('Optional. The block of addresses should be unique across VNet in your subscription as well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X is between 0 and 22')
 param networkBlock string = ''
 
@@ -140,9 +143,6 @@ param secondaryCircuit object = {}
 
 @description('Optional. The segments to create as part of the privateCloud.')
 param segments array = []
-
-@description('Required. The resource model definition representing SKU')
-param sku object
 
 @description('Optional. Resource tags')
 param tags object = {}

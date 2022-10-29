@@ -2,6 +2,15 @@
 //   Parameters   //
 // ============== //
 
+@description('Required. Name of the cluster in the private cloud')
+param name string
+
+@description('Required. The resource model definition representing SKU')
+param sku object
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
+
 @description('Optional. The cluster size')
 param clusterSize int = 
 
@@ -14,17 +23,8 @@ param enableDefaultTelemetry bool = true
 @description('Optional. The hosts')
 param hosts array = []
 
-@description('Required. Name of the cluster in the private cloud')
-param name string
-
 @description('Optional. The placementPolicies to create as part of the cluster.')
 param placementPolicies array = []
-
-@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
-param privateCloudName string
-
-@description('Required. The resource model definition representing SKU')
-param sku object
 
 var enableReferencedModulesTelemetry = false
 

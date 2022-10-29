@@ -2,6 +2,12 @@
 //   Parameters   //
 // ============== //
 
+@description('Required. Name of the user-invoked script execution resource')
+param name string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -11,9 +17,6 @@ param failureReason string = ''
 @description('Optional. Parameters that will be hidden/not visible to ARM, such as passwords and credentials')
 param hiddenParameters array = []
 
-@description('Required. Name of the user-invoked script execution resource')
-param name string
-
 @description('Optional. User-defined dictionary.')
 param namedOutputs object = {}
 
@@ -22,9 +25,6 @@ param output array = []
 
 @description('Optional. Parameters the script will accept')
 param parameters array = []
-
-@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
-param privateCloudName string
 
 @description('Optional. Time to live for the resource. If not provided, will be available for 60 days')
 param retention string = ''

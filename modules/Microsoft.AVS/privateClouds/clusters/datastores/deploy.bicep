@@ -2,8 +2,14 @@
 //   Parameters   //
 // ============== //
 
+@description('Required. Name of the datastore in the private cloud cluster')
+param name string
+
 @description('Conditional. The name of the parent clusters. Required if the template is used in a standalone deployment.')
 param clusterName string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
 
 @description('Optional. An iSCSI volume from Microsoft.StoragePool provider')
 param diskPoolVolume object = {}
@@ -11,14 +17,8 @@ param diskPoolVolume object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Required. Name of the datastore in the private cloud cluster')
-param name string
-
 @description('Optional. An Azure NetApp Files volume from Microsoft.NetApp provider')
 param netAppVolume object = {}
-
-@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
-param privateCloudName string
 
 
 // =============== //

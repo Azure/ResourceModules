@@ -96,6 +96,7 @@ function Set-ModuleTemplate {
         # Handle parent proxy, if any
         $hasAProxyParent = $FullModuleData.identifier -notContains ((Split-Path $FullResourceType -Parent) -replace '\\', '/')
         $parentProxyName = $hasAProxyParent ? ($UrlPath -split '\/')[-3] : ''
+        $proxyParentType = Split-Path (Split-Path $FullResourceType -Parent) -Leaf
 
         ##################
         ##  PARAMETERS  ##
@@ -121,15 +122,17 @@ function Set-ModuleTemplate {
 
         # Add parent parameters
         foreach ($parentResourceType in ($parentResourceTypes | Sort-Object)) {
+            $thisParentIsProxy = $hasAProxyParent -and $parentResourceType -eq $proxyParentType
+
             $parentParamData = @{
                 level       = 0
                 name        = '{0}Name' -f (Get-ResourceTypeSingularName -ResourceType $parentResourceType)
                 type        = 'string'
-                description = "Conditional. The name of the parent $parentResourceType. Required if the template is used in a standalone deployment."
+                description = '{0}. The name of the parent {1}. Required if the template is used in a standalone deployment.' -f ($thisParentIsProxy ? 'Optional' : 'Conditional'), $parentResourceType
                 required    = $false
             }
 
-            if ($hasAProxyParent) {
+            if ($thisParentIsProxy) {
                 # Handle proxy parents (i.e., empty containers with only a default value name)
                 $parentParamData['default'] = $parentProxyName
             }
@@ -169,7 +172,16 @@ function Set-ModuleTemplate {
 
         # Create collected parameters
         # ---------------------------
-        foreach ($parameter in ($parametersToAdd | Sort-Object -Property 'Name')) {
+        # First the required
+        foreach ($parameter in ($parametersToAdd | Where-Object { $_.required } | Sort-Object -Property 'Name')) {
+            $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
+        }
+        # Then the conditional
+        foreach ($parameter in ($parametersToAdd | Where-Object { -not $_.required -and $_.description -like 'Conditional. *' } | Sort-Object -Property 'Name')) {
+            $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
+        }
+        # Then the rest
+        foreach ($parameter in ($parametersToAdd | Where-Object { -not $_.required -and $_.description -notlike 'Conditional. *' } | Sort-Object -Property 'Name')) {
             $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
         }
 

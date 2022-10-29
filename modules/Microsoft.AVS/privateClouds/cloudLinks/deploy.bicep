@@ -2,17 +2,17 @@
 //   Parameters   //
 // ============== //
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = true
-
-@description('Optional. Identifier of the other private cloud participating in the link.')
-param linkedCloud string = ''
-
 @description('Required. Name of the cloud link resource')
 param name string
 
 @description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
 param privateCloudName string
+
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
+@description('Optional. Identifier of the other private cloud participating in the link.')
+param linkedCloud string = ''
 
 
 // =============== //

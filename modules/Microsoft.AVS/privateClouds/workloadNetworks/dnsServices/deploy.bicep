@@ -2,6 +2,12 @@
 //   Parameters   //
 // ============== //
 
+@description('Required. NSX DNS Service identifier. Generally the same as the DNS Service\'s display name')
+param name string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
+
 @description('Optional. Default DNS zone of the DNS Service.')
 param defaultDnsZone string = ''
 
@@ -27,16 +33,10 @@ param fqdnZones array = []
 ])
 param logLevel string = ''
 
-@description('Required. NSX DNS Service identifier. Generally the same as the DNS Service\'s display name')
-param name string
-
-@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
-param privateCloudName string = 'default'
-
 @description('Optional. NSX revision number.')
 param revision int = 
 
-@description('Conditional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
+@description('Optional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
 param workloadNetworkName string = 'default'
 
 

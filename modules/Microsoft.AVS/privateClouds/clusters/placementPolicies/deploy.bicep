@@ -2,6 +2,15 @@
 //   Parameters   //
 // ============== //
 
+@description('Required. Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy')
+param name string
+
+@description('Conditional. The name of the parent clusters. Required if the template is used in a standalone deployment.')
+param clusterName string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
+
 @description('Optional. VM-Host placement policy affinity strength (should/must)')
 @allowed([
   'Should'
@@ -16,9 +25,6 @@ param affinityStrength string = ''
 ])
 param azureHybridBenefitType string = ''
 
-@description('Conditional. The name of the parent clusters. Required if the template is used in a standalone deployment.')
-param clusterName string
-
 @description('Optional. Display name of the placement policy')
 param displayName string = ''
 
@@ -27,12 +33,6 @@ param enableDefaultTelemetry bool = true
 
 @description('Optional. Host members list')
 param hostMembers array = []
-
-@description('Required. Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy')
-param name string
-
-@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
-param privateCloudName string
 
 @description('Optional. Whether the placement policy is enabled or disabled')
 @allowed([

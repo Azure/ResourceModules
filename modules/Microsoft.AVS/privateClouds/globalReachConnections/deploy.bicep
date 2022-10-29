@@ -2,6 +2,12 @@
 //   Parameters   //
 // ============== //
 
+@description('Required. Name of the global reach connection in the private cloud')
+param name string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
+
 @description('Optional. Authorization key from the peer express route used for the global reach connection')
 param authorizationKey string = ''
 
@@ -11,14 +17,8 @@ param enableDefaultTelemetry bool = true
 @description('Optional. The ID of the Private Cloud\'s ExpressRoute Circuit that is participating in the global reach connection')
 param expressRouteId string = ''
 
-@description('Required. Name of the global reach connection in the private cloud')
-param name string
-
 @description('Optional. Identifier of the ExpressRoute Circuit to peer with in the global reach connection')
 param peerExpressRouteCircuit string = ''
-
-@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
-param privateCloudName string
 
 
 // =============== //

@@ -2,6 +2,12 @@
 //   Parameters   //
 // ============== //
 
+@description('Required. NSX DNS Zone identifier. Generally the same as the DNS Zone\'s display name')
+param name string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
+
 @description('Optional. Display name of the DNS Zone.')
 param displayName string = ''
 
@@ -17,19 +23,13 @@ param domain array = []
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Required. NSX DNS Zone identifier. Generally the same as the DNS Zone\'s display name')
-param name string
-
-@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
-param privateCloudName string = 'default'
-
 @description('Optional. NSX revision number.')
 param revision int = 
 
 @description('Optional. Source IP of the DNS Zone.')
 param sourceIp string = ''
 
-@description('Conditional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
+@description('Optional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
 param workloadNetworkName string = 'default'
 
 

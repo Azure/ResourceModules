@@ -2,6 +2,12 @@
 //   Parameters   //
 // ============== //
 
+@description('Required. NSX Segment identifier. Generally the same as the Segment\'s display name')
+param name string
+
+@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
+param privateCloudName string
+
 @description('Optional. Gateway which to connect segment to.')
 param connectedGateway string = ''
 
@@ -11,19 +17,13 @@ param displayName string = ''
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Required. NSX Segment identifier. Generally the same as the Segment\'s display name')
-param name string
-
-@description('Conditional. The name of the parent privateClouds. Required if the template is used in a standalone deployment.')
-param privateCloudName string = 'default'
-
 @description('Optional. NSX revision number.')
 param revision int = 
 
 @description('Optional. Subnet configuration for segment')
 param subnet object = {}
 
-@description('Conditional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
+@description('Optional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
 param workloadNetworkName string = 'default'
 
 
