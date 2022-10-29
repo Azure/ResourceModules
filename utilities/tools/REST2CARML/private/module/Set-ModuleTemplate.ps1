@@ -134,6 +134,8 @@ function Set-ModuleTemplate {
             required    = $false
         }
 
+        $locationParameterExists = ($templateContent | Where-Object { $_ -like 'param location *' }).Count -gt 0
+
         #################
         ##  VARIABLES  ##
         #################
@@ -162,14 +164,18 @@ function Set-ModuleTemplate {
         )
 
         # Telemetry
-        $templateContent += Get-Content -Path (Join-Path $Script:src 'telemetry.bicep')
+        $telemetryTemplate = Get-Content -Path (Join-Path $Script:src 'telemetry.bicep')
+        if (-not $locationParameterExists) {
+            $telemetryTemplate = $telemetryTemplate -replace ', location', ''
+        }
+        $templateContent += $telemetryTemplate
         $templateContent += ''
 
         $existingResourceIndent = 0
         $orderedParentResourceTypes = $fullParentResourceStack | Where-Object { $_ -notlike $FullResourceType } | Sort-Object
         foreach ($parentResourceType in $orderedParentResourceTypes) {
             $singularParent = ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
-            $levedParentResourceType = ($parentResourceType -ne $orderedParentResourceTypes[0]) ? (Split-Path $parentResourceType -Leaf) : $parentResourceType
+            $levedParentResourceType = ($parentResourceType -ne (@() + $orderedParentResourceTypes)[0]) ? (Split-Path $parentResourceType -Leaf) : $parentResourceType
             $parentResourceAPI = Split-Path (Split-Path ($FullModuleData | Where-Object { $_.identifier -eq $parentResourceType }).Metadata.JSONFilePath -Parent) -Leaf
             $templateContent += @(
                 "$(' ' * $existingResourceIndent)resource $($singularParent) '$($levedParentResourceType)@$($parentResourceAPI)' existing = {",
@@ -222,7 +228,7 @@ function Set-ModuleTemplate {
             $childResourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $childResourceType
             $templateContent += @(
                 "module $($resourceTypeSingular)_$($childResourceType) '$($childResourceType)/deploy.bicep' = [for ($($childResourceTypeSingular), index) in $($childResourceType): {",
-                "name: '`${uniqueString(deployment().name, location)}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'",
+                "name: '`${uniqueString(deployment().name$($locationParameterExists ? ', location' : ''))}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'",
                 'params: {'
             )
 
@@ -247,6 +253,12 @@ function Set-ModuleTemplate {
                     }
 
                     $wouldBeParamValue = $wouldBeParamElem[1]
+
+                    # Special case, location function - should reference a location parameter instead
+                    if ($wouldBeParamValue -like '*().location') {
+                        $wouldBeParamValue = 'location'
+                    }
+
                     $templateContent += "    $($parameter.name): contains($($childResourceTypeSingular), '$($parameter.name)') ? $($childResourceTypeSingular).$($parameter.name) : $($wouldBeParamValue)"
                 } else {
                     # No default

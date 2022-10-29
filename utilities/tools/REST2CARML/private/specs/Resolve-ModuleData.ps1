@@ -91,6 +91,7 @@ function Resolve-ModuleData {
 
     # Set Endpoint data
     $endpInputObject = @{
+        UrlPath      = $UrlPath
         JSONFilePath = $JSONFilePath
         ResourceType = $ResourceType
         ModuleData   = $ModuleData
@@ -108,7 +109,7 @@ function Resolve-ModuleData {
 
     ## Set Locks data
     $lockInputObject = @{
-        urlPath      = $UrlPath
+        UrlPath      = $UrlPath
         ResourceType = $ResourceType
         ModuleData   = $ModuleData
     }

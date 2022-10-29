@@ -109,7 +109,7 @@ function Set-Module {
         #############################
         try {
             if ($PSCmdlet.ShouldProcess(('Module ReadMe [{0}]' -f (Join-Path (Split-Path $templatePath -Parent) 'readme.md')), 'Update')) {
-                Set-ModuleReadMe -TemplateFilePath $templatePath
+                Set-ModuleReadMe -TemplateFilePath $templatePath -Verbose:$false
             }
         } catch {
             Write-Warning "Invocation of 'Set-ModuleReadMe' fuction for template in path [$templatePath] failed. Please review the template and re-run the command `Set-ModuleReadMe -TemplateFilePath '$templatePath'``"

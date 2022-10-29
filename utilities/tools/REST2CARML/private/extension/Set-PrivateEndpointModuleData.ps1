@@ -5,6 +5,9 @@ Populate the provided ModuleData with all parameters, variables & resources requ
 .DESCRIPTION
 Populate the provided ModuleData with all parameters, variables & resources required for private endpoints.
 
+.PARAMETER UrlPath
+Mandatory. The JSON key path (of the API Specs) to use when determining if private endpoints are supported or not
+
 .PARAMETER JSONFilePath
 Mandatory. The path to the API Specs file to use to check if private endpoints are supported.
 
@@ -15,7 +18,7 @@ Mandatory. The resource type to check if private endpoints are supported.
 Mandatory. The ModuleData object to populate.
 
 .EXAMPLE
-Set-PrivateEndpointModuleData -JSONFilePath './resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json'  -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
+Set-PrivateEndpointModuleData -JSONFilePath './resource-manager/Microsoft.KeyVault/stable/2022-07-01/keyvault.json'  -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) } -UrlPath '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}'
 
 Add the private endpoint module data of the resource type [vaults] to the provided module data object
 #>
@@ -23,6 +26,9 @@ function Set-PrivateEndpointModuleData {
 
     [CmdletBinding()]
     param (
+        [Parameter(Mandatory = $true)]
+        [string] $UrlPath,
+
         [Parameter(Mandatory = $true)]
         [string] $JSONFilePath,
 
@@ -41,7 +47,7 @@ function Set-PrivateEndpointModuleData {
 
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
-        if (-not (Get-SupportsPrivateEndpoint -JSONFilePath $JSONFilePath)) {
+        if (-not (Get-SupportsPrivateEndpoint -JSONFilePath $JSONFilePath -UrlPath $UrlPath)) {
             return
         }
 
