@@ -61,14 +61,14 @@ resource scriptExecution 'Microsoft.AVS/privateClouds/scriptExecutions@2022-05-0
   parent: privateCloud
   name: name
   properties: {
-    scriptCmdletId: scriptCmdletId
     failureReason: failureReason
-    output: output
-    namedOutputs: namedOutputs
-    timeout: timeout
-    retention: retention
-    parameters: parameters
     hiddenParameters: hiddenParameters
+    namedOutputs: namedOutputs
+    output: output
+    parameters: parameters
+    retention: retention
+    scriptCmdletId: scriptCmdletId
+    timeout: timeout
   }
 }
 

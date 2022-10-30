@@ -56,8 +56,8 @@ resource dhcpConfiguration 'Microsoft.AVS/privateClouds/workloadNetworks/dhcpCon
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    displayName: displayName
     dhcpType: dhcpType
+    displayName: displayName
     revision: revision
   }
 }

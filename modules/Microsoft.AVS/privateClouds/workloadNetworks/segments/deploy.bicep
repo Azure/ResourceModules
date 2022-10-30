@@ -55,10 +55,10 @@ resource segment 'Microsoft.AVS/privateClouds/workloadNetworks/segments@2022-05-
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    subnet: subnet
+    connectedGateway: connectedGateway
     displayName: displayName
     revision: revision
-    connectedGateway: connectedGateway
+    subnet: subnet
   }
 }
 

@@ -80,13 +80,13 @@ resource placementPolicy 'Microsoft.AVS/privateClouds/clusters/placementPolicies
   parent: privateCloud::cluster
   name: name
   properties: {
-    state: state
-    type: type
-    displayName: displayName
     affinityStrength: affinityStrength
     azureHybridBenefitType: azureHybridBenefitType
-    vmMembers: vmMembers
+    displayName: displayName
     hostMembers: hostMembers
+    state: state
+    type: type
+    vmMembers: vmMembers
   }
 }
 

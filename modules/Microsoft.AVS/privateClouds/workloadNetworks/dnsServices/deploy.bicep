@@ -68,12 +68,12 @@ resource dnsService 'Microsoft.AVS/privateClouds/workloadNetworks/dnsServices@20
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    logLevel: logLevel
-    fqdnZones: fqdnZones
     defaultDnsZone: defaultDnsZone
-    dnsServiceIp: dnsServiceIp
-    revision: revision
     displayName: displayName
+    dnsServiceIp: dnsServiceIp
+    fqdnZones: fqdnZones
+    logLevel: logLevel
+    revision: revision
   }
 }
 

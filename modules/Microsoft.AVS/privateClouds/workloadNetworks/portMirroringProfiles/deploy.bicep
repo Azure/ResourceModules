@@ -64,9 +64,9 @@ resource portMirroringProfile 'Microsoft.AVS/privateClouds/workloadNetworks/port
   name: name
   properties: {
     destination: destination
+    direction: direction
     displayName: displayName
     revision: revision
-    direction: direction
     source: source
   }
 }

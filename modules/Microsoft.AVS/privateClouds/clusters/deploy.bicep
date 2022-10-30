@@ -55,36 +55,36 @@ resource cluster 'Microsoft.AVS/privateClouds/clusters@2022-05-01' = {
   name: name
   sku: sku
   properties: {
-    hosts: hosts
     clusterSize: clusterSize
+    hosts: hosts
   }
 }
 
-module cluster_datastores 'datastores/deploy.bicep' = [for (datastore, index) in datastores: {
-name: '${uniqueString(deployment().name)}-cluster-datastore-${index}'
-params: {
+module cluster_placementPolicies 'placementPolicies/deploy.bicep' = [for (placementPolicy, index) in placementPolicies: {
+  name: '${uniqueString(deployment().name)}-cluster-placementPolicy-${index}'
+  params: {
     privateCloudName: privateCloudName
     clusterName: name
-    name: datastore.name
-    diskPoolVolume: contains(datastore, 'diskPoolVolume') ? datastore.diskPoolVolume : {}
-    netAppVolume: contains(datastore, 'netAppVolume') ? datastore.netAppVolume : {}
+    affinityStrength: contains(placementPolicy, 'affinityStrength') ? placementPolicy.affinityStrength : ''
+    azureHybridBenefitType: contains(placementPolicy, 'azureHybridBenefitType') ? placementPolicy.azureHybridBenefitType : ''
+    displayName: contains(placementPolicy, 'displayName') ? placementPolicy.displayName : ''
+    hostMembers: contains(placementPolicy, 'hostMembers') ? placementPolicy.hostMembers : []
+    name: placementPolicy.name
+    state: contains(placementPolicy, 'state') ? placementPolicy.state : ''
+    type: contains(placementPolicy, 'type') ? placementPolicy.type : ''
+    vmMembers: contains(placementPolicy, 'vmMembers') ? placementPolicy.vmMembers : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-module cluster_placementPolicies 'placementPolicies/deploy.bicep' = [for (placementPolicy, index) in placementPolicies: {
-name: '${uniqueString(deployment().name)}-cluster-placementPolicy-${index}'
-params: {
+module cluster_datastores 'datastores/deploy.bicep' = [for (datastore, index) in datastores: {
+  name: '${uniqueString(deployment().name)}-cluster-datastore-${index}'
+  params: {
     privateCloudName: privateCloudName
     clusterName: name
-    name: placementPolicy.name
-    state: contains(placementPolicy, 'state') ? placementPolicy.state : ''
-    type: contains(placementPolicy, 'type') ? placementPolicy.type : ''
-    displayName: contains(placementPolicy, 'displayName') ? placementPolicy.displayName : ''
-    affinityStrength: contains(placementPolicy, 'affinityStrength') ? placementPolicy.affinityStrength : ''
-    azureHybridBenefitType: contains(placementPolicy, 'azureHybridBenefitType') ? placementPolicy.azureHybridBenefitType : ''
-    vmMembers: contains(placementPolicy, 'vmMembers') ? placementPolicy.vmMembers : []
-    hostMembers: contains(placementPolicy, 'hostMembers') ? placementPolicy.hostMembers : []
+    diskPoolVolume: contains(datastore, 'diskPoolVolume') ? datastore.diskPoolVolume : {}
+    name: datastore.name
+    netAppVolume: contains(datastore, 'netAppVolume') ? datastore.netAppVolume : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

@@ -61,12 +61,12 @@ resource dnsZone 'Microsoft.AVS/privateClouds/workloadNetworks/dnsZones@2022-05-
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    revision: revision
     displayName: displayName
-    dnsServices: dnsServices
     dnsServerIps: dnsServerIps
-    sourceIp: sourceIp
+    dnsServices: dnsServices
     domain: domain
+    revision: revision
+    sourceIp: sourceIp
   }
 }
 
