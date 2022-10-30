@@ -100,7 +100,40 @@ function Resolve-ExistingTemplateContent {
         $topLevelIndent = Get-LineIndentation -Line $block.content[1]
         $relevantProperties = $block.content | Where-Object { (Get-LineIndentation $_) -eq $topLevelIndent -and $_ -notlike '*properties: {*' -and $_ -like '*:*' }
         $topLevelPropertyNames = $relevantProperties | ForEach-Object { ($_ -split ':')[0].Trim() }
-        $block['topLevelProperties'] = $topLevelPropertyNames
+
+        # Collect full data block
+        $topLevelProperties = @()
+        foreach ($topLevelPropertyName in $topLevelPropertyNames) {
+
+            # Find start index of poperty
+            $relativePropertyStartIndex = 1
+            for ($index = $relativePropertyStartIndex; $index -lt $block.content.Count; $index++) {
+                if ($block.content[$index] -match ("^\s{$($topLevelIndent)}$($topLevelPropertyName):.+$" )) {
+                    $relativePropertyStartIndex = $index
+                    break
+                }
+            }
+
+            # Find end index of poperty
+            $isPropertyOrClosing = "^\s{$($topLevelIndent)}\w+:.+$|^}$"
+            if ($block.content[$index + 1] -notmatch $isPropertyOrClosing) {
+                # If the next line is not another property, it's a multi-line declaration
+                $relativePropertyEndIndex = $relativePropertyStartIndex
+                while ($block.content[($relativePropertyEndIndex + 1)] -notmatch $isPropertyOrClosing) {
+                    $relativePropertyEndIndex++
+                }
+            } else {
+                $relativePropertyEndIndex = $relativePropertyStartIndex
+            }
+
+            # Build result
+            $topLevelProperties += @{
+                name    = $topLevelPropertyName
+                content = $block.content[$relativePropertyStartIndex..$relativePropertyEndIndex]
+            }
+        }
+
+        $block['topLevelProperties'] = $topLevelProperties
 
         if (($block.content | Where-Object { $_ -match '\s*properties:.+' }).count -gt 0) {
             $propertiesStartIndex = 1
@@ -126,7 +159,40 @@ function Resolve-ExistingTemplateContent {
                 $nestedIndent = Get-LineIndentation -Line $block.content[($propertiesStartIndex + 1)]
                 $relevantNestedProperties = $block.content[($propertiesStartIndex + 1) .. ($propertiesEndIndex - 1)] | Where-Object { (Get-LineIndentation $_) -eq $nestedIndent -and $_ -match '^\s*\w+:.*' }
                 $nestedPropertyNames = $relevantNestedProperties | ForEach-Object { ($_ -split ':')[0].Trim() }
-                $block['nestedProperties'] = $nestedPropertyNames
+
+                # Collect full data block
+                $nestedProperties = @()
+                foreach ($nestedPropertyName in $nestedPropertyNames) {
+
+                    # Find start index of poperty
+                    $relativePropertyStartIndex = 1
+                    for ($index = $relativePropertyStartIndex; $index -lt $block.content.Count; $index++) {
+                        if ($block.content[$index] -match ("^\s{$($nestedIndent)}$($nestedPropertyName):.+$" )) {
+                            $relativePropertyStartIndex = $index
+                            break
+                        }
+                    }
+
+                    # Find end index of poperty
+                    $isPropertyOrClosing = "^\s{$($nestedIndent)}\w+:.+$|^\s{$($topLevelIndent)}}$"
+                    if ($block.content[$index + 1] -notmatch $isPropertyOrClosing) {
+                        # If the next line is not another property, it's a multi-line declaration
+                        $relativePropertyEndIndex = $relativePropertyStartIndex
+                        while ($block.content[($relativePropertyEndIndex + 1)] -notmatch $isPropertyOrClosing) {
+                            $relativePropertyEndIndex++
+                        }
+                    } else {
+                        $relativePropertyEndIndex = $relativePropertyStartIndex
+                    }
+
+                    # Build result
+                    $nestedProperties += @{
+                        name    = $nestedPropertyName
+                        content = $block.content[$relativePropertyStartIndex..$relativePropertyEndIndex]
+                    }
+                }
+
+                $block['nestedProperties'] = $nestedProperties
             }
         }
     }
