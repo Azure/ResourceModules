@@ -17,7 +17,7 @@
 
 # Implement the contribution
 
-### Create a contribution branch. Leave all your custom changes to settings remain in main!
+### Create a contribution branch. Leave all your custom changes to settings remain in your forks main!
 ### Implement the change the issue requires.
 ### Validate the change locally or use the CI environment.
 
@@ -55,3 +55,6 @@ git commit -a -m 'Reset settings files'
 git push
 
 # Create a pull request
+# https://github.com/MariusStorhaug/ResourceModules (dev branch) -> https://github.com/Azure/ResourceModules (main)
+
+## Badges!
