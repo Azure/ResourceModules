@@ -28,31 +28,31 @@ Name                           Value
 startIndex                     173
 endIndex                       183
 content                        {resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {,   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment…
-nestedProperties               {mode, template}
-topLevelProperties             name
+nestedElements                 {mode, template}
+topLevelElements               name
 
 startIndex                     185
 endIndex                       188
 content                        {resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(cMKKeyVaultResourceId)) {,   name: last(split(cMKKeyVaultResourceId, '/')),   scope: resourc…
-topLevelProperties             {name, scope}
+topLevelElements               {name, scope}
 
 startIndex                     190
 endIndex                       240
 content                        {resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {,   name: name,   location: location,   kind: storageAccountKind…}
-nestedProperties               {encryption, accessTier, supportsHttpsTrafficOnly, isHnsEnabled…}
-topLevelProperties             {name, location, kind, sku…}
+nestedElements                 {encryption, accessTier, supportsHttpsTrafficOnly, isHnsEnabled…}
+topLevelElements               {name, location, kind, sku…}
 
 startIndex                     242
 endIndex                       252
 content                        {resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId))…
-nestedProperties               {storageAccountId, workspaceId, eventHubAuthorizationRuleId, eventHubName…}
-topLevelProperties             {name, scope}
+nestedElements                 {storageAccountId, workspaceId, eventHubAuthorizationRuleId, eventHubName…}
+topLevelElements               {name, scope}
 
 startIndex                     254
 endIndex                       261
-content                        {resource storageAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {,   name: '${storageAccount.name}-${lock}-lock',   properties: {,     level: any(lock)…
-nestedProperties               {level, notes}
-topLevelProperties             {name, scope}
+content                        {resource storageAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {,   name: '${storageAccount.name}-${lock}-lock',   Elements: {,     level: any(lock)…
+nestedElements                 {level, notes}
+topLevelElements               {name, scope}
 #>
 function Resolve-ExistingTemplateContent {
 
@@ -118,7 +118,6 @@ function Resolve-ExistingTemplateContent {
         $block['name'] = (($block.content | Where-Object { $_ -like 'output *' }) -split ' ')[1]
         $block['type'] = (($block.content | Where-Object { $_ -like 'output *' }) -split ' ')[2]
     }
-
 
     #######################
     ##   Return result   ##

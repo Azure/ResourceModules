@@ -28,6 +28,10 @@ function Read-DeclarationBlock {
         [string] $DeclarationType
     )
 
+    ######################################################################################################################################
+    ##   Define which key-words indicate a new declaration (depending on whether you'd move up in the template, or down line by line)   ##
+    ######################################################################################################################################
+
     # Any keyword when moving from the current line up to indicate that it's a new declaration
     $newLogicIdentifiersUp = @(
         '^targetScope.+$',
@@ -51,6 +55,9 @@ function Read-DeclarationBlock {
         '^\s*$'
     )
 
+    #########################################
+    ##   Find all indexes to investigate   ##
+    #########################################
     $existingBlocks = @()
 
     $declarationIndexes = @()
@@ -60,6 +67,9 @@ function Read-DeclarationBlock {
         }
     }
 
+    ########################################################################################################################
+    ##   Process each found index and find its element's start- & end-index (i.e., where its declaration starts & ends)   ##
+    ########################################################################################################################
     foreach ($declarationIndex in $declarationIndexes) {
         switch ($DeclarationType) {
             { $PSItem -in @('param', 'output') } {

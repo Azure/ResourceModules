@@ -30,12 +30,13 @@ function Expand-DeploymentBlock {
     $relevantProperties = $DeclarationBlock.content | Where-Object { (Get-LineIndentation $_) -eq $topLevelIndent -and $_ -notlike "*$($NestedType): {*" -and $_ -like '*:*' }
     $topLevelElementNames = $relevantProperties | ForEach-Object { ($_ -split ':')[0].Trim() }
 
-    # Collect full data block
-    ## Top level elements
+    ####################################
+    ##   Collect top level elements   ##
+    ####################################
     $topLevelElements = @()
     foreach ($topLevelElementName in $topLevelElementNames) {
 
-        # Find start index of poperty
+        # Find start index of element
         $relativeElementStartIndex = 1
         for ($index = $relativeElementStartIndex; $index -lt $DeclarationBlock.content.Count; $index++) {
             if ($DeclarationBlock.content[$index] -match ("^\s{$($topLevelIndent)}$($topLevelElementName):.+$" )) {
@@ -44,7 +45,7 @@ function Expand-DeploymentBlock {
             }
         }
 
-        # Find end index of poperty
+        # Find end index of element
         $isPropertyOrClosing = "^\s{$($topLevelIndent)}\w+:.+$|^}$"
         if ($DeclarationBlock.content[$index + 1] -notmatch $isPropertyOrClosing) {
             # If the next line is not another element/property/param, it's a multi-line declaration
@@ -65,8 +66,13 @@ function Expand-DeploymentBlock {
 
     $DeclarationBlock['topLevelElements'] = $topLevelElements
 
-    ## Nested elements
+    #################################
+    ##   Collect nested elements   ##
+    #################################
     if (($DeclarationBlock.content | Where-Object { $_ -match "^\s*$($NestedType): \{\s*$" }).count -gt 0) {
+
+        # Find start index of nested block
+        # --------------------------------
         $propertiesStartIndex = 1
         for ($index = $propertiesStartIndex; $index -lt $DeclarationBlock.content.Count; $index++) {
             if ($DeclarationBlock.Content[$index] -match "^\s*$($NestedType): \{\s*$") {
@@ -75,6 +81,8 @@ function Expand-DeploymentBlock {
             }
         }
 
+        # Find end index of nested block
+        # ------------------------------
         $propertiesEndIndex = $propertiesStartIndex
         for ($index = $propertiesEndIndex; $index -lt $DeclarationBlock.content.Count; $index++) {
             if ((Get-LineIndentation -Line $DeclarationBlock.Content[$index]) -eq $topLevelIndent -and $DeclarationBlock.Content[$index].Trim() -eq '}') {
@@ -83,8 +91,10 @@ function Expand-DeploymentBlock {
             }
         }
 
+        # Process nested block
+        # --------------------
         if ($DeclarationBlock.content[$propertiesStartIndex] -like '*{*}*' -or $DeclarationBlock.content[$propertiesStartIndex + 1].Trim() -eq '}') {
-            # Empty properties block. Can be skipped
+            # Empty properties block. Can be skipped.
             $DeclarationBlock['nestedElements'] = @()
         } else {
             $nestedIndent = Get-LineIndentation -Line $DeclarationBlock.content[($propertiesStartIndex + 1)]
