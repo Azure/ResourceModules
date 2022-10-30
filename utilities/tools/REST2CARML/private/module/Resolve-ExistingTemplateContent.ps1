@@ -32,7 +32,7 @@
         '^output .+$',
         '^//.*$',
         '^@.+$',
-        '^\s+$'
+        '^\s*$'
     )
 
     ############################
@@ -61,7 +61,7 @@
         $paramEndIndex = $paramIndex
 
         $existingParametersBlock += @{
-            content    = $templateContent[$paramStartIndex .. $paramIndex]
+            content    = $templateContent[$paramStartIndex .. $paramEndIndex]
             startIndex = $paramStartIndex
             endIndex   = $paramEndIndex
         }
@@ -71,7 +71,44 @@
     ##   Extract Variables   ##
     ###########################
     $existingVariablesBlock = @()
+
+    $varIndexes = @()
+    for ($index = 0; $index -lt $templateContent.Count; $index++) {
+        if ($templateContent[$index] -like 'var *') {
+            $varIndexes += $index
+        }
+    }
+
+    foreach ($varIndex in $varIndexes) {
+
+        # The var line is always the first line of a var
+        $varStartIndex = $varIndex
+
+
+        # Let's go 'down' until the var declarations end
+        $varEndIndex = $varIndex
+        while ($templateContent[$varEndIndex] -eq $templateContent[$varIndex] -or (($newLogicIdentifiersDown | Where-Object { $templateContent[$varEndIndex] -match $_ }).Count -eq 0 -and $varEndIndex -ne $templateContent.Count)) {
+            $varEndIndex++
+        }
+        # Logic always counts one too far
+        $varEndIndex--
+
+        $existingVariablesBlock += @{
+            content    = $templateContent[$varStartIndex .. $varEndIndex]
+            startIndex = $varStartIndex
+            endIndex   = $varEndIndex
+        }
+    }
+
+    ###########################
+    ##   Extract Resources   ##
+    ###########################
     $existingdeploymentBlock = @()
+
+
+    #########################
+    ##   Extract Outputs   ##
+    #########################
     $existingOutputsBlock = @()
 }
 Resolve-ExistingTemplateContent -TemplateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules\Microsoft.Storage\storageAccounts\deploy.bicep'
