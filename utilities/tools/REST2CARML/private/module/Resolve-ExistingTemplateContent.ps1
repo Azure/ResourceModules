@@ -102,6 +102,7 @@ function Resolve-ExistingTemplateContent {
         $topLevelPropertyNames = $relevantProperties | ForEach-Object { ($_ -split ':')[0].Trim() }
 
         # Collect full data block
+        ## Top level properties
         $topLevelProperties = @()
         foreach ($topLevelPropertyName in $topLevelPropertyNames) {
 
@@ -135,10 +136,11 @@ function Resolve-ExistingTemplateContent {
 
         $block['topLevelProperties'] = $topLevelProperties
 
-        if (($block.content | Where-Object { $_ -match '\s*properties:.+' }).count -gt 0) {
+        ## Nested properties
+        if (($block.content | Where-Object { $_ -match '^\s*properties: \{\s*$' }).count -gt 0) {
             $propertiesStartIndex = 1
             for ($index = $propertiesStartIndex; $index -lt $block.content.Count; $index++) {
-                if ($block.Content[$index] -match '^\s*properties: {.*') {
+                if ($block.Content[$index] -match '^\s*properties: \{\s*$') {
                     $propertiesStartIndex = $index
                     break
                 }
@@ -204,7 +206,82 @@ function Resolve-ExistingTemplateContent {
 
     # Analyze content
     foreach ($block in $existingModuleBlocks) {
-        $block['params'] = $block.content[3..($block.content.count - 3)] | ForEach-Object { ($_ -split ':')[0].Trim() }
+
+        $topLevelIndent = Get-LineIndentation -Line $block.content[1]
+        $relevantProperties = $block.content | Where-Object { (Get-LineIndentation $_) -eq $topLevelIndent -and $_ -notlike '*params: {*' -and $_ -like '*:*' }
+        $topLevelPropertyNames = $relevantProperties | ForEach-Object { ($_ -split ':')[0].Trim() }
+
+        # Collect full data block
+        ## Top level properties
+        $block['topLevelProperties'] = @(
+            @{
+                name    = 'name'
+                content = $block.content[1]
+            }
+        )
+        ## Nested params
+        # $block['params'] = $block.content[3..($block.content.count - 3)] | ForEach-Object { ($_ -split ':')[0].Trim() }
+        if (($block.content | Where-Object { $_ -match '^\s*params: {\s*$' }).count -gt 0) {
+            $paramsStartIndex = 1
+            for ($index = $paramsStartIndex; $index -lt $block.content.Count; $index++) {
+                if ($block.Content[$index] -match '^\s*params: {\s*$') {
+                    $paramsStartIndex = $index
+                    break
+                }
+            }
+
+            $paramsEndIndex = $paramsStartIndex
+            for ($index = $paramsEndIndex; $index -lt $block.content.Count; $index++) {
+                if ((Get-LineIndentation -Line $block.Content[$index]) -eq $topLevelIndent -and $block.Content[$index].Trim() -eq '}') {
+                    $paramsEndIndex = $index
+                    break
+                }
+            }
+            $paramsEndIndex
+
+            if ($block.content[$paramsStartIndex] -like '*{*}*' -or $block.content[$paramsStartIndex + 1].Trim() -eq '}') {
+                # Empty properties block. Can be skipped
+                $block['nestedParams'] = @()
+            } else {
+                $nestedIndent = Get-LineIndentation -Line $block.content[($paramsStartIndex + 1)]
+                $relevantNestedParams = $block.content[($paramsStartIndex + 1) .. ($paramsEndIndex - 1)] | Where-Object { (Get-LineIndentation $_) -eq $nestedIndent -and $_ -match '^\s*\w+:.*' }
+                $nestedParamNames = $relevantNestedParams | ForEach-Object { ($_ -split ':')[0].Trim() }
+
+                # Collect full data block
+                $nestedparams = @()
+                foreach ($nestedParamName in $nestedParamNames) {
+
+                    # Find start index of poperty
+                    $relativeParamStartIndex = 1
+                    for ($index = $relativeParamStartIndex; $index -lt $block.content.Count; $index++) {
+                        if ($block.content[$index] -match ("^\s{$($nestedIndent)}$($nestedParamName):.+$" )) {
+                            $relativeParamStartIndex = $index
+                            break
+                        }
+                    }
+
+                    # Find end index of poperty
+                    $isParamOrClosing = "^\s{$($nestedIndent)}\w+:.+$|^\s{$($topLevelIndent)}}$"
+                    if ($block.content[$index + 1] -notmatch $isParamOrClosing) {
+                        # If the next line is not another param, it's a multi-line declaration
+                        $relativeParamEndIndex = $relativeParamStartIndex
+                        while ($block.content[($relativeParamEndIndex + 1)] -notmatch $isParamOrClosing) {
+                            $relativeParamEndIndex++
+                        }
+                    } else {
+                        $relativeParamEndIndex = $relativeParamStartIndex
+                    }
+
+                    # Build result
+                    $nestedParams += @{
+                        name    = $nestedParamName
+                        content = $block.content[$relativeParamStartIndex..$relativeParamEndIndex]
+                    }
+                }
+
+                $block['nestedParams'] = $nestedParams
+            }
+        }
     }
 
 
