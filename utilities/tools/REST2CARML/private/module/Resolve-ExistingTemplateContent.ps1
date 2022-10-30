@@ -38,7 +38,7 @@
     ############################
     ##   Extract Parameters   ##
     ############################
-    $existingParametersBlock = @()
+    $existingParameterBlocks = @()
 
     $paramIndexes = @()
     for ($index = 0; $index -lt $templateContent.Count; $index++) {
@@ -60,7 +60,7 @@
         # The param line is always the last line of a param
         $paramEndIndex = $paramIndex
 
-        $existingParametersBlock += @{
+        $existingParameterBlocks += @{
             content    = $templateContent[$paramStartIndex .. $paramEndIndex]
             startIndex = $paramStartIndex
             endIndex   = $paramEndIndex
@@ -70,7 +70,7 @@
     ###########################
     ##   Extract Variables   ##
     ###########################
-    $existingVariablesBlock = @()
+    $existingVariableBlocks = @()
 
     $varIndexes = @()
     for ($index = 0; $index -lt $templateContent.Count; $index++) {
@@ -93,7 +93,7 @@
         # Logic always counts one too far
         $varEndIndex--
 
-        $existingVariablesBlock += @{
+        $existingVariableBlocks += @{
             content    = $templateContent[$varStartIndex .. $varEndIndex]
             startIndex = $varStartIndex
             endIndex   = $varEndIndex
@@ -109,6 +109,40 @@
     #########################
     ##   Extract Outputs   ##
     #########################
-    $existingOutputsBlock = @()
+    $existingOutputBlocks = @()
+
+    $outputIndexes = @()
+    for ($index = 0; $index -lt $templateContent.Count; $index++) {
+        if ($templateContent[$index] -like 'output *') {
+            $outputIndexes += $index
+        }
+    }
+
+    foreach ($outputIndex in $outputIndexes) {
+
+        # Let's go 'up' until the output declarations end
+        $outputStartIndex = $outputIndex
+        while ($templateContent[$outputStartIndex] -eq $templateContent[$outputIndex] -or (($newLogicIdentifiersUp | Where-Object { $templateContent[$outputStartIndex] -match $_ }).Count -eq 0 -and $outputStartIndex -ne 0)) {
+            $outputStartIndex--
+        }
+        # Logic always counts one too far
+        $outputStartIndex++
+
+        # The output line is always the last line of a output
+        $outputEndIndex = $outputIndex
+
+        $existingOutputBlocks += @{
+            content    = $templateContent[$outputStartIndex .. $outputEndIndex]
+            startIndex = $outputStartIndex
+            endIndex   = $outputEndIndex
+        }
+    }
+
+    return @{
+        parameters = $existingParameterBlocks
+        variables  = $existingVariableBlocks
+        resources  = $existingVariableBlocks
+        outputs    = $existingOutputBlocks
+    }
 }
 Resolve-ExistingTemplateContent -TemplateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules\Microsoft.Storage\storageAccounts\deploy.bicep'
