@@ -11,12 +11,17 @@ Get-LineIndentation -Line '    Test'
 Retrieve indentation of line '    Test'. Would return 4.
 #>
 function Get-LineIndentation {
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
         [string] $Line
     )
-    begin {}
+
+    begin {
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
+    }
+
     process {
         $indentation = 0
         for ($i = 0; $i -lt $Line.Length; $i++) {
@@ -35,5 +40,8 @@ function Get-LineIndentation {
         }
         return $indentation
     }
-    end {}
+
+    end {
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
+    }
 }
