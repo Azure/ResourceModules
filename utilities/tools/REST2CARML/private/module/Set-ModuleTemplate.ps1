@@ -48,7 +48,7 @@ function Set-ModuleTemplate {
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
-        $templatePath = Join-Path $script:repoRoot 'modules' $FullResourceType 'deploy.bicep'
+        $templateFilePath = Join-Path $script:repoRoot 'modules' $FullResourceType 'deploy.bicep'
         $providerNamespace = ($FullResourceType -split '/')[0]
         $resourceType = $FullResourceType -replace "$providerNamespace/", ''
     }
@@ -58,6 +58,9 @@ function Set-ModuleTemplate {
         #####################
         ##   Collect Data   #
         #####################
+
+        # Existing template (if any)
+        $existingTemplateContent = Resolve-ExistingTemplateContent -TemplateFilePath $templateFilePath
 
         # Collect child-resource information
         $linkedChildren = $fullmoduleData | Where-Object {
@@ -172,6 +175,7 @@ function Set-ModuleTemplate {
 
         # Create collected parameters
         # ---------------------------
+        # TODO: Only update parameters that are not already defines
         # First the required
         foreach ($parameter in ($parametersToAdd | Where-Object { $_.required } | Sort-Object -Property 'Name')) {
             $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
@@ -385,7 +389,7 @@ function Set-ModuleTemplate {
 
         # Update file
         # -----------
-        Set-Content -Path $templatePath -Value ($templateContent | Out-String).TrimEnd() -Force
+        Set-Content -Path $templateFilePath -Value ($templateContent | Out-String).TrimEnd() -Force
     }
 
     end {
