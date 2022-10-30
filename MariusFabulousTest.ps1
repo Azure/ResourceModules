@@ -50,4 +50,8 @@ git remote add upstream https://github.com/Azure/ResourceModules.git
 git fetch upstream
 git restore --source upstream/main * ':!*Microsoft.KeyVault\vaults*'
 
+# Push the branch to your fork
+git commit -a -m 'Reset settings files'
+git push
+
 # Create a pull request
