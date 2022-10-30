@@ -99,8 +99,8 @@ function Resolve-ExistingTemplateContent {
 
         $topLevelIndent = Get-LineIndentation -Line $block.content[1]
         $relevantProperties = $block.content | Where-Object { (Get-LineIndentation $_) -eq $topLevelIndent -and $_ -notlike '*properties: {*' -and $_ -like '*:*' }
-
-        $block['topLevelProperties'] = $relevantProperties | ForEach-Object { ($_ -split ':')[0].Trim() }
+        $topLevelPropertyNames = $relevantProperties | ForEach-Object { ($_ -split ':')[0].Trim() }
+        $block['topLevelProperties'] = $topLevelPropertyNames
 
         if (($block.content | Where-Object { $_ -match '\s*properties:.+' }).count -gt 0) {
             $propertiesStartIndex = 1
@@ -125,7 +125,8 @@ function Resolve-ExistingTemplateContent {
             } else {
                 $nestedIndent = Get-LineIndentation -Line $block.content[($propertiesStartIndex + 1)]
                 $relevantNestedProperties = $block.content[($propertiesStartIndex + 1) .. ($propertiesEndIndex - 1)] | Where-Object { (Get-LineIndentation $_) -eq $nestedIndent -and $_ -match '^\s*\w+:.*' }
-                $block['nestedProperties'] = $relevantNestedProperties | ForEach-Object { ($_ -split ':')[0].Trim() }
+                $nestedPropertyNames = $relevantNestedProperties | ForEach-Object { ($_ -split ':')[0].Trim() }
+                $block['nestedProperties'] = $nestedPropertyNames
             }
         }
     }
