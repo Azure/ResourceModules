@@ -2,6 +2,9 @@
 .SYNOPSIS
 Retrieve indentation of a line.
 
+.DESCRIPTION
+Retrieve indentation of a line.
+
 .PARAMETER Line
 Mandatory. The line to analyse for indentation.
 
