@@ -60,7 +60,7 @@ function Set-ModuleTemplate {
         #####################
 
         # Existing template (if any)
-        $existingTemplateContent = @() # Resolve-ExistingTemplateContent -TemplateFilePath $templateFilePath
+        $existingTemplateContent = Resolve-ExistingTemplateContent -TemplateFilePath $templateFilePath
 
         # Collect child-resource information
         $linkedChildren = $fullmoduleData | Where-Object {
@@ -181,6 +181,7 @@ function Set-ModuleTemplate {
                 $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
             } else {
                 $templateContent += ($existingTemplateContent.parameters | Where-Object { $_.name -eq $parameter.name }).content
+                $templateContent += ''
             }
         }
         # Then the conditional
@@ -189,6 +190,7 @@ function Set-ModuleTemplate {
                 $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
             } else {
                 $templateContent += ($existingTemplateContent.parameters | Where-Object { $_.name -eq $parameter.name }).content
+                $templateContent += ''
             }
         }
         # Then the rest
@@ -197,12 +199,14 @@ function Set-ModuleTemplate {
                 $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
             } else {
                 $templateContent += ($existingTemplateContent.parameters | Where-Object { $_.name -eq $parameter.name }).content
+                $templateContent += ''
             }
         }
 
         # TODO: Add additional parameters at the end?
         foreach ($extraParameter in ($existingTemplateContent.parameters | Where-Object { $parametersToAdd.name -notcontains $_.name })) {
             $templateContent += $extraParameter.content
+            $templateContent += ''
         }
 
 
@@ -263,9 +267,9 @@ function Set-ModuleTemplate {
             $parentResourceAPI = Split-Path (Split-Path $parentJSONPath -Parent) -Leaf
             $templateContent += @(
                 "$(' ' * $existingResourceIndent)resource $($singularParent) '$($levedParentResourceType)@$($parentResourceAPI)' existing = {",
-                "$(' ' * $existingResourceIndent)    name: $($singularParent)Name"
+                "$(' ' * $existingResourceIndent)  name: $($singularParent)Name"
             )
-            if ($parentResourceType -ne $orderedParentResourceTypes[-1]) {
+            if ($parentResourceType -ne (@() + $orderedParentResourceTypes)[-1]) {
                 # Only add an empty line if there is more content to add
                 $templateContent += ''
             }

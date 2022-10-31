@@ -12,7 +12,7 @@ param sku object
 param privateCloudName string
 
 @description('Optional. The cluster size')
-param clusterSize int = 
+param clusterSize int =
 
 @description('Optional. The datastores to create as part of the cluster.')
 param datastores array = []
@@ -46,8 +46,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource privateCloud 'Microsoft.AVS/privateClouds@2022-05-01' existing = {
-    name: privateCloudName
-
+  name: privateCloudName
 }
 
 resource cluster 'Microsoft.AVS/privateClouds/clusters@2022-05-01' = {
