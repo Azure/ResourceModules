@@ -691,10 +691,10 @@ function ConvertTo-FormattedJSONParameterObject {
         $line = $pattern.replace($line, '"$1":', 1)
 
         # [2.5] Syntax: Replace Bicep resource ID references
-        $mayHaveValue = $line -like '*:*'
+        $mayHaveValue = $line -match '\s*.+:\s+'
         if ($mayHaveValue) {
 
-            $lineValue = ($line -split '\s*".+":')[1].Trim() # i.e. optional spaces, followed by a name ("xzy"), followed by ':'
+            $lineValue = ($line -split '\s*.+:\s+')[1].Trim() # i.e. optional spaces, followed by a name ("xzy"), followed by ':', folowed by at least a space
 
             # Individual checks
             $isLineWithEmptyObjectValue = $line -match '^.+:\s*{\s*}\s*$' # e.g. test: {}
