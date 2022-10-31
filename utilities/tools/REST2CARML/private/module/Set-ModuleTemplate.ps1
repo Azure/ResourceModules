@@ -203,7 +203,7 @@ function Set-ModuleTemplate {
             }
         }
 
-        # TODO: Add additional parameters at the end?
+        # Add additional parameters at the end?
         foreach ($extraParameter in ($existingTemplateContent.parameters | Where-Object { $parametersToAdd.name -notcontains $_.name })) {
             $templateContent += $extraParameter.content
             $templateContent += ''
