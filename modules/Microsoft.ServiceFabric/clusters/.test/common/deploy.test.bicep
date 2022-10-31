@@ -92,11 +92,11 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.core.windows.net/'
+      blobEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.blob.${environment().suffixes.storage}/'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.core.windows.net/'
-      storageAccountName: resourceGroupResources.outputs.storageAccountResourceName
-      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.table.core.windows.net/'
+      queueEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.queue.${environment().suffixes.storage}/'
+      storageAccountName: last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))
+      tableEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.table.${environment().suffixes.storage}/'
     }
     fabricSettings: [
       {
