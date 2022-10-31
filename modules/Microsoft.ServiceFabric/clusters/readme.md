@@ -400,7 +400,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     azureActiveDirectory: {
-      clientApplication: '<<deploymentSpId>>'
+      clientApplication: '<clientApplication>'
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
       tenantId: '<<tenantId>>'
     }
@@ -436,11 +436,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://adp<<namePrefix>>azsaweux001.blob.core.windows.net/'
+      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.core.windows.net/'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: 'https://adp<<namePrefix>>azsaweux001.queue.core.windows.net/'
-      storageAccountName: 'adp<<namePrefix>>azsaweux001'
-      tableEndpoint: 'https://adp<<namePrefix>>azsaweux001.table.core.windows.net/'
+      queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.core.windows.net/'
+      storageAccountName: '<storageAccountName>'
+      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.table.core.windows.net/'
     }
     fabricSettings: [
       {
@@ -594,7 +594,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "azureActiveDirectory": {
       "value": {
-        "clientApplication": "<<deploymentSpId>>",
+        "clientApplication": "<clientApplication>",
         "clusterApplication": "cf33fea8-b30f-424f-ab73-c48d99e0b222",
         "tenantId": "<<tenantId>>"
       }
@@ -638,11 +638,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "diagnosticsStorageAccountConfig": {
       "value": {
-        "blobEndpoint": "https://adp<<namePrefix>>azsaweux001.blob.core.windows.net/",
+        "blobEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.core.windows.net/",
         "protectedAccountKeyName": "StorageAccountKey1",
-        "queueEndpoint": "https://adp<<namePrefix>>azsaweux001.queue.core.windows.net/",
-        "storageAccountName": "adp<<namePrefix>>azsaweux001",
-        "tableEndpoint": "https://adp<<namePrefix>>azsaweux001.table.core.windows.net/"
+        "queueEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.core.windows.net/",
+        "storageAccountName": "<storageAccountName>",
+        "tableEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.table.core.windows.net/"
       }
     },
     "fabricSettings": {

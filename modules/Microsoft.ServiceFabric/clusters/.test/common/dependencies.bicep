@@ -27,5 +27,5 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
-@description('The resource ID of the created Storage Account.')
-output storageAccountResourceId string = storageAccount.id
+@description('The name of the created Storage Account.')
+output storageAccountResourceName string = last(split(storageAccount.id, '/'))
