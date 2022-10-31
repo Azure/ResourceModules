@@ -1,9 +1,6 @@
 @description('Required. The name of the Action Group to create.')
 param actionGroupName string
 
-@description('Required. The short name of the Action Group to create')
-param groupShortName string
-
 @description('Optional. The location to deploy to.')
 param location string = resourceGroup().location
 
@@ -18,8 +15,8 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 resource actionGroup 'Microsoft.Insights/actionGroups@2022-06-01' = {
   name: actionGroupName
   location: 'global'
-  properties:{
-    groupShortName: groupShortName
+  properties: {
+    groupShortName: substring(replace(actionGroupName, '-', ''), 0, 11)
     enabled: true
   }
 }

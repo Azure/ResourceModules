@@ -30,7 +30,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     actionGroupName: 'dep-<<namePrefix>>-ag-${serviceShort}'
-    groupShortName: 'ag${serviceShort}001'
   }
 }
 
