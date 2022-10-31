@@ -14,7 +14,6 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Identifier of the other private cloud participating in the link.')
 param linkedCloud string = ''
 
-
 // =============== //
 //   Deployments   //
 // =============== //

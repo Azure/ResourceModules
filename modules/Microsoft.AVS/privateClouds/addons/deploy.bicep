@@ -20,7 +20,6 @@ param addonType string = ''
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-
 // =============== //
 //   Deployments   //
 // =============== //

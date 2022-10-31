@@ -214,6 +214,11 @@ function Set-ModuleTemplate {
         ##  VARIABLES  ##
         #################
 
+        # Add a space in between the new section and the previous one in case no space exists
+        if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
+            $templateContent += ''
+        }
+
         foreach ($variable in $ModuleData.variables) {
             $templateContent += $variable
         }
@@ -231,8 +236,12 @@ function Set-ModuleTemplate {
 
         $locationParameterExists = ($templateContent | Where-Object { $_ -like 'param location *' }).Count -gt 0
 
+        # Add a space in between the new section and the previous one in case no space exists
+        if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
+            $templateContent += ''
+        }
+
         $templateContent += @(
-            ''
             '// =============== //'
             '//   Deployments   //'
             '// =============== //'
@@ -385,6 +394,11 @@ function Set-ModuleTemplate {
         #######################################
         ##  Create template outputs section  ##
         #######################################
+
+        # Add a space in between the new section and the previous one in case no space exists
+        if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
+            $templateContent += ''
+        }
 
         # Output header comment
         $templateContent += @(

@@ -20,7 +20,6 @@ param enableDefaultTelemetry bool = true
 @description('Optional. An Azure NetApp Files volume from Microsoft.NetApp provider')
 param netAppVolume object = {}
 
-
 // =============== //
 //   Deployments   //
 // =============== //

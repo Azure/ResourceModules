@@ -51,7 +51,6 @@ param type string = ''
 @description('Optional. Virtual machine members list')
 param vmMembers array = []
 
-
 // =============== //
 //   Deployments   //
 // =============== //

@@ -26,7 +26,6 @@ param subnet object = {}
 @description('Optional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
 param workloadNetworkName string = 'default'
 
-
 // =============== //
 //   Deployments   //
 // =============== //

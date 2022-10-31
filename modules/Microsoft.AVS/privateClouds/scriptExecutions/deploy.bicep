@@ -35,7 +35,6 @@ param scriptCmdletId string = ''
 @description('Optional. Time limit for execution')
 param timeout string = ''
 
-
 // =============== //
 //   Deployments   //
 // =============== //

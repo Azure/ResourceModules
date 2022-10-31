@@ -20,7 +20,6 @@ param expressRouteId string = ''
 @description('Optional. Identifier of the ExpressRoute Circuit to peer with in the global reach connection')
 param peerExpressRouteCircuit string = ''
 
-
 // =============== //
 //   Deployments   //
 // =============== //
