@@ -5,6 +5,8 @@ param location string = resourceGroup().location
 param virtualNetworkName string
 
 @description('Required. The name of the Key Vault to create.')
+@minLength(3)
+@maxLength(24)
 param keyVaultName string
 
 @description('Required. The name of the Managed Identity to create.')
