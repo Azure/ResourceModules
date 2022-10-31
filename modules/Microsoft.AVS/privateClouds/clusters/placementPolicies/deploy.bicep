@@ -51,7 +51,6 @@ param type string = ''
 @description('Optional. Virtual machine members list')
 param vmMembers array = []
 
-
 // =============== //
 //   Deployments   //
 // =============== //
@@ -69,10 +68,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource privateCloud 'Microsoft.AVS/privateClouds@2022-05-01' existing = {
-    name: privateCloudName
+  name: privateCloudName
 
     resource cluster 'clusters@2022-05-01' existing = {
-        name: clusterName
+      name: clusterName
     }
 }
 
@@ -80,13 +79,13 @@ resource placementPolicy 'Microsoft.AVS/privateClouds/clusters/placementPolicies
   parent: privateCloud::cluster
   name: name
   properties: {
-    state: state
-    type: type
-    displayName: displayName
     affinityStrength: affinityStrength
     azureHybridBenefitType: azureHybridBenefitType
-    vmMembers: vmMembers
+    displayName: displayName
     hostMembers: hostMembers
+    state: state
+    type: type
+    vmMembers: vmMembers
   }
 }
 

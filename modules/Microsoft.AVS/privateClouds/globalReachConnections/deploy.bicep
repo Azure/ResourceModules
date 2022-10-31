@@ -20,7 +20,6 @@ param expressRouteId string = ''
 @description('Optional. Identifier of the ExpressRoute Circuit to peer with in the global reach connection')
 param peerExpressRouteCircuit string = ''
 
-
 // =============== //
 //   Deployments   //
 // =============== //
@@ -38,8 +37,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource privateCloud 'Microsoft.AVS/privateClouds@2022-05-01' existing = {
-    name: privateCloudName
-
+  name: privateCloudName
 }
 
 resource globalReachConnection 'Microsoft.AVS/privateClouds/globalReachConnections@2022-05-01' = {

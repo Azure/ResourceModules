@@ -32,7 +32,6 @@ param sourceIp string = ''
 @description('Optional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
 param workloadNetworkName string = 'default'
 
-
 // =============== //
 //   Deployments   //
 // =============== //
@@ -50,10 +49,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource privateCloud 'Microsoft.AVS/privateClouds@2022-05-01' existing = {
-    name: privateCloudName
+  name: privateCloudName
 
     resource workloadNetwork 'workloadNetworks@2022-05-01' existing = {
-        name: workloadNetworkName
+      name: workloadNetworkName
     }
 }
 
@@ -61,12 +60,12 @@ resource dnsZone 'Microsoft.AVS/privateClouds/workloadNetworks/dnsZones@2022-05-
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    revision: revision
     displayName: displayName
-    dnsServices: dnsServices
     dnsServerIps: dnsServerIps
-    sourceIp: sourceIp
+    dnsServices: dnsServices
     domain: domain
+    revision: revision
+    sourceIp: sourceIp
   }
 }
 

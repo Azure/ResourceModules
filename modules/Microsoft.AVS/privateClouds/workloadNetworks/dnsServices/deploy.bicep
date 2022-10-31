@@ -39,7 +39,6 @@ param revision int =
 @description('Optional. The name of the parent workloadNetworks. Required if the template is used in a standalone deployment.')
 param workloadNetworkName string = 'default'
 
-
 // =============== //
 //   Deployments   //
 // =============== //
@@ -57,10 +56,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource privateCloud 'Microsoft.AVS/privateClouds@2022-05-01' existing = {
-    name: privateCloudName
+  name: privateCloudName
 
     resource workloadNetwork 'workloadNetworks@2022-05-01' existing = {
-        name: workloadNetworkName
+      name: workloadNetworkName
     }
 }
 
@@ -68,12 +67,12 @@ resource dnsService 'Microsoft.AVS/privateClouds/workloadNetworks/dnsServices@20
   parent: privateCloud::workloadNetwork
   name: name
   properties: {
-    logLevel: logLevel
-    fqdnZones: fqdnZones
     defaultDnsZone: defaultDnsZone
-    dnsServiceIp: dnsServiceIp
-    revision: revision
     displayName: displayName
+    dnsServiceIp: dnsServiceIp
+    fqdnZones: fqdnZones
+    logLevel: logLevel
+    revision: revision
   }
 }
 

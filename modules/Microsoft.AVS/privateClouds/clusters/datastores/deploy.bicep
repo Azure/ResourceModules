@@ -20,7 +20,6 @@ param enableDefaultTelemetry bool = true
 @description('Optional. An Azure NetApp Files volume from Microsoft.NetApp provider')
 param netAppVolume object = {}
 
-
 // =============== //
 //   Deployments   //
 // =============== //
@@ -38,10 +37,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource privateCloud 'Microsoft.AVS/privateClouds@2022-05-01' existing = {
-    name: privateCloudName
+  name: privateCloudName
 
     resource cluster 'clusters@2022-05-01' existing = {
-        name: clusterName
+      name: clusterName
     }
 }
 

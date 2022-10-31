@@ -175,23 +175,49 @@ function Set-ModuleTemplate {
 
         # Create collected parameters
         # ---------------------------
-        # TODO: Only update parameters that are not already defines
         # First the required
         foreach ($parameter in ($parametersToAdd | Where-Object { $_.required } | Sort-Object -Property 'Name')) {
-            $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
+            if ($existingTemplateContent.parameters.name -notcontains $parameter.name) {
+                $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
+            } else {
+                $templateContent += ($existingTemplateContent.parameters | Where-Object { $_.name -eq $parameter.name }).content
+                $templateContent += ''
+            }
         }
         # Then the conditional
         foreach ($parameter in ($parametersToAdd | Where-Object { -not $_.required -and $_.description -like 'Conditional. *' } | Sort-Object -Property 'Name')) {
-            $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
+            if ($existingTemplateContent.parameters.name -notcontains $parameter.name) {
+                $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
+            } else {
+                $templateContent += ($existingTemplateContent.parameters | Where-Object { $_.name -eq $parameter.name }).content
+                $templateContent += ''
+            }
         }
         # Then the rest
         foreach ($parameter in ($parametersToAdd | Where-Object { -not $_.required -and $_.description -notlike 'Conditional. *' } | Sort-Object -Property 'Name')) {
-            $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
+            if ($existingTemplateContent.parameters.name -notcontains $parameter.name) {
+                $templateContent += Get-FormattedModuleParameter -ParameterData $parameter
+            } else {
+                $templateContent += ($existingTemplateContent.parameters | Where-Object { $_.name -eq $parameter.name }).content
+                $templateContent += ''
+            }
         }
+
+        # Add additional parameters at the end
+        foreach ($extraParameter in ($existingTemplateContent.parameters | Where-Object { $parametersToAdd.name -notcontains $_.name })) {
+            $templateContent += $extraParameter.content
+            $templateContent += ''
+        }
+
 
         #################
         ##  VARIABLES  ##
         #################
+
+        # Add a space in between the new section and the previous one in case no space exists
+        if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
+            $templateContent += ''
+        }
 
         foreach ($variable in $ModuleData.variables) {
             $templateContent += $variable
@@ -210,8 +236,12 @@ function Set-ModuleTemplate {
 
         $locationParameterExists = ($templateContent | Where-Object { $_ -like 'param location *' }).Count -gt 0
 
+        # Add a space in between the new section and the previous one in case no space exists
+        if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
+            $templateContent += ''
+        }
+
         $templateContent += @(
-            ''
             '// =============== //'
             '//   Deployments   //'
             '// =============== //'
@@ -246,9 +276,9 @@ function Set-ModuleTemplate {
             $parentResourceAPI = Split-Path (Split-Path $parentJSONPath -Parent) -Leaf
             $templateContent += @(
                 "$(' ' * $existingResourceIndent)resource $($singularParent) '$($levedParentResourceType)@$($parentResourceAPI)' existing = {",
-                "$(' ' * $existingResourceIndent)    name: $($singularParent)Name"
+                "$(' ' * $existingResourceIndent)  name: $($singularParent)Name"
             )
-            if ($parentResourceType -ne $orderedParentResourceTypes[-1]) {
+            if ($parentResourceType -ne (@() + $orderedParentResourceTypes)[-1]) {
                 # Only add an empty line if there is more content to add
                 $templateContent += ''
             }
@@ -272,12 +302,12 @@ function Set-ModuleTemplate {
             $templateContent += ('  parent: {0}' -f (($parentResourceTypes | ForEach-Object { Get-ResourceTypeSingularName -ResourceType $_ }) -join '::'))
         }
 
-        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 0 -and $_.name -ne 'properties' })) {
+        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 0 -and $_.name -ne 'properties' } | Sort-Object -Property 'name')) {
             $templateContent += '  {0}: {0}' -f $parameter.name
         }
 
         $templateContent += '  properties: {'
-        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 1 -and $_.Parent -eq 'properties' })) {
+        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 1 -and $_.Parent -eq 'properties' } | Sort-Object -Property 'name')) {
             $templateContent += '    {0}: {0}' -f $parameter.name
         }
 
@@ -306,8 +336,8 @@ function Set-ModuleTemplate {
 
             $templateContent += @(
                 "module $($hasProxyParent ? "$($proxyParentName)_" : '')$($resourceTypeSingular)_$($childResourceType) '$($hasProxyParent ? "$proxyParentName/" : '')$($childResourceType)/deploy.bicep' = [for ($($childResourceTypeSingular), index) in $($childResourceType): {",
-                "name: '`${uniqueString(deployment().name$($locationParameterExists ? ', location' : ''))}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'",
-                'params: {'
+                "  name: '`${uniqueString(deployment().name$($locationParameterExists ? ', location' : ''))}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'",
+                '  params: {'
             )
 
             # All param names of parents
@@ -325,7 +355,7 @@ function Set-ModuleTemplate {
 
             # Add primary child parameters
             $allParam = $dataBlock.data.parameters + $dataBlock.data.additionalParameters
-            foreach ($parameter in ($allParam | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') })) {
+            foreach ($parameter in (($allParam | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') }) | Sort-Object -Property 'Name')) {
                 $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter | Where-Object { $_ -like 'param *' } | ForEach-Object { $_ -replace 'param ', '' }
                 $wouldBeParamElem = $wouldBeParameter -split ' = '
                 $parameter.name = ($wouldBeParamElem -split ' ')[0]
@@ -364,6 +394,11 @@ function Set-ModuleTemplate {
         #######################################
         ##  Create template outputs section  ##
         #######################################
+
+        # Add a space in between the new section and the previous one in case no space exists
+        if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
+            $templateContent += ''
+        }
 
         # Output header comment
         $templateContent += @(

@@ -20,7 +20,6 @@ param addonType string = ''
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-
 // =============== //
 //   Deployments   //
 // =============== //
@@ -38,8 +37,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource privateCloud 'Microsoft.AVS/privateClouds@2022-05-01' existing = {
-    name: privateCloudName
-
+  name: privateCloudName
 }
 
 resource addon 'Microsoft.AVS/privateClouds/addons@2022-05-01' = {

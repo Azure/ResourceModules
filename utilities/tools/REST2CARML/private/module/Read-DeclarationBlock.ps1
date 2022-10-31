@@ -51,8 +51,8 @@ function Read-DeclarationBlock {
         '^module .+$',
         '^output .+$',
         '^//.*$',
-        '^@.+$',
-        '^\s*$'
+        '^@.+$'#,
+        #'^\s*$'
     )
 
     #########################################
@@ -72,7 +72,25 @@ function Read-DeclarationBlock {
     ########################################################################################################################
     foreach ($declarationIndex in $declarationIndexes) {
         switch ($DeclarationType) {
-            { $PSItem -in @('param', 'output') } {
+            { $PSItem -in @('param') } {
+                # Let's go 'up' until the declarations end
+                $declarationStartIndex = $declarationIndex
+                while ($DeclarationContent[$declarationStartIndex] -eq $DeclarationContent[$declarationIndex] -or (($newLogicIdentifiersUp | Where-Object { $DeclarationContent[$declarationStartIndex] -match $_ }).Count -eq 0 -and $declarationStartIndex -ne 0)) {
+                    $declarationStartIndex--
+                }
+                # Logic always counts one too far
+                $declarationStartIndex++
+
+                # The declaration line is always the last line of the block
+                $declarationEndIndex = $declarationIndex
+                while ($DeclarationContent[$declarationEndIndex] -eq $DeclarationContent[$declarationIndex] -or (($newLogicIdentifiersDown | Where-Object { $DeclarationContent[$declarationEndIndex] -match $_ }).Count -eq 0 -and $declarationEndIndex -ne $DeclarationContent.Count)) {
+                    $declarationEndIndex++
+                }
+                # Logic always counts one too far
+                $declarationEndIndex--
+                break
+            }
+            { $PSItem -in @('output') } {
                 # Let's go 'up' until the declarations end
                 $declarationStartIndex = $declarationIndex
                 while ($DeclarationContent[$declarationStartIndex] -eq $DeclarationContent[$declarationIndex] -or (($newLogicIdentifiersUp | Where-Object { $DeclarationContent[$declarationStartIndex] -match $_ }).Count -eq 0 -and $declarationStartIndex -ne 0)) {
@@ -98,6 +116,11 @@ function Read-DeclarationBlock {
                 $declarationEndIndex--
                 break
             }
+        }
+
+        # Trim empty lines from the end
+        while ([String]::IsNullOrEmpty($templateContent[$declarationEndIndex])) {
+            $declarationEndIndex--
         }
 
         $existingBlocks += @{

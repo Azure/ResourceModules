@@ -35,7 +35,6 @@ param scriptCmdletId string = ''
 @description('Optional. Time limit for execution')
 param timeout string = ''
 
-
 // =============== //
 //   Deployments   //
 // =============== //
@@ -53,22 +52,21 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource privateCloud 'Microsoft.AVS/privateClouds@2022-05-01' existing = {
-    name: privateCloudName
-
+  name: privateCloudName
 }
 
 resource scriptExecution 'Microsoft.AVS/privateClouds/scriptExecutions@2022-05-01' = {
   parent: privateCloud
   name: name
   properties: {
-    scriptCmdletId: scriptCmdletId
     failureReason: failureReason
-    output: output
-    namedOutputs: namedOutputs
-    timeout: timeout
-    retention: retention
-    parameters: parameters
     hiddenParameters: hiddenParameters
+    namedOutputs: namedOutputs
+    output: output
+    parameters: parameters
+    retention: retention
+    scriptCmdletId: scriptCmdletId
+    timeout: timeout
   }
 }
 

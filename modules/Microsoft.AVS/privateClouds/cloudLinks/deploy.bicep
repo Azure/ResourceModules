@@ -14,7 +14,6 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Identifier of the other private cloud participating in the link.')
 param linkedCloud string = ''
 
-
 // =============== //
 //   Deployments   //
 // =============== //
@@ -32,8 +31,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource privateCloud 'Microsoft.AVS/privateClouds@2022-05-01' existing = {
-    name: privateCloudName
-
+  name: privateCloudName
 }
 
 resource cloudLink 'Microsoft.AVS/privateClouds/cloudLinks@2022-05-01' = {
