@@ -92,7 +92,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.core.windows.net/'
+      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.${environment().suffixes.storage}/'
       protectedAccountKeyName: 'StorageAccountKey1'
       queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.core.windows.net/'
       storageAccountName: resourceGroupResources.outputs.storageAccountResourceName
