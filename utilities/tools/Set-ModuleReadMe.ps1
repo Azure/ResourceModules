@@ -694,7 +694,7 @@ function ConvertTo-FormattedJSONParameterObject {
         $mayHaveValue = $line -like '*:*'
         if ($mayHaveValue) {
 
-            $lineValue = ($line -split '\s*"\w+":')[1].Trim() # i.e. optional spaces, followed by a name ("xzy"), followed by ':'
+            $lineValue = ($line -split '\s*".+":')[1].Trim() # i.e. optional spaces, followed by a name ("xzy"), followed by ':'
 
             # Individual checks
             $isLineWithEmptyObjectValue = $line -match '^.+:\s*{\s*}\s*$' # e.g. test: {}
