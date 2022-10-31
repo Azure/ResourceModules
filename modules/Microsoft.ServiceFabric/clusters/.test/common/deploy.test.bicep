@@ -96,7 +96,7 @@ module testDeployment '../../deploy.bicep' = {
       protectedAccountKeyName: 'StorageAccountKey1'
       queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.${environment().suffixes.storage}/'
       storageAccountName: resourceGroupResources.outputs.storageAccountResourceName
-      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.table.core.windows.net/'
+      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.table.${environment().suffixes.storage}/'
     }
     fabricSettings: [
       {
