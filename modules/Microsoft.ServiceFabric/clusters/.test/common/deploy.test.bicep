@@ -29,6 +29,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
   }
 }
 
@@ -91,11 +92,11 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://adp<<namePrefix>>azsaweux001.blob.core.windows.net/'
+      blobEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, ' /'))} .blob.core.windows.net/'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: 'https://adp<<namePrefix>>azsaweux001.queue.core.windows.net/'
-      storageAccountName: 'adp<<namePrefix>>azsaweux001'
-      tableEndpoint: 'https://adp<<namePrefix>>azsaweux001.table.core.windows.net/'
+      queueEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, ' /'))}.queue.core.windows.net/'
+      storageAccountName: '${last(split(resourceGroupResources.outputs.storageAccountResourceId, ' /'))}'
+      tableEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, ' /'))}.table.core.windows.net/'
     }
     fabricSettings: [
       {
