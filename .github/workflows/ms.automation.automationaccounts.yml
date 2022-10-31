@@ -44,7 +44,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'
@@ -69,7 +69,7 @@ jobs:
     name: 'Static validation'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -97,7 +97,7 @@ jobs:
         moduleTestFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -125,7 +125,7 @@ jobs:
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables

@@ -48,7 +48,7 @@ jobs:
           ['validation.parameters.json', 'locks.parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -74,7 +74,7 @@ jobs:
       - job_deploy_rg
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -105,7 +105,7 @@ jobs:
           ['parameters.json', 'vm.parameters.json', 'vmss.parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -138,7 +138,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -180,7 +180,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -211,7 +211,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -242,7 +242,7 @@ jobs:
         parameterFilePaths: ['mg.parameters.json', 'sub.parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -273,7 +273,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -310,7 +310,7 @@ jobs:
           ]
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -348,7 +348,7 @@ jobs:
           ]
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -375,7 +375,7 @@ jobs:
       - job_deploy_sa
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: 'Setup agent'
@@ -470,7 +470,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -501,7 +501,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -532,7 +532,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -563,7 +563,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -595,7 +595,7 @@ jobs:
         parameterFilePaths: ['sqlMi.parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -635,7 +635,7 @@ jobs:
           ]
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -669,7 +669,7 @@ jobs:
         parameterFilePaths: ['sqlmi.parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -711,7 +711,7 @@ jobs:
           ]
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -744,7 +744,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -777,7 +777,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -810,7 +810,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -844,7 +844,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -880,7 +880,7 @@ jobs:
           ['parameters.json', 'pe.parameters.json', 'nopr.parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -909,7 +909,7 @@ jobs:
       - job_deploy_kv
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: 'Setup agent'
@@ -1067,7 +1067,7 @@ jobs:
         parameterFilePaths: ['sqlmi.parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -1096,7 +1096,7 @@ jobs:
       namespace: 'Microsoft.KeyVault\vaults'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: 'Setup agent'
@@ -1203,7 +1203,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -1234,7 +1234,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -1265,7 +1265,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -1313,7 +1313,7 @@ jobs:
           ]
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -1346,7 +1346,7 @@ jobs:
         parameterFilePaths: ['6.sqlmi.parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -1403,7 +1403,7 @@ jobs:
           ]
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -1436,7 +1436,7 @@ jobs:
         parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -1467,7 +1467,7 @@ jobs:
         parameterFilePaths: ['internal.parameters.json', 'pls.parameters.json']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables

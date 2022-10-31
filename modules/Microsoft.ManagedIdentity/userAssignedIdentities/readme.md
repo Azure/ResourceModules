@@ -173,6 +173,10 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -204,6 +208,12 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

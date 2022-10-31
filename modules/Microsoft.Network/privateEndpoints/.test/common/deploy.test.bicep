@@ -31,6 +31,7 @@ module resourceGroupResources 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    applicationSecurityGroupName: 'dep-<<namePrefix>>-asg-${serviceShort}'
   }
 }
 
@@ -60,6 +61,22 @@ module testDeployment '../../deploy.bicep' = {
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    ipConfigurations: [
+      {
+        name: 'myIPconfig'
+        properties: {
+          groupId: 'vault'
+          memberName: 'default'
+          privateIPAddress: '10.0.0.10'
+        }
+      }
+    ]
+    customNetworkInterfaceName: '<<namePrefix>>${serviceShort}001nic'
+    applicationSecurityGroups: [
+      {
+        id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
       }
     ]
   }
