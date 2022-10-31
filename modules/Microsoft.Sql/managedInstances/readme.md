@@ -99,6 +99,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `vCores` | int | `4` |  | The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
 | `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/readme.md)_ object | `{object}` |  | The vulnerability assessment configuration. |
 | `zoneRedundant` | bool | `False` |  | Whether or not multi-az is enabled. |
+| `minimalTlsVersion` | string | `'1.2'` | `[None, 1.0, 1.1, 1.2]` | Minimal TLS version allowed. |
 
 
 ### Parameter Usage : `userAssignedIdentities`
