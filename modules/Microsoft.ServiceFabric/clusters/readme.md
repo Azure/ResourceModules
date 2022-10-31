@@ -436,11 +436,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.core.windows.net/'
+      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.${environment().suffixes.storage}/'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.core.windows.net/'
+      queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.${environment().suffixes.storage}/'
       storageAccountName: '<storageAccountName>'
-      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.table.core.windows.net/'
+      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.table.${environment().suffixes.storage}/'
     }
     fabricSettings: [
       {
@@ -638,11 +638,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "diagnosticsStorageAccountConfig": {
       "value": {
-        "blobEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.core.windows.net/",
+        "blobEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.${environment().suffixes.storage}/",
         "protectedAccountKeyName": "StorageAccountKey1",
-        "queueEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.core.windows.net/",
+        "queueEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.${environment().suffixes.storage}/",
         "storageAccountName": "<storageAccountName>",
-        "tableEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.table.core.windows.net/"
+        "tableEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.table.${environment().suffixes.storage}/"
       }
     },
     "fabricSettings": {
