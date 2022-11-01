@@ -443,6 +443,7 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -499,6 +500,7 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
