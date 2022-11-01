@@ -51,7 +51,7 @@ git fetch upstream
 git restore --source upstream/main * ':!*Microsoft.KeyVault\vaults*'
 
 # Push the branch to your fork
-git commit -a -m 'Reset settings files'
+git commit -a -m 'Revert unwanted changes'
 git push
 
 # Create a pull request
