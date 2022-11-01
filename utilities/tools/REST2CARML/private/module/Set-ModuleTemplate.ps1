@@ -175,6 +175,9 @@ function Set-ModuleTemplate {
 
         # Create collected parameters
         # ---------------------------
+        # Note: If there already is a template and a given parameter was already specified, we use the existing declaration instead of generating a new one
+        # as it may have custom logic / default values, etc.
+
         # First the required
         foreach ($parameter in ($parametersToAdd | Where-Object { $_.required } | Sort-Object -Property 'Name')) {
             if ($existingTemplateContent.parameters.name -notcontains $parameter.name) {
@@ -203,7 +206,7 @@ function Set-ModuleTemplate {
             }
         }
 
-        # Add additional parameters at the end
+        # Add additional parameters to only exist in a pre-existing template at the end
         foreach ($extraParameter in ($existingTemplateContent.parameters | Where-Object { $parametersToAdd.name -notcontains $_.name })) {
             $templateContent += $extraParameter.content
             $templateContent += ''
@@ -220,15 +223,35 @@ function Set-ModuleTemplate {
         }
 
         foreach ($variable in $ModuleData.variables) {
-            $templateContent += $variable
+            if ($existingTemplateContent.variables.name -notcontains $variable.name) {
+                $templateContent += $variable.content
+            } else {
+                $matchingExistingVar = $existingTemplateContent.variables | Where-Object { $_.name -eq $variable.name }
+                $templateContent += $matchingExistingVar.content
+            }
+            $templateContent += ''
         }
+
         # Add telemetry variable
         if ($linkedChildren.Count -gt 0) {
-            $templateContent += @(
-                'var enableReferencedModulesTelemetry = false'
-                ''
-            )
+            if ($existingTemplateContent.variables.name -notcontains 'enableReferencedModulesTelemetry') {
+                $templateContent += @(
+                    'var enableReferencedModulesTelemetry = false'
+                    ''
+                )
+            } else {
+                $matchingExistingVar = $existingTemplateContent.variables | Where-Object { $_.name -eq 'enableReferencedModulesTelemetry' }
+                $templateContent += $matchingExistingVar.content
+            }
+            $templateContent += ''
         }
+
+        # Add additional parameters to only exist in a pre-existing template at the end
+        foreach ($extraVariable in ($existingTemplateContent.variables | Where-Object { $ModuleData.variables.name -notcontains $_.name -and $_.name -ne 'enableReferencedModulesTelemetry' })) {
+            $templateContent += $extraVariable.content
+            $templateContent += ''
+        }
+
 
         ###################
         ##  DEPLOYMENTS  ##

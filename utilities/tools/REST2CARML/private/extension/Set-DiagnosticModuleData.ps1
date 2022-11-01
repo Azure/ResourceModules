@@ -112,18 +112,20 @@ function Set-DiagnosticModuleData {
                     )
                 }
             )
-            $ModuleData.variables += @(
-                'var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {'
-                '  category: metric'
-                '  timeGrain: null'
-                '  enabled: true'
-                '  retentionPolicy: {'
-                '    enabled: true'
-                '    days: diagnosticLogsRetentionInDays'
-                '  }'
-                '}]'
-                ''
-            )
+            $ModuleData.variables += @{
+                name    = 'diagnosticsMetrics'
+                content = @(
+                    'var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {'
+                    '  category: metric'
+                    '  timeGrain: null'
+                    '  enabled: true'
+                    '  retentionPolicy: {'
+                    '    enabled: true'
+                    '    days: diagnosticLogsRetentionInDays'
+                    '  }'
+                    '}]'
+                )
+            }
 
             $diagnosticResource += '    metrics: diagnosticsMetrics'
         }
@@ -140,17 +142,19 @@ function Set-DiagnosticModuleData {
                     default       = $diagnosticOptions.Logs
                 }
             )
-            $ModuleData.variables += @(
-                'var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {'
-                '  category: category'
-                '  enabled: true'
-                '  retentionPolicy: {'
-                '    enabled: true'
-                '    days: diagnosticLogsRetentionInDays'
-                '  }'
-                '}]'
-                ''
-            )
+            $ModuleData.variables += @{
+                name    = 'diagnosticsLogs'
+                content = @(
+                    'var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {'
+                    '  category: category'
+                    '  enabled: true'
+                    '  retentionPolicy: {'
+                    '    enabled: true'
+                    '    days: diagnosticLogsRetentionInDays'
+                    '  }'
+                    '}]'
+                )
+            }
 
             $diagnosticResource += '    logs: diagnosticsLogs'
         }
