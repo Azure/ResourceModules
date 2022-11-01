@@ -261,6 +261,10 @@ function Set-ModuleTemplate {
 
         $locationParameterExists = ($templateContent | Where-Object { $_ -like 'param location *' }).Count -gt 0
 
+        $matchingExistingResource = $existingTemplateContent.resources | Where-Object {
+            $_.resourceType -eq $FullResourceType -and $_.resourceName -eq $resourceTypeSingular
+        }
+
         # Add a space in between the new section and the previous one in case no space exists
         if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
             $templateContent += ''
@@ -328,12 +332,22 @@ function Set-ModuleTemplate {
         }
 
         foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 0 -and $_.name -ne 'properties' } | Sort-Object -Property 'name')) {
-            $templateContent += '  {0}: {0}' -f $parameter.name
+            if ($matchingExistingResource.topLevelElements.name -notcontains $parameter.name) {
+                $templateContent += '  {0}: {0}' -f $parameter.name
+            } else {
+                $existingProperty = $matchingExistingResource.topLevelElements | Where-Object { $_.name -eq $parameter.name }
+                $templateContent += $existingProperty.content
+            }
         }
 
         $templateContent += '  properties: {'
         foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 1 -and $_.Parent -eq 'properties' } | Sort-Object -Property 'name')) {
-            $templateContent += '    {0}: {0}' -f $parameter.name
+            if ($matchingExistingResource.nestedElements.name -notcontains $parameter.name) {
+                $templateContent += '    {0}: {0}' -f $parameter.name
+            } else {
+                $existingProperty = $matchingExistingResource.nestedElements | Where-Object { $_.name -eq $parameter.name }
+                $templateContent += $existingProperty.content
+            }
         }
 
         $templateContent += @(
@@ -381,6 +395,7 @@ function Set-ModuleTemplate {
             # Add primary child parameters
             $allParam = $dataBlock.data.parameters + $dataBlock.data.additionalParameters
             foreach ($parameter in (($allParam | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') }) | Sort-Object -Property 'Name')) {
+                # TODO: Make idempotent
                 $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter | Where-Object { $_ -like 'param *' } | ForEach-Object { $_ -replace 'param ', '' }
                 $wouldBeParamElem = $wouldBeParameter -split ' = '
                 $parameter.name = ($wouldBeParamElem -split ' ')[0]
