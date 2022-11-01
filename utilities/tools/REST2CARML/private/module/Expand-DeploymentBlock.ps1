@@ -36,15 +36,15 @@ function Expand-DeploymentBlock {
     switch ($NestedType) {
         'properties' {
             $declarationElem = $declarationBlock.content[0] -split ' '
-            $DeclarationBlock['resourceName'] = $declarationElem[1]
-            $DeclarationBlock['resourceType'] = ($declarationElem[2] -split '@')[0].Trim("'")
-            $DeclarationBlock['resourceVersion'] = (($declarationElem[2] -split '@')[1])[0..9] -join '' # The date always has 10 characters
+            $DeclarationBlock['name'] = $declarationElem[1]
+            $DeclarationBlock['type'] = ($declarationElem[2] -split '@')[0].Trim("'")
+            $DeclarationBlock['version'] = (($declarationElem[2] -split '@')[1])[0..9] -join '' # The date always has 10 characters
             break
         }
         'params' {
             $declarationElem = $declarationBlock.content[0] -split ' '
-            $DeclarationBlock['moduleName'] = $declarationElem[1]
-            $DeclarationBlock['modulePath'] = $declarationElem[2].Trim("'")
+            $DeclarationBlock['name'] = $declarationElem[1]
+            $DeclarationBlock['path'] = $declarationElem[2].Trim("'")
             break
         }
     }

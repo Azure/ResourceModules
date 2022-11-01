@@ -60,17 +60,20 @@ function Set-LockModuleData {
             }
         )
 
-        $ModuleData.resources += @(
-            "resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {"
-            "  name: '`${$resourceTypeSingular.name}-`${lock}-lock'"
-            '  properties: {'
-            '    level: any(lock)'
-            "    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'"
-            '  }'
-            '  scope: {0}' -f $resourceTypeSingular
-            '}'
-            ''
-        )
+        $ModuleData.resources += @{
+            name    = "$($resourceTypeSingular)_lock"
+            content = @(
+                "resource @($resourceTypeSingular)_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {"
+                "  name: '`${$resourceTypeSingular.name}-`${lock}-lock'"
+                '  properties: {'
+                '    level: any(lock)'
+                "    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'"
+                '  }'
+                '  scope: {0}' -f $resourceTypeSingular
+                '}'
+                ''
+            )
+        }
     }
 
     end {

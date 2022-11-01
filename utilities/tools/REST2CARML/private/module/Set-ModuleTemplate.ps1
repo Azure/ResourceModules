@@ -81,7 +81,10 @@ function Set-ModuleTemplate {
             # If the child's parent's parentUrlPath is empty, this parent has no PUT rest command which indicates it cannot be created independently
             [String]::IsNullOrEmpty($_.metadata.parentUrlPath)
         }
-        $linkedChildren += $indirectChildren
+
+        if ($indirectChildren) {
+            $linkedChildren += $indirectChildren
+        }
 
         # Collect parent resources to use for parent type references
         $typeElem = $FullResourceType -split '/'
@@ -357,12 +360,28 @@ function Set-ModuleTemplate {
             ''
         )
 
-        # TODO: Add 'other' resources? Like those where we reference 'existing'
+        # If a template already exists, add 'extra' resources that are not yet part of the template content
+        # -------------------------------------------------------------------------------------------------
+        $preExistingExtraResources = $existingTemplateContent.resources | Where-Object {
+            $_.resourceName -notIn ($ModuleData.resources.name + 'defaultTelemetry' + $resourceTypeSingular)
+        }
+        foreach ($resource in $preExistingExtraResources) {
+            $templateContent += $resource.content
+            $templateContent += ''
+        }
 
-        # Add additional resources such as extensions (like RBAC)
-        # -------------------------------------------------------
+        # Add additional resources such as extensions (like DiagnosticSettigs)
+        # --------------------------------------------------------------------
         # Other collected resources
-        $templateContent += $ModuleData.resources
+        foreach ($additionalResource in $ModuleData.resources) {
+            if ($existingTemplateContent.resources.resourceName -notcontains $additionalResource.name) {
+                $templateContent += $additionalResource.content
+            } else {
+                $existingResource = $existingTemplateContent.resources | Where-Object { $_.resourceName -eq $additionalResource.name }
+                $templateContent += $existingResource.content
+                $templateContent += ''
+            }
+        }
 
         # Add child-module references
         # ---------------------------
@@ -378,7 +397,7 @@ function Set-ModuleTemplate {
             $moduleName = '{0}{1}_{2}' -f ($hasProxyParent ? "$($proxyParentName)_" : ''), $resourceTypeSingular, $childResourceType
             $modulePath = '{0}{1}/deploy.bicep' -f ($hasProxyParent ? "$proxyParentName/" : ''), $childResourceType
 
-            $matchingModule = $existingTemplateContent.modules | Where-Object { $_.moduleName -eq $moduleName -and $_.modulePath -eq $modulePath }
+            $matchingModule = $existingTemplateContent.modules | Where-Object { $_.name -eq $moduleName -and $_.path -eq $modulePath }
 
             # TODO: Also consider 'singular' children (if we can detect it)
             $templateContent += @(
@@ -465,6 +484,25 @@ function Set-ModuleTemplate {
                 ''
             )
         }
+
+        # TODO : Add other module references
+        # ----------------------------------
+        foreach ($additionalResource in $ModuleData.modules) {
+            if ($existingTemplateContent.modules.name -notcontains $additionalResource.name) {
+                $templateContent += $additionalResource.content
+            } else {
+                $existingResource = $existingTemplateContent.modules | Where-Object { $_.name -eq $additionalResource.name }
+                $templateContent += $existingResource.content
+                $templateContent += ''
+            }
+        }
+
+        # TODO: Extra extra modules
+        # $preExistingExtraModules = $existingTemplateContent.modules | Where-Object { $_.name -notIn $ModuleData.modules.name }
+        # foreach ($preExistingMdoule in $preExistingExtraModules) {
+        #     # Beware: The pre-existing content also contains e.g. 'linkedChildren' we add as part of the template generation
+        # }
+
         #endregion
 
         #######################################
@@ -498,6 +536,12 @@ function Set-ModuleTemplate {
                 'output resourceGroupName string = resourceGroup().name'
                 ''
             )
+        }
+
+        # Extra outputs
+        foreach ($output in $existingTemplateContent.outputs | Where-Object { $_.name -notin @('name', 'resourceId', 'resourceGroupName') }) {
+            $templateContent += $output.content
+            $templateContent += ''
         }
 
         # Update file

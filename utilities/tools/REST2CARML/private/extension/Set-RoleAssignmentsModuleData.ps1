@@ -71,21 +71,24 @@ function Set-RoleAssignmentsModuleData {
             }
         )
 
-        $ModuleData.resources += @(
-            "module $($resourceTypeSingular)_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment,index) in roleAssignments: {"
-            "  name: '`${uniqueString(deployment().name, location)}-$resourceTypeSingular-Rbac-`${index}'"
-            '  params: {'
-            "    description: contains(roleAssignment,'description') ? roleAssignment.description : ''"
-            '    principalIds: roleAssignment.principalIds'
-            "    principalType: contains(roleAssignment,'principalType') ? roleAssignment.principalType : ''"
-            '    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName'
-            "    condition: contains(roleAssignment,'condition') ? roleAssignment.condition : ''"
-            "    delegatedManagedIdentityResourceId: contains(roleAssignment,'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''"
-            "    resourceId: $resourceTypeSingular.id"
-            '  }'
-            '}]'
-            ''
-        )
+        $ModuleData.modules += @{
+            name    = "$($resourceTypeSingular)_roleAssignments"
+            content = @(
+                "module $($resourceTypeSingular)_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment,index) in roleAssignments: {"
+                "  name: '`${uniqueString(deployment().name, location)}-$resourceTypeSingular-Rbac-`${index}'"
+                '  params: {'
+                "    description: contains(roleAssignment,'description') ? roleAssignment.description : ''"
+                '    principalIds: roleAssignment.principalIds'
+                "    principalType: contains(roleAssignment,'principalType') ? roleAssignment.principalType : ''"
+                '    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName'
+                "    condition: contains(roleAssignment,'condition') ? roleAssignment.condition : ''"
+                "    delegatedManagedIdentityResourceId: contains(roleAssignment,'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''"
+                "    resourceId: $resourceTypeSingular.id"
+                '  }'
+                '}]'
+                ''
+            )
+        }
 
         $fileContent = @()
         $rawContent = Get-Content -Path (Join-Path $script:src 'nested_roleAssignments.bicep') -Raw

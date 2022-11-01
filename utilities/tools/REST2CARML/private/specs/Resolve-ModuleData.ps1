@@ -72,6 +72,7 @@ function Resolve-ModuleData {
         parameters           = $filteredList
         additionalParameters = @()
         resources            = @()
+        modules              = @()
         variables            = @()
         outputs              = @()
         additionalFiles      = @()

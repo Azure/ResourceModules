@@ -112,7 +112,7 @@ function Set-Module {
                 Set-ModuleReadMe -TemplateFilePath $templatePath -Verbose:$false
             }
         } catch {
-            Write-Warning "Invocation of 'Set-ModuleReadMe' fuction for template in path [$templatePath] failed. Please review the template and re-run the command `Set-ModuleReadMe -TemplateFilePath '$templatePath'``"
+            Write-Warning "Invocation of 'Set-ModuleReadMe' function for template in path [$templatePath] failed. Please review the template and re-run the command `Set-ModuleReadMe -TemplateFilePath '$templatePath'``"
         }
     }
 

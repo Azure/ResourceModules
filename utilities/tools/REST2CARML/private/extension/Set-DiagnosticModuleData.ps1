@@ -85,15 +85,18 @@ function Set-DiagnosticModuleData {
             }
         )
 
-        $diagnosticResource = @(
-            "resource $($resourceTypeSingular)_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {"
-            '  name: diagnosticSettingsName'
-            '  properties: {'
-            '    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null'
-            '    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null'
-            '    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null'
-            '    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null'
-        )
+        $diagnosticResource = @{
+            name    = "$($resourceTypeSingular)_diagnosticSettings"
+            content = @(
+                "resource $($resourceTypeSingular)_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {"
+                '  name: diagnosticSettingsName'
+                '  properties: {'
+                '    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null'
+                '    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null'
+                '    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null'
+                '    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null'
+            )
+        }
 
         # Metric-specific
         if ($diagnosticOptions.Metrics) {
@@ -127,7 +130,7 @@ function Set-DiagnosticModuleData {
                 )
             }
 
-            $diagnosticResource += '    metrics: diagnosticsMetrics'
+            $diagnosticResource.content += '    metrics: diagnosticsMetrics'
         }
 
         # Log-specific
@@ -156,10 +159,10 @@ function Set-DiagnosticModuleData {
                 )
             }
 
-            $diagnosticResource += '    logs: diagnosticsLogs'
+            $diagnosticResource.content += '    logs: diagnosticsLogs'
         }
 
-        $diagnosticResource += @(
+        $diagnosticResource.content += @(
             '  }'
             "  scope: $resourceTypeSingular"
             '}'
