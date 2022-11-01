@@ -58,6 +58,7 @@ function Set-ModuleTemplate {
         #####################
         ##   Collect Data   #
         #####################
+        #region data
 
         # Existing template (if any)
         $existingTemplateContent = Resolve-ExistingTemplateContent -TemplateFilePath $templateFilePath
@@ -100,11 +101,12 @@ function Set-ModuleTemplate {
         $hasAProxyParent = $FullModuleData.identifier -notContains ((Split-Path $FullResourceType -Parent) -replace '\\', '/')
         $parentProxyName = $hasAProxyParent ? ($UrlPath -split '\/')[-3] : ''
         $proxyParentType = Split-Path (Split-Path $FullResourceType -Parent) -Leaf
+        #endregion
 
         ##################
         ##  PARAMETERS  ##
         ##################
-
+        #region parameters
         $targetScope = Get-TargetScope -UrlPath $UrlPath
 
         $templateContent = ($targetScope -ne 'resourceGroup') ? @(
@@ -211,12 +213,12 @@ function Set-ModuleTemplate {
             $templateContent += $extraParameter.content
             $templateContent += ''
         }
-
+        #endregion
 
         #################
         ##  VARIABLES  ##
         #################
-
+        #region variables
         # Add a space in between the new section and the previous one in case no space exists
         if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
             $templateContent += ''
@@ -251,7 +253,7 @@ function Set-ModuleTemplate {
             $templateContent += $extraVariable.content
             $templateContent += ''
         }
-
+        #endregion
 
         ###################
         ##  DEPLOYMENTS  ##
