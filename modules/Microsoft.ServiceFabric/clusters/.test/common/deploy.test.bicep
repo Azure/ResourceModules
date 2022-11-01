@@ -92,11 +92,11 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.${environment().suffixes.storage}/'
+      blobEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.blob.${environment().suffixes.storage}/'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.${environment().suffixes.storage}/'
-      storageAccountName: resourceGroupResources.outputs.storageAccountResourceName
-      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.table.${environment().suffixes.storage}/'
+      queueEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.queue.${environment().suffixes.storage}/'
+      storageAccountName: last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))
+      tableEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.table.${environment().suffixes.storage}/'
     }
     fabricSettings: [
       {
@@ -201,6 +201,7 @@ module testDeployment '../../deploy.bicep' = {
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
+        principalType: 'ServicePrincipal'
       }
     ]
     applicationTypes: [
