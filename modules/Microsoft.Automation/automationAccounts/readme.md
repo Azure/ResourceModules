@@ -434,6 +434,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -645,6 +646,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

@@ -294,6 +294,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -350,6 +351,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

@@ -221,6 +221,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -299,6 +300,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

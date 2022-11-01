@@ -440,6 +440,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -477,6 +478,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -492,6 +494,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
               principalIds: [
                 '<managedIdentityPrincipalId>'
               ]
+              principalType: 'ServicePrincipal'
               roleDefinitionIdOrName: 'Reader'
             }
           ]
@@ -583,6 +586,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ]
@@ -628,6 +632,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -645,6 +650,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
                 "principalIds": [
                   "<managedIdentityPrincipalId>"
                 ],
+                "principalType": "ServicePrincipal",
                 "roleDefinitionIdOrName": "Reader"
               }
             ],

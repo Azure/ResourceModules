@@ -410,6 +410,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
               principalIds: [
                 '<managedIdentityPrincipalId>'
               ]
+              principalType: 'ServicePrincipal'
               roleDefinitionIdOrName: 'Reader'
             }
           ]
@@ -447,6 +448,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
               principalIds: [
                 '<managedIdentityPrincipalId>'
               ]
+              principalType: 'ServicePrincipal'
               roleDefinitionIdOrName: 'Reader'
             }
           ]
@@ -504,6 +506,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
               principalIds: [
                 '<managedIdentityPrincipalId>'
               ]
+              principalType: 'ServicePrincipal'
               roleDefinitionIdOrName: 'Reader'
             }
           ]
@@ -520,6 +523,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -574,6 +578,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                 "principalIds": [
                   "<managedIdentityPrincipalId>"
                 ],
+                "principalType": "ServicePrincipal",
                 "roleDefinitionIdOrName": "Reader"
               }
             ]
@@ -623,6 +628,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                 "principalIds": [
                   "<managedIdentityPrincipalId>"
                 ],
+                "principalType": "ServicePrincipal",
                 "roleDefinitionIdOrName": "Reader"
               }
             ],
@@ -688,6 +694,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                 "principalIds": [
                   "<managedIdentityPrincipalId>"
                 ],
+                "principalType": "ServicePrincipal",
                 "roleDefinitionIdOrName": "Reader"
               }
             ]
@@ -708,6 +715,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -940,6 +948,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -1008,6 +1017,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
