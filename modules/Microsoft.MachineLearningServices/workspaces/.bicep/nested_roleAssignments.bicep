@@ -50,7 +50,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' existing = {
+resource workspace 'Microsoft.MachineLearningServices/workspaces@2022-05-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
