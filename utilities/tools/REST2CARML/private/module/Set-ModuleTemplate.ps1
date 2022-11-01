@@ -258,6 +258,7 @@ function Set-ModuleTemplate {
         ###################
         ##  DEPLOYMENTS  ##
         ###################
+        #region resources & modules
 
         $locationParameterExists = ($templateContent | Where-Object { $_ -like 'param location *' }).Count -gt 0
 
@@ -356,6 +357,7 @@ function Set-ModuleTemplate {
             ''
         )
 
+        # TODO: Add 'other' resources? Like those where we reference 'existing'
 
         # Add additional resources such as extensions (like RBAC)
         # -------------------------------------------------------
@@ -373,38 +375,69 @@ function Set-ModuleTemplate {
                 $proxyParentName = Split-Path (Split-Path $dataBlock.identifier -Parent) -Leaf
             }
 
+            $moduleName = '{0}{1}_{2}' -f ($hasProxyParent ? "$($proxyParentName)_" : ''), $resourceTypeSingular, $childResourceType
+            $modulePath = '{0}{1}/deploy.bicep' -f ($hasProxyParent ? "$proxyParentName/" : ''), $childResourceType
+
+            $matchingModule = $existingTemplateContent.modules | Where-Object { $_.moduleName -eq $moduleName -and $_.modulePath -eq $modulePath }
+
+            # TODO: Also consider 'singular' children (if we can detect it)
             $templateContent += @(
-                "module $($hasProxyParent ? "$($proxyParentName)_" : '')$($resourceTypeSingular)_$($childResourceType) '$($hasProxyParent ? "$proxyParentName/" : '')$($childResourceType)/deploy.bicep' = [for ($($childResourceTypeSingular), index) in $($childResourceType): {",
-                "  name: '`${uniqueString(deployment().name$($locationParameterExists ? ', location' : ''))}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'",
-                '  params: {'
+                "module $moduleName '$modulePath' = [for ($($childResourceTypeSingular), index) in $($childResourceType): {"
             )
+
+            if ($matchingModule.topLevelElements.name -notcontains 'name') {
+                $templateContent += "  name: '`${uniqueString(deployment().name$($locationParameterExists ? ', location' : ''))}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'"
+            } else {
+                $existingParam = $matchingModule.topLevelElements | Where-Object { $_.name -eq 'name' }
+                $templateContent += $existingParam.content
+            }
+
+            $templateContent += '  params: {'
+            $templateContent += @()
+
+            $alreadyAddedParams = @()
 
             # All param names of parents
             foreach ($parentResourceType in $parentResourceTypes) {
-                $templateContent += '    {0}Name: {0}Name' -f ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
+                $parentParamName = ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
+                $templateContent += '    {0}Name: {0}Name' -f $parentParamName
+                $alreadyAddedParams += $parentParamName
             }
             # Itself
-            $templateContent += '    {0}Name: name' -f ((Get-ResourceTypeSingularName -ResourceType ($FullResourceType -split '/')[-1]) -split '/')[-1]
+            $selfParamName = ((Get-ResourceTypeSingularName -ResourceType ($FullResourceType -split '/')[-1]) -split '/')[-1]
+            $templateContent += '    {0}Name: name' -f $selfParamName
+            $alreadyAddedParams += $selfParamName
 
             # Any proxy default if any
             if ($hasProxyParent) {
                 $proxyDefaultValue = ($dataBlock.metadata.urlPath -split '\/')[-3]
-                $templateContent += "    {0}Name: '{1}'" -f (Get-ResourceTypeSingularName -ResourceType ($proxyParentName -split '/')[-1]), $proxyDefaultValue
+                $proxyParamName = Get-ResourceTypeSingularName -ResourceType ($proxyParentName -split '/')[-1]
+                $templateContent += "    {0}Name: '{1}'" -f $proxyParamName, $proxyDefaultValue
+                $alreadyAddedParams += $proxyParamName
             }
 
             # Add primary child parameters
             $allParam = $dataBlock.data.parameters + $dataBlock.data.additionalParameters
             foreach ($parameter in (($allParam | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') }) | Sort-Object -Property 'Name')) {
-                # TODO: Make idempotent
                 $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter | Where-Object { $_ -like 'param *' } | ForEach-Object { $_ -replace 'param ', '' }
                 $wouldBeParamElem = $wouldBeParameter -split ' = '
                 $parameter.name = ($wouldBeParamElem -split ' ')[0]
+
+                if ($matchingModule.nestedElements.name -notcontains $parameter.name) {
+                    $existingParam = $matchingModule.nestedElements | Where-Object { $_.name -eq $parameter.name }
+                    if ($alreadyAddedParams -notcontains $existingParam.name) {
+                        $templateContent += $existingParam.content
+                    }
+                    continue
+                }
+
                 if ($wouldBeParamElem.count -gt 1) {
                     # With default
 
                     if ($parameter.name -eq 'lock') {
                         # Special handling as we pass the parameter down to the child
-                        $templateContent += "    lock: contains($($childResourceTypeSingular), 'lock') ? $($childResourceTypeSingular).lock : lock"
+                        $templateContent += "    $($parameter.name): contains($($childResourceTypeSingular), 'lock') ? $($childResourceTypeSingular).lock : lock"
+                        $alreadyAddedParams += $parameter.name
                         continue
                     }
 
@@ -416,9 +449,11 @@ function Set-ModuleTemplate {
                     }
 
                     $templateContent += "    $($parameter.name): contains($($childResourceTypeSingular), '$($parameter.name)') ? $($childResourceTypeSingular).$($parameter.name) : $($wouldBeParamValue)"
+                    $alreadyAddedParams += $parameter.name
                 } else {
                     # No default
                     $templateContent += "    $($parameter.name): $($childResourceTypeSingular).$($parameter.name)"
+                    $alreadyAddedParams += $parameter.name
                 }
             }
 
@@ -430,6 +465,7 @@ function Set-ModuleTemplate {
                 ''
             )
         }
+        #endregion
 
         #######################################
         ##  Create template outputs section  ##
@@ -439,6 +475,8 @@ function Set-ModuleTemplate {
         if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
             $templateContent += ''
         }
+
+        # TODO: Make idempotent
 
         # Output header comment
         $templateContent += @(
