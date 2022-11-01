@@ -322,3 +322,6 @@ output uri string = keyVault.properties.vaultUri
 
 @description('The location the resource was deployed into.')
 output location string = keyVault.location
+
+@description('The type of the Key Vault.')
+output type string = keyVault.type

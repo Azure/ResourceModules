@@ -367,6 +367,7 @@ privateEndpoints:  [
 | `name` | string | The name of the key vault. |
 | `resourceGroupName` | string | The name of the resource group the key vault was created in. |
 | `resourceId` | string | The resource ID of the key vault. |
+| `type` | string | The type of the Key Vault. |
 | `uri` | string | The URI of the key vault. |
 
 ## Cross-referenced modules
