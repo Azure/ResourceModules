@@ -68,6 +68,7 @@ module testDeployment '../../deploy.bicep' = {
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     scopes: [
