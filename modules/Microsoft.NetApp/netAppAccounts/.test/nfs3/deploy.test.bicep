@@ -47,10 +47,11 @@ module testDeployment '../../deploy.bicep' = {
         name: '<<namePrefix>>-${serviceShort}-cp-001'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         serviceLevel: 'Premium'
@@ -73,10 +74,11 @@ module testDeployment '../../deploy.bicep' = {
             ]
             roleAssignments: [
               {
+                roleDefinitionIdOrName: 'Reader'
                 principalIds: [
                   resourceGroupResources.outputs.managedIdentityPrincipalId
                 ]
-                roleDefinitionIdOrName: 'Reader'
+                principalType: 'ServicePrincipal'
               }
             ]
             subnetResourceId: resourceGroupResources.outputs.subnetResourceId
@@ -96,10 +98,11 @@ module testDeployment '../../deploy.bicep' = {
         name: '<<namePrefix>>-${serviceShort}-cp-002'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         serviceLevel: 'Premium'
@@ -110,10 +113,11 @@ module testDeployment '../../deploy.bicep' = {
     lock: 'CanNotDelete'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     tags: {

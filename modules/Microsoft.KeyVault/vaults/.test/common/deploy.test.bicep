@@ -98,10 +98,11 @@ module testDeployment '../../deploy.bicep' = {
         name: 'keyName'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
       }
@@ -135,10 +136,11 @@ module testDeployment '../../deploy.bicep' = {
     ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     secrets: {
@@ -150,10 +152,11 @@ module testDeployment '../../deploy.bicep' = {
           name: 'secretName'
           roleAssignments: [
             {
+              roleDefinitionIdOrName: 'Reader'
               principalIds: [
                 resourceGroupResources.outputs.managedIdentityPrincipalId
               ]
-              roleDefinitionIdOrName: 'Reader'
+              principalType: 'ServicePrincipal'
             }
           ]
           value: 'secretValue'

@@ -45,10 +45,11 @@ module testDeployment '../../deploy.bicep' = {
     workspaceResourceId: resourceGroupResources.outputs.logAnalyticsWorkspaceResourceId
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
   }

@@ -50,10 +50,11 @@ module testDeployment '../../deploy.bicep' = {
     skuName: 'Premium'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     networkRuleSets: {
