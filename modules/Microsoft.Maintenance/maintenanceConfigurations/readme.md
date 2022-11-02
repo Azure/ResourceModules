@@ -182,7 +182,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `locatino` | string | The location the maintenanceConfiguration was created in. |
+| `location` | string | The location the maintenanceConfiguration was created in. |
 | `name` | string | The name of the maintenanceConfiguration. |
 | `resourceGroupName` | string | The name of the resource group the maintenanceConfiguration was created in. |
 | `resourceId` | string | The resource ID of the maintenanceConfiguration. |
