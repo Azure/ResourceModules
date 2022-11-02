@@ -31,7 +31,7 @@ param lock string = ''
   'SQLDB'
   'SQLManagedInstance'
 ])
-param maintenanceScope string = ''
+param maintenanceScope string = 'Host'
 
 @description('Optional. Definition of a MaintenanceWindow')
 param maintenanceWindow object = {}
@@ -47,6 +47,7 @@ param tags object = {}
 
 @description('Optional. Gets or sets the visibility of the configuration. The default value is \'Custom\'')
 @allowed([
+  ''
   'Custom'
   'Public'
 ])
@@ -67,7 +68,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
     }
   }
 }
-
 
 resource maintenanceConfiguration 'Microsoft.Maintenance/maintenanceConfigurations@2021-05-01' = {
   location: location
@@ -91,15 +91,15 @@ resource maintenanceConfiguration_lock 'Microsoft.Authorization/locks@2017-04-01
   scope: maintenanceConfiguration
 }
 
-module maintenanceConfiguration_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment,index) in roleAssignments: {
+module maintenanceConfiguration_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-maintenanceConfiguration-Rbac-${index}'
   params: {
-    description: contains(roleAssignment,'description') ? roleAssignment.description : ''
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment,'principalType') ? roleAssignment.principalType : ''
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    condition: contains(roleAssignment,'condition') ? roleAssignment.condition : ''
-    delegatedManagedIdentityResourceId: contains(roleAssignment,'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: maintenanceConfiguration.id
   }
 }]
