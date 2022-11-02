@@ -120,8 +120,6 @@ jobs:
             $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
             $servicePrincipalObjectId = $servicePrincipal.Id
 
-            Write-Verbose ($servicePrincipal | ConvertTo-Json | Out-String) -Verbose
-
             # Build path
             # Set test input module path
             $moduleFolderPaths = @(Join-Path $repoRootPath '${{ parameters.modulePath }}')
