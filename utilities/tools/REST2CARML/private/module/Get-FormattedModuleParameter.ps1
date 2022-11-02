@@ -24,6 +24,7 @@ function Get-FormattedModuleParameter {
 
     # description (optional)
     # ----------------------
+    # TODO: Add logic to always add a finishing '.' if missing
     if ($ParameterData.description) {
         # For the description we have to escape any single quote that is not already escaped (i.e., negative lookbehind)
         if ($ParameterData.description -match '^\w+\. .+' ) {
