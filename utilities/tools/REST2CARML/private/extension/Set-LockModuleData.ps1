@@ -63,7 +63,7 @@ function Set-LockModuleData {
         $ModuleData.resources += @{
             name    = "$($resourceTypeSingular)_lock"
             content = @(
-                "resource @($resourceTypeSingular)_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {"
+                "resource $($resourceTypeSingular)_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {"
                 "  name: '`${$resourceTypeSingular.name}-`${lock}-lock'"
                 '  properties: {'
                 '    level: any(lock)'
