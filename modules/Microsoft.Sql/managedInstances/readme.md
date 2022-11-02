@@ -81,6 +81,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedInstanceCreateMode` | string | `'Default'` | `[Default, PointInTimeRestore]` | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
+| `minimalTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2, None]` | Minimal TLS version allowed. |
 | `proxyOverride` | string | `'Proxy'` | `[Default, Proxy, Redirect]` | Connection type used for connecting to the instance. |
 | `publicDataEndpointEnabled` | bool | `False` |  | Whether or not the public data endpoint is enabled. |
 | `requestedBackupStorageRedundancy` | string | `'Geo'` | `[Geo, GeoZone, Local, Zone]` | The storage account type used to store backups for this database. |
@@ -99,7 +100,6 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `vCores` | int | `4` |  | The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
 | `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/readme.md)_ object | `{object}` |  | The vulnerability assessment configuration. |
 | `zoneRedundant` | bool | `False` |  | Whether or not multi-az is enabled. |
-| `minimalTlsVersion` | string | `'1.2'` | `[None, 1.0, 1.1, 1.2]` | Minimal TLS version allowed. |
 
 
 ### Parameter Usage : `userAssignedIdentities`
