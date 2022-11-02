@@ -436,11 +436,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.${environment().suffixes.storage}/'
+      blobEndpoint: '<blobEndpoint>'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.${environment().suffixes.storage}/'
+      queueEndpoint: '<queueEndpoint>'
       storageAccountName: '<storageAccountName>'
-      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountResourceName}.table.${environment().suffixes.storage}/'
+      tableEndpoint: '<tableEndpoint>'
     }
     fabricSettings: [
       {
@@ -484,6 +484,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -506,7 +507,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         maxPercentUnhealthyNodes: 0
       }
       upgradeDomainTimeout: '02:00:00'
-      upgradeReplicaSetCheckTimeout: '<upgradeReplicaSetCheckTimeout>'
+      upgradeReplicaSetCheckTimeout: '1.00:00:00'
       upgradeTimeout: '02:00:00'
     }
     vmImage: 'Linux'
@@ -638,11 +639,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "diagnosticsStorageAccountConfig": {
       "value": {
-        "blobEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.blob.${environment().suffixes.storage}/",
+        "blobEndpoint": "<blobEndpoint>",
         "protectedAccountKeyName": "StorageAccountKey1",
-        "queueEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.queue.${environment().suffixes.storage}/",
+        "queueEndpoint": "<queueEndpoint>",
         "storageAccountName": "<storageAccountName>",
-        "tableEndpoint": "https://${resourceGroupResources.outputs.storageAccountResourceName}.table.${environment().suffixes.storage}/"
+        "tableEndpoint": "<tableEndpoint>"
       }
     },
     "fabricSettings": {
@@ -696,6 +697,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -722,7 +724,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
           "maxPercentUnhealthyNodes": 0
         },
         "upgradeDomainTimeout": "02:00:00",
-        "upgradeReplicaSetCheckTimeout": "<upgradeReplicaSetCheckTimeout>",
+        "upgradeReplicaSetCheckTimeout": "1.00:00:00",
         "upgradeTimeout": "02:00:00"
       }
     },

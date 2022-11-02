@@ -691,15 +691,16 @@ function ConvertTo-FormattedJSONParameterObject {
         $line = $pattern.replace($line, '"$1":', 1)
 
         # [2.5] Syntax: Replace Bicep resource ID references
-        $mayHaveValue = $line -like '*:*'
+        $mayHaveValue = $line -match '\s*.+:\s+'
         if ($mayHaveValue) {
+
+            $lineValue = ($line -split '\s*.+:\s+')[1].Trim() # i.e. optional spaces, followed by a name ("xzy"), followed by ':', folowed by at least a space
 
             # Individual checks
             $isLineWithEmptyObjectValue = $line -match '^.+:\s*{\s*}\s*$' # e.g. test: {}
-            $isLineWithObjectPropertyReferenceValue = ($line -split ':')[1].Trim() -like '*.*' # e.g. resourceGroupResources.outputs.virtualWWANResourceId`
+            $isLineWithObjectPropertyReferenceValue = $lineValue -like '*.*' # e.g. resourceGroupResources.outputs.virtualWWANResourceId`
             $isLineWithReferenceInLineKey = ($line -split ':')[0].Trim() -like '*.*'
 
-            $lineValue = ($line -split ':')[1].Trim()
             $isLineWithStringValue = $lineValue -match '".+"' # e.g. "value"
             $isLineWithFunction = $lineValue -match '[a-zA-Z]+\(.+\)' # e.g. (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4]
             $isLineWithPlainValue = $lineValue -match '^\w+$' # e.g. adminPassword: password
@@ -717,7 +718,7 @@ function ConvertTo-FormattedJSONParameterObject {
             if ($isLineWithObjectPropertyReference -or $isLineWithFunction -or $isLineWithParameterOrVariableReferenceValue) {
                 $line = '{0}: "<{1}>"' -f ($line -split ':')[0], ([regex]::Match(($line -split ':')[0], '"(.+)"')).Captures.Groups[1].Value
             } elseif ($isLineWithObjectReferenceKeyAndEmptyObjectValue) {
-                $line = '"<{0}>": {1}' -f (($line -split ':')[0] -split '\.')[-1].TrimEnd('}"'), ($line -split ':')[1].Trim()
+                $line = '"<{0}>": {1}' -f (($line -split ':')[0] -split '\.')[-1].TrimEnd('}"'), $lineValue
             }
         } else {
             if ($line -notlike '*"*"*' -and $line -like '*.*') {
