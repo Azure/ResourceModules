@@ -538,6 +538,8 @@ function Set-ModuleTemplate {
             )
         }
 
+        # TODO: Add location output if applicable (pester tests for it too)
+
         # Extra outputs
         foreach ($output in $existingTemplateContent.outputs | Where-Object { $_.name -notin @('name', 'resourceId', 'resourceGroupName') }) {
             $templateContent += $output.content
