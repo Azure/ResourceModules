@@ -544,7 +544,19 @@ function Set-ModuleTemplate {
             }
         }
 
-        # TODO: Make idempotent
+        # If the main resource has a location property, an output should be returned too
+        if ($ModuleData.parametersToAdd.name -contains 'location' -and $ModuleData.parametersToAdd['location'].defaultValue -ne 'global') {
+            $defaultOutputs += @{
+                name    = 'location'
+                type    = 'string'
+                content = @(
+                    "@description('The location the resource was deployed into.')"
+                    '{0}.location' -f $resourceTypeSingular
+                )
+            }
+        }
+
+        # Extra outputs
         $outputsToAdd = -not $existingTemplateContent ? @() : $existingTemplateContent.outputs
         foreach ($default in $defaultOutputs) {
             if ($outputsToAdd.name -notcontains $default.name) {
@@ -558,33 +570,9 @@ function Set-ModuleTemplate {
             '//   Outputs   //'
             '// =========== //'
             ''
-            "@description('The name of the $resourceTypeSingular.')"
-            "output name string = $resourceTypeSingular.name"
-            ''
-            "@description('The resource ID of the $resourceTypeSingular.')"
-            "output resourceId string = $resourceTypeSingular.id"
-            ''
         )
 
-        if ($targetScope -eq 'resourceGroup') {
-            $templateContent += @(
-                "@description('The name of the resource group the $resourceTypeSingular was created in.')"
-                'output resourceGroupName string = resourceGroup().name'
-                ''
-            )
-        }
-
-        # If the main resource has a location property, an output should be returned too
-        if ($ModuleData.parametersToAdd.name -contains 'location' -and $ModuleData.parametersToAdd['location'].defaultValue -ne 'global') {
-            $templateContent += @(
-                "@description('The location the resource was deployed into.')"
-                'output location string = {0}.location' -f $resourceTypeSingular
-                ''
-            )
-        }
-
-        # Extra outputs
-        foreach ($output in $existingTemplateContent.outputs | Where-Object { $_.name -notin @('name', 'resourceId', 'resourceGroupName') }) {
+        foreach ($output in $outputsToAdd) {
             $templateContent += $output.content
             $templateContent += ''
         }
