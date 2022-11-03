@@ -59,7 +59,9 @@ function Update-NestedRoleAssignmentListInner {
         #####################
         $newContent = ($nestedRoles | Out-String).TrimEnd()
         $content = ($content -replace '(?ms)^\s+var builtInRoleNames = {.*?}', $newContent).TrimEnd()
-        Set-Content -Path $pathToFile -Value $content -Force -Encoding 'utf8'
+        if ($PSCmdlet.ShouldProcess("File in path [$pathToFile]", 'Update')) {
+                Set-Content -Path $pathToFile -Value $content -Force -Encoding 'utf8'
+        }
 
         # Return arrays
         return $roles
