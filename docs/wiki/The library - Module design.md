@@ -562,7 +562,7 @@ In either case, we follow the following, general guidelines:
 In addition, we follow the following, file-type-specific guidelines:
 
 - JSON Parameter file specific
-  - Parameter file names should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
+  - Parameter filenames should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
   - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
 - Bicep file specific
 
