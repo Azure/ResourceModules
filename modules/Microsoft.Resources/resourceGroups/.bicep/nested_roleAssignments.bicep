@@ -75,6 +75,7 @@ var builtInRoleNames = {
   'Azure Kubernetes Service RBAC Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','7f6c6a51-bcf8-42ba-9220-52d62157d7db')
   'Azure Kubernetes Service RBAC Writer': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','a7ffa36f-339b-4b5c-8bdf-e2c188b2c0eb')
   'Azure Maps Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','dba33070-676a-4fb0-87fa-064dc56ff7fb')
+  'Azure Traffic Controller Configuration Manager': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','fbc52c3f-28ad-4303-a892-8a056630b8f1')
   'Backup Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','5e467623-bb1f-42f4-a55d-6e525e11384b')
   'Backup Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','00c29273-979b-4161-815c-10b084fb9324')
   'BizTalk Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','5e3c6656-6cfa-4708-81fe-0de47ac73342')
