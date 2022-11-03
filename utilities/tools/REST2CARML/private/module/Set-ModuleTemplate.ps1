@@ -538,7 +538,14 @@ function Set-ModuleTemplate {
             )
         }
 
-        # TODO: Add location output if applicable (pester tests for it too)
+        # If the main resource has a location property, an output should be returned too
+        if ($ModuleData.parametersToAdd.name -contains 'location' -and $ModuleData.parametersToAdd['location'].defaultValue -ne 'global') {
+            $templateContent += @(
+                "@description('The location the resource was deployed into.')"
+                'output location string = {0}.location' -f $resourceTypeSingular
+                ''
+            )
+        }
 
         # Extra outputs
         foreach ($output in $existingTemplateContent.outputs | Where-Object { $_.name -notin @('name', 'resourceId', 'resourceGroupName') }) {
