@@ -12,11 +12,11 @@ Mandatory. The Provider Namespace to fetch the role definitions for
 Mandatory. The ResourceType to fetch the role definitions for
 
 .EXAMPLE
-Update-NestedRoleAssignmentInner -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+Update-NestedRoleAssignmentListInner -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
 
 Update nested_roleassignments.bicep template for [Microsoft.KeyVault/vaults] module with latest available Role Definitions
 #>
-function Update-NestedRoleAssignmentInner {
+function Update-NestedRoleAssignmentListInner {
 
     [CmdletBinding()]
     param(
@@ -85,16 +85,16 @@ Optional. The Provider Namespace to fetch the role definitions for
 Optional. The ResourceType to fetch the role definitions for
 
 .EXAMPLE
-Update-NestedRoleAssignment
+Update-NestedRoleAssignmentList
 
 Update all nested_roleassignments.bicep found in the library with latest available Role Definitions
 
 .EXAMPLE
-Update-NestedRoleAssignment -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+Update-NestedRoleAssignmentList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
 
 Update nested_roleassignments.bicep template for [Microsoft.KeyVault/vaults] module with latest available Role Definitions
 #>
-function Update-NestedRoleAssignment {
+function Update-NestedRoleAssignmentList {
 
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -118,7 +118,7 @@ function Update-NestedRoleAssignment {
             ## Update RBAC roles for single module #
             ########################################
             if ($PSCmdlet.ShouldProcess("Role Assignments for module [$ProviderNamespace/$ResourceType]", 'Update')) {
-                $null = Update-NestedRoleAssignmentInner -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -Verbose
+                $null = Update-NestedRoleAssignmentListInner -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -Verbose
             }
         } else {
             ############################################
@@ -134,7 +134,7 @@ function Update-NestedRoleAssignment {
                 $relativeDirectoryPath = $relativeFilePath -replace '\\\.bicep\\nested_roleAssignments\.bicep', ''
                 $provider, $type = $relativeDirectoryPath -split '\\', 2
                 if ($PSCmdlet.ShouldProcess("Role Assignments for module [$relativeDirectoryPath]", 'Update')) {
-                    $null = Update-NestedRoleAssignmentInner -ProviderNamespace $provider -ResourceType $type -Verbose
+                    $null = Update-NestedRoleAssignmentListInner -ProviderNamespace $provider -ResourceType $type -Verbose
                 }
             }
         }
