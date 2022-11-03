@@ -31,7 +31,7 @@ function Update-NestedRoleAssignmentListInner {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         # Load Get RoleAssignments List
         $utilitiesFolderPath = Split-Path $PSScriptRoot -Parent
-        . (Join-Path $utilitiesFolderPath 'tools' 'Get-RoleAssignmentsList')
+        . (Join-Path $utilitiesFolderPath 'tools' 'Get-RoleAssignmentList')
     }
 
     process {
@@ -39,7 +39,7 @@ function Update-NestedRoleAssignmentListInner {
         #################
         ##  Get Roles  ##
         #################
-        $roles = (Get-RoleAssignmentsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType).bicepFormat
+        $roles = (Get-RoleAssignmentList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType).bicepFormat
         $roles = $roles | ForEach-Object { "  $_" }
         $nestedRoles = [System.Collections.ArrayList]@(
             '',

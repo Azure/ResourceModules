@@ -11,7 +11,7 @@ Use this script to get the roles for a given Provider Namespace & Resource Type 
 ---
 # Location
 
-You can find the script under [`/utilities/tools/Get-RoleAssignmentsList.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/Get-RoleAssignmentsList.ps1)
+You can find the script under [`/utilities/tools/Get-RoleAssignmentList.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/Get-RoleAssignmentList.ps1)
 
 # How it works
 
@@ -25,7 +25,7 @@ This script
 
 The script only expects you to provide the Provider Namespace & Resource Type for which you want to fetch the roles for.
 
-1. Run the script with for example the parameters for the KeyVault: `Get-RoleAssignmentsList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'`. The output would for example be
+1. Run the script with for example the parameters for the KeyVault: `Get-RoleAssignmentList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'`. The output would for example be
 
    ```yml
    VERBOSE: Bicep

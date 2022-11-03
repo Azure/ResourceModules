@@ -16,11 +16,11 @@ Optional. The ResourceType to fetch the role definitions for
 Optional. Whether to include custom roles or not
 
 .EXAMPLE
-Get-RoleAssignmentsList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+Get-RoleAssignmentList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
 
 Fetch all available Role Definitions for ProviderNamespace [Microsoft.KeyVault/vaults], excluding custom roles
 #>
-function Get-RoleAssignmentsList {
+function Get-RoleAssignmentList {
 
     [CmdletBinding()]
     param(
