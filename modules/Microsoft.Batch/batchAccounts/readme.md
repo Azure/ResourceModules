@@ -269,6 +269,15 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
             '<privateDNSZoneResourceId>'
           ]
         }
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
         service: 'batchAccount'
         subnetResourceId: '<subnetResourceId>'
       }
@@ -329,6 +338,15 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
               "<privateDNSZoneResourceId>"
             ]
           },
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
           "service": "batchAccount",
           "subnetResourceId": "<subnetResourceId>"
         }

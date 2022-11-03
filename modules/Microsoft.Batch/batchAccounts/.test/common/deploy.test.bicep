@@ -30,7 +30,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     storageAccountName: 'dep<<namePrefix>>st${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
@@ -75,6 +74,15 @@ module testDeployment '../../deploy.bicep' = {
             resourceGroupResources.outputs.privateDNSZoneResourceId
           ]
         }
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              resourceGroupResources.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
       }
     ]
     storageAccessIdentity: resourceGroupResources.outputs.managedIdentityResourceId
