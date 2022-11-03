@@ -514,7 +514,43 @@ function Set-ModuleTemplate {
             $templateContent += ''
         }
 
+        $defaultOutputs = @(
+            @{
+                name    = 'name'
+                type    = 'string'
+                content = @(
+                    "@description('The name of the $resourceTypeSingular.')"
+                    "output name string = $resourceTypeSingular.name"
+                )
+            },
+            @{
+                name    = 'resourceId'
+                type    = 'string'
+                content = @(
+                    "@description('The resource ID of the $resourceTypeSingular.')"
+                    "output resourceId string = $resourceTypeSingular.id"
+                )
+            }
+        )
+
+        if ($targetScope -eq 'resourceGroup') {
+            $defaultOutputs += @{
+                name    = 'resourceGroupName'
+                type    = 'string'
+                content = @(
+                    "@description('The name of the resource group the $resourceTypeSingular was created in.')"
+                    'output resourceGroupName string = resourceGroup().name'
+                )
+            }
+        }
+
         # TODO: Make idempotent
+        $outputsToAdd = -not $existingTemplateContent ? @() : $existingTemplateContent.outputs
+        foreach ($default in $defaultOutputs) {
+            if ($outputsToAdd.name -notcontains $default.name) {
+                $outputsToAdd += $default
+            }
+        }
 
         # Output header comment
         $templateContent += @(
