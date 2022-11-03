@@ -24,12 +24,14 @@ This module deploys a firewall.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Azure Firewall. |
 | `vNetId` | string | Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalPublicIpConfigurations` | array | `[]` |  | This is to add any additional public ip configurations on top of the public ip with subnet ip configuration. |
@@ -321,16 +323,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-AzureFirewalls'
+  name: '${uniqueString(deployment().name)}-test-nafaddpip'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-fw-add-001'
-    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw'
+    name: '<<namePrefix>>nafaddpip001'
+    vNetId: '<vNetId>'
     // Non-required parameters
     additionalPublicIpConfigurations: [
       {
         name: 'ipConfig01'
-        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-fw'
+        publicIPAddressResourceId: '<publicIPAddressResourceId>'
       }
     ]
   }
@@ -351,17 +353,17 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-fw-add-001"
+      "value": "<<namePrefix>>nafaddpip001"
     },
     "vNetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw"
+      "value": "<vNetId>"
     },
     // Non-required parameters
     "additionalPublicIpConfigurations": {
       "value": [
         {
           "name": "ipConfig01",
-          "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-fw"
+          "publicIPAddressResourceId": "<publicIPAddressResourceId>"
         }
       ]
     }
@@ -372,7 +374,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Custompip</h3>
+<h3>Example 2: Common</h3>
 
 <details>
 
@@ -380,147 +382,11 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-AzureFirewalls'
+  name: '${uniqueString(deployment().name)}-test-nafcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-fw-custompip-001'
-    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
-    // Non-required parameters
-    publicIPAddressObject: {
-      diagnosticLogCategoriesToEnable: [
-        'DDoSMitigationFlowLogs'
-        'DDoSMitigationReports'
-        'DDoSProtectionNotifications'
-      ]
-      diagnosticMetricsToEnable: [
-        'AllMetrics'
-      ]
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
-      publicIPAllocationMethod: 'Static'
-      publicIPPrefixResourceId: ''
-      roleAssignments: [
-        {
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
-      skuName: 'Standard'
-      skuTier: 'Regional'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-fw-custompip-001"
-    },
-    "vNetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw"
-    },
-    // Non-required parameters
-    "publicIPAddressObject": {
-      "value": {
-        "diagnosticLogCategoriesToEnable": [
-          "DDoSMitigationFlowLogs",
-          "DDoSMitigationReports",
-          "DDoSProtectionNotifications"
-        ],
-        "diagnosticMetricsToEnable": [
-          "AllMetrics"
-        ],
-        "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
-        "publicIPAllocationMethod": "Static",
-        "publicIPPrefixResourceId": "",
-        "roleAssignments": [
-          {
-            "principalIds": [
-              "<<deploymentSpId>>"
-            ],
-            "roleDefinitionIdOrName": "Reader"
-          }
-        ],
-        "skuName": "Standard",
-        "skuTier": "Regional"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-AzureFirewalls'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-az-fw-min-001'
-    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-fw-min-001"
-    },
-    "vNetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 4: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-AzureFirewalls'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-az-fw-x-001'
-    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw'
+    name: '<<namePrefix>>nafcom001'
+    vNetId: '<vNetId>'
     // Non-required parameters
     applicationRuleCollections: [
       {
@@ -567,19 +433,19 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
                 '*'
               ]
               targetFqdns: [
-                'management.azure.com'
+                'bing.com'
               ]
             }
           ]
         }
       }
     ]
-    azureFirewallSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    azureFirewallSubnetPublicIpId: '<azureFirewallSubnetPublicIpId>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     lock: 'CanNotDelete'
     networkRuleCollections: [
       {
@@ -613,7 +479,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -641,10 +507,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-fw-x-001"
+      "value": "<<namePrefix>>nafcom001"
     },
     "vNetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw"
+      "value": "<vNetId>"
     },
     // Non-required parameters
     "applicationRuleCollections": {
@@ -693,7 +559,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
                   "*"
                 ],
                 "targetFqdns": [
-                  "management.azure.com"
+                  "bing.com"
                 ]
               }
             ]
@@ -702,22 +568,22 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       ]
     },
     "azureFirewallSubnetPublicIpId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw"
+      "value": "<azureFirewallSubnetPublicIpId>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -757,7 +623,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -769,6 +635,142 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         "2",
         "3"
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Custompip</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nafcstpip'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nafcstpip001'
+    vNetId: '<vNetId>'
+    // Non-required parameters
+    publicIPAddressObject: {
+      diagnosticLogCategoriesToEnable: [
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+        'DDoSProtectionNotifications'
+      ]
+      diagnosticMetricsToEnable: [
+        'AllMetrics'
+      ]
+      name: 'new-<<namePrefix>>-pip-nafcstpip'
+      publicIPAllocationMethod: 'Static'
+      publicIPPrefixResourceId: ''
+      roleAssignments: [
+        {
+          principalIds: [
+            '<managedIdentityPrincipalId>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      skuName: 'Standard'
+      skuTier: 'Regional'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nafcstpip001"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "publicIPAddressObject": {
+      "value": {
+        "diagnosticLogCategoriesToEnable": [
+          "DDoSMitigationFlowLogs",
+          "DDoSMitigationReports",
+          "DDoSProtectionNotifications"
+        ],
+        "diagnosticMetricsToEnable": [
+          "AllMetrics"
+        ],
+        "name": "new-<<namePrefix>>-pip-nafcstpip",
+        "publicIPAllocationMethod": "Static",
+        "publicIPPrefixResourceId": "",
+        "roleAssignments": [
+          {
+            "principalIds": [
+              "<managedIdentityPrincipalId>"
+            ],
+            "roleDefinitionIdOrName": "Reader"
+          }
+        ],
+        "skuName": "Standard",
+        "skuTier": "Regional"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nafmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nafmin001'
+    vNetId: '<vNetId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nafmin001"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
     }
   }
 }
