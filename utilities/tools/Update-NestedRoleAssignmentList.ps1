@@ -113,7 +113,7 @@ function Update-NestedRoleAssignmentList {
     }
 
     process {
-        if ($ProviderNamespace -and $ResourceType) {
+        if (-not [String]::IsNullOrEmpty($ProviderNamespace) -and -not [String]::IsNullOrEmpty($ResourceType)) {
             ########################################
             ## Update RBAC roles for single module #
             ########################################
