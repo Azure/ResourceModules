@@ -40,7 +40,7 @@ module testDeployment '../../deploy.bicep' = {
   // scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    scope: '/subscriptions/<<subscriptionId>>'
+    scope: subscription().subscriptionId
     workspaceId: resourceGroupResources.outputs.logAnalyticsWorkspaceResourceId
     securityContactProperties: {
       alertNotifications: 'Off'
@@ -48,6 +48,5 @@ module testDeployment '../../deploy.bicep' = {
       email: 'foo@contoso.com'
       phone: '+12345678'
     }
-
   }
 }
