@@ -28,6 +28,9 @@ param replicationFabrics array = []
 @minLength(0)
 param replicationPolicies array = []
 
+@description('Optional. Replication alert settings.')
+param replicationAlertSetting object = {}
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -239,6 +242,18 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
     storageType: contains(backupConfig, 'storageType') ? backupConfig.storageType : 'GeoRedundant'
     storageTypeState: contains(backupConfig, 'storageTypeState') ? backupConfig.storageTypeState : 'Locked'
     isSoftDeleteFeatureStateEditable: contains(backupConfig, 'isSoftDeleteFeatureStateEditable') ? backupConfig.isSoftDeleteFeatureStateEditable : true
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
+module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if (!empty(replicationAlertSetting)) {
+  name: '${uniqueString(deployment().name, location)}-RSV-replicationAlertSettings'
+  params: {
+    recoveryVaultName: rsv.name
+    name: replicationAlertSetting.name
+    emailAddresses: contains(replicationAlertSetting, 'emailAddresses') ? replicationAlertSetting.emailAddresses : ''
+    locale: contains(replicationAlertSetting, 'locale') ? replicationAlertSetting.locale : ''
+    sendToOwners: contains(replicationAlertSetting, 'sendToOwners') ? replicationAlertSetting.sendToOwners : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }

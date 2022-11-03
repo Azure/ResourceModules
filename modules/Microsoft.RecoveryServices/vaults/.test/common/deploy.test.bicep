@@ -294,6 +294,9 @@ module testDeployment '../../deploy.bicep' = {
       crossRegionRestoreFlag: true
       storageModelType: 'GeoRedundant'
     }
+    replicationAlertSetting: {
+      sendToOwners: 'Send'
+    }
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId

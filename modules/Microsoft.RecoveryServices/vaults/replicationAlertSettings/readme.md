@@ -31,8 +31,8 @@ This module deploys RecoveryServices Vaults ReplicationAlertSettings.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `locale` | string | `'en-GB'` |  | The locale for the email notification. |
-| `sendToOwners` | string | `'DoNotSend'` | `[DoNotSend, Send]` | The value indicating whether to send email to subscription administrator. |
+| `locale` | string | `''` |  | The locale for the email notification. |
+| `sendToOwners` | string | `'Send'` | `[DoNotSend, Send]` | The value indicating whether to send email to subscription administrator. |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`

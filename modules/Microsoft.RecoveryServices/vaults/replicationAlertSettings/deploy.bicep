@@ -8,14 +8,14 @@ param name string
 param emailAddresses string = ''
 
 @description('Optional. The locale for the email notification.')
-param locale string = 'en-GB'
+param locale string = ''
 
 @description('Optional. The value indicating whether to send email to subscription administrator.')
 @allowed([
   'DoNotSend'
   'Send'
 ])
-param sendToOwners string = 'DoNotSend'
+param sendToOwners string = 'Send'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
