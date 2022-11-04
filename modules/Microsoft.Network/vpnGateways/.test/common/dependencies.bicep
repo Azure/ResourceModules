@@ -59,7 +59,7 @@ resource vpnSite 'Microsoft.Network/vpnSites@2022-01-01' = {
           ipAddress: '10.2.0.0'
           bgpProperties: {
             asn: 65010
-            bgpPeeringAddress: '1.1.1.1'
+            bgpPeeringAddress: '1.2.1.1'
           }
         }
       }
