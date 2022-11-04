@@ -108,7 +108,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -116,12 +116,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-AzureSecurityCenter'
+  name: '${uniqueString(deployment().name)}-test-sasccom'
   params: {
     // Required parameters
-    scope: '/subscriptions/<<subscriptionId>>'
-    workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    // Non-required parameters
+    workspaceId: '<workspaceId>'
     securityContactProperties: {
       alertNotifications: 'Off'
       alertsToAdmins: 'Off'
@@ -145,13 +143,9 @@ module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bice
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "scope": {
-      "value": "/subscriptions/<<subscriptionId>>"
-    },
     "workspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<workspaceId>"
     },
-    // Non-required parameters
     "securityContactProperties": {
       "value": {
         "alertNotifications": "Off",

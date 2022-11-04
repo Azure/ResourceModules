@@ -43,7 +43,8 @@ module testDeployment '../../deploy.bicep' = {
     displayName: 'azuremonitorlogs'
     name: 'azuremonitor'
     connectionApi: {
-      id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
+      id: '${subscription().id}/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
+
     }
     lock: 'CanNotDelete'
     roleAssignments: [
