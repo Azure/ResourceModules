@@ -29,6 +29,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
     virtualMachineName: 'dep-<<namePrefix>>-vm-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     location: location
@@ -60,7 +61,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     connectionMonitors: [
       {
-        name: 'adp-<<namePrefix>>-conn-mon-x-001'
+        name: 'adp-<<namePrefix>>-conmon-${serviceShort}-x-001'
         endpoints: [
           {
             name: '<<namePrefix>>-subnet-x-001(${resourceGroup.name})'
@@ -115,24 +116,25 @@ module testDeployment '../../deploy.bicep' = {
       {
         enabled: false
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
-        targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'
+        targetResourceId: resourceGroupResources.outputs.networkSecurityGroupResourceId
       }
       {
         formatVersion: 1
         name: 'adp-<<namePrefix>>-nsg-x-apgw-flowlog'
         retentionInDays: 8
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
-        targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-apgw'
+        targetResourceId: resourceGroupResources.outputs.networkSecurityGroupResourceId
         trafficAnalyticsInterval: 10
         workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       }
     ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
   }

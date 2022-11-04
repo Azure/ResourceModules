@@ -7,6 +7,9 @@ param virtualNetworkName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+@description('Required. The name of the Network Security Group to create.')
+param networkSecurityGroupName string
+
 @description('Required. The name of the Virtual Machine to create.')
 param virtualMachineName string
 
@@ -37,6 +40,10 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
     location: location
+}
+
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-01' = {
+    name: networkSecurityGroupName
 }
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2022-05-01' = {
@@ -84,3 +91,6 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 
 @description('The resource ID of the created Virtual Machine.')
 output virtualMachineResourceId string = virtualMachine.id
+
+@description('The resource ID of the created Network Security Group.')
+output networkSecurityGroupResourceId string = networkSecurityGroup.id
