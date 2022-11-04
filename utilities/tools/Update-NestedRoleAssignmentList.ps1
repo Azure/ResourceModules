@@ -32,6 +32,7 @@ function Update-NestedRoleAssignmentListInner {
         # Load Get RoleAssignments List
         $utilitiesFolderPath = Split-Path $PSScriptRoot -Parent
         . (Join-Path $utilitiesFolderPath 'tools' 'Get-RoleAssignmentList')
+        $fileNameToUpdate = 'nested_roleAssignments.bicep'
     }
 
     process {
@@ -51,7 +52,7 @@ function Update-NestedRoleAssignmentListInner {
         #######################
         ##  Get old content  ##
         #######################
-        $pathToFile = Join-Path $ProviderNamespace $ResourceType '.bicep' 'nested_roleAssignments.bicep'
+        $pathToFile = Join-Path $ProviderNamespace $ResourceType '.bicep' $fileNameToUpdate
         $content = Get-Content $pathToFile -Raw
 
         #####################
@@ -60,7 +61,7 @@ function Update-NestedRoleAssignmentListInner {
         $newContent = ($nestedRoles | Out-String).TrimEnd()
         $content = ($content -replace '(?ms)^\s+var builtInRoleNames = {.*?}', $newContent).TrimEnd()
         if ($PSCmdlet.ShouldProcess("File in path [$pathToFile]", 'Update')) {
-                Set-Content -Path $pathToFile -Value $content -Force -Encoding 'utf8'
+            Set-Content -Path $pathToFile -Value $content -Force -Encoding 'utf8'
         }
 
         # Return arrays
@@ -111,7 +112,7 @@ function Update-NestedRoleAssignmentList {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
         $modulesPath = Join-Path $repoRootPath 'modules'
-        $FileToSearch = 'nested_roleAssignments.bicep'
+        $fileNameToUpdate = 'nested_roleAssignments.bicep'
     }
 
     process {
@@ -127,14 +128,15 @@ function Update-NestedRoleAssignmentList {
             ## Update RBAC roles for the whole library #
             ############################################
             Set-Location $modulesPath
-            $searchFile = Join-Path $modulesPath '**' $FileToSearch
+            $searchFile = Join-Path $modulesPath '**' $fileNameToUpdate
             $rbacPathList = Get-ChildItem -Path $searchFile -Recurse
             foreach ($item in $rbacPathList) {
                 $FullFilePath = $item.FullName
-                $relativeFilePath = Get-Item $FullFilePath | Resolve-Path -Relative
-                $relativeFilePath = $relativeFilePath -replace '\.\\', ''
-                $relativeDirectoryPath = $relativeFilePath -replace '\\\.bicep\\nested_roleAssignments\.bicep', ''
-                $provider, $type = $relativeDirectoryPath -split '\\', 2
+                $relativeFilePath = ((Get-Item $FullFilePath | Resolve-Path -Relative) -replace '\\', '/') -replace '\.\/', ''
+                $stringToReplace = (Join-Path '/.bicep' $fileNameToUpdate) -replace '\\', '/'
+                $relativeDirectoryPath = $relativeFilePath.Replace($stringToReplace, '')
+                $provider, $type = $relativeDirectoryPath -split '\/', 2
+
                 if ($PSCmdlet.ShouldProcess("Role Assignments for module [$relativeDirectoryPath]", 'Update')) {
                     $null = Update-NestedRoleAssignmentListInner -ProviderNamespace $provider -ResourceType $type -Verbose
                 }
