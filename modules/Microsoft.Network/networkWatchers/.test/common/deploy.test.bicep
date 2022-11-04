@@ -29,6 +29,9 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    virtualMachineName: 'dep-<<namePrefix>>-vm-${serviceShort}'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    location: location
   }
 }
 
@@ -57,11 +60,11 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     connectionMonitors: [
       {
-        name: 'adp-<<namePrefix>>-az-conn-mon-x-001'
+        name: 'adp-<<namePrefix>>-conn-mon-x-001'
         endpoints: [
           {
-            name: '<<namePrefix>>-az-subnet-x-001(validation-rg)'
-            resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-<<namePrefix>>-vm-01'
+            name: '<<namePrefix>>-subnet-x-001(${resourceGroup.name})'
+            resourceId: resourceGroupResources.outputs.virtualMachineResourceId
             type: 'AzureVM'
           }
           {
@@ -98,7 +101,7 @@ module testDeployment '../../deploy.bicep' = {
             disable: false
             name: 'TestHTTPBing'
             sources: [
-              '<<namePrefix>>-az-subnet-x-001(${resourceGroup.name})'
+              '<<namePrefix>>-subnet-x-001(${resourceGroup.name})'
             ]
             testConfigurations: [
               'HTTP Test'
@@ -116,7 +119,7 @@ module testDeployment '../../deploy.bicep' = {
       }
       {
         formatVersion: 1
-        name: 'adp-<<namePrefix>>-az-nsg-x-apgw-flowlog'
+        name: 'adp-<<namePrefix>>-nsg-x-apgw-flowlog'
         retentionInDays: 8
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
         targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-apgw'

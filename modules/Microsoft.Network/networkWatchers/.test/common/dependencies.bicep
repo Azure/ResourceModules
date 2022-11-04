@@ -1,14 +1,86 @@
 @description('Optional. The location to deploy to.')
 param location string = resourceGroup().location
 
+@description('Required. The name of the Virtual Network to create.')
+param virtualNetworkName string
+
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
+
+@description('Required. The name of the Virtual Machine to create.')
+param virtualMachineName string
+
+@description('Optional. The password to leverage for the VM login.')
+@secure()
+param password string = newGuid()
+
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+    name: virtualNetworkName
+    location: location
+    properties: {
+        addressSpace: {
+            addressPrefixes: [
+                '10.0.0.0/24'
+            ]
+        }
+        subnets: [
+            {
+                name: 'defaultSubnet'
+                properties: {
+                    addressPrefix: '10.0.0.0/24'
+                }
+            }
+        ]
+    }
+}
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
     location: location
 }
 
+resource networkInterface 'Microsoft.Network/networkInterfaces@2022-05-01' = {
+    name: '${virtualMachineName}-nic'
+}
+
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-08-01' = {
+    name: virtualMachineName
+    location: location
+    properties: {
+        networkProfile: {
+            networkInterfaces: [
+                {
+                    id: networkInterface.id
+                    properties: {
+                        deleteOption: 'Delete'
+                        primary: true
+                    }
+                }
+            ]
+        }
+        storageProfile: {
+            imageReference: {
+                offer: 'UbuntuServer'
+                publisher: 'Canonical'
+                sku: '18.04-LTS'
+                version: 'latest'
+            }
+        }
+        hardwareProfile: {
+            vmSize: 'Standard_B1ms'
+        }
+        osProfile: {
+            adminUsername: '${virtualMachineName}cake'
+            adminPassword: password
+            linuxConfiguration: {
+                disablePasswordAuthentication: false
+            }
+        }
+    }
+}
+
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
+@description('The resource ID of the created Virtual Machine.')
+output virtualMachineResourceId string = virtualMachine.id
