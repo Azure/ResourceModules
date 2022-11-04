@@ -44,10 +44,24 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-01' = {
     name: networkSecurityGroupName
+    location: location
 }
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2022-05-01' = {
     name: '${virtualMachineName}-nic'
+    location: location
+    properties: {
+        ipConfigurations: [
+            {
+                name: 'ipconfig01'
+                properties: {
+                    subnet: {
+                        id: virtualNetwork.properties.subnets[0].id
+                    }
+                }
+            }
+        ]
+    }
 }
 
 resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-08-01' = {
@@ -79,10 +93,27 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-08-01' = {
         osProfile: {
             adminUsername: '${virtualMachineName}cake'
             adminPassword: password
+            computerName: virtualMachineName
             linuxConfiguration: {
                 disablePasswordAuthentication: false
             }
         }
+    }
+}
+
+resource extension 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
+    name: 'NetworkWatcherAgent'
+    parent: virtualMachine
+    location: location
+    properties: {
+        publisher: 'Microsoft.Azure.NetworkWatcher'
+        type: 'NetworkWatcherAgentLinux'
+        typeHandlerVersion: '1.4'
+        autoUpgradeMinorVersion: true
+        enableAutomaticUpgrade: false
+        settings: {}
+        protectedSettings: {}
+        suppressFailures: false
     }
 }
 
