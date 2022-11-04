@@ -22,11 +22,13 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Azure Shared Image Gallery. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -158,7 +160,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Images</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -166,14 +168,77 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Galleries'
+  name: '${uniqueString(deployment().name)}-test-cgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azsigweuimages001'
+    name: '<<namePrefix>>cgcom001'
+    // Non-required parameters
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>cgcom001"
+    },
+    // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Images</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-cgimages'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>cgimages001'
     // Non-required parameters
     images: [
       {
-        name: '<<namePrefix>>-az-imgd-x-003'
+        name: '<<namePrefix>>-cgimages-imgd-001'
       }
       {
         hyperVGeneration: 'V1'
@@ -189,7 +254,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
             roleDefinitionIdOrName: 'Reader'
           }
@@ -228,13 +293,13 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azsigweuimages001"
+      "value": "<<namePrefix>>cgimages001"
     },
     // Non-required parameters
     "images": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-imgd-x-003"
+          "name": "<<namePrefix>>-cgimages-imgd-001"
         },
         {
           "hyperVGeneration": "V1",
@@ -250,7 +315,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
               "roleDefinitionIdOrName": "Reader"
             }
@@ -269,69 +334,6 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "osType": "Linux",
           "publisher": "canonical",
           "sku": "20_04-lts-gen2"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Galleries'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>azsigweux001'
-    // Non-required parameters
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>azsigweux001"
-    },
-    // Non-required parameters
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<<deploymentSpId>>"
-          ],
-          "roleDefinitionIdOrName": "Reader"
         }
       ]
     }

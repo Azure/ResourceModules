@@ -21,12 +21,14 @@ With this module you can create policy exemptions across the management group, s
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy exemption. Maximum length is 64 characters for management group, subscription and resource group scopes. |
 | `policyAssignmentId` | string | The resource ID of the policy assignment that is being exempted. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string | `''` |  | The description of the policy exemption. |
@@ -159,7 +161,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg Min</h3>
+<h3>Example 1: Mg.Common</h3>
 
 <details>
 
@@ -167,59 +169,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyExemptions'
+  name: '${uniqueString(deployment().name)}-test-apemgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-min-mg-polexem'
-    policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-min-mg-polexem"
-    },
-    "policyAssignmentId": {
-      "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Mg</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyExemptions'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-mg-polexem'
-    policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
+    name: '<<namePrefix>>apemgcom001'
+    policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     displayName: '[Display Name] policy exempt (management group scope)'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
-    managementGroupId: '<<managementGroupId>>'
+    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
     }
@@ -241,10 +200,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-mg-polexem"
+      "value": "<<namePrefix>>apemgcom001"
     },
     "policyAssignmentId": {
-      "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
+      "value": "<policyAssignmentId>"
     },
     // Non-required parameters
     "displayName": {
@@ -257,7 +216,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "2025-10-02T03:57:00Z"
     },
     "managementGroupId": {
-      "value": "<<managementGroupId>>"
+      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {
@@ -271,7 +230,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 </details>
 <p>
 
-<h3>Example 3: Rg Min</h3>
+<h3>Example 2: Mg.Min</h3>
 
 <details>
 
@@ -279,14 +238,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyExemptions'
+  name: '${uniqueString(deployment().name)}-test-apemgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-min-rg-polexem'
-    policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
-    // Non-required parameters
-    resourceGroupName: '<<resourceGroupName>>'
-    subscriptionId: '<<subscriptionId>>'
+    name: '<<namePrefix>>apemgmin001'
+    policyAssignmentId: '<policyAssignmentId>'
   }
 }
 ```
@@ -305,17 +261,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-min-rg-polexem"
+      "value": "<<namePrefix>>apemgmin001"
     },
     "policyAssignmentId": {
-      "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
-    },
-    // Non-required parameters
-    "resourceGroupName": {
-      "value": "<<resourceGroupName>>"
-    },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "<policyAssignmentId>"
     }
   }
 }
@@ -324,7 +273,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 </details>
 <p>
 
-<h3>Example 4: Rg</h3>
+<h3>Example 3: Rg.Common</h3>
 
 <details>
 
@@ -332,11 +281,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyExemptions'
+  name: '${uniqueString(deployment().name)}-test-apergcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-rg-polexem'
-    policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+    name: '<<namePrefix>>apergcom001'
+    policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     displayName: '[Display Name] policy exempt (resource group scope)'
     exemptionCategory: 'Waiver'
@@ -344,8 +293,8 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     metadata: {
       category: 'Security'
     }
-    resourceGroupName: '<<resourceGroupName>>'
-    subscriptionId: '<<subscriptionId>>'
+    resourceGroupName: '<resourceGroupName>'
+    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -364,10 +313,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-rg-polexem"
+      "value": "<<namePrefix>>apergcom001"
     },
     "policyAssignmentId": {
-      "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+      "value": "<policyAssignmentId>"
     },
     // Non-required parameters
     "displayName": {
@@ -385,10 +334,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       }
     },
     "resourceGroupName": {
-      "value": "<<resourceGroupName>>"
+      "value": "<resourceGroupName>"
     },
     "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "<subscriptionId>"
     }
   }
 }
@@ -397,7 +346,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 </details>
 <p>
 
-<h3>Example 5: Sub Min</h3>
+<h3>Example 4: Rg.Min</h3>
 
 <details>
 
@@ -405,13 +354,14 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyExemptions'
+  name: '${uniqueString(deployment().name)}-test-apergmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-min-sub-polexem'
-    policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+    name: '<<namePrefix>>apergmin001'
+    policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
-    subscriptionId: '<<subscriptionId>>'
+    resourceGroupName: '<resourceGroupName>'
+    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -430,14 +380,17 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-min-sub-polexem"
+      "value": "<<namePrefix>>apergmin001"
     },
     "policyAssignmentId": {
-      "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+      "value": "<policyAssignmentId>"
     },
     // Non-required parameters
+    "resourceGroupName": {
+      "value": "<resourceGroupName>"
+    },
     "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "<subscriptionId>"
     }
   }
 }
@@ -446,7 +399,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 </details>
 <p>
 
-<h3>Example 6: Sub</h3>
+<h3>Example 5: Sub.Common</h3>
 
 <details>
 
@@ -454,11 +407,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 
 ```bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyExemptions'
+  name: '${uniqueString(deployment().name)}-test-apesubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sub-polexem'
-    policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+    name: '<<namePrefix>>apesubcom001'
+    policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     displayName: '[Display Name] policy exempt (subscription scope)'
     exemptionCategory: 'Waiver'
@@ -466,7 +419,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     metadata: {
       category: 'Security'
     }
-    subscriptionId: '<<subscriptionId>>'
+    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -485,10 +438,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sub-polexem"
+      "value": "<<namePrefix>>apesubcom001"
     },
     "policyAssignmentId": {
-      "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+      "value": "<policyAssignmentId>"
     },
     // Non-required parameters
     "displayName": {
@@ -506,7 +459,56 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       }
     },
     "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "<subscriptionId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 6: Sub.Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apesubmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>apesubmin001'
+    policyAssignmentId: '<policyAssignmentId>'
+    // Non-required parameters
+    subscriptionId: '<subscriptionId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>apesubmin001"
+    },
+    "policyAssignmentId": {
+      "value": "<policyAssignmentId>"
+    },
+    // Non-required parameters
+    "subscriptionId": {
+      "value": "<subscriptionId>"
     }
   }
 }

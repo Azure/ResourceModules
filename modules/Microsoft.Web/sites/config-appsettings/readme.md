@@ -18,16 +18,19 @@ This module deploys the app settings.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `kind` | string | `[app, functionapp, functionapp,linux]` | Type of site to deploy. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `appName` | string | The name of the parent site resource. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `appInsightId` | string | `''` | Resource ID of the app insight to leverage for this resource. |

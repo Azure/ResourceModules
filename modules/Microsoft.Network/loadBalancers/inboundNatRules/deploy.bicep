@@ -72,7 +72,7 @@ resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-08
     frontendPort: frontendPort
     backendPort: backendPort
     backendAddressPool: !empty(backendAddressPoolName) ? {
-      id: az.resourceId('Microsoft.Network/loadBalancers/backendAddressPools', name, backendAddressPoolName)
+      id: '${loadBalancer.id}/backendAddressPools/${backendAddressPoolName}'
     } : null
     enableFloatingIP: enableFloatingIP
     enableTcpReset: enableTcpReset

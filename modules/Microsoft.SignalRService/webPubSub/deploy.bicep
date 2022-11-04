@@ -146,7 +146,7 @@ resource webPubSub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(
   scope: webPubSub
 }
 
-module webPubSub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module webPubSub_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-WebPubSub-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

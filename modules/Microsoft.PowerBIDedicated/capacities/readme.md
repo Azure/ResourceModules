@@ -21,6 +21,7 @@ This module deploys PowerBIDedicated Capacities.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `members` | array | Members of the resource. |
@@ -28,6 +29,7 @@ This module deploys PowerBIDedicated Capacities.
 | `skuCapacity` | int | SkuCapacity of the resource. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
