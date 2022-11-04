@@ -1133,7 +1133,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: '<commandToExecute>'
+      commandToExecute: 'value=$(./${resourceGroupResources.outputs.storageAccountCSEFileName}); echo \'$value\''
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -1339,7 +1339,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionCustomScriptProtectedSetting": {
       "value": {
-        "commandToExecute": "<commandToExecute>"
+        "commandToExecute": "value=$(./${resourceGroupResources.outputs.storageAccountCSEFileName}); echo \"$value\""
       }
     },
     "extensionDependencyAgentConfig": {
@@ -1822,7 +1822,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: '<commandToExecute>'
+      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command \'& ./${resourceGroupResources.outputs.storageAccountCSEFileName}\''
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -2043,7 +2043,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionCustomScriptProtectedSetting": {
       "value": {
-        "commandToExecute": "<commandToExecute>"
+        "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& ./${resourceGroupResources.outputs.storageAccountCSEFileName}\""
       }
     },
     "extensionDependencyAgentConfig": {
