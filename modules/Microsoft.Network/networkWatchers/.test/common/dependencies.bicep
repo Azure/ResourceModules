@@ -94,6 +94,10 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-08-01' = {
                 sku: '18.04-LTS'
                 version: 'latest'
             }
+            osDisk: {
+                deleteOption: 'Delete'
+                createOption: 'FromImage'
+            }
         }
         hardwareProfile: {
             vmSize: 'Standard_B1ms'
