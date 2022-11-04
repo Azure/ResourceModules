@@ -894,6 +894,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/14.postgres.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: PostgreSQL Virtual Network Custom
+            - path: $(dependencyPath)/$(resourceType)/parameters/15.vnetGateway.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Virtual Network Gateway Secondary Virtual Network
 
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json

@@ -66,7 +66,7 @@ param asn int = 65815
 @description('Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network.')
 param vpnClientAddressPoolPrefix string = ''
 
-@description('Optional. Client root certificate data used to authenticate VPN clients.')
+@description('Optional. Client root certificate data used to authenticate VPN clients. Cannot be configured if vpnClientAadConfiguration is provided.')
 param clientRootCertData string = ''
 
 @description('Optional. Thumbprint of the revoked certificate. This would revoke VPN client certificates matching this thumbprint from connecting to the VNet.')
@@ -134,6 +134,8 @@ param virtualNetworkGatewaydiagnosticLogCategoriesToEnable array = [
   'P2SDiagnosticLog'
 ]
 
+@description('Optional. Configuration for AAD Authentication for P2S Tunnel Type, Cannot be configured if clientRootCertData is provided.')
+param vpnClientAadConfiguration object = {}
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
@@ -251,20 +253,20 @@ var ipConfiguration = isActiveActiveValid ? [
   }
 ]
 
-var vpnClientConfiguration = {
+var vpnClientConfiguration = !empty(clientRootCertData) ? {
   vpnClientAddressPool: {
     addressPrefixes: [
       vpnClientAddressPoolPrefix
     ]
   }
-  vpnClientRootCertificates: !empty(clientRootCertData) ? [
+  vpnClientRootCertificates: [
     {
       name: 'RootCert1'
       properties: {
         PublicCertData: clientRootCertData
       }
     }
-  ] : null
+  ]
   vpnClientRevokedCertificates: !empty(clientRevokedCertThumbprint) ? [
     {
       name: 'RevokedCert1'
@@ -273,7 +275,22 @@ var vpnClientConfiguration = {
       }
     }
   ] : null
-}
+} : !empty(vpnClientAadConfiguration) ? {
+  vpnClientAddressPool: {
+    addressPrefixes: [
+      vpnClientAddressPoolPrefix
+    ]
+  }
+  aadTenant: vpnClientAadConfiguration.aadTenant
+  aadAudience: vpnClientAadConfiguration.aadAudience
+  aadIssuer: vpnClientAadConfiguration.aadIssuer
+  vpnAuthenticationTypes: [
+    vpnClientAadConfiguration.vpnAuthenticationTypes
+  ]
+  vpnClientProtocols: [
+    vpnClientAadConfiguration.vpnClientProtocols
+  ]
+} : null
 
 // ================//
 // Deployments     //
