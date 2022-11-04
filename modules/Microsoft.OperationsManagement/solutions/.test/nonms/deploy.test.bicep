@@ -41,7 +41,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    logAnalyticsWorkspaceName: resourceGroupResources.outputs.logAnalyticsName
+    logAnalyticsWorkspaceName: resourceGroupResources.outputs.logAnalyticsWorkspaceName
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
   }
