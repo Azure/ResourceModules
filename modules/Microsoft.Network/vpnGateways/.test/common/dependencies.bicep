@@ -33,30 +33,34 @@ resource vpnSite 'Microsoft.Network/vpnSites@2022-01-01' = {
     virtualWan: {
       id: virtualWan.id
     }
-    // addressSpace: {
-    //   addressPrefixes: [
-    //     '10.0.0.0/16'
-    //   ]
-    // }
+    addressSpace: {
+      addressPrefixes: [
+        '10.0.0.0/16'
+      ]
+    }
     vpnSiteLinks: [
       {
         name: '${vpnSiteName}-vSite-link-1'
         properties: {
-          // bgpProperties: {
-          //   asn: 65010
-          //   bgpPeeringAddress: '1.1.1.1'
-          // }
           ipAddress: '10.1.0.0'
-          // linkProperties: {
-          //   linkProviderName: 'contoso'
-          //   linkSpeedInMbps: 5
-          // }
+          bgpProperties: {
+            asn: 65010
+            bgpPeeringAddress: '1.1.1.1'
+          }
+          linkProperties: {
+            linkProviderName: 'contoso'
+            linkSpeedInMbps: 5
+          }
         }
       }
       {
         name: '${vpnSiteName}-vSite-link-2'
         properties: {
           ipAddress: '10.2.0.0'
+          bgpProperties: {
+            asn: 65010
+            bgpPeeringAddress: '1.1.1.1'
+          }
         }
       }
     ]
