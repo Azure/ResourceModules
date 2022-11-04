@@ -53,14 +53,14 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // ============== //
 // Test Execution //
 // ============== //
-
+#disable-next-line no-hardcoded-location // Disabled as the default RG & location are created in always one location, but each test has to deploy into a different one
+var testLocation = 'westeurope'
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: 'NetworkWatcher_westeurope'
-    #disable-next-line no-hardcoded-location // Disabled as the default RG & location are created in always one location, but each test has to deploy into a different one
-    location: 'westeurope'
+    name: 'NetworkWatcher_${testLocation}'
+    location: testLocation
     connectionMonitors: [
       {
         name: 'adp-<<namePrefix>>-conmon-${serviceShort}-x-001'
@@ -115,11 +115,11 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     flowLogs: [
-      // {
-      //   enabled: false
-      //   storageId: diagnosticDependencies.outputs.storageAccountResourceId
-      //   targetResourceId: resourceGroupResources.outputs.networkSecurityGroupResourceId
-      // }
+      {
+        enabled: false
+        storageId: diagnosticDependencies.outputs.storageAccountResourceId
+        targetResourceId: resourceGroupResources.outputs.networkSecurityGroupResourceId
+      }
       {
         formatVersion: 1
         name: 'adp-<<namePrefix>>-nsg-x-apgw-flowlog'
