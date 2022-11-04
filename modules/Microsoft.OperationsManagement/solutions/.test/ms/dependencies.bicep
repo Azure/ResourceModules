@@ -10,4 +10,4 @@ resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
 }
 
 @description('The name of the created Log Analytics Workspace.')
-output logAnalyticsName string = logAnalytics.name
+output logAnalyticsWorkspaceName string = logAnalytics.name
