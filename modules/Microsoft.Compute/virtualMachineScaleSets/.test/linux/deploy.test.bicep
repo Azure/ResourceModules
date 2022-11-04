@@ -80,7 +80,7 @@ module testDeployment '../../deploy.bicep' = {
     availabilityZones: [
       '2'
     ]
-    bootDiagnosticStorageAccountName: last(split(diagnosticDependencies.outputs.storageAccountResourceId, '/'))
+    bootDiagnosticStorageAccountName: resourceGroupResources.outputs.storageAccountName
     dataDisks: [
       {
         caching: 'ReadOnly'

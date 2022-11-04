@@ -180,6 +180,9 @@ output keyVaultUrl string = keyVault.properties.vaultUri
 @description('The URL of the created Key Vault Encryption Key.')
 output keyVaultEncryptionKeyUrl string = keyVault::key.properties.keyUriWithVersion
 
+@description('The name of the created Storage Account.')
+output storageAccountName string = storageAccount.name
+
 @description('The resource ID of the created Storage Account.')
 output storageAccountResourceId string = storageAccount.id
 

@@ -114,7 +114,7 @@ module testDeployment '../../deploy.bicep' = {
         }
       ]
       protectedSettings: {
-        commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command "& ./${last(split(resourceGroupResources.outputs.storageAccountCSEFileUrl, '/'))}"'
+        commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command "& ./${resourceGroupResources.outputs.storageAccountCSEFileName}"'
       }
     }
     extensionDependencyAgentConfig: {
