@@ -5,7 +5,8 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes')
 @maxLength(90)
-param resourceGroupName string = 'ms.network.networkwatchers-${serviceShort}-rg'
+//param resourceGroupName string = 'ms.network.networkwatchers-${serviceShort}-rg'
+param resourceGroupName string = 'NetworkWatcherRG'
 
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
@@ -113,11 +114,11 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     flowLogs: [
-      {
-        enabled: false
-        storageId: diagnosticDependencies.outputs.storageAccountResourceId
-        targetResourceId: resourceGroupResources.outputs.networkSecurityGroupResourceId
-      }
+      // {
+      //   enabled: false
+      //   storageId: diagnosticDependencies.outputs.storageAccountResourceId
+      //   targetResourceId: resourceGroupResources.outputs.networkSecurityGroupResourceId
+      // }
       {
         formatVersion: 1
         name: 'adp-<<namePrefix>>-nsg-x-apgw-flowlog'
