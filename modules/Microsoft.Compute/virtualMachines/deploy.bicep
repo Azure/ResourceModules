@@ -380,7 +380,7 @@ module vm_nic '.bicep/nested_networkInterface.bicep' = [for (nicConfiguration, i
 resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   name: name
   location: location
-  identity: identity
+  identity: any(identity)
   tags: tags
   zones: availabilityZone != 0 ? array(availabilityZone) : null
   plan: !empty(plan) ? plan : null
