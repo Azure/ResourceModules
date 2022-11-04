@@ -308,8 +308,11 @@ output managedIdentityResourceId string = managedIdentity.id
 @description('The resource ID of the created Load Balancer Backend Pool.')
 output loadBalancerBackendPoolResourceId string = loadBalancer.properties.backendAddressPools[0].id
 
-@description('The resource ID of the created Recovery Services Vault.')
-output recoveryServicesVaultResourceId string = recoveryServicesVault.id
+@description('The name of the created Recovery Services Vault.')
+output recoveryServicesVaultName string = recoveryServicesVault.name
+
+@description('The name of the Resource Group, the Recovery Services Vault was created in.')
+output recoveryServicesVaultResourceGroupName string = resourceGroup().name
 
 @description('The name of the Backup Policy created in the Backup Recovery Vault.')
 output recoveryServicesVaultBackupPolicyName string = backupPolicyName
@@ -328,6 +331,9 @@ output storageAccountResourceId string = storageAccount.id
 
 @description('The URL of the Custom Script Extension in the created Storage Account')
 output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageContainerName}/${storageAccountCSEFileName}'
+
+@description('The name of the Custom Script Extension in the created Storage Account')
+output storageAccountCSEFileName string = storageAccountCSEFileName
 
 @description('The resource ID of the created SSH Key')
 output SSHKeyResourceID string = sshKey.id
