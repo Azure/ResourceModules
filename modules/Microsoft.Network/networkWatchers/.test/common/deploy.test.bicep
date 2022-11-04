@@ -9,7 +9,7 @@ targetScope = 'subscription'
 param resourceGroupName string = 'NetworkWatcherRG'
 
 @description('Optional. The location to deploy resources to')
-param location string = deployment().location
+param location string = 'WestEurope'
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
 param serviceShort string = 'nnwcom'
@@ -59,7 +59,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    name: 'NetworkWatcher_${location}'
     connectionMonitors: [
       {
         name: 'adp-<<namePrefix>>-conmon-${serviceShort}-x-001'
