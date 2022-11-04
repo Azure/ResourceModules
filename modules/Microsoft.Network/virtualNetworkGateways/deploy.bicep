@@ -259,14 +259,14 @@ var vpnClientConfiguration = !empty(clientRootCertData) ? {
       vpnClientAddressPoolPrefix
     ]
   }
-  vpnClientRootCertificates: !empty(clientRootCertData) ? [
+  vpnClientRootCertificates: [
     {
       name: 'RootCert1'
       properties: {
         PublicCertData: clientRootCertData
       }
     }
-  ] : null
+  ]
   vpnClientRevokedCertificates: !empty(clientRevokedCertThumbprint) ? [
     {
       name: 'RevokedCert1'
