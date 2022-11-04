@@ -40,7 +40,7 @@ module testDeployment '../../deploy.bicep' = {
   // scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    scope: subscription().subscriptionId
+    scope: '/subscriptions/${subscription().subscriptionId}'
     workspaceId: resourceGroupResources.outputs.logAnalyticsWorkspaceResourceId
     securityContactProperties: {
       alertNotifications: 'Off'
