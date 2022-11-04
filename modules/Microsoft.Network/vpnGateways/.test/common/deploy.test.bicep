@@ -48,42 +48,42 @@ module testDeployment '../../deploy.bicep' = {
       asn: 65515
       peerWeight: 0
     }
-    // connections: [
-    //   {
-    //     connectionBandwidth: 10
-    //     enableBgp: true
-    //     name: 'Connection-<<namePrefix>>-az-vsite-x-001'
-    //     remoteVpnSiteResourceId: resourceGroupResources.outputs.vpnSiteResourceId
-    //     routingConfiguration: {
-    //       associatedRouteTable: {
-    //         id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
-    //       }
-    //       propagatedRouteTables: {
-    //         ids: [
-    //           {
-    //             id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
-    //           }
-    //         ]
-    //         labels: [
-    //           'default'
-    //         ]
-    //       }
-    //       vnetRoutes: {
-    //         staticRoutes: []
-    //       }
-    //     }
-    //     vpnLinkConnections: [
-    //       {
-    //         name: last(split(resourceGroupResources.outputs.vpnSiteLink1ResourceId, '/'))
-    //         id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
-    //       }
-    //       {
-    //         name: last(split(resourceGroupResources.outputs.vpnSiteLink2ResourceId, '/'))
-    //         id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
-    //       }
-    //     ]
-    //   }
-    // ]
+    connections: [
+      {
+        connectionBandwidth: 10
+        enableBgp: true
+        name: 'Connection-<<namePrefix>>-az-vsite-x-001'
+        remoteVpnSiteResourceId: resourceGroupResources.outputs.vpnSiteResourceId
+        // routingConfiguration: {
+        //   associatedRouteTable: {
+        //     id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
+        //   }
+        //   propagatedRouteTables: {
+        //     ids: [
+        //       {
+        //         id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
+        //       }
+        //     ]
+        //     labels: [
+        //       'default'
+        //     ]
+        //   }
+        //   vnetRoutes: {
+        //     staticRoutes: []
+        //   }
+        // }
+        // vpnLinkConnections: [
+        //   {
+        //     name: last(split(resourceGroupResources.outputs.vpnSiteLink1ResourceId, '/'))
+        //     id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
+        //   }
+        //   {
+        //     name: last(split(resourceGroupResources.outputs.vpnSiteLink2ResourceId, '/'))
+        //     id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
+        //   }
+        // ]
+      }
+    ]
     lock: 'CanNotDelete'
     natRules: [
       {
