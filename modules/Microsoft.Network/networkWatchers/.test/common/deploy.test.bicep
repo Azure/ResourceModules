@@ -29,7 +29,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
+    firstNetworkSecurityGroupName: 'dep-<<namePrefix>>-nsg-1-${serviceShort}'
+    secondNetworkSecurityGroupName: 'dep-<<namePrefix>>-nsg-2-${serviceShort}'
     virtualMachineName: 'dep-<<namePrefix>>-vm-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     location: location
@@ -118,14 +119,14 @@ module testDeployment '../../deploy.bicep' = {
       {
         enabled: false
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
-        targetResourceId: resourceGroupResources.outputs.networkSecurityGroupResourceId
+        targetResourceId: resourceGroupResources.outputs.firstNetworkSecurityGroupResourceId
       }
       {
         formatVersion: 1
         name: 'adp-<<namePrefix>>-nsg-x-apgw-flowlog'
         retentionInDays: 8
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
-        targetResourceId: resourceGroupResources.outputs.networkSecurityGroupResourceId
+        targetResourceId: resourceGroupResources.outputs.secondNetworkSecurityGroupResourceId
         trafficAnalyticsInterval: 10
         workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       }

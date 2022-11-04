@@ -7,8 +7,11 @@ param virtualNetworkName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
-@description('Required. The name of the Network Security Group to create.')
-param networkSecurityGroupName string
+@description('Required. The name of the first Network Security Group to create.')
+param firstNetworkSecurityGroupName string
+
+@description('Required. The name of the second Network Security Group to create.')
+param secondNetworkSecurityGroupName string
 
 @description('Required. The name of the Virtual Machine to create.')
 param virtualMachineName string
@@ -42,8 +45,13 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
     location: location
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-01' = {
-    name: networkSecurityGroupName
+resource firstNetworkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-01' = {
+    name: firstNetworkSecurityGroupName
+    location: location
+}
+
+resource secondNetworkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-01' = {
+    name: secondNetworkSecurityGroupName
     location: location
 }
 
@@ -123,5 +131,8 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 @description('The resource ID of the created Virtual Machine.')
 output virtualMachineResourceId string = virtualMachine.id
 
-@description('The resource ID of the created Network Security Group.')
-output networkSecurityGroupResourceId string = networkSecurityGroup.id
+@description('The resource ID of the first created Network Security Group.')
+output firstNetworkSecurityGroupResourceId string = firstNetworkSecurityGroup.id
+
+@description('The resource ID of the second created Network Security Group.')
+output secondNetworkSecurityGroupResourceId string = secondNetworkSecurityGroup.id
