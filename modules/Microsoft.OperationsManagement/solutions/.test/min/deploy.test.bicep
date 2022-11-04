@@ -41,6 +41,6 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: 'Updates'
-    logAnalyticsWorkspaceName: resourceGroupResources.outputs.logAnalyticsName
+    logAnalyticsWorkspaceName: resourceGroupResources.outputs.logAnalyticsWorkspaceName
   }
 }
