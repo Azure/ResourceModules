@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: false # Only one Network Watcher can exist in the same location. If removed, a default would be created in a dedicated RG
+        default: true
       prerelease:
         type: boolean
         description: 'Publish prerelease module'

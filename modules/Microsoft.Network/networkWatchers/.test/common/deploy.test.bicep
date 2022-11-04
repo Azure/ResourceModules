@@ -5,11 +5,10 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes')
 @maxLength(90)
-//param resourceGroupName string = 'ms.network.networkwatchers-${serviceShort}-rg'
-param resourceGroupName string = 'NetworkWatcherRG'
+param resourceGroupName string = 'NetworkWatcherRG' // Note, this is the default NetworkWatcher resource group. Do not change.
 
 @description('Optional. The location to deploy resources to')
-param location string = 'WestEurope'
+param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
 param serviceShort string = 'nnwcom'
@@ -59,7 +58,9 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: 'NetworkWatcher_${location}'
+    name: 'NetworkWatcher_westeurope'
+    #disable-next-line no-hardcoded-location // Disabled as the default RG & location are created in always one location, but each test has to deploy into a different one
+    location: 'westeurope'
     connectionMonitors: [
       {
         name: 'adp-<<namePrefix>>-conmon-${serviceShort}-x-001'
