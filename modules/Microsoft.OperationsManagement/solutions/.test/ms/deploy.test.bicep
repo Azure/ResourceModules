@@ -41,7 +41,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: 'AzureAutomation'
-    logAnalyticsWorkspaceName: last(split(resourceGroupResources.outputs.logAnalyticsResourceId, '/'))
+    logAnalyticsWorkspaceName: resourceGroupResources.outputs.logAnalyticsName
     product: 'OMSGallery'
     publisher: 'Microsoft'
   }
