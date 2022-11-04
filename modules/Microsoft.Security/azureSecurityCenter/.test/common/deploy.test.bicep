@@ -37,7 +37,6 @@ module resourceGroupResources 'dependencies.bicep' = {
 // ============== //
 
 module testDeployment '../../deploy.bicep' = {
-  // scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     scope: '/subscriptions/${subscription().subscriptionId}'
