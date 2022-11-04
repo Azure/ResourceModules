@@ -158,18 +158,18 @@ function New-DeploymentWithParameterFile {
         if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
             $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
         }
-        # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
-        do {
-            $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
-        } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
+        if ($templateFilePath -match '.*(\\|\/)Microsoft.+') {
+            # If we can assume we're operating in a module structure, we can further fetch the provider namespace & resource type
+            $providerNamespace = ((($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/')[0]
+            $resourceType = ((($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/')[1]
 
-        Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
+            $deploymentNamePrefix = "$providerNamespace-$resourceType-$deploymentNamePrefix"
+        }
 
         $DeploymentInputs = @{
-            DeploymentName = $deploymentName
-            TemplateFile   = $templateFilePath
-            Verbose        = $true
-            ErrorAction    = 'Stop'
+            TemplateFile = $templateFilePath
+            Verbose      = $true
+            ErrorAction  = 'Stop'
         }
 
         # Parameter file provided yes/no
@@ -208,6 +208,14 @@ function New-DeploymentWithParameterFile {
         [int]$retryCount = 1
 
         do {
+            # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
+            do {
+                $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])-#$retryCount"
+            } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
+
+            Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
+            $DeploymentInputs['DeploymentName'] = $deploymentName
+
             try {
                 switch ($deploymentScope) {
                     'resourcegroup' {
