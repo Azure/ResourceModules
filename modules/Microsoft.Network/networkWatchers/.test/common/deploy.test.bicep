@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.network.networkwatchers-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = '...'
+param serviceShort string = 'nnwcom'
 
 // =========== //
 // Deployments //
@@ -57,6 +57,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     connectionMonitors: [
       {
+        name: 'adp-<<namePrefix>>-az-conn-mon-x-001'
         endpoints: [
           {
             name: '<<namePrefix>>-az-subnet-x-001(validation-rg)'
@@ -69,7 +70,6 @@ module testDeployment '../../deploy.bicep' = {
             type: 'ExternalAddress'
           }
         ]
-        name: 'adp-<<namePrefix>>-az-conn-mon-x-001'
         testConfigurations: [
           {
             httpConfiguration: {
@@ -98,36 +98,36 @@ module testDeployment '../../deploy.bicep' = {
             disable: false
             name: 'TestHTTPBing'
             sources: [
-              '<<namePrefix>>-az-subnet-x-001(validation-rg)'
+              '<<namePrefix>>-az-subnet-x-001(${resourceGroup.name})'
             ]
             testConfigurations: [
               'HTTP Test'
             ]
           }
         ]
-        workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       }
     ]
     flowLogs: [
       {
         enabled: false
-        storageId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+        storageId: diagnosticDependencies.outputs.storageAccountResourceId
         targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'
       }
       {
         formatVersion: 1
         name: 'adp-<<namePrefix>>-az-nsg-x-apgw-flowlog'
         retentionInDays: 8
-        storageId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+        storageId: diagnosticDependencies.outputs.storageAccountResourceId
         targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-apgw'
         trafficAnalyticsInterval: 10
-        workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
       }
