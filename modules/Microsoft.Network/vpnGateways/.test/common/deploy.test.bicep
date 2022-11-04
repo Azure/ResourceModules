@@ -50,8 +50,8 @@ module testDeployment '../../deploy.bicep' = {
     }
     connections: [
       {
-        connectionBandwidth: 10
-        enableBgp: true
+        connectionBandwidth: 100
+        // enableBgp: true
         name: 'Connection-<<namePrefix>>-az-vsite-x-001'
         remoteVpnSiteResourceId: resourceGroupResources.outputs.vpnSiteResourceId
         // routingConfiguration: {
@@ -72,16 +72,16 @@ module testDeployment '../../deploy.bicep' = {
         //     staticRoutes: []
         //   }
         // }
-        // vpnLinkConnections: [
-        //   {
-        //     name: last(split(resourceGroupResources.outputs.vpnSiteLink1ResourceId, '/'))
-        //     id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
-        //   }
-        //   {
-        //     name: last(split(resourceGroupResources.outputs.vpnSiteLink2ResourceId, '/'))
-        //     id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
-        //   }
-        // ]
+        vpnLinkConnections: [
+          {
+            name: last(split(resourceGroupResources.outputs.vpnSiteLink1ResourceId, '/'))
+            id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
+          }
+          {
+            name: last(split(resourceGroupResources.outputs.vpnSiteLink2ResourceId, '/'))
+            id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
+          }
+        ]
       }
     ]
     lock: 'CanNotDelete'
