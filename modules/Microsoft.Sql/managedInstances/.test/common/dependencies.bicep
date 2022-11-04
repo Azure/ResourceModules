@@ -87,21 +87,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
         }
         tenantId: tenant().tenantId
       }
-      {
-        objectId: '<<deploymentSpId>>'
-        permissions: {
-          keys: [
-            'All'
-          ]
-          secrets: [
-            'All'
-          ]
-          certificates: [
-            'All'
-          ]
-        }
-        tenantId: tenant().tenantId
-      }
     ]
     sku: {
       family: 'A'
