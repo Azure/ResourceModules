@@ -47,18 +47,17 @@ function Set-ModuleTemplate {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
-
-        $templateFilePath = Join-Path $script:repoRoot 'modules' $FullResourceType 'deploy.bicep'
-        $providerNamespace = ($FullResourceType -split '/')[0]
-        $resourceType = $FullResourceType -replace "$providerNamespace/", ''
     }
 
     process {
-
         #####################
         ##   Collect Data   #
         #####################
         #region data
+
+        $templateFilePath = Join-Path $script:repoRoot 'modules' $FullResourceType 'deploy.bicep'
+        $providerNamespace = ($FullResourceType -split '/')[0]
+        $resourceType = $FullResourceType -replace "$providerNamespace/", ''
 
         # Existing template (if any)
         $existingTemplateContent = Resolve-ExistingTemplateContent -TemplateFilePath $templateFilePath
@@ -71,7 +70,8 @@ function Set-ModuleTemplate {
             (($_.identifier -split '/').Count -eq (($FullResourceType -split '/').Count + 1)
             )
         }
-        ##  Add indirect child (via proxy resource) (i.e. it's a nested-nested resources who's parent has no individual specification/JSONFilePath). TODO: Is that always true? What if the data is specified in one file?x`
+        ##  Add indirect child (via proxy resource) (i.e. it's a nested-nested resources who's parent has no individual specification/JSONFilePath).
+        # TODO: Is that always true? What if the data is specified in one file?
         $indirectChildren = $FullModuleData | Where-Object {
             # Is nested
             $_.identifier -like "$FullResourceType/*" -and
@@ -387,7 +387,6 @@ function Set-ModuleTemplate {
         # ---------------------------
         foreach ($dataBlock in $linkedChildren) {
             $childResourceType = ($dataBlock.identifier -split '/')[-1]
-            $childResourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $childResourceType
 
             $hasProxyParent = [String]::IsNullOrEmpty($dataBlock.metadata.parentUrlPath)
             if ($hasProxyParent) {
@@ -399,90 +398,179 @@ function Set-ModuleTemplate {
 
             $matchingModule = $existingTemplateContent.modules | Where-Object { $_.name -eq $moduleName -and $_.path -eq $modulePath }
 
-            # TODO: Also consider 'singular' children (if we can detect it)
-            $templateContent += @(
-                "module $moduleName '$modulePath' = [for ($($childResourceTypeSingular), index) in $($childResourceType): {"
-            )
+            # Differentiate 'singular' children (like 'blobservices') vs. 'multiple' chilren (like 'containers')
+            if ($ModuleData.isSingleton) {
+                $templateContent += @(
+                    "module $moduleName '$modulePath' = {"
+                )
 
-            if ($matchingModule.topLevelElements.name -notcontains 'name') {
-                $templateContent += "  name: '`${uniqueString(deployment().name$($locationParameterExists ? ', location' : ''))}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'"
-            } else {
-                $existingParam = $matchingModule.topLevelElements | Where-Object { $_.name -eq 'name' }
-                $templateContent += $existingParam.content
-            }
-
-            $templateContent += '  params: {'
-            $templateContent += @()
-
-            $alreadyAddedParams = @()
-
-            # All param names of parents
-            foreach ($parentResourceType in $parentResourceTypes) {
-                $parentParamName = ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
-                $templateContent += '    {0}Name: {0}Name' -f $parentParamName
-                $alreadyAddedParams += $parentParamName
-            }
-            # Itself
-            $selfParamName = ((Get-ResourceTypeSingularName -ResourceType ($FullResourceType -split '/')[-1]) -split '/')[-1]
-            $templateContent += '    {0}Name: name' -f $selfParamName
-            $alreadyAddedParams += $selfParamName
-
-            # Any proxy default if any
-            if ($hasProxyParent) {
-                $proxyDefaultValue = ($dataBlock.metadata.urlPath -split '\/')[-3]
-                $proxyParamName = Get-ResourceTypeSingularName -ResourceType ($proxyParentName -split '/')[-1]
-                $templateContent += "    {0}Name: '{1}'" -f $proxyParamName, $proxyDefaultValue
-                $alreadyAddedParams += $proxyParamName
-            }
-
-            # Add primary child parameters
-            $allParam = $dataBlock.data.parameters + $dataBlock.data.additionalParameters
-            foreach ($parameter in (($allParam | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') }) | Sort-Object -Property 'Name')) {
-                $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter | Where-Object { $_ -like 'param *' } | ForEach-Object { $_ -replace 'param ', '' }
-                $wouldBeParamElem = $wouldBeParameter -split ' = '
-                $parameter.name = ($wouldBeParamElem -split ' ')[0]
-
-                if ($matchingModule.nestedElements.name -notcontains $parameter.name) {
-                    $existingParam = $matchingModule.nestedElements | Where-Object { $_.name -eq $parameter.name }
-                    if ($alreadyAddedParams -notcontains $existingParam.name) {
-                        $templateContent += $existingParam.content
-                    }
-                    continue
+                if ($matchingModule.topLevelElements.name -notcontains 'name') {
+                    $templateContent += "  name: '`${uniqueString(deployment().name$($locationParameterExists ? ', location' : ''))}-$($resourceTypeSingular)-$($childResourceType)'"
+                } else {
+                    $existingParam = $matchingModule.topLevelElements | Where-Object { $_.name -eq 'name' }
+                    $templateContent += $existingParam.content
                 }
 
-                if ($wouldBeParamElem.count -gt 1) {
-                    # With default
+                $templateContent += '  params: {'
+                $templateContent += @()
 
-                    if ($parameter.name -eq 'lock') {
-                        # Special handling as we pass the parameter down to the child
-                        $templateContent += "    $($parameter.name): contains($($childResourceTypeSingular), 'lock') ? $($childResourceTypeSingular).lock : lock"
-                        $alreadyAddedParams += $parameter.name
+                $alreadyAddedParams = @()
+
+                # All param names of parents
+                foreach ($parentResourceType in $parentResourceTypes) {
+                    $parentParamName = ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
+                    $templateContent += '    {0}Name: {0}Name' -f $parentParamName
+                    $alreadyAddedParams += $parentParamName
+                }
+                # Itself
+                $selfParamName = ((Get-ResourceTypeSingularName -ResourceType ($FullResourceType -split '/')[-1]) -split '/')[-1]
+                $templateContent += '    {0}Name: name' -f $selfParamName
+                $alreadyAddedParams += $selfParamName
+
+                # Any proxy default if any
+                if ($hasProxyParent) {
+                    $proxyDefaultValue = ($dataBlock.metadata.urlPath -split '\/')[-3]
+                    $proxyParamName = Get-ResourceTypeSingularName -ResourceType ($proxyParentName -split '/')[-1]
+                    $templateContent += "    {0}Name: '{1}'" -f $proxyParamName, $proxyDefaultValue
+                    $alreadyAddedParams += $proxyParamName
+                }
+
+                # Add primary child parameters
+                $allParam = $dataBlock.data.parameters + $dataBlock.data.additionalParameters
+                foreach ($parameter in (($allParam | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') }) | Sort-Object -Property 'Name')) {
+                    $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter | Where-Object { $_ -like 'param *' } | ForEach-Object { $_ -replace 'param ', '' }
+                    $wouldBeParamElem = $wouldBeParameter -split ' = '
+                    $parameter.name = ($wouldBeParamElem -split ' ')[0]
+
+                    if ($matchingModule.nestedElements.name -notcontains $parameter.name) {
+                        $existingParam = $matchingModule.nestedElements | Where-Object { $_.name -eq $parameter.name }
+                        if ($alreadyAddedParams -notcontains $existingParam.name) {
+                            $templateContent += $existingParam.content
+                        }
                         continue
                     }
 
-                    $wouldBeParamValue = $wouldBeParamElem[1]
+                    if ($wouldBeParamElem.count -gt 1) {
+                        # With default
 
-                    # Special case, location function - should reference a location parameter instead
-                    if ($wouldBeParamValue -like '*().location') {
-                        $wouldBeParamValue = 'location'
+                        if ($parameter.name -eq 'lock') {
+                            # Special handling as we pass the parameter down to the child
+                            $templateContent += "    $($parameter.name): contains($($childResourceType), 'lock') ? $($childResourceType).lock : lock"
+                            $alreadyAddedParams += $parameter.name
+                            continue
+                        }
+
+                        $wouldBeParamValue = $wouldBeParamElem[1]
+
+                        # Special case, location function - should reference a location parameter instead
+                        if ($wouldBeParamValue -like '*().location') {
+                            $wouldBeParamValue = 'location'
+                        }
+
+                        $templateContent += "    $($parameter.name): contains($($childResourceType), '$($parameter.name)') ? $($childResourceType).$($parameter.name) : $($wouldBeParamValue)"
+                        $alreadyAddedParams += $parameter.name
+                    } else {
+                        # No default
+                        $templateContent += "    $($parameter.name): $($childResourceType).$($parameter.name)"
+                        $alreadyAddedParams += $parameter.name
+                    }
+                }
+
+                $templateContent += @(
+                    # Special handling as we pass the variable down to the child
+                    '    enableDefaultTelemetry: enableReferencedModulesTelemetry'
+                    '  }'
+                    '}'
+                    ''
+                )
+            } else {
+
+                $childResourceTypeSingular = Get-ResourceTypeSingularName -ResourceType $childResourceType
+
+                $templateContent += @(
+                    "module $moduleName '$modulePath' = [for ($($childResourceTypeSingular), index) in $($childResourceType): {"
+                )
+
+                if ($matchingModule.topLevelElements.name -notcontains 'name') {
+                    $templateContent += "  name: '`${uniqueString(deployment().name$($locationParameterExists ? ', location' : ''))}-$($resourceTypeSingular)-$($childResourceTypeSingular)-`${index}'"
+                } else {
+                    $existingParam = $matchingModule.topLevelElements | Where-Object { $_.name -eq 'name' }
+                    $templateContent += $existingParam.content
+                }
+
+                $templateContent += '  params: {'
+                $templateContent += @()
+
+                $alreadyAddedParams = @()
+
+                # All param names of parents
+                foreach ($parentResourceType in $parentResourceTypes) {
+                    $parentParamName = ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
+                    $templateContent += '    {0}Name: {0}Name' -f $parentParamName
+                    $alreadyAddedParams += $parentParamName
+                }
+                # Itself
+                $selfParamName = ((Get-ResourceTypeSingularName -ResourceType ($FullResourceType -split '/')[-1]) -split '/')[-1]
+                $templateContent += '    {0}Name: name' -f $selfParamName
+                $alreadyAddedParams += $selfParamName
+
+                # Any proxy default if any
+                if ($hasProxyParent) {
+                    $proxyDefaultValue = ($dataBlock.metadata.urlPath -split '\/')[-3]
+                    $proxyParamName = Get-ResourceTypeSingularName -ResourceType ($proxyParentName -split '/')[-1]
+                    $templateContent += "    {0}Name: '{1}'" -f $proxyParamName, $proxyDefaultValue
+                    $alreadyAddedParams += $proxyParamName
+                }
+
+                # Add primary child parameters
+                $allParam = $dataBlock.data.parameters + $dataBlock.data.additionalParameters
+                foreach ($parameter in (($allParam | Where-Object { $_.Level -in @(0, 1) -and $_.name -ne 'properties' -and ([String]::IsNullOrEmpty($_.Parent) -or $_.Parent -eq 'properties') }) | Sort-Object -Property 'Name')) {
+                    $wouldBeParameter = Get-FormattedModuleParameter -ParameterData $parameter | Where-Object { $_ -like 'param *' } | ForEach-Object { $_ -replace 'param ', '' }
+                    $wouldBeParamElem = $wouldBeParameter -split ' = '
+                    $parameter.name = ($wouldBeParamElem -split ' ')[0]
+
+                    if ($matchingModule.nestedElements.name -notcontains $parameter.name) {
+                        $existingParam = $matchingModule.nestedElements | Where-Object { $_.name -eq $parameter.name }
+                        if ($alreadyAddedParams -notcontains $existingParam.name) {
+                            $templateContent += $existingParam.content
+                        }
+                        continue
                     }
 
-                    $templateContent += "    $($parameter.name): contains($($childResourceTypeSingular), '$($parameter.name)') ? $($childResourceTypeSingular).$($parameter.name) : $($wouldBeParamValue)"
-                    $alreadyAddedParams += $parameter.name
-                } else {
-                    # No default
-                    $templateContent += "    $($parameter.name): $($childResourceTypeSingular).$($parameter.name)"
-                    $alreadyAddedParams += $parameter.name
-                }
-            }
+                    if ($wouldBeParamElem.count -gt 1) {
+                        # With default
 
-            $templateContent += @(
-                # Special handling as we pass the variable down to the child
-                '    enableDefaultTelemetry: enableReferencedModulesTelemetry'
-                '  }'
-                '}]'
-                ''
-            )
+                        if ($parameter.name -eq 'lock') {
+                            # Special handling as we pass the parameter down to the child
+                            $templateContent += "    $($parameter.name): contains($($childResourceTypeSingular), 'lock') ? $($childResourceTypeSingular).lock : lock"
+                            $alreadyAddedParams += $parameter.name
+                            continue
+                        }
+
+                        $wouldBeParamValue = $wouldBeParamElem[1]
+
+                        # Special case, location function - should reference a location parameter instead
+                        if ($wouldBeParamValue -like '*().location') {
+                            $wouldBeParamValue = 'location'
+                        }
+
+                        $templateContent += "    $($parameter.name): contains($($childResourceTypeSingular), '$($parameter.name)') ? $($childResourceTypeSingular).$($parameter.name) : $($wouldBeParamValue)"
+                        $alreadyAddedParams += $parameter.name
+                    } else {
+                        # No default
+                        $templateContent += "    $($parameter.name): $($childResourceTypeSingular).$($parameter.name)"
+                        $alreadyAddedParams += $parameter.name
+                    }
+                }
+
+                $templateContent += @(
+                    # Special handling as we pass the variable down to the child
+                    '    enableDefaultTelemetry: enableReferencedModulesTelemetry'
+                    '  }'
+                    '}]'
+                    ''
+                )
+            }
         }
 
         # TODO : Add other module references
@@ -514,68 +602,19 @@ function Set-ModuleTemplate {
             $templateContent += ''
         }
 
-        $defaultOutputs = @(
-            @{
-                name    = 'name'
-                type    = 'string'
-                content = @(
-                    "@description('The name of the $resourceTypeSingular.')"
-                    "output name string = $resourceTypeSingular.name"
-                )
-            },
-            @{
-                name    = 'resourceId'
-                type    = 'string'
-                content = @(
-                    "@description('The resource ID of the $resourceTypeSingular.')"
-                    "output resourceId string = $resourceTypeSingular.id"
-                )
-            }
-        )
-
-        if ($targetScope -eq 'resourceGroup') {
-            $defaultOutputs += @{
-                name    = 'resourceGroupName'
-                type    = 'string'
-                content = @(
-                    "@description('The name of the resource group the $resourceTypeSingular was created in.')"
-                    'output resourceGroupName string = resourceGroup().name'
-                )
-            }
+        $outputsInputObject = @{
+            FullResourceType = $FullResourceType
+            UrlPath          = $UrlPath
+            ModuleData       = $ModuleData
         }
-
-        # If the main resource has a location property, an output should be returned too
-        if ($ModuleData.parametersToAdd.name -contains 'location' -and $ModuleData.parametersToAdd['location'].defaultValue -ne 'global') {
-            $defaultOutputs += @{
-                name    = 'location'
-                type    = 'string'
-                content = @(
-                    "@description('The location the resource was deployed into.')"
-                    '{0}.location' -f $resourceTypeSingular
-                )
-            }
+        if ($ExistingTemplateContent.Count -gt 0) {
+            $outputsInputObject['ExistingTemplateContent'] = $ExistingTemplateContent
         }
+        $templateContent += Get-ModuleOutputContent @outputsInputObject
 
-        # Extra outputs
-        $outputsToAdd = -not $existingTemplateContent ? @() : $existingTemplateContent.outputs
-        foreach ($default in $defaultOutputs) {
-            if ($outputsToAdd.name -notcontains $default.name) {
-                $outputsToAdd += $default
-            }
-        }
-
-        # Output header comment
-        $templateContent += @(
-            '// =========== //'
-            '//   Outputs   //'
-            '// =========== //'
-            ''
-        )
-
-        foreach ($output in $outputsToAdd) {
-            $templateContent += $output.content
-            $templateContent += ''
-        }
+        ############################
+        ##  Update template file  ##
+        ############################
 
         # Update file
         # -----------
