@@ -1,13 +1,15 @@
-﻿function Get-ModuleOutputContent {
+﻿function Get-TemplateOutputContent {
 
     [CmdletBinding()]
     param (
-        [Parameter()]
         [Parameter(Mandatory = $true)]
-        [string] $FullResourceType,
+        [string] $ResourceType,
+
+        [Parameter(Mandatory = $false)]
+        [string] $ResourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $ResourceType) -split '/')[-1],
 
         [Parameter(Mandatory = $true)]
-        [string] $UrlPath,
+        [string] $TargetScope,
 
         [Parameter(Mandatory = $true)]
         [array] $ModuleData,
@@ -21,22 +23,9 @@
     }
 
     process {
-
         #####################
         ##   Collect Data   #
         #####################
-
-        $providerNamespace = ($FullResourceType -split '/')[0]
-        $resourceType = $FullResourceType -replace "$providerNamespace/", ''
-
-        # Get the singular version of the current resource type for proper naming
-        $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
-
-        $targetScope = Get-TargetScope -UrlPath $UrlPath
-
-        ####################
-        ##   Set Outputs   #
-        ####################
         $defaultOutputs = @(
             @{
                 name    = 'name'
@@ -87,7 +76,10 @@
             }
         }
 
-        # Output header comment
+        ########################
+        ##   Create Content   ##
+        ########################
+
         $templateContent = @(
             '// =========== //'
             '//   Outputs   //'
@@ -100,7 +92,7 @@
             $templateContent += ''
         }
 
-
+        return $templateContent
     }
 
     end {
