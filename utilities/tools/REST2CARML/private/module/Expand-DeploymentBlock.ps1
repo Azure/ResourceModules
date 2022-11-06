@@ -30,6 +30,25 @@ function Expand-DeploymentBlock {
     $relevantProperties = $DeclarationBlock.content | Where-Object { (Get-LineIndentation $_) -eq $topLevelIndent -and $_ -notlike "*$($NestedType): {*" -and $_ -like '*:*' }
     $topLevelElementNames = $relevantProperties | ForEach-Object { ($_ -split ':')[0].Trim() }
 
+    ###########################################
+    ##   Collect specification information   ##
+    ###########################################
+    switch ($NestedType) {
+        'properties' {
+            $declarationElem = $declarationBlock.content[0] -split ' '
+            $DeclarationBlock['name'] = $declarationElem[1]
+            $DeclarationBlock['type'] = ($declarationElem[2] -split '@')[0].Trim("'")
+            $DeclarationBlock['version'] = (($declarationElem[2] -split '@')[1])[0..9] -join '' # The date always has 10 characters
+            break
+        }
+        'params' {
+            $declarationElem = $declarationBlock.content[0] -split ' '
+            $DeclarationBlock['name'] = $declarationElem[1]
+            $DeclarationBlock['path'] = $declarationElem[2].Trim("'")
+            break
+        }
+    }
+
     ####################################
     ##   Collect top level elements   ##
     ####################################

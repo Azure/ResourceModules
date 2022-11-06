@@ -85,15 +85,18 @@ function Set-DiagnosticModuleData {
             }
         )
 
-        $diagnosticResource = @(
-            "resource $($resourceTypeSingular)_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {"
-            '  name: diagnosticSettingsName'
-            '  properties: {'
-            '    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null'
-            '    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null'
-            '    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null'
-            '    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null'
-        )
+        $diagnosticResource = @{
+            name    = "$($resourceTypeSingular)_diagnosticSettings"
+            content = @(
+                "resource $($resourceTypeSingular)_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {"
+                '  name: diagnosticSettingsName'
+                '  properties: {'
+                '    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null'
+                '    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null'
+                '    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null'
+                '    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null'
+            )
+        }
 
         # Metric-specific
         if ($diagnosticOptions.Metrics) {
@@ -112,20 +115,22 @@ function Set-DiagnosticModuleData {
                     )
                 }
             )
-            $ModuleData.variables += @(
-                'var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {'
-                '  category: metric'
-                '  timeGrain: null'
-                '  enabled: true'
-                '  retentionPolicy: {'
-                '    enabled: true'
-                '    days: diagnosticLogsRetentionInDays'
-                '  }'
-                '}]'
-                ''
-            )
+            $ModuleData.variables += @{
+                name    = 'diagnosticsMetrics'
+                content = @(
+                    'var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {'
+                    '  category: metric'
+                    '  timeGrain: null'
+                    '  enabled: true'
+                    '  retentionPolicy: {'
+                    '    enabled: true'
+                    '    days: diagnosticLogsRetentionInDays'
+                    '  }'
+                    '}]'
+                )
+            }
 
-            $diagnosticResource += '    metrics: diagnosticsMetrics'
+            $diagnosticResource.content += '    metrics: diagnosticsMetrics'
         }
 
         # Log-specific
@@ -140,22 +145,24 @@ function Set-DiagnosticModuleData {
                     default       = $diagnosticOptions.Logs
                 }
             )
-            $ModuleData.variables += @(
-                'var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {'
-                '  category: category'
-                '  enabled: true'
-                '  retentionPolicy: {'
-                '    enabled: true'
-                '    days: diagnosticLogsRetentionInDays'
-                '  }'
-                '}]'
-                ''
-            )
+            $ModuleData.variables += @{
+                name    = 'diagnosticsLogs'
+                content = @(
+                    'var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {'
+                    '  category: category'
+                    '  enabled: true'
+                    '  retentionPolicy: {'
+                    '    enabled: true'
+                    '    days: diagnosticLogsRetentionInDays'
+                    '  }'
+                    '}]'
+                )
+            }
 
-            $diagnosticResource += '    logs: diagnosticsLogs'
+            $diagnosticResource.content += '    logs: diagnosticsLogs'
         }
 
-        $diagnosticResource += @(
+        $diagnosticResource.content += @(
             '  }'
             "  scope: $resourceTypeSingular"
             '}'

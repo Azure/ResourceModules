@@ -154,6 +154,10 @@ param vcenterPassword string = ''
 @description('Optional. The vmGroups to create as part of the privateCloud.')
 param vmGroups array = []
 
+// ============= //
+//   Variables   //
+// ============= //
+
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
@@ -225,7 +229,7 @@ resource privateCloud_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
   scope: privateCloud
 }
 
-resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource privateCloud_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${privateCloud.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -233,6 +237,16 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(l
   }
   scope: privateCloud
 }
+
+module privateCloud_addons 'addons/deploy.bicep' = [for (addon, index) in addons: {
+  name: '${uniqueString(deployment().name, location)}-privateCloud-addon-${index}'
+  params: {
+    privateCloudName: name
+    addonType: contains(addon, 'addonType') ? addon.addonType : ''
+    name: addon.name
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 module privateCloud_authorizations 'authorizations/deploy.bicep' = [for (authorization, index) in authorizations: {
   name: '${uniqueString(deployment().name, location)}-privateCloud-authorization-${index}'
@@ -253,12 +267,14 @@ module privateCloud_cloudLinks 'cloudLinks/deploy.bicep' = [for (cloudLink, inde
   }
 }]
 
-module privateCloud_addons 'addons/deploy.bicep' = [for (addon, index) in addons: {
-  name: '${uniqueString(deployment().name, location)}-privateCloud-addon-${index}'
+module privateCloud_clusters 'clusters/deploy.bicep' = [for (cluster, index) in clusters: {
+  name: '${uniqueString(deployment().name, location)}-privateCloud-cluster-${index}'
   params: {
     privateCloudName: name
-    addonType: contains(addon, 'addonType') ? addon.addonType : ''
-    name: addon.name
+    clusterSize: contains(cluster, 'clusterSize') ? cluster.clusterSize : 
+    hosts: contains(cluster, 'hosts') ? cluster.hosts : []
+    name: cluster.name
+    sku: cluster.sku
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -284,18 +300,6 @@ module privateCloud_hcxEnterpriseSites 'hcxEnterpriseSites/deploy.bicep' = [for 
   }
 }]
 
-module privateCloud_clusters 'clusters/deploy.bicep' = [for (cluster, index) in clusters: {
-  name: '${uniqueString(deployment().name, location)}-privateCloud-cluster-${index}'
-  params: {
-    privateCloudName: name
-    clusterSize: contains(cluster, 'clusterSize') ? cluster.clusterSize : 
-    hosts: contains(cluster, 'hosts') ? cluster.hosts : []
-    name: cluster.name
-    sku: cluster.sku
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
-
 module privateCloud_scriptExecutions 'scriptExecutions/deploy.bicep' = [for (scriptExecution, index) in scriptExecutions: {
   name: '${uniqueString(deployment().name, location)}-privateCloud-scriptExecution-${index}'
   params: {
@@ -309,6 +313,19 @@ module privateCloud_scriptExecutions 'scriptExecutions/deploy.bicep' = [for (scr
     retention: contains(scriptExecution, 'retention') ? scriptExecution.retention : ''
     scriptCmdletId: contains(scriptExecution, 'scriptCmdletId') ? scriptExecution.scriptCmdletId : ''
     timeout: contains(scriptExecution, 'timeout') ? scriptExecution.timeout : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module workloadNetworks_privateCloud_dhcpConfigurations 'workloadNetworks/dhcpConfigurations/deploy.bicep' = [for (dhcpConfiguration, index) in dhcpConfigurations: {
+  name: '${uniqueString(deployment().name, location)}-privateCloud-dhcpConfiguration-${index}'
+  params: {
+    privateCloudName: name
+    workloadNetworkName: 'default'
+    dhcpType: contains(dhcpConfiguration, 'dhcpType') ? dhcpConfiguration.dhcpType : ''
+    displayName: contains(dhcpConfiguration, 'displayName') ? dhcpConfiguration.displayName : ''
+    name: dhcpConfiguration.name
+    revision: contains(dhcpConfiguration, 'revision') ? dhcpConfiguration.revision : 
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -329,20 +346,6 @@ module workloadNetworks_privateCloud_dnsServices 'workloadNetworks/dnsServices/d
   }
 }]
 
-module workloadNetworks_privateCloud_segments 'workloadNetworks/segments/deploy.bicep' = [for (segment, index) in segments: {
-  name: '${uniqueString(deployment().name, location)}-privateCloud-segment-${index}'
-  params: {
-    privateCloudName: name
-    workloadNetworkName: 'default'
-    connectedGateway: contains(segment, 'connectedGateway') ? segment.connectedGateway : ''
-    displayName: contains(segment, 'displayName') ? segment.displayName : ''
-    name: segment.name
-    revision: contains(segment, 'revision') ? segment.revision : 
-    subnet: contains(segment, 'subnet') ? segment.subnet : {}
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
-
 module workloadNetworks_privateCloud_dnsZones 'workloadNetworks/dnsZones/deploy.bicep' = [for (dnsZone, index) in dnsZones: {
   name: '${uniqueString(deployment().name, location)}-privateCloud-dnsZone-${index}'
   params: {
@@ -355,31 +358,6 @@ module workloadNetworks_privateCloud_dnsZones 'workloadNetworks/dnsZones/deploy.
     name: dnsZone.name
     revision: contains(dnsZone, 'revision') ? dnsZone.revision : 
     sourceIp: contains(dnsZone, 'sourceIp') ? dnsZone.sourceIp : ''
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
-
-module workloadNetworks_privateCloud_publicIPs 'workloadNetworks/publicIPs/deploy.bicep' = [for (publicIP, index) in publicIPs: {
-  name: '${uniqueString(deployment().name, location)}-privateCloud-publicIP-${index}'
-  params: {
-    privateCloudName: name
-    workloadNetworkName: 'default'
-    displayName: contains(publicIP, 'displayName') ? publicIP.displayName : ''
-    name: publicIP.name
-    numberOfPublicIPs: contains(publicIP, 'numberOfPublicIPs') ? publicIP.numberOfPublicIPs : 
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
-
-module workloadNetworks_privateCloud_vmGroups 'workloadNetworks/vmGroups/deploy.bicep' = [for (vmGroup, index) in vmGroups: {
-  name: '${uniqueString(deployment().name, location)}-privateCloud-vmGroup-${index}'
-  params: {
-    privateCloudName: name
-    workloadNetworkName: 'default'
-    displayName: contains(vmGroup, 'displayName') ? vmGroup.displayName : ''
-    members: contains(vmGroup, 'members') ? vmGroup.members : []
-    name: vmGroup.name
-    revision: contains(vmGroup, 'revision') ? vmGroup.revision : 
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -399,15 +377,41 @@ module workloadNetworks_privateCloud_portMirroringProfiles 'workloadNetworks/por
   }
 }]
 
-module workloadNetworks_privateCloud_dhcpConfigurations 'workloadNetworks/dhcpConfigurations/deploy.bicep' = [for (dhcpConfiguration, index) in dhcpConfigurations: {
-  name: '${uniqueString(deployment().name, location)}-privateCloud-dhcpConfiguration-${index}'
+module workloadNetworks_privateCloud_publicIPs 'workloadNetworks/publicIPs/deploy.bicep' = [for (publicIP, index) in publicIPs: {
+  name: '${uniqueString(deployment().name, location)}-privateCloud-publicIP-${index}'
   params: {
     privateCloudName: name
     workloadNetworkName: 'default'
-    dhcpType: contains(dhcpConfiguration, 'dhcpType') ? dhcpConfiguration.dhcpType : ''
-    displayName: contains(dhcpConfiguration, 'displayName') ? dhcpConfiguration.displayName : ''
-    name: dhcpConfiguration.name
-    revision: contains(dhcpConfiguration, 'revision') ? dhcpConfiguration.revision : 
+    displayName: contains(publicIP, 'displayName') ? publicIP.displayName : ''
+    name: publicIP.name
+    numberOfPublicIPs: contains(publicIP, 'numberOfPublicIPs') ? publicIP.numberOfPublicIPs : 
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module workloadNetworks_privateCloud_segments 'workloadNetworks/segments/deploy.bicep' = [for (segment, index) in segments: {
+  name: '${uniqueString(deployment().name, location)}-privateCloud-segment-${index}'
+  params: {
+    privateCloudName: name
+    workloadNetworkName: 'default'
+    connectedGateway: contains(segment, 'connectedGateway') ? segment.connectedGateway : ''
+    displayName: contains(segment, 'displayName') ? segment.displayName : ''
+    name: segment.name
+    revision: contains(segment, 'revision') ? segment.revision : 
+    subnet: contains(segment, 'subnet') ? segment.subnet : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module workloadNetworks_privateCloud_vmGroups 'workloadNetworks/vmGroups/deploy.bicep' = [for (vmGroup, index) in vmGroups: {
+  name: '${uniqueString(deployment().name, location)}-privateCloud-vmGroup-${index}'
+  params: {
+    privateCloudName: name
+    workloadNetworkName: 'default'
+    displayName: contains(vmGroup, 'displayName') ? vmGroup.displayName : ''
+    members: contains(vmGroup, 'members') ? vmGroup.members : []
+    name: vmGroup.name
+    revision: contains(vmGroup, 'revision') ? vmGroup.revision : 
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

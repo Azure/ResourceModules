@@ -12,7 +12,7 @@ param sku object
 param privateCloudName string
 
 @description('Optional. The cluster size')
-param clusterSize int =
+param clusterSize int = 
 
 @description('Optional. The datastores to create as part of the cluster.')
 param datastores array = []
@@ -25,6 +25,10 @@ param hosts array = []
 
 @description('Optional. The placementPolicies to create as part of the cluster.')
 param placementPolicies array = []
+
+// ============= //
+//   Variables   //
+// ============= //
 
 var enableReferencedModulesTelemetry = false
 
@@ -58,6 +62,18 @@ resource cluster 'Microsoft.AVS/privateClouds/clusters@2022-05-01' = {
   }
 }
 
+module cluster_datastores 'datastores/deploy.bicep' = [for (datastore, index) in datastores: {
+  name: '${uniqueString(deployment().name)}-cluster-datastore-${index}'
+  params: {
+    privateCloudName: privateCloudName
+    clusterName: name
+    diskPoolVolume: contains(datastore, 'diskPoolVolume') ? datastore.diskPoolVolume : {}
+    name: datastore.name
+    netAppVolume: contains(datastore, 'netAppVolume') ? datastore.netAppVolume : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 module cluster_placementPolicies 'placementPolicies/deploy.bicep' = [for (placementPolicy, index) in placementPolicies: {
   name: '${uniqueString(deployment().name)}-cluster-placementPolicy-${index}'
   params: {
@@ -71,18 +87,6 @@ module cluster_placementPolicies 'placementPolicies/deploy.bicep' = [for (placem
     state: contains(placementPolicy, 'state') ? placementPolicy.state : ''
     type: contains(placementPolicy, 'type') ? placementPolicy.type : ''
     vmMembers: contains(placementPolicy, 'vmMembers') ? placementPolicy.vmMembers : []
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
-
-module cluster_datastores 'datastores/deploy.bicep' = [for (datastore, index) in datastores: {
-  name: '${uniqueString(deployment().name)}-cluster-datastore-${index}'
-  params: {
-    privateCloudName: privateCloudName
-    clusterName: name
-    diskPoolVolume: contains(datastore, 'diskPoolVolume') ? datastore.diskPoolVolume : {}
-    name: datastore.name
-    netAppVolume: contains(datastore, 'netAppVolume') ? datastore.netAppVolume : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
