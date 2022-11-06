@@ -113,6 +113,40 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
+@description('Optional. Monitoring Settings of the vault.')
+param monitoringSettings object = {}
+
+@description('Optional. The details of the latest move operation performed on the Azure Resource.')
+param moveDetails
+
+@description('Optional. The redundancy Settings of a Vault.')
+param redundancySettings
+
+@description('Optional. Security Settings of the vault.')
+param securitySettings
+
+@description('Optional. Details for upgrading vault.')
+param upgradeDetails
+
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
+
+@description('Optional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
+param cMKUserAssignedIdentityResourceId string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
+
+@description('Optional. Enabling/Disabling the Double Encryption state. Infrastructure encryption can only be configured if you first choose to use your own keys for encryption at rest.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+param infrastructureEncryption string = 'Disabled'
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -153,7 +187,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-04-01' = {
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
   name: name
   location: location
   tags: tags
@@ -162,7 +201,23 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-04-01' = {
     name: 'RS0'
     tier: 'Standard'
   }
-  properties: {}
+  properties: {
+    encryption: {
+      infrastructureEncryption: infrastructureEncryption
+      kekIdentity: {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+        useSystemAssignedIdentity: empty(cMKUserAssignedIdentityResourceId)
+      }
+      keyVaultProperties: {
+        keyUri: empty(cMKKeyVersion) ? cMKKeyVaultKey.properties.keyUriWithVersion : '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}'
+      }
+    }
+    monitoringSettings: monitoringSettings
+    moveDetails: moveDetails
+    redundancySettings: redundancySettings
+    securitySettings: securitySettings
+    upgradeDetails: upgradeDetails
+  }
 }
 
 module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicationFabric, index) in replicationFabrics: {
