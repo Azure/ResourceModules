@@ -179,7 +179,6 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
 
 var enableReferencedModulesTelemetry = false
 
-
 // =============== //
 //   Deployments   //
 // =============== //

@@ -42,7 +42,7 @@
         $locationParameterExists = ($templateContent | Where-Object { $_ -like 'param location *' }).Count -gt 0
 
         $matchingExistingResource = $existingTemplateContent.resources | Where-Object {
-            $_.resourceType -eq $FullResourceType -and $_.resourceName -eq $resourceTypeSingular
+            $_.type -eq $FullResourceType -and $_.name -eq $resourceTypeSingular
         }
 
         ########################
@@ -137,8 +137,12 @@
 
         # If a template already exists, add 'extra' resources that are not yet part of the template content
         # -------------------------------------------------------------------------------------------------
+        # Excluded are
+        # - Anything we generate anew as a resource
+        # - Telemetry (as it's regenerated above anyways)
+        # - Existing parent resources (as they are regenerated above anyways)
         $preExistingExtraResources = $existingTemplateContent.resources | Where-Object {
-            $_.resourceName -notIn ($ModuleData.resources.name + 'defaultTelemetry' + $resourceTypeSingular)
+            $_.name -notIn $ModuleData.resources.name + @('defaultTelemetry') + @($resourceTypeSingular) -and $_.content[0] -notlike '* existing = {'
         }
         foreach ($resource in $preExistingExtraResources) {
             $templateContent += $resource.content
@@ -149,10 +153,10 @@
         # --------------------------------------------------------------------
         # Other collected resources
         foreach ($additionalResource in $ModuleData.resources) {
-            if ($existingTemplateContent.resources.resourceName -notcontains $additionalResource.name) {
+            if ($existingTemplateContent.resources.name -notcontains $additionalResource.name) {
                 $templateContent += $additionalResource.content
             } else {
-                $existingResource = $existingTemplateContent.resources | Where-Object { $_.resourceName -eq $additionalResource.name }
+                $existingResource = $existingTemplateContent.resources | Where-Object { $_.name -eq $additionalResource.name }
                 $templateContent += $existingResource.content
                 $templateContent += ''
             }

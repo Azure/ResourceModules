@@ -32,7 +32,6 @@ param placementPolicies array = []
 
 var enableReferencedModulesTelemetry = false
 
-
 // =============== //
 //   Deployments   //
 // =============== //
