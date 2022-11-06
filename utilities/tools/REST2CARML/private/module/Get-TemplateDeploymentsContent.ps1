@@ -93,7 +93,26 @@ $contentInputObject = @{
 }
 Get-TemplateDeploymentsContent @contentInputObject
 
-Get the formatted template content for resource type 'Microsoft.AVS/privateClouds/clusters/datastores' based on the given data - including an existing template's data
+Get the formatted template content for resource type 'Microsoft.AVS/privateClouds/clusters/datastores' based on the given data - including an existing template's data. The  output looks something like:
+
+```bicep
+// =============== //
+//   Deployments   //
+// =============== //
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+    name: 'pid-11111111-1111-1111-1111-111111111111-${uniqueString(deployment().name, location)}'
+    properties: {
+        mode: 'Incremental'
+        template: {
+            '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+            contentVersion: '1.0.0.0'
+            resources: []
+        }
+    }
+}
+(...)
+```
 #>
 function Get-TemplateDeploymentsContent {
 
