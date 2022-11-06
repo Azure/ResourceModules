@@ -3,7 +3,7 @@
 Get the formatted content for the template's 'variables' section
 
 .DESCRIPTION
-Get the formatted content for the template's 'variables' section. 'Existing' template content taxes precedence over new variables.
+Get the formatted content for the template's 'variables' section. Template content of any pre-existing template takes precedence over new content.
 
 .PARAMETER ModuleData
 Mandatory. The module data to fetch the data for this section from & then format it propertly for the template.

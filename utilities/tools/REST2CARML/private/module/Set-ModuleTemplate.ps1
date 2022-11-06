@@ -154,7 +154,7 @@ function Set-ModuleTemplate {
         if ($LinkedChildren.Count -gt 0) {
             $resourcesInputObject['LinkedChildren'] = $LinkedChildren
         }
-        $templateContent += Get-TemplateResourcesContent @resourcesInputObject
+        $templateContent += Get-TemplateDeploymentsContent @resourcesInputObject
         #endregion
 
         #######################################

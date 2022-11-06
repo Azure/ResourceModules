@@ -1,4 +1,101 @@
-﻿function Get-TemplateResourcesContent {
+﻿<#
+.SYNOPSIS
+Get the formatted content for the template's 'deployments' section
+
+.DESCRIPTION
+Get the formatted content for the template's 'deployments' section. For the primary resource, template content of any pre-existing template takes precedence over new content.
+
+.PARAMETER FullResourceType
+Mandatory. The complete ResourceType identifier to update the template for (e.g., 'Microsoft.Storage/storageAccounts').
+
+.PARAMETER ResourceType
+Mandatory. The resource type without the provider namespace (e.g., 'storageAccounts')
+
+.PARAMETER ResourceTypeSingular
+Optional. The 'singular' version of the resource type. For example 'container' instead of 'containers'.
+
+.PARAMETER ModuleData
+Mandatory. The module data to fetch the data for this section from & then format it propertly for the template.
+
+Expects an array with objects like:
+Name                           Value
+----                           -----
+parameters                     {name, identity, type, properties…}
+outputs                        {}
+additionalFiles                {}
+modules                        {}
+variables                      {diagnosticsMetrics, diagnosticsLogs}
+resources                      {privateCloud_diagnosticSettings, privateCloud_lock}
+isSingleton                    False
+additionalParameters           {diagnosticLogsRetentionInDays, diagnosticStorageAccountId, diagnosticWorkspaceId, diagnosticEventHubAuthorizationRuleId…}
+
+.PARAMETER FullModuleData
+Mandatory. The full stack of module data of all modules included in the original invocation. May be used for parent-child references.
+
+Expects an array with objects like:
+
+Name                           Value
+----                           -----
+identifier                     Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations
+data                           {parameters, outputs, additionalFiles, modules…}
+metadata                       {urlPath, jsonFilePath, parentUrlPath}
+identifier                     Microsoft.AVS/privateClouds/cloudLinks
+data                           {parameters, outputs, additionalFiles, modules…}
+metadata                       {urlPath, jsonFilePath, parentUrlPath}
+identifier                     Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles
+data                           {parameters, outputs, additionalFiles, modules…}
+metadata                       {urlPath, jsonFilePath, parentUrlPath}
+
+.PARAMETER ParentResourceTypes
+Optional. The name of any parent resource type. (e.g., @('privateClouds', 'clusters')
+
+.PARAMETER ExistingTemplateContent
+Optional. The prepared content of an existing template, if any.
+
+Expects an array with objects like:
+
+Name                           Value
+----                           -----
+modules                        {privateCloud_cloudLinks, privateCloud_hcxEnterpriseSites, privateCloud_authorizations, privateCloud_scriptExecutions…}
+variables                      {diagnosticsMetrics, diagnosticsLogs, enableReferencedModulesTelemetry}
+parameters                     {name, sku, addons, authorizations…}
+outputs                        {name, resourceId, resourceGroupName}
+resources                      {defaultTelemetry, privateCloud, privateCloud_diagnosticSettings, privateCloud_lock}
+
+
+.PARAMETER LinkedChildren
+Optional. Information about any child-module of the current resource type. Used to generate proper module references.
+
+Expects an array with objects like:
+
+Name                           Value
+----                           -----
+identifier                     Microsoft.AVS/privateClouds/cloudLinks
+data                           {parameters, outputs, additionalFiles, modules…}
+metadata                       {urlPath, jsonFilePath, parentUrlPath}
+identifier                     Microsoft.AVS/privateClouds/hcxEnterpriseSites
+data                           {parameters, outputs, additionalFiles, modules…}
+metadata                       {urlPath, jsonFilePath, parentUrlPath}
+identifier                     Microsoft.AVS/privateClouds/authorizations
+data                           {parameters, outputs, additionalFiles, modules…}
+metadata                       {urlPath, jsonFilePath, parentUrlPath}
+
+.EXAMPLE
+$contentInputObject = @{
+    FullResourceType        = 'Microsoft.AVS/privateClouds/clusters/datastores'
+    ResourceType            = 'privateClouds/clusters/datastores'
+    ResourceTypeSingular    = 'datastore'
+    ModuleData              = @(@{...}, (...))
+    FullModuleData          = @(@{...}, (...))
+    ParentResourceTypes     = @('privateClouds', 'clusters')
+    ExistingTemplateContent = @(@{...}, (...))
+    LinkedChildren          = @(@{...}, (...))
+}
+Get-TemplateDeploymentsContent @contentInputObject
+
+Get the formatted template content for resource type 'Microsoft.AVS/privateClouds/clusters/datastores' based on the given data - including an existing template's data
+#>
+function Get-TemplateDeploymentsContent {
 
     [CmdletBinding()]
     param (
