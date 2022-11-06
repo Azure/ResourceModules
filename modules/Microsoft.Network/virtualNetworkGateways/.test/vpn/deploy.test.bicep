@@ -59,7 +59,6 @@ module testDeployment '../../deploy.bicep' = {
     virtualNetworkGatewaySku: 'VpnGw1AZ'
     virtualNetworkGatewayType: 'Vpn'
     vNetResourceId: resourceGroupResources.outputs.vnetResourceId
-    // Non-required parameters
     activeActive: true
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
