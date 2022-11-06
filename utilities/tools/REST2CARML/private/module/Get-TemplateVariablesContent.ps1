@@ -38,7 +38,7 @@ Get-TemplateVariablesContent -ModuleData @(@{ variables = @(@{ name = 'abc'; con
 
 Generate the variables content for the above example containing at least the 'abc' variable. Would result in an output like
 
-```Bicep
+```bicep
 // ============= //
 //   Variables   //
 // ============= //

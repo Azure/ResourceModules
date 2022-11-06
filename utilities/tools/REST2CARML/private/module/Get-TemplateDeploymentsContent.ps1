@@ -62,7 +62,6 @@ parameters                     {name, sku, addons, authorizations…}
 outputs                        {name, resourceId, resourceGroupName}
 resources                      {defaultTelemetry, privateCloud, privateCloud_diagnosticSettings, privateCloud_lock}
 
-
 .PARAMETER LinkedChildren
 Optional. Information about any child-module of the current resource type. Used to generate proper module references.
 
