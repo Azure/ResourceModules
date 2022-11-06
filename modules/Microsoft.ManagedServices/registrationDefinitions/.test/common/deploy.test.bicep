@@ -21,7 +21,7 @@ module testDeployment '../../deploy.bicep' = {
         roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
       }
       {
-        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalId: '9bce07dd-ae3a-4062-a24d-33631a4b35e8'
         principalIdDisplayName: 'ResourceModules-Contributor'
         roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
       }
