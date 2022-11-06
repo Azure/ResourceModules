@@ -67,6 +67,9 @@ module cluster_datastores 'datastores/deploy.bicep' = [for (datastore, index) in
   params: {
     privateCloudName: privateCloudName
     clusterName: name
+    diskPoolVolume: contains(datastore, 'diskPoolVolume') ? datastore.diskPoolVolume : {}
+    name: datastore.name
+    netAppVolume: contains(datastore, 'netAppVolume') ? datastore.netAppVolume : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -76,6 +79,14 @@ module cluster_placementPolicies 'placementPolicies/deploy.bicep' = [for (placem
   params: {
     privateCloudName: privateCloudName
     clusterName: name
+    affinityStrength: contains(placementPolicy, 'affinityStrength') ? placementPolicy.affinityStrength : ''
+    azureHybridBenefitType: contains(placementPolicy, 'azureHybridBenefitType') ? placementPolicy.azureHybridBenefitType : ''
+    displayName: contains(placementPolicy, 'displayName') ? placementPolicy.displayName : ''
+    hostMembers: contains(placementPolicy, 'hostMembers') ? placementPolicy.hostMembers : []
+    name: placementPolicy.name
+    state: contains(placementPolicy, 'state') ? placementPolicy.state : ''
+    type: contains(placementPolicy, 'type') ? placementPolicy.type : ''
+    vmMembers: contains(placementPolicy, 'vmMembers') ? placementPolicy.vmMembers : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
