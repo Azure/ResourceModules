@@ -65,7 +65,7 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     domainNameLabel: [
-      '<<namePrefix>>-gw-vpn-dm-${serviceShort}-001'
+      '<<namePrefix>>-dm-${serviceShort}'
     ]
     lock: 'CanNotDelete'
     publicIpZones: [
