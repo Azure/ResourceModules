@@ -63,7 +63,7 @@ resource cluster 'Microsoft.AVS/privateClouds/clusters@2022-05-01' = {
 }
 
 module cluster_datastores 'datastores/deploy.bicep' = [for (datastore, index) in datastores: {
-  name: '${uniqueString(deployment().name, location)}-cluster-datastore-${index}'
+  name: '${uniqueString(deployment().name)}-cluster-datastore-${index}'
   params: {
     privateCloudName: privateCloudName
     clusterName: name
@@ -75,7 +75,7 @@ module cluster_datastores 'datastores/deploy.bicep' = [for (datastore, index) in
 }]
 
 module cluster_placementPolicies 'placementPolicies/deploy.bicep' = [for (placementPolicy, index) in placementPolicies: {
-  name: '${uniqueString(deployment().name, location)}-cluster-placementPolicy-${index}'
+  name: '${uniqueString(deployment().name)}-cluster-placementPolicy-${index}'
   params: {
     privateCloudName: privateCloudName
     clusterName: name

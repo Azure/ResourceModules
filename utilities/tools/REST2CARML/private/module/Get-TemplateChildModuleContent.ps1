@@ -125,7 +125,7 @@ function Get-TemplateChildModuleContent {
         #####################################
         $templateContent = @()
 
-        foreach ($dataBlock in $linkedChildren) {
+        foreach ($dataBlock in ($linkedChildren | Sort-Object -Property 'identifier')) {
             $childResourceType = ($dataBlock.identifier -split '/')[-1]
 
             $hasProxyParent = [String]::IsNullOrEmpty($dataBlock.metadata.parentUrlPath)

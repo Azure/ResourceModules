@@ -256,18 +256,20 @@ function Get-TemplateDeploymentsContent {
         # - Anything we generate anew as a resource
         # - Telemetry (as it's regenerated above anyways)
         # - Existing parent resources (as they are regenerated above anyways)
-        $preExistingExtraResources = $existingTemplateContent.resources | Where-Object {
-            $_.name -notIn $ModuleData.resources.name + @('defaultTelemetry') + @($resourceTypeSingular) -and $_.content[0] -notlike '* existing = {'
-        }
-        foreach ($resource in $preExistingExtraResources) {
-            $templateContent += $resource.content
-            $templateContent += ''
+        if ($existingTemplateContent.resources.count -gt 0) {
+            $preExistingExtraResources = $existingTemplateContent.resources | Where-Object {
+                $_.name -notIn $ModuleData.resources.name + @('defaultTelemetry') + @($resourceTypeSingular) -and $_.content[0] -notlike '* existing = {'
+            }
+            foreach ($resource in $preExistingExtraResources) {
+                $templateContent += $resource.content
+                $templateContent += ''
+            }
         }
 
         # Add additional resources such as extensions (like DiagnosticSettigs)
         # --------------------------------------------------------------------
         # Other collected resources
-        foreach ($additionalResource in $ModuleData.resources) {
+        foreach ($additionalResource in ($ModuleData.resources | Sort-Object 'name')) {
             if ($existingTemplateContent.resources.name -notcontains $additionalResource.name) {
                 $templateContent += $additionalResource.content
             } else {

@@ -90,7 +90,6 @@ function Get-TemplateVariablesContent {
             if ($existingTemplateContent.variables.name -notcontains 'enableReferencedModulesTelemetry') {
                 $templateContent += @(
                     'var enableReferencedModulesTelemetry = false'
-                    ''
                 )
             } else {
                 $matchingExistingVar = $existingTemplateContent.variables | Where-Object { $_.name -eq 'enableReferencedModulesTelemetry' }
