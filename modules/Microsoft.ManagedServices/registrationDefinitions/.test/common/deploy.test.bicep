@@ -16,7 +16,7 @@ module testDeployment '../../deploy.bicep' = {
     name: 'Component Validation - <<namePrefix>>${serviceShort} Subscription assignment'
     authorizations: [
       {
-        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalId: '9740a11d-a508-4a83-8ed5-4cb5bff5154a'
         principalIdDisplayName: 'ResourceModules-Reader'
         roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
       }
@@ -26,7 +26,7 @@ module testDeployment '../../deploy.bicep' = {
         roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
       }
       {
-        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalId: '441519e3-00e5-4070-8ec8-4b8cddf6409a'
         principalIdDisplayName: 'ResourceModules-LHManagement'
         roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
       }
