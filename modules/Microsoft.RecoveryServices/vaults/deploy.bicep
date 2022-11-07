@@ -116,17 +116,8 @@ param privateEndpoints array = []
 @description('Optional. Monitoring Settings of the vault.')
 param monitoringSettings object = {}
 
-@description('Optional. The details of the latest move operation performed on the Azure Resource.')
-param moveDetails
-
-@description('Optional. The redundancy Settings of a Vault.')
-param redundancySettings
-
 @description('Optional. Security Settings of the vault.')
-param securitySettings
-
-@description('Optional. Details for upgrading vault.')
-param upgradeDetails
+param securitySettings object = {}
 
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
 param cMKKeyVaultResourceId string = ''
@@ -213,10 +204,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
       }
     }
     monitoringSettings: monitoringSettings
-    moveDetails: moveDetails
-    redundancySettings: redundancySettings
     securitySettings: securitySettings
-    upgradeDetails: upgradeDetails
   }
 }
 
