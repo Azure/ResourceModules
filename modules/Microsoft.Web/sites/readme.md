@@ -459,7 +459,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           registration: {
             clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
             clientSecretSettingName: 'EASYAUTH_SECRET'
-            openIdIssuer: 'https://sts.windows.net/${tenant().tenantId}/v2.0/'
+            openIdIssuer: '<openIdIssuer>'
           }
           validation: {
             allowedAudiences: [
@@ -596,7 +596,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
             "registration": {
               "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
               "clientSecretSettingName": "EASYAUTH_SECRET",
-              "openIdIssuer": "https://sts.windows.net/${tenant().tenantId}/v2.0/"
+              "openIdIssuer": "<openIdIssuer>"
             },
             "validation": {
               "allowedAudiences": [
