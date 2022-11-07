@@ -169,8 +169,8 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
     tier: 'Standard'
   }
   properties: {
-    monitoringSettings: monitoringSettings
-    securitySettings: securitySettings
+    monitoringSettings: !empty(monitoringSettings) ? monitoringSettings : null
+    securitySettings: !empty(securitySettings) ? securitySettings : null
   }
 }
 
