@@ -249,7 +249,7 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
 module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if (!empty(replicationAlertSetting)) {
   name: '${uniqueString(deployment().name, location)}-RSV-replicationAlertSettings'
   params: {
-    name: '${rsv.name}/defaultAlertSetting'
+    name: 'defaultAlertSetting'
     recoveryVaultName: rsv.name
     emailAddresses: contains(replicationAlertSetting, 'emailAddresses') ? replicationAlertSetting.emailAddresses : ''
     locale: contains(replicationAlertSetting, 'locale') ? replicationAlertSetting.locale : ''
