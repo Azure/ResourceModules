@@ -160,10 +160,16 @@ function New-DeploymentWithParameterFile {
         }
         if ($templateFilePath -match '.*(\\|\/)Microsoft.+') {
             # If we can assume we're operating in a module structure, we can further fetch the provider namespace & resource type
-            $providerNamespace = ((($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/')[0]
-            $resourceType = ((($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/')[1]
+            $shortPathElem = (($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/' # e.g., AppConfiguration, configurationStores, .test, common, deploy.test.bicep
+            $providerNamespace = $shortPathElem[0] # e.g., AppConfiguration
+            $providerNamespaceShort = ($providerNamespace -creplace '[^A-Z]').ToLower() # e.g., ac
 
-            $deploymentNamePrefix = "$providerNamespace-$resourceType-$deploymentNamePrefix"
+            $resourceType = $shortPathElem[1] # e.g., configurationStores
+            $resourceTypeShort = ('{0}{1}' -f ($resourceType.ToLower())[0], ($resourceType -creplace '[^A-Z]')).ToLower() # e.g. cs
+
+            $testFolderShort = Split-Path (Split-Path $templateFilePath -Parent) -Leaf  # e.g., common
+
+            $deploymentNamePrefix = "$providerNamespaceShort-$resourceTypeShort-$testFolderShort" # e.g., ac-cs-common
         }
 
         $DeploymentInputs = @{
@@ -210,7 +216,7 @@ function New-DeploymentWithParameterFile {
         do {
             # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
             do {
-                $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..60])-t$retryCount"
+                $deploymentName = ('{0}-{1}-t{2}' -f $deploymentNamePrefix, (Get-Date -Format 'yyyyMMddTHHMMssffffZ'), $retryCount)[0..63] -join ''
             } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
 
             Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
