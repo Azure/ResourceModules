@@ -465,7 +465,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-07-01' 
     }
     autoScalerProfile: {
       'balance-similar-node-groups': autoScalerProfileBalanceSimilarNodeGroups
-      'expander': autoScalerProfileExpander
+      expander: autoScalerProfileExpander
       'max-empty-bulk-delete': autoScalerProfileMaxEmptyBulkDelete
       'max-graceful-termination-sec': autoScalerProfileMaxGracefulTerminationSec
       'max-node-provision-time': autoScalerProfileMaxNodeProvisionTime
