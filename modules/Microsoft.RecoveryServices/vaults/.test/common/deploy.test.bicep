@@ -327,6 +327,9 @@ module testDeployment '../../deploy.bicep' = {
       azureMonitorAlertSettings: {
         alertsForAllJobFailures: 'Enabled'
       }
+      classicAlertSettings: {
+        alertsForCriticalOperations: 'Enabled'
+      }
     }
     securitySettings: {
       immutabilitySettings: {
