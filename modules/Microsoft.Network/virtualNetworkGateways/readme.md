@@ -275,7 +275,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     domainNameLabel: [
-      '<<namePrefix>>-gw-vpn-dm-nvngavpn-001'
+      '<<namePrefix>>-dm-nvngavpn'
     ]
     lock: 'CanNotDelete'
     publicIpZones: [
@@ -349,7 +349,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     },
     "domainNameLabel": {
       "value": [
-        "<<namePrefix>>-gw-vpn-dm-nvngavpn-001"
+        "<<namePrefix>>-dm-nvngavpn"
       ]
     },
     "lock": {

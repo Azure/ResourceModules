@@ -81,7 +81,8 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     vpnClientAadConfiguration: {
-      aadAudience: '41b23e61-6c1e-4545-b367-cd054e0ed4b4' // The Application ID of the "Azure VPN" Azure AD Enterprise App for Azure Public
+      // The Application ID of the "Azure VPN" Azure AD Enterprise App for Azure Public
+      aadAudience: '41b23e61-6c1e-4545-b367-cd054e0ed4b4'
       aadIssuer: 'https://sts.windows.net/${tenant().tenantId}/'
       aadTenant: '${environment().authentication.loginEndpoint}/${tenant().tenantId}/'
       vpnAuthenticationTypes: [
