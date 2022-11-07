@@ -201,7 +201,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
           ]
           metricMeasureColumn: 'AggregatedValue'
           operator: 'GreaterThan'
-          query: '<query>'
+          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
           threshold: 0
           timeAggregation: 'Average'
         }
@@ -265,7 +265,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
             ],
             "metricMeasureColumn": "AggregatedValue",
             "operator": "GreaterThan",
-            "query": "<query>",
+            "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
             "threshold": 0,
             "timeAggregation": "Average"
           }

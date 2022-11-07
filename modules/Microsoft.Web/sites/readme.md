@@ -432,7 +432,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     appInsightId: '<appInsightId>'
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
-      EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
+      EASYAUTH_SECRET: '<EASYAUTH_SECRET>'
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     }
@@ -567,7 +567,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "appSettingsKeyValuePairs": {
       "value": {
         "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
-        "EASYAUTH_SECRET": "https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password",
+        "EASYAUTH_SECRET": "<EASYAUTH_SECRET>",
         "FUNCTIONS_EXTENSION_VERSION": "~4",
         "FUNCTIONS_WORKER_RUNTIME": "dotnet"
       }

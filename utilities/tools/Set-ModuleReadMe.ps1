@@ -688,7 +688,7 @@ function ConvertTo-FormattedJSONParameterObject {
         # [2.4] Syntax:
         # - Everything left of a leftest ':' should be wrapped in quotes (as a parameter name is always a string)
         # - However, we don't want to accidently catch something like "CriticalAddonsOnly=true:NoSchedule"
-        [regex]$pattern = '^\s*\"{0}([0-9a-zA-Z]+):'
+        [regex]$pattern = '^\s*\"{0}([0-9a-zA-Z_]+):'
         $line = $pattern.replace($line, '"$1":', 1)
 
         # [2.5] Syntax: Replace Bicep resource ID references
