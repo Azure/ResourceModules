@@ -674,7 +674,8 @@ function ConvertTo-FormattedJSONParameterObject {
         '}'
     ) | Out-String
 
-    # [2.2] Syntax: All single-quotes are double-quotes
+    # [2.2] Syntax: All double quotes must be escaped & single-quotes are double-quotes
+    $paramInJsonFormat = $paramInJsonFormat -replace '"', '\"'
     $paramInJsonFormat = $paramInJsonFormat -replace "'", '"'
 
     # [2.3] Split the object to format line-by-line (& also remove any empty lines)
