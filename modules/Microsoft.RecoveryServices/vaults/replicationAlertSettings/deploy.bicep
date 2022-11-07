@@ -8,17 +8,24 @@ param name string
 param emailAddresses string = ''
 
 @description('Optional. The locale for the email notification.')
-param locale string = ''
+param emailLocale string = ''
 
 @description('Optional. The value indicating whether to send email to subscription administrator.')
 @allowed([
   'DoNotSend'
   'Send'
 ])
-param sendToOwners string = 'Send'
+param sendEmailToSubOwners string = 'Send'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var alertSettingProperties = union((emailAddresses != '') ? {
+    customEmailAddresses: [ emailAddresses ]
+  } : {},
+  { locale: emailLocale
+    sendToOwners: sendEmailToSubOwners
+  })
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -39,15 +46,7 @@ resource recoveryVault 'Microsoft.RecoveryServices/vaults@2022-08-01' existing =
 resource replicationAlertSetting 'Microsoft.RecoveryServices/vaults/replicationAlertSettings@2022-08-01' = {
   name: name
   parent: recoveryVault
-  properties: {
-    customEmailAddresses: [
-      emailAddresses
-    ]
-    locale: locale
-    sendToOwners: sendToOwners
-
-  }
-
+  properties: alertSettingProperties
 }
 
 @description('The name of the replication Alert Setting.')

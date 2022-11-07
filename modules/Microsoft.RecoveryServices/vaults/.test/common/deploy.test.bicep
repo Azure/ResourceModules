@@ -295,7 +295,7 @@ module testDeployment '../../deploy.bicep' = {
       storageModelType: 'GeoRedundant'
     }
     replicationAlertSetting: {
-      sendToOwners: 'Send'
+      sendEmailToSubOwners: 'Send'
     }
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId

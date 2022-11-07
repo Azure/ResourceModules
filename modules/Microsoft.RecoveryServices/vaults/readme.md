@@ -1184,7 +1184,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       }
     ]
     replicationAlertSetting: {
-      sendToOwners: 'Send'
+      sendEmailToSubOwners: 'Send'
     }
     roleAssignments: [
       {
@@ -1496,7 +1496,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     },
     "replicationAlertSetting": {
       "value": {
-        "sendToOwners": "Send"
+        "sendEmailToSubOwners": "Send"
       }
     },
     "roleAssignments": {
