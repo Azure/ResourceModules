@@ -5,7 +5,7 @@ param recoveryVaultName string
 param name string = 'defaultAlertSetting'
 
 @description('Optional. Comma separated list of custom email address for sending alert emails.')
-param emailAddresses string = ''
+param emailAddresses array = [ '' ]
 
 @description('Optional. The locale for the email notification.')
 param emailLocale string = ''
@@ -20,8 +20,8 @@ param sendEmailToSubOwners string = 'Send'
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var alertSettingProperties = union((emailAddresses != '') ? {
-    customEmailAddresses: [ emailAddresses ]
+var alertSettingProperties = union((length(emailAddresses) != 0) ? {
+    customEmailAddresses: emailAddresses
   } : {},
   { locale: emailLocale
     sendToOwners: sendEmailToSubOwners

@@ -251,7 +251,7 @@ module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if
   params: {
     name: 'defaultAlertSetting'
     recoveryVaultName: rsv.name
-    emailAddresses: contains(replicationAlertSetting, 'emailAddresses') ? replicationAlertSetting.emailAddresses : ''
+    emailAddresses: contains(replicationAlertSetting, 'emailAddresses') ? replicationAlertSetting.emailAddresses : [ '' ]
     emailLocale: contains(replicationAlertSetting, 'emailLocale') ? replicationAlertSetting.emailLocale : ''
     sendEmailToSubOwners: contains(replicationAlertSetting, 'sendEmailToSubOwners') ? replicationAlertSetting.sendEmailToSubOwners : 'Send'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
