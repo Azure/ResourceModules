@@ -39,11 +39,13 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
       - task: AzurePowerShell@5
-        displayName: 'Replace tokens in template file via connection [$(serviceConnection)]'
+        displayName: 'Cleanup deployments via connection [$(serviceConnection)]'
         inputs:
           azureSubscription: '$(serviceConnection)'
-          ScriptType: InlineScript
+          azurePowerShellVersion: 'latestVersion'
+          preferredAzurePowerShellVersion: ''
           pwsh: true
+          ScriptType: InlineScript
           inline: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
