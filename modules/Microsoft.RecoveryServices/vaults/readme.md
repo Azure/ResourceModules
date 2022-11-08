@@ -1184,6 +1184,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       }
     ]
     replicationAlertSetting: {
+      emailAddresses: [
+        '123@abc.com'
+        'abc@123.com'
+      ]
+      emailLocale: 'en-US'
       sendEmailToSubOwners: 'Send'
     }
     roleAssignments: [
@@ -1496,6 +1501,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     },
     "replicationAlertSetting": {
       "value": {
+        "emailAddresses": [
+          "123@abc.com",
+          "abc@123.com"
+        ],
+        "emailLocale": "en-US",
         "sendEmailToSubOwners": "Send"
       }
     },

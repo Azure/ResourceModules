@@ -1,10 +1,10 @@
 @description('Required. The name of the parent Azure Recovery Service Vault.')
 param recoveryVaultName string
 
-@description('Required. The name of the replication Alert Setting.')
-param name string
+@description('Optional. The name of the replication Alert Setting.')
+param name string = 'defaultAlertSetting'
 
-@description('Required. Comma separated list of custom email address for sending alert emails.')
+@description('Optional. Comma separated list of custom email address for sending alert emails.')
 param emailAddresses string = ''
 
 @description('Optional. The locale for the email notification.')
