@@ -37,7 +37,7 @@ function Clear-ManagementGroupDeployment {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Enables web reponse
 
     # Load used functions
-    . (Join-Path $PSScriptRoot 'helper' 'Split-Array.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'sharedScripts' 'Split-Array.ps1')
 
     $getInputObject = @{
         Method  = 'GET'
@@ -74,7 +74,7 @@ function Clear-ManagementGroupDeployment {
 
         $requests = $deployments | ForEach-Object {
             @{ httpMethod            = 'DELETE'
-                name                 = (New-Guid).Guid
+                name                 = (New-Guid).Guid # Each batch request needs a unique ID
                 requestHeaderDetails = @{
                     commandName = 'HubsExtension.Microsoft.Resources/deployments.BulkDelete.execute'
                 }

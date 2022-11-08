@@ -35,10 +35,9 @@ function Clear-SubscriptionDeployment {
     )
 
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Enables web reponse
-    $subscription = Get-AzSubscription -SubscriptionId $subscriptionId
 
     # Load used functions
-    . (Join-Path $PSScriptRoot 'helper' 'Split-Array.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'sharedScripts' 'Split-Array.ps1')
 
     $getInputObject = @{
         Method  = 'GET'
@@ -56,7 +55,7 @@ function Clear-SubscriptionDeployment {
     $relevantDeployments = $response.value | Where-Object { $_.properties.provisioningState -notin $DeploymentStatusToExclude }
 
     if (-not $relevantDeployments) {
-        Write-Verbose ('No deployments for subscription [{0}/{1}] found' -f $subscription.Name, $subscriptionId) -Verbose
+        Write-Verbose ('No deployments for subscription [{0}] found' -f $subscriptionId) -Verbose
         return
     }
 
@@ -67,7 +66,7 @@ function Clear-SubscriptionDeployment {
         $relevantDeploymentChunks = $rawDeploymentChunks
     }
 
-    Write-Verbose ('Triggering the removal of [{0}] deployments from subscription [{1}/{2}]' -f $relevantDeployments.Count, $subscription.Name, $subscriptionId)
+    Write-Verbose ('Triggering the removal of [{0}] deployments from subscription [{1}]' -f $relevantDeployments.Count, $subscriptionId)
 
     $failedRemovals = 0
     $successfulRemovals = 0
@@ -75,7 +74,7 @@ function Clear-SubscriptionDeployment {
 
         $requests = $deployments | ForEach-Object {
             @{ httpMethod            = 'DELETE'
-                name                 = (New-Guid).Guid
+                name                 = (New-Guid).Guid # Each batch request needs a unique ID
                 requestHeaderDetails = @{
                     commandName = 'HubsExtension.Microsoft.Resources/deployments.BulkDelete.execute'
                 }

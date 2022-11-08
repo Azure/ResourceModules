@@ -1,0 +1,43 @@
+name: '.Platform - Remove Deployments'
+
+schedules:
+- cron: "0 0 * * *"
+  displayName: Nightly run
+  branches:
+    include:
+    - main
+
+pr: none
+
+variables:
+  - template: '../../settings.yml'
+  - group: 'PLATFORM_VARIABLES'
+
+jobs:
+  - job: Update_module_tables
+    pool:
+    ${{ if eq(variables['vmImage'], '') }}:
+      name: $(poolName)
+    ${{ if eq(variables['poolName'], '') }}:
+      vmImage: $(vmImage)
+    steps:
+      - checkout: self
+      - task: AzurePowerShell@5
+        displayName: 'Replace tokens in template file via connection [$(serviceConnection)]'
+        inputs:
+          azureSubscription: '$(serviceConnection)'
+          ScriptType: InlineScript
+          pwsh: true
+          inline: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
+
+            $functionInput = @{
+              SubscriptionId = '$(ARM_SUBSCRIPTION_ID)'
+              Verbose        = $true
+            }
+
+            Write-Verbose 'Invoke task with' -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Clear-SubscriptionDeployment @functionInput
