@@ -6,8 +6,6 @@ This section provides a guideline on how to use the CARML CI environment pipelin
 
 - [Operate the module pipelines](#operate-the-module-pipelines)
   - [Add a new module pipeline](#add-a-new-module-pipeline)
-- [Operate the dependencies pipeline](#operate-the-dependencies-pipeline)
-  - [Add a new dependency](#add-a-new-dependency)
 - [DevOps-Tool-specific guidance](#devops-tool-specific-guidance)
   - [GitHub workflows](#github-workflows)
     - [Trigger a workflow](#trigger-a-workflow)
@@ -38,34 +36,6 @@ Pipeline logs are available for troubleshooting and provide detailed information
 ## Add a new module pipeline
 
 To add a new module pipeline, we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties, e.g., triggers and module paths. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
-
-# Operate the dependencies pipeline
-
-The dependencies pipeline must be triggered manually. This deploys a set of resources we reference as part of the module tests (e.g., Virtual Networks, Log Analytics Workspace, Key Vaults).
-
-To run the dependencies pipeline you can perform the following steps:
-
-1. Before running the pipeline for the first time make sure to update the following values:
-
-   | File | Parameter | Description |
-   | - | - | - |
-   | `utilities\pipelines\.. ..dependencies\Microsoft.KeyVault\.. ..vaults\parameters\parameters.json` | `accessPolicies.value[0].objectId` | The 'Backup Management Service' needs access to back up the keys and secrets, along with the associated VMs. The Enterprise Application's object ID is unique per tenant. |
-1. (Optionally) Verify if you are satisfied with the dependency resource names by checking dependency parameter files stored in path `utilities\pipelines\dependencies`. If not, make the necessary updates to you local branch and push the local changes to the repository.
-   > **Note:** If you want to rename any dependency resources, make sure to update any references to their name in the module parameter files too.
-1. On the DevOps platform, navigate to the dependencies pipeline.
-1. Select the branch you intend to run.
-1. (Optionally) Enable the `'Enable SqlMI dependency deployment'` switch to include the deployment of the dependencies for the \[SQL managed instance] module.
-1. (Optionally) Enable the `'Enable deployment of a vhd stored in a blob container'` switch to include the deployment of the dependencies for the \[Compute Images] and \[Compute Disks] modules.
-   > **Note**: This option requires up to two hours to complete.
-1.  Trigger the pipeline.
-
-By default, i.e., by keeping the optional flags disables, the dependencies pipeline may take up to 30 minutes to run.
-
-> **Note:** For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design#dependencies-pipeline) section.
-
-## Add a new dependency
-
-Depending on what you want to test in your module pipeline, you may want to include additional resources to your dependencies pipeline. If so, make sure to include an additional parameter file for each service you require under `utilities/pipelines/dependencies`. Once done, you need to add the deployment to the pipeline itself making sure to deploy the new resources in the correct order. The implementation depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
 
 ---
 
