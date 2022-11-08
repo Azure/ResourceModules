@@ -86,6 +86,10 @@ function Clear-ManagementGroupDeployment {
             }
         }
 
+        if ($requests -is [hashtable]) {
+            $requests = , $requests
+        }
+
         $removeInputObject = @{
             Method  = 'POST'
             Uri     = 'https://management.azure.com/batch?api-version=2020-06-01'

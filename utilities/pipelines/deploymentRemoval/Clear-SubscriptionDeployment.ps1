@@ -54,7 +54,6 @@ function Clear-SubscriptionDeployment {
 
     Write-Verbose ('Found [{0}] deployments in subscription [{1}]' -f $response.value.Count, $subscriptionId) -Verbose
 
-
     $relevantDeployments = $response.value | Where-Object { $_.properties.provisioningState -notin $DeploymentStatusToExclude }
 
     Write-Verbose ('Filtering [{0}] deployments out as they are in state [{1}]' -f ($response.value.Count - $relevantDeployments.Count), ($DeploymentStatusToExclude -join '/')) -Verbose
@@ -87,6 +86,10 @@ function Clear-SubscriptionDeployment {
             }
         }
 
+        if ($requests -is [hashtable]) {
+            $requests = , $requests
+        }
+
         $removeInputObject = @{
             Method  = 'POST'
             Uri     = 'https://management.azure.com/batch?api-version=2020-06-01'
@@ -96,7 +99,7 @@ function Clear-SubscriptionDeployment {
             }
             Body    = @{
                 requests = $requests
-            } | ConvertTo-Json -Depth 4
+            } | ConvertTo-Json -Depth 4 -EnumsAsStrings
         }
         if ($PSCmdlet.ShouldProcess(('Removal of [{0}] deployments' -f $requests.Count), 'Request')) {
             $response = Invoke-RestMethod @removeInputObject
