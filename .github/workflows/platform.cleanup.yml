@@ -49,7 +49,6 @@ jobs:
 
             $functionInput = @{
               SubscriptionId = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-              Verbose        = $true
             }
 
             Write-Verbose "Invoke task with" -Verbose

@@ -52,7 +52,12 @@ function Clear-SubscriptionDeployment {
         throw ('Fetching deployments failed with error [{0}]' -f ($reponse | Out-String))
     }
 
+    Write-Verbose ('Found [{0}] deployments in subscription [{1}]' -f $response.value.Count, $subscriptionId) -Verbose
+
+
     $relevantDeployments = $response.value | Where-Object { $_.properties.provisioningState -notin $DeploymentStatusToExclude }
+
+    Write-Verbose ('Filtering [{0}] deployments out as they are in state [{1}]' -f ($response.value.Count - $relevantDeployments.Count), ($DeploymentStatusToExclude -join '/')) -Verbose
 
     if (-not $relevantDeployments) {
         Write-Verbose ('No deployments for subscription [{0}] found' -f $subscriptionId) -Verbose
@@ -66,7 +71,7 @@ function Clear-SubscriptionDeployment {
         $relevantDeploymentChunks = $rawDeploymentChunks
     }
 
-    Write-Verbose ('Triggering the removal of [{0}] deployments from subscription [{1}]' -f $relevantDeployments.Count, $subscriptionId)
+    Write-Verbose ('Triggering the removal of [{0}] deployments from subscription [{1}]' -f $relevantDeployments.Count, $subscriptionId) -Verbose
 
     $failedRemovals = 0
     $successfulRemovals = 0

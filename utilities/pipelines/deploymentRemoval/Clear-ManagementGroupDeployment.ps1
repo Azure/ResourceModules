@@ -52,7 +52,12 @@ function Clear-ManagementGroupDeployment {
         throw ('Fetching deployments failed with error [{0}]' -f ($reponse | Out-String))
     }
 
+    Write-Verbose ('Found [{0}] deployments in management group [{1}]' -f $response.value.Count, $ManagementGroupId) -Verbose
+
     $relevantDeployments = $response.value | Where-Object { $_.properties.provisioningState -notin $DeploymentStatusToExclude }
+
+    Write-Verbose ('Filtering [{0}] deployments out as they are in state [{1}]' -f ($response.value.Count - $relevantDeployments.Count), ($DeploymentStatusToExclude -join '/')) -Verbose
+
 
     if (-not $relevantDeployments) {
         Write-Verbose 'No deployments found' -Verbose
@@ -66,7 +71,7 @@ function Clear-ManagementGroupDeployment {
         $relevantDeploymentChunks = $rawDeploymentChunks
     }
 
-    Write-Verbose ('Triggering the removal of [{0}] deployments from management group [{1}]' -f $relevantDeployments.Count, $ManagementGroupId)
+    Write-Verbose ('Triggering the removal of [{0}] deployments from management group [{1}]' -f $relevantDeployments.Count, $ManagementGroupId) -Verbose
 
     $failedRemovals = 0
     $successfulRemovals = 0
