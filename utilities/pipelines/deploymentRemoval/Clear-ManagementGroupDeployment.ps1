@@ -7,7 +7,7 @@ Bulk delete all deployments on the given management group scope
 Bulk delete all deployments on the given management group scope
 
 .PARAMETER ManagementGroupId
-Mandatory. The Resource ID of the Management Group to remove the deployments for.
+Mandatory. The Resource ID of the Management Group to remove the deployments from.
 
 .PARAMETER DeploymentStatusToExclude
 Optional. The status to exlude from removals. Can be multiple. By default, we exclude any deployment that is in state 'running' or 'failed'.
@@ -66,7 +66,7 @@ function Clear-ManagementGroupDeployment {
         $relevantDeploymentChunks = $rawDeploymentChunks
     }
 
-    Write-Verbose ('Triggering the removal of [{0}] deployments of management group [{1}]' -f $relevantDeployments.Count, $ManagementGroupId)
+    Write-Verbose ('Triggering the removal of [{0}] deployments from management group [{1}]' -f $relevantDeployments.Count, $ManagementGroupId)
 
     $failedRemovals = 0
     $successfulRemovals = 0
