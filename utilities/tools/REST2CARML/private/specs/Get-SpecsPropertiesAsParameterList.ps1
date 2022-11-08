@@ -69,6 +69,11 @@ function Get-SpecsPropertiesAsParameterList {
         $specParameters = $specificationData.parameters
     }
 
+    if ([String]::IsNullOrEmpty($matchingPathObjectParametersRef)) {
+        # If we still cannot find a path with a body - there likely isn't any. Hence we skip
+        return $templateData
+    }
+
     # Get top-most parameters
     $outerParameters = $definitions[(Split-Path $matchingPathObjectParametersRef -Leaf)]
 

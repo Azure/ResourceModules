@@ -125,7 +125,7 @@ function Get-AzureApiSpecsData {
             return $moduleData
 
         } catch {
-            throw $_
+            throw ($_, $_.ScriptStackTrace)
         } finally {
             ##########################
             ##   Remove Artifacts   ##
