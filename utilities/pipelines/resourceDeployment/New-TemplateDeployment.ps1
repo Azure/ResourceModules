@@ -216,7 +216,7 @@ function New-DeploymentWithParameterFile {
         do {
             # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
             do {
-                $deploymentName = ('{0}-{1}-t{2}' -f $deploymentNamePrefix, (Get-Date -Format 'yyyyMMddTHHMMssffffZ'), $retryCount)[0..63] -join ''
+                $deploymentName = ('{0}-t{2}-{1}' -f $deploymentNamePrefix, $retryCount, (Get-Date -Format 'yyyyMMddTHHMMssffffZ'))[0..63] -join ''
             } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
 
             Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
