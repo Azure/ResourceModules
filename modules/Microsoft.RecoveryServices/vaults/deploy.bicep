@@ -29,7 +29,7 @@ param replicationFabrics array = []
 param replicationPolicies array = []
 
 @description('Optional. Replication alert settings.')
-param replicationAlertSetting object = {}
+param replicationAlertSettings object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -246,14 +246,14 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
   }
 }
 
-module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if (!empty(replicationAlertSetting)) {
+module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if (!empty(replicationAlertSettings)) {
   name: '${uniqueString(deployment().name, location)}-RSV-replicationAlertSettings'
   params: {
     name: 'defaultAlertSetting'
     recoveryVaultName: rsv.name
-    emailAddresses: contains(replicationAlertSetting, 'emailAddresses') ? replicationAlertSetting.emailAddresses : [ '' ]
-    emailLocale: contains(replicationAlertSetting, 'emailLocale') ? replicationAlertSetting.emailLocale : ''
-    sendEmailToSubOwners: contains(replicationAlertSetting, 'sendEmailToSubOwners') ? replicationAlertSetting.sendEmailToSubOwners : 'Send'
+    emailAddresses: contains(replicationAlertSettings, 'emailAddresses') ? replicationAlertSettings.emailAddresses : [ '' ]
+    emailLocale: contains(replicationAlertSettings, 'emailLocale') ? replicationAlertSettings.emailLocale : ''
+    sendEmailToSubOwners: contains(replicationAlertSettings, 'sendEmailToSubOwners') ? replicationAlertSettings.sendEmailToSubOwners : 'Send'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }

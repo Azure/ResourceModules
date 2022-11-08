@@ -294,7 +294,7 @@ module testDeployment '../../deploy.bicep' = {
       crossRegionRestoreFlag: true
       storageModelType: 'GeoRedundant'
     }
-    replicationAlertSetting: {
+    replicationAlertSettings: {
       emailAddresses: [
         'abc@123.com', '123@abc.com'
       ]

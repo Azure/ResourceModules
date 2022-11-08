@@ -43,17 +43,17 @@ resource recoveryVault 'Microsoft.RecoveryServices/vaults@2022-08-01' existing =
   name: recoveryVaultName
 }
 
-resource replicationAlertSetting 'Microsoft.RecoveryServices/vaults/replicationAlertSettings@2022-08-01' = {
+resource replicationAlertSettings 'Microsoft.RecoveryServices/vaults/replicationAlertSettings@2022-08-01' = {
   name: name
   parent: recoveryVault
   properties: alertSettingProperties
 }
 
 @description('The name of the replication Alert Setting.')
-output name string = replicationAlertSetting.name
+output name string = replicationAlertSettings.name
 
 @description('The name of the resource group the replication alert setting was created.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the replication alert setting.')
-output resourceId string = replicationAlertSetting.id
+output resourceId string = replicationAlertSettings.id
