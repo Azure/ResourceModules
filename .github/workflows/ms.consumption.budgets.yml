@@ -21,9 +21,7 @@ on:
       - '.github/workflows/ms.consumption.budgets.yml'
       - 'modules/Microsoft.Consumption/budgets/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
-
 env:
   variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Consumption/budgets'

@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.web.connections.yml'
       - 'modules/Microsoft.Web/connections/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

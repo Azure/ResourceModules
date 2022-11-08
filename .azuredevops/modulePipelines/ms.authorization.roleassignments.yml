@@ -24,8 +24,6 @@ trigger:
       - '/modules/Microsoft.Authorization/roleAssignments/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
-      - '/**/*.md'
 
 variables:
   - template: '../../settings.yml'

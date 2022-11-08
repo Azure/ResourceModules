@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.web.staticsites.yml'
       - 'modules/Microsoft.Web/staticSites/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

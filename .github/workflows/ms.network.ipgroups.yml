@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.network.ipgroups.yml'
       - 'modules/Microsoft.Network/ipGroups/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.managedidentity.userassignedidentities.yml'
       - 'modules/Microsoft.ManagedIdentity/userAssignedIdentities/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

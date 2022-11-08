@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.security.azuresecuritycenter.yml'
       - 'modules/Microsoft.Security/azureSecurityCenter/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

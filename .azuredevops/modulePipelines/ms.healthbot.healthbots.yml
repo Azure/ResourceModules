@@ -24,11 +24,6 @@ trigger:
       - '/modules/Microsoft.HealthBot/healthBots/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
-      - '/**/*.md'
-
-variables:
-  - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/modules/Microsoft.HealthBot/healthBots'

@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.network.routetables.yml'
       - 'modules/Microsoft.Network/routeTables/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

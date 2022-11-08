@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.kubernetesconfiguration.fluxconfigurations.yml'
       - 'modules/Microsoft.KubernetesConfiguration/fluxConfigurations/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

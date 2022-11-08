@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.resources.tags.yml'
       - 'modules/Microsoft.Resources/tags/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

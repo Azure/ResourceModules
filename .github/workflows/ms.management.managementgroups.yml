@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.management.managementgroups.yml'
       - 'modules/Microsoft.Management/managementGroups/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

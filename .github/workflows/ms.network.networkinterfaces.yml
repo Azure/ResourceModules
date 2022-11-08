@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.network.networkinterfaces.yml'
       - 'modules/Microsoft.Network/networkInterfaces/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:
