@@ -58,7 +58,6 @@ function Clear-ManagementGroupDeployment {
 
     Write-Verbose ('Filtering [{0}] deployments out as they are in state [{1}]' -f ($response.value.Count - $relevantDeployments.Count), ($DeploymentStatusToExclude -join '/')) -Verbose
 
-
     if (-not $relevantDeployments) {
         Write-Verbose 'No deployments found' -Verbose
         return
