@@ -16,10 +16,10 @@ variables:
 jobs:
   - job: Update_module_tables
     pool:
-    ${{ if eq(variables['vmImage'], '') }}:
-      name: $(poolName)
-    ${{ if eq(variables['poolName'], '') }}:
-      vmImage: $(vmImage)
+      ${{ if eq(variables['vmImage'], '') }}:
+        name: $(poolName)
+      ${{ if eq(variables['poolName'], '') }}:
+        vmImage: $(vmImage)
     steps:
       - checkout: self
       - task: PowerShell@2
