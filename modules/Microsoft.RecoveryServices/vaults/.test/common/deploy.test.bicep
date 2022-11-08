@@ -296,7 +296,7 @@ module testDeployment '../../deploy.bicep' = {
     }
     replicationAlertSettings: {
       emailAddresses: [
-        'abc@123.com', '123@abc.com'
+        'test.user@testcompany.com'
       ]
       emailLocale: 'en-US'
       sendEmailToSubOwners: 'Send'

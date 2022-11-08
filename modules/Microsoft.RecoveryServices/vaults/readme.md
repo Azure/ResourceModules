@@ -19,7 +19,7 @@ This module deploys a recovery service vault.
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.RecoveryServices/vaults` | [2022-09-10](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults) |
+| `Microsoft.RecoveryServices/vaults` | [2022-09-10](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-09-10/vaults) |
 | `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupconfig) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers/protectedItems) |
@@ -1195,8 +1195,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     ]
     replicationAlertSettings: {
       emailAddresses: [
-        '123@abc.com'
-        'abc@123.com'
+        'test.user@testcompany.com'
       ]
       emailLocale: 'en-US'
       sendEmailToSubOwners: 'Send'
@@ -1527,8 +1526,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     "replicationAlertSettings": {
       "value": {
         "emailAddresses": [
-          "123@abc.com",
-          "abc@123.com"
+          "test.user@testcompany.com"
         ],
         "emailLocale": "en-US",
         "sendEmailToSubOwners": "Send"
