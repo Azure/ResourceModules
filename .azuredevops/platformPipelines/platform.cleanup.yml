@@ -22,6 +22,22 @@ jobs:
       vmImage: $(vmImage)
     steps:
       - checkout: self
+      - task: PowerShell@2
+        displayName: 'Setup agent for deployment'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+            # Define PS modules to install on the runner
+            $Modules = @(
+                @{ Name = 'Az.Accounts' }
+            )
+
+            # Set agent up
+            Set-EnvironmentOnAgent -PSModules $Modules
       - task: AzurePowerShell@5
         displayName: 'Replace tokens in template file via connection [$(serviceConnection)]'
         inputs:

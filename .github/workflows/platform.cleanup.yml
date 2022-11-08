@@ -1,0 +1,59 @@
+name: '.Platform: Remove Deployments'
+
+on:
+  workflow_dispatch:
+
+env:
+  variablesPath: 'settings.yml'
+
+jobs:
+  job_cleanup_deployments:
+    runs-on: ubuntu-20.04
+    name: 'Remove deployments'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+          # Define PS modules to install on the runner
+          $Modules = @(
+              @{ Name = 'Az.Accounts' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $Modules
+
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      - name: Remove deployments
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
+
+            $functionInput = @{
+              SubscriptionId = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+              Verbose        = $true
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Clear-SubscriptionDeployment @functionInput
+          azPSVersion: 'latest'
