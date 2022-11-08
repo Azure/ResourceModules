@@ -110,7 +110,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-ManagementGroupDeployment.ps1')
 
             $functionInput = @{
-              ManagementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
+              ManagementGroupId = '$(ARM_MGMTGROUP_ID)'
             }
 
             Write-Verbose 'Invoke task with' -Verbose
