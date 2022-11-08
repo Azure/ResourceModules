@@ -14,8 +14,8 @@ variables:
   - group: 'PLATFORM_VARIABLES'
 
 jobs:
-  - job: Remove_deployments
-    displayName: Remove deployments
+  - job: Remove_Deployments
+    displayName: Remove Deployments
     pool:
       ${{ if eq(variables['vmImage'], '') }}:
         name: $(poolName)
