@@ -369,23 +369,15 @@ Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops
 
 In order to successfully deploy and test all modules in your desired environment, some modules require resources to be deployed beforehand.
 
-The repository comes with a platform pipeline, i.e., the '*dependencies pipeline*', that deploys a set of Azure services such as Virtual Networks and Key Vaults (along with dummy secrets) to be used by the module pipeline tests.
+Those resources are generally deployed by the module test files before the module to validate, so that you don't need to worry about setting up dependencies for each test and clean them up afterwards.
 
-Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#operate-the-dependencies-pipeline) section.
-
-> **Note**: For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design#dependencies-pipeline) section.
-
-## 4.1 Manual Dependencies
-
-In special cases, manual actions may be required to provision certain resources that are not covered by the dependencies pipeline. In the following, you can find an overview of these resources, for which modules you need them and what you need to do:
+In special cases, manual actions may be required to provision certain resources whose deployment is not covered by the module test files. In the following, you can find an overview of which modules require special attention before being validated:
 
 ### Microsoft.Web/sites
 
-To successfully deploy the sites module using the `fa.parameters.json` parameter file, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
+To successfully deploy the sites module using the `FunctionAppCommon/deploy.test.bicep` test, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
 
 # 5. Update module test files
-
-Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
 
 Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependencies pipeline ran once.
 
