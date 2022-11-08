@@ -274,7 +274,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -282,7 +282,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ImageTemplates'
+  name: '${uniqueString(deployment().name)}-test-vmicom'
   params: {
     // Required parameters
     customizationSteps: [
@@ -298,26 +298,26 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>-az-imgt-x-001'
-    userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
+    name: '<<namePrefix>>vmicom001'
+    userMsiName: '<userMsiName>'
     // Non-required parameters
     buildTimeoutInMinutes: 0
     imageReplicationRegions: []
     lock: 'CanNotDelete'
-    managedImageName: '<<namePrefix>>-az-mi-x-001'
+    managedImageName: '<<namePrefix>>-mi-vmicom-001'
     osDiskSizeGB: 127
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    sigImageDefinitionId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001'
+    sigImageDefinitionId: '<sigImageDefinitionId>'
     subnetId: ''
-    unManagedImageName: '<<namePrefix>>-az-umi-x-001'
-    userMsiResourceGroup: 'validation-rg'
+    unManagedImageName: '<<namePrefix>>-umi-vmicom-001'
+    userMsiResourceGroup: '<userMsiResourceGroup>'
     vmSize: 'Standard_D2s_v3'
   }
 }
@@ -354,10 +354,10 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       }
     },
     "name": {
-      "value": "<<namePrefix>>-az-imgt-x-001"
+      "value": "<<namePrefix>>vmicom001"
     },
     "userMsiName": {
-      "value": "adp-<<namePrefix>>-az-msi-x-001"
+      "value": "<userMsiName>"
     },
     // Non-required parameters
     "buildTimeoutInMinutes": {
@@ -370,7 +370,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": "CanNotDelete"
     },
     "managedImageName": {
-      "value": "<<namePrefix>>-az-mi-x-001"
+      "value": "<<namePrefix>>-mi-vmicom-001"
     },
     "osDiskSizeGB": {
       "value": 127
@@ -379,23 +379,23 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
     "sigImageDefinitionId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001"
+      "value": "<sigImageDefinitionId>"
     },
     "subnetId": {
       "value": ""
     },
     "unManagedImageName": {
-      "value": "<<namePrefix>>-az-umi-x-001"
+      "value": "<<namePrefix>>-umi-vmicom-001"
     },
     "userMsiResourceGroup": {
-      "value": "validation-rg"
+      "value": "<userMsiResourceGroup>"
     },
     "vmSize": {
       "value": "Standard_D2s_v3"

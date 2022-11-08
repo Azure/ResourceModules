@@ -63,10 +63,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Solutions'
+  name: '${uniqueString(deployment().name)}-test-omsmin'
   params: {
     // Required parameters
-    logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
     name: 'Updates'
   }
 }
@@ -86,7 +86,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "logAnalyticsWorkspaceName": {
-      "value": "adp-<<namePrefix>>-az-law-sol-001"
+      "value": "<logAnalyticsWorkspaceName>"
     },
     "name": {
       "value": "Updates"
@@ -106,10 +106,10 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 
 ```bicep
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Solutions'
+  name: '${uniqueString(deployment().name)}-test-omsms'
   params: {
     // Required parameters
-    logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
     name: 'AzureAutomation'
     // Non-required parameters
     product: 'OMSGallery'
@@ -132,7 +132,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "logAnalyticsWorkspaceName": {
-      "value": "adp-<<namePrefix>>-az-law-sol-001"
+      "value": "<logAnalyticsWorkspaceName>"
     },
     "name": {
       "value": "AzureAutomation"
@@ -159,11 +159,11 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 
 ```bicep
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Solutions'
+  name: '${uniqueString(deployment().name)}-test-omsnonms'
   params: {
     // Required parameters
-    logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
-    name: 'nonmsTestSolution'
+    logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
+    name: '<<namePrefix>>omsnonms001'
     // Non-required parameters
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
@@ -185,10 +185,10 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "logAnalyticsWorkspaceName": {
-      "value": "adp-<<namePrefix>>-az-law-sol-001"
+      "value": "<logAnalyticsWorkspaceName>"
     },
     "name": {
-      "value": "nonmsTestSolution"
+      "value": "<<namePrefix>>omsnonms001"
     },
     // Non-required parameters
     "product": {
