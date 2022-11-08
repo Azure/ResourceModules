@@ -26,7 +26,7 @@ variables:
 jobs:
   - job: Remove_Subscription_Deployments
     condition: and(succeeded(), eq('${{ parameters.handleSubscriptionScope }}', 'true'))
-    displayName: Remove Deployments
+    displayName: Remove Subscription deployments
     pool:
       ${{ if eq(variables['vmImage'], '') }}:
         name: $(poolName)
@@ -73,7 +73,7 @@ jobs:
 
   - job: Remove_ManagementGroup_Deployments
     condition: and(succeeded(), eq('${{ parameters.handleManagementGroupScope }}', 'true'))
-    displayName: Remove Deployments
+    displayName: Remove Management Group deployments
     pool:
       ${{ if eq(variables['vmImage'], '') }}:
         name: $(poolName)
