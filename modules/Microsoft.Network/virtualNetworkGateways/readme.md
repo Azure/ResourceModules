@@ -39,7 +39,7 @@ This module deploys a virtual network gateway.
 | `activeGatewayPipName` | string | `[format('{0}-pip2', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway when active-active configuration is required. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
 | `asn` | int | `65815` |  | ASN value. |
 | `clientRevokedCertThumbprint` | string | `''` |  | Thumbprint of the revoked certificate. This would revoke VPN client certificates matching this thumbprint from connecting to the VNet. |
-| `clientRootCertData` | string | `''` |  | Client root certificate data used to authenticate VPN clients. |
+| `clientRootCertData` | string | `''` |  | Client root certificate data used to authenticate VPN clients. Cannot be configured if vpnClientAadConfiguration is provided. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -60,6 +60,7 @@ This module deploys a virtual network gateway.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `virtualNetworkGatewaydiagnosticLogCategoriesToEnable` | array | `[GatewayDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog, RouteDiagnosticLog, TunnelDiagnosticLog]` | `[GatewayDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog, RouteDiagnosticLog, TunnelDiagnosticLog]` | The name of logs that will be streamed. |
 | `virtualNetworkGatewayDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `vpnClientAadConfiguration` | object | `{object}` |  | Configuration for AAD Authentication for P2S Tunnel Type, Cannot be configured if clientRootCertData is provided. |
 | `vpnClientAddressPoolPrefix` | string | `''` |  | The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
 | `vpnType` | string | `'RouteBased'` | `[PolicyBased, RouteBased]` | Specifies the VPN type. |
 
@@ -252,7 +253,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Expressroute</h3>
+<h3>Example 1: Aadvpn</h3>
 
 <details>
 
@@ -260,27 +261,168 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
+  name: '${uniqueString(deployment().name)}-test-nvngavpn'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-gw-er-001'
-    virtualNetworkGatewaySku: 'ErGw1AZ'
-    virtualNetworkGatewayType: 'ExpressRoute'
-    vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+    name: '<<namePrefix>>nvngavpn001'
+    virtualNetworkGatewaySku: 'VpnGw2AZ'
+    virtualNetworkGatewayType: 'Vpn'
+    vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    activeActive: false
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     domainNameLabel: [
-      '<<namePrefix>>-az-gw-er-dm-001'
+      '<<namePrefix>>-dm-nvngavpn'
     ]
-    gatewayPipName: '<<namePrefix>>-az-gw-er-001-pip'
+    lock: 'CanNotDelete'
+    publicIpZones: [
+      '1'
+    ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    vpnClientAadConfiguration: {
+      aadAudience: '41b23e61-6c1e-4545-b367-cd054e0ed4b4'
+      aadIssuer: 'https://sts.windows.net/${tenant().tenantId}/'
+      aadTenant: '<aadTenant>'
+      vpnAuthenticationTypes: [
+        'AAD'
+      ]
+      vpnClientProtocols: [
+        'OpenVPN'
+      ]
+    }
+    vpnType: 'RouteBased'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nvngavpn001"
+    },
+    "virtualNetworkGatewaySku": {
+      "value": "VpnGw2AZ"
+    },
+    "virtualNetworkGatewayType": {
+      "value": "Vpn"
+    },
+    "vNetResourceId": {
+      "value": "<vNetResourceId>"
+    },
+    // Non-required parameters
+    "activeActive": {
+      "value": false
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "domainNameLabel": {
+      "value": [
+        "<<namePrefix>>-dm-nvngavpn"
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "publicIpZones": {
+      "value": [
+        "1"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "vpnClientAadConfiguration": {
+      "value": {
+        "aadAudience": "41b23e61-6c1e-4545-b367-cd054e0ed4b4",
+        "aadIssuer": "https://sts.windows.net/${tenant().tenantId}/",
+        "aadTenant": "<aadTenant>",
+        "vpnAuthenticationTypes": [
+          "AAD"
+        ],
+        "vpnClientProtocols": [
+          "OpenVPN"
+        ]
+      }
+    },
+    "vpnType": {
+      "value": "RouteBased"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Expressroute</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nvger'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nvger001'
+    virtualNetworkGatewaySku: 'ErGw1AZ'
+    virtualNetworkGatewayType: 'ExpressRoute'
+    vNetResourceId: '<vNetResourceId>'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    domainNameLabel: [
+      '<<namePrefix>>-dm-nvger'
+    ]
+    gatewayPipName: '<<namePrefix>>-pip-nvger'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -311,7 +453,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-gw-er-001"
+      "value": "<<namePrefix>>nvger001"
     },
     "virtualNetworkGatewaySku": {
       "value": "ErGw1AZ"
@@ -320,37 +462,37 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
       "value": "ExpressRoute"
     },
     "vNetResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
+      "value": "<vNetResourceId>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "domainNameLabel": {
       "value": [
-        "<<namePrefix>>-az-gw-er-dm-001"
+        "<<namePrefix>>-dm-nvger"
       ]
     },
     "gatewayPipName": {
-      "value": "<<namePrefix>>-az-gw-er-001-pip"
+      "value": "<<namePrefix>>-pip-nvger"
     },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -373,7 +515,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 </details>
 <p>
 
-<h3>Example 2: Vpn</h3>
+<h3>Example 3: Vpn</h3>
 
 <details>
 
@@ -381,22 +523,22 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 
 ```bicep
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
+  name: '${uniqueString(deployment().name)}-test-nvgvpn'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-gw-vpn-001'
+    name: '<<namePrefix>>nvgvpn001'
     virtualNetworkGatewaySku: 'VpnGw1AZ'
     virtualNetworkGatewayType: 'Vpn'
-    vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+    vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
     activeActive: true
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     domainNameLabel: [
-      '<<namePrefix>>-az-gw-vpn-dm-001'
+      '<<namePrefix>>-dm-nvgvpn'
     ]
     lock: 'CanNotDelete'
     publicIpZones: [
@@ -405,7 +547,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -429,7 +571,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-gw-vpn-001"
+      "value": "<<namePrefix>>nvgvpn001"
     },
     "virtualNetworkGatewaySku": {
       "value": "VpnGw1AZ"
@@ -438,30 +580,30 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
       "value": "Vpn"
     },
     "vNetResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
+      "value": "<vNetResourceId>"
     },
     // Non-required parameters
     "activeActive": {
       "value": true
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "domainNameLabel": {
       "value": [
-        "<<namePrefix>>-az-gw-vpn-dm-001"
+        "<<namePrefix>>-dm-nvgvpn"
       ]
     },
     "lock": {
@@ -476,7 +618,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
