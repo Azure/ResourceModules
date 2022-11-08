@@ -37,7 +37,7 @@ This module deploys RecoveryServices Vaults ReplicationAlertSettings.
 
 ### Parameter Usage: `<ParameterPlaceholder>`
 
-// TODO: Fill in Parameter usage
+
 
 ## Outputs
 
