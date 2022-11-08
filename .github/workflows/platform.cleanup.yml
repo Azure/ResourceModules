@@ -13,6 +13,8 @@ on:
         description: 'Include Management Group deployments'
         required: true
         default: false
+  schedule:
+    - cron: '0 0 * * *'
 
 env:
   variablesPath: 'settings.yml'
