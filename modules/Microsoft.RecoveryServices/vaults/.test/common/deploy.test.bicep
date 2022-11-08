@@ -330,5 +330,18 @@ module testDeployment '../../deploy.bicep' = {
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
+    monitoringSettings: {
+      azureMonitorAlertSettings: {
+        alertsForAllJobFailures: 'Enabled'
+      }
+      classicAlertSettings: {
+        alertsForCriticalOperations: 'Enabled'
+      }
+    }
+    securitySettings: {
+      immutabilitySettings: {
+        state: 'Unlocked'
+      }
+    }
   }
 }

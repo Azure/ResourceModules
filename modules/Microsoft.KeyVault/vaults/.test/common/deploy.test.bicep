@@ -39,10 +39,10 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
+    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}03'
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}01'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}01'
     location: location
   }
 }
@@ -55,7 +55,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}002'
     accessPolicies: [
       {
         objectId: resourceGroupResources.outputs.managedIdentityPrincipalId

@@ -244,7 +244,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -252,11 +252,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ActionGroups'
+  name: '${uniqueString(deployment().name)}-test-iagcom'
   params: {
     // Required parameters
-    groupShortName: 'azagweux001'
-    name: '<<namePrefix>>-az-ag-x-001'
+    groupShortName: 'agiagcom001'
+    name: '<<namePrefix>>iagcom001'
     // Non-required parameters
     emailReceivers: [
       {
@@ -273,7 +273,7 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -303,10 +303,10 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "groupShortName": {
-      "value": "azagweux001"
+      "value": "agiagcom001"
     },
     "name": {
-      "value": "<<namePrefix>>-az-ag-x-001"
+      "value": "<<namePrefix>>iagcom001"
     },
     // Non-required parameters
     "emailReceivers": {
@@ -327,7 +327,7 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -341,6 +341,49 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
           "phoneNumber": "2345678901"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-iagmin'
+  params: {
+    // Required parameters
+    groupShortName: 'agiagmin001'
+    name: '<<namePrefix>>iagmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupShortName": {
+      "value": "agiagmin001"
+    },
+    "name": {
+      "value": "<<namePrefix>>iagmin001"
     }
   }
 }
