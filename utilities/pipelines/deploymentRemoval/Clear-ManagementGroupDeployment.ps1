@@ -7,7 +7,7 @@ Bulk delete all deployments on the given management group scope
 Bulk delete all deployments on the given management group scope
 
 .PARAMETER ManagementGroupId
-Mandatory. The Resource ID of the Management Group to remove the deployments for.
+Mandatory. The Resource ID of the Management Group to remove the deployments from.
 
 .PARAMETER DeploymentStatusToExclude
 Optional. The status to exlude from removals. Can be multiple. By default, we exclude any deployment that is in state 'running' or 'failed'.
@@ -37,7 +37,7 @@ function Clear-ManagementGroupDeployment {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Enables web reponse
 
     # Load used functions
-    . (Join-Path $PSScriptRoot 'helper' 'Split-Array.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'sharedScripts' 'Split-Array.ps1')
 
     $getInputObject = @{
         Method  = 'GET'
@@ -52,7 +52,11 @@ function Clear-ManagementGroupDeployment {
         throw ('Fetching deployments failed with error [{0}]' -f ($reponse | Out-String))
     }
 
+    Write-Verbose ('Found [{0}] deployments in management group [{1}]' -f $response.value.Count, $ManagementGroupId) -Verbose
+
     $relevantDeployments = $response.value | Where-Object { $_.properties.provisioningState -notin $DeploymentStatusToExclude }
+
+    Write-Verbose ('Filtering [{0}] deployments out as they are in state [{1}]' -f ($response.value.Count - $relevantDeployments.Count), ($DeploymentStatusToExclude -join '/')) -Verbose
 
     if (-not $relevantDeployments) {
         Write-Verbose 'No deployments found' -Verbose
@@ -66,7 +70,7 @@ function Clear-ManagementGroupDeployment {
         $relevantDeploymentChunks = $rawDeploymentChunks
     }
 
-    Write-Verbose ('Triggering the removal of [{0}] deployments of management group [{1}]' -f $relevantDeployments.Count, $ManagementGroupId)
+    Write-Verbose ('Triggering the removal of [{0}] deployments from management group [{1}]' -f $relevantDeployments.Count, $ManagementGroupId) -Verbose
 
     $failedRemovals = 0
     $successfulRemovals = 0
@@ -74,12 +78,16 @@ function Clear-ManagementGroupDeployment {
 
         $requests = $deployments | ForEach-Object {
             @{ httpMethod            = 'DELETE'
-                name                 = (New-Guid).Guid
+                name                 = (New-Guid).Guid # Each batch request needs a unique ID
                 requestHeaderDetails = @{
                     commandName = 'HubsExtension.Microsoft.Resources/deployments.BulkDelete.execute'
                 }
                 url                  = '/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Resources/deployments/{1}?api-version=2019-08-01' -f $ManagementGroupId, $_.name
             }
+        }
+
+        if ($requests -is [hashtable]) {
+            $requests = , $requests
         }
 
         $removeInputObject = @{

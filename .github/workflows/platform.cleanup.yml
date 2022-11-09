@@ -1,0 +1,151 @@
+name: '.Platform: Remove Deployments'
+
+on:
+  workflow_dispatch:
+    inputs:
+      handleSubscriptionScope:
+        type: boolean
+        description: 'Include Subscription deployments'
+        required: false
+        default: true
+      handleManagementGroupScope:
+        type: boolean
+        description: 'Include Management Group deployments'
+        required: true
+        default: false
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+  variablesPath: 'settings.yml'
+  workflowPath: '.github/workflows/platform.cleanup'
+
+jobs:
+  ###########################
+  #   Initialize pipeline   #
+  ###########################
+  job_initialize_pipeline:
+    runs-on: ubuntu-20.04
+    name: 'Initialize pipeline'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 'Set input parameters to output variables'
+        id: get-workflow-param
+        uses: ./.github/actions/templates/getWorkflowInput
+        with:
+          workflowPath: '${{ env.workflowPath}}'
+    outputs:
+      handleSubscriptionScope: ${{ steps.get-workflow-param.outputs.handleSubscriptionScope }}
+      handleManagementGroupScope: ${{ steps.get-workflow-param.outputs.handleManagementGroupScope }}
+
+  ################
+  #   Removale   #
+  ################
+  job_cleanup_subscription_deployments:
+    runs-on: ubuntu-20.04
+    name: 'Remove deployments'
+    needs:
+      - job_initialize_pipeline
+    if: ${{ needs.job_initialize_pipeline.outputs.handleSubscriptionScope == 'true' }}
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+          # Define PS modules to install on the runner
+          $Modules = @(
+              @{ Name = 'Az.Accounts' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $Modules
+
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      - name: Remove deployments
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
+
+            $functionInput = @{
+              SubscriptionId = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Clear-SubscriptionDeployment @functionInput
+          azPSVersion: 'latest'
+
+  job_cleanup_managementGroup_deployments:
+    runs-on: ubuntu-20.04
+    name: 'Remove deployments'
+    needs:
+      - job_initialize_pipeline
+    if: ${{ needs.job_initialize_pipeline.outputs.handleManagementGroupScope == 'true' }}
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+          # Define PS modules to install on the runner
+          $Modules = @(
+              @{ Name = 'Az.Accounts' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $Modules
+
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      - name: Remove deployments
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
+
+            $functionInput = @{
+              ManagementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Clear-ManagementGroupDeployment @functionInput
+          azPSVersion: 'latest'
