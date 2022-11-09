@@ -67,7 +67,7 @@ runs:
           # $parameterNames = (Get-GitHubWorkflowDefaultInput @functionInput -Verbose).Keys
 
           # foreach($parameterName in $parameterNames) {
-          #   $parameterValue = "${{ github.event.inputs.$($parameterName) }}"
+          #   $parameterValue = "${{ github.event.inputs.nonexistend) }}"
 
           #   Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $parameterValue) -Verbose
 
