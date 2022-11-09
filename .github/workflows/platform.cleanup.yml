@@ -46,7 +46,7 @@ jobs:
   ################
   job_cleanup_subscription_deployments:
     runs-on: ubuntu-20.04
-    name: 'Remove deployments'
+    name: 'Remove Subscription deployments'
     needs:
       - job_initialize_pipeline
     if: ${{ needs.job_initialize_pipeline.outputs.handleSubscriptionScope == 'true' }}
@@ -99,7 +99,7 @@ jobs:
 
   job_cleanup_managementGroup_deployments:
     runs-on: ubuntu-20.04
-    name: 'Remove deployments'
+    name: 'Remove Management Group deployments'
     needs:
       - job_initialize_pipeline
     if: ${{ needs.job_initialize_pipeline.outputs.handleManagementGroupScope == 'true' }}
