@@ -38,8 +38,8 @@ jobs:
         with:
           workflowPath: '${{ env.workflowPath}}'
     outputs:
-      handleSubscriptionScope: ${{ steps.get-workflow-param.outputs.handleSubscriptionScope }}
-      handleManagementGroupScope: ${{ steps.get-workflow-param.outputs.handleManagementGroupScope }}
+      handleSubscriptionScope: ${{ (fromJson(steps.get-workflow-param.outputs.outputs)).handleSubscriptionScope }}
+      handleManagementGroupScope: ${{ (fromJson(steps.get-workflow-param.outputs.outputs)).handleManagementGroupScope }}
 
   ################
   #   Removale   #
