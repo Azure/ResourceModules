@@ -86,8 +86,6 @@ function Clear-SubscriptionDeployment {
 
     Write-Verbose ('Triggering the removal of [{0}] deployments from subscription [{1}]' -f $relevantDeployments.Count, $subscriptionId) -Verbose
 
-    $failedRemovals = 0
-    $successfulRemovals = 0
     foreach ($deployments in $relevantDeploymentChunks) {
 
         $requests = $deployments | ForEach-Object {
@@ -116,15 +114,8 @@ function Clear-SubscriptionDeployment {
             } | ConvertTo-Json -Depth 4 -EnumsAsStrings
         }
         if ($PSCmdlet.ShouldProcess(('Removal of [{0}] deployments' -f $requests.Count), 'Request')) {
-            $response = Invoke-RestMethod @removeInputObject
-
-            $failedRemovals += ($response.responses | Where-Object { $_.httpStatusCode -notlike '20*' }  ).Count
-            $successfulRemovals += ($response.responses | Where-Object { $_.httpStatusCode -like '20*' }  ).Count
+            $null = Invoke-RestMethod @removeInputObject
         }
     }
-
-    Write-Verbose 'Outcome' -Verbose
-    Write-Verbose '=======' -Verbose
-    Write-Verbose "Successful removals:`t`t$successfulRemovals" -Verbose
-    Write-Verbose "Un-successful removals:`t$failedRemovals" -Verbose
+    Write-Verbose 'Script execution finished. Note that the removal can take a few minutes to propagate.' -Verbose
 }
