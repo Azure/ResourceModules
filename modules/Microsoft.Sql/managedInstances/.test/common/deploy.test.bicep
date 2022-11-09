@@ -86,15 +86,16 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     dnsZonePartner: ''
     encryptionProtectorObj: {
-      serverKeyName: resourceGroupResources.outputs.keyVaultKeyName
+      serverKeyName: '${resourceGroupResources.outputs.keyVaultName}_${resourceGroupResources.outputs.keyVaultKeyName}_${last(split(resourceGroupResources.outputs.keyVaultEncryptionKeyUrl, '/'))}'
       serverKeyType: 'AzureKeyVault'
     }
     hardwareFamily: 'Gen5'
     // keys: [
     //   {
-    //     name: resourceGroupResources.outputs.keyVaultKeyName
+    //     // name: resourceGroupResources.outputs.keyVaultKeyName
+    //     name: '${resourceGroupResources.outputs.keyVaultName}_${resourceGroupResources.outputs.keyVaultKeyName}_${last(split(resourceGroupResources.outputs.keyVaultEncryptionKeyUrl, '/'))}'
     //     serverKeyType: 'AzureKeyVault'
-    //     uri: resourceGroupResources.outputs.keyVaultUri
+    //     uri: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
     //   }
     // ]
     licenseType: 'LicenseIncluded'
