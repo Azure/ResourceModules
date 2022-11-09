@@ -17,24 +17,21 @@ This module deploys RecoveryServices Vaults ReplicationAlertSettings.
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. |
+| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `emailAddresses` | array | `[]` |  | Comma separated list of custom email address for sending alert emails. |
-| `emailLocale` | string | `''` |  | The locale for the email notification. |
+| `customEmailAddresses` | array | `[]` |  | Comma separated list of custom email address for sending alert emails. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `locale` | string | `''` |  | The locale for the email notification. |
 | `name` | string | `'defaultAlertSetting'` |  | The name of the replication Alert Setting. |
-| `sendEmailToSubOwners` | string | `'Send'` | `[DoNotSend, Send]` | The value indicating whether to send email to subscription administrator. |
-
-
-### Parameter Usage: `<ParameterPlaceholder>`
+| `sendToOwners` | string | `'Send'` | `[DoNotSend, Send]` | The value indicating whether to send email to subscription administrator. |
 
 
 

@@ -5,26 +5,26 @@ param recoveryVaultName string
 param name string = 'defaultAlertSetting'
 
 @description('Optional. Comma separated list of custom email address for sending alert emails.')
-param emailAddresses array = [ '' ]
+param customEmailAddresses array = [ '' ]
 
 @description('Optional. The locale for the email notification.')
-param emailLocale string = ''
+param locale string = ''
 
 @description('Optional. The value indicating whether to send email to subscription administrator.')
 @allowed([
   'DoNotSend'
   'Send'
 ])
-param sendEmailToSubOwners string = 'Send'
+param sendToOwners string = 'Send'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var alertSettingProperties = union((length(emailAddresses) != 0) ? {
-    customEmailAddresses: emailAddresses
+var alertSettingProperties = union((length(customEmailAddresses) != 0) ? {
+    customEmailAddresses: customEmailAddresses
   } : {},
-  { locale: emailLocale
-    sendToOwners: sendEmailToSubOwners
+  { locale: locale
+    sendToOwners: sendToOwners
   })
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

@@ -295,11 +295,11 @@ module testDeployment '../../deploy.bicep' = {
       storageModelType: 'GeoRedundant'
     }
     replicationAlertSettings: {
-      emailAddresses: [
+      customEmailAddresses: [
         'test.user@testcompany.com'
       ]
-      emailLocale: 'en-US'
-      sendEmailToSubOwners: 'Send'
+      locale: 'en-US'
+      sendToOwners: 'Send'
     }
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId

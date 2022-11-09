@@ -1194,11 +1194,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       }
     ]
     replicationAlertSettings: {
-      emailAddresses: [
+      customEmailAddresses: [
         'test.user@testcompany.com'
       ]
-      emailLocale: 'en-US'
-      sendEmailToSubOwners: 'Send'
+      locale: 'en-US'
+      sendToOwners: 'Send'
     }
     roleAssignments: [
       {
@@ -1525,11 +1525,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     },
     "replicationAlertSettings": {
       "value": {
-        "emailAddresses": [
+        "customEmailAddresses": [
           "test.user@testcompany.com"
         ],
-        "emailLocale": "en-US",
-        "sendEmailToSubOwners": "Send"
+        "locale": "en-US",
+        "sendToOwners": "Send"
       }
     },
     "roleAssignments": {
