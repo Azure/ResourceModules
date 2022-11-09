@@ -11,8 +11,8 @@ on:
       handleManagementGroupScope:
         type: boolean
         description: 'Include Management Group deployments'
-        required: true
-        default: false
+        required: false
+        default: true
   schedule:
     - cron: '0 0 * * *'
 
