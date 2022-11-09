@@ -296,12 +296,14 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlmicom'
+  name: '${uniqueString(deployment().name, location)}-test-sqlmicom'
   params: {
+    // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
     name: '<<namePrefix>>-sqlmicom'
     subnetId: '<subnetId>'
+    // Non-required parameters
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
       {
@@ -325,13 +327,6 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       serverKeyType: 'AzureKeyVault'
     }
     hardwareFamily: 'Gen5'
-    keys: [
-      {
-        name: '<name>'
-        serverKeyType: 'AzureKeyVault'
-        uri: '<uri>'
-      }
-    ]
     licenseType: 'LicenseIncluded'
     lock: 'CanNotDelete'
     primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
@@ -386,6 +381,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "administratorLogin": {
       "value": "adminUserName"
     },
@@ -398,6 +394,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     "subnetId": {
       "value": "<subnetId>"
     },
+    // Non-required parameters
     "collation": {
       "value": "SQL_Latin1_General_CP1_CI_AS"
     },
@@ -440,15 +437,6 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     },
     "hardwareFamily": {
       "value": "Gen5"
-    },
-    "keys": {
-      "value": [
-        {
-          "name": "<name>",
-          "serverKeyType": "AzureKeyVault",
-          "uri": "<uri>"
-        }
-      ]
     },
     "licenseType": {
       "value": "LicenseIncluded"
@@ -535,7 +523,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
 
 ```bicep
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlmimin'
+  name: '${uniqueString(deployment().name, location)}-test-sqlmimin'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
