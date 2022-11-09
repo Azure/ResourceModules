@@ -61,7 +61,7 @@ runs:
 
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-          Get-Childitem env:*
+          echo "${{ toJSON(github.event.inputs) }}"
 
           throw
           # $parameterNames = (Get-GitHubWorkflowDefaultInput @functionInput -Verbose).Keys
