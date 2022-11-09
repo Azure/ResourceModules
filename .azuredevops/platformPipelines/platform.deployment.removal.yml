@@ -63,7 +63,8 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
 
             $functionInput = @{
-              SubscriptionId = '$(ARM_SUBSCRIPTION_ID)'
+              SubscriptionId           = '$(ARM_SUBSCRIPTION_ID)'
+              DaysToKeepDeploymentsFor = '$(DaysToKeepDeploymentsFor)'
             }
 
             Write-Verbose 'Invoke task with' -Verbose
@@ -110,7 +111,8 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-ManagementGroupDeployment.ps1')
 
             $functionInput = @{
-              ManagementGroupId = '$(ARM_MGMTGROUP_ID)'
+              ManagementGroupId        = '$(ARM_MGMTGROUP_ID)'
+              DaysToKeepDeploymentsFor = '$(DaysToKeepDeploymentsFor)'
             }
 
             Write-Verbose 'Invoke task with' -Verbose
