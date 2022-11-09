@@ -46,7 +46,7 @@ inputs:
 outputs:
   workflowInput:
     description: 'A flag, set in the pipeline, to control whether deployment resources should be removed or not'
-    value: ${{ steps.get-input-param-action.outputs.outputs }}
+    value: ${{ steps.get-input-param-action.outputs.workflowInput }}
 
 runs:
   using: 'composite'
@@ -64,13 +64,13 @@ runs:
           $parameters = '${{ toJSON(github.event.inputs) }}' | ConvertFrom-Json -AsHashTable
 
           # Output values to be accessed by next jobs
-          $outputs = @{}
+          $workflowInput = @{}
           foreach($parameterName in $parameters.Keys) {
             Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $parameters[$parameterName]) -Verbose
-            $outputs[$parameterName] = $parameters[$parameterName]
+            $workflowInput[$parameterName] = $parameters[$parameterName]
           }
-          Write-Output ('{0}={1}' -f 'outputs', ($outputs | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
-          Write-Verbose ("Pushing {0}" -f ($outputs | ConvertTo-Json -Compress)) -Verbose
+          Write-Output ('{0}={1}' -f 'workflowInput', ($workflowInput | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
+          Write-Verbose ("Pushing {0}" -f ($workflowInput | ConvertTo-Json -Compress)) -Verbose
         }
         # Otherwise retrieve default values
         else {
@@ -87,12 +87,12 @@ runs:
           $workflowParameters = Get-GitHubWorkflowDefaultInput @functionInput -Verbose
 
           # Output values to be accessed by next jobs
-          $outputs = @{}
+          $workflowInput = @{}
           foreach($parameterName in $workflowParameters.Keys) {
             Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $workflowParameters[$parameterName]) -Verbose
-            $outputs[$parameterName] = $workflowParameters[$parameterName]
+            $workflowInput[$parameterName] = $workflowParameters[$parameterName]
           }
-          Write-Output ('{0}={1}' -f 'outputs', ($outputs | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
+          Write-Output ('{0}={1}' -f 'workflowInput', ($workflowInput | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
         }
         Write-Output '::endgroup::'
       shell: pwsh
