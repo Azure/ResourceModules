@@ -69,7 +69,8 @@ runs:
             Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $parameters[$parameterName]) -Verbose
             $outputs[$parameterName] = $parameters[$parameterName]
           }
-          Write-Output ('{0}={1}' -f (output, $outputs | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
+          Write-Output ('{0}={1}' -f 'output', ($outputs | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
+          Write-Verbose ("Pushing {0}" -f ($outputs | ConvertTo-Json -Compress)) -Verbose
         }
         # Otherwise retrieve default values
         else {
@@ -91,7 +92,7 @@ runs:
             Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $workflowParameters[$parameterName]) -Verbose
             $outputs[$parameterName] = $workflowParameters[$parameterName]
           }
-          Write-Output ('{0}={1}' -f (output, $outputs | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
+          Write-Output ('{0}={1}' -f 'output', ($outputs | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
         }
         Write-Output '::endgroup::'
       shell: pwsh
