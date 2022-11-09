@@ -33,6 +33,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    // Note: This value is not required and only set to enable testing
     location: testLocation
   }
 }
