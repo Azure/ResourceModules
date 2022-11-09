@@ -61,10 +61,9 @@ runs:
 
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-          $parameters = '${{ toJSON(github.event.inputs) }}' | ConvertFrom-Json
+          $parameters = '${{ toJSON(github.event.inputs) }}' | ConvertFrom-Json -AsHashTable
 
           foreach($parameterName in $parameters.Keys) {
-
             Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $parameters[$parameterName]) -Verbose
 
             # Output values to be accessed by next jobs
