@@ -34,7 +34,6 @@ This module deploys RecoveryServices Vaults ReplicationAlertSettings.
 | `sendToOwners` | string | `'Send'` | `[DoNotSend, Send]` | The value indicating whether to send email to subscription administrator. |
 
 
-
 ## Outputs
 
 | Output Name | Type | Description |
