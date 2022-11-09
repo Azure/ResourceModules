@@ -113,6 +113,12 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
+@description('Optional. Monitoring Settings of the vault.')
+param monitoringSettings object = {}
+
+@description('Optional. Security Settings of the vault.')
+param securitySettings object = {}
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -153,7 +159,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-04-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
   name: name
   location: location
   tags: tags
@@ -162,7 +168,10 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-04-01' = {
     name: 'RS0'
     tier: 'Standard'
   }
-  properties: {}
+  properties: {
+    monitoringSettings: !empty(monitoringSettings) ? monitoringSettings : null
+    securitySettings: !empty(securitySettings) ? securitySettings : null
+  }
 }
 
 module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicationFabric, index) in replicationFabrics: {
