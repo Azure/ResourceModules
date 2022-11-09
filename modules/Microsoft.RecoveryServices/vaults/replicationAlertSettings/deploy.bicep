@@ -1,4 +1,4 @@
-@description('Required. The name of the parent Azure Recovery Service Vault.')
+@description('Conditional. The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.')
 param recoveryVaultName string
 
 @description('Optional. The name of the replication Alert Setting.')
