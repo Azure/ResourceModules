@@ -43,10 +43,10 @@ inputs:
     description: 'The path to the workflow file used to retrieve default workflow input parameters.'
     required: true
 
-outputs:
-  removeDeployment:
-    description: 'A flag, set in the pipeline, to control whether deployment resources should be removed or not'
-    value: ${{ steps.get-input-param-action.outputs.removeDeployment }}
+# outputs:
+#   removeDeployment:
+#     description: 'A flag, set in the pipeline, to control whether deployment resources should be removed or not'
+#     value: ${{ steps.get-input-param-action.outputs.removeDeployment }}
 
 runs:
   using: 'composite'
