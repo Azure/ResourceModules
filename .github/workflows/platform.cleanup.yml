@@ -138,7 +138,7 @@ jobs:
         with:
           inlineScript: |
             # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-ManagementGroupDeployment.ps1')
 
             $functionInput = @{
               ManagementGroupId = '${{ secrets.ARM_MGMTGROUP_ID }}'
