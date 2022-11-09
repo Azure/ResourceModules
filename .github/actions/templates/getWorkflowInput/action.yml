@@ -61,19 +61,15 @@ runs:
 
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-          echo "${{ toJSON(github.event.inputs) }}"
+          $parameters = "${{ toJSON(github.event.inputs) }}" | ConvertFrom-Json
 
-          throw
-          # $parameterNames = (Get-GitHubWorkflowDefaultInput @functionInput -Verbose).Keys
+          foreach($parameterName in $parameters.Keys) {
 
-          # foreach($parameterName in $parameterNames) {
-          #   $parameterValue = "${{ github.event.inputs.nonexistend }}"
+            Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $parameters[$parameterName]) -Verbose
 
-          #   Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $parameterValue) -Verbose
-
-          #   # Output values to be accessed by next jobs
-          #   Write-Output "::set-output name={0}::{1}" -f $parameterName, $parameterValue
-          # }
+            # Output values to be accessed by next jobs
+            Write-Output "::set-output name={0}::{1}" -f $parameterName, $parameters[$parameterName]
+          }
         }
         # Otherwise retrieve default values
         else {
