@@ -67,7 +67,7 @@ runs:
             Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $parameters[$parameterName]) -Verbose
 
             # Output values to be accessed by next jobs
-            Write-Output "::set-output name={0}::{1}" -f $parameterName, $parameters[$parameterName]
+            Write-Output ('{0}={1}' -f $parameterName, $parameters[$parameterName]) >> $env:GITHUB_OUTPUT
           }
         }
         # Otherwise retrieve default values
@@ -88,7 +88,7 @@ runs:
             Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $workflowParameters[$parameterName]) -Verbose
 
             # Output values to be accessed by next jobs
-            Write-Output "::set-output name={0}::{1}" -f $parameterName, $workflowParameters[$parameterName]
+            Write-Output ('{0}={1}' -f $parameterName, $workflowParameters[$parameterName]) >> $env:GITHUB_OUTPUT
           }
         }
         Write-Output '::endgroup::'
