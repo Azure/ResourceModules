@@ -70,7 +70,6 @@ runs:
             $workflowInput[$parameterName] = $parameters[$parameterName]
           }
           Write-Output ('{0}={1}' -f 'workflowInput', ($workflowInput | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
-          Write-Verbose ("Pushing {0}" -f ($workflowInput | ConvertTo-Json -Compress)) -Verbose
         }
         # Otherwise retrieve default values
         else {
