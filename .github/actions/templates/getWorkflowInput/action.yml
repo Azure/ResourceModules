@@ -61,7 +61,16 @@ runs:
 
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-          $removeDeployment='${{ github.event.inputs.removeDeployment }}'
+          $parameterNames = (Get-GitHubWorkflowDefaultInput @functionInput -Verbose).Keys
+
+          foreach($parameterName in $parameterNames) {
+            $parameterValue = "${{ github.event.inputs.$($parameterName) }}"
+
+            Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $parameterValue) -Verbose
+
+            # Output values to be accessed by next jobs
+            Write-Output "::set-output name={0}::{1}" -f $parameterName, $parameterValue
+          }
         }
         # Otherwise retrieve default values
         else {
@@ -76,11 +85,13 @@ runs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           $workflowParameters = Get-GitHubWorkflowDefaultInput @functionInput -Verbose
-          $removeDeployment = $workflowParameters.removeDeployment
+
+          foreach($parameterName in $workflowParameters.Keys) {
+            Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $workflowParameters[$parameterName]) -Verbose
+
+            # Output values to be accessed by next jobs
+            Write-Output "::set-output name={0}::{1}" -f $parameterName, $workflowParameters[$parameterName]
+          }
         }
-
-        # Output values to be accessed by next jobs
-        Write-Output "::set-output name=removeDeployment::$removeDeployment"
-
         Write-Output '::endgroup::'
       shell: pwsh
