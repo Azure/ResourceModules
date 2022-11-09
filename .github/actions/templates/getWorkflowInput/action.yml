@@ -61,7 +61,7 @@ runs:
 
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-          $parameters = "${{ toJSON(github.event.inputs) }}" | ConvertFrom-Json
+          $parameters = '${{ toJSON(github.event.inputs) }}' | ConvertFrom-Json
 
           foreach($parameterName in $parameters.Keys) {
 

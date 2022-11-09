@@ -39,6 +39,10 @@ function Clear-SubscriptionDeployment {
     # Load used functions
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'sharedScripts' 'Split-Array.ps1')
 
+    # Setting context explicitely in case the principal has permissions on multiple
+    Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+    $null = Set-AzContext -Subscription $subscriptionId
+
     $getInputObject = @{
         Method  = 'GET'
         Uri     = "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Resources/deployments?api-version=2020-06-01"
