@@ -37,9 +37,9 @@ jobs:
         uses: ./.github/actions/templates/getWorkflowInput
         with:
           workflowPath: '${{ env.workflowPath}}'
-    outputs:
-      handleSubscriptionScope: ${{ steps.get-workflow-param.outputs.handleSubscriptionScope }}
-      handleManagementGroupScope: ${{ steps.get-workflow-param.outputs.handleManagementGroupScope }}
+    # outputs:
+    #   handleSubscriptionScope: ${{ steps.get-workflow-param.outputs.handleSubscriptionScope }}
+    #   handleManagementGroupScope: ${{ steps.get-workflow-param.outputs.handleManagementGroupScope }}
 
   ################
   #   Removale   #
