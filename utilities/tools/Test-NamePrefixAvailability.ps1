@@ -8,12 +8,16 @@ Test if a given name prefix token placeholder is already taken. Tests resource n
 .PARAMETER namePrefix
 Parameter description
 
+.PARAMETER serviceShort
+A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.
+
 .PARAMETER Tokens
 Optional. A hashtable parameter that contains tokens to be replaced in the paramter files
 
 .EXAMPLE
 $inputObject = @{
     NamePrefix = 'carml'
+    ServiceShort = ''
     Tokens     = @{
         Location          = 'westeurope'
         ResourceGroupName = 'validation-rg'
@@ -33,6 +37,9 @@ function Test-NamePrefixAvailability {
     param(
         [Parameter(Mandatory = $true)]
         [string] $namePrefix,
+
+        [Parameter(Mandatory = $true)]
+        [string] $serviceShort,
 
         [Parameter(Mandatory = $false)]
         [Psobject] $Tokens = @{}
@@ -56,8 +63,71 @@ function Test-NamePrefixAvailability {
             'Microsoft.ContainerRegistry/registries'
             'Microsoft.KeyVault/vaults'
         )
-        $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter '*.json').FullName | ForEach-Object { $_.Replace('\', '/') }
-        $parameterFiles = $parameterFiles | Where-Object { $_ -match '(?:{0}).*parameters\.json' -f ($relevantResourceTypes -join '|' -replace '/', '\/+') }
+
+        $storageAccountNames = @()
+        $containerRegistryNames = @()
+        $keyVaultNames = @()
+
+
+        foreach ($relevantResourceType in $relevantResourceTypes) {
+            switch ($relevantResourceType) {
+                'Microsoft.Storage/storageAccounts' {
+                    $filter = 'storageAccountName:'
+                }
+                'Microsoft.ContainerRegistry/registries' {
+                    $filter = 'registryName:'
+                }
+                'Microsoft.KeyVault/vaults' {
+                    $filter = 'keyVaultName:'
+                }
+                Default { Write-Error 'I dont like you.' }
+            }
+
+            $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter 'deploy.test.bicep').FullName | ForEach-Object { $_.Replace('\', '/') }
+            foreach ($parameterFile in $parameterFiles) {
+                $temp = $null
+
+                # determine if entry is of one of the resourceTypes using the filter variable
+                $temp = Get-Content -Path $parameterFile | ForEach-Object {
+                    if ($_ -match "$filter\s'") { $_ }
+                }
+                if ($temp) {
+                    $temp = $temp.Split($filter)
+                    $temp = $temp | Where-Object { $_ -match '\S' } # replace empty lines in array
+
+                    # trim the entry and replace placeholder values
+                    $temp = $temp.Replace("'", '') # remove trailing quotes
+                    $temp = $temp.Replace('<<namePrefix>>', $namePrefix)
+                    $temp = $temp.Replace('${serviceShort}', $serviceShort)
+                    $temp = $temp.Replace(' ', '') # remove trailing whitespaces
+                    $temp
+
+                    # drop entries which generate its name during runtime (e.g. via uniqueString function in bicep)
+                    if ($temp -match 'uniqueString') {
+                        continue
+                    }
+
+                    # add entry to resourcetype-specific list
+                    switch ($filter) {
+                        'storageAccountName:' { $storageAccountNames += $temp }
+                        'registryName:' { $containerRegistryNames += $temp }
+                        'keyVaultName:' { $keyVaultNames += $temp }
+                        Default {}
+                    }
+                }
+            }
+        }
+
+        $storageAccountNames = $storageAccountNames | Select-Object -Unique
+        $containerRegistryNames = $containerRegistryNames | Select-Object -Unique
+        $keyVaultNames = $keyVaultNames | Select-Object -Unique
+
+        '====================='
+        $storageAccountNames
+        '---'
+        $containerRegistryNames
+        '---'
+        $keyVaultNames
 
         # Replace parameter file tokens
         # -----------------------------
@@ -85,15 +155,6 @@ function Test-NamePrefixAvailability {
 
             # Extract Parameter Names
             # -----------------------
-            $storageAccountFiles = $parameterFiles | Where-Object { $_ -match 'Microsoft.Storage/storageAccounts' }
-            $storageAccountNames = $storageAccountFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).parameters.name.value } | Where-Object { $null -ne $_ }
-
-            $keyVaultFiles = $parameterFiles | Where-Object { $_ -match 'Microsoft.KeyVault/vaults' }
-            $keyVaultNames = $keyVaultFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).parameters.name.value } | Where-Object { $null -ne $_ }
-
-            $acrFiles = $parameterFiles | Where-Object { $_ -match 'Microsoft.ContainerRegistry/registries' }
-            $acrNames = $acrFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).parameters.name.value } | Where-Object { $null -ne $_ }
-
             $subscriptionId = (Get-AzContext).Subscription.Id
 
             # Storage
