@@ -144,6 +144,112 @@ resource routeTable 'Microsoft.Network/routeTables@2021-08-01' = {
   location: location
   properties: {
     disableBgpRoutePropagation: false
+    routes: [
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_subnet-10-0-0-0-24-to-vnetlocal'
+        properties: {
+          addressPrefix: '10.0.0.0/24'
+          nextHopType: 'VnetLocal'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-Storage'
+        properties: {
+          addressPrefix: 'Storage'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-SqlManagement'
+        properties: {
+          addressPrefix: 'SqlManagement'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-AzureMonitor'
+        properties: {
+          addressPrefix: 'AzureMonitor'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-CorpNetSaw'
+        properties: {
+          addressPrefix: 'CorpNetSaw'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-CorpNetPublic'
+        properties: {
+          addressPrefix: 'CorpNetPublic'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-AzureActiveDirectory'
+        properties: {
+          addressPrefix: 'AzureActiveDirectory'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-AzureCloud.westeurope'
+        properties: {
+          addressPrefix: 'AzureCloud.westeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-AzureCloud.northeurope'
+        properties: {
+          addressPrefix: 'AzureCloud.northeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-Storage.westeurope'
+        properties: {
+          addressPrefix: 'Storage.westeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-Storage.northeurope'
+        properties: {
+          addressPrefix: 'Storage.northeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-EventHub.westeurope'
+        properties: {
+          addressPrefix: 'EventHub.westeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-EventHub.northeurope'
+        properties: {
+          addressPrefix: 'EventHub.northeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+    ]
   }
 }
 
