@@ -121,14 +121,6 @@ function Test-NamePrefixAvailability {
         $containerRegistryNames = $containerRegistryNames | Select-Object -Unique
         $keyVaultNames = $keyVaultNames | Select-Object -Unique
 
-        '====================='
-        $storageAccountNames
-        '---'
-        $containerRegistryNames
-        '---'
-        $keyVaultNames
-
-
         try {
 
             # Extract Parameter Names
