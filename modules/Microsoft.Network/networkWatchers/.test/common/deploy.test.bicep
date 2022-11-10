@@ -3,14 +3,14 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
-@description('Optional. The name of the resource group to deploy for testing purposes')
+@description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'NetworkWatcherRG' // Note, this is the default NetworkWatcher resource group. Do not change.
 
-@description('Optional. The location to deploy resources to')
+@description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
-@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
+@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'nnwcom'
 
 // =========== //
@@ -64,7 +64,7 @@ module testDeployment '../../deploy.bicep' = {
     location: testLocation
     connectionMonitors: [
       {
-        name: 'adp-<<namePrefix>>-conmon-${serviceShort}-x-001'
+        name: 'dep-<<namePrefix>>-conmon-${serviceShort}-x-001'
         endpoints: [
           {
             name: '<<namePrefix>>-subnet-x-001(${resourceGroup.name})'
@@ -105,7 +105,7 @@ module testDeployment '../../deploy.bicep' = {
             disable: false
             name: 'TestHTTPBing'
             sources: [
-              '<<namePrefix>>-subnet-x-001(${resourceGroup.name})'
+              '<<namePrefix>>-subnet-001(${resourceGroup.name})'
             ]
             testConfigurations: [
               'HTTP Test'
@@ -123,7 +123,7 @@ module testDeployment '../../deploy.bicep' = {
       }
       {
         formatVersion: 1
-        name: 'adp-<<namePrefix>>-nsg-x-apgw-flowlog'
+        name: 'dep-<<namePrefix>>-nsg-apgw-flowlog'
         retentionInDays: 8
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
         targetResourceId: resourceGroupResources.outputs.secondNetworkSecurityGroupResourceId

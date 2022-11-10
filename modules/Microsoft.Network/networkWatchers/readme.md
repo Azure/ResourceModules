@@ -15,7 +15,7 @@
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/networkWatchers` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers) |
 | `Microsoft.Network/networkWatchers/connectionMonitors` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers/connectionMonitors) |
@@ -181,7 +181,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
             type: 'ExternalAddress'
           }
         ]
-        name: 'adp-<<namePrefix>>-conmon-nnwcom-x-001'
+        name: 'dep-<<namePrefix>>-conmon-nnwcom-x-001'
         testConfigurations: [
           {
             httpConfiguration: {
@@ -210,7 +210,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
             disable: false
             name: 'TestHTTPBing'
             sources: [
-              '<<namePrefix>>-subnet-x-001(${resourceGroup.name})'
+              '<<namePrefix>>-subnet-001(${resourceGroup.name})'
             ]
             testConfigurations: [
               'HTTP Test'
@@ -228,7 +228,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       }
       {
         formatVersion: 1
-        name: 'adp-<<namePrefix>>-nsg-x-apgw-flowlog'
+        name: 'dep-<<namePrefix>>-nsg-apgw-flowlog'
         retentionInDays: 8
         storageId: '<storageId>'
         targetResourceId: '<targetResourceId>'
@@ -278,7 +278,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
               "type": "ExternalAddress"
             }
           ],
-          "name": "adp-<<namePrefix>>-conmon-nnwcom-x-001",
+          "name": "dep-<<namePrefix>>-conmon-nnwcom-x-001",
           "testConfigurations": [
             {
               "httpConfiguration": {
@@ -307,7 +307,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
               "disable": false,
               "name": "TestHTTPBing",
               "sources": [
-                "<<namePrefix>>-subnet-x-001(${resourceGroup.name})"
+                "<<namePrefix>>-subnet-001(${resourceGroup.name})"
               ],
               "testConfigurations": [
                 "HTTP Test"
@@ -327,7 +327,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         },
         {
           "formatVersion": 1,
-          "name": "adp-<<namePrefix>>-nsg-x-apgw-flowlog",
+          "name": "dep-<<namePrefix>>-nsg-apgw-flowlog",
           "retentionInDays": 8,
           "storageId": "<storageId>",
           "targetResourceId": "<targetResourceId>",
