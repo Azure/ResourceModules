@@ -139,47 +139,47 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-0
   }
 }
 
-// resource routeTable 'Microsoft.Network/routeTables@2021-08-01' = {
-//   name: routeTableName
-//   location: location
-//   properties: {
-//     disableBgpRoutePropagation: false
-//   }
-// }
+resource routeTable 'Microsoft.Network/routeTables@2021-08-01' = {
+  name: routeTableName
+  location: location
+  properties: {
+    disableBgpRoutePropagation: false
+  }
+}
 
-// resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
-//   name: virtualNetworkName
-//   location: location
-//   properties: {
-//     addressSpace: {
-//       addressPrefixes: [
-//         '10.0.0.0/16'
-//       ]
-//     }
-//     subnets: [
-//       {
-//         name: 'ManagedInstance'
-//         properties: {
-//           addressPrefix: '10.0.0.0/24'
-//           routeTable: {
-//             id: routeTable.id
-//           }
-//           networkSecurityGroup: {
-//             id: networkSecurityGroup.id
-//           }
-//           delegations: [
-//             {
-//               name: 'managedInstanceDelegation'
-//               properties: {
-//                 serviceName: 'Microsoft.Sql/managedInstances'
-//               }
-//             }
-//           ]
-//         }
-//       }
-//     ]
-//   }
-// }
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        '10.0.0.0/16'
+      ]
+    }
+    subnets: [
+      {
+        name: 'ManagedInstance'
+        properties: {
+          addressPrefix: '10.0.0.0/24'
+          routeTable: {
+            id: routeTable.id
+          }
+          networkSecurityGroup: {
+            id: networkSecurityGroup.id
+          }
+          delegations: [
+            {
+              name: 'managedInstanceDelegation'
+              properties: {
+                serviceName: 'Microsoft.Sql/managedInstances'
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
 
 // resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
 //   name: managedIdentityName
