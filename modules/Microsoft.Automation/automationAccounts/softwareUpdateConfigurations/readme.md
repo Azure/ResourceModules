@@ -18,6 +18,7 @@ This module deploys an Azure Automation Account Software update Configuration.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `frequency` | string | `[Day, Hour, Month, OneTime, Week]` | The frequency of the deployment schedule. When using 'Hour', 'Day', 'Week' or 'Month', an interval needs to be provided. |
@@ -26,11 +27,13 @@ This module deploys an Azure Automation Account Software update Configuration.
 | `rebootSetting` | string | `[Always, IfRequired, Never, RebootOnly]` | Reboot setting for the deployment schedule. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `azureVirtualMachines` | array | `[]` |  | List of azure resource IDs for azure virtual machines in scope for the deployment schedule. |
@@ -63,6 +66,7 @@ This module deploys an Azure Automation Account Software update Configuration.
 | `weekDays` | array | `[]` | `[Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday]` | Required when used with frequency 'Week'. Specified the day of the week to run the deployment schedule. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule. |

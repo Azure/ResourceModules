@@ -166,6 +166,7 @@ function Set-ParametersSection {
         # 2. Create header including optional columns
         $newSectionContent += @(
             ('**{0} parameters**' -f $category),
+            '',
             ('| Parameter Name | Type | {0}{1}Description |' -f ($hasDefault ? 'Default Value | ' : ''), ($hasAllowed ? 'Allowed Values | ' : '')),
             ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefault ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
         )
@@ -655,6 +656,11 @@ function ConvertTo-FormattedJSONParameterObject {
         [string] $CurrentFilePath
     )
 
+    if ([String]::IsNullOrEmpty($BicepParamBlock)) {
+        # Case: No mandatory parameters
+        return @{}
+    }
+
     # [1/4] Detect top level params for later processing
     $bicepParamBlockArray = $BicepParamBlock -split '\n'
     $topLevelParamIndent = ([regex]::Match($bicepParamBlockArray[0], '^(\s+).*')).Captures.Groups[1].Value.Length
@@ -668,7 +674,8 @@ function ConvertTo-FormattedJSONParameterObject {
         '}'
     ) | Out-String
 
-    # [2.2] Syntax: All single-quotes are double-quotes
+    # [2.2] Syntax: All double quotes must be escaped & single-quotes are double-quotes
+    $paramInJsonFormat = $paramInJsonFormat -replace '"', '\"'
     $paramInJsonFormat = $paramInJsonFormat -replace "'", '"'
 
     # [2.3] Split the object to format line-by-line (& also remove any empty lines)
@@ -685,15 +692,16 @@ function ConvertTo-FormattedJSONParameterObject {
         $line = $pattern.replace($line, '"$1":', 1)
 
         # [2.5] Syntax: Replace Bicep resource ID references
-        $mayHaveValue = $line -like '*:*'
+        $mayHaveValue = $line -match '\s*.+:\s+'
         if ($mayHaveValue) {
+
+            $lineValue = ($line -split '\s*.+:\s+')[1].Trim() # i.e. optional spaces, followed by a name ("xzy"), followed by ':', folowed by at least a space
 
             # Individual checks
             $isLineWithEmptyObjectValue = $line -match '^.+:\s*{\s*}\s*$' # e.g. test: {}
-            $isLineWithObjectPropertyReferenceValue = ($line -split ':')[1].Trim() -like '*.*' # e.g. resourceGroupResources.outputs.virtualWWANResourceId`
+            $isLineWithObjectPropertyReferenceValue = $lineValue -like '*.*' # e.g. resourceGroupResources.outputs.virtualWWANResourceId`
             $isLineWithReferenceInLineKey = ($line -split ':')[0].Trim() -like '*.*'
 
-            $lineValue = ($line -split ':')[1].Trim()
             $isLineWithStringValue = $lineValue -match '".+"' # e.g. "value"
             $isLineWithFunction = $lineValue -match '[a-zA-Z]+\(.+\)' # e.g. (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4]
             $isLineWithPlainValue = $lineValue -match '^\w+$' # e.g. adminPassword: password
@@ -711,7 +719,7 @@ function ConvertTo-FormattedJSONParameterObject {
             if ($isLineWithObjectPropertyReference -or $isLineWithFunction -or $isLineWithParameterOrVariableReferenceValue) {
                 $line = '{0}: "<{1}>"' -f ($line -split ':')[0], ([regex]::Match(($line -split ':')[0], '"(.+)"')).Captures.Groups[1].Value
             } elseif ($isLineWithObjectReferenceKeyAndEmptyObjectValue) {
-                $line = '"<{0}>": {1}' -f (($line -split ':')[0] -split '\.')[-1].TrimEnd('}"'), ($line -split ':')[1].Trim()
+                $line = '"<{0}>": {1}' -f (($line -split ':')[0] -split '\.')[-1].TrimEnd('}"'), $lineValue
             }
         } else {
             if ($line -notlike '*"*"*' -and $line -like '*.*') {
@@ -974,8 +982,14 @@ function Set-DeploymentExamplesSection {
             $rawBicepExampleArray = $rawBicepExample -split '\n'
             $moduleDeploymentPropertyIndent = ([regex]::Match($rawBicepExampleArray[1], '^(\s+).*')).Captures.Groups[1].Value.Length
             $paramsStartIndex = ($rawBicepExampleArray | Select-String ("^[\s]{$moduleDeploymentPropertyIndent}params:[\s]*\{") | ForEach-Object { $_.LineNumber - 1 })[0] + 1
-            $paramsEndIndex = ($rawBicepExampleArray[($paramsStartIndex + 1)..($rawBicepExampleArray.Count)] | Select-String "^[\s]{$moduleDeploymentPropertyIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + $paramsStartIndex
-            $paramBlock = ($rawBicepExampleArray[$paramsStartIndex..$paramsEndIndex] | Out-String).TrimEnd()
+            if ($rawBicepExampleArray[$paramsStartIndex].Trim() -ne '}') {
+                # Handle case where param block is empty
+                $paramsEndIndex = ($rawBicepExampleArray[($paramsStartIndex + 1)..($rawBicepExampleArray.Count)] | Select-String "^[\s]{$moduleDeploymentPropertyIndent}\}" | ForEach-Object { $_.LineNumber - 1 })[0] + $paramsStartIndex
+                $paramBlock = ($rawBicepExampleArray[$paramsStartIndex..$paramsEndIndex] | Out-String).TrimEnd()
+            } else {
+                $paramBlock = ''
+                $paramsEndIndex = $paramsStartIndex
+            }
 
             # [5/6] Convert Bicep parameter block to JSON parameter block to enable processing
             $conversionInputObject = @{
@@ -996,7 +1010,12 @@ function Set-DeploymentExamplesSection {
             # --------------------- #
             if ($addBicep) {
 
-                $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + ($bicepExample -split '\n') + $rawBicepExample[($paramsEndIndex + 1)..($rawBicepExample.Count)]
+                if ([String]::IsNullOrEmpty($paramBlock)) {
+                    # Handle case where param block is empty
+                    $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + $rawBicepExample[($paramsEndIndex)..($rawBicepExample.Count)]
+                } else {
+                    $formattedBicepExample = $rawBicepExample[0..($paramsStartIndex - 1)] + ($bicepExample -split '\n') + $rawBicepExample[($paramsEndIndex + 1)..($rawBicepExample.Count)]
+                }
 
                 # Remove any dependsOn as it it test specific
                 if ($detected = ($formattedBicepExample | Select-String '^\s*dependsOn:\s*\[\s*$' | ForEach-Object { $_.LineNumber - 1 })) {

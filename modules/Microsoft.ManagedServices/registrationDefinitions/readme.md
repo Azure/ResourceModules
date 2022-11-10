@@ -25,6 +25,7 @@ remote/managing tenant.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `authorizations` | array | Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
@@ -33,6 +34,7 @@ remote/managing tenant.
 | `registrationDescription` | string | Description of the offer/registration. i.e. 'Managed by <Managing Org Name>'. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -175,7 +177,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -183,28 +185,28 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
+  name: '${uniqueString(deployment().name)}-test-msrdcom'
   params: {
     // Required parameters
     authorizations: [
       {
-        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalId: '9740a11d-a508-4a83-8ed5-4cb5bff5154a'
         principalIdDisplayName: 'ResourceModules-Reader'
         roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
       }
       {
-        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalId: '9bce07dd-ae3a-4062-a24d-33631a4b35e8'
         principalIdDisplayName: 'ResourceModules-Contributor'
         roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
       }
       {
-        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalId: '441519e3-00e5-4070-8ec8-4b8cddf6409a'
         principalIdDisplayName: 'ResourceModules-LHManagement'
         roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
       }
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    name: 'Component Validation - Subscription assignment'
+    name: 'Component Validation - <<namePrefix>>msrdcom Subscription assignment'
     registrationDescription: 'Managed by Lighthouse'
   }
 }
@@ -226,17 +228,17 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     "authorizations": {
       "value": [
         {
-          "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+          "principalId": "9740a11d-a508-4a83-8ed5-4cb5bff5154a",
           "principalIdDisplayName": "ResourceModules-Reader",
           "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
         },
         {
-          "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+          "principalId": "9bce07dd-ae3a-4062-a24d-33631a4b35e8",
           "principalIdDisplayName": "ResourceModules-Contributor",
           "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
         },
         {
-          "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+          "principalId": "441519e3-00e5-4070-8ec8-4b8cddf6409a",
           "principalIdDisplayName": "ResourceModules-LHManagement",
           "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
         }
@@ -246,7 +248,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
     },
     "name": {
-      "value": "Component Validation - Subscription assignment"
+      "value": "Component Validation - <<namePrefix>>msrdcom Subscription assignment"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
@@ -266,31 +268,31 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
+  name: '${uniqueString(deployment().name)}-test-msrdrg'
   params: {
     // Required parameters
     authorizations: [
       {
-        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalId: '9740a11d-a508-4a83-8ed5-4cb5bff5154a'
         principalIdDisplayName: 'ResourceModules-Reader'
         roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
       }
       {
-        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalId: '9bce07dd-ae3a-4062-a24d-33631a4b35e8'
         principalIdDisplayName: 'ResourceModules-Contributor'
         roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
       }
       {
-        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalId: '441519e3-00e5-4070-8ec8-4b8cddf6409a'
         principalIdDisplayName: 'ResourceModules-LHManagement'
         roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
       }
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    name: 'Component Validation - Resource group assignment'
+    name: 'Component Validation - <<namePrefix>>msrdrg Resource group assignment'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
-    resourceGroupName: 'validation-rg'
+    resourceGroupName: '<resourceGroupName>'
   }
 }
 ```
@@ -311,17 +313,17 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     "authorizations": {
       "value": [
         {
-          "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+          "principalId": "9740a11d-a508-4a83-8ed5-4cb5bff5154a",
           "principalIdDisplayName": "ResourceModules-Reader",
           "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
         },
         {
-          "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+          "principalId": "9bce07dd-ae3a-4062-a24d-33631a4b35e8",
           "principalIdDisplayName": "ResourceModules-Contributor",
           "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
         },
         {
-          "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+          "principalId": "441519e3-00e5-4070-8ec8-4b8cddf6409a",
           "principalIdDisplayName": "ResourceModules-LHManagement",
           "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
         }
@@ -331,14 +333,14 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
     },
     "name": {
-      "value": "Component Validation - Resource group assignment"
+      "value": "Component Validation - <<namePrefix>>msrdrg Resource group assignment"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
     },
     // Non-required parameters
     "resourceGroupName": {
-      "value": "validation-rg"
+      "value": "<resourceGroupName>"
     }
   }
 }

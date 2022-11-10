@@ -80,7 +80,7 @@ runs:
         }
 
         # Output values to be accessed by next jobs
-        Write-Output "::set-output name=removeDeployment::$removeDeployment"
+        Write-Output ('{0}={1}' -f 'removeDeployment', $removeDeployment) >> $env:GITHUB_OUTPUT
 
         Write-Output '::endgroup::'
       shell: pwsh
