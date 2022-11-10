@@ -27,8 +27,8 @@ param tags object = {}
 @description('Optional. The datastore type to use.')
 @allowed([
   'ArchiveStore'
-  'SnapshotStore'
   'VaultStore'
+  'OperationalStore'
 ])
 param dataStoreType string = 'VaultStore'
 
@@ -36,6 +36,7 @@ param dataStoreType string = 'VaultStore'
 @allowed([
   'LocallyRedundant'
   'GeoRedundant'
+  'ZoneRedundant'
 ])
 param type string = 'GeoRedundant'
 
