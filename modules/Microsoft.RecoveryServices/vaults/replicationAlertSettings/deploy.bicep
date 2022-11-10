@@ -5,7 +5,7 @@ param recoveryVaultName string
 param name string = 'defaultAlertSetting'
 
 @description('Optional. Comma separated list of custom email address for sending alert emails.')
-param customEmailAddresses array = [ '' ]
+param customEmailAddresses array = []
 
 @description('Optional. The locale for the email notification.')
 param locale string = ''
@@ -19,13 +19,6 @@ param sendToOwners string = 'Send'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
-
-var alertSettingProperties = union((length(customEmailAddresses) != 0) ? {
-    customEmailAddresses: customEmailAddresses
-  } : {},
-  { locale: locale
-    sendToOwners: sendToOwners
-  })
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -46,7 +39,11 @@ resource recoveryVault 'Microsoft.RecoveryServices/vaults@2022-08-01' existing =
 resource replicationAlertSettings 'Microsoft.RecoveryServices/vaults/replicationAlertSettings@2022-08-01' = {
   name: name
   parent: recoveryVault
-  properties: alertSettingProperties
+  properties: {
+    customEmailAddresses: !empty(customEmailAddresses) ? customEmailAddresses : null
+    locale: locale
+    sendToOwners: sendToOwners
+  }
 }
 
 @description('The name of the replication Alert Setting.')
