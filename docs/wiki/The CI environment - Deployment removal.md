@@ -4,7 +4,7 @@ The corresponding error message would look similar to `Creating the deployment '
 
 The platform pipeline `platform.deployment.removal.yml` has an automatic schedule that runs every night, but can also be triggered on-demand.
 
-By default, the pipeline will cleanup both the Subscription, as well as Management Group scope using the used script's default configuration. In addition, you can specify a pipeline variable `daysToKeepDeploymentsFor` to define beyond which time frame deployments should always be deleted. Within the timeframe, only non-failed and non-running deployments are considered.
+By default, the pipeline will cleanup both the Subscription, as well as Management Group scope using the used script's default configuration. In addition, you can specify a pipeline variable `maxDeploymentRetentionInDays` to define beyond which time frame deployments should always be deleted. Within the timeframe, only non-failed and non-running deployments are considered.
 
 ---
 

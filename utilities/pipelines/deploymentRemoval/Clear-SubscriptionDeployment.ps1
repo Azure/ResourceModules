@@ -12,7 +12,7 @@ Optional. The ID of the subscription to remove the deployments from. Defaults to
 .PARAMETER DeploymentStatusToExclude
 Optional. The status to exlude from removals. Can be multiple. By default, we exclude any deployment that is in state 'running' or 'failed'.
 
-.PARAMETER DaysToKeepDeploymentsFor
+.PARAMETER maxDeploymentRetentionInDays
 Optional. The time to keep deployments for beyong the deployment statuses to exclude. In other words, if a deployment is older than the threshold, they will always be deleted.
 
 .EXAMPLE
@@ -37,11 +37,11 @@ function Clear-SubscriptionDeployment {
         [string[]] $DeploymentStatusToExclude = @('running', 'failed'),
 
         [Parameter(Mandatory = $false)]
-        [int] $DaysToKeepDeploymentsFor = 7
+        [int] $maxDeploymentRetentionInDays = 7
     )
 
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Enables web reponse
-    $deploymentThreshold = (Get-Date).AddDays(-1 * $DaysToKeepDeploymentsFor)
+    $deploymentThreshold = (Get-Date).AddDays(-1 * $maxDeploymentRetentionInDays)
 
     # Load used functions
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'sharedScripts' 'Split-Array.ps1')
@@ -70,7 +70,7 @@ function Clear-SubscriptionDeployment {
         ([DateTime]$_.properties.timestamp) -lt $deploymentThreshold
     }
 
-    Write-Verbose ('Filtering [{0}] deployments out as they are in state [{1}] or newer than [{2}] days ({3})' -f ($response.value.Count - $relevantDeployments.Count), ($DeploymentStatusToExclude -join '/'), $DaysToKeepDeploymentsFor, $deploymentThreshold.ToString('yyyy-MM-dd')) -Verbose
+    Write-Verbose ('Filtering [{0}] deployments out as they are in state [{1}] or newer than [{2}] days ({3})' -f ($response.value.Count - $relevantDeployments.Count), ($DeploymentStatusToExclude -join '/'), $maxDeploymentRetentionInDays, $deploymentThreshold.ToString('yyyy-MM-dd')) -Verbose
 
     if (-not $relevantDeployments) {
         Write-Verbose ('No deployments for subscription [{0}] found' -f $subscriptionId) -Verbose

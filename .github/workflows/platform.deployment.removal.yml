@@ -89,7 +89,7 @@ jobs:
 
             $functionInput = @{
               SubscriptionId           = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-              DaysToKeepDeploymentsFor = '${{ env.DaysToKeepDeploymentsFor }}'
+              maxDeploymentRetentionInDays = '${{ env.maxDeploymentRetentionInDays }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose
@@ -143,7 +143,7 @@ jobs:
 
             $functionInput = @{
               ManagementGroupId        = '${{ secrets.ARM_MGMTGROUP_ID }}'
-              DaysToKeepDeploymentsFor = '${{ env.DaysToKeepDeploymentsFor }}'
+              maxDeploymentRetentionInDays = '${{ env.maxDeploymentRetentionInDays }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose
