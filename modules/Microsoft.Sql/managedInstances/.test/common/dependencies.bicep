@@ -287,77 +287,77 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   }
 }
 
-// resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-//   name: managedIdentityName
-//   location: location
-// }
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+  name: managedIdentityName
+  location: location
+}
 
-// resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-//   name: keyVaultName
-//   location: location
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
+  name: keyVaultName
+  location: location
+  properties: {
+    accessPolicies: [
+      {
+        objectId: managedIdentity.properties.principalId
+        permissions: {
+          keys: [
+            'Get'
+            'WrapKey'
+            'UnwrapKey'
+          ]
+          secrets: [
+            'Get'
+          ]
+        }
+        tenantId: tenant().tenantId
+      }
+    ]
+    sku: {
+      family: 'A'
+      name: 'standard'
+    }
+    tenantId: tenant().tenantId
+    enablePurgeProtection: null
+    enabledForTemplateDeployment: true
+    enabledForDiskEncryption: true
+    enabledForDeployment: true
+    enableRbacAuthorization: false
+    // accessPolicies: []
+  }
+
+  resource key 'keys@2022-07-01' = {
+    name: 'keyEncryptionKey'
+    properties: {
+      kty: 'RSA'
+    }
+  }
+}
+
+// resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
+//   scope: keyVault::key
 //   properties: {
-//     accessPolicies: [
-//       {
-//         objectId: managedIdentity.properties.principalId
-//         permissions: {
-//           keys: [
-//             'Get'
-//             'WrapKey'
-//             'UnwrapKey'
-//           ]
-//           secrets: [
-//             'Get'
-//           ]
-//         }
-//         tenantId: tenant().tenantId
-//       }
-//     ]
-//     sku: {
-//       family: 'A'
-//       name: 'standard'
-//     }
-//     tenantId: tenant().tenantId
-//     enablePurgeProtection: null
-//     enabledForTemplateDeployment: true
-//     enabledForDiskEncryption: true
-//     enabledForDeployment: true
-//     enableRbacAuthorization: false
-//     // accessPolicies: []
-//   }
-
-//   resource key 'keys@2022-07-01' = {
-//     name: 'keyEncryptionKey'
-//     properties: {
-//       kty: 'RSA'
-//     }
+//     principalId: managedIdentity.properties.principalId
+//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
+//     principalType: 'ServicePrincipal'
 //   }
 // }
 
-// // resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-// //   name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
-// //   scope: keyVault::key
-// //   properties: {
-// //     principalId: managedIdentity.properties.principalId
-// //     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
-// //     principalType: 'ServicePrincipal'
-// //   }
-// // }
+@description('The resource ID of the created Virtual Network Subnet.')
+output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
-// @description('The resource ID of the created Virtual Network Subnet.')
-// output subnetResourceId string = virtualNetwork.properties.subnets[0].id
+@description('The principal ID of the created Managed Identity.')
+output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
-// @description('The principal ID of the created Managed Identity.')
-// output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+@description('The resource ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id
 
-// @description('The resource ID of the created Managed Identity.')
-// output managedIdentityResourceId string = managedIdentity.id
+@description('The vault URI of the created Key Vault.')
+// output keyVaultUri string = keyVault.properties.vaultUri
+output keyVaultEncryptionKeyUrl string = keyVault::key.properties.keyUriWithVersion
 
-// @description('The vault URI of the created Key Vault.')
-// // output keyVaultUri string = keyVault.properties.vaultUri
-// output keyVaultEncryptionKeyUrl string = keyVault::key.properties.keyUriWithVersion
+@description('The name of the created Key Vault encryption key.')
+output keyVaultKeyName string = keyVault::key.name
 
-// @description('The name of the created Key Vault encryption key.')
-// output keyVaultKeyName string = keyVault::key.name
-
-// @description('The name of the created Key Vault.')
-// output keyVaultName string = keyVault.name
+@description('The name of the created Key Vault.')
+output keyVaultName string = keyVault.name
