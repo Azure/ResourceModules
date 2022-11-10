@@ -171,7 +171,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       {
         endpoints: [
           {
-            name: '<<namePrefix>>-subnet-x-001(${resourceGroup.name})'
+            name: '<<namePrefix>>-subnet-001(${resourceGroup.name})'
             resourceId: '<resourceId>'
             type: 'AzureVM'
           }
@@ -181,7 +181,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
             type: 'ExternalAddress'
           }
         ]
-        name: 'dep-<<namePrefix>>-conmon-nnwcom-x-001'
+        name: '<<namePrefix>>-nnwcom-001'
         testConfigurations: [
           {
             httpConfiguration: {
@@ -228,7 +228,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       }
       {
         formatVersion: 1
-        name: 'dep-<<namePrefix>>-nsg-apgw-flowlog'
+        name: '<<namePrefix>>-nsg-apgw-flowlog'
         retentionInDays: 8
         storageId: '<storageId>'
         targetResourceId: '<targetResourceId>'
@@ -268,7 +268,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         {
           "endpoints": [
             {
-              "name": "<<namePrefix>>-subnet-x-001(${resourceGroup.name})",
+              "name": "<<namePrefix>>-subnet-001(${resourceGroup.name})",
               "resourceId": "<resourceId>",
               "type": "AzureVM"
             },
@@ -278,7 +278,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
               "type": "ExternalAddress"
             }
           ],
-          "name": "dep-<<namePrefix>>-conmon-nnwcom-x-001",
+          "name": "<<namePrefix>>-nnwcom-001",
           "testConfigurations": [
             {
               "httpConfiguration": {
@@ -327,7 +327,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         },
         {
           "formatVersion": 1,
-          "name": "dep-<<namePrefix>>-nsg-apgw-flowlog",
+          "name": "<<namePrefix>>-nsg-apgw-flowlog",
           "retentionInDays": 8,
           "storageId": "<storageId>",
           "targetResourceId": "<targetResourceId>",

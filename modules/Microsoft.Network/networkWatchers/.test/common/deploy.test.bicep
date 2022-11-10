@@ -64,10 +64,10 @@ module testDeployment '../../deploy.bicep' = {
     location: testLocation
     connectionMonitors: [
       {
-        name: 'dep-<<namePrefix>>-conmon-${serviceShort}-x-001'
+        name: '<<namePrefix>>-${serviceShort}-001'
         endpoints: [
           {
-            name: '<<namePrefix>>-subnet-x-001(${resourceGroup.name})'
+            name: '<<namePrefix>>-subnet-001(${resourceGroup.name})'
             resourceId: resourceGroupResources.outputs.virtualMachineResourceId
             type: 'AzureVM'
           }
@@ -123,7 +123,7 @@ module testDeployment '../../deploy.bicep' = {
       }
       {
         formatVersion: 1
-        name: 'dep-<<namePrefix>>-nsg-apgw-flowlog'
+        name: '<<namePrefix>>-nsg-apgw-flowlog'
         retentionInDays: 8
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
         targetResourceId: resourceGroupResources.outputs.secondNetworkSecurityGroupResourceId
