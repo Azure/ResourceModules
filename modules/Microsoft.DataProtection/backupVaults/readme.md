@@ -14,10 +14,10 @@ This module deploys DataProtection BackupVaults.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DataProtection/backupVaults` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-03-01/backupVaults) |
-| `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-03-01/backupVaults/backupPolicies) |
+| `Microsoft.DataProtection/backupVaults` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-05-01/backupVaults) |
+| `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-05-01/backupVaults/backupPolicies) |
 
 ## Parameters
 

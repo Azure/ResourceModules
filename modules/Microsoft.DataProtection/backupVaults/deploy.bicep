@@ -62,7 +62,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource backupVault 'Microsoft.DataProtection/backupVaults@2022-03-01' = {
+resource backupVault 'Microsoft.DataProtection/backupVaults@2022-05-01' = {
   name: name
   location: location
   tags: tags
