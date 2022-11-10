@@ -17,39 +17,39 @@ param serviceShort string = 'sqlmimin'
 @secure()
 param password string = newGuid()
 
-// =========== //
-// Deployments //
-// =========== //
+// // =========== //
+// // Deployments //
+// // =========== //
 
-// General resources
-// =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: resourceGroupName
-  location: location
-}
+// // General resources
+// // =================
+// resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+//   name: resourceGroupName
+//   location: location
+// }
 
-module resourceGroupResources 'dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
-  params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
-    routeTableName: 'dep-<<namePrefix>>-rt-${serviceShort}'
-    location: location
-  }
-}
+// module resourceGroupResources 'dependencies.bicep' = {
+//   scope: resourceGroup
+//   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
+//   params: {
+//     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+//     networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
+//     routeTableName: 'dep-<<namePrefix>>-rt-${serviceShort}'
+//     location: location
+//   }
+// }
 
-// ============== //
-// Test Execution //
-// ============== //
+// // ============== //
+// // Test Execution //
+// // ============== //
 
-module testDeployment '../../deploy.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
-  params: {
-    name: '<<namePrefix>>-${serviceShort}'
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: password
-    subnetId: resourceGroupResources.outputs.subnetResourceId
-  }
-}
+// module testDeployment '../../deploy.bicep' = {
+//   scope: resourceGroup
+//   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+//   params: {
+//     name: '<<namePrefix>>-${serviceShort}'
+//     administratorLogin: 'adminUserName'
+//     administratorLoginPassword: password
+//     subnetId: resourceGroupResources.outputs.subnetResourceId
+//   }
+// }
