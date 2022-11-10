@@ -100,7 +100,6 @@ function Test-NamePrefixAvailability {
                     $temp = $temp.Replace('<<namePrefix>>', $namePrefix)
                     $temp = $temp.Replace('${serviceShort}', $serviceShort)
                     $temp = $temp.Replace(' ', '') # remove trailing whitespaces
-                    $temp
 
                     # drop entries which generate its name during runtime (e.g. via uniqueString function in bicep)
                     if ($temp -match 'uniqueString') {
@@ -129,27 +128,6 @@ function Test-NamePrefixAvailability {
         '---'
         $keyVaultNames
 
-        # Replace parameter file tokens
-        # -----------------------------
-
-        # Tokens in settings.yml
-        $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRoot 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
-
-        # Construct Token Configuration Input
-        $tokenConfiguration = @{
-            FilePathList = $parameterFiles
-            Tokens       = @{
-                'namePrefix' = $namePrefix
-            }
-            TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
-            TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
-        }
-
-        # Add additional tokens provided by the user
-        $tokenConfiguration.Tokens += $Tokens
-
-        # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-        $null = Convert-TokensInFileList @tokenConfiguration
 
         try {
 
