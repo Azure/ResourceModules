@@ -30,14 +30,14 @@ param tags object = {}
   'SnapshotStore'
   'VaultStore'
 ])
-param dataStoreType string = 'SnapshotStore'
+param dataStoreType string = 'VaultStore'
 
 @description('Optional. The vault redundancy level to use.')
 @allowed([
   'LocallyRedundant'
   'GeoRedundant'
 ])
-param type string = 'LocallyRedundant'
+param type string = 'GeoRedundant'
 
 @description('Optional. List of all backup policies.')
 param backupPolicies array = []
