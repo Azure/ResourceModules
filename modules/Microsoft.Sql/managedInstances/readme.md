@@ -14,7 +14,7 @@ This template deploys a SQL managed instance.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Sql/managedInstances` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances) |
@@ -298,12 +298,10 @@ The following module usage examples are retrieved from the content of the files 
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlmicom'
   params: {
-    // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
     name: '<<namePrefix>>-sqlmicom'
     subnetId: '<subnetId>'
-    // Non-required parameters
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
       {
@@ -322,11 +320,14 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     dnsZonePartner: ''
-    encryptionProtectorObj: {
-      serverKeyName: '<serverKeyName>'
-      serverKeyType: 'AzureKeyVault'
-    }
     hardwareFamily: 'Gen5'
+    keys: [
+      {
+        name: '<name>'
+        serverKeyType: 'AzureKeyVault'
+        uri: '<uri>'
+      }
+    ]
     licenseType: 'LicenseIncluded'
     lock: 'CanNotDelete'
     primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
@@ -381,7 +382,6 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "administratorLogin": {
       "value": "adminUserName"
     },
@@ -394,7 +394,6 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     "subnetId": {
       "value": "<subnetId>"
     },
-    // Non-required parameters
     "collation": {
       "value": "SQL_Latin1_General_CP1_CI_AS"
     },
@@ -429,14 +428,17 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     "dnsZonePartner": {
       "value": ""
     },
-    "encryptionProtectorObj": {
-      "value": {
-        "serverKeyName": "<serverKeyName>",
-        "serverKeyType": "AzureKeyVault"
-      }
-    },
     "hardwareFamily": {
       "value": "Gen5"
+    },
+    "keys": {
+      "value": [
+        {
+          "name": "<name>",
+          "serverKeyType": "AzureKeyVault",
+          "uri": "<uri>"
+        }
+      ]
     },
     "licenseType": {
       "value": "LicenseIncluded"
