@@ -14,7 +14,7 @@ This module deploys DataProtection BackupVaults.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DataProtection/backupVaults` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-05-01/backupVaults) |
 | `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-05-01/backupVaults/backupPolicies) |
@@ -365,55 +365,8 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
           ]
           objectType: 'BackupPolicy'
           policyRules: [
-            {
-              backupParameters: {
-                backupType: 'Incremental'
-                objectType: 'AzureBackupParams'
-              }
-              dataStore: {
-                dataStoreType: 'OperationalStore'
-                objectType: 'DataStoreInfoBase'
-              }
-              name: 'BackupDaily'
-              objectType: 'AzureBackupRule'
-              trigger: {
-                objectType: 'ScheduleBasedTriggerContext'
-                schedule: {
-                  repeatingTimeIntervals: [
-                    'R/2022-05-31T23:30:00+01:00/P1D'
-                  ]
-                  timeZone: 'W. Europe Standard Time'
-                }
-                taggingCriteria: [
-                  {
-                    isDefault: true
-                    taggingPriority: 99
-                    tagInfo: {
-                      id: 'Default_'
-                      tagName: 'Default'
-                    }
-                  }
-                ]
-              }
-            }
-            {
-              isDefault: true
-              lifecycles: [
-                {
-                  deleteAfter: {
-                    duration: 'P7D'
-                    objectType: 'AbsoluteDeleteOption'
-                  }
-                  sourceDataStore: {
-                    dataStoreType: 'OperationalStore'
-                    objectType: 'DataStoreInfoBase'
-                  }
-                  targetDataStoreCopySettings: []
-                }
-              ]
-              name: 'Default'
-              objectType: 'AzureRetentionRule'
-            }
+            'System.Management.Automation.OrderedHashtable'
+            'System.Management.Automation.OrderedHashtable'
           ]
         }
       }
