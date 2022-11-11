@@ -126,7 +126,7 @@ function Remove-Deployment {
 
         # Resource IDs starting with a prefix in the below list are ignored by the removal
         $resourceIdPrefixesToIgnore = @(
-            # '/subscriptions/{0}/providers/Microsoft.Security/autoProvisioningSettings/' -f $azContext.Subscription.Id
+            '/subscriptions/{0}/providers/Microsoft.Security/autoProvisioningSettings/' -f $azContext.Subscription.Id
             # '/subscriptions/{0}/providers/Microsoft.Security/deviceSecurityGroups/' -f $azContext.Subscription.Id
             # '/subscriptions/{0}/providers/Microsoft.Security/iotSecuritySolutions/' -f $azContext.Subscription.Id
             '/subscriptions/{0}/providers/Microsoft.Security/pricings/' -f $azContext.Subscription.Id
