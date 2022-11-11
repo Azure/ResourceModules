@@ -16,19 +16,23 @@ param keyVaultName string
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
+var sqlMiVnetAddressPrefix = '10.0.0.0/16'
+var sqlMiSubnetAddressPrefix = '10.0.0.0/24'
+var sqlMiSubnetAddressPrefixString = replace(replace(sqlMiSubnetAddressPrefix, '.', '-'), '/', '-')
+
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
   name: networkSecurityGroupName
   location: location
   properties: {
     securityRules: [
       {
-        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-sqlmgmt-in-10-0-0-0-24-v10'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-sqlmgmt-in-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
           description: 'Allow MI provisioning Control Plane Deployment and Authentication Service'
           protocol: 'Tcp'
           sourcePortRange: '*'
           sourceAddressPrefix: 'SqlManagement'
-          destinationAddressPrefix: '10.0.0.0/24'
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
           access: 'Allow'
           priority: 100
           direction: 'Inbound'
@@ -42,13 +46,13 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-0
         }
       }
       {
-        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-corpsaw-in-10-0-0-0-24-v10'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-corpsaw-in-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
           description: 'Allow MI Supportability'
           protocol: 'Tcp'
           sourcePortRange: '*'
           sourceAddressPrefix: 'CorpNetSaw'
-          destinationAddressPrefix: '10.0.0.0/24'
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
           access: 'Allow'
           priority: 101
           direction: 'Inbound'
@@ -60,13 +64,13 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-0
         }
       }
       {
-        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-corppublic-in-10-0-0-0-24-v10'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-corppublic-in-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
           description: 'Allow MI Supportability through Corpnet ranges'
           protocol: 'Tcp'
           sourcePortRange: '*'
           sourceAddressPrefix: 'CorpNetPublic'
-          destinationAddressPrefix: '10.0.0.0/24'
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
           access: 'Allow'
           priority: 102
           direction: 'Inbound'
@@ -77,40 +81,40 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-0
         }
       }
       {
-        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-healthprobe-in-10-0-0-0-24-v10'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-healthprobe-in-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
           description: 'Allow Azure Load Balancer inbound traffic'
           protocol: '*'
           sourcePortRange: '*'
           destinationPortRange: '*'
           sourceAddressPrefix: 'AzureLoadBalancer'
-          destinationAddressPrefix: '10.0.0.0/24'
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
           access: 'Allow'
           priority: 103
           direction: 'Inbound'
         }
       }
       {
-        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-internal-in-10-0-0-0-24-v10'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-internal-in-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
           description: 'Allow MI internal inbound traffic'
           protocol: '*'
           sourcePortRange: '*'
           destinationPortRange: '*'
-          sourceAddressPrefix: '10.0.0.0/24'
-          destinationAddressPrefix: '10.0.0.0/24'
+          sourceAddressPrefix: sqlMiSubnetAddressPrefix
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
           access: 'Allow'
           priority: 104
           direction: 'Inbound'
         }
       }
       {
-        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-services-out-10-0-0-0-24-v10'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-services-out-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
           description: 'Allow MI services outbound traffic over https'
           protocol: 'Tcp'
           sourcePortRange: '*'
-          sourceAddressPrefix: '10.0.0.0/24'
+          sourceAddressPrefix: sqlMiSubnetAddressPrefix
           destinationAddressPrefix: 'AzureCloud'
           access: 'Allow'
           priority: 100
@@ -122,14 +126,14 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-0
         }
       }
       {
-        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-internal-out-10-0-0-0-24-v10'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-internal-out-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
           description: 'Allow MI internal outbound traffic'
           protocol: '*'
           sourcePortRange: '*'
           destinationPortRange: '*'
-          sourceAddressPrefix: '10.0.0.0/24'
-          destinationAddressPrefix: '10.0.0.0/24'
+          sourceAddressPrefix: sqlMiSubnetAddressPrefix
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
           access: 'Allow'
           priority: 101
           direction: 'Outbound'
@@ -146,9 +150,9 @@ resource routeTable 'Microsoft.Network/routeTables@2021-08-01' = {
     disableBgpRoutePropagation: false
     routes: [
       {
-        name: 'Microsoft.Sql-managedInstances_UseOnly_subnet-10-0-0-0-24-to-vnetlocal'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_subnet-${sqlMiSubnetAddressPrefixString}-to-vnetlocal'
         properties: {
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: sqlMiSubnetAddressPrefix
           nextHopType: 'VnetLocal'
           hasBgpOverride: false
         }
@@ -259,14 +263,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/16'
+        sqlMiVnetAddressPrefix
       ]
     }
     subnets: [
       {
         name: 'ManagedInstance'
         properties: {
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: sqlMiSubnetAddressPrefix
           routeTable: {
             id: routeTable.id
           }

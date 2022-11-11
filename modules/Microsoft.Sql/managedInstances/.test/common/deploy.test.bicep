@@ -92,7 +92,6 @@ module testDeployment '../../deploy.bicep' = {
     hardwareFamily: 'Gen5'
     keys: [
       {
-        // name: resourceGroupResources.outputs.keyVaultKeyName
         name: '${resourceGroupResources.outputs.keyVaultName}_${resourceGroupResources.outputs.keyVaultKeyName}_${last(split(resourceGroupResources.outputs.keyVaultEncryptionKeyUrl, '/'))}'
         serverKeyType: 'AzureKeyVault'
         uri: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
