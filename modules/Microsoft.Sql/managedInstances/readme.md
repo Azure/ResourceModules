@@ -14,7 +14,7 @@ This template deploys a SQL managed instance.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Sql/managedInstances` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances) |
@@ -320,6 +320,10 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     dnsZonePartner: ''
+    encryptionProtectorObj: {
+      serverKeyName: '<serverKeyName>'
+      serverKeyType: 'AzureKeyVault'
+    }
     hardwareFamily: 'Gen5'
     keys: [
       {
@@ -427,6 +431,12 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     },
     "dnsZonePartner": {
       "value": ""
+    },
+    "encryptionProtectorObj": {
+      "value": {
+        "serverKeyName": "<serverKeyName>",
+        "serverKeyType": "AzureKeyVault"
+      }
     },
     "hardwareFamily": {
       "value": "Gen5"
