@@ -10,64 +10,126 @@ param routeTableName string
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
+var sqlMiVnetAddressPrefix = '10.0.0.0/16'
+var sqlMiSubnetAddressPrefix = '10.0.0.0/24'
+var sqlMiSubnetAddressPrefixString = replace(replace(sqlMiSubnetAddressPrefix, '.', '-'), '/', '-')
+
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
   name: networkSecurityGroupName
   location: location
   properties: {
     securityRules: [
       {
-        name: 'allow_tds_inbound'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-sqlmgmt-in-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
-          description: 'Allow access to data'
+          description: 'Allow MI provisioning Control Plane Deployment and Authentication Service'
           protocol: 'Tcp'
           sourcePortRange: '*'
-          destinationPortRange: '1433'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationAddressPrefix: '*'
+          sourceAddressPrefix: 'SqlManagement'
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
           access: 'Allow'
-          priority: 1000
+          priority: 100
           direction: 'Inbound'
+          destinationPortRanges: [
+            '9000'
+            '9003'
+            '1438'
+            '1440'
+            '1452'
+          ]
         }
       }
       {
-        name: 'allow_redirect_inbound'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-corpsaw-in-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
-          description: 'Allow inbound redirect traffic to Managed Instance inside the virtual network'
+          description: 'Allow MI Supportability'
           protocol: 'Tcp'
           sourcePortRange: '*'
-          destinationPortRange: '11000-11999'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationAddressPrefix: '*'
+          sourceAddressPrefix: 'CorpNetSaw'
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
           access: 'Allow'
-          priority: 1100
+          priority: 101
           direction: 'Inbound'
+          destinationPortRanges: [
+            '9000'
+            '9003'
+            '1440'
+          ]
         }
       }
       {
-        name: 'deny_all_inbound'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-corppublic-in-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
-          description: 'Deny all other inbound traffic'
+          description: 'Allow MI Supportability through Corpnet ranges'
+          protocol: 'Tcp'
+          sourcePortRange: '*'
+          sourceAddressPrefix: 'CorpNetPublic'
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
+          access: 'Allow'
+          priority: 102
+          direction: 'Inbound'
+          destinationPortRanges: [
+            '9000'
+            '9003'
+          ]
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-healthprobe-in-${sqlMiSubnetAddressPrefixString}-v10'
+        properties: {
+          description: 'Allow Azure Load Balancer inbound traffic'
           protocol: '*'
           sourcePortRange: '*'
           destinationPortRange: '*'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: '*'
-          access: 'Deny'
-          priority: 4096
+          sourceAddressPrefix: 'AzureLoadBalancer'
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
+          access: 'Allow'
+          priority: 103
           direction: 'Inbound'
         }
       }
       {
-        name: 'deny_all_outbound'
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-internal-in-${sqlMiSubnetAddressPrefixString}-v10'
         properties: {
-          description: 'Deny all other outbound traffic'
+          description: 'Allow MI internal inbound traffic'
           protocol: '*'
           sourcePortRange: '*'
           destinationPortRange: '*'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: '*'
-          access: 'Deny'
-          priority: 4096
+          sourceAddressPrefix: sqlMiSubnetAddressPrefix
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
+          access: 'Allow'
+          priority: 104
+          direction: 'Inbound'
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-services-out-${sqlMiSubnetAddressPrefixString}-v10'
+        properties: {
+          description: 'Allow MI services outbound traffic over https'
+          protocol: 'Tcp'
+          sourcePortRange: '*'
+          sourceAddressPrefix: sqlMiSubnetAddressPrefix
+          destinationAddressPrefix: 'AzureCloud'
+          access: 'Allow'
+          priority: 100
+          direction: 'Outbound'
+          destinationPortRanges: [
+            '443'
+            '12000'
+          ]
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-internal-out-${sqlMiSubnetAddressPrefixString}-v10'
+        properties: {
+          description: 'Allow MI internal outbound traffic'
+          protocol: '*'
+          sourcePortRange: '*'
+          destinationPortRange: '*'
+          sourceAddressPrefix: sqlMiSubnetAddressPrefix
+          destinationAddressPrefix: sqlMiSubnetAddressPrefix
+          access: 'Allow'
+          priority: 101
           direction: 'Outbound'
         }
       }
@@ -80,6 +142,112 @@ resource routeTable 'Microsoft.Network/routeTables@2021-08-01' = {
   location: location
   properties: {
     disableBgpRoutePropagation: false
+    routes: [
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_subnet-${sqlMiSubnetAddressPrefixString}-to-vnetlocal'
+        properties: {
+          addressPrefix: sqlMiSubnetAddressPrefix
+          nextHopType: 'VnetLocal'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-Storage'
+        properties: {
+          addressPrefix: 'Storage'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-SqlManagement'
+        properties: {
+          addressPrefix: 'SqlManagement'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-AzureMonitor'
+        properties: {
+          addressPrefix: 'AzureMonitor'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-CorpNetSaw'
+        properties: {
+          addressPrefix: 'CorpNetSaw'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-CorpNetPublic'
+        properties: {
+          addressPrefix: 'CorpNetPublic'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-AzureActiveDirectory'
+        properties: {
+          addressPrefix: 'AzureActiveDirectory'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-AzureCloud.westeurope'
+        properties: {
+          addressPrefix: 'AzureCloud.westeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-AzureCloud.northeurope'
+        properties: {
+          addressPrefix: 'AzureCloud.northeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-Storage.westeurope'
+        properties: {
+          addressPrefix: 'Storage.westeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-Storage.northeurope'
+        properties: {
+          addressPrefix: 'Storage.northeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-EventHub.westeurope'
+        properties: {
+          addressPrefix: 'EventHub.westeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+      {
+        name: 'Microsoft.Sql-managedInstances_UseOnly_mi-EventHub.northeurope'
+        properties: {
+          addressPrefix: 'EventHub.northeurope'
+          nextHopType: 'Internet'
+          hasBgpOverride: false
+        }
+      }
+    ]
   }
 }
 
@@ -89,14 +257,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/16'
+        sqlMiVnetAddressPrefix
       ]
     }
     subnets: [
       {
         name: 'ManagedInstance'
         properties: {
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: sqlMiSubnetAddressPrefix
           routeTable: {
             id: routeTable.id
           }
