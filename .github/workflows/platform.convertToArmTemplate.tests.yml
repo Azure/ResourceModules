@@ -45,7 +45,7 @@ jobs:
             }
           }
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
           files: 'utilities/tools/tests/conversion-testResults-${{ matrix.tags }}.xml'
