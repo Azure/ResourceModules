@@ -25,6 +25,7 @@ This module deploys a recovery service vault.
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers/protectedItems) |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupPolicies) |
 | `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupstorageconfig) |
+| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | [2022-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-08-01/vaults/replicationAlertSettings) |
 | `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics) |
 | `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics/replicationProtectionContainers) |
 | `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
@@ -59,6 +60,7 @@ This module deploys a recovery service vault.
 | `monitoringSettings` | object | `{object}` |  | Monitoring Settings of the vault. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `protectionContainers` | _[protectionContainers](protectionContainers/readme.md)_ array | `[]` |  | List of all protection containers. |
+| `replicationAlertSettings` | _[replicationAlertSettings](replicationAlertSettings/readme.md)_ object | `{object}` |  | Replication alert settings. |
 | `replicationFabrics` | _[replicationFabrics](replicationFabrics/readme.md)_ array | `[]` |  | List of all replication fabrics. |
 | `replicationPolicies` | _[replicationPolicies](replicationPolicies/readme.md)_ array | `[]` |  | List of all replication policies. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -1191,6 +1193,13 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    replicationAlertSettings: {
+      customEmailAddresses: [
+        'test.user@testcompany.com'
+      ]
+      locale: 'en-US'
+      sendToOwners: 'Send'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -1513,6 +1522,15 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
+    },
+    "replicationAlertSettings": {
+      "value": {
+        "customEmailAddresses": [
+          "test.user@testcompany.com"
+        ],
+        "locale": "en-US",
+        "sendToOwners": "Send"
+      }
     },
     "roleAssignments": {
       "value": [
