@@ -381,10 +381,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csmazure'
+  name: '${uniqueString(deployment().name)}-test-csmaz'
   params: {
     // Required parameters
-    name: '<<namePrefix>>csmazure001'
+    name: '<<namePrefix>>csmaz001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -494,7 +494,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>csmazure001"
+      "value": "<<namePrefix>>csmaz001"
     },
     "primaryAgentPoolProfile": {
       "value": [
