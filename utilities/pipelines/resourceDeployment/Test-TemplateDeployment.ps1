@@ -122,9 +122,9 @@ function Test-TemplateDeployment {
         Write-Verbose "Testing with deployment name [$deploymentName]" -Verbose
         $DeploymentInputs['DeploymentName'] = $deploymentName
 
-        #######################
-        ## INVOKE DEPLOYMENT ##
-        #######################
+        #################
+        ## INVOKE TEST ##
+        #################
         switch ($deploymentScope) {
             'resourceGroup' {
                 if (-not [String]::IsNullOrEmpty($subscriptionId)) {
