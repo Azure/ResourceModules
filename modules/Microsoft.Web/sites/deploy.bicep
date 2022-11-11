@@ -10,9 +10,11 @@ param location string = resourceGroup().location
 
 @description('Required. Type of site to deploy.')
 @allowed([
-  'functionapp'
-  'functionapp,linux'
-  'app'
+  'functionapp' // function app windows os
+  'functionapp,linux' // function app linux os
+  'functionapp,workflowapp' // logic app workflow
+  'functionapp,workflowapp,linux' // logic app docker container
+  'app' // normal web app
 ])
 param kind string
 
@@ -33,6 +35,9 @@ param systemAssignedIdentity bool = false
 
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
+
+@description('Optional. The resource ID of the assigned identity to be used to access a key vault with.')
+param keyVaultAccessIdentityResourceId string = ''
 
 @description('Optional. Checks if Customer provided storage account is required.')
 param storageAccountRequired bool = false
@@ -194,6 +199,7 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
       id: appServiceEnvironmentId
     } : null
     storageAccountRequired: storageAccountRequired
+    keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId: null
     virtualNetworkSubnetId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
     siteConfig: siteConfig
   }

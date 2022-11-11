@@ -345,19 +345,19 @@ runs:
           $res = New-TemplateDeployment @functionInput -Verbose
 
           # Get deployment name
-          Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
+          Write-Output ('{0}={1}' -f 'deploymentName', $res.deploymentName) >> $env:GITHUB_OUTPUT
 
           # Populate further outputs
           $deploymentOutputHash = @{}
 
           foreach ($outputKey in $res.deploymentOutput.Keys) {
-            Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+            Write-Output ('{0}={1}' -f 'outputKey', $res.deploymentOutput[$outputKey].Value) >> $env:GITHUB_OUTPUT
             $deploymentOutputHash.add($outputKey, $res.deploymentOutput[$outputKey].Value)
           }
 
           $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
           Write-Verbose "Deployment output: $deploymentOutput" -Verbose
-          Write-Output ('::set-output name={0}::{1}' -f 'deploymentOutput', $deploymentOutput)
+          Write-Output ('{0}={1}' -f 'deploymentOutput', $deploymentOutput) >> $env:GITHUB_OUTPUT
 
           if ($res.ContainsKey('exception')) {
             # Happens only if there is an exception

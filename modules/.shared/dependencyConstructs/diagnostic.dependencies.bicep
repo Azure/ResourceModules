@@ -3,6 +3,7 @@
 // ========== //
 
 @description('Required. The name of the storage account to create.')
+@maxLength(24)
 param storageAccountName string
 
 @description('Required. The name of the log analytics workspace to create.')

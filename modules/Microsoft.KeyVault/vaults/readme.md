@@ -21,8 +21,8 @@ This module deploys a key vault and its child resources.
 | `Microsoft.KeyVault/vaults/accessPolicies` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies) |
 | `Microsoft.KeyVault/vaults/keys` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys) |
 | `Microsoft.KeyVault/vaults/secrets` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -394,7 +394,7 @@ The following module usage examples are retrieved from the content of the files 
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-kvvcom'
   params: {
-    name: '<<namePrefix>>kvvcom001'
+    name: '<<namePrefix>>kvvcom002'
     accessPolicies: [
       {
         objectId: '<objectId>'
@@ -521,7 +521,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>kvvcom001"
+      "value": "<<namePrefix>>kvvcom002"
     },
     "accessPolicies": {
       "value": [
@@ -679,7 +679,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-kvvmin'
   params: {
-    name: '<<namePrefix>>kvvmin001'
+    name: '<<namePrefix>>kvvmin002'
   }
 }
 ```
@@ -697,7 +697,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>kvvmin001"
+      "value": "<<namePrefix>>kvvmin002"
     }
   }
 }

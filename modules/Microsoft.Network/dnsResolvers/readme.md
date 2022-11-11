@@ -16,9 +16,9 @@ This module deploys Network DnsResolvers.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/dnsResolvers` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates) |
-| `Microsoft.Network/dnsResolvers/inboundEndpoints` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/dnsResolvers) |
-| `Microsoft.Network/dnsResolvers/outboundEndpoints` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/dnsResolvers) |
+| `Microsoft.Network/dnsResolvers` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsResolvers) |
+| `Microsoft.Network/dnsResolvers/inboundEndpoints` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsResolvers/inboundEndpoints) |
+| `Microsoft.Network/dnsResolvers/outboundEndpoints` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsResolvers/outboundEndpoints) |
 
 ## Parameters
 

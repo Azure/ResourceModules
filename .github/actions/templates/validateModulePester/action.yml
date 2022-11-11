@@ -118,7 +118,7 @@ runs:
         $outputPathFile = 'testResults.xml'
         $outputPath = Join-Path $outputPathDirectory $outputPathFile
         Write-Verbose "Pester tests output: $outputPath" -Verbose
-        Write-Output ('::set-output name={0}::{1}' -f 'outputPath', $outputPath)
+        Write-Output ('{0}={1}' -f 'outputPath', $outputPath) >> $env:GITHUB_OUTPUT
 
         # --------------------- #
         # Invoke Pester test(s) #
