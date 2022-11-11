@@ -181,7 +181,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
             type: 'ExternalAddress'
           }
         ]
-        name: '<<namePrefix>>-nnwcom-001'
+        name: '<<namePrefix>>-nnwcom-cm-001'
         testConfigurations: [
           {
             httpConfiguration: {
@@ -228,7 +228,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       }
       {
         formatVersion: 1
-        name: '<<namePrefix>>-nsg-apgw-flowlog'
+        name: '<<namePrefix>>-nnwcom-fl-001'
         retentionInDays: 8
         storageId: '<storageId>'
         targetResourceId: '<targetResourceId>'
@@ -278,7 +278,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
               "type": "ExternalAddress"
             }
           ],
-          "name": "<<namePrefix>>-nnwcom-001",
+          "name": "<<namePrefix>>-nnwcom-cm-001",
           "testConfigurations": [
             {
               "httpConfiguration": {
@@ -327,7 +327,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         },
         {
           "formatVersion": 1,
-          "name": "<<namePrefix>>-nsg-apgw-flowlog",
+          "name": "<<namePrefix>>-nnwcom-fl-001",
           "retentionInDays": 8,
           "storageId": "<storageId>",
           "targetResourceId": "<targetResourceId>",

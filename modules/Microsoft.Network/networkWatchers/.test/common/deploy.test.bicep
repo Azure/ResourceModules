@@ -64,7 +64,7 @@ module testDeployment '../../deploy.bicep' = {
     location: testLocation
     connectionMonitors: [
       {
-        name: '<<namePrefix>>-${serviceShort}-001'
+        name: '<<namePrefix>>-${serviceShort}-cm-001'
         endpoints: [
           {
             name: '<<namePrefix>>-subnet-001(${resourceGroup.name})'
@@ -123,7 +123,7 @@ module testDeployment '../../deploy.bicep' = {
       }
       {
         formatVersion: 1
-        name: '<<namePrefix>>-nsg-apgw-flowlog'
+        name: '<<namePrefix>>-${serviceShort}-fl-001'
         retentionInDays: 8
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
         targetResourceId: resourceGroupResources.outputs.secondNetworkSecurityGroupResourceId
