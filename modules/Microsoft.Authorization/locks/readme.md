@@ -14,7 +14,7 @@ This module deploys Authorization Locks.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 
 ## Parameters
 
@@ -31,6 +31,7 @@ This module deploys Authorization Locks.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` | Location for all resources. |
 | `notes` | string | `[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]` | The decription attached to the lock. |
+| `owners` | array | `[]` | The owners of the lock. |
 | `resourceGroupName` | string | `''` | Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group. |
 | `subscriptionId` | string | `[subscription().id]` | Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription. |
 
@@ -67,6 +68,11 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
     // Required parameters
     level: 'CanNotDelete'
     // Non-required parameters
+    owners: [
+      {
+        applicationId: '<applicationId>'
+      }
+    ]
     resourceGroupName: '<resourceGroupName>'
     subscriptionId: '<subscriptionId>'
   }
@@ -90,6 +96,13 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     // Non-required parameters
+    "owners": {
+      "value": [
+        {
+          "applicationId": "<applicationId>"
+        }
+      ]
+    },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
     },

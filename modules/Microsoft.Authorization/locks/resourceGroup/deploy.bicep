@@ -16,6 +16,9 @@ param notes string = level == 'CanNotDelete' ? 'Cannot delete resource or child 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. The owners of the lock.')
+param owners array = []
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -28,11 +31,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource lock 'Microsoft.Authorization/locks@2017-04-01' = {
+resource lock 'Microsoft.Authorization/locks@2020-05-01' = {
   name: name
   properties: {
     level: level
     notes: notes
+    owners: owners
   }
 }
 
