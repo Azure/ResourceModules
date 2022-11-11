@@ -30,6 +30,15 @@ variables:
   moduleTestFilePath: 'utilities/pipelines/staticValidation/module.tests.ps1'
 
   ######################################
+  # Platform pipeline settings
+  ######################################
+
+  # Deployment removal
+  # ==================
+  # Deployments are only moved if they are not running or failed - AND - if they are not older than the below threshold
+  maxDeploymentRetentionInDays: 14
+
+  ######################################
   # Validation deployment settings
   ######################################
 

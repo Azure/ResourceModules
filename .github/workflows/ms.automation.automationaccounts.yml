@@ -58,7 +58,7 @@ jobs:
         with:
           modulePath: '${{ env.modulePath }}'
     outputs:
-      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      removeDeployment: ${{ (fromJson(steps.get-workflow-param.outputs.workflowInput)).removeDeployment }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
 
   #########################
