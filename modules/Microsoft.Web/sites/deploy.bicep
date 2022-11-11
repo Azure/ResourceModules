@@ -10,9 +10,11 @@ param location string = resourceGroup().location
 
 @description('Required. Type of site to deploy.')
 @allowed([
-  'functionapp'
-  'functionapp,linux'
-  'app'
+  'functionapp' // function app windows os
+  'functionapp,linux' // function app linux os
+  'functionapp,workflowapp' // logic app workflow
+  'functionapp,workflowapp,linux' // logic app docker container
+  'app' // normal web app
 ])
 param kind string
 

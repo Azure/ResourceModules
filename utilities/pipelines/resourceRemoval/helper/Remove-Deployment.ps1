@@ -74,6 +74,8 @@ function Remove-Deployment {
     }
 
     process {
+        $azContext = Get-AzContext
+
         # Prepare data
         # ============
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $TemplateFilePath
@@ -117,12 +119,16 @@ function Remove-Deployment {
         # ===============================
         $dependencyResourceNames = Get-DependencyResourceNameList
 
-        if ($resourcesToIgnore = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -in $dependencyResourceNames }) {
+        $resourceIdsToIgnore = @(
+            '/subscriptions/{0}/resourceGroups/NetworkWatcherRG' -f $azContext.Subscription.Id
+        )
+
+        if ($resourcesToIgnore = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -in $dependencyResourceNames -or $_.resourceId -in $resourceIdsToIgnore }) {
             Write-Verbose 'Resources excluded from removal:' -Verbose
             $resourcesToIgnore | ForEach-Object { Write-Verbose ('- Ignore [{0}]' -f $_.resourceId) -Verbose }
         }
 
-        [array] $resourcesToRemove = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -notin $dependencyResourceNames }
+        [array] $resourcesToRemove = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -notin $dependencyResourceNames -and $_.resourceId -notin $resourceIdsToIgnore }
         Write-Verbose ('Total number of deployments after filtering all dependency resources [{0}]' -f $resourcesToRemove.Count) -Verbose
 
         # Order resources
