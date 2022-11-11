@@ -107,7 +107,7 @@ function Test-TemplateDeployment {
             $providerNamespaceShort = ($providerNamespace -creplace '[^A-Z]').ToLower() # e.g., ac
 
             $resourceType = $shortPathElem[1] # e.g., configurationStores
-            $resourceTypeShort = ('{0}{1}' -f ($resourceType.ToLower())[0..2], ($resourceType -creplace '[^A-Z]')).ToLower() # e.g. cs
+            $resourceTypeShort = ('{0}{1}' -f ($resourceType.ToLower())[0], ($resourceType -creplace '[^A-Z]')).ToLower() # e.g. cs
 
             $testFolderShort = Split-Path (Split-Path $templateFilePath -Parent) -Leaf  # e.g., common
 
