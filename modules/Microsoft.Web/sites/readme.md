@@ -507,13 +507,13 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
-        service: 'sites'
-        subnetResourceId: '<subnetResourceId>'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
+        service: 'sites'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     roleAssignments: [
@@ -787,13 +787,13 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     httpsOnly: true
     privateEndpoints: [
       {
-        service: 'sites'
-        subnetResourceId: '<subnetResourceId>'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
+        service: 'sites'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     roleAssignments: [
