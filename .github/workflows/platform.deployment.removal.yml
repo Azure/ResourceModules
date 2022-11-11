@@ -41,9 +41,9 @@ jobs:
       handleSubscriptionScope: ${{ (fromJson(steps.get-workflow-param.outputs.workflowInput)).handleSubscriptionScope }}
       handleManagementGroupScope: ${{ (fromJson(steps.get-workflow-param.outputs.workflowInput)).handleManagementGroupScope }}
 
-  ################
-  #   Removale   #
-  ################
+  ###############
+  #   Removal   #
+  ###############
   job_cleanup_subscription_deployments:
     runs-on: ubuntu-20.04
     name: 'Remove Subscription deployments'
