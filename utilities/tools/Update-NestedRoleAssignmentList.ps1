@@ -148,3 +148,5 @@ function Update-NestedRoleAssignmentList {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
+
+Update-NestedRoleAssignmentList
