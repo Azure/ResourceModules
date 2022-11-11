@@ -16,7 +16,8 @@ With this module you can create policy exemptions across the management group, s
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyExemptions` | [2020-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions) |
+| `Microsoft.Authorization/policyExemptions` | [2022-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-07-01-preview/policyExemptions) |
+| `Microsoft.Authorization/policyExemptions` | [2020-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/policyExemptions) |
 
 ## Parameters
 
@@ -31,6 +32,7 @@ With this module you can create policy exemptions across the management group, s
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `assignmentScopeValidation` | string | `''` | `['', Default, DoNotValidate]` | The option whether validate the exemption is at or under the assignment scope. |
 | `description` | string | `''` |  | The description of the policy exemption. |
 | `displayName` | string | `''` |  | The display name of the policy exemption. Maximum length is 128 characters. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -41,6 +43,7 @@ With this module you can create policy exemptions across the management group, s
 | `metadata` | object | `{object}` |  | The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `policyDefinitionReferenceIds` | array | `[]` |  | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
 | `resourceGroupName` | string | `''` |  | The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter. |
+| `resourceSelectors` | array | `[]` |  | The resource selector list to filter policies by resource properties. |
 | `subscriptionId` | string | `''` |  | The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter. |
 
 
@@ -175,6 +178,8 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apemgcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
+    assignmentScopeValidation: 'Default'
+    description: 'My description'
     displayName: '[Display Name] policy exempt (management group scope)'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
@@ -182,6 +187,23 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     metadata: {
       category: 'Security'
     }
+    policyDefinitionReferenceIds: [
+      'limitSku'
+      'limitType'
+    ]
+    resourceSelectors: [
+      {
+        name: 'TemporaryMitigation'
+        selectors: [
+          {
+            in: [
+              'westcentralus'
+            ]
+            kind: 'resourceLocation'
+          }
+        ]
+      }
+    ]
   }
 }
 ```
@@ -206,6 +228,12 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
+    "assignmentScopeValidation": {
+      "value": "Default"
+    },
+    "description": {
+      "value": "My description"
+    },
     "displayName": {
       "value": "[Display Name] policy exempt (management group scope)"
     },
@@ -222,6 +250,27 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": {
         "category": "Security"
       }
+    },
+    "policyDefinitionReferenceIds": {
+      "value": [
+        "limitSku",
+        "limitType"
+      ]
+    },
+    "resourceSelectors": {
+      "value": [
+        {
+          "name": "TemporaryMitigation",
+          "selectors": [
+            {
+              "in": [
+                "westcentralus"
+              ],
+              "kind": "resourceLocation"
+            }
+          ]
+        }
+      ]
     }
   }
 }
@@ -287,13 +336,32 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apergcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
+    assignmentScopeValidation: 'Default'
+    description: 'My description'
     displayName: '[Display Name] policy exempt (resource group scope)'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     metadata: {
       category: 'Security'
     }
+    policyDefinitionReferenceIds: [
+      'limitSku'
+      'limitType'
+    ]
     resourceGroupName: '<resourceGroupName>'
+    resourceSelectors: [
+      {
+        name: 'TemporaryMitigation'
+        selectors: [
+          {
+            in: [
+              'westcentralus'
+            ]
+            kind: 'resourceLocation'
+          }
+        ]
+      }
+    ]
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -319,6 +387,12 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
+    "assignmentScopeValidation": {
+      "value": "Default"
+    },
+    "description": {
+      "value": "My description"
+    },
     "displayName": {
       "value": "[Display Name] policy exempt (resource group scope)"
     },
@@ -333,8 +407,29 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         "category": "Security"
       }
     },
+    "policyDefinitionReferenceIds": {
+      "value": [
+        "limitSku",
+        "limitType"
+      ]
+    },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
+    },
+    "resourceSelectors": {
+      "value": [
+        {
+          "name": "TemporaryMitigation",
+          "selectors": [
+            {
+              "in": [
+                "westcentralus"
+              ],
+              "kind": "resourceLocation"
+            }
+          ]
+        }
+      ]
     },
     "subscriptionId": {
       "value": "<subscriptionId>"
@@ -413,12 +508,31 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apesubcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
+    assignmentScopeValidation: 'Default'
+    description: 'My description'
     displayName: '[Display Name] policy exempt (subscription scope)'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     metadata: {
       category: 'Security'
     }
+    policyDefinitionReferenceIds: [
+      'limitSku'
+      'limitType'
+    ]
+    resourceSelectors: [
+      {
+        name: 'TemporaryMitigation'
+        selectors: [
+          {
+            in: [
+              'westcentralus'
+            ]
+            kind: 'resourceLocation'
+          }
+        ]
+      }
+    ]
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -444,6 +558,12 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
+    "assignmentScopeValidation": {
+      "value": "Default"
+    },
+    "description": {
+      "value": "My description"
+    },
     "displayName": {
       "value": "[Display Name] policy exempt (subscription scope)"
     },
@@ -457,6 +577,27 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": {
         "category": "Security"
       }
+    },
+    "policyDefinitionReferenceIds": {
+      "value": [
+        "limitSku",
+        "limitType"
+      ]
+    },
+    "resourceSelectors": {
+      "value": [
+        {
+          "name": "TemporaryMitigation",
+          "selectors": [
+            {
+              "in": [
+                "westcentralus"
+              ],
+              "kind": "resourceLocation"
+            }
+          ]
+        }
+      ]
     },
     "subscriptionId": {
       "value": "<subscriptionId>"

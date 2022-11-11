@@ -51,5 +51,24 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
     }
     resourceGroupName: resourceGroup.name
     subscriptionId: subscription().subscriptionId
+    assignmentScopeValidation: 'Default'
+    description: 'My description'
+    resourceSelectors: [
+      {
+        name: 'TemporaryMitigation'
+        selectors: [
+          {
+            kind: 'resourceLocation'
+            in: [
+              'westcentralus'
+            ]
+          }
+        ]
+      }
+    ]
+    policyDefinitionReferenceIds: [
+      'limitSku'
+      'limitType'
+    ]
   }
 }

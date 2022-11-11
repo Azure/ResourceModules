@@ -41,5 +41,24 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
     metadata: {
       category: 'Security'
     }
+    assignmentScopeValidation: 'Default'
+    description: 'My description'
+    resourceSelectors: [
+      {
+        name: 'TemporaryMitigation'
+        selectors: [
+          {
+            kind: 'resourceLocation'
+            in: [
+              'westcentralus'
+            ]
+          }
+        ]
+      }
+    ]
+    policyDefinitionReferenceIds: [
+      'limitSku'
+      'limitType'
+    ]
   }
 }

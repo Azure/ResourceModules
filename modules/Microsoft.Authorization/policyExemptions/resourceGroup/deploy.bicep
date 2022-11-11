@@ -36,6 +36,17 @@ param subscriptionId string = subscription().subscriptionId
 @sys.description('Optional. The name of the resource group to be exempted from the policy assignment. If not provided, will use the current scope for deployment.')
 param resourceGroupName string = resourceGroup().name
 
+@sys.description('Optional. The option whether validate the exemption is at or under the assignment scope.')
+@allowed([
+  ''
+  'Default'
+  'DoNotValidate'
+])
+param assignmentScopeValidation string = ''
+
+@sys.description('Optional. The resource selector list to filter policies by resource properties.')
+param resourceSelectors array = []
+
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -61,6 +72,8 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
     policyAssignmentId: policyAssignmentId
     policyDefinitionReferenceIds: !empty(policyDefinitionReferenceIds) ? policyDefinitionReferenceIds : []
     expiresOn: !empty(expiresOn) ? expiresOn : null
+    assignmentScopeValidation: !empty(assignmentScopeValidation) ? assignmentScopeValidation : null
+    resourceSelectors: resourceSelectors
   }
 }
 
