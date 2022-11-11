@@ -188,8 +188,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       category: 'Security'
     }
     policyDefinitionReferenceIds: [
-      'limitSku'
-      'limitType'
+      'StorageAccountNetworkACLs'
     ]
     resourceSelectors: [
       {
@@ -253,8 +252,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "policyDefinitionReferenceIds": {
       "value": [
-        "limitSku",
-        "limitType"
+        "StorageAccountNetworkACLs"
       ]
     },
     "resourceSelectors": {
@@ -345,8 +343,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       category: 'Security'
     }
     policyDefinitionReferenceIds: [
-      'limitSku'
-      'limitType'
+      'StorageAccountNetworkACLs'
     ]
     resourceGroupName: '<resourceGroupName>'
     resourceSelectors: [
@@ -409,8 +406,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "policyDefinitionReferenceIds": {
       "value": [
-        "limitSku",
-        "limitType"
+        "StorageAccountNetworkACLs"
       ]
     },
     "resourceGroupName": {
@@ -517,8 +513,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       category: 'Security'
     }
     policyDefinitionReferenceIds: [
-      'limitSku'
-      'limitType'
+      'StorageAccountNetworkACLs'
     ]
     resourceSelectors: [
       {
@@ -580,8 +575,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "policyDefinitionReferenceIds": {
       "value": [
-        "limitSku",
-        "limitType"
+        "StorageAccountNetworkACLs"
       ]
     },
     "resourceSelectors": {

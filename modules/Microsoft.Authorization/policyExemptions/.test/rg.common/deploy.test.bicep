@@ -67,8 +67,7 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
       }
     ]
     policyDefinitionReferenceIds: [
-      'limitSku'
-      'limitType'
+      'StorageAccountNetworkACLs'
     ]
   }
 }
