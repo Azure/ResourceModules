@@ -300,19 +300,20 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: keyVaultName
   location: location
   properties: {
-    accessPolicies: [
-      {
-        objectId: managedIdentity.properties.principalId
-        permissions: {
-          keys: [
-            'Get'
-            'WrapKey'
-            'UnwrapKey'
-          ]
-        }
-        tenantId: tenant().tenantId
-      }
-    ]
+    // accessPolicies: [
+    //   {
+    //     objectId: managedIdentity.properties.principalId
+    //     permissions: {
+    //       keys: [
+    //         'Get'
+    //         'WrapKey'
+    //         'UnwrapKey'
+    //       ]
+    //     }
+    //     tenantId: tenant().tenantId
+    //   }
+    // ]
+    // enableRbacAuthorization: false
     sku: {
       family: 'A'
       name: 'standard'
@@ -322,8 +323,8 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     enabledForTemplateDeployment: true
     enabledForDiskEncryption: true
     enabledForDeployment: true
-    enableRbacAuthorization: false
-    // accessPolicies: []
+    enableRbacAuthorization: true
+    accessPolicies: []
   }
 
   resource key 'keys@2022-07-01' = {
@@ -334,15 +335,15 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 }
 
-// resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-//   name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
-//   scope: keyVault::key
-//   properties: {
-//     principalId: managedIdentity.properties.principalId
-//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
-//     principalType: 'ServicePrincipal'
-//   }
-// }
+resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
+  scope: keyVault::key
+  properties: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
+    principalType: 'ServicePrincipal'
+  }
+}
 
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
