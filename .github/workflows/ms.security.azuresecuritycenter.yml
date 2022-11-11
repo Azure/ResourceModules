@@ -16,6 +16,7 @@ on:
   push:
     branches:
       - main
+      - users/eriqua/2281-asc-removal
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.security.azuresecuritycenter.yml'
