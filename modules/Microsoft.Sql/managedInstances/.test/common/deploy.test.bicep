@@ -85,10 +85,10 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     dnsZonePartner: ''
-    // encryptionProtectorObj: {
-    //   serverKeyName: '${resourceGroupResources.outputs.keyVaultName}_${resourceGroupResources.outputs.keyVaultKeyName}_${last(split(resourceGroupResources.outputs.keyVaultEncryptionKeyUrl, '/'))}'
-    //   serverKeyType: 'AzureKeyVault'
-    // }
+    encryptionProtectorObj: {
+      serverKeyName: '${resourceGroupResources.outputs.keyVaultName}_${resourceGroupResources.outputs.keyVaultKeyName}_${last(split(resourceGroupResources.outputs.keyVaultEncryptionKeyUrl, '/'))}'
+      serverKeyType: 'AzureKeyVault'
+    }
     hardwareFamily: 'Gen5'
     keys: [
       {
