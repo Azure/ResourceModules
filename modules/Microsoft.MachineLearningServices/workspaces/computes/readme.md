@@ -14,22 +14,25 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.MachineLearningServices/workspaces/computes` | [2022-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-01-01-preview/workspaces/computes) |
+| `Microsoft.MachineLearningServices/workspaces/computes` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-05-01/workspaces/computes) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `computeType` | string | `[AKS, AmlCompute, ComputeInstance, Databricks, DataFactory, DataLakeAnalytics, HDInsight, Kubernetes, SynapseSpark, VirtualMachine]` | Set the object type. |
 | `name` | string |  | Name of the compute. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `machineLearningWorkspaceName` | string | The name of the parent Machine Learning Workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `computeLocation` | string | `[resourceGroup().location]` |  | Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |

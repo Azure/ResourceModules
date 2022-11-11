@@ -21,11 +21,13 @@ This module deploys a deployment script.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Display name of the script to be run. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `arguments` | string | `''` |  | Command-line arguments to pass to the script. Arguments are separated by spaces. |
@@ -48,6 +50,7 @@ This module deploys a deployment script.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` | Do not provide a value! This date value is used to make sure the script run every time the template is deployed. |
@@ -159,20 +162,20 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DeploymentScripts'
+  name: '${uniqueString(deployment().name)}-test-rdscli'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-ds-cli-001'
+    name: '<<namePrefix>>rdscli001'
     // Non-required parameters
-    azCliVersion: '2.15.0'
+    azCliVersion: '2.40.0'
     cleanupPreference: 'Always'
     kind: 'AzureCLI'
     retentionInterval: 'P1D'
     runOnce: false
-    scriptContent: 'echo \'Hello from inside the script\''
+    scriptContent: 'echo \'echo echo echo\''
     timeout: 'PT30M'
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -192,11 +195,11 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-ds-cli-001"
+      "value": "<<namePrefix>>rdscli001"
     },
     // Non-required parameters
     "azCliVersion": {
-      "value": "2.15.0"
+      "value": "2.40.0"
     },
     "cleanupPreference": {
       "value": "Always"
@@ -211,14 +214,14 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
       "value": false
     },
     "scriptContent": {
-      "value": "echo \"Hello from inside the script\""
+      "value": "echo \"echo echo echo\""
     },
     "timeout": {
       "value": "PT30M"
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -236,21 +239,21 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 
 ```bicep
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DeploymentScripts'
+  name: '${uniqueString(deployment().name)}-test-rdsps'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-ds-ps-001'
+    name: '<<namePrefix>>rdsps001'
     // Non-required parameters
-    azPowerShellVersion: '3.0'
+    azPowerShellVersion: '8.0'
     cleanupPreference: 'Always'
     kind: 'AzurePowerShell'
     lock: 'CanNotDelete'
     retentionInterval: 'P1D'
     runOnce: false
-    scriptContent: 'Write-Host 'Running PowerShell from template''
+    scriptContent: 'Write-Host \'The cake is a lie!\''
     timeout: 'PT30M'
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -270,11 +273,11 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-ds-ps-001"
+      "value": "<<namePrefix>>rdsps001"
     },
     // Non-required parameters
     "azPowerShellVersion": {
-      "value": "3.0"
+      "value": "8.0"
     },
     "cleanupPreference": {
       "value": "Always"
@@ -292,14 +295,14 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
       "value": false
     },
     "scriptContent": {
-      "value": "Write-Host 'Running PowerShell from template'"
+      "value": "Write-Host \"The cake is a lie!\""
     },
     "timeout": {
       "value": "PT30M"
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }

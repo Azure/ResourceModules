@@ -79,7 +79,7 @@ var identity = identityType != 'None' ? {
 // ============================= //
 // Existing resources references //
 // ============================= //
-resource machineLearningWorkspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' existing = {
+resource machineLearningWorkspace 'Microsoft.MachineLearningServices/workspaces@2022-05-01' existing = {
   name: machineLearningWorkspaceName
 }
 
@@ -98,7 +98,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/workspaces/computes@2022-01-01-preview' = if (deployCompute == true) {
+resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/workspaces/computes@2022-05-01' = if (deployCompute == true) {
   name: name
   location: location
   tags: empty(resourceId) ? tags : any(null)

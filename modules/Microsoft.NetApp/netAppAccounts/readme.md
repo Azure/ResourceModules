@@ -23,11 +23,13 @@ This template deploys Azure NetApp Files.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the NetApp account. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `capacityPools` | _[capacityPools](capacityPools/readme.md)_ array | `[]` |  | Capacity pools to create. |
@@ -172,9 +174,9 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-NetAppAccounts'
+  name: '${uniqueString(deployment().name)}-test-nanaamin'
   params: {
-    name: '<<namePrefix>>-az-anf-min-001'
+    name: '<<namePrefix>>nanaamin001'
   }
 }
 ```
@@ -192,7 +194,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>-az-anf-min-001"
+      "value": "<<namePrefix>>nanaamin001"
     }
   }
 }
@@ -209,18 +211,18 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-NetAppAccounts'
+  name: '${uniqueString(deployment().name)}-test-nanaanfs3'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-anf-nfs3-001'
+    name: '<<namePrefix>>nanaanfs3001'
     // Non-required parameters
     capacityPools: [
       {
-        name: '<<namePrefix>>-az-anfcp-x-001'
+        name: '<<namePrefix>>-nanaanfs3-cp-001'
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
             roleDefinitionIdOrName: 'Reader'
           }
@@ -239,37 +241,37 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: 'anf3-vol01-nfsv3'
+            name: '<<namePrefix>>-nanaanfs3-vol-001'
             protocolTypes: [
               'NFSv3'
             ]
             roleAssignments: [
               {
                 principalIds: [
-                  '<<deploymentSpId>>'
+                  '<managedIdentityPrincipalId>'
                 ]
                 roleDefinitionIdOrName: 'Reader'
               }
             ]
-            subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004'
+            subnetResourceId: '<subnetResourceId>'
             usageThreshold: 107374182400
           }
           {
-            name: 'anf3-vol02-nfsv3'
+            name: '<<namePrefix>>-nanaanfs3-vol-002'
             protocolTypes: [
               'NFSv3'
             ]
-            subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004'
+            subnetResourceId: '<subnetResourceId>'
             usageThreshold: 107374182400
           }
         ]
       }
       {
-        name: '<<namePrefix>>-az-anfcp-x-002'
+        name: '<<namePrefix>>-nanaanfs3-cp-002'
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
             roleDefinitionIdOrName: 'Reader'
           }
@@ -283,7 +285,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -314,17 +316,17 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-anf-nfs3-001"
+      "value": "<<namePrefix>>nanaanfs3001"
     },
     // Non-required parameters
     "capacityPools": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-anfcp-x-001",
+          "name": "<<namePrefix>>-nanaanfs3-cp-001",
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
               "roleDefinitionIdOrName": "Reader"
             }
@@ -343,37 +345,37 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "anf3-vol01-nfsv3",
+              "name": "<<namePrefix>>-nanaanfs3-vol-001",
               "protocolTypes": [
                 "NFSv3"
               ],
               "roleAssignments": [
                 {
                   "principalIds": [
-                    "<<deploymentSpId>>"
+                    "<managedIdentityPrincipalId>"
                   ],
                   "roleDefinitionIdOrName": "Reader"
                 }
               ],
-              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
+              "subnetResourceId": "<subnetResourceId>",
               "usageThreshold": 107374182400
             },
             {
-              "name": "anf3-vol02-nfsv3",
+              "name": "<<namePrefix>>-nanaanfs3-vol-002",
               "protocolTypes": [
                 "NFSv3"
               ],
-              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
+              "subnetResourceId": "<subnetResourceId>",
               "usageThreshold": 107374182400
             }
           ]
         },
         {
-          "name": "<<namePrefix>>-az-anfcp-x-002",
+          "name": "<<namePrefix>>-nanaanfs3-cp-002",
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
               "roleDefinitionIdOrName": "Reader"
             }
@@ -391,7 +393,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -422,19 +424,20 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-NetAppAccounts'
+  name: '${uniqueString(deployment().name)}-test-nanaanfs41'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-anf-nfs41-001'
+    name: '<<namePrefix>>nanaanfs41001'
     // Non-required parameters
     capacityPools: [
       {
-        name: '<<namePrefix>>-az-anfcp-x-001'
+        name: '<<namePrefix>>-nanaanfs41-cp-001'
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -452,19 +455,20 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: 'anf4-vol01-nfsv41'
+            name: '<<namePrefix>>-nanaanfs41-vol-001'
             protocolTypes: [
               'NFSv4.1'
             ]
             roleAssignments: [
               {
                 principalIds: [
-                  '<<deploymentSpId>>'
+                  '<managedIdentityPrincipalId>'
                 ]
+                principalType: 'ServicePrincipal'
                 roleDefinitionIdOrName: 'Reader'
               }
             ]
-            subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004'
+            subnetResourceId: '<subnetResourceId>'
             usageThreshold: 107374182400
           }
           {
@@ -478,22 +482,23 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: 'anf4-vol02-nfsv41'
+            name: '<<namePrefix>>-nanaanfs41-vol-002'
             protocolTypes: [
               'NFSv4.1'
             ]
-            subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004'
+            subnetResourceId: '<subnetResourceId>'
             usageThreshold: 107374182400
           }
         ]
       }
       {
-        name: '<<namePrefix>>-az-anfcp-x-002'
+        name: '<<namePrefix>>-nanaanfs41-cp-002'
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -505,8 +510,9 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -536,18 +542,19 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-anf-nfs41-001"
+      "value": "<<namePrefix>>nanaanfs41001"
     },
     // Non-required parameters
     "capacityPools": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-anfcp-x-001",
+          "name": "<<namePrefix>>-nanaanfs41-cp-001",
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -565,19 +572,20 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "anf4-vol01-nfsv41",
+              "name": "<<namePrefix>>-nanaanfs41-vol-001",
               "protocolTypes": [
                 "NFSv4.1"
               ],
               "roleAssignments": [
                 {
                   "principalIds": [
-                    "<<deploymentSpId>>"
+                    "<managedIdentityPrincipalId>"
                   ],
+                  "principalType": "ServicePrincipal",
                   "roleDefinitionIdOrName": "Reader"
                 }
               ],
-              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
+              "subnetResourceId": "<subnetResourceId>",
               "usageThreshold": 107374182400
             },
             {
@@ -591,22 +599,23 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "anf4-vol02-nfsv41",
+              "name": "<<namePrefix>>-nanaanfs41-vol-002",
               "protocolTypes": [
                 "NFSv4.1"
               ],
-              "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
+              "subnetResourceId": "<subnetResourceId>",
               "usageThreshold": 107374182400
             }
           ]
         },
         {
-          "name": "<<namePrefix>>-az-anfcp-x-002",
+          "name": "<<namePrefix>>-nanaanfs41-cp-002",
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -620,8 +629,9 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

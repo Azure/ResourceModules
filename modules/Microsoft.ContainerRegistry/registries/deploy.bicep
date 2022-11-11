@@ -51,6 +51,23 @@ param retentionPolicyStatus string = 'enabled'
 @description('Optional. The number of days to retain an untagged manifest after which it gets purged.')
 param retentionPolicyDays int = 15
 
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether the policy for using ARM audience token for a container registr is enabled or not. Default is enabled.')
+param azureADAuthenticationAsArmPolicyStatus string = 'enabled'
+
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. Soft Delete policy status. Default is disabled.')
+param softDeletePolicyStatus string = 'disabled'
+
+@description('Optional. The number of days after which a soft-deleted item is permanently deleted.')
+param softDeletePolicyDays int = 7
+
 @description('Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. Note, requires the \'acrSku\' to be \'Premium\'.')
 param dataEndpointEnabled bool = false
 
@@ -215,7 +232,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
+resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
   name: name
   location: location
   identity: identity
@@ -233,6 +250,9 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
       }
     } : null
     policies: {
+      azureADAuthenticationAsArmPolicy: {
+        status: azureADAuthenticationAsArmPolicyStatus
+      }
       exportPolicy: acrSku == 'Premium' ? {
         status: exportPolicyStatus
       } : null
@@ -247,6 +267,10 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
         days: retentionPolicyDays
         status: retentionPolicyStatus
       } : null
+      softDeletePolicy: {
+        retentionDays: softDeletePolicyDays
+        status: softDeletePolicyStatus
+      }
     }
     dataEndpointEnabled: dataEndpointEnabled
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkRuleSetIpRules) ? 'Disabled' : null)

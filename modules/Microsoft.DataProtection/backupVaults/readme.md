@@ -22,11 +22,13 @@ This module deploys DataProtection BackupVaults.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Backup Vault. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupPolicies` | _[backupPolicies](backupPolicies/readme.md)_ array | `[]` |  | List of all backup policies. |
@@ -38,7 +40,6 @@ This module deploys DataProtection BackupVaults.
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
 | `type` | string | `'LocallyRedundant'` | `[GeoRedundant, LocallyRedundant]` | The vault redundancy level to use. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
 ### Parameter Usage: `backupPolicies`
@@ -342,7 +343,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -350,47 +351,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-BackupVaults'
-  params: {
-    name: '<<namePrefix>>-az-bv-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-bv-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-BackupVaults'
+  name: '${uniqueString(deployment().name)}-test-dpbvcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-bv-x-001'
+    name: '<<namePrefix>>dpbvcom001'
     // Non-required parameters
     backupPolicies: [
       {
@@ -455,6 +419,15 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    systemAssignedIdentity: true
   }
 }
 ```
@@ -473,7 +446,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-bv-x-001"
+      "value": "<<namePrefix>>dpbvcom001"
     },
     // Non-required parameters
     "backupPolicies": {
@@ -542,6 +515,56 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-dpbvmin'
+  params: {
+    name: '<<namePrefix>>dpbvmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>dpbvmin001"
     }
   }
 }

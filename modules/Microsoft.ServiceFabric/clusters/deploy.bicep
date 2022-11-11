@@ -63,8 +63,8 @@ param infrastructureServiceManager bool = false
 @description('Required. The http management endpoint of the cluster.')
 param managementEndpoint string
 
-@description('Optional. The list of node types in the cluster.')
-param nodeTypes array = []
+@description('Required. The list of node types in the cluster.')
+param nodeTypes array
 
 @description('Optional. Indicates a list of notification channels for cluster events.')
 param notifications array = []
@@ -76,7 +76,7 @@ param notifications array = []
   'Platinum'
   'Silver'
 ])
-@description('Optional. The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9.')
+@description('Required. The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9.')
 param reliabilityLevel string
 
 @description('Optional. Describes the certificate details.')
