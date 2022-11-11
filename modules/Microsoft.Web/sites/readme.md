@@ -660,13 +660,13 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "service": "sites",
-          "subnetResourceId": "<subnetResourceId>",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
-          }
+          },
+          "service": "sites",
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -865,13 +865,13 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "privateEndpoints": {
       "value": [
         {
-          "service": "sites",
-          "subnetResourceId": "<subnetResourceId>",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
-          }
+          },
+          "service": "sites",
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
