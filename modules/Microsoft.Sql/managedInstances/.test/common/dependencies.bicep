@@ -309,9 +309,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
             'WrapKey'
             'UnwrapKey'
           ]
-          secrets: [
-            'Get'
-          ]
         }
         tenantId: tenant().tenantId
       }
@@ -356,11 +353,10 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
 
-@description('The vault URI of the created Key Vault.')
-// output keyVaultUri string = keyVault.properties.vaultUri
+@description('The URL of the created Key Vault Encryption Key.')
 output keyVaultEncryptionKeyUrl string = keyVault::key.properties.keyUriWithVersion
 
-@description('The name of the created Key Vault encryption key.')
+@description('The name of the created Key Vault Encryption Key.')
 output keyVaultKeyName string = keyVault::key.name
 
 @description('The name of the created Key Vault.')
