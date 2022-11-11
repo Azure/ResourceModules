@@ -93,7 +93,7 @@ function ConvertTo-OrderedHashtable {
                 }
 
                 # Case: Primitive data types
-                $primitiveElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().Name -notin @('Object[]', 'Hashtable') } | ConvertTo-Json | ConvertFrom-Json -AsHashtable -NoEnumerate
+                $primitiveElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().Name -notin @('Object[]', 'Hashtable') } | ConvertTo-Json -Depth 99 | ConvertFrom-Json -AsHashtable -NoEnumerate -Depth 99
                 if ($primitiveElements.Count -gt 1) {
                     $primitiveElements = $primitiveElements | Sort-Object
                 }
