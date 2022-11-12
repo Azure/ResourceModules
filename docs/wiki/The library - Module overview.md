@@ -25,7 +25,7 @@ This section provides an overview of the library's feature set.
 | 10 | MS.Synapse<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:1] | 264 |
 | 11 | MS.Synapse<p>privateLinkHubs | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  |  | 87 |
 | 12 | MS.Authorization<p>policyDefinitions |  |  |  |  |  |  | [L1:2] | 84 |
-| 13 | MS.Authorization<p>locks |  |  |  |  |  |  | [L1:2] | 57 |
+| 13 | MS.Authorization<p>locks |  |  |  |  |  |  | [L1:2] | 59 |
 | 14 | MS.Authorization<p>policyExemptions |  |  |  |  |  |  | [L1:3] | 104 |
 | 15 | MS.Authorization<p>policyAssignments |  |  |  |  |  |  | [L1:3] | 130 |
 | 16 | MS.Authorization<p>roleDefinitions |  |  |  |  |  |  | [L1:3] | 91 |
@@ -122,7 +122,7 @@ This section provides an overview of the library's feature set.
 | 107 | MS.DBforPostgreSQL<p>flexibleServers | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:3] | 269 |
 | 108 | MS.ContainerRegistry<p>registries | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:2] | 333 |
 | 109 | MS.ContainerService<p>managedClusters | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 504 |
-| Sum | | 85 | 83 | 94 | 49 | 21 | 2 | 149 | 18260 |
+| Sum | | 85 | 83 | 94 | 49 | 21 | 2 | 149 | 18262 |
 
 ## Legend
 
