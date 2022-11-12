@@ -62,6 +62,7 @@ module roleAssignment 'dependencies_rbac.bicep' = {
 
 // Deploy image template
 resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14' = {
+  #disable-next-line use-stable-resource-identifiers
   name: '${imageTemplateNamePrefix}-${baseTime}'
   location: location
   identity: {
@@ -154,7 +155,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
       name: 'standard'
     }
     tenantId: tenant().tenantId
-    enablePurgeProtection: false
+    enablePurgeProtection: null
     softDeleteRetentionInDays: 7
     enabledForTemplateDeployment: true
     enabledForDiskEncryption: true
