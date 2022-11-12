@@ -30,7 +30,6 @@ This module deploys Authorization Locks on Subscription level.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `[format('{0}-lock', parameters('level'))]` | The name of the lock. |
 | `notes` | string | `[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]` | The decription attached to the lock. |
-| `owners` | array | `[]` | The owners of the lock. |
 
 
 ## Outputs
