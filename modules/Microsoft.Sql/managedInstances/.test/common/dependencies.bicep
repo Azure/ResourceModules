@@ -300,20 +300,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: keyVaultName
   location: location
   properties: {
-    // accessPolicies: [
-    //   {
-    //     objectId: managedIdentity.properties.principalId
-    //     permissions: {
-    //       keys: [
-    //         'Get'
-    //         'WrapKey'
-    //         'UnwrapKey'
-    //       ]
-    //     }
-    //     tenantId: tenant().tenantId
-    //   }
-    // ]
-    // enableRbacAuthorization: false
     sku: {
       family: 'A'
       name: 'standard'
