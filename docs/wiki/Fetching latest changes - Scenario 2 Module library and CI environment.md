@@ -6,16 +6,20 @@ The update process is the following:
 
 ### _Navigation_
 
-- [1. Sync your copy of the library](#1-sync-your-copy-of-the-library)
-- [2. Apply specific settings to files](#2-apply-specific-settings-to-files)
-- [3. (Optional) Re-apply your customizations](#3-optional-re-apply-your-customizations)
-- [4. Run dependencies pipeline](#4-run-dependencies-pipeline)
-- [5. Update module module test files](#5-update-module-module-test-files)
-- [6. (Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
-- [7. Push updated code](#7-push-updated-code)
+- [1. Backup your local copy of the library](#1-backup-your-local-copy-of-the-library)
+- [2. Sync your copy of the library](#1-sync-your-copy-of-the-library)
+- [3. (Optional) Convert library to ARM](#3-optional-convert-library-to-arm)
+- [4. Apply specific settings to files](#4-apply-specific-settings-to-files)
+- [5. (Optional) Customize modules and CI environment](#5-optional-customize-modules-and-ci-environment)
+- [6. Run dependencies pipeline](#6-run-dependencies-pipeline)
+- [7. Update module test files](#7-update-module-test-files)
 - [8. Test and publish modules](#8-test-and-publish-modules)
 
-# 1. Sync your copy of the library
+# 1. Backup your local copy of the library
+
+Rename your local repository. Assuming the local repository location is `'D:\ResourcesModules'` rename it in `'D:\ResourcesModules_Backup'`.
+
+# 2. Sync your copy of the library
 
 <details>
 <summary>GitHub public repository</summary>
@@ -48,42 +52,32 @@ Clone/download CARML repository to create a local copy of it, as explained in Az
 </details>
 <p>
 
-# 2. Apply specific settings to files
+# 3. (Optional) Convert library to ARM
+
+Follow instructions in [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%201%20Consume%20library#2-optional-convert-library-to-arm)
+
+# 4. Apply specific settings to files
 
 Personalize files with your specific settings:
 1. [Update default name prefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#31-update-default-nameprefix)
 1. Update settings file ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) as explained in [Set up variables file](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#322-set-up-variables-file)
 
-# 3. (Optional) Re-apply your customizations
+# 5. (Optional) Customize modules and CI environment
 
-There are different options for library's customization:
-- [Option 1 - Library improvement](./Fetching%20latest%20updates#option-1---library-improvement)
-- [Option 2 - Specific requirements](./Fetching%20latest%20updates#option-2---specific-requirements)
+The backup folder from step 1, can be used to compare your local copy with your synced copy coming from the latest version. For example, the `'Compare selected'` [function](https://vscode.one/diff-vscode/) in Visual Studio Code can be leveraged for that purpose.
 
-The recommendation is to [contribute](./Contribution%20guide) to the public CARML repository so that your updates can improve the public library. In this way your changes will be available on the public library when fetching updates, modules will be already tested with your changes and you won't need to take care of customization on each update.
+If your copy deviates from the upstream version due to customizations you applied to the code, you'll have to re-apply those customizations to the updated code. This process may be automated, by script or CI, if customization tasks are repeatable.
 
-In some cases, you might need to add to the library company/organization' specifics, that are not sharable with the public CARML repository.
+> **Note**: If customizations are general improvements which may be useful for the public, the recommendation is to [contribute](./Contribution%20guide) to the public CARML repository so that your updates can improve the public library. This way, your changes will be already available the next time you will fetch from upstream, modules will be already tested with your changes and you will not need to take care of customization on each update.
 
-In this scenario every time you'll fetch updates from the public CARML repository merge conflicts are expected. You'll have to compare the new public code with your customized one and re-apply your customizations to the updated code.
+# 6. Run dependencies pipeline
 
-This process can be automated, by script or CI, if customization tasks are repeatable.
+Refer to the [Deploy dependencies](././Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#4-deploy-dependencies) section to run the '*dependencies pipeline*' and update dependencies configuration in your environment.
 
-# 4. Run dependencies pipeline
+# 7. Update module test files
 
-Run the '*dependencies pipeline*' to update dependencies configuration that can be updated on the downloaded CARML release. Follow [Deploy dependencies](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only#4-deploy-dependencies) section in Getting started - Scenario 2 Onboard module library and CI environment documentation to do this.
-
-# 5. Update module module test files
-
-Follow the [Update module module test files](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#5-update-module-module-test-files) procedure
-
-# 6. (Optional) Convert library to ARM
-
-Follow instructions in [(Optional) Convert library to ARM](./Fetching%20latest%20changes%20-%20Scenario%202%20Module%20library%20only#6-optional-convert-library-to-arm)
-
-# 7. Push updated code
-
-Push the updated local code to your remote public fork (for GitHub public repository scenario) or on your remote target repository for GitHub private repository and Azure DevOps private git scenarios.
+Follow the [Update module test files](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#5-update-module-test-files) procedure
 
 # 8. Test and publish modules
 
-If actions/ pipelines are enabled test and publishing of modules starts automatically. In some cases triggers for the pipelines are not enabled, in these cases start actions/pipelines to run tests and publish modules.
+Push the updated local code to your remote repository. If actions are enabled test and publishing of modules will start automatically.
