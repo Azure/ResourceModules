@@ -16,33 +16,23 @@ The update process is the following:
 
 Rename your local repository. Assuming the local repository location is `'D:\ResourcesModules'` rename it in `'D:\ResourcesModules_Backup'`.
 
-The backup folder can be used to compare customized modules with the ones coming from the latest version and implement the required changes.
-
-This can be done, for example, by the `'Compare selected'` [function](https://vscode.one/diff-vscode/) of Visual Studio Code.
-
 # 2. Download the library
 
-To download the updated library follow the best option for your scenario, as explained in [Download the library](./Getting%20started%20-%20Scenario%202%20Consume%20library#1-download-the-library)
+To download the updated library follow the best option for your scenario, as explained in [Download the library](./Getting%20started%20-%20Scenario%201%20Consume%20library#1-download-the-library)
 
 # 3. (Optional) Convert library to ARM
 
-In case you aren't using Bicep you need to follow this procedure: [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%202%20Consume%20library#2-optional-convert-library-to-arm)
+In case you aren't using Bicep you need to follow this procedure: [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%201%20Consume%20library#2-optional-convert-library-to-arm)
 
 # 4. (Optional) Customize modules
 
-There are different options for library's customization:
-- [Option 1 - Library improvement](./Fetching%20latest%20updates#option-1---library-improvement)
-- [Option 2 - Specific requirements](./Fetching%20latest%20updates#option-2---specific-requirements)
+The backup folder from step 1, can be used to compare customized modules with the ones coming from the latest version and to implement the required changes. For example, the `'Compare selected'` [function](https://vscode.one/diff-vscode/) in Visual Studio Code can be leveraged for that purpose.
 
-The recommendation is to [contribute](./Contribution%20guide) to the public CARML repository so that your updates can improve the public library. In this way your changes will be available on the public library when fetching updates, modules will be already tested with your changes and you won't need to take care of customization on each update.
+If your copy deviates from the upstream version due to customizations you applied to the code, you'll have to re-apply your customizations to the updated code. This process may be automated, by script or CI, if customization tasks are repeatable.
 
-In some cases, you might need to add to the library company/organization' specifics, that are not sharable with the public CARML repository.
-
-In this scenario every time you'll fetch updates from the public CARML repository merge conflicts are expected. You'll have to compare the new public code with your customized one and re-apply your customizations to the updated code.
-
-This process can be automated, by script or CI, if customization tasks are repeatable.
+> **Note**: If customizations are general improvements which may be useful for the public, the recommendation is to [contribute](./Contribution%20guide) to the public CARML repository so that your updates can improve the public library. This way, your changes will be already available the next time you will fetch from upstream, modules will be already tested with your changes and you will not need to take care of customization on each update.
 
 # 5. Test and publish modules
 
-To test and publish updated modules follow the best option for your scenario in [Test and publish modules](./Getting%20started%20-%20Scenario%201%20Consume%20library#3-test-and-publish-modules)
+To test and publish updated modules, follow the best option for your scenario in [Test and publish modules](./Getting%20started%20-%20Scenario%201%20Consume%20library#3-test-and-publish-modules)
 
