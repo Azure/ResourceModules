@@ -57,7 +57,7 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   properties: {
     proximityPlacementGroupType: proximityPlacementGroupType
     colocationStatus: colocationStatus
-    intent: intent
+    intent: !empty(intent) ? intent : null
   }
 }
 
