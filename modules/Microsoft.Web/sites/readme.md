@@ -28,7 +28,7 @@ This module deploys a web or function app.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `kind` | string | `[app, functionapp, functionapp,linux]` | Type of site to deploy. |
+| `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of site to deploy. |
 | `name` | string |  | Name of the site. |
 | `serverFarmResourceId` | string |  | The resource ID of the app service plan to use for the site. |
 
