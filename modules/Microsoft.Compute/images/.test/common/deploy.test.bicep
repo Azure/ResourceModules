@@ -30,6 +30,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    diskEncryptionSetName: 'dep-<<namePrefix>>-des-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
     imageTemplateNamePrefix: 'dep-<<namePrefix>>-imgt-${serviceShort}'
     triggerImageDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
@@ -59,5 +61,16 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     zoneResilient: true
+    diskEncryptionSetResourceId: resourceGroupResources.outputs.diskEncryptionSetResourceId
+    extendedLocation: {
+      name: 'customlocal'
+      type: 'EdgeZone'
+    }
+    osState: 'Generalized'
+    diskSizeGB: 128
+    tags: {
+      tagA: 'You\'re it'
+      tagB: 'Player'
+    }
   }
 }
