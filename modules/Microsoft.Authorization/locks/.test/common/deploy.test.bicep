@@ -24,14 +24,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
-  params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-  }
-}
-
 // ============== //
 // Test Execution //
 // ============== //
@@ -42,10 +34,5 @@ module testDeployment '../../deploy.bicep' = {
     level: 'CanNotDelete'
     resourceGroupName: resourceGroup.name
     subscriptionId: subscription().subscriptionId
-    owners: [
-      {
-        applicationId: resourceGroupResources.outputs.managedIdentityApplicationId
-      }
-    ]
   }
 }

@@ -19,9 +19,6 @@ param resourceGroupName string = ''
 @description('Optional. Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription.')
 param subscriptionId string = subscription().id
 
-@description('Optional. The owners of the lock.')
-param owners array = []
-
 @description('Optional. Location for all resources.')
 param location string = deployment().location
 
@@ -47,7 +44,7 @@ module lock_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empt
     name: '${subscription().displayName}-${level}-lock'
     level: level
     notes: notes
-    owners: owners
+    // owners: owners // Not intended to be applied by users (ref https://github.com/Azure/azure-cli/issues/22528)
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -59,7 +56,7 @@ module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(subscriptionId) && !emp
     name: '${resourceGroupName}-${level}-lock'
     level: level
     notes: notes
-    owners: owners
+    // owners: owners // Not intended to be applied by users (ref https://github.com/Azure/azure-cli/issues/22528)
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
