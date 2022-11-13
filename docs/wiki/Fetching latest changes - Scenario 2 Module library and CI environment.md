@@ -11,8 +11,8 @@ The update process is the following:
 - [3. (Optional) Convert library to ARM](#3-optional-convert-library-to-arm)
 - [4. Apply specific settings to files](#4-apply-specific-settings-to-files)
 - [5. (Optional) Customize modules and CI environment](#5-optional-customize-modules-and-ci-environment)
-- [6. Run dependencies pipeline](#6-run-dependencies-pipeline)
-- [7. Update module test files](#7-update-module-test-files)
+- [6. Update module test files](#6-update-module-test-files)
+- [7. Run dependencies pipeline](#7-run-dependencies-pipeline)
 - [8. Test and publish modules](#8-test-and-publish-modules)
 
 # 1. Backup your local copy of the library
@@ -70,13 +70,13 @@ If your copy deviates from the upstream version due to customizations you applie
 
 > **Note**: If customizations are general improvements which may be useful for the public, the recommendation is to [contribute](./Contribution%20guide) to the public CARML repository so that your updates can improve the public library. This way, your changes will already be available the next time you fetch from upstream, as modules would already been tested, and would not conflict with your customizations.
 
-# 6. Run dependencies pipeline
-
-Refer to the [Deploy dependencies](././Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#4-deploy-dependencies) section to run the '*dependencies pipeline*' and update dependencies configuration in your environment.
-
-# 7. Update module test files
+# 6. Update module test files
 
 Follow the [Update module test files](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#5-update-module-test-files) procedure
+
+# 7. Run dependencies pipeline
+
+Refer to the [Deploy dependencies](././Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#4-deploy-dependencies) section to run the '*dependencies pipeline*' and update dependencies configuration in your environment.
 
 # 8. Test and publish modules
 
