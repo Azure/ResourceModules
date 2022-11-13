@@ -80,4 +80,4 @@ Follow the [Update module test files](./Getting%20started%20-%20Scenario%202%20O
 
 # 8. Test and publish modules
 
-Push the updated local code to your remote repository. If actions are enabled test and publishing of modules will start automatically.
+Push the updated local code to your remote repository. If actions are enabled, test and publishing of modules will start automatically.
