@@ -71,7 +71,7 @@ inputs:
 outputs:
   deploymentOutput:
     description: 'The module deployment output in json format'
-    value: ${{ steps.deploy_step.outputs.deploymentOutput }}
+    value: ${{ fromJSON(steps.deploy_step.outputs.deploymentOutput) }}
 
 runs:
   using: 'composite'
