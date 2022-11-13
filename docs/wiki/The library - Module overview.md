@@ -39,7 +39,7 @@ This section provides an overview of the library's feature set.
 | 24 | MS.AAD<p>DomainServices | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 230 |
 | 25 | MS.Cache<p>redis | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | 233 |
 | 26 | MS.DataProtection<p>backupVaults | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:1] | 104 |
-| 27 | MS.Compute<p>images | :white_check_mark: |  | :white_check_mark: |  |  |  |  | 72 |
+| 27 | MS.Compute<p>images | :white_check_mark: |  | :white_check_mark: |  |  |  |  | 107 |
 | 28 | MS.Compute<p>availabilitySets | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 83 |
 | 29 | MS.Compute<p>proximityPlacementGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 80 |
 | 30 | MS.Compute<p>virtualMachines | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 586 |
@@ -122,7 +122,7 @@ This section provides an overview of the library's feature set.
 | 107 | MS.DBforPostgreSQL<p>flexibleServers | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:3] | 269 |
 | 108 | MS.ContainerRegistry<p>registries | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:2] | 333 |
 | 109 | MS.ContainerService<p>managedClusters | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 504 |
-| Sum | | 85 | 83 | 94 | 49 | 21 | 2 | 149 | 18274 |
+| Sum | | 85 | 83 | 94 | 49 | 21 | 2 | 149 | 18309 |
 
 ## Legend
 
