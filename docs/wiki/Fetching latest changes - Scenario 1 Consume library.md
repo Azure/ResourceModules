@@ -30,7 +30,7 @@ The backup folder from step 1, can be used to compare customized modules with th
 
 If your copy deviates from the upstream version due to customizations you applied to the code, you'll have to re-apply your customizations to the updated code. This process may be automated, by script or CI, if customization tasks are repeatable.
 
-> **Note**: If customizations are general improvements which may be useful for the public, the recommendation is to [contribute](./Contribution%20guide) to the public CARML repository so that your updates can improve the public library. This way, your changes will be already available the next time you will fetch from upstream, modules will be already tested with your changes and you will not need to take care of customization on each update.
+> **Note**: If customizations are general improvements which may be useful for the public, the recommendation is to [contribute](./Contribution%20guide) to the public CARML repository so that your updates can improve the public library. This way, your changes will already be available the next time you fetch from upstream, as modules would already been tested, and would not conflict with your customizations.
 
 # 5. Test and publish modules
 
