@@ -77,16 +77,12 @@ For all other app settings key-value pairs use this object.
 
 ```json
 "appSettingsKeyValuePairs": {
-    "value": [
-        {
-            "name": "key1",
-            "value": "val1"
-        },
-        {
-            "name": "key2",
-            "value": "val2"
-        }
-    ]
+    "value": {
+      "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
+      "EASYAUTH_SECRET": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password",
+      "FUNCTIONS_EXTENSION_VERSION": "~4",
+      "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+    }
 }
 ```
 
@@ -97,16 +93,12 @@ For all other app settings key-value pairs use this object.
 <summary>Bicep format</summary>
 
 ```bicep
-appSettingsKeyValuePairs: [
-    {
-        name: 'key1'
-        value: 'val1'
-    }
-    {
-        name: 'key2'
-        value: 'val2'
-    }
-]
+appSettingsKeyValuePairs: {
+  AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
+  EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password'
+  FUNCTIONS_EXTENSION_VERSION: '~4'
+  FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+}
 ```
 
 </details>
