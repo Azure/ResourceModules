@@ -75,7 +75,7 @@ resource image 'Microsoft.Compute/images@2022-08-01' = {
   name: name
   location: location
   tags: tags
-  extendedLocation: extendedLocation
+  extendedLocation: !empty(extendedLocation) ? extendedLocation : null
   properties: {
     storageProfile: {
       osDisk: {
