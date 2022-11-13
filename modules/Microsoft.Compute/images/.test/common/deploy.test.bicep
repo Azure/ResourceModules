@@ -62,10 +62,6 @@ module testDeployment '../../deploy.bicep' = {
     ]
     zoneResilient: true
     diskEncryptionSetResourceId: resourceGroupResources.outputs.diskEncryptionSetResourceId
-    extendedLocation: {
-      name: 'customlocal'
-      type: 'EdgeZone'
-    }
     osState: 'Generalized'
     diskSizeGB: 128
     tags: {

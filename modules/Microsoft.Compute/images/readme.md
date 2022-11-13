@@ -188,10 +188,6 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
     // Non-required parameters
     diskEncryptionSetResourceId: '<diskEncryptionSetResourceId>'
     diskSizeGB: 128
-    extendedLocation: {
-      name: 'customlocal'
-      type: 'EdgeZone'
-    }
     hyperVGeneration: 'V1'
     osState: 'Generalized'
     roleAssignments: [
@@ -245,12 +241,6 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
     },
     "diskSizeGB": {
       "value": 128
-    },
-    "extendedLocation": {
-      "value": {
-        "name": "customlocal",
-        "type": "EdgeZone"
-      }
     },
     "hyperVGeneration": {
       "value": "V1"
