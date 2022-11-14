@@ -81,7 +81,10 @@ function Test-NamePrefixAvailability {
                 'Microsoft.KeyVault/vaults' {
                     $filter = 'keyVaultName:'
                 }
-                Default { Write-Error 'I dont like you.' }
+                Default {
+                    Write-Warning "The entered resource Type '$_' could not be matched."
+                    continue
+                }
             }
 
             foreach ($parameterFile in $parameterFiles) {
