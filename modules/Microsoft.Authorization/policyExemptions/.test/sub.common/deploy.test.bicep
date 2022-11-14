@@ -16,7 +16,7 @@ param serviceShort string = 'apesubcom'
 // General resources
 // =================
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' = {
-  name: '${serviceShort}-AuditKeyVaults'
+  name: 'dep-<<namePrefix>>-polDef-AuditKvlt-${serviceShort}'
   properties: {
     policyRule: {
       if: {
@@ -44,7 +44,7 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
 }
 
 resource policySet 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
-  name: 'testSet'
+  name: 'dep-<<namePrefix>>-polSet-${serviceShort}'
   properties: {
     policyDefinitions: [
       {
@@ -61,7 +61,7 @@ resource policySet 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
 }
 
 resource policySetAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-  name: 'dep-<<namePrefix>>-${serviceShort}-rgloc'
+  name: 'dep-<<namePrefix>>-polSetAss-${serviceShort}'
   location: location
   properties: {
     displayName: 'Test case assignment'
