@@ -68,6 +68,7 @@ function Test-NamePrefixAvailability {
         $containerRegistryNames = @()
         $keyVaultNames = @()
 
+        $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter 'deploy.test.bicep').FullName | ForEach-Object { $_.Replace('\', '/') }
 
         foreach ($relevantResourceType in $relevantResourceTypes) {
             switch ($relevantResourceType) {
@@ -83,10 +84,8 @@ function Test-NamePrefixAvailability {
                 Default { Write-Error 'I dont like you.' }
             }
 
-            $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter 'deploy.test.bicep').FullName | ForEach-Object { $_.Replace('\', '/') }
             foreach ($parameterFile in $parameterFiles) {
                 $temp = $null
-
                 # determine if entry is of one of the resourceTypes using the filter variable
                 $temp = Get-Content -Path $parameterFile | ForEach-Object {
                     if ($_ -match "$filter\s'") { $_ }
