@@ -140,7 +140,7 @@ resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-
 }
 
 @description('The URI of the created VHD.')
-output vhdUri string = 'https://${storageAccount.name}.blob.core.windows.net/vhds/${imageTemplateNamePrefix}.vhd'
+output vhdUri string = 'https://${storageAccount.name}.blob.${environment().suffixes.storage}/vhds/${imageTemplateNamePrefix}.vhd'
 
 @description('The resource ID of the created Storage Account.')
 output storageAccountResourceId string = storageAccount.id
