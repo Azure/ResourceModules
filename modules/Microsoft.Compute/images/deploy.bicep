@@ -28,6 +28,34 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@description('Optional. The extended location of the Image.')
+param extendedLocation object = {}
+
+@description('Optional. The source virtual machine from which Image is created.')
+param sourceVirtualMachineResourceId string = ''
+
+@description('Optional. Specifies the customer managed disk encryption set resource ID for the managed image disk.')
+param diskEncryptionSetResourceId string = ''
+
+@description('Optional. The managedDisk.')
+param managedDiskResourceId string = ''
+
+@description('Optional. Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. This value cannot be larger than 1023 GB.')
+param diskSizeGB int = 128
+
+@description('Optional. The OS State. For managed images, use Generalized.')
+@allowed([
+  'Generalized'
+  'Specialized'
+])
+param osState string = 'Generalized'
+
+@description('Optional. The snapshot resource ID.')
+param snapshotResourceId string = ''
+
+@description('Optional. Specifies the parameters that are used to add a data disk to a virtual machine.')
+param dataDisks array = []
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -43,10 +71,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource image 'Microsoft.Compute/images@2021-04-01' = {
+resource image 'Microsoft.Compute/images@2022-08-01' = {
   name: name
   location: location
   tags: tags
+  extendedLocation: !empty(extendedLocation) ? extendedLocation : null
   properties: {
     storageProfile: {
       osDisk: {
@@ -54,11 +83,25 @@ resource image 'Microsoft.Compute/images@2021-04-01' = {
         blobUri: osDiskBlobUri
         caching: osDiskCaching
         storageAccountType: osAccountType
+        osState: osState
+        diskEncryptionSet: !empty(diskEncryptionSetResourceId) ? {
+          id: diskEncryptionSetResourceId
+        } : null
+        diskSizeGB: diskSizeGB
+        managedDisk: !empty(managedDiskResourceId) ? {
+          id: managedDiskResourceId
+        } : null
+        snapshot: !empty(snapshotResourceId) ? {
+          id: snapshotResourceId
+        } : null
       }
-      dataDisks: []
+      dataDisks: dataDisks
       zoneResilient: zoneResilient
     }
     hyperVGeneration: hyperVGeneration
+    sourceVirtualMachine: !empty(sourceVirtualMachineResourceId) ? {
+      id: sourceVirtualMachineResourceId
+    } : null
   }
 }
 
