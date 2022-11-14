@@ -16,17 +16,8 @@ param serviceShort string = 'apemgcom'
 // General resources
 // =================
 
-// resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-//   name: 'dep-<<namePrefix>>-${serviceShort}-rgloc'
-//   location: location
-//   properties: {
-//     displayName: '[Depedency] Audit resource location matches resource group location (management group scope)'
-//     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/0a914e76-4921-4c19-b460-a2d36003525a'
-//   }
-// }
-
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' = {
-  name: '${serviceShort}customDefinition'
+  name: '${serviceShort}-AuditKeyVaults'
   properties: {
     policyRule: {
       if: {
@@ -64,6 +55,7 @@ resource policySet 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
           }
         }
         policyDefinitionId: policyDefinition.id
+        policyDefinitionReferenceId: policyDefinition.name
       }
     ]
   }
@@ -110,7 +102,7 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
       }
     ]
     policyDefinitionReferenceIds: [
-      last(split(policyDefinition.id, '/'))
+      policySet.properties.policyDefinitions[0].policyDefinitionReferenceId
     ]
   }
 }
