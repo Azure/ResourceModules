@@ -62,7 +62,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-preview' = {
+resource policyExemption 'Microsoft.Authorization/policyExemptions@2022-07-01-preview' = {
   name: name
   properties: {
     displayName: !empty(displayName) ? displayName : null
