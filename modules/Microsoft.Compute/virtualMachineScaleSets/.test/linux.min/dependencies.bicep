@@ -86,5 +86,5 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 @description('The resource ID of the created SSH Key')
 output SSHKeyResourceID string = sshKey.id
 
-@description('The Public Key of the created SSH Key')
+@description('The Public Key of the created SSH Key.')
 output SSHKey string = sshKey.properties.publicKey
