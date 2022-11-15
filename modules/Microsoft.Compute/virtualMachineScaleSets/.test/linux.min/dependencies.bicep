@@ -39,7 +39,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 }
 
 resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${resourceGroup().id}-${location}-${managedIdentity.id}-RG-Reader-RoleAssignment')
+    name: guid(resourceGroup().id, 'Contributor', managedIdentity.id)
     scope: resourceGroup()
     properties: {
         principalId: managedIdentity.properties.principalId
