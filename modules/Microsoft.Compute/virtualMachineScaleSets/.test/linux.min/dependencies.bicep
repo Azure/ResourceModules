@@ -83,7 +83,7 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
-@description('The resource ID of the created SSH Key')
+@description('The resource ID of the created SSH Key.')
 output SSHKeyResourceID string = sshKey.id
 
 @description('The Public Key of the created SSH Key.')
