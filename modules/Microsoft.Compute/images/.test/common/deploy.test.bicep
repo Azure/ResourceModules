@@ -14,6 +14,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
 param serviceShort string = 'cicom'
 
+@description('Generated. Used as a basis for unique resource names.')
+param baseTime string = utcNow('u')
+
 // =========== //
 // Deployments //
 // =========== //
@@ -30,6 +33,9 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    diskEncryptionSetName: 'dep-<<namePrefix>>-des-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
     imageTemplateNamePrefix: 'dep-<<namePrefix>>-imgt-${serviceShort}'
     triggerImageDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-triggerImageTemplate'
@@ -59,5 +65,12 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     zoneResilient: true
+    diskEncryptionSetResourceId: resourceGroupResources.outputs.diskEncryptionSetResourceId
+    osState: 'Generalized'
+    diskSizeGB: 128
+    tags: {
+      tagA: 'You\'re it'
+      tagB: 'Player'
+    }
   }
 }
