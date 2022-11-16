@@ -86,7 +86,7 @@ resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-
 }
 
 resource msiKVCryptoUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-KeyVault-Key-Read-RoleAssignment')
+    name: guid(keyVault::key.id, 'Key Vault Crypto User', managedIdentity.id)
     scope: keyVault::key
     properties: {
         principalId: managedIdentity.properties.principalId
