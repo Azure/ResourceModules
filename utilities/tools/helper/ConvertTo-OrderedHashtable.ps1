@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
 Convert a given JSON string into an ordered HashTable.
 
@@ -87,13 +87,13 @@ function ConvertTo-OrderedHashtable {
                 }
 
                 # Case: Array of objects
-                $hashTableElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().Name -in @('Hashtable', 'OrderedHashtable') }
+                $hashTableElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().Name -eq 'Hashtable' }
                 foreach ($hashTable in $hashTableElements) {
                     $arrayOutput += , (ConvertTo-OrderedHashtable -JSONInputObject ($hashTable | ConvertTo-Json -Depth 99))
                 }
 
                 # Case: Primitive data types
-                $primitiveElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().Name -notin @('Object[]', 'Hashtable', 'OrderedHashtable') } | ConvertTo-Json -Depth 99 | ConvertFrom-Json -AsHashtable -NoEnumerate -Depth 99
+                $primitiveElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().Name -notin @('Object[]', 'Hashtable') } | ConvertTo-Json | ConvertFrom-Json -AsHashtable -NoEnumerate
                 if ($primitiveElements.Count -gt 1) {
                     $primitiveElements = $primitiveElements | Sort-Object
                 }
