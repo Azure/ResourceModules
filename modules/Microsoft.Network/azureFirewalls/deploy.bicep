@@ -1,3 +1,5 @@
+//Test comment for submodule update
+
 @description('Required. Name of the Azure Firewall.')
 param name string
 
