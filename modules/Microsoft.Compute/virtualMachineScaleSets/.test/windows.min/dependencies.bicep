@@ -1,4 +1,4 @@
-@description('Optional. The location to deploy to')
+@description('Optional. The location to deploy to.')
 param location string = resourceGroup().location
 
 @description('Required. The name of the Virtual Network to create.')
