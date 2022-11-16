@@ -57,7 +57,7 @@ function Set-ResourceTypesSection {
     $VerbosePreference = 'SilentlyContinue'
     foreach ($resourceTypeObject in $RelevantResourceTypeObjects) {
         $ProviderNamespace, $ResourceType = $resourceTypeObject.Type -split '/', 2
-        # Validate if Reference URL Is working
+        # Validate if Reference URL is working
         $TemplatesBaseUrl = 'https://docs.microsoft.com/en-us/azure/templates'
         try {
             $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $ProviderNamespace, $resourceTypeObject.ApiVersion, $ResourceType
