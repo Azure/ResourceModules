@@ -159,7 +159,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           }
           {
             exists: 'false'
-            field: '<field>'
+            field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
           }
         ]
       }
@@ -167,9 +167,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         details: {
           operations: [
             {
-              field: '<field>'
+              field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
               operation: 'add'
-              value: '<value>'
+              value: '[parameters(\'tagValue\')]'
             }
           ]
           roleDefinitionIds: [
@@ -232,7 +232,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
             },
             {
               "exists": "false",
-              "field": "<field>"
+              "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]"
             }
           ]
         },
@@ -240,9 +240,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "details": {
             "operations": [
               {
-                "field": "<field>",
+                "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]",
                 "operation": "add",
-                "value": "<value>"
+                "value": "[parameters(\"tagValue\")]"
               }
             ],
             "roleDefinitionIds": [
@@ -315,7 +315,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         ]
       }
       then: {
-        effect: '<effect>'
+        effect: '[parameters(\'effect\')]'
       }
     }
     // Non-required parameters
@@ -359,7 +359,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           ]
         },
         "then": {
-          "effect": "<effect>"
+          "effect": "[parameters(\"effect\")]"
         }
       }
     },
@@ -403,7 +403,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           }
           {
             exists: 'false'
-            field: '<field>'
+            field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
           }
         ]
       }
@@ -411,9 +411,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         details: {
           operations: [
             {
-              field: '<field>'
+              field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
               operation: 'add'
-              value: '<value>'
+              value: '[parameters(\'tagValue\')]'
             }
           ]
           roleDefinitionIds: [
@@ -476,7 +476,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
             },
             {
               "exists": "false",
-              "field": "<field>"
+              "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]"
             }
           ]
         },
@@ -484,9 +484,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "details": {
             "operations": [
               {
-                "field": "<field>",
+                "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]",
                 "operation": "add",
-                "value": "<value>"
+                "value": "[parameters(\"tagValue\")]"
               }
             ],
             "roleDefinitionIds": [
@@ -559,7 +559,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         ]
       }
       then: {
-        effect: '<effect>'
+        effect: '[parameters(\'effect\')]'
       }
     }
     // Non-required parameters
@@ -604,7 +604,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           ]
         },
         "then": {
-          "effect": "<effect>"
+          "effect": "[parameters(\"effect\")]"
         }
       }
     },

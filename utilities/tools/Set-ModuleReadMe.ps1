@@ -707,7 +707,7 @@ function ConvertTo-FormattedJSONParameterObject {
             $isLineWithReferenceInLineKey = ($line -split ':')[0].Trim() -like '*.*'
 
             $isLineWithStringValue = $lineValue -match '".+"' # e.g. "value"
-            $isLineWithFunction = $lineValue -match "^'\$\{.+'$|^'{0}[\w\(]+" # e.g. (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4] or '${last(...)}' or last()
+            $isLineWithFunction = $lineValue -match "^'\$\{.+'$|^'{0}[a-zA-Z\(]+\(.+" # e.g. (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4] or '${last(...)}' or last()
             $isLineWithPlainValue = $lineValue -match '^\w+$' # e.g. adminPassword: password
             $isLineWithPrimitiveValue = $lineValue -match '^\s*true|false|[0-9]+$' # e.g. isSecure: true
 
