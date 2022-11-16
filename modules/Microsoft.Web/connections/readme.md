@@ -16,7 +16,7 @@ This module deploys an Azure API connection.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Web/connections` | [2016-06-01](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Web/connections` | [2016-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections) |
 
 ## Parameters
 
@@ -180,7 +180,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
     name: 'azuremonitor'
     // Non-required parameters
     connectionApi: {
-      id: '${subscription().id}/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
+      id: '<id>'
     }
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -217,7 +217,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
     // Non-required parameters
     "connectionApi": {
       "value": {
-        "id": "${subscription().id}/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs"
+        "id": "<id>"
       }
     },
     "lock": {
