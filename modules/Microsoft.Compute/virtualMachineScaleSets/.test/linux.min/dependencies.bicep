@@ -59,7 +59,7 @@ resource sshDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' 
         }
     }
     properties: {
-        azPowerShellVersion: '9.1'
+        azPowerShellVersion: '9.0'
         retentionInterval: 'P1D'
         arguments: '-SSHKeyName "${sshKeyName}" -ResourceGroupName "${resourceGroup().name}"'
         scriptContent: loadTextContent('../.scripts/New-SSHKey.ps1')
