@@ -60,11 +60,6 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // Test Execution //
 // ============== //
 
-// resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' existing = {
-//   name: sshKeyName
-//   scope: resourceGroup
-// }
-
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
@@ -202,7 +197,7 @@ module testDeployment '../../deploy.bicep' = {
     monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     publicKeys: [
       {
-        keyData: resourceGroupResources.outputs.SSHKey
+        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]

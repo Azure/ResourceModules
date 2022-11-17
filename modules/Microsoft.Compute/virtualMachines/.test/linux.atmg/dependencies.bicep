@@ -39,7 +39,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 }
 
 resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${resourceGroup().id}-${location}-${managedIdentity.id}-ResourceGroup-Reader-RoleAssignment')
+  name: guid(resourceGroup().id, 'Contributor', managedIdentity.id)
   scope: resourceGroup()
   properties: {
     principalId: managedIdentity.properties.principalId
@@ -80,8 +80,5 @@ resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' = {
 @description('The resource ID of the created Virtual Network Subnet')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
-@description('The resource ID of the created SSH Key')
-output SSHKeyResourceID string = sshKey.id
-
 @description('The Public Key of the created SSH Key')
-output SSHKey string = sshKey.properties.publicKey
+output SSHKeyPublicKey string = sshKey.properties.publicKey

@@ -78,7 +78,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     publicKeys: [
       {
-        keyData: resourceGroupResources.outputs.SSHKey
+        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
         path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]

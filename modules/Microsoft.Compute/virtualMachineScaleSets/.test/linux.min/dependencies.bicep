@@ -87,4 +87,4 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 output SSHKeyResourceID string = sshKey.id
 
 @description('The Public Key of the created SSH Key.')
-output SSHKey string = sshKey.properties.publicKey
+output SSHKeyPublicKey string = sshKey.properties.publicKey
