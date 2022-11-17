@@ -5,8 +5,9 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - '**/*.md'
+      - users/erikag/brokenlinks
+    # paths:
+    #   - '**/*.md'
 
 jobs:
   build:
@@ -25,9 +26,14 @@ jobs:
         uses: lycheeverse/lychee-action@v1.5.4
         with:
           args: --verbose --no-progress **/*.md --accept 200,201,403,429,401 --exclude-file .lycheeignore
+          format: json
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
+      # - name: Publish Results
+      #   if: always()
+      #   run: exit ${{ steps.checker.outputs.exit_code }}
+
       - name: Publish Results
         if: always()
-        run: exit ${{ steps.checker.outputs.exit_code }}
+        run: echo ${{ steps.checker.outputs }}
