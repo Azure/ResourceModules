@@ -92,11 +92,11 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.blob.${environment().suffixes.storage}/'
+      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.blob.${environment().suffixes.storage}/'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.queue.${environment().suffixes.storage}/'
-      storageAccountName: last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))
-      tableEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.table.${environment().suffixes.storage}/'
+      queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.queue.${environment().suffixes.storage}/'
+      storageAccountName: resourceGroupResources.outputs.storageAccountName
+      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.table.${environment().suffixes.storage}/'
     }
     fabricSettings: [
       {
