@@ -141,12 +141,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
         remoteVirtualNetworkId: '<remoteVirtualNetworkId>'
         routingConfiguration: {
           associatedRouteTable: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1'
+            id: '<id>'
           }
           propagatedRouteTables: {
             ids: [
               {
-                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1'
+                id: '<id>'
               }
             ]
             labels: [
@@ -198,12 +198,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
           "remoteVirtualNetworkId": "<remoteVirtualNetworkId>",
           "routingConfiguration": {
             "associatedRouteTable": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1"
+              "id": "<id>"
             },
             "propagatedRouteTables": {
               "ids": [
                 {
-                  "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1"
+                  "id": "<id>"
                 }
               ],
               "labels": [
