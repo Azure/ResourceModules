@@ -80,8 +80,5 @@ resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' = {
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
-@description('The resource ID of the created SSH Key.')
-output SSHKeyResourceID string = sshKey.id
-
 @description('The Public Key of the created SSH Key.')
 output SSHKeyPublicKey string = sshKey.properties.publicKey
