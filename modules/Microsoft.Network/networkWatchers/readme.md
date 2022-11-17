@@ -171,7 +171,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       {
         endpoints: [
           {
-            name: '<<namePrefix>>-subnet-001(${resourceGroup.name})'
+            name: '<name>'
             resourceId: '<resourceId>'
             type: 'AzureVM'
           }
@@ -237,7 +237,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       }
     ]
     location: '<location>'
-    name: 'NetworkWatcher_${testLocation}'
+    name: '<name>'
     roleAssignments: [
       {
         principalIds: [
@@ -268,7 +268,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         {
           "endpoints": [
             {
-              "name": "<<namePrefix>>-subnet-001(${resourceGroup.name})",
+              "name": "<name>",
               "resourceId": "<resourceId>",
               "type": "AzureVM"
             },
@@ -340,7 +340,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "NetworkWatcher_${testLocation}"
+      "value": "<name>"
     },
     "roleAssignments": {
       "value": [

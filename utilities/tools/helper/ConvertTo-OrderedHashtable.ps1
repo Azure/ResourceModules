@@ -57,7 +57,7 @@ function ConvertTo-OrderedHashtable {
     $JSONObject = ConvertFrom-Json $JSONInputObject -AsHashtable -Depth 99 -NoEnumerate
     $orderedLevel = [ordered]@{}
 
-    if (-not ($JSONObject -is [hashtable])) {
+    if (-not ($JSONObject.GetType().BaseType.Name -eq 'Hashtable')) {
         return $JSONObject # E.g. in primitive data types [1,2,3]
     }
 
@@ -70,14 +70,14 @@ function ConvertTo-OrderedHashtable {
         }
 
         switch ($JSONObject[$currentLevelKey].GetType().BaseType.Name) {
-            'Object' {
+            { $PSItem -in @('Hashtable') } {
                 $orderedLevel[$currentLevelKey] = ConvertTo-OrderedHashtable -JSONInputObject ($JSONObject[$currentLevelKey] | ConvertTo-Json -Depth 99)
             }
             'Array' {
                 $arrayOutput = @()
 
                 # Case: Array of arrays
-                $arrayElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().Name -eq 'Object[]' }
+                $arrayElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().BaseType.Name -eq 'Array' }
                 foreach ($array in $arrayElements) {
                     if ($array.Count -gt 1) {
                         # Only sort for arrays with more than one item. Otherwise single-item arrays are casted
@@ -87,13 +87,13 @@ function ConvertTo-OrderedHashtable {
                 }
 
                 # Case: Array of objects
-                $hashTableElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().Name -eq 'Hashtable' }
+                $hashTableElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().BaseType.Name -eq 'Hashtable' }
                 foreach ($hashTable in $hashTableElements) {
                     $arrayOutput += , (ConvertTo-OrderedHashtable -JSONInputObject ($hashTable | ConvertTo-Json -Depth 99))
                 }
 
                 # Case: Primitive data types
-                $primitiveElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().Name -notin @('Object[]', 'Hashtable') } | ConvertTo-Json | ConvertFrom-Json -AsHashtable -NoEnumerate
+                $primitiveElements = $JSONObject[$currentLevelKey] | Where-Object { $_.GetType().BaseType.Name -notin @('Array', 'Hashtable') } | ConvertTo-Json -Depth 99 | ConvertFrom-Json -AsHashtable -NoEnumerate -Depth 99
                 if ($primitiveElements.Count -gt 1) {
                     $primitiveElements = $primitiveElements | Sort-Object
                 }
