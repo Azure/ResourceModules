@@ -41,7 +41,7 @@ This module deploys a service bus namespace resource.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Authorization Rules for the Service Bus namespace. |
+| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus namespace. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key. |
 | `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |

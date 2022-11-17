@@ -440,7 +440,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     ]
     authorizationServers: [
       {
-        authorizationEndpoint: '${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize'
+        authorizationEndpoint: '<authorizationEndpoint>'
         clientCredentialsKeyVaultId: '<clientCredentialsKeyVaultId>'
         clientIdSecretName: '<clientIdSecretName>'
         clientRegistrationEndpoint: 'http://localhost'
@@ -449,7 +449,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
           'authorizationCode'
         ]
         name: 'AuthServer1'
-        tokenEndpoint: '${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token'
+        tokenEndpoint: '<tokenEndpoint>'
       }
     ]
     backends: [
@@ -593,7 +593,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     "authorizationServers": {
       "value": [
         {
-          "authorizationEndpoint": "${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize",
+          "authorizationEndpoint": "<authorizationEndpoint>",
           "clientCredentialsKeyVaultId": "<clientCredentialsKeyVaultId>",
           "clientIdSecretName": "<clientIdSecretName>",
           "clientRegistrationEndpoint": "http://localhost",
@@ -602,7 +602,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
             "authorizationCode"
           ],
           "name": "AuthServer1",
-          "tokenEndpoint": "${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token"
+          "tokenEndpoint": "<tokenEndpoint>"
         }
       ]
     },
