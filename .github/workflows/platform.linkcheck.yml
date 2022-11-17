@@ -27,16 +27,13 @@ jobs:
         id: checker
         uses: lycheeverse/lychee-action@v1.5.4
         with:
-          # args: --verbose --no-progress **/*.md --accept 200,201,403,429,401
           args: --verbose --no-progress './**/*.md' --accept 200,201,403,429,401 --exclude-file .lycheeignore
 
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      # - name: Publish Results
-      #   if: always()
-      #   run: exit ${{ steps.checker.outputs.exit_code }}
-
       - name: Publish Results
         if: always()
-        run: echo ${{ steps.checker.outputs }}
+        run: exit ${{ steps.checker.outputs.exit_code }}
+
+
