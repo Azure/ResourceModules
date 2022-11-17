@@ -15,5 +15,5 @@ if (-not ($sshKey = Get-AzSshKey -ResourceGroupName $ResourceGroupName | Where-O
 # Write into Deployment Script output stream
 $DeploymentScriptOutputs = @{
     # Requires conversion as the script otherwise returns an object instead of the plain public key string
-    publicKey = ($publicKey | ConvertTo-Json | ConvertFrom-Json).Value
+    publicKey = $publicKey | Out-String
 }
