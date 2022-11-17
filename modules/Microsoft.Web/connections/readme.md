@@ -180,7 +180,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
     name: 'azuremonitor'
     // Non-required parameters
     connectionApi: {
-      id: '<id>'
+      id: '${subscription().id}/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
     }
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -217,7 +217,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
     // Non-required parameters
     "connectionApi": {
       "value": {
-        "id": "<id>"
+        "id": "${subscription().id}/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs"
       }
     },
     "lock": {
