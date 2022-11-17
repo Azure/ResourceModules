@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.compute.proximityplacementgroups-${serviceS
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'cppgcom'
+param serviceShort string = 'cppgmin'
 
 // =========== //
 // Deployments //
@@ -24,14 +24,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
-  params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-  }
-}
-
 // ============== //
 // Test Execution //
 // ============== //
@@ -41,34 +33,5 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
-        ]
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    zones: [
-      '1'
-    ]
-    proximityPlacementGroupType: 'Standard'
-    tags: {
-      TagA: 'Would you kindly...'
-      TagB: 'Tags for sale'
-    }
-    colocationStatus: {
-      code: 'ColocationStatus/Aligned'
-      displayStatus: 'Aligned'
-      level: 'Info'
-      message: 'I\'m a default error message'
-    }
-    intent: {
-      vmSizes: [
-        'Standard_B1ms'
-        'Standard_B4ms'
-      ]
-    }
   }
 }
