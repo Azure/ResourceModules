@@ -108,7 +108,7 @@ module maintenanceConfiguration_roleAssignments '.bicep/nested_roleAssignments.b
 //   Outputs   //
 // =========== //
 
-@description('The name of the maintenanceConfiguration.')
+@description('The name of the Maintenance Configuration.')
 output name string = maintenanceConfiguration.name
 
 @description('The resource ID of the maintenanceConfiguration.')
