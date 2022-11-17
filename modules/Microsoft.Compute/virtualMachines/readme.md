@@ -1044,17 +1044,37 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         deleteOption: 'Delete'
         ipConfigurations: [
           {
-            applicationSecurityGroups: 'System.Management.Automation.OrderedHashtable'
-            loadBalancerBackendAddressPools: 'System.Management.Automation.OrderedHashtable'
+            applicationSecurityGroups: [
+              {
+                id: '<id>'
+              }
+            ]
+            loadBalancerBackendAddressPools: [
+              {
+                id: '<id>'
+              }
+            ]
             name: 'ipconfig01'
-            pipConfiguration: 'System.Management.Automation.OrderedHashtable'
+            pipConfiguration: {
+              publicIpNameSuffix: '-pip-01'
+              roleAssignments: [
+                {
+                  principalIds: [
+                    '<managedIdentityPrincipalId>'
+                  ]
+                  roleDefinitionIdOrName: 'Reader'
+                }
+              ]
+            }
             subnetResourceId: '<subnetResourceId>'
           }
         ]
         nicSuffix: '-nic-01'
         roleAssignments: [
           {
-            principalIds: '<managedIdentityPrincipalId>'
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -1425,7 +1445,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         ipConfigurations: [
           {
             name: 'ipconfig01'
-            pipConfiguration: 'System.Management.Automation.OrderedHashtable'
+            pipConfiguration: {
+              publicIpNameSuffix: '-pip-01'
+            }
             subnetResourceId: '<subnetResourceId>'
           }
         ]
@@ -1560,7 +1582,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         ipConfigurations: [
           {
             name: 'ipconfig01'
-            pipConfiguration: 'System.Management.Automation.OrderedHashtable'
+            pipConfiguration: {
+              publicIpNameSuffix: '-pip-01'
+            }
             subnetResourceId: '<subnetResourceId>'
           }
         ]
@@ -1691,17 +1715,37 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         deleteOption: 'Delete'
         ipConfigurations: [
           {
-            applicationSecurityGroups: 'System.Management.Automation.OrderedHashtable'
-            loadBalancerBackendAddressPools: 'System.Management.Automation.OrderedHashtable'
+            applicationSecurityGroups: [
+              {
+                id: '<id>'
+              }
+            ]
+            loadBalancerBackendAddressPools: [
+              {
+                id: '<id>'
+              }
+            ]
             name: 'ipconfig01'
-            pipConfiguration: 'System.Management.Automation.OrderedHashtable'
+            pipConfiguration: {
+              publicIpNameSuffix: '-pip-01'
+              roleAssignments: [
+                {
+                  principalIds: [
+                    '<managedIdentityPrincipalId>'
+                  ]
+                  roleDefinitionIdOrName: 'Reader'
+                }
+              ]
+            }
             subnetResourceId: '<subnetResourceId>'
           }
         ]
         nicSuffix: '-nic-01'
         roleAssignments: [
           {
-            principalIds: '<managedIdentityPrincipalId>'
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
             roleDefinitionIdOrName: 'Reader'
           }
         ]
