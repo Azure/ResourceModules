@@ -111,7 +111,6 @@ function Test-NamePrefixAvailability {
                     $serviceShort = $serviceShort.Replace("'", '') # remove trailing quotes
                 }
                 else {
-                    Write-Verbose "Parameter 'serviceShort' has been supplied. Will not replace value." -Verbose
                     $serviceShort = $overwrittenServiceShort
                 }
 
