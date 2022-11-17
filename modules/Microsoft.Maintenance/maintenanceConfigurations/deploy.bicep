@@ -117,5 +117,5 @@ output resourceId string = maintenanceConfiguration.id
 @description('The name of the resource group the Maintenance Configuration was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The location the maintenanceConfiguration was created in.')
+@description('The location the Maintenance Configuration was created in.')
 output location string = maintenanceConfiguration.location
