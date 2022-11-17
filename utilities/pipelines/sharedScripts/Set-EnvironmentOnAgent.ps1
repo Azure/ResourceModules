@@ -134,6 +134,16 @@ function Set-EnvironmentOnAgent {
     Write-Verbose 'Powershell version:' -Verbose
     $PSVersionTable
 
+    #####################################
+    ##  TEMP PowerShell installation   ##
+    #####################################
+
+    # Install the downloaded package
+    sudo dpkg -i powershell-lts_7.3.0-1.deb_amd64.deb
+
+    # Resolve missing dependencies and finish the install (if necessary)
+    sudo apt-get install -f
+
     ###########################
     ##   Install Azure CLI   ##
     ###########################
