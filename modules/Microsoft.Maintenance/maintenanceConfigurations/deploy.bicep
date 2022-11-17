@@ -111,7 +111,7 @@ module maintenanceConfiguration_roleAssignments '.bicep/nested_roleAssignments.b
 @description('The name of the Maintenance Configuration.')
 output name string = maintenanceConfiguration.name
 
-@description('The resource ID of the maintenanceConfiguration.')
+@description('The resource ID of the Maintenance Configuration.')
 output resourceId string = maintenanceConfiguration.id
 
 @description('The name of the resource group the maintenanceConfiguration was created in.')
