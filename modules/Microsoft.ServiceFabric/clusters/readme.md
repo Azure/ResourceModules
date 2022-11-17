@@ -436,11 +436,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.blob.${environment().suffixes.storage}/'
+      blobEndpoint: '<blobEndpoint>'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.queue.${environment().suffixes.storage}/'
+      queueEndpoint: '<queueEndpoint>'
       storageAccountName: '<storageAccountName>'
-      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.table.${environment().suffixes.storage}/'
+      tableEndpoint: '<tableEndpoint>'
     }
     fabricSettings: [
       {
@@ -639,11 +639,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "diagnosticsStorageAccountConfig": {
       "value": {
-        "blobEndpoint": "https://${resourceGroupResources.outputs.storageAccountName}.blob.${environment().suffixes.storage}/",
+        "blobEndpoint": "<blobEndpoint>",
         "protectedAccountKeyName": "StorageAccountKey1",
-        "queueEndpoint": "https://${resourceGroupResources.outputs.storageAccountName}.queue.${environment().suffixes.storage}/",
+        "queueEndpoint": "<queueEndpoint>",
         "storageAccountName": "<storageAccountName>",
-        "tableEndpoint": "https://${resourceGroupResources.outputs.storageAccountName}.table.${environment().suffixes.storage}/"
+        "tableEndpoint": "<tableEndpoint>"
       }
     },
     "fabricSettings": {
