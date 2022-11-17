@@ -8,7 +8,7 @@ Test if a given name prefix token placeholder is already taken. Tests resource n
 .PARAMETER namePrefix
 Parameter description
 
-.PARAMETER serviceShort
+.PARAMETER overwrittenServiceShort
 A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.
 
 .PARAMETER Tokens
@@ -17,7 +17,7 @@ Optional. A hashtable parameter that contains tokens to be replaced in the param
 .EXAMPLE
 $inputObject = @{
     NamePrefix = 'carml'
-    ServiceShort = ''
+    overwrittenServiceShort = ''
     Tokens     = @{
         Location          = 'westeurope'
         ResourceGroupName = 'validation-rg'
@@ -38,8 +38,8 @@ function Test-NamePrefixAvailability {
         [Parameter(Mandatory = $true)]
         [string] $namePrefix,
 
-        [Parameter(Mandatory = $true)]
-        [string] $serviceShort,
+        [Parameter(Mandatory = $false)]
+        [string] $overwrittenServiceShort,
 
         [Parameter(Mandatory = $false)]
         [Psobject] $Tokens = @{}
@@ -69,56 +69,73 @@ function Test-NamePrefixAvailability {
         $keyVaultNames = @()
 
         $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter 'deploy.test.bicep').FullName | Where-Object {
-          Test-Path (Join-Path (Split-Path $_ -Parent) 'dependencies.bicep') # Currently we only need to consider files that have ResourceGroup resources
+            Test-Path (Join-Path (Split-Path $_ -Parent) 'dependencies.bicep') # Currently we only need to consider files that have ResourceGroup resources
         } | ForEach-Object { 
-          $_.Replace('\', '/') 
+            $_.Replace('\', '/') 
         }
 
-        foreach ($relevantResourceType in $relevantResourceTypes) {
-            switch ($relevantResourceType) {
-                'Microsoft.Storage/storageAccounts' {
-                    $filter = 'storageAccountName:'
-                }
-                'Microsoft.ContainerRegistry/registries' {
-                    $filter = 'registryName:'
-                }
-                'Microsoft.KeyVault/vaults' {
-                    $filter = 'keyVaultName:'
-                }
-                Default {
-                    Write-Warning "The entered resource Type '$_' could not be matched."
-                    continue
-                }
-            }
+        foreach ($parameterFile in $parameterFiles) {
 
-            foreach ($parameterFile in $parameterFiles) {
-                $temp = $null
-                # determine if entry is of one of the resourceTypes using the filter variable
-                $temp = Get-Content -Path $parameterFile | ForEach-Object {
-                    if ($_ -match "$filter\s'") { $_ }
-                }
-                if ($temp) {
-                    $temp = $temp.Split($filter)
-                    $temp = $temp | Where-Object { $_ -match '\S' } # replace empty lines in array
-
-                    # trim the entry and replace placeholder values
-                    $temp = $temp.Replace("'", '') # remove trailing quotes
-                    $temp = $temp.Replace('<<namePrefix>>', $namePrefix)
-                    $temp = $temp.Replace('${serviceShort}', $serviceShort)
-                    $temp = $temp.Replace(' ', '') # remove trailing whitespaces
-
-                    # drop entries which generate its name during runtime (e.g. via uniqueString function in bicep)
-                    if ($temp -match 'uniqueString') {
+            foreach ($relevantResourceType in $relevantResourceTypes) {
+                switch ($relevantResourceType) {
+                    'Microsoft.Storage/storageAccounts' {
+                        $filter = 'storageAccountName:'
+                    }
+                    'Microsoft.ContainerRegistry/registries' {
+                        $filter = 'registryName:'
+                    }
+                    'Microsoft.KeyVault/vaults' {
+                        $filter = 'keyVaultName:'
+                    }
+                    Default {
+                        Write-Warning "The entered resource Type '$_' could not be matched."
                         continue
                     }
+                }
+            }
+            
+            $temp = $null
 
-                    # add entry to resourcetype-specific list
-                    switch ($filter) {
-                        'storageAccountName:' { $storageAccountNames += $temp }
-                        'registryName:' { $containerRegistryNames += $temp }
-                        'keyVaultName:' { $keyVaultNames += $temp }
-                        Default {}
-                    }
+            # determine if entry is of one of the resourceTypes using the filter variable
+            $temp = Get-Content -Path $parameterFile | ForEach-Object {
+                if ($_ -match "$filter\s'") { $_ }
+            }
+
+            # determine serviceshort default value if no parameter has been supplied
+            if (!$overwrittenServiceShort) {
+                $serviceShort = Get-Content -Path $parameterFile | ForEach-Object {
+                    if ($_ -match "serviceShort string = ") { $_ }
+                }
+                $serviceShort = $serviceShort.Split("=")[-1] # split string to get the default value for serviceshort
+                $serviceShort = $serviceShort.Replace("'", '') # remove trailing quotes
+                $serviceShort = $serviceShort.Replace("'", '') # remove trailing quotes
+            }
+            else {
+                Write-Verbose "Parameter 'serviceShort' has been supplied. Will not replace value." -Verbose
+                $serviceShort = $overwrittenServiceShort
+            }
+
+            if ($temp) {
+                $temp = $temp.Split($filter)
+                $temp = $temp | Where-Object { $_ -match '\S' } # replace empty lines in array
+
+                # trim the entry and replace placeholder values
+                $temp = $temp.Replace("'", '') # remove trailing quotes
+                $temp = $temp.Replace('<<namePrefix>>', $namePrefix)
+                $temp = $temp.Replace('${serviceShort}', $serviceShort)
+                $temp = $temp.Replace(' ', '') # remove trailing whitespaces
+
+                # drop entries which generate its name during runtime (e.g. via uniqueString function in bicep)
+                if ($temp -match 'uniqueString') {
+                    continue
+                }
+
+                # add entry to resourcetype-specific list
+                switch ($filter) {
+                    'storageAccountName:' { $storageAccountNames += $temp }
+                    'registryName:' { $containerRegistryNames += $temp }
+                    'keyVaultName:' { $keyVaultNames += $temp }
+                    Default {}
                 }
             }
         }
@@ -174,7 +191,7 @@ function Test-NamePrefixAvailability {
         }
 
         # Azure Container Registry
-        Write-Host "`nCheck Azure Container Registies" -ForegroundColor 'Cyan'
+        Write-Host "`nCheck Azure Container Registries" -ForegroundColor 'Cyan'
         Write-Host '==============================' -ForegroundColor 'Cyan'
         foreach ($acrName in $acrNames) {
             $path = '/subscriptions/{0}/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01' -f $subscriptionId
@@ -198,12 +215,13 @@ function Test-NamePrefixAvailability {
         Write-Host '======' -ForegroundColor 'Cyan'
         if (-not $prefixAvailable) {
             Write-Error "=> Prefix [$namePrefix] is not available for all resources. Please try a different one."
-        } else {
+        }
+        else {
             Write-Host "=> Prefix [$namePrefix] is available for all resources." -ForegroundColor 'Green'
         }
     }
 
     end {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
-    }
+    }   
 }
