@@ -988,11 +988,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         ipConfigurations: [
           {
             name: 'ipconfig1'
-            properties: {
-              subnet: {
-                id: '<id>'
-              }
-            }
+            properties: 'System.Management.Automation.OrderedHashtable'
           }
         ]
         nicSuffix: '-nic01'
@@ -1264,11 +1260,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         ipConfigurations: [
           {
             name: 'ipconfig1'
-            properties: {
-              subnet: {
-                id: '<id>'
-              }
-            }
+            properties: 'System.Management.Automation.OrderedHashtable'
           }
         ]
         nicSuffix: '-nic01'
@@ -1459,11 +1451,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         ipConfigurations: [
           {
             name: 'ipconfig1'
-            properties: {
-              subnet: {
-                id: '<id>'
-              }
-            }
+            properties: 'System.Management.Automation.OrderedHashtable'
           }
         ]
         nicSuffix: '-nic01'
@@ -1718,11 +1706,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         ipConfigurations: [
           {
             name: 'ipconfig1'
-            properties: {
-              subnet: {
-                id: '<id>'
-              }
-            }
+            properties: 'System.Management.Automation.OrderedHashtable'
           }
         ]
         nicSuffix: '-nic01'
