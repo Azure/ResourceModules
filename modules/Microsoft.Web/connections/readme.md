@@ -16,7 +16,7 @@ This module deploys an Azure API connection.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Web/connections` | [2016-06-01](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Web/connections` | [2016-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections) |
 
 ## Parameters
 

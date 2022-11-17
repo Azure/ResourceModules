@@ -1587,7 +1587,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
               {
                 policyName: 'Default_values'
                 targetContainerName: 'pluto'
-                targetProtectionContainerId: '${resourceGroup.id}/providers/Microsoft.RecoveryServices/vaults/${rsvName}/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container2'
+                targetProtectionContainerId: '<targetProtectionContainerId>'
               }
             ]
           }
@@ -1664,7 +1664,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
                 {
                   "policyName": "Default_values",
                   "targetContainerName": "pluto",
-                  "targetProtectionContainerId": "${resourceGroup.id}/providers/Microsoft.RecoveryServices/vaults/${rsvName}/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container2"
+                  "targetProtectionContainerId": "<targetProtectionContainerId>"
                 }
               ]
             },
