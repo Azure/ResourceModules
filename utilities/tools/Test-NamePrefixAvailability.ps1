@@ -92,50 +92,50 @@ function Test-NamePrefixAvailability {
                         continue
                     }
                 }
-            }
             
-            $temp = $null
+                $temp = $null
 
-            # determine if entry is of one of the resourceTypes using the filter variable
-            $temp = Get-Content -Path $parameterFile | ForEach-Object {
-                if ($_ -match "$filter\s'") { $_ }
-            }
-
-            # determine serviceshort default value if no parameter has been supplied
-            if (!$overwrittenServiceShort) {
-                $serviceShort = Get-Content -Path $parameterFile | ForEach-Object {
-                    if ($_ -match "serviceShort string = ") { $_ }
-                }
-                $serviceShort = $serviceShort.Split("=")[-1] # split string to get the default value for serviceshort
-                $serviceShort = $serviceShort.Replace("'", '') # remove trailing quotes
-                $serviceShort = $serviceShort.Replace("'", '') # remove trailing quotes
-            }
-            else {
-                Write-Verbose "Parameter 'serviceShort' has been supplied. Will not replace value." -Verbose
-                $serviceShort = $overwrittenServiceShort
-            }
-
-            if ($temp) {
-                $temp = $temp.Split($filter)
-                $temp = $temp | Where-Object { $_ -match '\S' } # replace empty lines in array
-
-                # trim the entry and replace placeholder values
-                $temp = $temp.Replace("'", '') # remove trailing quotes
-                $temp = $temp.Replace('<<namePrefix>>', $namePrefix)
-                $temp = $temp.Replace('${serviceShort}', $serviceShort)
-                $temp = $temp.Replace(' ', '') # remove trailing whitespaces
-
-                # drop entries which generate its name during runtime (e.g. via uniqueString function in bicep)
-                if ($temp -match 'uniqueString') {
-                    continue
+                # determine if entry is of one of the resourceTypes using the filter variable
+                $temp = Get-Content -Path $parameterFile | ForEach-Object {
+                    if ($_ -match "$filter\s'") { $_ }
                 }
 
-                # add entry to resourcetype-specific list
-                switch ($filter) {
-                    'storageAccountName:' { $storageAccountNames += $temp }
-                    'registryName:' { $containerRegistryNames += $temp }
-                    'keyVaultName:' { $keyVaultNames += $temp }
-                    Default {}
+                # determine serviceshort default value if no parameter has been supplied
+                if (!$overwrittenServiceShort) {
+                    $serviceShort = Get-Content -Path $parameterFile | ForEach-Object {
+                        if ($_ -match "serviceShort string = ") { $_ }
+                    }
+                    $serviceShort = $serviceShort.Split("=")[-1] # split string to get the default value for serviceshort
+                    $serviceShort = $serviceShort.Replace("'", '') # remove trailing quotes
+                    $serviceShort = $serviceShort.Replace("'", '') # remove trailing quotes
+                }
+                else {
+                    Write-Verbose "Parameter 'serviceShort' has been supplied. Will not replace value." -Verbose
+                    $serviceShort = $overwrittenServiceShort
+                }
+
+                if ($temp) {
+                    $temp = $temp.Split($filter)
+                    $temp = $temp | Where-Object { $_ -match '\S' } # replace empty lines in array
+
+                    # trim the entry and replace placeholder values
+                    $temp = $temp.Replace("'", '') # remove trailing quotes
+                    $temp = $temp.Replace('<<namePrefix>>', $namePrefix)
+                    $temp = $temp.Replace('${serviceShort}', $serviceShort)
+                    $temp = $temp.Replace(' ', '') # remove trailing whitespaces
+
+                    # drop entries which generate its name during runtime (e.g. via uniqueString function in bicep)
+                    if ($temp -match 'uniqueString') {
+                        continue
+                    }
+
+                    # add entry to resourcetype-specific list
+                    switch ($filter) {
+                        'storageAccountName:' { $storageAccountNames += $temp }
+                        'registryName:' { $containerRegistryNames += $temp }
+                        'keyVaultName:' { $keyVaultNames += $temp }
+                        Default {}
+                    }
                 }
             }
         }
