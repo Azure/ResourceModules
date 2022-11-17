@@ -72,8 +72,6 @@ runs:
         # Grouping task logs
         Write-Output '::group::Run Pester tests'
 
-        $PSVersionTable # TODO: Remove
-
         # Set repo root path
         $repoRootPath = $env:GITHUB_WORKSPACE
 
