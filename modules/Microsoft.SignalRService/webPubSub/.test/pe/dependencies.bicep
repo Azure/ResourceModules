@@ -4,9 +4,6 @@ param location string = resourceGroup().location
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
-@description('Required. The name of the private DNS zone to create.')
-param privateDnsname string
-
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
     location: location

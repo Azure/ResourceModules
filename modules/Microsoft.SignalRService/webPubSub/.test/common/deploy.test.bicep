@@ -29,7 +29,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    privateDnsname: 'privatelink.${serviceShort}.azure.com'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }

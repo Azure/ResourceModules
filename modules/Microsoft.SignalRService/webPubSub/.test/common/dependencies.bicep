@@ -7,9 +7,6 @@ param virtualNetworkName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
-@description('Required. The name of the private DNS zone to create.')
-param privateDnsname string
-
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
     location: location
