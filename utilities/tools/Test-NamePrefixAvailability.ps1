@@ -10,6 +10,7 @@ Parameter description
 
 .PARAMETER overwrittenServiceShort
 A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.
+If left blank the script will use the default value from parameter named 'serviceShort' from the respective the bicep file.
 
 .PARAMETER Tokens
 Optional. A hashtable parameter that contains tokens to be replaced in the paramter files
