@@ -62,15 +62,15 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-var managedImageName_var = '${managedImageName}-${baseTime}'
-var managedImageId = '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Compute/images/${managedImageName_var}'
-var imageReplicationRegions_var = empty(imageReplicationRegions) ? array(location) : imageReplicationRegions
+var managedImageNameVar = '${managedImageName}-${baseTime}'
+var managedImageId = '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Compute/images/${managedImageNameVar}'
+var imageReplicationRegionsVar = empty(imageReplicationRegions) ? array(location) : imageReplicationRegions
 
 var managedImage = {
   type: 'ManagedImage'
   imageId: managedImageId
   location: location
-  runOutputName: '${managedImageName_var}-ManagedImage'
+  runOutputName: '${managedImageNameVar}-ManagedImage'
   artifactTags: {
     sourceType: imageSource.type
     sourcePublisher: contains(imageSource, 'publisher') ? imageSource.publisher : null
@@ -97,7 +97,7 @@ var sharedImage = {
     sourceImageVersionID: contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null
     creationTime: baseTime
   }
-  replicationRegions: imageReplicationRegions_var
+  replicationRegions: imageReplicationRegionsVar
 }
 var conditionalSharedImage = empty(sigImageDefinitionId) ? [] : array(sharedImage)
 var unManagedImage = {

@@ -22,7 +22,7 @@ This module deploys the auth settings v2.
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `authSettingV2Configuration` | object |  | The auth settings V2 configuration. |
-| `kind` | string | `[app, functionapp, functionapp,linux]` | Type of site to deploy. |
+| `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of site to deploy. |
 
 **Conditional parameters**
 

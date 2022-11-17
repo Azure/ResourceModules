@@ -127,6 +127,13 @@ function Set-EnvironmentOnAgent {
         [Hashtable[]] $PSModules = @()
     )
 
+    ############################
+    ##   PowerShell version   ##
+    ############################
+
+    Write-Verbose 'Powershell version:' -Verbose
+    $PSVersionTable
+
     ###########################
     ##   Install Azure CLI   ##
     ###########################
@@ -134,6 +141,7 @@ function Set-EnvironmentOnAgent {
     # AzCLI is pre-installed on GitHub hosted runners.
     # https://github.com/actions/virtual-environments#available-environments
 
+    Write-Verbose 'Az CLI version:' -Verbose
     az --version
     <#
     Write-Verbose ("Install azure cli start") -Verbose
@@ -148,6 +156,7 @@ function Set-EnvironmentOnAgent {
     # Bicep CLI is pre-installed on GitHub hosted runners.
     # https://github.com/actions/virtual-environments#available-environments
 
+    Write-Verbose 'Bicep CLI version:' -Verbose
     bicep --version
     <#
     Write-Verbose ("Install bicep start") -Verbose
@@ -169,7 +178,8 @@ function Set-EnvironmentOnAgent {
     # Azure CLI extension for DevOps is pre-installed on GitHub hosted runners.
     # https://github.com/actions/virtual-environments#available-environments
 
-    az extension list | ConvertFrom-Json | Select-Object -Property name, version, preview, experimental
+    Write-Verbose 'AZ CLI extensions:' -Verbose
+    az extension list | ConvertFrom-Json | Select-Object -Property 'name', 'version', 'preview', 'experimental'
 
     <#
     Write-Verbose ('Install cli exentions start') -Verbose
@@ -238,4 +248,21 @@ function Set-EnvironmentOnAgent {
     }
 
     Write-Verbose ('Install-CustomModule end') -Verbose
+
+    #####################################
+    ##  TEMP PowerShell installation   ##
+    #####################################
+
+    # Update the list of packages
+    sudo apt-get update
+    # Install pre-requisite packages.
+    sudo apt-get install -y wget apt-transport-https software-properties-common
+    # Download the Microsoft repository GPG keys
+    wget -q "https://packages.microsoft.com/config/ubuntu/`$(lsb_release -rs)/packages-microsoft-prod.deb"
+    # Register the Microsoft repository GPG keys
+    sudo dpkg -i packages-microsoft-prod.deb
+    # Update the list of packages after we added packages.microsoft.com
+    sudo apt-get update
+    # Install PowerShell
+    sudo apt-get install -y powershell
 }

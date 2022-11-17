@@ -7,20 +7,20 @@ Fetch all available Role Definitions for the given ProviderNamespace
 Leverges Microsoft Docs's [https://learn.microsoft.com/en-us/powershell/module/az.resources/get-azroledefinition?view=azps-8.3.0] to fetch the data
 
 .PARAMETER ProviderNamespace
-Mandatory. The Provider Namespace to fetch the role definitions for
+Optional. The Provider Namespace to fetch the role definitions for
 
 .PARAMETER ResourceType
-Mandatory. The ResourceType to fetch the role definitions for
+Optional. The ResourceType to fetch the role definitions for
 
 .PARAMETER IncludeCustomRoles
 Optional. Whether to include custom roles or not
 
 .EXAMPLE
-Get-RoleAssignmentsList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+Get-RoleAssignmentList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
 
 Fetch all available Role Definitions for ProviderNamespace [Microsoft.KeyVault/vaults], excluding custom roles
 #>
-function Get-RoleAssignmentsList {
+function Get-RoleAssignmentList {
 
     [CmdletBinding()]
     param(
@@ -41,7 +41,7 @@ function Get-RoleAssignmentsList {
     process {
 
         #################
-        ##   Get Roles ##
+        ##  Get Roles  ##
         #################
         $roleDefinitions = Get-AzRoleDefinition
 
@@ -66,13 +66,19 @@ function Get-RoleAssignmentsList {
             $_.DataActions -like '`**'
         }
 
+        # (Bicep-only) To comply with Bicep Linter Rule prefer-unquoted-property-names, remove quotes from role names not containing spaces
         $resBicep = [System.Collections.ArrayList]@()
         $resArm = [System.Collections.ArrayList]@()
         foreach ($role in $relevantRoles | Sort-Object -Property 'Name' -Unique) {
-            $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+            if ($role.Name -match '\s') {
+                $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+            } else {
+                $resBicep += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+            }
             $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')]`"," -f $role.Name, $role.Id
         }
 
+        # Return arrays
         return @{
             bicepFormat = $resBicep
             armFormat   = $resArm

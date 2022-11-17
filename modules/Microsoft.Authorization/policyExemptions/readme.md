@@ -16,7 +16,7 @@ With this module you can create policy exemptions across the management group, s
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyExemptions` | [2020-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions) |
+| `Microsoft.Authorization/policyExemptions` | [2020-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/policyExemptions) |
 
 ## Parameters
 
