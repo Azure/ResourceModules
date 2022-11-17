@@ -66,7 +66,7 @@ resource backupVault 'Microsoft.DataProtection/backupVaults@2022-03-01' = {
   name: name
   location: location
   tags: tags
-  identity: any(identity)
+  identity: identity
   properties: {
     storageSettings: [
       {
