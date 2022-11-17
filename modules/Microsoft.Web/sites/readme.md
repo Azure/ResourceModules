@@ -28,7 +28,7 @@ This module deploys a web or function app.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `kind` | string | `[app, functionapp, functionapp,linux]` | Type of site to deploy. |
+| `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of site to deploy. |
 | `name` | string |  | Name of the site. |
 | `serverFarmResourceId` | string |  | The resource ID of the app service plan to use for the site. |
 
@@ -77,16 +77,12 @@ For all other app settings key-value pairs use this object.
 
 ```json
 "appSettingsKeyValuePairs": {
-    "value": [
-        {
-            "name": "key1",
-            "value": "val1"
-        },
-        {
-            "name": "key2",
-            "value": "val2"
-        }
-    ]
+    "value": {
+      "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
+      "EASYAUTH_SECRET": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password",
+      "FUNCTIONS_EXTENSION_VERSION": "~4",
+      "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+    }
 }
 ```
 
@@ -97,16 +93,12 @@ For all other app settings key-value pairs use this object.
 <summary>Bicep format</summary>
 
 ```bicep
-appSettingsKeyValuePairs: [
-    {
-        name: 'key1'
-        value: 'val1'
-    }
-    {
-        name: 'key2'
-        value: 'val2'
-    }
-]
+appSettingsKeyValuePairs: {
+  AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
+  EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password'
+  FUNCTIONS_EXTENSION_VERSION: '~4'
+  FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+}
 ```
 
 </details>
@@ -432,7 +424,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     appInsightId: '<appInsightId>'
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
-      EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
+      EASYAUTH_SECRET: '<EASYAUTH_SECRET>'
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     }
@@ -459,7 +451,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           registration: {
             clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
             clientSecretSettingName: 'EASYAUTH_SECRET'
-            openIdIssuer: 'https://sts.windows.net/${tenant().tenantId}/v2.0/'
+            openIdIssuer: '<openIdIssuer>'
           }
           validation: {
             allowedAudiences: [
@@ -567,7 +559,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "appSettingsKeyValuePairs": {
       "value": {
         "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
-        "EASYAUTH_SECRET": "https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password",
+        "EASYAUTH_SECRET": "<EASYAUTH_SECRET>",
         "FUNCTIONS_EXTENSION_VERSION": "~4",
         "FUNCTIONS_WORKER_RUNTIME": "dotnet"
       }
@@ -596,7 +588,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
             "registration": {
               "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
               "clientSecretSettingName": "EASYAUTH_SECRET",
-              "openIdIssuer": "https://sts.windows.net/${tenant().tenantId}/v2.0/"
+              "openIdIssuer": "<openIdIssuer>"
             },
             "validation": {
               "allowedAudiences": [

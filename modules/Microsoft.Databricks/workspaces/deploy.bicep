@@ -91,7 +91,7 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
 }]
 
 var managedResourceGroupName = '${name}-rg'
-var managedResourceGroupId_var = '${subscription().id}/resourceGroups/${managedResourceGroupName}'
+var managedResourceGroupIdVar = '${subscription().id}/resourceGroups/${managedResourceGroupName}'
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -113,7 +113,7 @@ resource workspace 'Microsoft.Databricks/workspaces@2018-04-01' = {
     name: pricingTier
   }
   properties: {
-    managedResourceGroupId: (empty(managedResourceGroupId) ? managedResourceGroupId_var : managedResourceGroupId)
+    managedResourceGroupId: (empty(managedResourceGroupId) ? managedResourceGroupIdVar : managedResourceGroupId)
     parameters: workspaceParameters
   }
 }
