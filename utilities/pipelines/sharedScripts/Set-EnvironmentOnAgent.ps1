@@ -127,6 +127,13 @@ function Set-EnvironmentOnAgent {
         [Hashtable[]] $PSModules = @()
     )
 
+    ############################
+    ##   PowerShell version   ##
+    ############################
+
+    Write-Verbose 'Powershell version:' -Verbose
+    $PSVersionTable
+
     ###########################
     ##   Install Azure CLI   ##
     ###########################
@@ -134,6 +141,7 @@ function Set-EnvironmentOnAgent {
     # AzCLI is pre-installed on GitHub hosted runners.
     # https://github.com/actions/virtual-environments#available-environments
 
+    Write-Verbose 'Az CLI version:' -Verbose
     az --version
     <#
     Write-Verbose ("Install azure cli start") -Verbose
@@ -148,6 +156,7 @@ function Set-EnvironmentOnAgent {
     # Bicep CLI is pre-installed on GitHub hosted runners.
     # https://github.com/actions/virtual-environments#available-environments
 
+    Write-Verbose 'Bicep CLI version:' -Verbose
     bicep --version
     <#
     Write-Verbose ("Install bicep start") -Verbose
@@ -169,7 +178,8 @@ function Set-EnvironmentOnAgent {
     # Azure CLI extension for DevOps is pre-installed on GitHub hosted runners.
     # https://github.com/actions/virtual-environments#available-environments
 
-    az extension list | ConvertFrom-Json | Select-Object -Property name, version, preview, experimental
+    Write-Verbose 'AZ CLI extensions:' -Verbose
+    az extension list | ConvertFrom-Json | Select-Object -Property 'name', 'version', 'preview', 'experimental'
 
     <#
     Write-Verbose ('Install cli exentions start') -Verbose
