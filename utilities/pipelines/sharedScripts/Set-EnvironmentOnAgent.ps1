@@ -138,11 +138,18 @@ function Set-EnvironmentOnAgent {
     ##  TEMP PowerShell installation   ##
     #####################################
 
-    # Install the downloaded package
-    sudo dpkg -i powershell-lts_7.3.0-1.deb_amd64.deb
-
-    # Resolve missing dependencies and finish the install (if necessary)
-    sudo apt-get install -f
+    # Update the list of packages
+    sudo apt-get update
+    # Install pre-requisite packages.
+    sudo apt-get install -y wget apt-transport-https software-properties-common
+    # Download the Microsoft repository GPG keys
+    wget -q "https://packages.microsoft.com/config/ubuntu/`$(lsb_release -rs)/packages-microsoft-prod.deb"
+    # Register the Microsoft repository GPG keys
+    sudo dpkg -i packages-microsoft-prod.deb
+    # Update the list of packages after we added packages.microsoft.com
+    sudo apt-get update
+    # Install PowerShell
+    sudo apt-get install -y powershell
 
     ###########################
     ##   Install Azure CLI   ##
