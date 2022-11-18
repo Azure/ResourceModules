@@ -24,6 +24,7 @@
 ## Parameters
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `connectionMonitors` | _[connectionMonitors](connectionMonitors/readme.md)_ array | `[]` |  | Array that contains the Connection Monitors. |
@@ -156,7 +157,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -164,51 +165,14 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-NetworkWatchers'
-  params: {
-    location: 'northeurope'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "location": {
-      "value": "northeurope"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-NetworkWatchers'
+  name: '${uniqueString(deployment().name)}-test-nnwcom'
   params: {
     connectionMonitors: [
       {
         endpoints: [
           {
-            name: '<<namePrefix>>-az-subnet-x-001(validation-rg)'
-            resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-<<namePrefix>>-vm-01'
+            name: '<name>'
+            resourceId: '<resourceId>'
             type: 'AzureVM'
           }
           {
@@ -217,7 +181,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
             type: 'ExternalAddress'
           }
         ]
-        name: 'adp-<<namePrefix>>-az-conn-mon-x-001'
+        name: '<<namePrefix>>-nnwcom-cm-001'
         testConfigurations: [
           {
             httpConfiguration: {
@@ -246,38 +210,40 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
             disable: false
             name: 'TestHTTPBing'
             sources: [
-              '<<namePrefix>>-az-subnet-x-001(validation-rg)'
+              '<<namePrefix>>-subnet-001(${resourceGroup.name})'
             ]
             testConfigurations: [
               'HTTP Test'
             ]
           }
         ]
-        workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+        workspaceResourceId: '<workspaceResourceId>'
       }
     ]
     flowLogs: [
       {
         enabled: false
-        storageId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-        targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'
+        storageId: '<storageId>'
+        targetResourceId: '<targetResourceId>'
       }
       {
         formatVersion: 1
-        name: 'adp-<<namePrefix>>-az-nsg-x-apgw-flowlog'
+        name: '<<namePrefix>>-nnwcom-fl-001'
         retentionInDays: 8
-        storageId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-        targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-apgw'
+        storageId: '<storageId>'
+        targetResourceId: '<targetResourceId>'
         trafficAnalyticsInterval: 10
-        workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+        workspaceResourceId: '<workspaceResourceId>'
       }
     ]
-    name: 'adp-<<namePrefix>>-az-nw-x-001'
+    location: '<location>'
+    name: '<name>'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -302,8 +268,8 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         {
           "endpoints": [
             {
-              "name": "<<namePrefix>>-az-subnet-x-001(validation-rg)",
-              "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-<<namePrefix>>-vm-01",
+              "name": "<name>",
+              "resourceId": "<resourceId>",
               "type": "AzureVM"
             },
             {
@@ -312,7 +278,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
               "type": "ExternalAddress"
             }
           ],
-          "name": "adp-<<namePrefix>>-az-conn-mon-x-001",
+          "name": "<<namePrefix>>-nnwcom-cm-001",
           "testConfigurations": [
             {
               "httpConfiguration": {
@@ -341,14 +307,14 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
               "disable": false,
               "name": "TestHTTPBing",
               "sources": [
-                "<<namePrefix>>-az-subnet-x-001(validation-rg)"
+                "<<namePrefix>>-subnet-001(${resourceGroup.name})"
               ],
               "testConfigurations": [
                 "HTTP Test"
               ]
             }
           ],
-          "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+          "workspaceResourceId": "<workspaceResourceId>"
         }
       ]
     },
@@ -356,32 +322,73 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       "value": [
         {
           "enabled": false,
-          "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
-          "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001"
+          "storageId": "<storageId>",
+          "targetResourceId": "<targetResourceId>"
         },
         {
           "formatVersion": 1,
-          "name": "adp-<<namePrefix>>-az-nsg-x-apgw-flowlog",
+          "name": "<<namePrefix>>-nnwcom-fl-001",
           "retentionInDays": 8,
-          "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
-          "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-apgw",
+          "storageId": "<storageId>",
+          "targetResourceId": "<targetResourceId>",
           "trafficAnalyticsInterval": 10,
-          "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+          "workspaceResourceId": "<workspaceResourceId>"
         }
       ]
     },
+    "location": {
+      "value": "<location>"
+    },
     "name": {
-      "value": "adp-<<namePrefix>>-az-nw-x-001"
+      "value": "<name>"
     },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nnwmin'
+  params: {
+    location: '<location>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "<location>"
     }
   }
 }

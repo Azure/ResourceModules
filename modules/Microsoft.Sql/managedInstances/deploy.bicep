@@ -143,6 +143,15 @@ param encryptionProtectorObj object = {}
 @description('Optional. The administrator configuration.')
 param administratorsObj object = {}
 
+@allowed([
+  'None'
+  '1.0'
+  '1.1'
+  '1.2'
+])
+@description('Optional. Minimal TLS version allowed.')
+param minimalTlsVersion string = '1.2'
+
 @description('Optional. The storage account type used to store backups for this database.')
 @allowed([
   'Geo'
@@ -245,6 +254,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' = {
     servicePrincipal: {
       type: servicePrincipal
     }
+    minimalTlsVersion: minimalTlsVersion
   }
 }
 
@@ -360,6 +370,9 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    managedInstance_keys
+  ]
 }
 
 module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorsObj)) {

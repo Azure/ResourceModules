@@ -14,13 +14,14 @@ This module deploys PowerBIDedicated Capacities.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2016-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks) |
+| `Microsoft.Authorization/locks` | [2016-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.PowerBIDedicated/capacities` | [2021-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.PowerBIDedicated/2021-01-01/capacities) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `members` | array | Members of the resource. |
@@ -28,6 +29,7 @@ This module deploys PowerBIDedicated Capacities.
 | `skuCapacity` | int | SkuCapacity of the resource. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |

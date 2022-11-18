@@ -13,19 +13,22 @@ With this module you can create policy exemptions on a resource group level.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyExemptions` | [2020-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions) |
+| `Microsoft.Authorization/policyExemptions` | [2022-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-07-01-preview/policyExemptions) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy exemption. Maximum length is 64 characters for resource group scope. |
 | `policyAssignmentId` | string | The resource ID of the policy assignment that is being exempted. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `assignmentScopeValidation` | string | `''` | `['', Default, DoNotValidate]` | The option whether validate the exemption is at or under the assignment scope. |
 | `description` | string | `''` |  | The description of the policy exemption. |
 | `displayName` | string | `''` |  | The display name of the policy exemption. Maximum length is 128 characters. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -34,6 +37,7 @@ With this module you can create policy exemptions on a resource group level.
 | `metadata` | object | `{object}` |  | The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `policyDefinitionReferenceIds` | array | `[]` |  | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
 | `resourceGroupName` | string | `[resourceGroup().name]` |  | The name of the resource group to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
+| `resourceSelectors` | array | `[]` |  | The resource selector list to filter policies by resource properties. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | The subscription ID of the subscription to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
 
 

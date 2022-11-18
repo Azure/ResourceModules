@@ -205,7 +205,7 @@ Here, you specify the platform roles available for the main resource.
 
 The `builtInRoleNames` variable contains the list of applicable roles for the specific resource which the `nested_roleAssignments.bicep` template applies.
 
-> **Note**: You use the helper script [Get-FormattedRBACRoles.ps1](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
+> **Note**: You use the helper script [Get-RoleAssignmentList.ps1](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) to get a formatted list of RBAC roles for a given service, used in the CARML modules.
 
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child resource hierarchy.
 
@@ -562,7 +562,7 @@ In either case, we follow the following, general guidelines:
 In addition, we follow the following, file-type-specific guidelines:
 
 - JSON Parameter file specific
-  - Parameter file names should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
+  - Parameter filenames should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
   - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
 - Bicep file specific
 
@@ -585,7 +585,7 @@ In addition, we follow the following, file-type-specific guidelines:
     // ========== //
     // Parameters //
     // ========== //
-    @description('Optional. The name of the resource group to deploy for a testing purposes')
+    @description('Optional. The name of the resource group to deploy for testing purposes')
     @maxLength(90)
     param resourceGroupName string = 'ms.analysisservices.servers-${serviceShort}-test-rg'
 

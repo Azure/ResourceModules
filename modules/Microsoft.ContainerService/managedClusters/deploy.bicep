@@ -292,7 +292,7 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. The resource ID of the disc encryption set to apply to the clsuter. For security reasons, this value should be provided.')
+@description('Optional. The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided.')
 param diskEncryptionSetID string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -384,7 +384,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-06-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' = {
   name: name
   location: location
   tags: tags
@@ -465,7 +465,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-06-01' 
     }
     autoScalerProfile: {
       'balance-similar-node-groups': autoScalerProfileBalanceSimilarNodeGroups
-      'expander': autoScalerProfileExpander
+      expander: autoScalerProfileExpander
       'max-empty-bulk-delete': autoScalerProfileMaxEmptyBulkDelete
       'max-graceful-termination-sec': autoScalerProfileMaxGracefulTerminationSec
       'max-node-provision-time': autoScalerProfileMaxNodeProvisionTime
@@ -526,7 +526,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     nodeLabels: contains(agentPool, 'nodeLabels') ? agentPool.nodeLabels : {}
     nodePublicIpPrefixId: contains(agentPool, 'nodePublicIpPrefixId') ? agentPool.nodePublicIpPrefixId : ''
     nodeTaints: contains(agentPool, 'nodeTaints') ? agentPool.nodeTaints : []
-    orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion : ''
+    orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion : aksClusterKubernetesVersion
     osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB : -1
     osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType : ''
     osSku: contains(agentPool, 'osSku') ? agentPool.osSku : ''
