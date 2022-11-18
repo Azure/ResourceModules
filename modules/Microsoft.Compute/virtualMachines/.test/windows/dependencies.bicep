@@ -63,7 +63,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 }
 
 resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${resourceGroup().id}-${location}-${managedIdentity.id}-RG-Contributor-RoleAssignment')
+  name: guid(resourceGroup().id, 'Contributor', managedIdentity.id)
   scope: resourceGroup()
   properties: {
     principalId: managedIdentity.properties.principalId
@@ -251,7 +251,7 @@ resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     }
   }
   properties: {
-    azPowerShellVersion: '6.2.1'
+    azPowerShellVersion: '9.0'
     retentionInterval: 'P1D'
     arguments: '-StorageAccountName "${storageAccount.name}" -ResourceGroupName "${resourceGroup().name}" -ContainerName "${storageAccount::blobService::container.name}" -FileName "${storageAccountCSEFileName}"'
     scriptContent: loadTextContent('../.scripts/Set-BlobContent.ps1')
