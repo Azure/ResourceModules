@@ -363,7 +363,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -371,53 +371,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-WebPubSub'
-  params: {
-    name: '<<namePrefix>>-az-pubsub-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-pubsub-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-WebPubSub'
+  name: '${uniqueString(deployment().name)}-test-srswpscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-pubsub-x-001'
+    name: '<<namePrefix>>-srswpscom-001'
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
     disableAadAuth: false
     disableLocalAuth: true
-    location: 'westeurope'
+    location: '<location>'
     lock: 'CanNotDelete'
     networkAcls: {
       defaultAction: 'Allow'
@@ -428,7 +391,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
             'ServerConnection'
             'Trace'
           ]
-          name: 'pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0'
+          name: 'pe-<<namePrefix>>-srswpscom-001'
         }
       ]
       publicNetwork: {
@@ -443,11 +406,11 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.webpubsub.azure.com'
+            '<privateDNSResourceId>'
           ]
         }
         service: 'webpubsub'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     resourceLogConfigurationsToEnable: [
@@ -456,7 +419,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -484,7 +447,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-pubsub-x-001"
+      "value": "<<namePrefix>>-srswpscom-001"
     },
     // Non-required parameters
     "capacity": {
@@ -500,7 +463,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
       "value": true
     },
     "location": {
-      "value": "westeurope"
+      "value": "<location>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -515,7 +478,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
               "ServerConnection",
               "Trace"
             ],
-            "name": "pe-<<namePrefix>>-az-pubsub-x-001-webpubsub-0"
+            "name": "pe-<<namePrefix>>-srswpscom-001"
           }
         ],
         "publicNetwork": {
@@ -532,11 +495,11 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.webpubsub.azure.com"
+              "<privateDNSResourceId>"
             ]
           },
           "service": "webpubsub",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -549,7 +512,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -573,6 +536,43 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 </details>
 <p>
 
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-srswpsmin'
+  params: {
+    name: '<<namePrefix>>-srswpsmin-001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-srswpsmin-001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 <h3>Example 3: Pe</h3>
 
 <details>
@@ -581,20 +581,20 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 
 ```bicep
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-WebPubSub'
+  name: '${uniqueString(deployment().name)}-test-srswpspe'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-pubsub-pe-001'
+    name: '<<namePrefix>>-srswpspe-001'
     // Non-required parameters
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.webpubsub.azure.com'
+            '<privateDNSResourceId>'
           ]
         }
         service: 'webpubsub'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     sku: 'Standard_S1'
@@ -616,7 +616,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-pubsub-pe-001"
+      "value": "<<namePrefix>>-srswpspe-001"
     },
     // Non-required parameters
     "privateEndpoints": {
@@ -624,11 +624,11 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.webpubsub.azure.com"
+              "<privateDNSResourceId>"
             ]
           },
           "service": "webpubsub",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
