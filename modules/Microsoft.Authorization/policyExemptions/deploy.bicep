@@ -42,6 +42,17 @@ param resourceGroupName string = ''
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
+@sys.description('Optional. The option whether validate the exemption is at or under the assignment scope.')
+@allowed([
+  ''
+  'Default'
+  'DoNotValidate'
+])
+param assignmentScopeValidation string = ''
+
+@sys.description('Optional. The resource selector list to filter policies by resource properties.')
+param resourceSelectors array = []
+
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -65,15 +76,17 @@ module policyExemption_mg 'managementGroup/deploy.bicep' = if (empty(subscriptio
   scope: managementGroup(managementGroupId)
   params: {
     name: name
-    displayName: !empty(displayName) ? displayName : ''
-    description: !empty(description) ? description : ''
-    metadata: !empty(metadata) ? metadata : {}
+    displayName: displayName
+    description: description
+    metadata: metadata
     exemptionCategory: exemptionCategory
     policyAssignmentId: policyAssignmentId
-    policyDefinitionReferenceIds: !empty(policyDefinitionReferenceIds) ? policyDefinitionReferenceIds : []
-    expiresOn: !empty(expiresOn) ? expiresOn : ''
+    policyDefinitionReferenceIds: policyDefinitionReferenceIds
+    expiresOn: expiresOn
     managementGroupId: managementGroupId
     location: location
+    assignmentScopeValidation: assignmentScopeValidation
+    resourceSelectors: resourceSelectors
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -83,13 +96,13 @@ module policyExemption_sub 'subscription/deploy.bicep' = if (!empty(subscription
   scope: subscription(subscriptionId)
   params: {
     name: name
-    displayName: !empty(displayName) ? displayName : ''
-    description: !empty(description) ? description : ''
-    metadata: !empty(metadata) ? metadata : {}
+    displayName: displayName
+    description: description
+    metadata: metadata
     exemptionCategory: exemptionCategory
     policyAssignmentId: policyAssignmentId
-    policyDefinitionReferenceIds: !empty(policyDefinitionReferenceIds) ? policyDefinitionReferenceIds : []
-    expiresOn: !empty(expiresOn) ? expiresOn : ''
+    policyDefinitionReferenceIds: policyDefinitionReferenceIds
+    expiresOn: expiresOn
     subscriptionId: subscriptionId
     location: location
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -101,13 +114,13 @@ module policyExemption_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGrou
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     name: name
-    displayName: !empty(displayName) ? displayName : ''
-    description: !empty(description) ? description : ''
-    metadata: !empty(metadata) ? metadata : {}
+    displayName: displayName
+    description: description
+    metadata: metadata
     exemptionCategory: exemptionCategory
     policyAssignmentId: policyAssignmentId
-    policyDefinitionReferenceIds: !empty(policyDefinitionReferenceIds) ? policyDefinitionReferenceIds : []
-    expiresOn: !empty(expiresOn) ? expiresOn : ''
+    policyDefinitionReferenceIds: policyDefinitionReferenceIds
+    expiresOn: expiresOn
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
     enableDefaultTelemetry: enableReferencedModulesTelemetry
