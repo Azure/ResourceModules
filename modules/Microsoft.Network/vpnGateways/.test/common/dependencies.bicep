@@ -35,17 +35,17 @@ resource vpnSite 'Microsoft.Network/vpnSites@2022-01-01' = {
     }
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/16'
+        '10.1.0.0/16'
       ]
     }
     vpnSiteLinks: [
       {
         name: '${vpnSiteName}-vSite-link-1'
         properties: {
-          ipAddress: '10.1.0.0'
+          ipAddress: '10.2.0.0'
           bgpProperties: {
             asn: 65010
-            bgpPeeringAddress: '1.1.1.1'
+            bgpPeeringAddress: '10.1.0.1'
           }
           linkProperties: {
             linkProviderName: 'contoso'
@@ -56,10 +56,10 @@ resource vpnSite 'Microsoft.Network/vpnSites@2022-01-01' = {
       {
         name: '${vpnSiteName}-vSite-link-2'
         properties: {
-          ipAddress: '10.2.0.0'
+          ipAddress: '10.3.0.0'
           bgpProperties: {
             asn: 65010
-            bgpPeeringAddress: '1.2.1.1'
+            bgpPeeringAddress: '10.1.0.2'
           }
         }
       }

@@ -79,7 +79,7 @@ module testDeployment '../../deploy.bicep' = {
           }
           {
             name: last(split(resourceGroupResources.outputs.vpnSiteLink2ResourceId, '/'))
-            id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
+            id: resourceGroupResources.outputs.vpnSiteLink2ResourceId
           }
         ]
       }
