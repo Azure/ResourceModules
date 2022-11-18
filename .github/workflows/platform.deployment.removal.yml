@@ -43,8 +43,7 @@ jobs:
         with:
           workflowPath: '${{ env.workflowPath}}'
     outputs:
-      handleSubscriptionScope: ${{ (fromJson(steps.get-workflow-param.outputs.workflowInput)).handleSubscriptionScope }}
-      handleManagementGroupScope: ${{ (fromJson(steps.get-workflow-param.outputs.workflowInput)).handleManagementGroupScope }}
+      workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
 
   ###############
   #   Removal   #
@@ -54,7 +53,7 @@ jobs:
     name: 'Remove Subscription deployments'
     needs:
       - job_initialize_pipeline
-    if: ${{ needs.job_initialize_pipeline.outputs.handleSubscriptionScope == 'true' }}
+    if: ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput).handleSubscriptionScope == 'true' }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
@@ -94,7 +93,7 @@ jobs:
 
             $functionInput = @{
               SubscriptionId               = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-              maxDeploymentRetentionInDays = '${{ needs.job_initialize_pipeline.outputs.maxDeploymentRetentionInDays }}'
+              maxDeploymentRetentionInDays = '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput).maxDeploymentRetentionInDays }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose
@@ -108,7 +107,7 @@ jobs:
     name: 'Remove Management Group deployments'
     needs:
       - job_initialize_pipeline
-    if: ${{ needs.job_initialize_pipeline.outputs.handleManagementGroupScope == 'true' }}
+    if: ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput).handleManagementGroupScope == 'true' }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
@@ -148,7 +147,7 @@ jobs:
 
             $functionInput = @{
               ManagementGroupId            = '${{ secrets.ARM_MGMTGROUP_ID }}'
-              maxDeploymentRetentionInDays = '${{ needs.job_initialize_pipeline.outputs.maxDeploymentRetentionInDays }}'
+              maxDeploymentRetentionInDays = '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput).maxDeploymentRetentionInDays }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose

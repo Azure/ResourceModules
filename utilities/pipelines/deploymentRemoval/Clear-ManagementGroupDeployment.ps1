@@ -63,7 +63,8 @@ function Clear-ManagementGroupDeployment {
 
     $relevantDeployments = $response.value | Where-Object {
         $_.properties.provisioningState -notin $DeploymentStatusToExclude -or
-        ([DateTime]$_.properties.timestamp) -lt $deploymentThreshold
+        ([DateTime]$_.properties.timestamp) -lt $deploymentThreshold -and
+        $_.properties.provisioningState -ne 'running' # we should never delete 'running' deployments
     }
 
     Write-Verbose ('Filtering [{0}] deployments out as they are in state [{1}] or newer than [{2}] days ({3})' -f ($response.value.Count - $relevantDeployments.Count), ($DeploymentStatusToExclude -join '/'), $maxDeploymentRetentionInDays, $deploymentThreshold.ToString('yyyy-MM-dd')) -Verbose
