@@ -5,7 +5,7 @@ targetScope = 'subscription'
 // ================ //
 
 // RG parameters
-@description('Optional. The name of the resource group to deploy')
+@description('Optional. The name of the resource group to deploy.')
 param resourceGroupName string = '<<resourceGroupName>>'
 
 // =========== //
