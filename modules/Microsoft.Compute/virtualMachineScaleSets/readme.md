@@ -890,7 +890,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Linux Min</h3>
+<h3>Example 1: Linux</h3>
 
 <details>
 
@@ -898,7 +898,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-test-cvmsslin'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -908,140 +908,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '18.04-LTS'
       version: 'latest'
     }
-    name: '<<namePrefix>>-scaleset-linux-min-001'
-    osDisk: {
-      createOption: 'fromImage'
-      diskSizeGB: '128'
-      managedDisk: {
-        storageAccountType: 'Premium_LRS'
-      }
-    }
-    osType: 'Linux'
-    skuName: 'Standard_B12ms'
-    // Non-required parameters
-    disablePasswordAuthentication: true
-    nicConfigurations: [
-      {
-        ipConfigurations: [
-          {
-            name: 'ipconfig1'
-            properties: {
-              subnet: {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002'
-              }
-            }
-          }
-        ]
-        nicSuffix: '-nic01'
-      }
-    ]
-    publicKeys: [
-      {
-        keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
-        path: '/home/scaleSetAdmin/.ssh/authorized_keys'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "adminUsername": {
-      "value": "scaleSetAdmin"
-    },
-    "imageReference": {
-      "value": {
-        "offer": "UbuntuServer",
-        "publisher": "Canonical",
-        "sku": "18.04-LTS",
-        "version": "latest"
-      }
-    },
-    "name": {
-      "value": "<<namePrefix>>-scaleset-linux-min-001"
-    },
-    "osDisk": {
-      "value": {
-        "createOption": "fromImage",
-        "diskSizeGB": "128",
-        "managedDisk": {
-          "storageAccountType": "Premium_LRS"
-        }
-      }
-    },
-    "osType": {
-      "value": "Linux"
-    },
-    "skuName": {
-      "value": "Standard_B12ms"
-    },
-    // Non-required parameters
-    "disablePasswordAuthentication": {
-      "value": true
-    },
-    "nicConfigurations": {
-      "value": [
-        {
-          "ipConfigurations": [
-            {
-              "name": "ipconfig1",
-              "properties": {
-                "subnet": {
-                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
-                }
-              }
-            }
-          ],
-          "nicSuffix": "-nic01"
-        }
-      ]
-    },
-    "publicKeys": {
-      "value": [
-        {
-          "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure",
-          "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Linux</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
-  params: {
-    // Required parameters
-    adminUsername: 'scaleSetAdmin'
-    imageReference: {
-      offer: 'UbuntuServer'
-      publisher: 'Canonical'
-      sku: '18.04-LTS'
-      version: 'latest'
-    }
-    name: '<<namePrefix>>-scaleset-linux-001'
+    name: '<<namePrefix>>cvmsslin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1055,7 +922,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     availabilityZones: [
       '2'
     ]
-    bootDiagnosticStorageAccountName: 'adp<<namePrefix>>azsax001'
+    bootDiagnosticStorageAccountName: '<bootDiagnosticStorageAccountName>'
     dataDisks: [
       {
         caching: 'ReadOnly'
@@ -1074,19 +941,19 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         }
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disablePasswordAuthentication: true
     encryptionAtHost: false
     extensionCustomScriptConfig: {
       enabled: true
       fileData: [
         {
-          storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-          uri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1'
+          storageAccountId: '<storageAccountId>'
+          uri: '<uri>'
         }
       ]
       protectedSettings: {
@@ -1100,11 +967,11 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+        KekVaultResourceId: '<KekVaultResourceId>'
         KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5'
-        KeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-        KeyVaultURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/'
+        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
+        KeyVaultResourceId: '<KeyVaultResourceId>'
+        KeyVaultURL: '<KeyVaultURL>'
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
@@ -1123,7 +990,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002'
+                id: '<id>'
               }
             }
           }
@@ -1133,14 +1000,14 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     ]
     publicKeys: [
       {
-        keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
+        keyData: '<keyData>'
         path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -1150,7 +1017,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     systemAssignedIdentity: true
     upgradePolicyMode: 'Manual'
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
     vmNamePrefix: 'vmsslinvm'
     vmPriority: 'Regular'
@@ -1183,7 +1050,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "name": {
-      "value": "<<namePrefix>>-scaleset-linux-001"
+      "value": "<<namePrefix>>cvmsslin001"
     },
     "osDisk": {
       "value": {
@@ -1207,7 +1074,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       ]
     },
     "bootDiagnosticStorageAccountName": {
-      "value": "adp<<namePrefix>>azsax001"
+      "value": "<bootDiagnosticStorageAccountName>"
     },
     "dataDisks": {
       "value": [
@@ -1230,19 +1097,19 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "disablePasswordAuthentication": {
       "value": true
@@ -1255,8 +1122,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "enabled": true,
         "fileData": [
           {
-            "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
-            "uri": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1"
+            "storageAccountId": "<storageAccountId>",
+            "uri": "<uri>"
           }
         ],
         "protectedSettings": {
@@ -1274,11 +1141,11 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "enabled": true,
         "settings": {
           "EncryptionOperation": "EnableEncryption",
-          "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
+          "KekVaultResourceId": "<KekVaultResourceId>",
           "KeyEncryptionAlgorithm": "RSA-OAEP",
-          "KeyEncryptionKeyURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5",
-          "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
-          "KeyVaultURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/",
+          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
+          "KeyVaultResourceId": "<KeyVaultResourceId>",
+          "KeyVaultURL": "<KeyVaultURL>",
           "ResizeOSDisk": "false",
           "VolumeType": "All"
         }
@@ -1305,7 +1172,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
               "name": "ipconfig1",
               "properties": {
                 "subnet": {
-                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
+                  "id": "<id>"
                 }
               }
             }
@@ -1317,7 +1184,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "publicKeys": {
       "value": [
         {
-          "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure",
+          "keyData": "<keyData>",
           "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
         }
       ]
@@ -1326,7 +1193,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -1346,7 +1213,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     },
     "vmNamePrefix": {
@@ -1362,30 +1229,25 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 </details>
 <p>
 
-<h3>Example 3: Windows Min</h3>
+<h3>Example 2: Linux.Min</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-test-cvmsslinmin'
   params: {
     // Required parameters
-    adminUsername: kv1.getSecret('adminUsername')
+    adminUsername: 'scaleSetAdmin'
     imageReference: {
-      offer: 'WindowsServer'
-      publisher: 'MicrosoftWindowsServer'
-      sku: '2016-Datacenter'
+      offer: 'UbuntuServer'
+      publisher: 'Canonical'
+      sku: '18.04-LTS'
       version: 'latest'
     }
-    name: '<<namePrefix>>-scaleset-win-min-001'
+    name: '<<namePrefix>>cvmsslinmin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1393,10 +1255,10 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         storageAccountType: 'Premium_LRS'
       }
     }
-    osType: 'Windows'
+    osType: 'Linux'
     skuName: 'Standard_B12ms'
     // Non-required parameters
-    adminPassword: kv1.getSecret('adminPassword')
+    disablePasswordAuthentication: true
     nicConfigurations: [
       {
         ipConfigurations: [
@@ -1404,12 +1266,18 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002'
+                id: '<id>'
               }
             }
           }
         ]
         nicSuffix: '-nic01'
+      }
+    ]
+    publicKeys: [
+      {
+        keyData: '<keyData>'
+        path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]
   }
@@ -1430,23 +1298,18 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "adminUsername"
-      }
+      "value": "scaleSetAdmin"
     },
     "imageReference": {
       "value": {
-        "offer": "WindowsServer",
-        "publisher": "MicrosoftWindowsServer",
-        "sku": "2016-Datacenter",
+        "offer": "UbuntuServer",
+        "publisher": "Canonical",
+        "sku": "18.04-LTS",
         "version": "latest"
       }
     },
     "name": {
-      "value": "<<namePrefix>>-scaleset-win-min-001"
+      "value": "<<namePrefix>>cvmsslinmin001"
     },
     "osDisk": {
       "value": {
@@ -1458,19 +1321,14 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "osType": {
-      "value": "Windows"
+      "value": "Linux"
     },
     "skuName": {
       "value": "Standard_B12ms"
     },
     // Non-required parameters
-    "adminPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "adminPassword"
-      }
+    "disablePasswordAuthentication": {
+      "value": true
     },
     "nicConfigurations": {
       "value": [
@@ -1480,12 +1338,20 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
               "name": "ipconfig1",
               "properties": {
                 "subnet": {
-                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
+                  "id": "<id>"
                 }
               }
             }
           ],
           "nicSuffix": "-nic01"
+        }
+      ]
+    },
+    "publicKeys": {
+      "value": [
+        {
+          "keyData": "<keyData>",
+          "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
         }
       ]
     }
@@ -1496,30 +1362,25 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 </details>
 <p>
 
-<h3>Example 4: Windows</h3>
+<h3>Example 3: Windows</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
+  name: '${uniqueString(deployment().name)}-test-cvmsswin'
   params: {
     // Required parameters
-    adminUsername: kv1.getSecret('adminUsername')
+    adminUsername: 'localAdminUser'
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
       sku: '2016-Datacenter'
       version: 'latest'
     }
-    name: '<<namePrefix>>-scaleset-win-001'
+    name: '<<namePrefix>>cvmsswin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1530,12 +1391,12 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     osType: 'Windows'
     skuName: 'Standard_B12ms'
     // Non-required parameters
-    adminPassword: kv1.getSecret('adminPassword')
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    adminPassword: '<adminPassword>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     encryptionAtHost: false
     extensionAntiMalwareConfig: {
       enabled: true
@@ -1559,12 +1420,12 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       enabled: true
       fileData: [
         {
-          storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-          uri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1'
+          storageAccountId: '<storageAccountId>'
+          uri: '<uri>'
         }
       ]
       protectedSettings: {
-        commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command \'& .\\scriptExtensionMasterInstaller.ps1\''
+        commandToExecute: '<commandToExecute>'
       }
     }
     extensionDependencyAgentConfig: {
@@ -1574,11 +1435,11 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+        KekVaultResourceId: '<KekVaultResourceId>'
         KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5'
-        KeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-        KeyVaultURL: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/'
+        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
+        KeyVaultResourceId: '<KeyVaultResourceId>'
+        KeyVaultURL: '<KeyVaultURL>'
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
@@ -1600,7 +1461,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002'
+                id: '<id>'
               }
             }
           }
@@ -1608,11 +1469,11 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         nicSuffix: '-nic01'
       }
     ]
-    proximityPlacementGroupResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-vmss-001'
+    proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -1621,7 +1482,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     systemAssignedIdentity: true
     upgradePolicyMode: 'Manual'
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
     vmNamePrefix: 'vmsswinvm'
     vmPriority: 'Regular'
@@ -1643,12 +1504,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "adminUsername"
-      }
+      "value": "localAdminUser"
     },
     "imageReference": {
       "value": {
@@ -1659,7 +1515,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "name": {
-      "value": "<<namePrefix>>-scaleset-win-001"
+      "value": "<<namePrefix>>cvmsswin001"
     },
     "osDisk": {
       "value": {
@@ -1678,27 +1534,22 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     // Non-required parameters
     "adminPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "adminPassword"
-      }
+      "value": "<adminPassword>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "encryptionAtHost": {
       "value": false
@@ -1728,12 +1579,12 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "enabled": true,
         "fileData": [
           {
-            "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
-            "uri": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1"
+            "storageAccountId": "<storageAccountId>",
+            "uri": "<uri>"
           }
         ],
         "protectedSettings": {
-          "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
+          "commandToExecute": "<commandToExecute>"
         }
       }
     },
@@ -1747,11 +1598,11 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "enabled": true,
         "settings": {
           "EncryptionOperation": "EnableEncryption",
-          "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
+          "KekVaultResourceId": "<KekVaultResourceId>",
           "KeyEncryptionAlgorithm": "RSA-OAEP",
-          "KeyEncryptionKeyURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5",
-          "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
-          "KeyVaultURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/",
+          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
+          "KeyVaultResourceId": "<KeyVaultResourceId>",
+          "KeyVaultURL": "<KeyVaultURL>",
           "ResizeOSDisk": "false",
           "VolumeType": "All"
         }
@@ -1783,7 +1634,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
               "name": "ipconfig1",
               "properties": {
                 "subnet": {
-                  "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
+                  "id": "<id>"
                 }
               }
             }
@@ -1793,13 +1644,13 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       ]
     },
     "proximityPlacementGroupResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-vmss-001"
+      "value": "<proximityPlacementGroupResourceId>"
     },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -1816,7 +1667,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     },
     "vmNamePrefix": {
@@ -1824,6 +1675,125 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "vmPriority": {
       "value": "Regular"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Windows.Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-cvmsswinmin'
+  params: {
+    // Required parameters
+    adminUsername: 'localAdminUser'
+    imageReference: {
+      offer: 'WindowsServer'
+      publisher: 'MicrosoftWindowsServer'
+      sku: '2016-Datacenter'
+      version: 'latest'
+    }
+    name: '<<namePrefix>>cvmsswinmin001'
+    osDisk: {
+      createOption: 'fromImage'
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Windows'
+    skuName: 'Standard_B12ms'
+    // Non-required parameters
+    adminPassword: '<adminPassword>'
+    nicConfigurations: [
+      {
+        ipConfigurations: [
+          {
+            name: 'ipconfig1'
+            properties: {
+              subnet: {
+                id: '<id>'
+              }
+            }
+          }
+        ]
+        nicSuffix: '-nic01'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "adminUsername": {
+      "value": "localAdminUser"
+    },
+    "imageReference": {
+      "value": {
+        "offer": "WindowsServer",
+        "publisher": "MicrosoftWindowsServer",
+        "sku": "2016-Datacenter",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>cvmsswinmin001"
+    },
+    "osDisk": {
+      "value": {
+        "createOption": "fromImage",
+        "diskSizeGB": "128",
+        "managedDisk": {
+          "storageAccountType": "Premium_LRS"
+        }
+      }
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "skuName": {
+      "value": "Standard_B12ms"
+    },
+    // Non-required parameters
+    "adminPassword": {
+      "value": "<adminPassword>"
+    },
+    "nicConfigurations": {
+      "value": [
+        {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "<id>"
+                }
+              }
+            }
+          ],
+          "nicSuffix": "-nic01"
+        }
+      ]
     }
   }
 }
