@@ -20,5 +20,4 @@ test@contoso.com
 foo@contoso.com
 @parameters.json
 '@odata.type
-%20
-
+^file:.*[^\.md]$
