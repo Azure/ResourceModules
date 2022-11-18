@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
 Convert a given JSON string into an ordered HashTable.
 
