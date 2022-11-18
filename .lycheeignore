@@ -20,6 +20,6 @@ test@contoso.com
 foo@contoso.com
 @parameters.json
 '@odata.type
-^file:.*[^d]$|^.*[^m]d$|^.*[^.]md$
-
+<!-- ^file:.*[^d]$|^.*[^m]d$|^.*[^.]md$ -->
+<!-- ^file:.*([^d]$|^.*[^m]d$|^.*[^.]md$)|([^g]|[^n]g|[^p]ng|[^.]png)$ -->
 
