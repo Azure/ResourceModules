@@ -27,8 +27,9 @@ jobs:
         id: checker
         uses: lycheeverse/lychee-action@v1.5.4
         with:
-          args: --verbose --no-progress './**/*.md' --accept 200,201,403,429,401 --exclude-file .lycheeignore --scheme http*
-
+          args: --verbose --no-progress './**/*.md' --accept 200,201,403,429,401 --exclude-file .lycheeignore
+          # --scheme http*
+          format: json
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
