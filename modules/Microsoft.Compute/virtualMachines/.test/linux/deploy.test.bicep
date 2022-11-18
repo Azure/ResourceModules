@@ -127,8 +127,8 @@ module testDeployment '../../deploy.bicep' = {
     vmSize: 'Standard_B12ms'
     availabilityZone: 1
     backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
-    backupVaultName: last(split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, '/'))
-    backupVaultResourceGroup: (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, '/'))[4]
+    backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
+    backupVaultResourceGroup: resourceGroupResources.outputs.recoveryServicesVaultResourceGroupName
     dataDisks: [
       {
         caching: 'ReadWrite'
@@ -166,7 +166,7 @@ module testDeployment '../../deploy.bicep' = {
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'value=$(./${last(split(resourceGroupResources.outputs.storageAccountCSEFileUrl, '/'))}); echo "$value"'
+      commandToExecute: 'value=$(./${resourceGroupResources.outputs.storageAccountCSEFileName}); echo "$value"'
     }
     extensionDependencyAgentConfig: {
       enabled: true

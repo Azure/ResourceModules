@@ -104,7 +104,7 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var natGatewayPipName_var = (empty(natGatewayPipName) ? '${name}-pip' : natGatewayPipName)
+var natGatewayPipNameVar = (empty(natGatewayPipName) ? '${name}-pip' : natGatewayPipName)
 var natGatewayPublicIPPrefix = {
   id: natGatewayPublicIPPrefixId
 }
@@ -136,7 +136,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 // PUBLIC IP
 // =========
 resource publicIP 'Microsoft.Network/publicIPAddresses@2021-08-01' = if (natGatewayPublicIpAddress) {
-  name: natGatewayPipName_var
+  name: natGatewayPipNameVar
   location: location
   tags: tags
   sku: {

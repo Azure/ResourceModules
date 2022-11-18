@@ -36,6 +36,17 @@ param subscriptionId string = subscription().subscriptionId
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
+@sys.description('Optional. The option whether validate the exemption is at or under the assignment scope.')
+@allowed([
+  ''
+  'Default'
+  'DoNotValidate'
+])
+param assignmentScopeValidation string = ''
+
+@sys.description('Optional. The resource selector list to filter policies by resource properties.')
+param resourceSelectors array = []
+
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -52,7 +63,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-preview' = {
+resource policyExemption 'Microsoft.Authorization/policyExemptions@2022-07-01-preview' = {
   name: name
   properties: {
     displayName: !empty(displayName) ? displayName : null
@@ -62,6 +73,8 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
     policyAssignmentId: policyAssignmentId
     policyDefinitionReferenceIds: !empty(policyDefinitionReferenceIds) ? policyDefinitionReferenceIds : []
     expiresOn: !empty(expiresOn) ? expiresOn : null
+    assignmentScopeValidation: !empty(assignmentScopeValidation) ? assignmentScopeValidation : null
+    resourceSelectors: resourceSelectors
   }
 }
 
