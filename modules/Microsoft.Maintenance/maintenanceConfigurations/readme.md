@@ -182,10 +182,10 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the maintenanceConfiguration was created in. |
-| `name` | string | The name of the maintenanceConfiguration. |
-| `resourceGroupName` | string | The name of the resource group the maintenanceConfiguration was created in. |
-| `resourceId` | string | The resource ID of the maintenanceConfiguration. |
+| `location` | string | The location the Maintenance Configuration was created in. |
+| `name` | string | The name of the Maintenance Configuration. |
+| `resourceGroupName` | string | The name of the resource group the Maintenance Configuration was created in. |
+| `resourceId` | string | The resource ID of the Maintenance Configuration. |
 
 ## Cross-referenced modules
 
