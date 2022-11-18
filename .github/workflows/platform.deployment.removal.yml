@@ -93,7 +93,7 @@ jobs:
 
             $functionInput = @{
               SubscriptionId               = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-              maxDeploymentRetentionInDays = '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput).maxDeploymentRetentionInDays }}'
+              maxDeploymentRetentionInDays = '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).maxDeploymentRetentionInDays }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose
@@ -147,7 +147,7 @@ jobs:
 
             $functionInput = @{
               ManagementGroupId            = '${{ secrets.ARM_MGMTGROUP_ID }}'
-              maxDeploymentRetentionInDays = '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput).maxDeploymentRetentionInDays }}'
+              maxDeploymentRetentionInDays = '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).maxDeploymentRetentionInDays }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose
