@@ -3,8 +3,6 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
-@description('Optional. Provide \'true\' to enable Key Vault\'s purge protection feature.')
-param enablePurgeProtection bool = false
 
 @description('Optional. The name of the resource group to deploy for testing purposes')
 @maxLength(90)
@@ -93,7 +91,8 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    enablePurgeProtection: enablePurgeProtection
+    // Only for testing purposes
+    enablePurgeProtection: false
     enableRbacAuthorization: false
     keys: [
       {

@@ -429,7 +429,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enablePurgeProtection: '<enablePurgeProtection>'
+    enablePurgeProtection: false
     enableRbacAuthorization: false
     keys: [
       {
@@ -571,7 +571,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       "value": "<diagnosticWorkspaceId>"
     },
     "enablePurgeProtection": {
-      "value": "<enablePurgeProtection>"
+      "value": false
     },
     "enableRbacAuthorization": {
       "value": false
@@ -686,7 +686,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>kvvmin002'
     // Non-required parameters
-    enablePurgeProtection: '<enablePurgeProtection>'
+    enablePurgeProtection: false
   }
 }
 ```
@@ -709,7 +709,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     },
     // Non-required parameters
     "enablePurgeProtection": {
-      "value": "<enablePurgeProtection>"
+      "value": false
     }
   }
 }
@@ -731,7 +731,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>kvvpe001'
     // Non-required parameters
-    enablePurgeProtection: '<enablePurgeProtection>'
+    enablePurgeProtection: false
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -769,7 +769,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     },
     // Non-required parameters
     "enablePurgeProtection": {
-      "value": "<enablePurgeProtection>"
+      "value": false
     },
     "privateEndpoints": {
       "value": [
