@@ -5,13 +5,13 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.insights.metricalerts-${serviceShort}-rg'
+param resourceGroupName string = 'ms.maintenance.maintenanceconfigurations-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'imacom'
+param serviceShort string = 'mmccom'
 
 // =========== //
 // Deployments //
@@ -29,7 +29,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    actionGroupName: 'dep-<<namePrefix>>-ag-${serviceShort}'
   }
 }
 
@@ -42,31 +41,30 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    criterias: [
-      {
-        criterionType: 'StaticThresholdCriterion'
-        metricName: 'Percentage CPU'
-        metricNamespace: 'microsoft.compute/virtualmachines'
-        name: 'HighCPU'
-        operator: 'GreaterThan'
-        threshold: '90'
-        timeAggregation: 'Average'
-      }
-    ]
-    actions: [
-      resourceGroupResources.outputs.actionGroupResourceId
-    ]
-    alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+    extensionProperties: {}
+    lock: 'CanNotDelete'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
-    targetResourceRegion: 'westeurope'
-    targetResourceType: 'microsoft.compute/virtualmachines'
-    windowSize: 'PT15M'
+    maintenanceScope: 'OSImage'
+    maintenanceWindow: {
+      duration: '05:00'
+      expirationDateTime: '9999-12-31 23:59:59'
+      recurEvery: 'Day'
+      startDateTime: '2022-12-31 13:00'
+      timeZone: 'W. Europe Standard Time'
+    }
+    namespace: '${serviceShort}ns'
+    visibility: 'Custom'
   }
 }
