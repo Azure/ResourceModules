@@ -58,6 +58,7 @@ jobs:
           modulePath: '${{ env.modulePath }}'
     outputs:
       workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
+      moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
 
   #########################
   #   Static validation   #
@@ -92,7 +93,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moduleTestFilePaths: ${{ fromJSON(fromJson(needs.job_initialize_pipeline.outputs.workflowInput).moduleTestFilePaths) }}
+        moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
