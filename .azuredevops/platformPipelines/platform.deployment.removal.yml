@@ -11,7 +11,7 @@ parameters:
     default: true
   - name: maxDeploymentRetentionInDays
     displayName: The number of days to keep deployments with status [running] or [failed]
-    type: integer
+    type: int
     default: 14
 
 schedules:
