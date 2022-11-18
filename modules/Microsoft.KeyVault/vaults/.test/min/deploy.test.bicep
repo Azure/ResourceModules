@@ -33,5 +33,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}002'
+    // Only for testing purposes
+    enablePurgeProtection: false
   }
 }

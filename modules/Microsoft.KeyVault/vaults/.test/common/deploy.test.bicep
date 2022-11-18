@@ -90,6 +90,8 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    // Only for testing purposes
+    enablePurgeProtection: false
     enableRbacAuthorization: false
     keys: [
       {
