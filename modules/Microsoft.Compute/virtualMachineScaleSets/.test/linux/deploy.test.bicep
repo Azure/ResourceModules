@@ -4,14 +4,14 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
-@maxLength(80)
-param resourceGroupName string = 'ms.compute.virtualMachines-${serviceShort}-rg'
+@maxLength(90)
+param resourceGroupName string = 'ms.compute.virtualmachinescalesets-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'cvmlindef'
+param serviceShort string = 'cvmsslin'
 
 // =========== //
 // Deployments //
@@ -26,15 +26,11 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
+  name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    location: location
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    applicationSecurityGroupName: 'adp-<<namePrefix>>-asg-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
-    loadBalancerName: 'dep-<<namePrefix>>-lb-${serviceShort}'
-    recoveryServicesVaultName: 'dep-<<namePrefix>>-rsv-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
     storageUploadDeploymentScriptName: 'dep-<<namePrefix>>-sads-${serviceShort}'
     sshDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
@@ -64,85 +60,39 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}'
-    location: location
-    adminUsername: 'localAdminUser'
+    name: '<<namePrefix>>${serviceShort}001'
+    adminUsername: 'scaleSetAdmin'
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
       sku: '18.04-LTS'
       version: 'latest'
     }
-    nicConfigurations: [
-      {
-        deleteOption: 'Delete'
-        ipConfigurations: [
-          {
-            applicationSecurityGroups: [
-              {
-                id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
-              }
-            ]
-            loadBalancerBackendAddressPools: [
-              {
-                id: resourceGroupResources.outputs.loadBalancerBackendPoolResourceId
-              }
-            ]
-            name: 'ipconfig01'
-            pipConfiguration: {
-              publicIpNameSuffix: '-pip-01'
-              roleAssignments: [
-                {
-                  principalIds: [
-                    resourceGroupResources.outputs.managedIdentityPrincipalId
-                  ]
-                  roleDefinitionIdOrName: 'Reader'
-                }
-              ]
-            }
-            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
-          }
-        ]
-        nicSuffix: '-nic-01'
-        roleAssignments: [
-          {
-            principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
-            ]
-            roleDefinitionIdOrName: 'Reader'
-          }
-        ]
-      }
-    ]
     osDisk: {
-      caching: 'ReadOnly'
       createOption: 'fromImage'
-      deleteOption: 'Delete'
       diskSizeGB: '128'
       managedDisk: {
         storageAccountType: 'Premium_LRS'
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_B12ms'
-    availabilityZone: 1
-    backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
-    backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
-    backupVaultResourceGroup: resourceGroupResources.outputs.recoveryServicesVaultResourceGroupName
+    skuName: 'Standard_B12ms'
+    availabilityZones: [
+      '2'
+    ]
+    bootDiagnosticStorageAccountName: resourceGroupResources.outputs.storageAccountName
     dataDisks: [
       {
-        caching: 'ReadWrite'
+        caching: 'ReadOnly'
         createOption: 'Empty'
-        deleteOption: 'Delete'
-        diskSizeGB: '128'
+        diskSizeGB: '256'
         managedDisk: {
           storageAccountType: 'Premium_LRS'
         }
       }
       {
-        caching: 'ReadWrite'
+        caching: 'ReadOnly'
         createOption: 'Empty'
-        deleteOption: 'Delete'
         diskSizeGB: '128'
         managedDisk: {
           storageAccountType: 'Premium_LRS'
@@ -164,9 +114,9 @@ module testDeployment '../../deploy.bicep' = {
           uri: resourceGroupResources.outputs.storageAccountCSEFileUrl
         }
       ]
-    }
-    extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'value=$(./${resourceGroupResources.outputs.storageAccountCSEFileName}); echo "$value"'
+      protectedSettings: {
+        commandToExecute: 'sudo apt-get update'
+      }
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -184,9 +134,6 @@ module testDeployment '../../deploy.bicep' = {
         VolumeType: 'All'
       }
     }
-    extensionDSCConfig: {
-      enabled: false
-    }
     extensionMonitoringAgentConfig: {
       enabled: true
     }
@@ -194,11 +141,25 @@ module testDeployment '../../deploy.bicep' = {
       enabled: true
     }
     lock: 'CanNotDelete'
-    monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    nicConfigurations: [
+      {
+        ipConfigurations: [
+          {
+            name: 'ipconfig1'
+            properties: {
+              subnet: {
+                id: resourceGroupResources.outputs.subnetResourceId
+              }
+            }
+          }
+        ]
+        nicSuffix: '-nic01'
+      }
+    ]
     publicKeys: [
       {
         keyData: resourceGroupResources.outputs.SSHKeyPublicKey
-        path: '/home/localAdminUser/.ssh/authorized_keys'
+        path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]
     roleAssignments: [
@@ -209,12 +170,14 @@ module testDeployment '../../deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    scaleSetFaultDomain: 1
+    skuCapacity: 1
     systemAssignedIdentity: true
+    upgradePolicyMode: 'Manual'
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
+    vmNamePrefix: 'vmsslinvm'
+    vmPriority: 'Regular'
   }
-  dependsOn: [
-    resourceGroupResources // Required to leverage `existing` SSH key reference
-  ]
 }
