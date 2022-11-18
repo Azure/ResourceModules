@@ -21,7 +21,7 @@ foo@contoso.com
 @parameters.json
 '@odata.type
 <!-- ^file:.*[^\.md]$ -->
-<!-- ^file:.*(?!md)$ -->
+
 <!-- ^file:.*([^d]|m[^d])$ -->
 ^file:.*\.m[^d]$
 <!-- ^([^h].*$)|(h([^e].*$|$))|(he([^h].*$|$))|(heh([^e].*$|$))|(hehe.+$)  -->
