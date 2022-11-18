@@ -3,6 +3,9 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+@description('Optional. Provide \'true\' to enable Key Vault\'s purge protection feature.')
+param enablePurgeProtection bool = false
+
 @description('Optional. The name of the resource group to deploy for testing purposes')
 @maxLength(90)
 param resourceGroupName string = 'ms.keyvault.vaults-${serviceShort}-rg'
@@ -41,6 +44,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
+    enablePurgeProtection: enablePurgeProtection
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
