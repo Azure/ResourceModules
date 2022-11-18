@@ -9,6 +9,10 @@ parameters:
     displayName: Include Management Group deployments
     type: boolean
     default: true
+  - name: maxDeploymentRetentionInDays
+    displayName: The number of days to keep deployments with status [running] or [failed]
+    type: integer
+    default: 14
 
 schedules:
 - cron: "0 0 * * *"
@@ -63,8 +67,8 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
 
             $functionInput = @{
-              SubscriptionId           = '$(ARM_SUBSCRIPTION_ID)'
-              maxDeploymentRetentionInDays = '$(maxDeploymentRetentionInDays)'
+              SubscriptionId               = '$(ARM_SUBSCRIPTION_ID)'
+              maxDeploymentRetentionInDays = ${{ parameters.maxDeploymentRetentionInDays }}
             }
 
             Write-Verbose 'Invoke task with' -Verbose
@@ -111,8 +115,8 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-ManagementGroupDeployment.ps1')
 
             $functionInput = @{
-              ManagementGroupId        = '$(ARM_MGMTGROUP_ID)'
-              maxDeploymentRetentionInDays = '$(maxDeploymentRetentionInDays)'
+              ManagementGroupId            = '$(ARM_MGMTGROUP_ID)'
+              maxDeploymentRetentionInDays = ${{ parameters.maxDeploymentRetentionInDays }}
             }
 
             Write-Verbose 'Invoke task with' -Verbose

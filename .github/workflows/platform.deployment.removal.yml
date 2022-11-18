@@ -13,6 +13,11 @@ on:
         description: 'Include Management Group deployments'
         required: false
         default: true
+      maxDeploymentRetentionInDays:
+        type: string
+        description: 'The number of days to keep deployments with status [running] or [failed]'
+        required: false
+        default: '14'
   schedule:
     - cron: '0 0 * * *'
 
@@ -88,8 +93,8 @@ jobs:
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
 
             $functionInput = @{
-              SubscriptionId           = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-              maxDeploymentRetentionInDays = '${{ env.maxDeploymentRetentionInDays }}'
+              SubscriptionId               = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+              maxDeploymentRetentionInDays = '${{ needs.job_initialize_pipeline.outputs.maxDeploymentRetentionInDays }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose
@@ -142,8 +147,8 @@ jobs:
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-ManagementGroupDeployment.ps1')
 
             $functionInput = @{
-              ManagementGroupId        = '${{ secrets.ARM_MGMTGROUP_ID }}'
-              maxDeploymentRetentionInDays = '${{ env.maxDeploymentRetentionInDays }}'
+              ManagementGroupId            = '${{ secrets.ARM_MGMTGROUP_ID }}'
+              maxDeploymentRetentionInDays = '${{ needs.job_initialize_pipeline.outputs.maxDeploymentRetentionInDays }}'
             }
 
             Write-Verbose "Invoke task with" -Verbose
