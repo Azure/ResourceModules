@@ -623,6 +623,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -733,6 +734,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -967,6 +969,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -1216,6 +1219,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -1266,6 +1270,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -1328,6 +1333,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -1375,6 +1381,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -1458,6 +1465,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

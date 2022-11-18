@@ -46,10 +46,11 @@ module testDeployment '../../deploy.bicep' = {
     proximityPlacementGroupId: resourceGroupResources.outputs.proximityPlacementGroupResourceId
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
   }

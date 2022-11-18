@@ -176,6 +176,7 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -209,6 +210,7 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

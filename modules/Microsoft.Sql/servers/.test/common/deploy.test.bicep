@@ -71,6 +71,7 @@ module testDeployment '../../deploy.bicep' = {
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
+        principalType: 'ServicePrincipal'
       }
     ]
     vulnerabilityAssessmentsObj: {

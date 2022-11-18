@@ -441,6 +441,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -451,6 +452,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -484,6 +486,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -613,6 +616,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ]
@@ -625,6 +629,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -666,6 +671,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ]
@@ -744,6 +750,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -831,6 +838,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

@@ -87,10 +87,11 @@ module testDeployment '../../deploy.bicep' = {
     lock: 'CanNotDelete'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
   }

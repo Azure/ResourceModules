@@ -58,10 +58,11 @@ module testDeployment '../../deploy.bicep' = {
     hyperVGeneration: 'V1'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     zoneResilient: true

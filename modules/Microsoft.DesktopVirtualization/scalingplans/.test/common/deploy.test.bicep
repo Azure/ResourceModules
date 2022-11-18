@@ -57,10 +57,11 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     diagnosticLogsRetentionInDays: 7

@@ -542,6 +542,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -916,6 +917,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

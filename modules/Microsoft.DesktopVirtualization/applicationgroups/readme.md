@@ -218,6 +218,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -301,6 +302,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
