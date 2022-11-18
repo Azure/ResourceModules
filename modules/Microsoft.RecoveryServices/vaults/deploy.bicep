@@ -166,7 +166,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
   name: name
   location: location
   tags: tags
-  identity: any(identity)
+  identity: identity
   sku: {
     name: 'RS0'
     tier: 'Standard'
