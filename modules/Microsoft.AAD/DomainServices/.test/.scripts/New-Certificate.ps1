@@ -2,10 +2,10 @@
     [string] $KeyVaultName,
     [string] $ResourceGroupName,
     [string] $CertPWSecretName,
-    [string] $CertName
+    [string] $CertSecretName
 )
 
-$password = ConvertTo-SecureString -String "$ResourceGroupName/$KeyVaultName/$CertName" -AsPlainText -Force
+$password = ConvertTo-SecureString -String "$ResourceGroupName/$KeyVaultName/$CertSecretName" -AsPlainText -Force
 
 # Install open-ssl if not available
 apt-get install openssl
