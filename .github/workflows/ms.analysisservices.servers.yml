@@ -92,7 +92,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moduleTestFilePaths: ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).moduleTestFilePaths }}
+        moduleTestFilePaths: ${{ fromJSON(fromJson(needs.job_initialize_pipeline.outputs.workflowInput).moduleTestFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
