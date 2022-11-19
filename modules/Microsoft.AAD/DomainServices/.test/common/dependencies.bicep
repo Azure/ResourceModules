@@ -97,7 +97,7 @@ output keyVaultResourceId string = keyVault.id
 output certPWSecretName string = certPWSecretName
 
 @description('The name of the certification secret.')
-output CertSecretName string = CertSecretName
+output certSecretName string = certSecretName
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
