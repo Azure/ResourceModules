@@ -72,7 +72,6 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-
     lock: 'CanNotDelete'
     pfxCertificate: keyVault.getSecret(resourceGroupResources.outputs.CertSecretName)
     pfxCertificatePassword: keyVault.getSecret(resourceGroupResources.outputs.CertPWSecretName)
