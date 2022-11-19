@@ -72,16 +72,16 @@ module testDeployment '../../deploy.bicep' = {
         //     staticRoutes: []
         //   }
         // }
-        vpnLinkConnections: [
-          {
-            name: last(split(resourceGroupResources.outputs.vpnSiteLink1ResourceId, '/'))
-            id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
-          }
-          {
-            name: last(split(resourceGroupResources.outputs.vpnSiteLink2ResourceId, '/'))
-            id: resourceGroupResources.outputs.vpnSiteLink2ResourceId
-          }
-        ]
+        // vpnLinkConnections: [
+        //   {
+        //     name: last(split(resourceGroupResources.outputs.vpnSiteLink1ResourceId, '/'))
+        //     id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
+        //   }
+        //   {
+        //     name: last(split(resourceGroupResources.outputs.vpnSiteLink2ResourceId, '/'))
+        //     id: resourceGroupResources.outputs.vpnSiteLink2ResourceId
+        //   }
+        // ]
       }
     ]
     lock: 'CanNotDelete'

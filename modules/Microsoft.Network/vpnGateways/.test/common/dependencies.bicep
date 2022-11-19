@@ -38,32 +38,33 @@ resource vpnSite 'Microsoft.Network/vpnSites@2022-01-01' = {
         '10.1.0.0/16'
       ]
     }
-    vpnSiteLinks: [
-      {
-        name: '${vpnSiteName}-vSite-link-1'
-        properties: {
-          ipAddress: '10.2.0.0'
-          bgpProperties: {
-            asn: 65010
-            bgpPeeringAddress: '10.1.0.1'
-          }
-          linkProperties: {
-            linkProviderName: 'contoso'
-            linkSpeedInMbps: 5
-          }
-        }
-      }
-      {
-        name: '${vpnSiteName}-vSite-link-2'
-        properties: {
-          ipAddress: '10.3.0.0'
-          bgpProperties: {
-            asn: 65010
-            bgpPeeringAddress: '10.1.0.2'
-          }
-        }
-      }
-    ]
+    ipAddress: '10.1.0.0'
+    // vpnSiteLinks: [
+    //   {
+    //     name: '${vpnSiteName}-vSite-link-1'
+    //     properties: {
+    //       ipAddress: '10.2.0.0'
+    //       bgpProperties: {
+    //         asn: 65010
+    //         bgpPeeringAddress: '10.1.0.1'
+    //       }
+    //       linkProperties: {
+    //         linkProviderName: 'contoso'
+    //         linkSpeedInMbps: 5
+    //       }
+    //     }
+    //   }
+    //   {
+    //     name: '${vpnSiteName}-vSite-link-2'
+    //     properties: {
+    //       ipAddress: '10.3.0.0'
+    //       bgpProperties: {
+    //         asn: 65010
+    //         bgpPeeringAddress: '10.1.0.2'
+    //       }
+    //     }
+    //   }
+    // ]
   }
 }
 
@@ -73,5 +74,5 @@ output virtualHubResourceId string = virtualHub.id
 @description('The resource ID of the created VPN site.')
 output vpnSiteResourceId string = vpnSite.id
 
-output vpnSiteLink1ResourceId string = vpnSite.properties.vpnSiteLinks[0].id
-output vpnSiteLink2ResourceId string = vpnSite.properties.vpnSiteLinks[1].id
+// output vpnSiteLink1ResourceId string = vpnSite.properties.vpnSiteLinks[0].id
+// output vpnSiteLink2ResourceId string = vpnSite.properties.vpnSiteLinks[1].id
