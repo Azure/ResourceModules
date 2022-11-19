@@ -94,7 +94,7 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 output keyVaultResourceId string = keyVault.id
 
 @description('The name of the certification password secret.')
-output CertPWSecretName string = CertPWSecretName
+output certPWSecretName string = certPWSecretName
 
 @description('The name of the certification secret.')
 output CertSecretName string = CertSecretName
