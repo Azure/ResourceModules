@@ -13,7 +13,7 @@ param managedIdentityName string
 @description('Required. The name of the Deployment Script to create for the Certificate generation.')
 param certDeploymentScriptName string
 
-var CertPWSecretName = 'pfxCertificatePassword'
+var certPWSecretName = 'pfxCertificatePassword'
 var CertSecretName = 'pfxBase64Certificate'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
