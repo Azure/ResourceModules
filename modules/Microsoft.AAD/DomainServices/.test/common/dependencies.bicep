@@ -14,7 +14,7 @@ param managedIdentityName string
 param certDeploymentScriptName string
 
 var certPWSecretName = 'pfxCertificatePassword'
-var CertSecretName = 'pfxBase64Certificate'
+var certSecretName = 'pfxBase64Certificate'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
