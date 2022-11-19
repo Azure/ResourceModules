@@ -31,11 +31,12 @@ jobs:
           # --exclude '^file:.*[^d]$|^.*[^m]d$|^.*[^.]md$'
           # --scheme "https"
           format: json
+          fail: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Publish Results
         if: always()
-        run: exit ${{ steps.checker.outputs.exit_code }}
+        run: exit env.lychee_exit_code
 
 
