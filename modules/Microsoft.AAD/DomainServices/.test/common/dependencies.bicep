@@ -82,7 +82,7 @@ resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01'
     properties: {
         azPowerShellVersion: '3.0'
         retentionInterval: 'P1D'
-        arguments: ' -KeyVaultName "${keyVault.name}" -ResourceGroupName "${resourceGroup().name}" -CertPWSecretName "${CertPWSecretName}" -CertSecretName "${CertSecretName}"'
+        arguments: ' -KeyVaultName "${keyVault.name}" -ResourceGroupName "${resourceGroup().name}" -CertPWSecretName "${certPWSecretName}" -CertSecretName "${certSecretName}"'
         scriptContent: loadTextContent('../.scripts/New-Certificate.ps1')
     }
 }
