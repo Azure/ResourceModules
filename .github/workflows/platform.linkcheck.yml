@@ -30,7 +30,7 @@ jobs:
           args: --verbose --no-progress './**/*.md' --accept 200,201,403,429,401 --exclude-file .lycheeignore
           # --exclude '^file:.*[^d]$|^.*[^m]d$|^.*[^.]md$'
           # --scheme "https"
-          # format: json
+          format: json
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
