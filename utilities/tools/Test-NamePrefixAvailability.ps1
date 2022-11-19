@@ -102,7 +102,7 @@ function Test-NamePrefixAvailability {
                 }
 
                 # determine serviceshort default value if no parameter has been supplied
-                if (!$overwrittenServiceShort) {
+                if (-not $overwrittenServiceShort) {
                     $serviceShort = Get-Content -Path $parameterFile | ForEach-Object {
                         if ($_ -match "serviceShort string = ") { $_ }
                     }
