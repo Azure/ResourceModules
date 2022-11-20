@@ -22,7 +22,7 @@ Project maintainers will aim to respond to new issues on a best effort basis.
 
 This project uses GitHub Issues to track bugs and feature requests. Please search the existing issues before filing new issues to avoid duplicates.  For new issues, file your bug or feature request as a new Issue.
 
-For help and questions about using this project, please submit a Github issue with corresponding [Issue Labels found here](https://github.com/Azure/ResourceModules/labels).
+For help and questions about using this project, please submit a GitHub issue with corresponding [Issue Labels found here](https://github.com/Azure/ResourceModules/labels).
 
 
 <!-- Local -->
@@ -32,5 +32,5 @@ For help and questions about using this project, please submit a Github issue wi
 [GitHubIssues]: <https://github.com/Azure/Modules/issues>
 [Contributing]: CONTRIBUTING.md
 [AzureIcon]: docs/media/MicrosoftAzure-32px.png
-[PowershellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
+[PowerShellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
 [BashIcon]: docs/media/Bash_Logo_black_and_white_icon_only-32px.svg.png
