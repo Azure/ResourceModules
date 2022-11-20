@@ -27,6 +27,6 @@
     $fileContent = $res | ConvertTo-Json
 
     if ($PSCmdlet.ShouldProcess('API Specs file [apiSpecsList.json]', 'Update')) {
-        $null = Set-Item -Path $SpecsFilePath -Value $fileContent -Force
+        $null = Set-Content -Path $SpecsFilePath -Value $fileContent -Force
     }
 }
