@@ -23,7 +23,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'tools' 'platform' 'Set-ApiSpecsTable.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'tools' 'platform' 'Set-ApiSpecsFile.ps1')
 
           $functionInput = @{
             SpecsFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'src' 'apiSpecsList.json'
@@ -32,7 +32,7 @@ jobs:
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Set-ApiSpecsTable @functionInput -Verbose
+          Set-ApiSpecsFile @functionInput -Verbose
 
       - name: 'Push changes'
         shell: pwsh

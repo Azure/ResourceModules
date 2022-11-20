@@ -1,4 +1,19 @@
-﻿function Set-ApiSpecsTable {
+﻿<#
+.SYNOPSIS
+Update the API Specs file in the given path
+
+.DESCRIPTION
+Update the API Specs file in the given path. The file contains an outline of all Provider Namespaces with their Resource Types and supported API versions.
+
+.PARAMETER SpecsFilePath
+Optional. The path the the file to create/overwrite. By default points to path '<root>/utilities/src/apiSpecsList.json'
+
+.EXAMPLE
+Set-ApiSpecsFile -SpecsFilePath 'C:/dev/ResourceModules/utilities/src/apiSpecsList.json'
+
+Update the file in path 'C:/dev/ResourceModules/utilities/src/apiSpecsList.json' with the latest API versions.
+#>
+function Set-ApiSpecsFile {
 
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (

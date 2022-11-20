@@ -34,7 +34,7 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'platform' 'Set-ApiSpecsTable.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'platform' 'Set-ApiSpecsFile.ps1')
 
             $functionInput = @{
               SpecsFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'src' 'apiSpecsList.json'
@@ -43,7 +43,7 @@ jobs:
             Write-Verbose "Invoke task with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Set-ApiSpecsTable @functionInput -Verbose
+            Set-ApiSpecsFile @functionInput -Verbose
 
       - task: PowerShell@2
         displayName: 'Push changes'
@@ -56,6 +56,6 @@ jobs:
             Write-Verbose '$(Build.SourceBranch)' -Verbose
             git add .
             git status
-            git commit -m "Push updated API Specs file"
+            git commit -m 'Push updated API Specs file'
             git pull $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
             git push $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
