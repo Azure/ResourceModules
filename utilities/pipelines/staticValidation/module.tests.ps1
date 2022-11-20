@@ -1198,7 +1198,14 @@ Describe 'Deployment template tests' -Tag Template {
 Describe "API version tests [All apiVersions in the template should be 'recent']" -Tag ApiCheck {
 
     $testCases = @()
-    $ApiVersions = Get-AzResourceProvider -ListAvailable
+    $apiSpecsFilePath = Join-Path $repoRootPath 'utilities' 'src' 'apiSpecsList.json'
+
+    if (-not (Test-Path $apiSpecsFilePath)) {
+        Write-Verbose "Skipping API tests as no API version are available in path [$apiSpecsFilePath]"
+        return
+    }
+
+    $ApiVersions = Get-Content -Path $apiSpecsFilePath -Raw | ConvertFrom-Json
     foreach ($moduleFolderPath in $moduleFolderPaths) {
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
@@ -1294,18 +1301,28 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         }
     }
 
-    It 'In [<moduleName>] used resource type [<resourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
+    It 'In [<moduleName>] used resource type [<ResourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
 
         param(
             [string] $moduleName,
-            [string] $resourceType,
+            [string] $ResourceType,
             [string] $TargetApi,
             [string] $ProviderNamespace,
-            [object[]] $AvailableApiVersions
+            [PSCustomObject] $AvailableApiVersions
         )
 
-        $namespaceResourceTypes = ($AvailableApiVersions | Where-Object { $_.ProviderNamespace -eq $ProviderNamespace }).ResourceTypes
-        $resourceTypeApiVersions = ($namespaceResourceTypes | Where-Object { $_.ResourceTypeName -eq $resourceType }).ApiVersions
+        if (-not (($AvailableApiVersions | Get-Member -Type NoteProperty).Name -contains $ProviderNamespace)) {
+            Write-Warning "[API Test] The Provider Namespace [$ProviderNamespace] is missing in your Azure API versions file. Please consider updating it and if it is still missing to open an issue in the 'AzureAPICrawler' PowerShell module's GitHub repository."
+            Set-ItResult -Skipped -Because "The Azure API version file is missing the Provider Namespace [$ProviderNamespace]."
+            return
+        }
+        if (-not (($AvailableApiVersions.$ProviderNamespace | Get-Member -Type NoteProperty).Name -contains $ResourceType)) {
+            Write-Warning "[API Test] The Provider Namespace [$ProviderNamespace] is missing the Resource Type [$ResourceType] in your API versions file. Please consider updating it and if it is still missing to open an issue in the 'AzureAPICrawler' PowerShell module's GitHub repository."
+            Set-ItResult -Skipped -Because "The Azure API version file is missing the Resource Type [$ResourceType] for Provider Namespace [$ProviderNamespace]."
+            return
+        }
+
+        $resourceTypeApiVersions = $AvailableApiVersions.$ProviderNamespace.$ResourceType
 
         if (-not $resourceTypeApiVersions) {
             Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
@@ -1314,8 +1331,8 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
 
         # We allow the latest 5 including previews (in case somebody wants to use preview), or the latest 3 non-preview
         $approvedApiVersions = @()
-        $approvedApiVersions += $resourceTypeApiVersions | Select-Object -First 5
-        $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -First 3
+        $approvedApiVersions += $resourceTypeApiVersions | Select-Object -Last 5
+        $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 3
         ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
     }
 }
