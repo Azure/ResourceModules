@@ -55,5 +55,7 @@ jobs:
             git config --global user.name '$(pipelinePrincipalGitUserName)'
             Write-Verbose '$(Build.SourceBranch)' -Verbose
             git add .
+            git status
             git commit -m "Push updated API Specs file"
+            git pull $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
             git push $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
