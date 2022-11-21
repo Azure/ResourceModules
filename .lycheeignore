@@ -25,4 +25,4 @@ foo@contoso.com
 
 
 <!-- (^file:.*docs.*wiki.*media.*([^g]|[^n]g|[^p]ng|[^.]png))|(^file:.*([^d]|[^m]d|[^.]md))$ -->
-^file:.*(docs.*wiki.*media.*([^g]|[^n]g|[^p]ng|[^.]png))&(([^d]|[^m]d|[^.]md))$
+^file:.*(docs.*wiki.*media.*([^g]|[^n]g|[^p]ng|[^.]png))&(docs.*wiki.*([^d]|[^m]d|[^.]md))$
