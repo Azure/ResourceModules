@@ -11383,6 +11383,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "alertRules/actions": [
@@ -11401,6 +11402,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "automationRules": [
@@ -11417,6 +11419,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "bookmarks": [
@@ -11434,6 +11437,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "bookmarks/relations": [
@@ -11475,6 +11479,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "entityQueries": [
@@ -11514,6 +11519,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "incidents/comments": [
@@ -11533,6 +11539,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "incidents/relations": [
@@ -11551,6 +11558,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "metadata": [
@@ -11581,6 +11589,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "securityMLAnalyticsSettings": [
@@ -11590,6 +11599,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "settings": [
@@ -11636,6 +11646,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "watchlists": [
@@ -11654,6 +11665,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ],
     "watchlists/watchlistItems": [
@@ -11672,6 +11684,7 @@
       "2022-08-01-preview",
       "2022-09-01-preview",
       "2022-10-01-preview",
+      "2022-11-01",
       "2022-11-01-preview"
     ]
   },
