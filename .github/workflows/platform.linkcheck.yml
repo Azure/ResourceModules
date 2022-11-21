@@ -22,7 +22,7 @@ jobs:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
-      # Ref https://github.com/marketplace/actions/lychee-broken-link-checker and https://github.com/lycheeverse/lychee#commandline-parameters
+      # Ref https://github.com/marketplace/actions/lychee-broken-link-checker and https://github.com/lycheeverse/lychee#commandline-parameters k
       - name: Check Broken Links
         if: always()
         id: checker
