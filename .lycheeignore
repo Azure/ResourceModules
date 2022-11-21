@@ -24,4 +24,4 @@ foo@contoso.com
 <!-- ^file:.*([^d]$|^.*[^m]d$|^.*[^.]md$)|([^g]|[^n]g|[^p]ng|[^.]png)$ -->
 
 <!-- ^file:.*([^d]|[^m]d|[^.]md)$ -->
-^file:.*([^g]|[^n]g|[^p]ng|[^.]png)$
+^file:.*docs\/wiki\/media.*([^g]|[^n]g|[^p]ng|[^.]png)$
