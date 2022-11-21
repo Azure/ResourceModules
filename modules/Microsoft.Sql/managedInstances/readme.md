@@ -81,6 +81,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedInstanceCreateMode` | string | `'Default'` | `[Default, PointInTimeRestore]` | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
+| `minimalTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2, None]` | Minimal TLS version allowed. |
 | `proxyOverride` | string | `'Proxy'` | `[Default, Proxy, Redirect]` | Connection type used for connecting to the instance. |
 | `publicDataEndpointEnabled` | bool | `False` |  | Whether or not the public data endpoint is enabled. |
 | `requestedBackupStorageRedundancy` | string | `'Geo'` | `[Geo, GeoZone, Local, Zone]` | The storage account type used to store backups for this database. |
@@ -287,91 +288,20 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ManagedInstances'
+  name: '${uniqueString(deployment().name, location)}-test-sqlmicom'
   params: {
-    // Required parameters
-    administratorLogin: kv1.getSecret('administratorLogin')
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-sqlmi-min-001'
-    subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "administratorLogin": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLogin"
-      }
-    },
-    "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-sqlmi-min-001"
-    },
-    "subnetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
-module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ManagedInstances'
-  params: {
-    administratorLogin: kv1.getSecret('administratorLogin')
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-sqlmi-x-001'
-    subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi'
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: '<<namePrefix>>-sqlmicom'
+    subnetId: '<subnetId>'
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
       {
@@ -381,36 +311,36 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
         backupShortTermRetentionPolicies: {
           name: 'default'
         }
-        name: '<<namePrefix>>-az-sqlmidb-x-001'
+        name: '<<namePrefix>>-sqlmicom-db-001'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     dnsZonePartner: ''
     encryptionProtectorObj: {
-      serverKeyName: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
+      serverKeyName: '<serverKeyName>'
       serverKeyType: 'AzureKeyVault'
     }
     hardwareFamily: 'Gen5'
     keys: [
       {
-        name: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
+        name: '<name>'
         serverKeyType: 'AzureKeyVault'
-        uri: 'https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07'
+        uri: '<uri>'
       }
     ]
     licenseType: 'LicenseIncluded'
     lock: 'CanNotDelete'
-    primaryUserAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
     proxyOverride: 'Proxy'
     publicDataEndpointEnabled: false
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -427,7 +357,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     systemAssignedIdentity: true
     timezoneId: 'UTC'
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
     vCores: 4
     vulnerabilityAssessmentsObj: {
@@ -438,7 +368,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
         'test2@contoso.com'
       ]
       recurringScansIsEnabled: true
-      vulnerabilityAssessmentsStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
     }
   }
 }
@@ -457,26 +387,16 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "administratorLogin": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLogin"
-      }
+      "value": "adminUserName"
     },
     "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
+      "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-az-sqlmi-x-001"
+      "value": "<<namePrefix>>-sqlmicom"
     },
     "subnetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi"
+      "value": "<subnetId>"
     },
     "collation": {
       "value": "SQL_Latin1_General_CP1_CI_AS"
@@ -490,31 +410,31 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
           "backupShortTermRetentionPolicies": {
             "name": "default"
           },
-          "name": "<<namePrefix>>-az-sqlmidb-x-001"
+          "name": "<<namePrefix>>-sqlmicom-db-001"
         }
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
     "dnsZonePartner": {
       "value": ""
     },
     "encryptionProtectorObj": {
       "value": {
-        "serverKeyName": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07",
+        "serverKeyName": "<serverKeyName>",
         "serverKeyType": "AzureKeyVault"
       }
     },
@@ -524,9 +444,9 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     "keys": {
       "value": [
         {
-          "name": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07",
+          "name": "<name>",
           "serverKeyType": "AzureKeyVault",
-          "uri": "https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07"
+          "uri": "<uri>"
         }
       ]
     },
@@ -537,7 +457,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     "primaryUserAssignedIdentityId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+      "value": "<primaryUserAssignedIdentityId>"
     },
     "proxyOverride": {
       "value": "Proxy"
@@ -549,7 +469,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -582,7 +502,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     },
     "vCores": {
@@ -597,8 +517,59 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
           "test2@contoso.com"
         ],
         "recurringScansIsEnabled": true,
-        "vulnerabilityAssessmentsStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-sqlmimin'
+  params: {
+    // Required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: '<<namePrefix>>-sqlmimin'
+    subnetId: '<subnetId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "name": {
+      "value": "<<namePrefix>>-sqlmimin"
+    },
+    "subnetId": {
+      "value": "<subnetId>"
     }
   }
 }

@@ -44,11 +44,32 @@ module testDeployment '../../deploy.bicep' = {
     lock: 'CanNotDelete'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
+    zones: [
+      '1'
+    ]
+    proximityPlacementGroupType: 'Standard'
+    tags: {
+      TagA: 'Would you kindly...'
+      TagB: 'Tags for sale'
+    }
+    colocationStatus: {
+      code: 'ColocationStatus/Aligned'
+      displayStatus: 'Aligned'
+      level: 'Info'
+      message: 'I\'m a default error message'
+    }
+    intent: {
+      vmSizes: [
+        'Standard_B1ms'
+        'Standard_B4ms'
+      ]
+    }
   }
 }

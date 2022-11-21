@@ -64,10 +64,11 @@ module testDeployment '../../deploy.bicep' = {
     publicIPAllocationMethod: 'Static'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     skuName: 'Standard'

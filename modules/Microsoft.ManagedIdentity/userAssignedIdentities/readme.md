@@ -170,6 +170,7 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -205,6 +206,7 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

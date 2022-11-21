@@ -57,10 +57,11 @@ module testDeployment '../../deploy.bicep' = {
       publicIPPrefixResourceId: ''
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             resourceGroupResources.outputs.managedIdentityPrincipalId
           ]
-          roleDefinitionIdOrName: 'Reader'
+          principalType: 'ServicePrincipal'
         }
       ]
       skuName: 'Standard'

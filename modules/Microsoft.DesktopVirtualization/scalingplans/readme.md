@@ -43,7 +43,7 @@ This module deploys an AVD Scaling Plan.
 | `logsToEnable` | array | `[Autoscale]` | `[Autoscale]` | The name of logs that will be streamed. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scalingplanDescription` | string | `[parameters('name')]` |  | Description of the scaling plan. |
-| `schedules` | array | `[System.Collections.Hashtable]` |  | The schedules related to this scaling plan. If no value is provided a default schedule will be provided. |
+| `schedules` | array | `[System.Management.Automation.OrderedHashtable]` |  | The schedules related to this scaling plan. If no value is provided a default schedule will be provided. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `timeZone` | string | `'W. Europe Standard Time'` |  | Timezone to be used for the scaling plan. |
 
@@ -294,6 +294,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -350,6 +351,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

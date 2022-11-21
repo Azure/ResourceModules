@@ -57,7 +57,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     applicationGroupType: 'RemoteApp'
-    hostpoolName: last(split(resourceGroupResources.outputs.hostPoolResourceId, '/'))
+    hostpoolName: resourceGroupResources.outputs.hostPoolName
     applications: [
       {
         commandLineArguments: ''
@@ -87,10 +87,11 @@ module testDeployment '../../deploy.bicep' = {
     lock: 'CanNotDelete'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
   }

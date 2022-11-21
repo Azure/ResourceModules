@@ -239,6 +239,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -313,6 +314,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

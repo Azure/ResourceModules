@@ -52,7 +52,7 @@ param enableRbacAuthorization bool = false
 param createMode string = 'default'
 
 @description('Optional. Provide \'true\' to enable Key Vault\'s purge protection feature.')
-param enablePurgeProtection bool = false
+param enablePurgeProtection bool = true
 
 @description('Optional. Specifies the SKU for the vault.')
 @allowed([

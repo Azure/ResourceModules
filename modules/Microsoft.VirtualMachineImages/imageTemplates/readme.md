@@ -311,6 +311,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -381,6 +382,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

@@ -58,10 +58,11 @@ module testDeployment '../../deploy.bicep' = {
         publisher: 'MicrosoftWindowsServer'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         sku: '2022-datacenter-azure-edition'

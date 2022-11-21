@@ -208,6 +208,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -262,6 +263,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -288,12 +290,13 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     sku: 'Standard_LRS'
     // Non-required parameters
     createOption: 'FromImage'
-    imageReferenceId: '${subscription().id}/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
+    imageReferenceId: '<imageReferenceId>'
     roleAssignments: [
       {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -325,7 +328,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
       "value": "FromImage"
     },
     "imageReferenceId": {
-      "value": "${subscription().id}/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838"
+      "value": "<imageReferenceId>"
     },
     "roleAssignments": {
       "value": [
@@ -333,6 +336,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -364,6 +368,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -402,6 +407,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

@@ -103,6 +103,7 @@ module testDeployment '../../deploy.bicep' = {
               principalIds: [
                 resourceGroupResources.outputs.managedIdentityPrincipalId
               ]
+              principalType: 'ServicePrincipal'
             }
           ]
         }
@@ -131,6 +132,7 @@ module testDeployment '../../deploy.bicep' = {
               principalIds: [
                 resourceGroupResources.outputs.managedIdentityPrincipalId
               ]
+              principalType: 'ServicePrincipal'
             }
           ]
         }
@@ -170,6 +172,7 @@ module testDeployment '../../deploy.bicep' = {
               principalIds: [
                 resourceGroupResources.outputs.managedIdentityPrincipalId
               ]
+              principalType: 'ServicePrincipal'
             }
           ]
         }
@@ -186,10 +189,11 @@ module testDeployment '../../deploy.bicep' = {
     }
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     diagnosticLogsRetentionInDays: 7

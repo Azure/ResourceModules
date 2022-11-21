@@ -178,6 +178,7 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -214,6 +215,7 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

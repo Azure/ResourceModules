@@ -1309,6 +1309,7 @@ jobs:
             '12.bastion.parameters.json',
             '13.bastion.parameters.json',
             '14.postgres.parameters.json',
+            '15.vnetGateway.parameters.json',
             'parameters.json',
           ]
     steps:

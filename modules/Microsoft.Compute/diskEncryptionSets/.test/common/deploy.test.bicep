@@ -46,10 +46,11 @@ module testDeployment '../../deploy.bicep' = {
     keyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
   }

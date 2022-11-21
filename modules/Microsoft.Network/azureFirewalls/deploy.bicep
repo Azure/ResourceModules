@@ -117,7 +117,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPublicIpConfigurations: {
+var additionalPublicIpConfigurationsVar = [for ipConfiguration in additionalPublicIpConfigurations: {
   name: ipConfiguration.name
   properties: {
     publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? {
@@ -132,7 +132,7 @@ var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPub
 // 2. Use new public ip created in this module
 // 3. Do not use a public ip if isCreateDefaultPublicIP is false
 
-var subnet_var = {
+var subnetVar = {
   subnet: {
     id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
   }
@@ -152,9 +152,9 @@ var ipConfigurations = concat([
     {
       name: !empty(azureFirewallSubnetPublicIpId) ? last(split(azureFirewallSubnetPublicIpId, '/')) : publicIPAddress.outputs.name
       //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
-      properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+      properties: union(subnetVar, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
     }
-  ], additionalPublicIpConfigurations_var)
+  ], additionalPublicIpConfigurationsVar)
 
 // ----------------------------------------------------------------------------
 
