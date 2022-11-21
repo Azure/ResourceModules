@@ -22,7 +22,6 @@ foo@contoso.com
 '@odata.type
 <!-- ^file:.*[^d]$|^.*[^m]d$|^.*[^.]md$ -->
 <!-- ^file:.*([^d]$|^.*[^m]d$|^.*[^.]md$)|([^g]|[^n]g|[^p]ng|[^.]png)$ -->
-
-
 <!-- (^file:.*docs.*wiki.*media.*([^g]|[^n]g|[^p]ng|[^.]png))|(^file:.*([^d]|[^m]d|[^.]md))$ -->
-^file:.*(docs.*wiki.*media.*([^g]|[^n]g|[^p]ng|[^.]png))(?=docs.*wiki.*([^d]|[^m]d|[^.]md))$
+<!-- ^file:.*(docs.*wiki.*media.*([^g]|[^n]g|[^p]ng|[^.]png))(docs.*wiki.*([^d]|[^m]d|[^.]md))$ -->
+^file:.*([^d]|[^m]d|[^.]md)$
