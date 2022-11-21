@@ -1,3 +1,4 @@
+<!-- This file lists all links/regex to be ignored by lychee in the Platform: Broken Links Check workflow -->
 https://foo.psd1/
 https://sts.windows.net/
 https://teststringforvalidation.com/
@@ -24,4 +25,9 @@ foo@contoso.com
 <!-- ^file:.*([^d]$|^.*[^m]d$|^.*[^.]md$)|([^g]|[^n]g|[^p]ng|[^.]png)$ -->
 <!-- (^file:.*docs.*wiki.*media.*([^g]|[^n]g|[^p]ng|[^.]png))|(^file:.*([^d]|[^m]d|[^.]md))$ -->
 <!-- ^file:.*(docs.*wiki.*media.*([^g]|[^n]g|[^p]ng|[^.]png))(docs.*wiki.*([^d]|[^m]d|[^.]md))$ -->
+
+<!-- The following regex excludes all local file paths besides the ones with .md extension.
+That is to ignore false positives such as the ones in the docs/wiki folder, supporting formatting for the Wiki.
+To avoid ignoring checks on the docs/wiki/media folder, an explicit inclusion is made at lychee argument level, since include has preference over all excludes.
+Ref https://github.com/marketplace/actions/lychee-broken-link-checker and https://github.com/lycheeverse/lychee#commandline-parameters -->
 ^file:.*([^d]|[^m]d|[^.]md)$

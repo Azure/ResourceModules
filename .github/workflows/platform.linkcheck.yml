@@ -22,15 +22,14 @@ jobs:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
+      # Ref https://github.com/marketplace/actions/lychee-broken-link-checker and https://github.com/lycheeverse/lychee#commandline-parameters
       - name: Check Broken Links
         if: always()
         id: checker
         uses: lycheeverse/lychee-action@v1.5.4
         with:
+          Explicit inclusion of the docs/wiki/media folder is done to
           args: --verbose --no-progress './**/*.md' --accept 200,201,403,429,401 --exclude-file .lycheeignore --include ^file:.*docs.*wiki.*media.*$
-          # --exclude '^file:.*[^d]$|^.*[^m]d$|^.*[^.]md$'
-          # --scheme "https"
-          # format: json
           fail: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
