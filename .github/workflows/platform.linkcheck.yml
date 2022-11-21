@@ -33,8 +33,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Publish Results
-        if: always()
-        run: exit env.lychee_exit_code
-
-
