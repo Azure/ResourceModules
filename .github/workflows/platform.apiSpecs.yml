@@ -1,6 +1,7 @@
 name: '.Platform: Update API Specs file'
 
 on:
+  push:
   workflow_dispatch:
   schedule:
     - cron: '0 12 * * 0' # Weekly Sunday Update
