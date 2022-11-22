@@ -1,4 +1,22 @@
-﻿function Get-LinkedChildModuleList {
+﻿<#
+.SYNOPSIS
+Collect all children which are linked to the provided resource type (direct, or indirect with a proxy)
+
+.DESCRIPTION
+Collect all children which are linked to the provided resource type (direct, or indirect with a proxy)
+
+.PARAMETER FullResourceType
+Mandatory. The Resource Type to search the linked child-modules for
+
+.PARAMETER FullModuleData
+Mandatory. The Module Data to search for child-modules in
+
+.EXAMPLE
+Get-LinkedChildModuleList -FullResourceType 'Microsoft.Storage/storageAccounts/blobServices' -FullModuleData @(@{ parameters = @(...); resource = @(...); (...) }, @{...})
+
+Get all children for resource type 'Microsoft.Storage/storageAccounts/blobServices'
+#>
+function Get-LinkedChildModuleList {
 
     [CmdletBinding()]
     param (
