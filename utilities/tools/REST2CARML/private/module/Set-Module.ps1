@@ -57,6 +57,51 @@ function Set-Module {
     }
 
     process {
+        ##########################################
+        ##   Collection addtional information   ##
+        ##########################################
+
+        # RBAC
+        if ($ModuleData.roleAssignmentOptions.Count -gt 0) {
+            $rbacInputObject = @{
+                ProviderNamespace = $ProviderNamespace
+                RelevantRoles     = $ModuleData.roleAssignmentOptions
+                ResourceType      = $ResourceType
+                ModuleData        = $ModuleData
+                ServiceApiVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
+            }
+            Set-RoleAssignmentsModuleData @rbacInputObject
+        }
+
+        # Private Endpoints
+        if ($ModuleData.supportsPrivateEndpoints) {
+            $endpInputObject = @{
+                ResourceType = $ResourceType
+                ModuleData   = $ModuleData
+            }
+            Set-PrivateEndpointModuleData @endpInputObject
+        }
+
+        # Locks
+        if ($ModuleData.supportsLocks) {
+            $lockInputObject = @{
+                ResourceType = $ResourceType
+                ModuleData   = $ModuleData
+            }
+            Set-LockModuleData @lockInputObject
+        }
+
+        # Diagnostic Settings
+        if ($ModuleData.supportsLocks) {
+            $diagInputObject = @{
+                ResourceType             = $ResourceType
+                DiagnosticMetricsOptions = $ModuleData.diagnosticMetricsOptions
+                DiagnosticLogsOptions    = $ModuleData.diagnosticLogsOptions
+                ModuleData               = $ModuleData
+            }
+            Set-DiagnosticModuleData @diagInputObject
+        }
+
         #############################
         ##   Update Support Files   #
         #############################
