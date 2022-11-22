@@ -328,6 +328,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -340,6 +341,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -400,6 +402,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -416,6 +419,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

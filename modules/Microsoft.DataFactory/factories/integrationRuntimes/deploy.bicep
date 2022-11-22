@@ -32,7 +32,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-var managedVirtualNetwork_var = {
+var managedVirtualNetworkVar = {
   referenceName: type == 'Managed' ? managedVirtualNetworkName : null
   type: type == 'Managed' ? 'ManagedVirtualNetworkReference' : null
 }
@@ -46,7 +46,7 @@ resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes
   parent: dataFactory
   properties: type == 'Managed' ? {
     type: type
-    managedVirtualNetwork: managedVirtualNetwork_var
+    managedVirtualNetwork: managedVirtualNetworkVar
     typeProperties: typeProperties
   } : {
     type: type

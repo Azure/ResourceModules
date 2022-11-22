@@ -220,7 +220,7 @@ module iotSecuritySolutions '.bicep/nested_iotSecuritySolutions.bicep' = if (!em
 }
 
 resource securityContacts 'Microsoft.Security/securityContacts@2017-08-01-preview' = if (!empty(securityContactProperties)) {
-  name: 'securityContacts'
+  name: 'default'
   properties: {
     email: securityContactProperties.email
     phone: securityContactProperties.phone

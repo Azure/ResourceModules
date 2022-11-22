@@ -407,6 +407,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -512,6 +513,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

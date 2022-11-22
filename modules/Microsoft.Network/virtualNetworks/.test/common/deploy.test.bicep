@@ -72,10 +72,11 @@ module testDeployment '../../deploy.bicep' = {
     lock: 'CanNotDelete'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     subnets: [
@@ -89,10 +90,11 @@ module testDeployment '../../deploy.bicep' = {
         networkSecurityGroupId: resourceGroupResources.outputs.networkSecurityGroupResourceId
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         routeTableId: resourceGroupResources.outputs.routeTableResourceId

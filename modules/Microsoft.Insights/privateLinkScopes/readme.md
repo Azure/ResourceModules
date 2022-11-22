@@ -276,6 +276,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -325,6 +326,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

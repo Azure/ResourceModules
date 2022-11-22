@@ -193,6 +193,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -242,6 +243,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -297,6 +299,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -370,6 +373,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

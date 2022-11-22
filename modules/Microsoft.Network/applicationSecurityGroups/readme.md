@@ -176,6 +176,7 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -209,6 +210,7 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

@@ -1062,6 +1062,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
                   principalIds: [
                     '<managedIdentityPrincipalId>'
                   ]
+                  principalType: 'ServicePrincipal'
                   roleDefinitionIdOrName: 'Reader'
                 }
               ]
@@ -1075,6 +1076,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -1175,6 +1177,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -1234,6 +1237,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
                     "principalIds": [
                       "<managedIdentityPrincipalId>"
                     ],
+                    "principalType": "ServicePrincipal",
                     "roleDefinitionIdOrName": "Reader"
                   }
                 ]
@@ -1247,6 +1251,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ]
@@ -1403,6 +1408,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -1733,6 +1739,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
                   principalIds: [
                     '<managedIdentityPrincipalId>'
                   ]
+                  principalType: 'ServicePrincipal'
                   roleDefinitionIdOrName: 'Reader'
                 }
               ]
@@ -1746,6 +1753,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -1859,6 +1867,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -1918,6 +1927,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
                     "principalIds": [
                       "<managedIdentityPrincipalId>"
                     ],
+                    "principalType": "ServicePrincipal",
                     "roleDefinitionIdOrName": "Reader"
                   }
                 ]
@@ -1931,6 +1941,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ]
@@ -2102,6 +2113,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

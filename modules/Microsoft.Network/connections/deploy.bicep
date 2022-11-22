@@ -63,7 +63,7 @@ param peer object = {}
 @description('Optional. The local network gateway. Used for connection type [IPsec].')
 param localNetworkGateway2 object = {}
 
-var customIPSecPolicy_var = [
+var customIPSecPolicyVar = [
   {
     saLifeTimeSeconds: customIPSecPolicy.saLifeTimeSeconds
     saDataSizeKilobytes: customIPSecPolicy.saDataSizeKilobytes
@@ -100,7 +100,7 @@ resource connection 'Microsoft.Network/connections@2021-08-01' = {
     peer: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? peer : null
     sharedKey: virtualNetworkGatewayConnectionType != 'ExpressRoute' ? vpnSharedKey : null
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
-    ipsecPolicies: !empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicy_var : customIPSecPolicy.ipsecEncryption
+    ipsecPolicies: !empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicyVar : customIPSecPolicy.ipsecEncryption
     routingWeight: routingWeight != -1 ? routingWeight : null
     enableBgp: enableBgp
   }

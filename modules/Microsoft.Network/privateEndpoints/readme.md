@@ -335,6 +335,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -408,6 +409,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

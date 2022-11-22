@@ -64,10 +64,11 @@ module testDeployment '../../deploy.bicep' = {
     natGatewayPublicIpAddress: true
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
   }

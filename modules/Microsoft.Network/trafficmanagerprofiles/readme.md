@@ -287,6 +287,7 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -338,6 +339,7 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

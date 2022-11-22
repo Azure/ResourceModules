@@ -645,6 +645,7 @@ In addition, we follow the following, file-type-specific guidelines:
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
+            principalType: 'ServicePrincipal'
           }
         ]
         diagnosticLogsRetentionInDays: 7

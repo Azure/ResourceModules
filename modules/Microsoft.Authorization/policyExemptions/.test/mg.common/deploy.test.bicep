@@ -16,12 +16,57 @@ param serviceShort string = 'apemgcom'
 // General resources
 // =================
 
-resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-  name: 'dep-<<namePrefix>>-${serviceShort}-rgloc'
+resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' = {
+  name: 'dep-<<namePrefix>>-polDef-AuditKvlt-${serviceShort}'
+  properties: {
+    policyRule: {
+      if: {
+        allOf: [
+          {
+            equals: 'Microsoft.KeyVault/vaults'
+            field: 'type'
+          }
+        ]
+      }
+      then: {
+        effect: '[parameters(\'effect\')]'
+      }
+    }
+    parameters: {
+      effect: {
+        allowedValues: [
+          'Audit'
+        ]
+        defaultValue: 'Audit'
+        type: 'String'
+      }
+    }
+  }
+}
+
+resource policySet 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
+  name: 'dep-<<namePrefix>>-polSet-${serviceShort}'
+  properties: {
+    policyDefinitions: [
+      {
+        parameters: {
+          effect: {
+            value: 'Audit'
+          }
+        }
+        policyDefinitionId: policyDefinition.id
+        policyDefinitionReferenceId: policyDefinition.name
+      }
+    ]
+  }
+}
+
+resource policySetAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
+  name: 'dep-<<namePrefix>>-psa-${serviceShort}'
   location: location
   properties: {
-    displayName: '[Depedency] Audit resource location matches resource group location (management group scope)'
-    policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/0a914e76-4921-4c19-b460-a2d36003525a'
+    displayName: 'Test case assignment'
+    policyDefinitionId: policySet.id
   }
 }
 
@@ -33,7 +78,7 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    policyAssignmentId: policyAssignment.id
+    policyAssignmentId: policySetAssignment.id
     displayName: '[Display Name] policy exempt (management group scope)'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
@@ -41,5 +86,23 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
     metadata: {
       category: 'Security'
     }
+    assignmentScopeValidation: 'Default'
+    description: 'My description'
+    resourceSelectors: [
+      {
+        name: 'TemporaryMitigation'
+        selectors: [
+          {
+            kind: 'resourceLocation'
+            in: [
+              'westcentralus'
+            ]
+          }
+        ]
+      }
+    ]
+    policyDefinitionReferenceIds: [
+      policySet.properties.policyDefinitions[0].policyDefinitionReferenceId
+    ]
   }
 }

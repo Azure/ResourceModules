@@ -52,10 +52,11 @@ module testDeployment '../../deploy.bicep' = {
         name: 'A_10.240.4.4'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         ttl: 3600
@@ -80,10 +81,11 @@ module testDeployment '../../deploy.bicep' = {
         name: 'CNAME_test'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         ttl: 3600
@@ -101,10 +103,11 @@ module testDeployment '../../deploy.bicep' = {
         name: 'MX_contoso'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         ttl: 3600
@@ -120,10 +123,11 @@ module testDeployment '../../deploy.bicep' = {
         ]
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         ttl: 3600
@@ -131,10 +135,11 @@ module testDeployment '../../deploy.bicep' = {
     ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     soa: [
@@ -142,10 +147,11 @@ module testDeployment '../../deploy.bicep' = {
         name: '@'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         soaRecord: {
@@ -165,10 +171,11 @@ module testDeployment '../../deploy.bicep' = {
         name: 'SRV_contoso'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         srvRecords: [
@@ -187,10 +194,11 @@ module testDeployment '../../deploy.bicep' = {
         name: 'TXT_test'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         ttl: 3600

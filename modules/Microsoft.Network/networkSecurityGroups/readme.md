@@ -191,6 +191,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -303,6 +304,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
