@@ -133,10 +133,11 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     userAssignedIdentities: {

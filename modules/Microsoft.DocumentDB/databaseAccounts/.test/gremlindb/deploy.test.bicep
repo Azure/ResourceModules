@@ -118,10 +118,11 @@ module testDeployment '../../deploy.bicep' = {
     location: location
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     systemAssignedIdentity: true

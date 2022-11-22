@@ -137,23 +137,23 @@ param applicationTypes array = []
 
 var enableReferencedModulesTelemetry = false
 
-var clientCertificateCommonNames_var = [for clientCertificateCommonName in clientCertificateCommonNames: {
+var clientCertificateCommonNamesVar = [for clientCertificateCommonName in clientCertificateCommonNames: {
   certificateCommonName: contains(clientCertificateCommonName, 'certificateCommonName') ? clientCertificateCommonName.certificateCommonName : null
   certificateIssuerThumbprint: contains(clientCertificateCommonName, 'certificateIssuerThumbprint') ? clientCertificateCommonName.certificateIssuerThumbprint : null
   isAdmin: contains(clientCertificateCommonName, 'isAdmin') ? clientCertificateCommonName.isAdmin : false
 }]
 
-var clientCertificateThumbprints_var = [for clientCertificateThumbprint in clientCertificateThumbprints: {
+var clientCertificateThumbprintsVar = [for clientCertificateThumbprint in clientCertificateThumbprints: {
   certificateThumbprint: contains(clientCertificateThumbprint, 'certificateThumbprint') ? clientCertificateThumbprint.certificateThumbprint : null
   isAdmin: contains(clientCertificateThumbprint, 'isAdmin') ? clientCertificateThumbprint.isAdmin : false
 }]
 
-var fabricSettings_var = [for fabricSetting in fabricSettings: {
+var fabricSettingsVar = [for fabricSetting in fabricSettings: {
   name: contains(fabricSetting, 'name') ? fabricSetting.name : null
   parameters: contains(fabricSetting, 'parameters') ? fabricSetting.parameters : null
 }]
 
-var nodeTypes_var = [for nodeType in nodeTypes: {
+var fnodeTypesVar = [for nodeType in nodeTypes: {
   applicationPorts: contains(nodeType, 'applicationPorts') ? {
     endPort: contains(nodeType.applicationPorts, 'endPort') ? nodeType.applicationPorts.endPort : null
     startPort: contains(nodeType.applicationPorts, 'startPort') ? nodeType.applicationPorts.startPort : null
@@ -175,14 +175,14 @@ var nodeTypes_var = [for nodeType in nodeTypes: {
   vmInstanceCount: contains(nodeType, 'vmInstanceCount') ? nodeType.vmInstanceCount : 1
 }]
 
-var notifications_var = [for notification in notifications: {
+var notificationsVar = [for notification in notifications: {
   isEnabled: contains(notification, 'isEnabled') ? notification.isEnabled : false
   notificationCategory: contains(notification, 'notificationCategory') ? notification.notificationCategory : 'WaveProgress'
   notificationLevel: contains(notification, 'notificationLevel') ? notification.notificationLevel : 'All'
   notificationTargets: contains(notification, 'notificationTargets') ? notification.notificationTargets : []
 }]
 
-var upgradeDescription_var = union({
+var upgradeDescriptionVar = union({
     deltaHealthPolicy: {
       applicationDeltaHealthPolicies: contains(upgradeDescription, 'applicationDeltaHealthPolicies') ? upgradeDescription.applicationDeltaHealthPolicies : {}
       maxPercentDeltaUnhealthyApplications: contains(upgradeDescription, 'maxPercentDeltaUnhealthyApplications') ? upgradeDescription.maxPercentDeltaUnhealthyApplications : 0
@@ -240,8 +240,8 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
       commonNames: contains(certificateCommonNames, 'commonNames') ? certificateCommonNames.commonNames : null
       x509StoreName: contains(certificateCommonNames, 'certificateCommonNamesx509StoreName') ? certificateCommonNames.certificateCommonNamesx509StoreName : null
     } : null
-    clientCertificateCommonNames: !empty(clientCertificateCommonNames) ? clientCertificateCommonNames_var : null
-    clientCertificateThumbprints: !empty(clientCertificateThumbprints) ? clientCertificateThumbprints_var : null
+    clientCertificateCommonNames: !empty(clientCertificateCommonNames) ? clientCertificateCommonNamesVar : null
+    clientCertificateThumbprints: !empty(clientCertificateThumbprints) ? clientCertificateThumbprintsVar : null
     clusterCodeVersion: !empty(clusterCodeVersion) ? clusterCodeVersion : null
     diagnosticsStorageAccountConfig: !empty(diagnosticsStorageAccountConfig) ? {
       blobEndpoint: contains(diagnosticsStorageAccountConfig, 'blobEndpoint') ? diagnosticsStorageAccountConfig.blobEndpoint : null
@@ -252,11 +252,11 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
       tableEndpoint: contains(diagnosticsStorageAccountConfig, 'tableEndpoint') ? diagnosticsStorageAccountConfig.tableEndpoint : null
     } : null
     eventStoreServiceEnabled: eventStoreServiceEnabled
-    fabricSettings: !empty(fabricSettings) ? fabricSettings_var : null
+    fabricSettings: !empty(fabricSettings) ? fabricSettingsVar : null
     infrastructureServiceManager: infrastructureServiceManager
     managementEndpoint: managementEndpoint
-    nodeTypes: !empty(nodeTypes) ? nodeTypes_var : []
-    notifications: !empty(notifications) ? notifications_var : null
+    nodeTypes: !empty(nodeTypes) ? fnodeTypesVar : []
+    notifications: !empty(notifications) ? notificationsVar : null
     reliabilityLevel: !empty(reliabilityLevel) ? reliabilityLevel : 'None'
     reverseProxyCertificate: !empty(reverseProxyCertificate) ? {
       thumbprint: contains(reverseProxyCertificate, 'thumbprint') ? reverseProxyCertificate.thumbprint : null
@@ -268,7 +268,7 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
       x509StoreName: contains(reverseProxyCertificateCommonNames, 'x509StoreName') ? reverseProxyCertificateCommonNames.x509StoreName : null
     } : null
     sfZonalUpgradeMode: !empty(sfZonalUpgradeMode) ? sfZonalUpgradeMode : null
-    upgradeDescription: !empty(upgradeDescription) ? upgradeDescription_var : null
+    upgradeDescription: !empty(upgradeDescription) ? upgradeDescriptionVar : null
     upgradeMode: !empty(upgradeMode) ? upgradeMode : null
     upgradePauseEndTimestampUtc: !empty(upgradePauseEndTimestampUtc) ? upgradePauseEndTimestampUtc : null
     upgradePauseStartTimestampUtc: !empty(upgradePauseStartTimestampUtc) ? upgradePauseStartTimestampUtc : null

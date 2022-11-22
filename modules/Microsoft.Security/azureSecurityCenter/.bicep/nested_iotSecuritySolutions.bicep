@@ -1,4 +1,4 @@
-@description('Optional. Security Solution data')
+@description('Optional. Security Solution data.')
 param ioTSecuritySolutionProperties object = {}
 
 resource iotSecuritySolutions 'Microsoft.Security/iotSecuritySolutions@2019-08-01' = if (!empty(ioTSecuritySolutionProperties)) {

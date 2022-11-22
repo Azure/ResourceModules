@@ -74,10 +74,11 @@ module testDeployment '../../deploy.bicep' = {
     multiSize: 'Standard_D1_V2'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
   }

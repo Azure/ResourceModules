@@ -14,7 +14,7 @@ This module deploys a web or function app.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
@@ -424,7 +424,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     appInsightId: '<appInsightId>'
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
-      EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
+      EASYAUTH_SECRET: '<EASYAUTH_SECRET>'
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     }
@@ -451,7 +451,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           registration: {
             clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
             clientSecretSettingName: 'EASYAUTH_SECRET'
-            openIdIssuer: 'https://sts.windows.net/${tenant().tenantId}/v2.0/'
+            openIdIssuer: '<openIdIssuer>'
           }
           validation: {
             allowedAudiences: [
@@ -513,6 +513,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -559,7 +560,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "appSettingsKeyValuePairs": {
       "value": {
         "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
-        "EASYAUTH_SECRET": "https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password",
+        "EASYAUTH_SECRET": "<EASYAUTH_SECRET>",
         "FUNCTIONS_EXTENSION_VERSION": "~4",
         "FUNCTIONS_WORKER_RUNTIME": "dotnet"
       }
@@ -588,7 +589,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
             "registration": {
               "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
               "clientSecretSettingName": "EASYAUTH_SECRET",
-              "openIdIssuer": "https://sts.windows.net/${tenant().tenantId}/v2.0/"
+              "openIdIssuer": "<openIdIssuer>"
             },
             "validation": {
               "allowedAudiences": [
@@ -668,6 +669,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -793,6 +795,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -873,6 +876,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

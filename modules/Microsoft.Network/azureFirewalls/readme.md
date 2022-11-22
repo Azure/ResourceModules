@@ -481,6 +481,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -625,6 +626,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -674,6 +676,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
           principalIds: [
             '<managedIdentityPrincipalId>'
           ]
+          principalType: 'ServicePrincipal'
           roleDefinitionIdOrName: 'Reader'
         }
       ]
@@ -722,6 +725,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
             "principalIds": [
               "<managedIdentityPrincipalId>"
             ],
+            "principalType": "ServicePrincipal",
             "roleDefinitionIdOrName": "Reader"
           }
         ],

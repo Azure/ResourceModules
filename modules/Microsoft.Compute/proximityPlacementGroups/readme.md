@@ -193,6 +193,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -252,6 +253,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

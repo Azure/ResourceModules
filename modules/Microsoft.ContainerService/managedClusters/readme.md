@@ -472,6 +472,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -604,6 +605,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -712,6 +714,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -837,6 +840,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

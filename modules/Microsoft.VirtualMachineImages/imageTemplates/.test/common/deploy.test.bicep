@@ -77,6 +77,7 @@ module testDeployment '../../deploy.bicep' = {
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
+        principalType: 'ServicePrincipal'
       }
     ]
     sigImageDefinitionId: resourceGroupResources.outputs.sigImageDefinitionId

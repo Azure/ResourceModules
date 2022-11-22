@@ -53,9 +53,11 @@ function Set-ResourceTypesSection {
         $_.type -notin $ResourceTypesToExclude -and $_
     } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture 'en-US'
 
+    $ProgressPreference = 'SilentlyContinue'
+    $VerbosePreference = 'SilentlyContinue'
     foreach ($resourceTypeObject in $RelevantResourceTypeObjects) {
         $ProviderNamespace, $ResourceType = $resourceTypeObject.Type -split '/', 2
-        # Validate if Reference URL Is working
+        # Validate if Reference URL is working
         $TemplatesBaseUrl = 'https://docs.microsoft.com/en-us/azure/templates'
         try {
             $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $ProviderNamespace, $resourceTypeObject.ApiVersion, $ResourceType
@@ -77,6 +79,8 @@ function Set-ResourceTypesSection {
         }
         $SectionContent += ('| `{0}` | [{1}]({2}) |' -f $resourceTypeObject.type, $resourceTypeObject.apiVersion, $ResourceReferenceUrl)
     }
+    $ProgressPreference = 'Continue'
+    $VerbosePreference = 'Continue'
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new resource type content', 'Merge')) {
@@ -177,11 +181,11 @@ function Set-ParametersSection {
             # Check for local readme references
             if ($folderNames -and $parameter.name -in $folderNames -and $parameter.type -in @('object', 'array')) {
                 if ($folderNames -contains $parameter.name) {
-                    $type = '_[{0}]({0}/readme.md)_ {1}' -f $parameter.name, $parameter.type
+                    $type = '_[{0}]({0}/readme.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name }), $parameter.type
                 }
             } elseif ($folderNames -and $parameter.name -like '*Obj' -and $parameter.name.TrimEnd('Obj') -in $folderNames -and $parameter.type -in @('object', 'array')) {
                 if ($folderNames -contains $parameter.name.TrimEnd('Obj')) {
-                    $type = '_[{0}]({0}/readme.md)_ {1}' -f $parameter.name.TrimEnd('Obj'), $parameter.type
+                    $type = '_[{0}]({0}/readme.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name.TrimEnd('Obj') }), $parameter.type
                 }
             } else {
                 $type = $parameter.type
@@ -688,7 +692,7 @@ function ConvertTo-FormattedJSONParameterObject {
         # [2.4] Syntax:
         # - Everything left of a leftest ':' should be wrapped in quotes (as a parameter name is always a string)
         # - However, we don't want to accidently catch something like "CriticalAddonsOnly=true:NoSchedule"
-        [regex]$pattern = '^\s*\"{0}([0-9a-zA-Z]+):'
+        [regex]$pattern = '^\s*\"{0}([0-9a-zA-Z_]+):'
         $line = $pattern.replace($line, '"$1":', 1)
 
         # [2.5] Syntax: Replace Bicep resource ID references
@@ -703,7 +707,7 @@ function ConvertTo-FormattedJSONParameterObject {
             $isLineWithReferenceInLineKey = ($line -split ':')[0].Trim() -like '*.*'
 
             $isLineWithStringValue = $lineValue -match '".+"' # e.g. "value"
-            $isLineWithFunction = $lineValue -match '[a-zA-Z]+\(.+\)' # e.g. (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4]
+            $isLineWithFunction = $lineValue -match "^['|`"]{1}.*\$\{.+['|`"]{1}$|^['|`"]{0}[a-zA-Z\(]+\(.+" # e.g. (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, "/"))[4] or '${last(...)}' or last() or "test${environment()}"
             $isLineWithPlainValue = $lineValue -match '^\w+$' # e.g. adminPassword: password
             $isLineWithPrimitiveValue = $lineValue -match '^\s*true|false|[0-9]+$' # e.g. isSecure: true
 

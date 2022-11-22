@@ -224,6 +224,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -250,6 +251,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
                 principalIds: [
                   '<managedIdentityPrincipalId>'
                 ]
+                principalType: 'ServicePrincipal'
                 roleDefinitionIdOrName: 'Reader'
               }
             ]
@@ -273,6 +275,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -287,6 +290,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -328,6 +332,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -354,6 +359,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
                   "principalIds": [
                     "<managedIdentityPrincipalId>"
                   ],
+                  "principalType": "ServicePrincipal",
                   "roleDefinitionIdOrName": "Reader"
                 }
               ],
@@ -377,6 +383,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -395,6 +402,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

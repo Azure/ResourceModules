@@ -275,6 +275,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
       {
@@ -327,6 +328,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         },
         {
