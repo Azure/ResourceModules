@@ -471,7 +471,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     name: '<<namePrefix>>swensa001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
-    cMKKeyName: 'keyEncryptionKey'
+    cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUseSystemAssignedIdentity: true
     encryption: true
@@ -507,7 +507,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     },
     // Non-required parameters
     "cMKKeyName": {
-      "value": "keyEncryptionKey"
+      "value": "<cMKKeyName>"
     },
     "cMKKeyVaultResourceId": {
       "value": "<cMKKeyVaultResourceId>"
