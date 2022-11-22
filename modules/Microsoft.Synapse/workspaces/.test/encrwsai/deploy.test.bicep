@@ -11,11 +11,10 @@ param resourceGroupName string = 'ms.synapse.workspaces-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'swenua'
+param serviceShort string = 'swensa'
 
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
-
 // =========== //
 // Deployments //
 // =========== //
@@ -33,7 +32,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -52,6 +50,7 @@ module testDeployment '../../deploy.bicep' = {
     encryption: true
     cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
     cMKKeyName: resourceGroupResources.outputs.keyVaultEncryptionKeyName
-    cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
+    cMKUseSystemAssignedIdentity: true
+    encryptionActivateWorkspace: true
   }
 }

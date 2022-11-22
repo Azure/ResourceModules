@@ -42,7 +42,8 @@ This module deploys a Synapse Workspace.
 | `azureADOnlyAuthentication` | bool | `False` |  | Enable or Disable AzureADOnlyAuthentication on All Workspace sub-resource. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
 | `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
-| `cMKUserAssignedIdentityResourceId` | bool | `False` |  | Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
+| `cMKUserAssignedIdentityResourceId` | string | `''` |  | The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
+| `cMKUseSystemAssignedIdentity` | bool | `False` |  | Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `defaultDataLakeStorageCreateManagedPrivateEndpoint` | bool | `False` |  | Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -54,7 +55,6 @@ This module deploys a Synapse Workspace.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryption` | bool | `False` |  | Double encryption using a customer-managed key. |
 | `encryptionActivateWorkspace` | bool | `False` |  | Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
-| `encryptionUserAssignedIdentity` | string | `''` |  | The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `initialWorkspaceAdminObjectID` | string | `''` |  | AAD object ID of initial workspace admin. |
 | `linkedAccessCheckOnTargetResource` | bool | `False` |  | Linked Access Check On Target Resource. |
 | `location` | string | `[resourceGroup().location]` |  | The geo-location where the resource lives. |
@@ -455,7 +455,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Encrwuai</h3>
+<h3>Example 2: Encrwsai</h3>
 
 <details>
 
@@ -463,18 +463,19 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-swenwuai'
+  name: '${uniqueString(deployment().name)}-test-swensa'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swenwuai001'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swensa001'
     defaultDataLakeStorageFilesystem: 'synapsews'
-    name: '<<namePrefix>>swenwuai001'
+    name: '<<namePrefix>>swensa001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUseSystemAssignedIdentity: true
     encryption: true
-    encryptionUserAssignedIdentity: '<encryptionUserAssignedIdentity>'
+    encryptionActivateWorkspace: true
   }
 }
 ```
@@ -493,13 +494,13 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>swenwuai001"
+      "value": "adp<<namePrefix>>swensa001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
     },
     "name": {
-      "value": "<<namePrefix>>swenwuai001"
+      "value": "<<namePrefix>>swensa001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
@@ -511,11 +512,14 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     "cMKKeyVaultResourceId": {
       "value": "<cMKKeyVaultResourceId>"
     },
+    "cMKUseSystemAssignedIdentity": {
+      "value": true
+    },
     "encryption": {
       "value": true
     },
-    "encryptionUserAssignedIdentity": {
-      "value": "<encryptionUserAssignedIdentity>"
+    "encryptionActivateWorkspace": {
+      "value": true
     }
   }
 }
@@ -524,7 +528,76 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Managedvnet</h3>
+<h3>Example 3: Encrwuai</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-swenua'
+  params: {
+    // Required parameters
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swenua001'
+    defaultDataLakeStorageFilesystem: 'synapsews'
+    name: '<<namePrefix>>swenua001'
+    sqlAdministratorLogin: 'synwsadmin'
+    // Non-required parameters
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    encryption: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "defaultDataLakeStorageAccountName": {
+      "value": "adp<<namePrefix>>swenua001"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "synapsews"
+    },
+    "name": {
+      "value": "<<namePrefix>>swenua001"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
+    },
+    // Non-required parameters
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
+    },
+    "encryption": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Managedvnet</h3>
 
 <details>
 
@@ -593,7 +666,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Min</h3>
+<h3>Example 5: Min</h3>
 
 <details>
 
@@ -644,7 +717,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Encryptionwsai</h3>
+<h3>Example 6: Encryptionwsai</h3>
 
 <details>
 
@@ -717,7 +790,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: Encryptionwuai</h3>
+<h3>Example 7: Encryptionwuai</h3>
 
 <details>
 
@@ -786,7 +859,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 7: Managedvnet</h3>
+<h3>Example 8: Managedvnet</h3>
 
 <details>
 
@@ -855,7 +928,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 8: Min</h3>
+<h3>Example 9: Min</h3>
 
 <details>
 
@@ -906,7 +979,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 9: Parameters</h3>
+<h3>Example 10: Parameters</h3>
 
 <details>
 
