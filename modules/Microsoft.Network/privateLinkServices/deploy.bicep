@@ -69,7 +69,7 @@ resource privateLinkService 'Microsoft.Network/privateLinkServices@2022-01-01' =
   }
 }
 
-resource privateLinkService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource privateLinkService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${privateLinkService.name}-${lock}-lock'
   properties: {
     level: any(lock)

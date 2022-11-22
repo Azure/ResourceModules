@@ -267,7 +267,7 @@ module logAnalyticsWorkspace_solutions '../../Microsoft.OperationsManagement/sol
   }
 }]
 
-resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${logAnalyticsWorkspace.name}-${lock}-lock'
   properties: {
     level: any(lock)

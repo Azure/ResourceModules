@@ -172,7 +172,7 @@ module staticSite_customDomains 'customDomains/deploy.bicep' = [for (customDomai
   }
 }]
 
-resource staticSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource staticSite_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${staticSite.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -612,7 +612,7 @@ module vmss_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDis
   ]
 }
 
-resource vmss_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource vmss_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${vmss.name}-${lock}-lock'
   properties: {
     level: any(lock)

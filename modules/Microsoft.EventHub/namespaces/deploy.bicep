@@ -286,7 +286,7 @@ module eventHubNamespace_roleAssignments '.bicep/nested_roleAssignments.bicep' =
   }
 }]
 
-resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${eventHubNamespace.name}-${lock}-lock'
   properties: {
     level: any(lock)

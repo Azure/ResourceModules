@@ -77,7 +77,7 @@ resource vpnSite 'Microsoft.Network/vpnSites@2021-08-01' = {
   }
 }
 
-resource vpnSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource vpnSite_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${vpnSite.name}-${lock}-lock'
   properties: {
     level: any(lock)

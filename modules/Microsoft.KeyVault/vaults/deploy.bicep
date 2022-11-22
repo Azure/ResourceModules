@@ -207,7 +207,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
   }
 }
 
-resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource keyVault_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${keyVault.name}-${lock}-lock'
   properties: {
     level: any(lock)

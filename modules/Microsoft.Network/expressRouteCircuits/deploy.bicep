@@ -174,7 +174,7 @@ resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01
   }
 }
 
-resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${expressRouteCircuits.name}-${lock}-lock'
   properties: {
     level: any(lock)

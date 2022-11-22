@@ -146,7 +146,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
   }
 }
 
-resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource publicIpAddress_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${publicIpAddress.name}-${lock}-lock'
   properties: {
     level: any(lock)

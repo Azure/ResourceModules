@@ -82,7 +82,7 @@ resource dnsResolver_outboundEndpoint 'Microsoft.Network/dnsResolvers/outboundEn
   }
 }]
 
-resource dnsResolver_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource dnsResolver_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${dnsResolver.name}-${lock}-lock'
   properties: {
     level: any(lock)

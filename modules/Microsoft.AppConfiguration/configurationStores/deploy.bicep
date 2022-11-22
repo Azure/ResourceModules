@@ -173,7 +173,7 @@ module configurationStore_keyValues 'keyValues/deploy.bicep' = [for (keyValue, i
   }
 }]
 
-resource configurationStore_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource configurationStore_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${configurationStore.name}-${lock}-lock'
   properties: {
     level: any(lock)

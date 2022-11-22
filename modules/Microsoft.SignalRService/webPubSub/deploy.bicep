@@ -137,7 +137,7 @@ module webPubSub_privateEndpoints '../../Microsoft.Network/privateEndpoints/depl
   }
 }]
 
-resource webPubSub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource webPubSub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${webPubSub.name}-${lock}-lock'
   properties: {
     level: any(lock)

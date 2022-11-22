@@ -234,7 +234,7 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
   }
 }
 
-resource flexibleServer_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource flexibleServer_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${flexibleServer.name}-${lock}-lock'
   properties: {
     level: any(lock)
