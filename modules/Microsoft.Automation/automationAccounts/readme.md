@@ -434,6 +434,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -538,7 +539,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         description: 'TestDateTimeDescription'
         isEncrypted: false
         name: 'TestDateTime'
-        value: '<value>'
+        value: '\'\\/Date(1637934042656)\\/\''
       }
       {
         description: 'TestEncryptedDescription'
@@ -645,6 +646,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -761,7 +763,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
           "description": "TestDateTimeDescription",
           "isEncrypted": false,
           "name": "TestDateTime",
-          "value": "<value>"
+          "value": "\"\\/Date(1637934042656)\\/\""
         },
         {
           "description": "TestEncryptedDescription",

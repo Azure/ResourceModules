@@ -180,7 +180,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
     name: 'azuremonitor'
     // Non-required parameters
     connectionApi: {
-      id: '${subscription().id}/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
+      id: '<id>'
     }
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -188,6 +188,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -217,7 +218,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
     // Non-required parameters
     "connectionApi": {
       "value": {
-        "id": "${subscription().id}/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs"
+        "id": "<id>"
       }
     },
     "lock": {
@@ -229,6 +230,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

@@ -292,7 +292,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     ]
     vpnClientAadConfiguration: {
       aadAudience: '41b23e61-6c1e-4545-b367-cd054e0ed4b4'
-      aadIssuer: 'https://sts.windows.net/${tenant().tenantId}/'
+      aadIssuer: '<aadIssuer>'
       aadTenant: '<aadTenant>'
       vpnAuthenticationTypes: [
         'AAD'
@@ -374,7 +374,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     "vpnClientAadConfiguration": {
       "value": {
         "aadAudience": "41b23e61-6c1e-4545-b367-cd054e0ed4b4",
-        "aadIssuer": "https://sts.windows.net/${tenant().tenantId}/",
+        "aadIssuer": "<aadIssuer>",
         "aadTenant": "<aadTenant>",
         "vpnAuthenticationTypes": [
           "AAD"

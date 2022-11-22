@@ -188,6 +188,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -235,6 +236,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

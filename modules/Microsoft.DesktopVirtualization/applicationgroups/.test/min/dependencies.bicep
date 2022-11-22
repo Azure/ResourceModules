@@ -14,5 +14,5 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2021-07-12' = {
     }
 }
 
-@description('The resource ID of the created Host Pool.')
-output hostPoolResourceId string = hostPool.id
+@description('The name of the created Host Pool.')
+output hostPoolName string = hostPool.name

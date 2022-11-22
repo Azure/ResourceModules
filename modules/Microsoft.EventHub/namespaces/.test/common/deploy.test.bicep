@@ -122,10 +122,11 @@ module testDeployment '../../deploy.bicep' = {
         partitionCount: 2
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         status: 'Active'
@@ -161,10 +162,11 @@ module testDeployment '../../deploy.bicep' = {
     ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     systemAssignedIdentity: true

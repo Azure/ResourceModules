@@ -28,6 +28,9 @@ param replicationFabrics array = []
 @minLength(0)
 param replicationPolicies array = []
 
+@description('Optional. Replication alert settings.')
+param replicationAlertSettings object = {}
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -163,7 +166,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
   name: name
   location: location
   tags: tags
-  identity: any(identity)
+  identity: identity
   sku: {
     name: 'RS0'
     tier: 'Standard'
@@ -248,6 +251,18 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
     storageType: contains(backupConfig, 'storageType') ? backupConfig.storageType : 'GeoRedundant'
     storageTypeState: contains(backupConfig, 'storageTypeState') ? backupConfig.storageTypeState : 'Locked'
     isSoftDeleteFeatureStateEditable: contains(backupConfig, 'isSoftDeleteFeatureStateEditable') ? backupConfig.isSoftDeleteFeatureStateEditable : true
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
+module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if (!empty(replicationAlertSettings)) {
+  name: '${uniqueString(deployment().name, location)}-RSV-replicationAlertSettings'
+  params: {
+    name: 'defaultAlertSetting'
+    recoveryVaultName: rsv.name
+    customEmailAddresses: contains(replicationAlertSettings, 'customEmailAddresses') ? replicationAlertSettings.customEmailAddresses : []
+    locale: contains(replicationAlertSettings, 'locale') ? replicationAlertSettings.locale : ''
+    sendToOwners: contains(replicationAlertSettings, 'sendToOwners') ? replicationAlertSettings.sendToOwners : 'Send'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }

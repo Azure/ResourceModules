@@ -39,7 +39,7 @@ This module deploys an event hub namespace.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Authorization Rules for the Event Hub namespace. |
+| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Event Hub namespace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[ApplicationMetricsLogs, ArchiveLogs, AutoScaleLogs, CustomerManagedKeyUserLogs, EventHubVNetConnectionEvent, KafkaCoordinatorLogs, KafkaUserErrorLogs, OperationalLogs, RuntimeAuditLogs]` | `[ApplicationMetricsLogs, ArchiveLogs, AutoScaleLogs, CustomerManagedKeyUserLogs, EventHubVNetConnectionEvent, KafkaCoordinatorLogs, KafkaUserErrorLogs, OperationalLogs, RuntimeAuditLogs]` | The name of logs that will be streamed. |
@@ -385,6 +385,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -424,6 +425,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -532,6 +534,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -579,6 +582,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

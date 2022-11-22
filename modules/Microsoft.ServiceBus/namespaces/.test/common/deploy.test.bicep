@@ -63,10 +63,11 @@ module testDeployment '../../deploy.bicep' = {
     }
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     networkRuleSets: {
@@ -113,10 +114,11 @@ module testDeployment '../../deploy.bicep' = {
         name: '<<namePrefix>>${serviceShort}q001'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         authorizationRules: [
@@ -143,10 +145,11 @@ module testDeployment '../../deploy.bicep' = {
         name: '<<namePrefix>>${serviceShort}t001'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
         authorizationRules: [

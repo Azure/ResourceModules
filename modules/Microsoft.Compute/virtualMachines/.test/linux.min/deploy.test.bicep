@@ -83,7 +83,7 @@ module testDeployment '../../deploy.bicep' = {
     disablePasswordAuthentication: true
     publicKeys: [
       {
-        keyData: resourceGroupResources.outputs.SSHKey
+        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]

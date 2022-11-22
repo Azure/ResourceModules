@@ -2,7 +2,7 @@
 
 ## Microsoft Support Policy
 
-If issues are encountered when deploying these Bicep modules users will be able to engage Microsoft support via their usual channels. Please provide corelation IDs where possible when contacting support to be able to investigate the issue effectively and in a timely fashion. For instructions on how to get deployments and correlation ID, please follow this link [here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-history?tabs=azure-portal#get-deployments-and-correlation-id).
+If issues are encountered when deploying these Bicep modules users will be able to engage Microsoft support via their usual channels. Please provide correlation IDs where possible when contacting support to be able to investigate the issue effectively and in a timely fashion. For instructions on how to get deployments and correlation ID, please follow this link [here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-history?tabs=azure-portal#get-deployments-and-correlation-id).
 
 Following list of issues are within the scope of Microsoft support:
 
@@ -22,7 +22,7 @@ Project maintainers will aim to respond to new issues on a best effort basis.
 
 This project uses GitHub Issues to track bugs and feature requests. Please search the existing issues before filing new issues to avoid duplicates.  For new issues, file your bug or feature request as a new Issue.
 
-For help and questions about using this project, please submit a Github issue with corresponding [Issue Labels found here](https://github.com/Azure/ResourceModules/labels).
+For help and questions about using this project, please submit a GitHub issue with corresponding [Issue Labels found here](https://github.com/Azure/ResourceModules/labels).
 
 
 <!-- Local -->
@@ -32,5 +32,5 @@ For help and questions about using this project, please submit a Github issue wi
 [GitHubIssues]: <https://github.com/Azure/Modules/issues>
 [Contributing]: CONTRIBUTING.md
 [AzureIcon]: docs/media/MicrosoftAzure-32px.png
-[PowershellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
+[PowerShellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
 [BashIcon]: docs/media/Bash_Logo_black_and_white_icon_only-32px.svg.png

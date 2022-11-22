@@ -196,6 +196,7 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -254,6 +255,7 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

@@ -401,7 +401,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
           '<storageAccountBlobEndpoint>'
         ]
         groupId: 'blob'
-        name: '${resourceGroupResources.outputs.storageAccountName}-managed-privateEndpoint'
+        name: '<name>'
         privateLinkResourceId: '<privateLinkResourceId>'
       }
     ]
@@ -422,6 +422,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -505,7 +506,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
             "<storageAccountBlobEndpoint>"
           ],
           "groupId": "blob",
-          "name": "${resourceGroupResources.outputs.storageAccountName}-managed-privateEndpoint",
+          "name": "<name>",
           "privateLinkResourceId": "<privateLinkResourceId>"
         }
       ]
@@ -532,6 +533,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

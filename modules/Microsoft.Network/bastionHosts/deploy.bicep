@@ -94,14 +94,14 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
 
 var enableTunneling = skuType == 'Standard' ? true : null
 
-var scaleUnits_var = skuType == 'Basic' ? 2 : scaleUnits
+var scaleUnitsVar = skuType == 'Basic' ? 2 : scaleUnits
 
 // ----------------------------------------------------------------------------
 // Prep ipConfigurations object AzureBastionSubnet for different uses cases:
 // 1. Use existing public ip
 // 2. Use new public ip created in this module
 // 3. Do not use a public ip if isCreateDefaultPublicIP is false
-var subnet_var = {
+var subnetVar = {
   subnet: {
     id: '${vNetId}/subnets/AzureBastionSubnet' // The subnet name must be AzureBastionSubnet
   }
@@ -121,7 +121,7 @@ var ipConfigurations = [
   {
     name: 'IpConfAzureBastionSubnet'
     //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
-    properties: union(subnet_var, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+    properties: union(subnetVar, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
   }
 ]
 
@@ -170,8 +170,8 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(azureBast
   }
 }
 
-var bastionproperties_var = skuType == 'Standard' ? {
-  scaleUnits: scaleUnits_var
+var bastionpropertiesVar = skuType == 'Standard' ? {
+  scaleUnits: scaleUnitsVar
   ipConfigurations: ipConfigurations
   enableTunneling: enableTunneling
   disableCopyPaste: disableCopyPaste
@@ -179,7 +179,7 @@ var bastionproperties_var = skuType == 'Standard' ? {
   enableIpConnect: enableIpConnect
   enableShareableLink: enableShareableLink
 } : {
-  scaleUnits: scaleUnits_var
+  scaleUnits: scaleUnitsVar
   ipConfigurations: ipConfigurations
 }
 
@@ -190,7 +190,7 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2022-01-01' = {
   sku: {
     name: skuType
   }
-  properties: bastionproperties_var
+  properties: bastionpropertiesVar
 }
 
 resource azureBastion_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {

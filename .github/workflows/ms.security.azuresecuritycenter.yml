@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: false # Needs custom removals script
+        default: true # Note: Deployed resources under the Microsoft.Security resource provider are not removed
       prerelease:
         type: boolean
         description: 'Publish prerelease module'

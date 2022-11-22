@@ -60,11 +60,6 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // Test Execution //
 // ============== //
 
-// resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' existing = {
-//   name: sshKeyName
-//   scope: resourceGroup
-// }
-
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
@@ -98,10 +93,11 @@ module testDeployment '../../deploy.bicep' = {
               publicIpNameSuffix: '-pip-01'
               roleAssignments: [
                 {
+                  roleDefinitionIdOrName: 'Reader'
                   principalIds: [
                     resourceGroupResources.outputs.managedIdentityPrincipalId
                   ]
-                  roleDefinitionIdOrName: 'Reader'
+                  principalType: 'ServicePrincipal'
                 }
               ]
             }
@@ -111,10 +107,11 @@ module testDeployment '../../deploy.bicep' = {
         nicSuffix: '-nic-01'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
       }
@@ -132,8 +129,8 @@ module testDeployment '../../deploy.bicep' = {
     vmSize: 'Standard_B12ms'
     availabilityZone: 1
     backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
-    backupVaultName: last(split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, '/'))
-    backupVaultResourceGroup: (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, '/'))[4]
+    backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
+    backupVaultResourceGroup: resourceGroupResources.outputs.recoveryServicesVaultResourceGroupName
     dataDisks: [
       {
         caching: 'ReadWrite'
@@ -171,7 +168,7 @@ module testDeployment '../../deploy.bicep' = {
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'value=$(./${last(split(resourceGroupResources.outputs.storageAccountCSEFileUrl, '/'))}); echo "$value"'
+      commandToExecute: 'value=$(./${resourceGroupResources.outputs.storageAccountCSEFileName}); echo "$value"'
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -202,16 +199,17 @@ module testDeployment '../../deploy.bicep' = {
     monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     publicKeys: [
       {
-        keyData: resourceGroupResources.outputs.SSHKey
+        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     systemAssignedIdentity: true

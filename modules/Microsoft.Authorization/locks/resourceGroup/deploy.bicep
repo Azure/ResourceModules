@@ -28,11 +28,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource lock 'Microsoft.Authorization/locks@2017-04-01' = {
+resource lock 'Microsoft.Authorization/locks@2020-05-01' = {
   name: name
   properties: {
     level: level
     notes: notes
+    // owners: owners // Not intended to be applied by users (ref https://github.com/Azure/azure-cli/issues/22528)
   }
 }
 
