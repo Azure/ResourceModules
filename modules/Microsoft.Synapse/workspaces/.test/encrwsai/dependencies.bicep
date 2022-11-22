@@ -22,16 +22,16 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
         accessPolicies: []
     }
 
-    resource key 'keys@2022-07-01' = {
-        name: 'keyEncryptionKey'
-        properties: {
-            kty: 'RSA'
-        }
-    }
+    // resource key 'keys@2022-07-01' = {
+    //     name: 'keyEncryptionKey'
+    //     properties: {
+    //         kty: 'RSA'
+    //     }
+    // }
 }
 
 @description('The resource ID of the created Key Vault.')
 output keyVaultResourceId string = keyVault.id
 
-@description('The name of the Key Vault Encryption Key.')
-output keyVaultEncryptionKeyName string = keyVault::key.name
+// @description('The name of the Key Vault Encryption Key.')
+// output keyVaultEncryptionKeyName string = keyVault::key.name

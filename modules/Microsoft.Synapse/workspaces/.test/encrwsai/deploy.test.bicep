@@ -49,7 +49,7 @@ module testDeployment '../../deploy.bicep' = {
     sqlAdministratorLogin: 'synwsadmin'
     encryption: true
     cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    cMKKeyName: resourceGroupResources.outputs.keyVaultEncryptionKeyName
+    cMKKeyName: 'keyEncryptionKey'
     cMKUseSystemAssignedIdentity: true
     encryptionActivateWorkspace: true
   }
