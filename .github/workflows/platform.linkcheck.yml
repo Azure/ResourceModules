@@ -2,9 +2,6 @@ name: '.Platform: Broken Links Check'
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - users/erikag/brokenlinks
   pull_request:
     branches:
       - main
