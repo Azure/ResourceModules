@@ -50,7 +50,7 @@ This module deploys an event hub namespace.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disasterRecoveryConfig` | object | `{object}` |  | The disaster recovery config for this namespace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `eventHubs` | _[eventHubs](eventHubs/readme.md)_ array | `[]` |  | The event hubs to deploy into this namespace. |
+| `eventHubs` | _[eventhubs](eventhubs/readme.md)_ array | `[]` |  | The event hubs to deploy into this namespace. |
 | `isAutoInflateEnabled` | bool | `False` |  | Switch to enable the Auto Inflate feature of Event Hub. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
