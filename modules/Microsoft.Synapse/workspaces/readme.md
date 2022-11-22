@@ -310,7 +310,109 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Encryptionwsai</h3>
+<h3>Example 1: Common</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-swmin'
+  params: {
+    // Required parameters
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swmin001'
+    defaultDataLakeStorageFilesystem: 'synapsews'
+    name: '<<namePrefix>>swmin001'
+    sqlAdministratorLogin: 'synwsadmin'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "defaultDataLakeStorageAccountName": {
+      "value": "adp<<namePrefix>>swmin001"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "synapsews"
+    },
+    "name": {
+      "value": "<<namePrefix>>swmin001"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-swmin'
+  params: {
+    // Required parameters
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swmin001'
+    defaultDataLakeStorageFilesystem: 'synapsews'
+    name: '<<namePrefix>>swmin001'
+    sqlAdministratorLogin: 'synwsadmin'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "defaultDataLakeStorageAccountName": {
+      "value": "adp<<namePrefix>>swmin001"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "synapsews"
+    },
+    "name": {
+      "value": "<<namePrefix>>swmin001"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Encryptionwsai</h3>
 
 <details>
 
@@ -383,7 +485,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Encryptionwuai</h3>
+<h3>Example 4: Encryptionwuai</h3>
 
 <details>
 
@@ -452,7 +554,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Managedvnet</h3>
+<h3>Example 5: Managedvnet</h3>
 
 <details>
 
@@ -521,7 +623,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Min</h3>
+<h3>Example 6: Min</h3>
 
 <details>
 
@@ -572,7 +674,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Parameters</h3>
+<h3>Example 7: Parameters</h3>
 
 <details>
 
