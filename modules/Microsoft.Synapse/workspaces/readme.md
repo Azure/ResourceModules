@@ -318,13 +318,50 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-swmin'
+  name: '${uniqueString(deployment().name)}-test-swcom'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swmin001'
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swcom001'
     defaultDataLakeStorageFilesystem: 'synapsews'
-    name: '<<namePrefix>>swmin001'
+    name: '<<namePrefix>>swcom001'
     sqlAdministratorLogin: 'synwsadmin'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogCategoriesToEnable: [
+      'BuiltinSqlReqsEnded'
+      'GatewayApiRequests'
+      'IntegrationActivityRuns'
+      'IntegrationPipelineRuns'
+      'IntegrationTriggerRuns'
+      'SynapseRbacOperations'
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    initialWorkspaceAdminObjectID: '<initialWorkspaceAdminObjectID>'
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+        }
+        service: 'SQL'
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -343,16 +380,73 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>swmin001"
+      "value": "adp<<namePrefix>>swcom001"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
     },
     "name": {
-      "value": "<<namePrefix>>swmin001"
+      "value": "<<namePrefix>>swcom001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
+    },
+    // Non-required parameters
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticLogCategoriesToEnable": {
+      "value": [
+        "BuiltinSqlReqsEnded",
+        "GatewayApiRequests",
+        "IntegrationActivityRuns",
+        "IntegrationPipelineRuns",
+        "IntegrationTriggerRuns",
+        "SynapseRbacOperations"
+      ]
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "initialWorkspaceAdminObjectID": {
+      "value": "<initialWorkspaceAdminObjectID>"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
+          "service": "SQL",
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }
