@@ -146,14 +146,6 @@ param vcenterPassword string = ''
 @description('Optional. The vmGroups to create as part of the privateCloud.')
 param vmGroups array = []
 
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param diagnosticMetricsToEnable array = [
-  'AllMetrics'
-]
-
 // ============= //
 //   Variables   //
 // ============= //
@@ -168,16 +160,6 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
 }]
 
 var enableReferencedModulesTelemetry = false
-
-var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
-  category: metric
-  timeGrain: null
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
 
 // =============== //
 //   Deployments   //
@@ -223,7 +205,6 @@ resource privateCloud_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
     eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
     eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
   scope: privateCloud
