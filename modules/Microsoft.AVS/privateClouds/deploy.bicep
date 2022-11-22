@@ -60,14 +60,6 @@ param diagnosticLogCategoriesToEnable array = [
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param diagnosticMetricsToEnable array = [
-  'AllMetrics'
-]
-
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
@@ -154,19 +146,17 @@ param vcenterPassword string = ''
 @description('Optional. The vmGroups to create as part of the privateCloud.')
 param vmGroups array = []
 
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param diagnosticMetricsToEnable array = [
+  'AllMetrics'
+]
+
 // ============= //
 //   Variables   //
 // ============= //
-
-var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
-  category: metric
-  timeGrain: null
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
@@ -178,6 +168,16 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
 }]
 
 var enableReferencedModulesTelemetry = false
+
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 // =============== //
 //   Deployments   //
