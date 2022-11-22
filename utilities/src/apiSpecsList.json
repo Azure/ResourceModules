@@ -4422,23 +4422,27 @@
       "2020-10-31",
       "2020-12-01",
       "2021-06-30-preview",
-      "2022-05-31"
+      "2022-05-31",
+      "2022-10-31"
     ],
     "digitalTwinsInstances/endpoints": [
       "2020-03-01-preview",
       "2020-10-31",
       "2020-12-01",
       "2021-06-30-preview",
-      "2022-05-31"
+      "2022-05-31",
+      "2022-10-31"
     ],
     "digitalTwinsInstances/privateEndpointConnections": [
       "2020-12-01",
       "2021-06-30-preview",
-      "2022-05-31"
+      "2022-05-31",
+      "2022-10-31"
     ],
     "digitalTwinsInstances/timeSeriesDatabaseConnections": [
       "2021-06-30-preview",
-      "2022-05-31"
+      "2022-05-31",
+      "2022-10-31"
     ]
   },
   "Microsoft.DocumentDB": {
@@ -10724,7 +10728,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationFabrics": [
       "2016-08-10",
@@ -10745,7 +10750,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationFabrics/replicationNetworks/replicationNetworkMappings": [
       "2016-08-10",
@@ -10766,7 +10772,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationFabrics/replicationProtectionContainers": [
       "2016-08-10",
@@ -10787,7 +10794,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems": [
       "2018-01-10",
@@ -10807,7 +10815,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems": [
       "2016-08-10",
@@ -10828,7 +10837,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings": [
       "2016-08-10",
@@ -10849,7 +10859,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationFabrics/replicationRecoveryServicesProviders": [
       "2018-01-10",
@@ -10869,7 +10880,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationFabrics/replicationStorageClassifications/replicationStorageClassificationMappings": [
       "2016-08-10",
@@ -10890,7 +10902,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationFabrics/replicationvCenters": [
       "2016-08-10",
@@ -10911,7 +10924,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationPolicies": [
       "2016-08-10",
@@ -10932,7 +10946,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationProtectionIntents": [
       "2018-07-10",
@@ -10951,7 +10966,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationRecoveryPlans": [
       "2016-08-10",
@@ -10972,7 +10988,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ],
     "vaults/replicationVaultSettings": [
       "2018-07-10",
@@ -10991,7 +11008,8 @@
       "2022-04-01",
       "2022-05-01",
       "2022-08-01",
-      "2022-09-10"
+      "2022-09-10",
+      "2022-10-01"
     ]
   },
   "Microsoft.RedHatOpenShift": {
