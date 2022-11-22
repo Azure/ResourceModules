@@ -206,7 +206,7 @@ module eventHubNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.
   }
 }
 
-module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
+module eventHubNamespace_eventHubs 'eventHubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-EventHub-${index}'
   params: {
     namespaceName: eventHubNamespace.name
