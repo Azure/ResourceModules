@@ -36,7 +36,7 @@ function Set-Module {
         [Hashtable] $ModuleData,
 
         [Parameter(Mandatory = $true)]
-        [array] $FullModuleData,
+        [hashtable] $FullModuleData,
 
         [Parameter(Mandatory = $true)]
         [string] $JSONFilePath,

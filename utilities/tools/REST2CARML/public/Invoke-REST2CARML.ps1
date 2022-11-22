@@ -84,7 +84,7 @@ function Invoke-REST2CARML {
                 JSONFilePath     = $fullModuleData[$identifier].metadata.jsonFilePath
                 UrlPath          = $fullModuleData[$identifier].metadata.urlPath
                 ModuleData       = $fullModuleData[$identifier].data
-                FullModuleData   = $fullModuleData[$identifier]
+                FullModuleData   = $fullModuleData
             }
             if ($PSCmdlet.ShouldProcess(('Module [{0}] files' -f $identifier), 'Create/Update')) {
                 Set-Module @moduleTemplateInputObject

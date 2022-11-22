@@ -86,7 +86,7 @@ function Get-TemplateVariablesContent {
         }
 
         # Add telemetry variable
-        if ($linkedChildren.Count -gt 0) {
+        if ($linkedChildren.Keys.Count -gt 0) {
             if ($existingTemplateContent.variables.name -notcontains 'enableReferencedModulesTelemetry') {
                 $templateContent += @(
                     'var enableReferencedModulesTelemetry = false'
