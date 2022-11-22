@@ -139,7 +139,7 @@ function Get-TemplateDeploymentsContent {
         [array] $ExistingTemplateContent = @(),
 
         [Parameter(Mandatory = $false)]
-        [hashtable] $LinkedChildren = @()
+        [hashtable] $LinkedChildren = @{}
     )
 
     begin {

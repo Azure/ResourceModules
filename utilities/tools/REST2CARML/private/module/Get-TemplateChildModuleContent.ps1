@@ -99,7 +99,7 @@ function Get-TemplateChildModuleContent {
         [string] $ResourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $ResourceType) -split '/')[-1],
 
         [Parameter(Mandatory = $false)]
-        [hashtable] $LinkedChildren = @(),
+        [hashtable] $LinkedChildren = @{},
 
         [Parameter(Mandatory = $true)]
         [array] $ModuleData,

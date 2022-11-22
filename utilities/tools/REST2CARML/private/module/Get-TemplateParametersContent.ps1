@@ -122,7 +122,7 @@ function Get-TemplateParametersContent {
         [array] $ExistingTemplateContent = @(),
 
         [Parameter(Mandatory = $false)]
-        [array] $LinkedChildren = @()
+        [hashtable] $LinkedChildren = @{}
     )
 
     begin {
