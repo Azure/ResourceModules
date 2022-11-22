@@ -455,7 +455,76 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+<h3>Example 2: Managedvnet</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-swmin'
+  params: {
+    // Required parameters
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swmin001'
+    defaultDataLakeStorageFilesystem: 'synapsews'
+    name: '<<namePrefix>>swmin001'
+    sqlAdministratorLogin: 'synwsadmin'
+    // Non-required parameters
+    allowedAadTenantIdsForLinking: [
+      '<tenantId>'
+    ]
+    managedVirtualNetwork: true
+    preventDataExfiltration: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "defaultDataLakeStorageAccountName": {
+      "value": "adp<<namePrefix>>swmin001"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "synapsews"
+    },
+    "name": {
+      "value": "<<namePrefix>>swmin001"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
+    },
+    // Non-required parameters
+    "allowedAadTenantIdsForLinking": {
+      "value": [
+        "<tenantId>"
+      ]
+    },
+    "managedVirtualNetwork": {
+      "value": true
+    },
+    "preventDataExfiltration": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
 
 <details>
 
@@ -506,7 +575,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Encryptionwsai</h3>
+<h3>Example 4: Encryptionwsai</h3>
 
 <details>
 
@@ -579,7 +648,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Encryptionwuai</h3>
+<h3>Example 5: Encryptionwuai</h3>
 
 <details>
 
@@ -648,7 +717,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Managedvnet</h3>
+<h3>Example 6: Managedvnet</h3>
 
 <details>
 
@@ -717,7 +786,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: Min</h3>
+<h3>Example 7: Min</h3>
 
 <details>
 
@@ -768,7 +837,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 7: Parameters</h3>
+<h3>Example 8: Parameters</h3>
 
 <details>
 

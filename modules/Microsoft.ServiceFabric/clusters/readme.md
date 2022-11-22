@@ -402,7 +402,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     azureActiveDirectory: {
       clientApplication: '<clientApplication>'
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
-      tenantId: '<<tenantId>>'
+      tenantId: '<tenantId>'
     }
     certificateCommonNames: {
       commonNames: [
@@ -597,7 +597,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       "value": {
         "clientApplication": "<clientApplication>",
         "clusterApplication": "cf33fea8-b30f-424f-ab73-c48d99e0b222",
-        "tenantId": "<<tenantId>>"
+        "tenantId": "<tenantId>"
       }
     },
     "certificateCommonNames": {

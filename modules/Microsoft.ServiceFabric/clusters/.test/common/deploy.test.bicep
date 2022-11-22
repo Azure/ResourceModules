@@ -58,7 +58,7 @@ module testDeployment '../../deploy.bicep' = {
     azureActiveDirectory: {
       clientApplication: resourceGroupResources.outputs.managedIdentityPrincipalId
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
-      tenantId: '<<tenantId>>'
+      tenantId: tenant().tenantId
     }
     certificateCommonNames: {
       commonNames: [
