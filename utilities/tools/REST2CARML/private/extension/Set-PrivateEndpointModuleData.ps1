@@ -35,7 +35,15 @@ function Set-PrivateEndpointModuleData {
 
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
+        # Type check (in case PowerShell auto-converted the array to a hashtable)
+        if ($ModuleData.additionalParameters -is [hashtable]) {
+            $ModuleData.additionalParameters = @($ModuleData.additionalParameters)
+        }
+        if ($ModuleData.modules -is [hashtable]) {
+            $ModuleData.modules = @($ModuleData.modules)
+        }
 
+        # Built result
         $ModuleData.additionalParameters += @(
             @{
                 name        = 'privateEndpoints'

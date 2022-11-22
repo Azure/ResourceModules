@@ -24,10 +24,10 @@ function Set-DiagnosticModuleData {
         [string] $ResourceType,
 
         [Parameter(Mandatory = $false)]
-        [string] $DiagnosticMetricsOptions = @(),
+        [string[]] $DiagnosticMetricsOptions = @(),
 
         [Parameter(Mandatory = $false)]
-        [string] $DiagnosticLogsOptions = @(),
+        [string[]] $DiagnosticLogsOptions = @(),
 
         [Parameter(Mandatory = $true)]
         [Hashtable] $ModuleData
@@ -39,6 +39,17 @@ function Set-DiagnosticModuleData {
 
     process {
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
+
+        # Type check (in case PowerShell auto-converted the array to a hashtable)
+        if ($ModuleData.additionalParameters -is [hashtable]) {
+            $ModuleData.additionalParameters = @($ModuleData.additionalParameters)
+        }
+        if ($ModuleData.variables -is [hashtable]) {
+            $ModuleData.variables = @($ModuleData.variables)
+        }
+        if ($ModuleData.resources -is [hashtable]) {
+            $ModuleData.resources = @($ModuleData.resources)
+        }
 
         $ModuleData.additionalParameters += @(
             @{
@@ -95,6 +106,7 @@ function Set-DiagnosticModuleData {
 
         # Metric-specific
         if ($diagnosticOptions.Metrics) {
+
             # TODO: Clarify: Might need to be always 'All metrics' if any metric exists
             $ModuleData.additionalParameters += @(
                 @{

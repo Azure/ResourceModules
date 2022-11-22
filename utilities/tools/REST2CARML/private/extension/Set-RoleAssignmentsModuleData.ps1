@@ -50,6 +50,17 @@ function Set-RoleAssignmentsModuleData {
 
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
+        # Type check (in case PowerShell auto-converted the array to a hashtable)
+        if ($ModuleData.modules -is [hashtable]) {
+            $ModuleData.modules = @($ModuleData.modules)
+        }
+        if ($ModuleData.additionalFiles -is [hashtable]) {
+            $ModuleData.additionalFiles = @($ModuleData.additionalFiles)
+        }
+        if ($ModuleData.additionalParameters -is [hashtable]) {
+            $ModuleData.additionalParameters = @($ModuleData.additionalParameters)
+        }
+
         # Tokens to replace in files
         $tokens = @{
             providerNamespace    = $ProviderNamespace

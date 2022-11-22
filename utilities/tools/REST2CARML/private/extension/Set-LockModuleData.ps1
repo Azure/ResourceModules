@@ -35,6 +35,14 @@ function Set-LockModuleData {
 
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
+        # Type check (in case PowerShell auto-converted the array to a hashtable)
+        if ($ModuleData.additionalFiles -is [hashtable]) {
+            $ModuleData.additionalFiles = @($ModuleData.additionalFiles)
+        }
+        if ($ModuleData.resources -is [hashtable]) {
+            $ModuleData.resources = @($ModuleData.resources)
+        }
+
         $ModuleData.additionalParameters += @(
             @{
                 name          = 'lock'
