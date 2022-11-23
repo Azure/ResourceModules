@@ -48,9 +48,9 @@ module testDeployment '../../deploy.bicep' = {
     adminUsername: 'localAdminUser'
     adminPassword: password
     imageReference: {
-      offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2016-Datacenter'
+      offer: 'WindowsServer'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
     osDisk: {
