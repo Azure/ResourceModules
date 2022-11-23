@@ -903,9 +903,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     // Required parameters
     adminUsername: 'scaleSetAdmin'
     imageReference: {
-      offer: 'UbuntuServer'
+      offer: '0001-com-ubuntu-server-jammy'
       publisher: 'Canonical'
-      sku: '22.04-LTS'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     name: '<<namePrefix>>cvmsslin001'
@@ -1043,9 +1043,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "imageReference": {
       "value": {
-        "offer": "UbuntuServer",
+        "offer": "0001-com-ubuntu-server-jammy",
         "publisher": "Canonical",
-        "sku": "22.04-LTS",
+        "sku": "22_04-lts-gen2",
         "version": "latest"
       }
     },
@@ -1242,9 +1242,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     // Required parameters
     adminUsername: 'scaleSetAdmin'
     imageReference: {
-      offer: 'UbuntuServer'
+      offer: '0001-com-ubuntu-server-jammy'
       publisher: 'Canonical'
-      sku: '22.04-LTS'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     name: '<<namePrefix>>cvmsslinmin001'
@@ -1302,9 +1302,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "imageReference": {
       "value": {
-        "offer": "UbuntuServer",
+        "offer": "0001-com-ubuntu-server-jammy",
         "publisher": "Canonical",
-        "sku": "22.04-LTS",
+        "sku": "22_04-lts-gen2",
         "version": "latest"
       }
     },

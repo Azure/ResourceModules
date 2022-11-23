@@ -299,9 +299,9 @@ module virtualMachinesMultiple './Microsoft.Compute/virtualMachinesMultiple/depl
     // Required parameters
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'UbuntuServer'
+      offer: '0001-com-ubuntu-server-jammy'
       publisher: 'Canonical'
-      sku: '22.04-LTS'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     nicConfigurations: [
@@ -359,9 +359,9 @@ module virtualMachinesMultiple './Microsoft.Compute/virtualMachinesMultiple/depl
     },
     "imageReference": {
       "value": {
-        "offer": "UbuntuServer",
+        "offer": "0001-com-ubuntu-server-jammy",
         "publisher": "Canonical",
-        "sku": "22.04-LTS",
+        "sku": "22_04-lts-gen2",
         "version": "latest"
       }
     },
@@ -436,9 +436,9 @@ module virtualMachinesMultiple './Microsoft.Compute/virtualMachinesMultiple/depl
     // Required parameters
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'UbuntuServer'
+      offer: '0001-com-ubuntu-server-jammy'
       publisher: 'Canonical'
-      sku: '22.04-LTS'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     nicConfigurations: [
@@ -498,9 +498,9 @@ module virtualMachinesMultiple './Microsoft.Compute/virtualMachinesMultiple/depl
     },
     "imageReference": {
       "value": {
-        "offer": "UbuntuServer",
+        "offer": "0001-com-ubuntu-server-jammy",
         "publisher": "Canonical",
-        "sku": "22.04-LTS",
+        "sku": "22_04-lts-gen2",
         "version": "latest"
       }
     },
