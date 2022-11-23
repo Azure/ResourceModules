@@ -905,7 +905,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      sku: '22.04-LTS'
       version: 'latest'
     }
     name: '<<namePrefix>>cvmsslin001'
@@ -1045,7 +1045,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": {
         "offer": "UbuntuServer",
         "publisher": "Canonical",
-        "sku": "18.04-LTS",
+        "sku": "22.04-LTS",
         "version": "latest"
       }
     },
@@ -1244,7 +1244,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      sku: '22.04-LTS'
       version: 'latest'
     }
     name: '<<namePrefix>>cvmsslinmin001'
@@ -1304,7 +1304,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": {
         "offer": "UbuntuServer",
         "publisher": "Canonical",
-        "sku": "18.04-LTS",
+        "sku": "22.04-LTS",
         "version": "latest"
       }
     },

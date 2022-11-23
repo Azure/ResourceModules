@@ -1036,7 +1036,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      sku: '22.04-LTS'
       version: 'latest'
     }
     nicConfigurations: [
@@ -1209,7 +1209,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "offer": "UbuntuServer",
         "publisher": "Canonical",
-        "sku": "18.04-LTS",
+        "sku": "22.04-LTS",
         "version": "latest"
       }
     },
@@ -1443,7 +1443,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      sku: '22.04-LTS'
       version: 'latest'
     }
     nicConfigurations: [
@@ -1503,7 +1503,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "offer": "UbuntuServer",
         "publisher": "Canonical",
-        "sku": "18.04-LTS",
+        "sku": "22.04-LTS",
         "version": "latest"
       }
     },
@@ -1580,7 +1580,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     imageReference: {
       offer: 'UbuntuServer'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      sku: '22.04-LTS'
       version: 'latest'
     }
     nicConfigurations: [
@@ -1639,7 +1639,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "offer": "UbuntuServer",
         "publisher": "Canonical",
-        "sku": "18.04-LTS",
+        "sku": "22.04-LTS",
         "version": "latest"
       }
     },
