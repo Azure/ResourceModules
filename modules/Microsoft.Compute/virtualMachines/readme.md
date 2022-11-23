@@ -128,7 +128,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
     "value": {
         "publisher": "MicrosoftWindowsServer",
         "offer": "WindowsServer",
-        "sku": "2016-Datacenter",
+        "sku": "2022-datacenter-azure-edition",
         "version": "latest"
     }
 }
@@ -143,7 +143,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 imageReference: {
       publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
-      sku: '2016-Datacenter'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
 }
 ```

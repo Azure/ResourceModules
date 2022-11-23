@@ -132,7 +132,7 @@ The following resources are required to be able to deploy this resource.
     "value": {
         "publisher": "MicrosoftWindowsServer",
         "offer": "WindowsServer",
-        "sku": "2016-Datacenter",
+        "sku": "2022-datacenter-azure-edition",
         "version": "latest"
     }
 }
@@ -149,7 +149,7 @@ The following resources are required to be able to deploy this resource.
 imageReference: {
     publisher: 'MicrosoftWindowsServer'
     offer: 'WindowsServer'
-    sku: '2016-Datacenter'
+    sku: '2022-datacenter-azure-edition'
     version: 'latest'
 }
 ```
