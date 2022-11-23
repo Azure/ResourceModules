@@ -155,7 +155,7 @@ resource eventHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(l
   scope: eventHub
 }
 
-module eventHub_consumergroups 'consumergroups/deploy.bicep' = [for (consumerGroup, index) in consumerGroups: {
+module eventHub_consumergroups 'consumerGroups/deploy.bicep' = [for (consumerGroup, index) in consumerGroups: {
   name: '${deployment().name}-ConsumerGroup-${index}'
   params: {
     namespaceName: namespaceName

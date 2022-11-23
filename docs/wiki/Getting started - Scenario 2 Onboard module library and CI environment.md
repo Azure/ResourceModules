@@ -68,7 +68,7 @@ from a command-line of your choice (e.g., PowerShell).
 
 If you just want to have a copy of the repository's content, you can instead download it in `.zip` format. You can do this by navigating to the repository folder of your choice (for example, root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
 
- <img src="./media/GettingStarted/cloneDownloadRepo.JPG" alt="How to download repository" height="266">
+ <img src="./media/GettingStarted/cloneDownloadRepo.png" alt="How to download repository" height="266">
 
 Alternatively, you can also do the same with a specific release by navigating to the [releases](https://github.com/Azure/ResourceModules/releases) page, scroll to the `'Assets'` section at the bottom end of the release you'd like to get and download the packaged release (as it was when the release was created) with a simple click on the `'Source code'` package (e.g., `Source code (zip)`) itself.
 
