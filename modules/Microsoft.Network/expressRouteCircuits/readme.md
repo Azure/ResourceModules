@@ -206,6 +206,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -265,6 +266,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

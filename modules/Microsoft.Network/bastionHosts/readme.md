@@ -332,6 +332,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -400,6 +401,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -448,6 +450,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
           principalIds: [
             '<managedIdentityPrincipalId>'
           ]
+          principalType: 'ServicePrincipal'
           roleDefinitionIdOrName: 'Reader'
         }
       ]
@@ -496,6 +499,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
             "principalIds": [
               "<managedIdentityPrincipalId>"
             ],
+            "principalType": "ServicePrincipal",
             "roleDefinitionIdOrName": "Reader"
           }
         ],

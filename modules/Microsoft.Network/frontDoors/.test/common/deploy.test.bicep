@@ -133,10 +133,11 @@ module testDeployment '../../deploy.bicep' = {
     sendRecvTimeoutSeconds: 10
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
   }

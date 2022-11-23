@@ -93,10 +93,11 @@ module testDeployment '../../deploy.bicep' = {
               publicIpNameSuffix: '-pip-01'
               roleAssignments: [
                 {
+                  roleDefinitionIdOrName: 'Reader'
                   principalIds: [
                     resourceGroupResources.outputs.managedIdentityPrincipalId
                   ]
-                  roleDefinitionIdOrName: 'Reader'
+                  principalType: 'ServicePrincipal'
                 }
               ]
             }
@@ -106,10 +107,11 @@ module testDeployment '../../deploy.bicep' = {
         nicSuffix: '-nic-01'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
       }
@@ -203,10 +205,11 @@ module testDeployment '../../deploy.bicep' = {
     ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     systemAssignedIdentity: true

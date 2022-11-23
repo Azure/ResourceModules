@@ -39,19 +39,19 @@ This template deploys a private DNS zone.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `a` | _[a](a/readme.md)_ array | `[]` |  | Array of A records. |
-| `aaaa` | _[aaaa](aaaa/readme.md)_ array | `[]` |  | Array of AAAA records. |
-| `cname` | _[cname](cname/readme.md)_ array | `[]` |  | Array of CNAME records. |
+| `a` | _[A](A/readme.md)_ array | `[]` |  | Array of A records. |
+| `aaaa` | _[AAAA](AAAA/readme.md)_ array | `[]` |  | Array of AAAA records. |
+| `cname` | _[CNAME](CNAME/readme.md)_ array | `[]` |  | Array of CNAME records. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `'global'` |  | The location of the PrivateDNSZone. Should be global. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `mx` | _[mx](mx/readme.md)_ array | `[]` |  | Array of MX records. |
-| `ptr` | _[ptr](ptr/readme.md)_ array | `[]` |  | Array of PTR records. |
+| `mx` | _[MX](MX/readme.md)_ array | `[]` |  | Array of MX records. |
+| `ptr` | _[PTR](PTR/readme.md)_ array | `[]` |  | Array of PTR records. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `soa` | _[soa](soa/readme.md)_ array | `[]` |  | Array of SOA records. |
-| `srv` | _[srv](srv/readme.md)_ array | `[]` |  | Array of SRV records. |
+| `soa` | _[SOA](SOA/readme.md)_ array | `[]` |  | Array of SOA records. |
+| `srv` | _[SRV](SRV/readme.md)_ array | `[]` |  | Array of SRV records. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `txt` | _[txt](txt/readme.md)_ array | `[]` |  | Array of TXT records. |
+| `txt` | _[TXT](TXT/readme.md)_ array | `[]` |  | Array of TXT records. |
 | `virtualNetworkLinks` | _[virtualNetworkLinks](virtualNetworkLinks/readme.md)_ array | `[]` |  | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
 
 
@@ -201,6 +201,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -229,6 +230,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -250,6 +252,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -269,6 +272,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -280,6 +284,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -291,6 +296,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -314,6 +320,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -336,6 +343,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -390,6 +398,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -422,6 +431,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -447,6 +457,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -468,6 +479,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -481,6 +493,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -494,6 +507,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -519,6 +533,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -543,6 +558,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],

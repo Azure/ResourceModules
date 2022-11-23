@@ -321,5 +321,5 @@ module roleAssignments_rg '../../../../modules/Microsoft.Authorization/roleAssig
   }
 }]
 
-@description('The scope of the role assignments')
+@description('The scope of the role assignments.')
 output roleAssignmentScope string = !empty(managementGroupId) ? roleAssignments_mg[0].outputs.scope : (!empty(resourceGroupName) ? roleAssignments_rg[0].outputs.scope : roleAssignments_sub[0].outputs.scope)
