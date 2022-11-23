@@ -68,9 +68,9 @@ module testDeployment '../../deploy.bicep' = {
     location: location
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'UbuntuServer'
       publisher: 'Canonical'
-      sku: '22.04-LTS'
+      offer: '0001-com-ubuntu-server-jammy'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     nicConfigurations: [

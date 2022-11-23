@@ -46,9 +46,9 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     adminUsername: 'scaleSetAdmin'
     imageReference: {
-      offer: 'UbuntuServer'
       publisher: 'Canonical'
-      sku: '22.04-LTS'
+      offer: '0001-com-ubuntu-server-jammy'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     osDisk: {
