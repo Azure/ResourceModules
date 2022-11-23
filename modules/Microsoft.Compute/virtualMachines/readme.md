@@ -1034,9 +1034,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Required parameters
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: '0001-com-ubuntu-server-jammy'
+      offer: '0001-com-ubuntu-server-focal'
       publisher: 'Canonical'
-      sku: '22_04-lts-gen2'
+      sku: '<sku>'
       version: 'latest'
     }
     nicConfigurations: [
@@ -1207,9 +1207,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "imageReference": {
       "value": {
-        "offer": "0001-com-ubuntu-server-jammy",
+        "offer": "0001-com-ubuntu-server-focal",
         "publisher": "Canonical",
-        "sku": "22_04-lts-gen2",
+        "sku": "<sku>",
         "version": "latest"
       }
     },
