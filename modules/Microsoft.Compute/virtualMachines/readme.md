@@ -1713,7 +1713,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2022-datacenter-azure-edition'
+      sku: '2019-datacenter'
       version: 'latest'
     }
     nicConfigurations: [
@@ -1899,7 +1899,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "offer": "WindowsServer",
         "publisher": "MicrosoftWindowsServer",
-        "sku": "2022-datacenter-azure-edition",
+        "sku": "2019-datacenter",
         "version": "latest"
       }
     },

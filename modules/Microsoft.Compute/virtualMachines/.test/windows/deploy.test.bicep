@@ -73,7 +73,7 @@ module testDeployment '../../deploy.bicep' = {
     imageReference: {
       publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
-      sku: '2022-datacenter-azure-edition'
+      sku: '2019-datacenter'
       version: 'latest'
     }
     nicConfigurations: [
