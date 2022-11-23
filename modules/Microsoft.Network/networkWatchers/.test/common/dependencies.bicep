@@ -91,7 +91,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-08-01' = {
             imageReference: {
                 offer: 'UbuntuServer'
                 publisher: 'Canonical'
-                sku: '18.04-LTS'
+                sku: '22.04-LTS'
                 version: 'latest'
             }
             osDisk: {
