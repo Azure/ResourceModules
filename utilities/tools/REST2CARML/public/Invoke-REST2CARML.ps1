@@ -72,21 +72,21 @@ function Invoke-REST2CARML {
             IncludePreview   = $IncludePreview
             KeepArtifacts    = $KeepArtifacts
         }
-        $fullModuleData = Get-AzureApiSpecsData @apiSpecsInputObject
+        $fullModuleData = Get-AzureAPISpecsData @apiSpecsInputObject
 
         ############################
         ##   Set module content   ##
         ############################
-        foreach ($moduleDataBlock in ($fullModuleData | Sort-Object -Property 'Identifier')) {
+        foreach ($identifier in ($fullModuleData.Keys | Sort-Object)) {
             # Sort shortest to longest path
             $moduleTemplateInputObject = @{
-                FullResourceType = $moduleDataBlock.identifier
-                JSONFilePath     = $moduleDataBlock.metadata.jsonFilePath
-                UrlPath          = $moduleDataBlock.metadata.urlPath
-                ModuleData       = $moduleDataBlock.data
+                FullResourceType = $identifier
+                JSONFilePath     = $fullModuleData[$identifier].metadata.jsonFilePath
+                UrlPath          = $fullModuleData[$identifier].metadata.urlPath
+                ModuleData       = $fullModuleData[$identifier].data
                 FullModuleData   = $fullModuleData
             }
-            if ($PSCmdlet.ShouldProcess(('Module [{0}] files' -f $moduleDataBlock.identifier), 'Create/Update')) {
+            if ($PSCmdlet.ShouldProcess(('Module [{0}] files' -f $identifier), 'Create/Update')) {
                 Set-Module @moduleTemplateInputObject
             }
         }

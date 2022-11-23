@@ -5,9 +5,6 @@ Populate the provided ModuleData with all parameters, variables & resources requ
 .DESCRIPTION
 Populate the provided ModuleData with all parameters, variables & resources required for diagnostic settings.
 
-.PARAMETER ProviderNamespace
-Mandatory. The ProviderNamespace to fetch the available diagnostic options for.
-
 .PARAMETER ResourceType
 Mandatory. The ResourceType to fetch the available diagnostic options for.
 
@@ -15,7 +12,7 @@ Mandatory. The ResourceType to fetch the available diagnostic options for.
 Mandatory. The ModuleData object to populate.
 
 .EXAMPLE
-Set-DiagnosticModuleData -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
+Set-DiagnosticModuleData -ResourceType 'vaults' -ModuleData @{ parameters = @(...); resources = @(...); (...) }
 
 Add the diagnostic module data of the resource type [Microsoft.KeyVault/vaults] to the provided module data object
 #>
@@ -24,10 +21,13 @@ function Set-DiagnosticModuleData {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $ProviderNamespace,
-
-        [Parameter(Mandatory = $true)]
         [string] $ResourceType,
+
+        [Parameter(Mandatory = $false)]
+        [string[]] $DiagnosticMetricsOptions = @(),
+
+        [Parameter(Mandatory = $false)]
+        [string[]] $DiagnosticLogsOptions = @(),
 
         [Parameter(Mandatory = $true)]
         [Hashtable] $ModuleData
@@ -39,10 +39,16 @@ function Set-DiagnosticModuleData {
 
     process {
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
-        $diagnosticOptions = Get-DiagnosticOptionsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
 
-        if (-not ($diagnosticOptions.Logs -and $diagnosticOptions.Metrics)) {
-            return
+        # Type check (in case PowerShell auto-converted the array to a hashtable)
+        if ($ModuleData.additionalParameters -is [hashtable]) {
+            $ModuleData.additionalParameters = @($ModuleData.additionalParameters)
+        }
+        if ($ModuleData.variables -is [hashtable]) {
+            $ModuleData.variables = @($ModuleData.variables)
+        }
+        if ($ModuleData.resources -is [hashtable]) {
+            $ModuleData.resources = @($ModuleData.resources)
         }
 
         $ModuleData.additionalParameters += @(
@@ -100,6 +106,7 @@ function Set-DiagnosticModuleData {
 
         # Metric-specific
         if ($diagnosticOptions.Metrics) {
+
             # TODO: Clarify: Might need to be always 'All metrics' if any metric exists
             $ModuleData.additionalParameters += @(
                 @{
@@ -134,15 +141,15 @@ function Set-DiagnosticModuleData {
         }
 
         # Log-specific
-        if ($diagnosticOptions.Logs) {
+        if ($DiagnosticLogsOptions) {
             $ModuleData.additionalParameters += @(
                 @{
                     name          = 'diagnosticLogCategoriesToEnable'
                     type          = 'array'
                     description   = 'The name of logs that will be streamed.'
                     required      = $false
-                    allowedValues = $diagnosticOptions.Logs
-                    default       = $diagnosticOptions.Logs
+                    allowedValues = $DiagnosticLogsOptions
+                    default       = $DiagnosticLogsOptions
                 }
             )
             $ModuleData.variables += @{

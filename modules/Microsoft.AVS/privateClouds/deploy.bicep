@@ -60,14 +60,6 @@ param diagnosticLogCategoriesToEnable array = [
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param diagnosticMetricsToEnable array = [
-  'AllMetrics'
-]
-
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
@@ -158,16 +150,6 @@ param vmGroups array = []
 //   Variables   //
 // ============= //
 
-var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
-  category: metric
-  timeGrain: null
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -223,7 +205,6 @@ resource privateCloud_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
     eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
     eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
   scope: privateCloud

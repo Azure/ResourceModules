@@ -130,7 +130,7 @@ function Get-TemplateDeploymentsContent {
         [array] $ModuleData,
 
         [Parameter(Mandatory = $true)]
-        [array] $FullModuleData,
+        [hashtable] $FullModuleData,
 
         [Parameter(Mandatory = $false)]
         [array] $ParentResourceTypes = @(),
@@ -139,7 +139,7 @@ function Get-TemplateDeploymentsContent {
         [array] $ExistingTemplateContent = @(),
 
         [Parameter(Mandatory = $false)]
-        [array] $LinkedChildren = @()
+        [hashtable] $LinkedChildren = @{}
     )
 
     begin {
@@ -188,7 +188,7 @@ function Get-TemplateDeploymentsContent {
         foreach ($parentResourceType in $orderedParentResourceTypes) {
             $singularParent = ((Get-ResourceTypeSingularName -ResourceType $parentResourceType) -split '/')[-1]
             $levedParentResourceType = ($parentResourceType -ne (@() + $orderedParentResourceTypes)[0]) ? (Split-Path $parentResourceType -Leaf) : $parentResourceType
-            $parentJSONPath = ($FullModuleData | Where-Object { $_.identifier -eq $parentResourceType }).Metadata.JSONFilePath
+            $parentJSONPath = ($FullModuleData[$parentResourceType]).Metadata.JSONFilePath
 
             if ([String]::IsNullOrEmpty($parentJSONPath)) {
                 # Case: A child who's parent resource does not exist (i.e., is a proxy). In this case we use the current API paths as a fallback
@@ -288,7 +288,7 @@ function Get-TemplateDeploymentsContent {
             ModuleData              = $ModuleData
             LocationParameterExists = $LocationParameterExists
         }
-        if ($LinkedChildren.Count -gt 0) {
+        if ($LinkedChildren.Keys.Count -gt 0) {
             $childrenInputObject['LinkedChildren'] = $LinkedChildren
         }
         if ($ExistingTemplateContent.Count -gt 0) {

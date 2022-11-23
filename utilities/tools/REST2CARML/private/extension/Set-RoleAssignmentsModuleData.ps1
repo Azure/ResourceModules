@@ -30,6 +30,9 @@ function Set-RoleAssignmentsModuleData {
         [string] $ProviderNamespace,
 
         [Parameter(Mandatory = $true)]
+        [object[]] $RelevantRoles = @(),
+
+        [Parameter(Mandatory = $true)]
         [string] $ResourceType,
 
         [Parameter(Mandatory = $true)]
@@ -47,6 +50,17 @@ function Set-RoleAssignmentsModuleData {
 
         $resourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $resourceType) -split '/')[-1]
 
+        # Type check (in case PowerShell auto-converted the array to a hashtable)
+        if ($ModuleData.modules -is [hashtable]) {
+            $ModuleData.modules = @($ModuleData.modules)
+        }
+        if ($ModuleData.additionalFiles -is [hashtable]) {
+            $ModuleData.additionalFiles = @($ModuleData.additionalFiles)
+        }
+        if ($ModuleData.additionalParameters -is [hashtable]) {
+            $ModuleData.additionalParameters = @($ModuleData.additionalParameters)
+        }
+
         # Tokens to replace in files
         $tokens = @{
             providerNamespace    = $ProviderNamespace
@@ -55,10 +69,14 @@ function Set-RoleAssignmentsModuleData {
             apiVersion           = $ServiceApiVersion
         }
 
-        $roleAssignmentList = Get-RoleAssignmentsList -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType
-
-        if (-not $roleAssignmentList.bicepFormat) {
+        # Format roles
+        if ($RelevantRoles.count -eq 0) {
             return
+        } else {
+            $roleAssignmentList = [System.Collections.ArrayList]@()
+            foreach ($role in $RelevantRoles | Sort-Object -Property 'Name' -Unique) {
+                $roleAssignmentList += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f ($role.Name -match '\s+' ? ("'{0}'" -f $role.Name) : $role.Name), $role.Id
+            }
         }
 
         $ModuleData.additionalParameters += @(
@@ -101,7 +119,7 @@ function Set-RoleAssignmentsModuleData {
         $preRolesContent = ($fileContent -split '<<roleDefinitions>>')[0].Trim() -split '\n' | ForEach-Object { $_.TrimEnd() }
         $postRolesContent = ($fileContent -split '<<roleDefinitions>>')[1].Trim() -split '\n' | ForEach-Object { $_.TrimEnd() }
         ## Add roles
-        $fileContent = $preRolesContent.TrimEnd() + ($roleAssignmentList.bicepFormat | ForEach-Object { "  $_" }) + $postRolesContent
+        $fileContent = $preRolesContent.TrimEnd() + ($roleAssignmentList | ForEach-Object { "  $_" }) + $postRolesContent
 
         # Set content
         $roleTemplateFilePath = Join-Path '.bicep' 'nested_roleAssignments.bicep'

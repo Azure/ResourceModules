@@ -99,7 +99,7 @@ function Get-TemplateChildModuleContent {
         [string] $ResourceTypeSingular = ((Get-ResourceTypeSingularName -ResourceType $ResourceType) -split '/')[-1],
 
         [Parameter(Mandatory = $false)]
-        [array] $LinkedChildren = @(),
+        [hashtable] $LinkedChildren = @{},
 
         [Parameter(Mandatory = $true)]
         [array] $ModuleData,
@@ -125,12 +125,13 @@ function Get-TemplateChildModuleContent {
         #####################################
         $templateContent = @()
 
-        foreach ($dataBlock in ($linkedChildren | Sort-Object -Property 'identifier')) {
-            $childResourceType = ($dataBlock.identifier -split '/')[-1]
+        foreach ($childIdentifier in ($linkedChildren.Keys | Sort-Object)) {
+            $dataBlock = $LinkedChildren[$childIdentifier]
+            $childResourceType = ($childIdentifier -split '/')[-1]
 
             $hasProxyParent = [String]::IsNullOrEmpty($dataBlock.metadata.parentUrlPath)
             if ($hasProxyParent) {
-                $proxyParentName = Split-Path (Split-Path $dataBlock.identifier -Parent) -Leaf
+                $proxyParentName = Split-Path (Split-Path $childIdentifier -Parent) -Leaf
             }
 
             $moduleName = '{0}{1}_{2}' -f ($hasProxyParent ? "$($proxyParentName)_" : ''), $resourceTypeSingular, $childResourceType

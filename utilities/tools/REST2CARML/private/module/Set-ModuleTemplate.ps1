@@ -36,7 +36,7 @@ function Set-ModuleTemplate {
         [array] $ModuleData,
 
         [Parameter(Mandatory = $true)]
-        [array] $FullModuleData,
+        [hashtable] $FullModuleData,
 
         [Parameter(Mandatory = $true)]
         [string] $JSONFilePath,
@@ -103,7 +103,7 @@ function Set-ModuleTemplate {
         if ($ParentResourceTypes.Count -gt 0) {
             $parametersInputObject['ParentResourceTypes'] = $ParentResourceTypes
         }
-        if ($LinkedChildren.Count -gt 0) {
+        if ($LinkedChildren.Keys.Count -gt 0) {
             $parametersInputObject['LinkedChildren'] = $LinkedChildren
         }
         $templateContent += Get-TemplateParametersContent @parametersInputObject
@@ -151,7 +151,7 @@ function Set-ModuleTemplate {
         if ($ParentResourceTypes.Count -gt 0) {
             $resourcesInputObject['ParentResourceTypes'] = $ParentResourceTypes
         }
-        if ($LinkedChildren.Count -gt 0) {
+        if ($LinkedChildren.Keys.Count -gt 0) {
             $resourcesInputObject['LinkedChildren'] = $LinkedChildren
         }
         $templateContent += Get-TemplateDeploymentsContent @resourcesInputObject

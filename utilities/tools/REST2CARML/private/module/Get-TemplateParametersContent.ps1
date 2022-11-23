@@ -113,7 +113,7 @@ function Get-TemplateParametersContent {
         [array] $ModuleData,
 
         [Parameter(Mandatory = $true)]
-        [array] $FullModuleData,
+        [hashtable] $FullModuleData,
 
         [Parameter(Mandatory = $false)]
         [array] $ParentResourceTypes = @(),
@@ -122,7 +122,7 @@ function Get-TemplateParametersContent {
         [array] $ExistingTemplateContent = @(),
 
         [Parameter(Mandatory = $false)]
-        [array] $LinkedChildren = @()
+        [hashtable] $LinkedChildren = @{}
     )
 
     begin {
@@ -135,7 +135,7 @@ function Get-TemplateParametersContent {
         #####################
 
         # Handle parent proxy, if any
-        $hasAProxyParent = $FullModuleData.identifier -notContains ((Split-Path $FullResourceType -Parent) -replace '\\', '/')
+        $hasAProxyParent = $FullModuleData.Keys -notContains ((Split-Path $FullResourceType -Parent) -replace '\\', '/')
         $parentProxyName = $hasAProxyParent ? ($UrlPath -split '\/')[-3] : ''
         $proxyParentType = Split-Path (Split-Path $FullResourceType -Parent) -Leaf
 
@@ -170,8 +170,8 @@ function Get-TemplateParametersContent {
         $parametersToAdd += $ModuleData.additionalParameters
 
         # Add child module references
-        foreach ($dataBlock in ($linkedChildren | Sort-Object -Property 'identifier')) {
-            $childResourceType = ($dataBlock.identifier -split '/')[-1]
+        foreach ($childIdentifier in ($linkedChildren.Keys | Sort-Object)) {
+            $childResourceType = ($childIdentifier -split '/')[-1]
             $parametersToAdd += @{
                 level       = 0
                 name        = $childResourceType
@@ -191,7 +191,6 @@ function Get-TemplateParametersContent {
             description = 'Enable telemetry via the Customer Usage Attribution ID (GUID).'
             required    = $false
         }
-
 
         ########################
         ##   Create Content   ##

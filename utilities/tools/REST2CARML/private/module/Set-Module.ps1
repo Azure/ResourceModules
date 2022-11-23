@@ -36,7 +36,7 @@ function Set-Module {
         [Hashtable] $ModuleData,
 
         [Parameter(Mandatory = $true)]
-        [array] $FullModuleData,
+        [hashtable] $FullModuleData,
 
         [Parameter(Mandatory = $true)]
         [string] $JSONFilePath,
@@ -49,6 +49,8 @@ function Set-Module {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         $moduleRootPath = Join-Path $script:repoRoot 'modules' $FullResourceType
+        $providerNamespace = ($FullResourceType -split '/')[0]
+        $resourceType = $FullResourceType -replace "$providerNamespace/", ''
         $templatePath = Join-Path $moduleRootPath 'deploy.bicep'
         $isTopLevelModule = ($FullResourceType -split '\/').Count -eq 2
 
@@ -57,6 +59,51 @@ function Set-Module {
     }
 
     process {
+        ##########################################
+        ##   Collection addtional information   ##
+        ##########################################
+
+        # RBAC
+        if ($ModuleData.roleAssignmentOptions.Count -gt 0) {
+            $rbacInputObject = @{
+                ProviderNamespace = $ProviderNamespace
+                RelevantRoles     = $ModuleData.roleAssignmentOptions
+                ResourceType      = $ResourceType
+                ModuleData        = $ModuleData
+                ServiceApiVersion = Split-Path (Split-Path $JSONFilePath -Parent) -Leaf
+            }
+            Set-RoleAssignmentsModuleData @rbacInputObject
+        }
+
+        # Private Endpoints
+        if ($ModuleData.supportsPrivateEndpoints) {
+            $endpInputObject = @{
+                ResourceType = $ResourceType
+                ModuleData   = $ModuleData
+            }
+            Set-PrivateEndpointModuleData @endpInputObject
+        }
+
+        # Locks
+        if ($ModuleData.supportsLocks) {
+            $lockInputObject = @{
+                ResourceType = $ResourceType
+                ModuleData   = $ModuleData
+            }
+            Set-LockModuleData @lockInputObject
+        }
+
+        # Diagnostic Settings
+        if ($ModuleData.diagnosticMetricsOptions.count -gt 0 -or $ModuleData.diagnosticLogsOptions.count -gt 0) {
+            $diagInputObject = @{
+                ResourceType             = $ResourceType
+                DiagnosticMetricsOptions = $ModuleData.diagnosticMetricsOptions
+                DiagnosticLogsOptions    = $ModuleData.diagnosticLogsOptions
+                ModuleData               = $ModuleData
+            }
+            Set-DiagnosticModuleData @diagInputObject
+        }
+
         #############################
         ##   Update Support Files   #
         #############################
@@ -75,7 +122,7 @@ function Set-Module {
                 $null = New-Item -Path $versionFilePath -ItemType 'File' -Value $versionFileContent -Force
             }
         } else {
-            Write-Verbose ('Version file [{0}] already exists.' -f ($versionFilePath -replace ($script:repoRoot -replace '\\', '\\'), ''))
+            Write-Verbose ('Version file [{0}] already exists.' -f ("$providerNamespace{0}" -f ($versionFilePath -split $providerNamespace)[1]))
         }
 
         # Additional files as per API-Specs
