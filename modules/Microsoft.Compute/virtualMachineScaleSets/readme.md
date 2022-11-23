@@ -1377,7 +1377,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2016-Datacenter'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
     name: '<<namePrefix>>cvmsswin001'
@@ -1510,7 +1510,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": {
         "offer": "WindowsServer",
         "publisher": "MicrosoftWindowsServer",
-        "sku": "2016-Datacenter",
+        "sku": "2022-datacenter-azure-edition",
         "version": "latest"
       }
     },
@@ -1698,7 +1698,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2016-Datacenter'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
     name: '<<namePrefix>>cvmsswinmin001'
@@ -1752,7 +1752,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": {
         "offer": "WindowsServer",
         "publisher": "MicrosoftWindowsServer",
-        "sku": "2016-Datacenter",
+        "sku": "2022-datacenter-azure-edition",
         "version": "latest"
       }
     },
