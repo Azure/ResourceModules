@@ -28,62 +28,62 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualHubName: 'dep-<<namePrefix>>-vh-${serviceShort}'
-    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}'
-    vpnSiteName: 'dep-<<namePrefix>>-vs-${serviceShort}'
+    virtualHubName: 'dep-carml-vh-${serviceShort}'
+    virtualWANName: 'dep-carml-vw-${serviceShort}'
+    vpnSiteName: 'dep-carml-vs-${serviceShort}'
   }
 }
 
 // ============== //
 // Test Execution //
 // ============== //
-var vHubResourceId = '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup.name}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>${serviceShort}001'
+var vHubResourceId = '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup.name}/providers/Microsoft.Network/virtualHubs/carml${serviceShort}001'
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    name: 'carml${serviceShort}001'
     virtualHubResourceId: resourceGroupResources.outputs.virtualHubResourceId
     bgpSettings: {
       asn: 65515
       peerWeight: 0
     }
-    connections: [
-      {
-        connectionBandwidth: 100
-        // enableBgp: true
-        name: 'Connection-<<namePrefix>>-az-vsite-x-001'
-        remoteVpnSiteResourceId: resourceGroupResources.outputs.vpnSiteResourceId
-        // routingConfiguration: {
-        //   associatedRouteTable: {
-        //     id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
-        //   }
-        //   propagatedRouteTables: {
-        //     ids: [
-        //       {
-        //         id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
-        //       }
-        //     ]
-        //     labels: [
-        //       'default'
-        //     ]
-        //   }
-        //   vnetRoutes: {
-        //     staticRoutes: []
-        //   }
-        // }
-        // vpnLinkConnections: [
-        //   {
-        //     name: last(split(resourceGroupResources.outputs.vpnSiteLink1ResourceId, '/'))
-        //     id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
-        //   }
-        //   {
-        //     name: last(split(resourceGroupResources.outputs.vpnSiteLink2ResourceId, '/'))
-        //     id: resourceGroupResources.outputs.vpnSiteLink2ResourceId
-        //   }
-        // ]
-      }
-    ]
+    // connections: [
+    //   {
+    //     connectionBandwidth: 100
+    //     // enableBgp: true
+    //     name: 'Connection-carml-az-vsite-x-001'
+    //     remoteVpnSiteResourceId: resourceGroupResources.outputs.vpnSiteResourceId
+    //     // routingConfiguration: {
+    //     //   associatedRouteTable: {
+    //     //     id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
+    //     //   }
+    //     //   propagatedRouteTables: {
+    //     //     ids: [
+    //     //       {
+    //     //         id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
+    //     //       }
+    //     //     ]
+    //     //     labels: [
+    //     //       'default'
+    //     //     ]
+    //     //   }
+    //     //   vnetRoutes: {
+    //     //     staticRoutes: []
+    //     //   }
+    //     // }
+    //     // vpnLinkConnections: [
+    //     //   {
+    //     //     name: last(split(resourceGroupResources.outputs.vpnSiteLink1ResourceId, '/'))
+    //     //     id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
+    //     //   }
+    //     //   {
+    //     //     name: last(split(resourceGroupResources.outputs.vpnSiteLink2ResourceId, '/'))
+    //     //     id: resourceGroupResources.outputs.vpnSiteLink2ResourceId
+    //     //   }
+    //     // ]
+    //   }
+    // ]
     lock: 'CanNotDelete'
     natRules: [
       {
