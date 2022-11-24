@@ -53,9 +53,9 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}'
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'UbuntuServer'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      offer: '0001-com-ubuntu-server-jammy'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     nicConfigurations: [
@@ -84,7 +84,7 @@ module testDeployment '../../deploy.bicep' = {
     disablePasswordAuthentication: true
     publicKeys: [
       {
-        keyData: resourceGroupResources.outputs.SSHKey
+        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]

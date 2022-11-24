@@ -104,11 +104,11 @@ param bootDiagnosticStorageAccountName string = ''
 @description('Optional. Storage account boot diagnostic base URI.')
 param bootDiagnosticStorageAccountUri string = '.blob.${environment().suffixes.storage}/'
 
-@description('Optional. Resource name of a proximity placement group.')
-param proximityPlacementGroupName string = ''
+@description('Optional. Resource ID of a proximity placement group.')
+param proximityPlacementGroupResourceId string = ''
 
-@description('Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set.')
-param availabilitySetName string = ''
+@description('Optional. Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set.')
+param availabilitySetResourceId string = ''
 
 @description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set.')
 @allowed([
@@ -313,7 +313,7 @@ module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/deploy
     vmSize: vmSize
     additionalUnattendContent: additionalUnattendContent
     allowExtensionOperations: allowExtensionOperations
-    availabilitySetName: availabilitySetName
+    availabilitySetResourceId: availabilitySetResourceId
     backupPolicyName: backupPolicyName
     backupVaultName: backupVaultName
     backupVaultResourceGroup: backupVaultResourceGroup
@@ -358,7 +358,7 @@ module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/deploy
     pipDiagnosticSettingsName: !empty(pipDiagnosticSettingsName) ? pipDiagnosticSettingsName : '${vmName}-diagnosticSettings'
     plan: plan
     provisionVMAgent: provisionVMAgent
-    proximityPlacementGroupName: proximityPlacementGroupName
+    proximityPlacementGroupResourceId: proximityPlacementGroupResourceId
     publicKeys: publicKeys
     roleAssignments: roleAssignments
     sasTokenValidityLength: sasTokenValidityLength

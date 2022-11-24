@@ -124,7 +124,7 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
+var maximumThroughputUnitsVar = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
@@ -182,7 +182,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
   properties: {
     zoneRedundant: zoneRedundant
     isAutoInflateEnabled: isAutoInflateEnabled
-    maximumThroughputUnits: maximumThroughputUnits_var
+    maximumThroughputUnits: maximumThroughputUnitsVar
   }
 }
 
@@ -206,7 +206,7 @@ module eventHubNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.
   }
 }
 
-module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
+module eventHubNamespace_eventHubs 'eventHubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-EventHub-${index}'
   params: {
     namespaceName: eventHubNamespace.name

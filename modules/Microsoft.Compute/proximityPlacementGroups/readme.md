@@ -16,7 +16,7 @@ This template deploys a proximity placement group.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/proximityPlacementGroups` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/proximityPlacementGroups) |
+| `Microsoft.Compute/proximityPlacementGroups` | [2022-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-08-01/proximityPlacementGroups) |
 
 ## Parameters
 
@@ -30,12 +30,15 @@ This template deploys a proximity placement group.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `colocationStatus` | object | `{object}` |  | Describes colocation status of the Proximity Placement Group. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `intent` | object | `{object}` |  | Specifies the user intent of the proximity placement group. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `proximityPlacementGroupType` | string | `'Standard'` | `[Standard, Ultra]` | Specifies the type of the proximity placement group. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the proximity placement group resource. |
+| `zones` | array | `[]` |  | Specifies the Availability Zone where virtual machine, virtual machine scale set or availability set associated with the proximity placement group can be created. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -171,14 +174,35 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
     // Required parameters
     name: '<<namePrefix>>cppgcom001'
     // Non-required parameters
+    colocationStatus: {
+      code: 'ColocationStatus/Aligned'
+      displayStatus: 'Aligned'
+      level: 'Info'
+      message: 'I\'m a default error message'
+    }
+    intent: {
+      vmSizes: [
+        'Standard_B1ms'
+        'Standard_B4ms'
+      ]
+    }
     lock: 'CanNotDelete'
+    proximityPlacementGroupType: 'Standard'
     roleAssignments: [
       {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
+    ]
+    tags: {
+      TagA: 'Would you kindly...'
+      TagB: 'Tags for sale'
+    }
+    zones: [
+      '1'
     ]
   }
 }
@@ -201,8 +225,27 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
       "value": "<<namePrefix>>cppgcom001"
     },
     // Non-required parameters
+    "colocationStatus": {
+      "value": {
+        "code": "ColocationStatus/Aligned",
+        "displayStatus": "Aligned",
+        "level": "Info",
+        "message": "I\"m a default error message"
+      }
+    },
+    "intent": {
+      "value": {
+        "vmSizes": [
+          "Standard_B1ms",
+          "Standard_B4ms"
+        ]
+      }
+    },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "proximityPlacementGroupType": {
+      "value": "Standard"
     },
     "roleAssignments": {
       "value": [
@@ -210,9 +253,58 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "TagA": "Would you kindly...",
+        "TagB": "Tags for sale"
+      }
+    },
+    "zones": {
+      "value": [
+        "1"
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-cppgmin'
+  params: {
+    name: '<<namePrefix>>cppgmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>cppgmin001"
     }
   }
 }

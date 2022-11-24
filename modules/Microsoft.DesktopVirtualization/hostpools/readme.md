@@ -300,6 +300,7 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -389,6 +390,7 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

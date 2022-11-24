@@ -205,10 +205,10 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             }
           ]
           HealthProbeSettings: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe'
+            id: '<id>'
           }
           LoadBalancingSettings: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer'
+            id: '<id>'
           }
         }
       }
@@ -217,7 +217,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       {
         name: 'frontEnd'
         properties: {
-          hostName: '${resourceName}.azurefd.net'
+          hostName: '<hostName>'
           sessionAffinityEnabledState: 'Disabled'
           sessionAffinityTtlSeconds: 60
         }
@@ -257,7 +257,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           enabledState: 'Enabled'
           frontendEndpoints: [
             {
-              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd'
+              id: '<id>'
             }
           ]
           patternsToMatch: [
@@ -266,7 +266,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           routeConfiguration: {
             '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
             backendPool: {
-              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool'
+              id: '<id>'
             }
             forwardingProtocol: 'MatchRequest'
           }
@@ -281,6 +281,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -323,10 +324,10 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
               }
             ],
             "HealthProbeSettings": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe"
+              "id": "<id>"
             },
             "LoadBalancingSettings": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer"
+              "id": "<id>"
             }
           }
         }
@@ -337,7 +338,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
         {
           "name": "frontEnd",
           "properties": {
-            "hostName": "${resourceName}.azurefd.net",
+            "hostName": "<hostName>",
             "sessionAffinityEnabledState": "Disabled",
             "sessionAffinityTtlSeconds": 60
           }
@@ -385,7 +386,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             "enabledState": "Enabled",
             "frontendEndpoints": [
               {
-                "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd"
+                "id": "<id>"
               }
             ],
             "patternsToMatch": [
@@ -394,7 +395,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             "routeConfiguration": {
               "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
               "backendPool": {
-                "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool"
+                "id": "<id>"
               },
               "forwardingProtocol": "MatchRequest"
             }
@@ -415,6 +416,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -456,10 +458,10 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             }
           ]
           HealthProbeSettings: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe'
+            id: '<id>'
           }
           LoadBalancingSettings: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer'
+            id: '<id>'
           }
         }
       }
@@ -468,7 +470,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       {
         name: 'frontEnd'
         properties: {
-          hostName: '${resourceName}.azurefd.net'
+          hostName: '<hostName>'
           sessionAffinityEnabledState: 'Disabled'
           sessionAffinityTtlSeconds: 60
         }
@@ -505,7 +507,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           enabledState: 'Enabled'
           frontendEndpoints: [
             {
-              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd'
+              id: '<id>'
             }
           ]
           patternsToMatch: [
@@ -514,7 +516,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           routeConfiguration: {
             '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
             backendPool: {
-              id: '${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool'
+              id: '<id>'
             }
           }
         }
@@ -554,10 +556,10 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
               }
             ],
             "HealthProbeSettings": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/HealthProbeSettings/heathProbe"
+              "id": "<id>"
             },
             "LoadBalancingSettings": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/LoadBalancingSettings/loadBalancer"
+              "id": "<id>"
             }
           }
         }
@@ -568,7 +570,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
         {
           "name": "frontEnd",
           "properties": {
-            "hostName": "${resourceName}.azurefd.net",
+            "hostName": "<hostName>",
             "sessionAffinityEnabledState": "Disabled",
             "sessionAffinityTtlSeconds": 60
           }
@@ -613,7 +615,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             "enabledState": "Enabled",
             "frontendEndpoints": [
               {
-                "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/FrontendEndpoints/frontEnd"
+                "id": "<id>"
               }
             ],
             "patternsToMatch": [
@@ -622,7 +624,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
             "routeConfiguration": {
               "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
               "backendPool": {
-                "id": "${resourceGroup.id}/providers/Microsoft.Network/frontDoors/${resourceName}/BackendPools/backendPool"
+                "id": "<id>"
               }
             }
           }

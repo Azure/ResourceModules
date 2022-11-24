@@ -75,10 +75,11 @@ module testDeployment '../../deploy.bicep' = {
     queryTimeRange: 'PT5M'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     scopes: [

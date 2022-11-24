@@ -19,15 +19,14 @@ jobs:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
+      # Ref https://github.com/marketplace/actions/lychee-broken-link-checker and https://github.com/lycheeverse/lychee#commandline-parameters
       - name: Check Broken Links
         if: always()
         id: checker
-        uses: lycheeverse/lychee-action@v1.1.1
+        uses: lycheeverse/lychee-action@v1.5.4
         with:
-          args: --verbose --no-progress **/*.md --accept 200,201,403,429,401 --exclude-file .lycheeignore
+          args: --verbose --no-progress './**/*.md' --accept 200,201,403,429,401 --exclude-path .lycheeignore --include ^file:.*docs.*wiki.*media.*$
+          fail: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Publish Results
-        if: always()
-        run: exit ${{ steps.checker.outputs.exit_code }}

@@ -7,6 +7,12 @@ param managedIdentityName string
 @description('Required. The name of the Storage Account to create and to copy the VHD into.')
 param storageAccountName string
 
+@description('Required. The name of the Disk Encryption Set to create.')
+param diskEncryptionSetName string
+
+@description('Required. The name of the Key Vault to create.')
+param keyVaultName string
+
 @description('Required. The name prefix of the Image Template to create.')
 param imageTemplateNamePrefix string
 
@@ -56,6 +62,7 @@ module roleAssignment 'dependencies_rbac.bicep' = {
 
 // Deploy image template
 resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14' = {
+  #disable-next-line use-stable-resource-identifiers
   name: '${imageTemplateNamePrefix}-${baseTime}'
   location: location
   identity: {
@@ -139,11 +146,67 @@ resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-
   dependsOn: [ triggerImageDeploymentScript ]
 }
 
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
+  name: keyVaultName
+  location: location
+  properties: {
+    sku: {
+      family: 'A'
+      name: 'standard'
+    }
+    tenantId: tenant().tenantId
+    enablePurgeProtection: true // Required for encrption to work
+    softDeleteRetentionInDays: 7
+    enabledForTemplateDeployment: true
+    enabledForDiskEncryption: true
+    enabledForDeployment: true
+    enableRbacAuthorization: true
+    accessPolicies: []
+  }
+
+  resource key 'keys@2022-07-01' = {
+    name: 'encryptionKey'
+    properties: {
+      kty: 'RSA'
+    }
+  }
+}
+
+resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
+  name: diskEncryptionSetName
+  location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    activeKey: {
+      sourceVault: {
+        id: keyVault.id
+      }
+      keyUrl: keyVault::key.properties.keyUriWithVersion
+    }
+    encryptionType: 'EncryptionAtRestWithCustomerKey'
+  }
+}
+
+resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Key-Read-RoleAssignment')
+  scope: keyVault
+  properties: {
+    principalId: diskEncryptionSet.identity.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
+    principalType: 'ServicePrincipal'
+  }
+}
+
 @description('The URI of the created VHD.')
-output vhdUri string = 'https://${storageAccount.name}.blob.core.windows.net/vhds/${imageTemplateNamePrefix}.vhd'
+output vhdUri string = 'https://${storageAccount.name}.blob.${environment().suffixes.storage}/vhds/${imageTemplateNamePrefix}.vhd'
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
+
+@description('The resource ID of the created Disk Encryption Set.')
+output diskEncryptionSetResourceId string = diskEncryptionSet.id

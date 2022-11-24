@@ -433,7 +433,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -441,85 +441,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateLinkServices'
+  name: '${uniqueString(deployment().name)}-test-nplscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-pls-min-001'
-    // Non-required parameters
-    ipConfigurations: [
-      {
-        name: 'minpls01'
-        properties: {
-          subnet: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009'
-          }
-        }
-      }
-    ]
-    loadBalancerFrontendIpConfigurations: [
-      {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls-min'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-pls-min-001"
-    },
-    // Non-required parameters
-    "ipConfigurations": {
-      "value": [
-        {
-          "name": "minpls01",
-          "properties": {
-            "subnet": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009"
-            }
-          }
-        }
-      ]
-    },
-    "loadBalancerFrontendIpConfigurations": {
-      "value": [
-        {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls-min"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateLinkServices'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-az-pls-001'
+    name: '<<namePrefix>>nplscom001'
     // Non-required parameters
     autoApproval: {
       subscriptions: [
@@ -528,38 +453,38 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     }
     enableProxyProtocol: true
     fqdns: [
-      '<<namePrefix>>.plsfqdn01.azure.privatelinkservice'
-      '<<namePrefix>>.plsfqdn02.azure.privatelinkserivce'
+      'nplscom.plsfqdn01.azure.privatelinkservice'
+      'nplscom.plsfqdn02.azure.privatelinkservice'
     ]
     ipConfigurations: [
       {
-        name: 'pls01'
+        name: 'nplscom01'
         properties: {
           primary: true
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009'
+            id: '<id>'
           }
         }
       }
     ]
     loadBalancerFrontendIpConfigurations: [
       {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls'
+        id: '<id>'
       }
     ]
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     visibility: {
       subscriptions: [
-        '<<subscriptionId>>'
+        '<subscriptionId>'
       ]
     }
   }
@@ -580,7 +505,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-pls-001"
+      "value": "<<namePrefix>>nplscom001"
     },
     // Non-required parameters
     "autoApproval": {
@@ -595,19 +520,19 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     },
     "fqdns": {
       "value": [
-        "<<namePrefix>>.plsfqdn01.azure.privatelinkservice",
-        "<<namePrefix>>.plsfqdn02.azure.privatelinkserivce"
+        "nplscom.plsfqdn01.azure.privatelinkservice",
+        "nplscom.plsfqdn02.azure.privatelinkservice"
       ]
     },
     "ipConfigurations": {
       "value": [
         {
-          "name": "pls01",
+          "name": "nplscom01",
           "properties": {
             "primary": true,
             "privateIPAllocationMethod": "Dynamic",
             "subnet": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009"
+              "id": "<id>"
             }
           }
         }
@@ -616,7 +541,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     "loadBalancerFrontendIpConfigurations": {
       "value": [
         {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls"
+          "id": "<id>"
         }
       ]
     },
@@ -627,7 +552,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -636,9 +561,84 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     "visibility": {
       "value": {
         "subscriptions": [
-          "<<subscriptionId>>"
+          "<subscriptionId>"
         ]
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nplsmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nplsmin001'
+    // Non-required parameters
+    ipConfigurations: [
+      {
+        name: 'nplsmin01'
+        properties: {
+          subnet: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    loadBalancerFrontendIpConfigurations: [
+      {
+        id: '<id>'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nplsmin001"
+    },
+    // Non-required parameters
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "nplsmin01",
+          "properties": {
+            "subnet": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "loadBalancerFrontendIpConfigurations": {
+      "value": [
+        {
+          "id": "<id>"
+        }
+      ]
     }
   }
 }

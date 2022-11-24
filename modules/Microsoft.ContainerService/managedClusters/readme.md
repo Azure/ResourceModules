@@ -16,8 +16,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-07-01/managedClusters) |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-07-01/managedClusters/agentPools) |
+| `Microsoft.ContainerService/managedClusters` | [2022-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
@@ -381,10 +381,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csmazure'
+  name: '${uniqueString(deployment().name)}-test-csmaz'
   params: {
     // Required parameters
-    name: '<<namePrefix>>csmazure001'
+    name: '<<namePrefix>>csmaz001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -472,6 +472,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -494,7 +495,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>csmazure001"
+      "value": "<<namePrefix>>csmaz001"
     },
     "primaryAgentPoolProfile": {
       "value": [
@@ -604,6 +605,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -712,6 +714,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -837,6 +840,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
