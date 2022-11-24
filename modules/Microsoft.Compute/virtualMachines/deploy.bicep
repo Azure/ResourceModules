@@ -198,7 +198,7 @@ param extensionNetworkWatcherAgentConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed.')
+@description('Optional. The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.')
 param extensionAzureDiskEncryptionConfig object = {
   enabled: false
 }
