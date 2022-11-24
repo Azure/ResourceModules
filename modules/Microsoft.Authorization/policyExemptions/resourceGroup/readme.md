@@ -36,9 +36,7 @@ With this module you can create policy exemptions on a resource group level.
 | `expiresOn` | string | `''` |  | The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z. |
 | `metadata` | object | `{object}` |  | The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `policyDefinitionReferenceIds` | array | `[]` |  | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
-| `resourceGroupName` | string | `[resourceGroup().name]` |  | The name of the resource group to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
 | `resourceSelectors` | array | `[]` |  | The resource selector list to filter policies by resource properties. |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | The subscription ID of the subscription to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
 
 
 ## Outputs

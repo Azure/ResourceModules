@@ -189,7 +189,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Non-required parameters
     description: '[Description] This policy set definition is deployed at management group scope'
     displayName: '[DisplayName] This policy set definition is deployed at management group scope'
-    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
       version: '1'
@@ -260,9 +259,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     },
     "displayName": {
       "value": "[DisplayName] This policy set definition is deployed at management group scope"
-    },
-    "managementGroupId": {
-      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {
@@ -409,7 +405,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         name: 'ARM'
       }
     ]
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -484,9 +479,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           "name": "ARM"
         }
       ]
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -519,8 +511,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
       }
     ]
-    // Non-required parameters
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -554,10 +544,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
         }
       ]
-    },
-    // Non-required parameters
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
     }
   }
 }

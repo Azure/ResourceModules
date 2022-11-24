@@ -112,7 +112,7 @@ output name string = policyAssignment.name
 output principalId string = identity == 'SystemAssigned' ? policyAssignment.identity.principalId : ''
 
 @sys.description('Policy Assignment resource ID.')
-output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
+output resourceId string = policyAssignment.id
 
 @sys.description('The name of the resource group the policy was assigned to.')
 output resourceGroupName string = resourceGroup().name

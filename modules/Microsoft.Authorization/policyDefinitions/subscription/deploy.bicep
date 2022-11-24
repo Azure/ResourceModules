@@ -30,9 +30,6 @@ param parameters object = {}
 @sys.description('Required. The Policy Rule details for the Policy Definition.')
 param policyRule object
 
-@sys.description('Optional. The subscription ID of the subscription.')
-param subscriptionId string = subscription().subscriptionId
-
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
@@ -69,7 +66,7 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
 output name string = policyDefinition.name
 
 @sys.description('Policy Definition resource ID.')
-output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyDefinitions', policyDefinition.name)
+output resourceId string = policyDefinition.id
 
 @sys.description('Policy Definition Role Definition IDs.')
 output roleDefinitionIds array = (contains(policyDefinition.properties.policyRule.then, 'details') ? ((contains(policyDefinition.properties.policyRule.then.details, 'roleDefinitionIds') ? policyDefinition.properties.policyRule.then.details.roleDefinitionIds : [])) : [])

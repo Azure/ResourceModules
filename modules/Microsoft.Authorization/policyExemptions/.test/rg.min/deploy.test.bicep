@@ -43,7 +43,5 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     policyAssignmentId: policyAssignment.id
-    resourceGroupName: resourceGroup.name
-    subscriptionId: subscription().subscriptionId
   }
 }

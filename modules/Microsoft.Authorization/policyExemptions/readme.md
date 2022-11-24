@@ -394,7 +394,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     policyDefinitionReferenceIds: [
       '<policyDefinitionReferenceId>'
     ]
-    resourceGroupName: '<resourceGroupName>'
     resourceSelectors: [
       {
         name: 'TemporaryMitigation'
@@ -408,7 +407,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         ]
       }
     ]
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -458,9 +456,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         "<policyDefinitionReferenceId>"
       ]
     },
-    "resourceGroupName": {
-      "value": "<resourceGroupName>"
-    },
     "resourceSelectors": {
       "value": [
         {
@@ -475,9 +470,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
           ]
         }
       ]
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -499,9 +491,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     // Required parameters
     name: '<<namePrefix>>apergmin001'
     policyAssignmentId: '<policyAssignmentId>'
-    // Non-required parameters
-    resourceGroupName: '<resourceGroupName>'
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -524,13 +513,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
-    },
-    // Non-required parameters
-    "resourceGroupName": {
-      "value": "<resourceGroupName>"
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -577,7 +559,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         ]
       }
     ]
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -641,9 +622,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
           ]
         }
       ]
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }

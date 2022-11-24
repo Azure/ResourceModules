@@ -64,6 +64,5 @@ module testDeployment '../../subscription/deploy.bicep' = {
         type: 'String'
       }
     }
-    subscriptionId: subscription().subscriptionId
   }
 }

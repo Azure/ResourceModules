@@ -182,7 +182,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Non-required parameters
     description: '[Description] This policy definition is deployed at the management group scope'
     displayName: '[DisplayName] This policy definition is deployed at the management group scope'
-    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
     }
@@ -259,9 +258,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     },
     "displayName": {
       "value": "[DisplayName] This policy definition is deployed at the management group scope"
-    },
-    "managementGroupId": {
-      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {
@@ -445,7 +441,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         type: 'String'
       }
     }
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -526,9 +521,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "type": "String"
         }
       }
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -572,7 +564,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         type: 'String'
       }
     }
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -619,9 +610,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "type": "String"
         }
       }
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }

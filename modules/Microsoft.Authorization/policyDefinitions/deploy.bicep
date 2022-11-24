@@ -62,7 +62,6 @@ module policyDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscripti
   scope: managementGroup(managementGroupId)
   params: {
     name: name
-    managementGroupId: managementGroupId
     mode: mode
     displayName: !empty(displayName) ? displayName : ''
     description: !empty(description) ? description : ''
@@ -79,7 +78,6 @@ module policyDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptio
   scope: subscription(subscriptionId)
   params: {
     name: name
-    subscriptionId: subscriptionId
     mode: mode
     displayName: !empty(displayName) ? displayName : ''
     description: !empty(description) ? description : ''

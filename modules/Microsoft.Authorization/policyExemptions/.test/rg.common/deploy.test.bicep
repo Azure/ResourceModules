@@ -94,8 +94,6 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
     metadata: {
       category: 'Security'
     }
-    resourceGroupName: resourceGroup.name
-    subscriptionId: subscription().subscriptionId
     assignmentScopeValidation: 'Default'
     description: 'My description'
     resourceSelectors: [
