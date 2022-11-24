@@ -1,9 +1,6 @@
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
-// @description('Required. The name of the Managed Identity to create.')
-// param managedIdentityName string
-
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
@@ -32,21 +29,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     ]
   }
 }
-
-// resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-//   name: managedIdentityName
-//   location: location
-// }
-
-// resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-//   name: guid(resourceGroup().id, 'Contributor', managedIdentity.id)
-//   scope: resourceGroup()
-//   properties: {
-//     principalId: managedIdentity.properties.principalId
-//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
-//     principalType: 'ServicePrincipal'
-//   }
-// }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: keyVaultName
@@ -86,7 +68,7 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
       }
       keyUrl: keyVault::key.properties.keyUriWithVersion
     }
-    encryptionType: 'EncryptionAtRestWithCustomerKey'
+    encryptionType: 'EncryptionAtRestWithPlatformAndCustomerKeys'
   }
 }
 
@@ -102,12 +84,6 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
-
-// @description('The principal ID of the created Managed Identity.')
-// output managedIdentityPrincipalId string = managedIdentity.properties.principalId
-
-// @description('The resource ID of the created Managed Identity.')
-// output managedIdentityResourceId string = managedIdentity.id
 
 @description('The resource ID of the created Disk Encryption Set.')
 output diskEncryptionSetResourceId string = diskEncryptionSet.id
