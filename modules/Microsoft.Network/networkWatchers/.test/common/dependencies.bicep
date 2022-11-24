@@ -89,9 +89,9 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-08-01' = {
         }
         storageProfile: {
             imageReference: {
-                offer: 'UbuntuServer'
                 publisher: 'Canonical'
-                sku: '22.04-LTS'
+                offer: '0001-com-ubuntu-server-jammy'
+                sku: '22_04-lts-gen2'
                 version: 'latest'
             }
             osDisk: {
