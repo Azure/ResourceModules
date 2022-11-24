@@ -159,9 +159,6 @@ param backupVaultResourceGroup string = resourceGroup().name
 @description('Optional. Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault.')
 param backupPolicyName string = 'DefaultPolicy'
 
-@description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
-param enableServerSideEncryption bool = false
-
 // Child resources
 @description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
 param allowExtensionOperations bool = true
@@ -406,7 +403,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         caching: contains(osDisk, 'caching') ? osDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
-          diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
+          diskEncryptionSet: {
+            id: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet.id : null
+          }
         }
       }
       dataDisks: [for (dataDisk, index) in dataDisks: {
@@ -419,7 +418,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         managedDisk: {
           storageAccountType: dataDisk.managedDisk.storageAccountType
           diskEncryptionSet: {
-            id: enableServerSideEncryption ? dataDisk.managedDisk.diskEncryptionSet.id : null
+            id: contains(dataDisk.managedDisk, 'diskEncryptionSet') ? dataDisk.managedDisk.diskEncryptionSet.id : null
           }
         }
       }]
