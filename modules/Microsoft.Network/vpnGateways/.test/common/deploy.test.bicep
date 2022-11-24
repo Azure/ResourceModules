@@ -37,7 +37,6 @@ module resourceGroupResources 'dependencies.bicep' = {
 // ============== //
 // Test Execution //
 // ============== //
-var vHubResourceId = '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup.name}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>${serviceShort}001'
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
@@ -60,34 +59,6 @@ module testDeployment '../../deploy.bicep' = {
         useLocalAzureIpAddress: false
         usePolicyBasedTrafficSelectors: false
         routingWeight: 0
-        // routingConfiguration: {
-        //   associatedRouteTable: {
-        //     id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
-        //   }
-        //   propagatedRouteTables: {
-        //     ids: [
-        //       {
-        //         id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
-        //       }
-        //     ]
-        //     labels: [
-        //       'default'
-        //     ]
-        //   }
-        //   vnetRoutes: {
-        //     staticRoutes: []
-        //   }
-        // }
-        // vpnLinkConnections: [
-        //   {
-        //     name: last(split(resourceGroupResources.outputs.vpnSiteLink1ResourceId, '/'))
-        //     id: resourceGroupResources.outputs.vpnSiteLink1ResourceId
-        //   }
-        //   {
-        //     name: last(split(resourceGroupResources.outputs.vpnSiteLink2ResourceId, '/'))
-        //     id: resourceGroupResources.outputs.vpnSiteLink2ResourceId
-        //   }
-        // ]
       }
     ]
     lock: 'CanNotDelete'

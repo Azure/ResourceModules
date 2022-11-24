@@ -202,28 +202,16 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
     }
     connections: [
       {
-        connectionBandwidth: 10
-        enableBgp: true
-        name: 'Connection-<<namePrefix>>-az-vsite-x-001'
+        connectionBandwidth: 100
+        enableBgp: false
+        enableInternetSecurity: true
+        enableRateLimiting: false
+        name: 'Connection-dep-<<namePrefix>>-vs-nvgcom'
         remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
-        routingConfiguration: {
-          associatedRouteTable: {
-            id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
-          }
-          propagatedRouteTables: {
-            ids: [
-              {
-                id: '${vHubResourceId}/hubRouteTables/defaultRouteTable'
-              }
-            ]
-            labels: [
-              'default'
-            ]
-          }
-          vnetRoutes: {
-            staticRoutes: []
-          }
-        }
+        routingWeight: 0
+        useLocalAzureIpAddress: false
+        usePolicyBasedTrafficSelectors: false
+        vpnConnectionProtocolType: 'IKEv2'
       }
     ]
     lock: 'CanNotDelete'
@@ -277,28 +265,16 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
     "connections": {
       "value": [
         {
-          "connectionBandwidth": 10,
-          "enableBgp": true,
-          "name": "Connection-<<namePrefix>>-az-vsite-x-001",
+          "connectionBandwidth": 100,
+          "enableBgp": false,
+          "enableInternetSecurity": true,
+          "enableRateLimiting": false,
+          "name": "Connection-dep-<<namePrefix>>-vs-nvgcom",
           "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
-          "routingConfiguration": {
-            "associatedRouteTable": {
-              "id": "${vHubResourceId}/hubRouteTables/defaultRouteTable"
-            },
-            "propagatedRouteTables": {
-              "ids": [
-                {
-                  "id": "${vHubResourceId}/hubRouteTables/defaultRouteTable"
-                }
-              ],
-              "labels": [
-                "default"
-              ]
-            },
-            "vnetRoutes": {
-              "staticRoutes": []
-            }
-          }
+          "routingWeight": 0,
+          "useLocalAzureIpAddress": false,
+          "usePolicyBasedTrafficSelectors": false,
+          "vpnConnectionProtocolType": "IKEv2"
         }
       ]
     },
