@@ -68,9 +68,9 @@ The following resources are required to be able to deploy this resource.
 | `enableServerSideEncryption` | bool | `False` |  | Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key. |
 | `encryptionAtHost` | bool | `True` |  | This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your virtual machine scale sets. |
 | `extensionAntiMalwareConfig` | object | `{object}` |  | The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed. |
+| `extensionAzureDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys. |
 | `extensionCustomScriptConfig` | object | `{object}` |  | The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionAzureDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinConfig` | object | `{object}` |  | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinPassword` | secureString | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
 | `extensionDSCConfig` | object | `{object}` |  | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -948,6 +948,19 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disablePasswordAuthentication: true
     encryptionAtHost: false
+    extensionAzureDiskEncryptionConfig: {
+      enabled: true
+      settings: {
+        EncryptionOperation: 'EnableEncryption'
+        KekVaultResourceId: '<KekVaultResourceId>'
+        KeyEncryptionAlgorithm: 'RSA-OAEP'
+        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
+        KeyVaultResourceId: '<KeyVaultResourceId>'
+        KeyVaultURL: '<KeyVaultURL>'
+        ResizeOSDisk: 'false'
+        VolumeType: 'All'
+      }
+    }
     extensionCustomScriptConfig: {
       enabled: true
       fileData: [
@@ -962,19 +975,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     }
     extensionDependencyAgentConfig: {
       enabled: true
-    }
-    extensionAzureDiskEncryptionConfig: {
-      enabled: true
-      settings: {
-        EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: '<KekVaultResourceId>'
-        KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
-        KeyVaultResourceId: '<KeyVaultResourceId>'
-        KeyVaultURL: '<KeyVaultURL>'
-        ResizeOSDisk: 'false'
-        VolumeType: 'All'
-      }
     }
     extensionMonitoringAgentConfig: {
       enabled: true
@@ -1117,6 +1117,21 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "encryptionAtHost": {
       "value": false
     },
+    "extensionAzureDiskEncryptionConfig": {
+      "value": {
+        "enabled": true,
+        "settings": {
+          "EncryptionOperation": "EnableEncryption",
+          "KekVaultResourceId": "<KekVaultResourceId>",
+          "KeyEncryptionAlgorithm": "RSA-OAEP",
+          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
+          "KeyVaultResourceId": "<KeyVaultResourceId>",
+          "KeyVaultURL": "<KeyVaultURL>",
+          "ResizeOSDisk": "false",
+          "VolumeType": "All"
+        }
+      }
+    },
     "extensionCustomScriptConfig": {
       "value": {
         "enabled": true,
@@ -1134,21 +1149,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "extensionDependencyAgentConfig": {
       "value": {
         "enabled": true
-      }
-    },
-    "extensionAzureDiskEncryptionConfig": {
-      "value": {
-        "enabled": true,
-        "settings": {
-          "EncryptionOperation": "EnableEncryption",
-          "KekVaultResourceId": "<KekVaultResourceId>",
-          "KeyEncryptionAlgorithm": "RSA-OAEP",
-          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
-          "KeyVaultResourceId": "<KeyVaultResourceId>",
-          "KeyVaultURL": "<KeyVaultURL>",
-          "ResizeOSDisk": "false",
-          "VolumeType": "All"
-        }
       }
     },
     "extensionMonitoringAgentConfig": {
@@ -1416,6 +1416,19 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         }
       }
     }
+    extensionAzureDiskEncryptionConfig: {
+      enabled: true
+      settings: {
+        EncryptionOperation: 'EnableEncryption'
+        KekVaultResourceId: '<KekVaultResourceId>'
+        KeyEncryptionAlgorithm: 'RSA-OAEP'
+        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
+        KeyVaultResourceId: '<KeyVaultResourceId>'
+        KeyVaultURL: '<KeyVaultURL>'
+        ResizeOSDisk: 'false'
+        VolumeType: 'All'
+      }
+    }
     extensionCustomScriptConfig: {
       enabled: true
       fileData: [
@@ -1430,19 +1443,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     }
     extensionDependencyAgentConfig: {
       enabled: true
-    }
-    extensionAzureDiskEncryptionConfig: {
-      enabled: true
-      settings: {
-        EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: '<KekVaultResourceId>'
-        KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
-        KeyVaultResourceId: '<KeyVaultResourceId>'
-        KeyVaultURL: '<KeyVaultURL>'
-        ResizeOSDisk: 'false'
-        VolumeType: 'All'
-      }
     }
     extensionDSCConfig: {
       enabled: true
@@ -1574,6 +1574,21 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         }
       }
     },
+    "extensionAzureDiskEncryptionConfig": {
+      "value": {
+        "enabled": true,
+        "settings": {
+          "EncryptionOperation": "EnableEncryption",
+          "KekVaultResourceId": "<KekVaultResourceId>",
+          "KeyEncryptionAlgorithm": "RSA-OAEP",
+          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
+          "KeyVaultResourceId": "<KeyVaultResourceId>",
+          "KeyVaultURL": "<KeyVaultURL>",
+          "ResizeOSDisk": "false",
+          "VolumeType": "All"
+        }
+      }
+    },
     "extensionCustomScriptConfig": {
       "value": {
         "enabled": true,
@@ -1591,21 +1606,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "extensionDependencyAgentConfig": {
       "value": {
         "enabled": true
-      }
-    },
-    "extensionAzureDiskEncryptionConfig": {
-      "value": {
-        "enabled": true,
-        "settings": {
-          "EncryptionOperation": "EnableEncryption",
-          "KekVaultResourceId": "<KekVaultResourceId>",
-          "KeyEncryptionAlgorithm": "RSA-OAEP",
-          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
-          "KeyVaultResourceId": "<KeyVaultResourceId>",
-          "KeyVaultURL": "<KeyVaultURL>",
-          "ResizeOSDisk": "false",
-          "VolumeType": "All"
-        }
       }
     },
     "extensionDSCConfig": {
