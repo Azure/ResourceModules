@@ -41,39 +41,39 @@ module resourceGroupResources 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-// module testDeployment '../../deploy.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-//   params: {
-//     location: location
-//     name: '<<namePrefix>>${serviceShort}'
-//     adminUsername: 'localAdminUser'
-//     imageReference: {
-//       publisher: 'MicrosoftWindowsServer'
-//       offer: 'WindowsServer'
-//       sku: '2022-datacenter-azure-edition'
-//       version: 'latest'
-//     }
-//     nicConfigurations: [
-//       {
-//         ipConfigurations: [
-//           {
-//             name: 'ipconfig01'
-//             subnetResourceId: resourceGroupResources.outputs.subnetResourceId
-//           }
-//         ]
-//         nicSuffix: '-nic-01'
-//       }
-//     ]
-//     osDisk: {
-//       diskSizeGB: '128'
-//       managedDisk: {
-//         storageAccountType: 'Premium_LRS'
-//       }
-//     }
-//     osType: 'Windows'
-//     vmSize: 'Standard_B12ms'
-//     adminPassword: password
-//     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-//   }
-// }
+module testDeployment '../../deploy.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  params: {
+    location: location
+    name: '<<namePrefix>>${serviceShort}'
+    adminUsername: 'localAdminUser'
+    imageReference: {
+      publisher: 'MicrosoftWindowsServer'
+      offer: 'WindowsServer'
+      sku: '2022-datacenter-azure-edition'
+      version: 'latest'
+    }
+    nicConfigurations: [
+      {
+        ipConfigurations: [
+          {
+            name: 'ipconfig01'
+            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+          }
+        ]
+        nicSuffix: '-nic-01'
+      }
+    ]
+    osDisk: {
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Windows'
+    vmSize: 'Standard_B12ms'
+    adminPassword: password
+    configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+  }
+}

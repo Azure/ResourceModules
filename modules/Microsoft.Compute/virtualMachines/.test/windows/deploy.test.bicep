@@ -63,174 +63,174 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // Test Execution //
 // ============== //
 
-// module testDeployment '../../deploy.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-//   params: {
-//     location: location
-//     name: '<<namePrefix>>${serviceShort}'
-//     adminUsername: 'localAdminUser'
-//     imageReference: {
-//       publisher: 'MicrosoftWindowsServer'
-//       offer: 'WindowsServer'
-//       sku: '2019-datacenter'
-//       version: 'latest'
-//     }
-//     nicConfigurations: [
-//       {
-//         deleteOption: 'Delete'
-//         ipConfigurations: [
-//           {
-//             applicationSecurityGroups: [
-//               {
-//                 id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
-//               }
-//             ]
-//             loadBalancerBackendAddressPools: [
-//               {
-//                 id: resourceGroupResources.outputs.loadBalancerBackendPoolResourceId
-//               }
-//             ]
-//             name: 'ipconfig01'
-//             pipConfiguration: {
-//               publicIpNameSuffix: '-pip-01'
-//               roleAssignments: [
-//                 {
-//                   roleDefinitionIdOrName: 'Reader'
-//                   principalIds: [
-//                     resourceGroupResources.outputs.managedIdentityPrincipalId
-//                   ]
-//                   principalType: 'ServicePrincipal'
-//                 }
-//               ]
-//             }
-//             subnetResourceId: resourceGroupResources.outputs.subnetResourceId
-//           }
-//         ]
-//         nicSuffix: '-nic-01'
-//         roleAssignments: [
-//           {
-//             roleDefinitionIdOrName: 'Reader'
-//             principalIds: [
-//               resourceGroupResources.outputs.managedIdentityPrincipalId
-//             ]
-//             principalType: 'ServicePrincipal'
-//           }
-//         ]
-//       }
-//     ]
-//     osDisk: {
-//       caching: 'None'
-//       createOption: 'fromImage'
-//       deleteOption: 'Delete'
-//       diskSizeGB: '128'
-//       managedDisk: {
-//         storageAccountType: 'Premium_LRS'
-//       }
-//     }
-//     osType: 'Windows'
-//     vmSize: 'Standard_B12ms'
-//     adminPassword: password
-//     availabilityZone: 2
-//     backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
-//     backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
-//     backupVaultResourceGroup: resourceGroupResources.outputs.recoveryServicesVaultResourceGroupName
-//     dataDisks: [
-//       {
-//         caching: 'None'
-//         createOption: 'Empty'
-//         deleteOption: 'Delete'
-//         diskSizeGB: '128'
-//         managedDisk: {
-//           storageAccountType: 'Premium_LRS'
-//         }
-//       }
-//       {
-//         caching: 'None'
-//         createOption: 'Empty'
-//         deleteOption: 'Delete'
-//         diskSizeGB: '128'
-//         managedDisk: {
-//           storageAccountType: 'Premium_LRS'
-//         }
-//       }
-//     ]
-//     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-//     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-//     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-//     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-//     diagnosticLogsRetentionInDays: 7
-//     encryptionAtHost: false
-//     extensionAntiMalwareConfig: {
-//       enabled: true
-//       settings: {
-//         AntimalwareEnabled: 'true'
-//         Exclusions: {
-//           Extensions: '.ext1;.ext2'
-//           Paths: 'c:\\excluded-path-1;c:\\excluded-path-2'
-//           Processes: 'excludedproc1.exe;excludedproc2.exe'
-//         }
-//         RealtimeProtectionEnabled: 'true'
-//         ScheduledScanSettings: {
-//           day: '7'
-//           isEnabled: 'true'
-//           scanType: 'Quick'
-//           time: '120'
-//         }
-//       }
-//     }
-//     extensionCustomScriptConfig: {
-//       enabled: true
-//       fileData: [
-//         {
-//           storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
-//           uri: resourceGroupResources.outputs.storageAccountCSEFileUrl
-//         }
-//       ]
-//     }
-//     extensionCustomScriptProtectedSetting: {
-//       commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command "& ./${resourceGroupResources.outputs.storageAccountCSEFileName}"'
-//     }
-//     extensionDependencyAgentConfig: {
-//       enabled: true
-//     }
-//     extensionAzureDiskEncryptionConfig: {
-//       enabled: true
-//       settings: {
-//         EncryptionOperation: 'EnableEncryption'
-//         KekVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-//         KeyEncryptionAlgorithm: 'RSA-OAEP'
-//         KeyEncryptionKeyURL: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
-//         KeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-//         KeyVaultURL: resourceGroupResources.outputs.keyVaultUrl
-//         ResizeOSDisk: 'false'
-//         VolumeType: 'All'
-//       }
-//     }
-//     extensionDSCConfig: {
-//       enabled: true
-//     }
-//     extensionMonitoringAgentConfig: {
-//       enabled: true
-//     }
-//     extensionNetworkWatcherAgentConfig: {
-//       enabled: true
-//     }
-//     lock: 'CanNotDelete'
-//     monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-//     proximityPlacementGroupResourceId: resourceGroupResources.outputs.proximityPlacementGroupResourceId
-//     roleAssignments: [
-//       {
-//         roleDefinitionIdOrName: 'Reader'
-//         principalIds: [
-//           resourceGroupResources.outputs.managedIdentityPrincipalId
-//         ]
-//         principalType: 'ServicePrincipal'
-//       }
-//     ]
-//     systemAssignedIdentity: true
-//     userAssignedIdentities: {
-//       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
-//     }
-//   }
-// }
+module testDeployment '../../deploy.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  params: {
+    location: location
+    name: '<<namePrefix>>${serviceShort}'
+    adminUsername: 'localAdminUser'
+    imageReference: {
+      publisher: 'MicrosoftWindowsServer'
+      offer: 'WindowsServer'
+      sku: '2019-datacenter'
+      version: 'latest'
+    }
+    nicConfigurations: [
+      {
+        deleteOption: 'Delete'
+        ipConfigurations: [
+          {
+            applicationSecurityGroups: [
+              {
+                id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
+              }
+            ]
+            loadBalancerBackendAddressPools: [
+              {
+                id: resourceGroupResources.outputs.loadBalancerBackendPoolResourceId
+              }
+            ]
+            name: 'ipconfig01'
+            pipConfiguration: {
+              publicIpNameSuffix: '-pip-01'
+              roleAssignments: [
+                {
+                  roleDefinitionIdOrName: 'Reader'
+                  principalIds: [
+                    resourceGroupResources.outputs.managedIdentityPrincipalId
+                  ]
+                  principalType: 'ServicePrincipal'
+                }
+              ]
+            }
+            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+          }
+        ]
+        nicSuffix: '-nic-01'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              resourceGroupResources.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+      }
+    ]
+    osDisk: {
+      caching: 'None'
+      createOption: 'fromImage'
+      deleteOption: 'Delete'
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Windows'
+    vmSize: 'Standard_B12ms'
+    adminPassword: password
+    availabilityZone: 2
+    backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
+    backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
+    backupVaultResourceGroup: resourceGroupResources.outputs.recoveryServicesVaultResourceGroupName
+    dataDisks: [
+      {
+        caching: 'None'
+        createOption: 'Empty'
+        deleteOption: 'Delete'
+        diskSizeGB: '128'
+        managedDisk: {
+          storageAccountType: 'Premium_LRS'
+        }
+      }
+      {
+        caching: 'None'
+        createOption: 'Empty'
+        deleteOption: 'Delete'
+        diskSizeGB: '128'
+        managedDisk: {
+          storageAccountType: 'Premium_LRS'
+        }
+      }
+    ]
+    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticLogsRetentionInDays: 7
+    encryptionAtHost: false
+    extensionAntiMalwareConfig: {
+      enabled: true
+      settings: {
+        AntimalwareEnabled: 'true'
+        Exclusions: {
+          Extensions: '.ext1;.ext2'
+          Paths: 'c:\\excluded-path-1;c:\\excluded-path-2'
+          Processes: 'excludedproc1.exe;excludedproc2.exe'
+        }
+        RealtimeProtectionEnabled: 'true'
+        ScheduledScanSettings: {
+          day: '7'
+          isEnabled: 'true'
+          scanType: 'Quick'
+          time: '120'
+        }
+      }
+    }
+    extensionCustomScriptConfig: {
+      enabled: true
+      fileData: [
+        {
+          storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
+          uri: resourceGroupResources.outputs.storageAccountCSEFileUrl
+        }
+      ]
+    }
+    extensionCustomScriptProtectedSetting: {
+      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command "& ./${resourceGroupResources.outputs.storageAccountCSEFileName}"'
+    }
+    extensionDependencyAgentConfig: {
+      enabled: true
+    }
+    extensionAzureDiskEncryptionConfig: {
+      enabled: true
+      settings: {
+        EncryptionOperation: 'EnableEncryption'
+        KekVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+        KeyEncryptionAlgorithm: 'RSA-OAEP'
+        KeyEncryptionKeyURL: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
+        KeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+        KeyVaultURL: resourceGroupResources.outputs.keyVaultUrl
+        ResizeOSDisk: 'false'
+        VolumeType: 'All'
+      }
+    }
+    extensionDSCConfig: {
+      enabled: true
+    }
+    extensionMonitoringAgentConfig: {
+      enabled: true
+    }
+    extensionNetworkWatcherAgentConfig: {
+      enabled: true
+    }
+    lock: 'CanNotDelete'
+    monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    proximityPlacementGroupResourceId: resourceGroupResources.outputs.proximityPlacementGroupResourceId
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+    }
+  }
+}
