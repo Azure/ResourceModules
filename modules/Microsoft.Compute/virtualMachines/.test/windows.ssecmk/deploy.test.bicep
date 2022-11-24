@@ -71,6 +71,9 @@ module testDeployment '../../deploy.bicep' = {
       diskSizeGB: '128'
       managedDisk: {
         storageAccountType: 'Premium_LRS'
+        diskEncryptionSet: {
+          id: resourceGroupResources.outputs.diskEncryptionSetResourceId
+        }
       }
     }
     osType: 'Windows'
@@ -81,12 +84,9 @@ module testDeployment '../../deploy.bicep' = {
         diskSizeGB: '128'
         managedDisk: {
           storageAccountType: 'Premium_LRS'
-        }
-      }
-      {
-        diskSizeGB: '128'
-        managedDisk: {
-          storageAccountType: 'Premium_LRS'
+          diskEncryptionSet: {
+            id: resourceGroupResources.outputs.diskEncryptionSetResourceId
+          }
         }
       }
     ]
