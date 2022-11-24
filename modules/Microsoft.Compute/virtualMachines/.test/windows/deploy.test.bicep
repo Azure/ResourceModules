@@ -34,7 +34,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     location: location
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    applicationSecurityGroupName: 'adp-<<namePrefix>>-asg-${serviceShort}'
+    applicationSecurityGroupName: 'dep-<<namePrefix>>-asg-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
     loadBalancerName: 'dep-<<namePrefix>>-lb-${serviceShort}'

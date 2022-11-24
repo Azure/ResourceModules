@@ -2361,3 +2361,146 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 
 </details>
 <p>
+
+<h3>Example 7: Windows.Ssecmk</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-cvmwincmk'
+  params: {
+    // Required parameters
+    adminUsername: 'localAdminUser'
+    imageReference: {
+      offer: 'WindowsServer'
+      publisher: 'MicrosoftWindowsServer'
+      sku: '2019-datacenter'
+      version: 'latest'
+    }
+    nicConfigurations: [
+      {
+        ipConfigurations: [
+          {
+            name: 'ipconfig01'
+            subnetResourceId: '<subnetResourceId>'
+          }
+        ]
+        nicSuffix: '-nic-01'
+      }
+    ]
+    osDisk: {
+      diskSizeGB: '128'
+      managedDisk: {
+        diskEncryptionSet: {
+          id: '<id>'
+        }
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Windows'
+    vmSize: 'Standard_B12ms'
+    // Non-required parameters
+    adminPassword: '<adminPassword>'
+    dataDisks: [
+      {
+        diskSizeGB: '128'
+        managedDisk: {
+          diskEncryptionSet: {
+            id: '<id>'
+          }
+          storageAccountType: 'Premium_LRS'
+        }
+      }
+    ]
+    location: '<location>'
+    name: '<<namePrefix>>cvmwincmk'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "adminUsername": {
+      "value": "localAdminUser"
+    },
+    "imageReference": {
+      "value": {
+        "offer": "WindowsServer",
+        "publisher": "MicrosoftWindowsServer",
+        "sku": "2019-datacenter",
+        "version": "latest"
+      }
+    },
+    "nicConfigurations": {
+      "value": [
+        {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig01",
+              "subnetResourceId": "<subnetResourceId>"
+            }
+          ],
+          "nicSuffix": "-nic-01"
+        }
+      ]
+    },
+    "osDisk": {
+      "value": {
+        "diskSizeGB": "128",
+        "managedDisk": {
+          "diskEncryptionSet": {
+            "id": "<id>"
+          },
+          "storageAccountType": "Premium_LRS"
+        }
+      }
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "vmSize": {
+      "value": "Standard_B12ms"
+    },
+    // Non-required parameters
+    "adminPassword": {
+      "value": "<adminPassword>"
+    },
+    "dataDisks": {
+      "value": [
+        {
+          "diskSizeGB": "128",
+          "managedDisk": {
+            "diskEncryptionSet": {
+              "id": "<id>"
+            },
+            "storageAccountType": "Premium_LRS"
+          }
+        }
+      ]
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "name": {
+      "value": "<<namePrefix>>cvmwincmk"
+    }
+  }
+}
+```
+
+</details>
+<p>
