@@ -9,7 +9,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 
 // Assign RBAC role Key Vault Crypto User
 resource workspace_cmk_rbac 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (usesRbacAuthorization) {
-  name: guid('${workspaceIndentityPrincipalId}-cmk-rbac')
+  name: guid('${keyVault.id}-${workspaceIndentityPrincipalId}-Key-Vault-Crypto-User')
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
     principalId: workspaceIndentityPrincipalId
