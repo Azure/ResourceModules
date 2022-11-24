@@ -45,50 +45,50 @@ module resourceGroupResources 'dependencies.bicep' = {
 //   scope: resourceGroup
 // }
 
-module testDeployment '../../deploy.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-  params: {
-    location: location
-    name: '<<namePrefix>>${serviceShort}'
-    adminUsername: 'localAdminUser'
-    imageReference: {
-      publisher: 'Canonical'
-      offer: '0001-com-ubuntu-server-jammy'
-      sku: '22_04-lts-gen2'
-      version: 'latest'
-    }
-    nicConfigurations: [
-      {
-        ipConfigurations: [
-          {
-            name: 'ipconfig01'
-            pipConfiguration: {
-              publicIpNameSuffix: '-pip-01'
-            }
-            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
-          }
-        ]
-        nicSuffix: '-nic-01'
-      }
-    ]
-    osDisk: {
-      diskSizeGB: '128'
-      managedDisk: {
-        storageAccountType: 'Premium_LRS'
-      }
-    }
-    osType: 'Linux'
-    vmSize: 'Standard_B12ms'
-    disablePasswordAuthentication: true
-    publicKeys: [
-      {
-        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
-        path: '/home/localAdminUser/.ssh/authorized_keys'
-      }
-    ]
-  }
-  dependsOn: [
-    resourceGroupResources // Required to leverage `existing` SSH key reference
-  ]
-}
+// module testDeployment '../../deploy.bicep' = {
+//   scope: resourceGroup
+//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+//   params: {
+//     location: location
+//     name: '<<namePrefix>>${serviceShort}'
+//     adminUsername: 'localAdminUser'
+//     imageReference: {
+//       publisher: 'Canonical'
+//       offer: '0001-com-ubuntu-server-jammy'
+//       sku: '22_04-lts-gen2'
+//       version: 'latest'
+//     }
+//     nicConfigurations: [
+//       {
+//         ipConfigurations: [
+//           {
+//             name: 'ipconfig01'
+//             pipConfiguration: {
+//               publicIpNameSuffix: '-pip-01'
+//             }
+//             subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+//           }
+//         ]
+//         nicSuffix: '-nic-01'
+//       }
+//     ]
+//     osDisk: {
+//       diskSizeGB: '128'
+//       managedDisk: {
+//         storageAccountType: 'Premium_LRS'
+//       }
+//     }
+//     osType: 'Linux'
+//     vmSize: 'Standard_B12ms'
+//     disablePasswordAuthentication: true
+//     publicKeys: [
+//       {
+//         keyData: resourceGroupResources.outputs.SSHKeyPublicKey
+//         path: '/home/localAdminUser/.ssh/authorized_keys'
+//       }
+//     ]
+//   }
+//   dependsOn: [
+//     resourceGroupResources // Required to leverage `existing` SSH key reference
+//   ]
+// }

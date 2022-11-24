@@ -60,164 +60,164 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // Test Execution //
 // ============== //
 
-module testDeployment '../../deploy.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-  params: {
-    name: '<<namePrefix>>${serviceShort}'
-    location: location
-    adminUsername: 'localAdminUser'
-    imageReference: {
-      publisher: 'Canonical'
-      offer: '0001-com-ubuntu-server-focal'
-      sku: '20_04-lts-gen2' // Note: 22.04 does not support OMS extension
-      version: 'latest'
-    }
-    nicConfigurations: [
-      {
-        deleteOption: 'Delete'
-        ipConfigurations: [
-          {
-            applicationSecurityGroups: [
-              {
-                id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
-              }
-            ]
-            loadBalancerBackendAddressPools: [
-              {
-                id: resourceGroupResources.outputs.loadBalancerBackendPoolResourceId
-              }
-            ]
-            name: 'ipconfig01'
-            pipConfiguration: {
-              publicIpNameSuffix: '-pip-01'
-              roleAssignments: [
-                {
-                  roleDefinitionIdOrName: 'Reader'
-                  principalIds: [
-                    resourceGroupResources.outputs.managedIdentityPrincipalId
-                  ]
-                  principalType: 'ServicePrincipal'
-                }
-              ]
-            }
-            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
-          }
-        ]
-        nicSuffix: '-nic-01'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
-            ]
-            principalType: 'ServicePrincipal'
-          }
-        ]
-      }
-    ]
-    osDisk: {
-      caching: 'ReadOnly'
-      createOption: 'fromImage'
-      deleteOption: 'Delete'
-      diskSizeGB: '128'
-      managedDisk: {
-        storageAccountType: 'Premium_LRS'
-      }
-    }
-    osType: 'Linux'
-    vmSize: 'Standard_B12ms'
-    availabilityZone: 1
-    backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
-    backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
-    backupVaultResourceGroup: resourceGroupResources.outputs.recoveryServicesVaultResourceGroupName
-    dataDisks: [
-      {
-        caching: 'ReadWrite'
-        createOption: 'Empty'
-        deleteOption: 'Delete'
-        diskSizeGB: '128'
-        managedDisk: {
-          storageAccountType: 'Premium_LRS'
-        }
-      }
-      {
-        caching: 'ReadWrite'
-        createOption: 'Empty'
-        deleteOption: 'Delete'
-        diskSizeGB: '128'
-        managedDisk: {
-          storageAccountType: 'Premium_LRS'
-        }
-      }
-    ]
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    diagnosticLogsRetentionInDays: 7
-    disablePasswordAuthentication: true
-    encryptionAtHost: false
-    extensionCustomScriptConfig: {
-      enabled: true
-      fileData: [
-        {
-          storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
-          uri: resourceGroupResources.outputs.storageAccountCSEFileUrl
-        }
-      ]
-    }
-    extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'value=$(./${resourceGroupResources.outputs.storageAccountCSEFileName}); echo "$value"'
-    }
-    extensionDependencyAgentConfig: {
-      enabled: true
-    }
-    extensionAzureDiskEncryptionConfig: {
-      enabled: true
-      settings: {
-        EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-        KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
-        KeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-        KeyVaultURL: resourceGroupResources.outputs.keyVaultUrl
-        ResizeOSDisk: 'false'
-        VolumeType: 'All'
-      }
-    }
-    extensionDSCConfig: {
-      enabled: false
-    }
-    extensionMonitoringAgentConfig: {
-      enabled: true
-    }
-    extensionNetworkWatcherAgentConfig: {
-      enabled: true
-    }
-    lock: 'CanNotDelete'
-    monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    publicKeys: [
-      {
-        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
-        path: '/home/localAdminUser/.ssh/authorized_keys'
-      }
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
-        ]
-        principalType: 'ServicePrincipal'
-      }
-    ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
-    }
-  }
-  dependsOn: [
-    resourceGroupResources // Required to leverage `existing` SSH key reference
-  ]
-}
+// module testDeployment '../../deploy.bicep' = {
+//   scope: resourceGroup
+//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+//   params: {
+//     name: '<<namePrefix>>${serviceShort}'
+//     location: location
+//     adminUsername: 'localAdminUser'
+//     imageReference: {
+//       publisher: 'Canonical'
+//       offer: '0001-com-ubuntu-server-focal'
+//       sku: '20_04-lts-gen2' // Note: 22.04 does not support OMS extension
+//       version: 'latest'
+//     }
+//     nicConfigurations: [
+//       {
+//         deleteOption: 'Delete'
+//         ipConfigurations: [
+//           {
+//             applicationSecurityGroups: [
+//               {
+//                 id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
+//               }
+//             ]
+//             loadBalancerBackendAddressPools: [
+//               {
+//                 id: resourceGroupResources.outputs.loadBalancerBackendPoolResourceId
+//               }
+//             ]
+//             name: 'ipconfig01'
+//             pipConfiguration: {
+//               publicIpNameSuffix: '-pip-01'
+//               roleAssignments: [
+//                 {
+//                   roleDefinitionIdOrName: 'Reader'
+//                   principalIds: [
+//                     resourceGroupResources.outputs.managedIdentityPrincipalId
+//                   ]
+//                   principalType: 'ServicePrincipal'
+//                 }
+//               ]
+//             }
+//             subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+//           }
+//         ]
+//         nicSuffix: '-nic-01'
+//         roleAssignments: [
+//           {
+//             roleDefinitionIdOrName: 'Reader'
+//             principalIds: [
+//               resourceGroupResources.outputs.managedIdentityPrincipalId
+//             ]
+//             principalType: 'ServicePrincipal'
+//           }
+//         ]
+//       }
+//     ]
+//     osDisk: {
+//       caching: 'ReadOnly'
+//       createOption: 'fromImage'
+//       deleteOption: 'Delete'
+//       diskSizeGB: '128'
+//       managedDisk: {
+//         storageAccountType: 'Premium_LRS'
+//       }
+//     }
+//     osType: 'Linux'
+//     vmSize: 'Standard_B12ms'
+//     availabilityZone: 1
+//     backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
+//     backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
+//     backupVaultResourceGroup: resourceGroupResources.outputs.recoveryServicesVaultResourceGroupName
+//     dataDisks: [
+//       {
+//         caching: 'ReadWrite'
+//         createOption: 'Empty'
+//         deleteOption: 'Delete'
+//         diskSizeGB: '128'
+//         managedDisk: {
+//           storageAccountType: 'Premium_LRS'
+//         }
+//       }
+//       {
+//         caching: 'ReadWrite'
+//         createOption: 'Empty'
+//         deleteOption: 'Delete'
+//         diskSizeGB: '128'
+//         managedDisk: {
+//           storageAccountType: 'Premium_LRS'
+//         }
+//       }
+//     ]
+//     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+//     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+//     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+//     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+//     diagnosticLogsRetentionInDays: 7
+//     disablePasswordAuthentication: true
+//     encryptionAtHost: false
+//     extensionCustomScriptConfig: {
+//       enabled: true
+//       fileData: [
+//         {
+//           storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
+//           uri: resourceGroupResources.outputs.storageAccountCSEFileUrl
+//         }
+//       ]
+//     }
+//     extensionCustomScriptProtectedSetting: {
+//       commandToExecute: 'value=$(./${resourceGroupResources.outputs.storageAccountCSEFileName}); echo "$value"'
+//     }
+//     extensionDependencyAgentConfig: {
+//       enabled: true
+//     }
+//     extensionAzureDiskEncryptionConfig: {
+//       enabled: true
+//       settings: {
+//         EncryptionOperation: 'EnableEncryption'
+//         KekVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+//         KeyEncryptionAlgorithm: 'RSA-OAEP'
+//         KeyEncryptionKeyURL: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
+//         KeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+//         KeyVaultURL: resourceGroupResources.outputs.keyVaultUrl
+//         ResizeOSDisk: 'false'
+//         VolumeType: 'All'
+//       }
+//     }
+//     extensionDSCConfig: {
+//       enabled: false
+//     }
+//     extensionMonitoringAgentConfig: {
+//       enabled: true
+//     }
+//     extensionNetworkWatcherAgentConfig: {
+//       enabled: true
+//     }
+//     lock: 'CanNotDelete'
+//     monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+//     publicKeys: [
+//       {
+//         keyData: resourceGroupResources.outputs.SSHKeyPublicKey
+//         path: '/home/localAdminUser/.ssh/authorized_keys'
+//       }
+//     ]
+//     roleAssignments: [
+//       {
+//         roleDefinitionIdOrName: 'Reader'
+//         principalIds: [
+//           resourceGroupResources.outputs.managedIdentityPrincipalId
+//         ]
+//         principalType: 'ServicePrincipal'
+//       }
+//     ]
+//     systemAssignedIdentity: true
+//     userAssignedIdentities: {
+//       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+//     }
+//   }
+//   dependsOn: [
+//     resourceGroupResources // Required to leverage `existing` SSH key reference
+//   ]
+// }
