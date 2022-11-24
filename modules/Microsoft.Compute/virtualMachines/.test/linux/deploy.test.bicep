@@ -173,7 +173,7 @@ module testDeployment '../../deploy.bicep' = {
     extensionDependencyAgentConfig: {
       enabled: true
     }
-    extensionDiskEncryptionConfig: {
+    extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'

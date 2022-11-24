@@ -206,7 +206,7 @@ param extensionNetworkWatcherAgentConfig object = {
 }
 
 @description('Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed.')
-param extensionDiskEncryptionConfig object = {
+param extensionAzureDiskEncryptionConfig object = {
   enabled: false
 }
 
@@ -340,7 +340,7 @@ module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/deploy
     extensionCustomScriptConfig: extensionCustomScriptConfig
     extensionCustomScriptProtectedSetting: extensionCustomScriptProtectedSetting
     extensionDependencyAgentConfig: extensionDependencyAgentConfig
-    extensionDiskEncryptionConfig: extensionDiskEncryptionConfig
+    extensionAzureDiskEncryptionConfig: extensionAzureDiskEncryptionConfig
     extensionDomainJoinConfig: extensionDomainJoinConfig
     extensionDomainJoinPassword: extensionDomainJoinPassword
     extensionDSCConfig: extensionDSCConfig

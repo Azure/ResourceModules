@@ -73,7 +73,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `extensionCustomScriptConfig` | object | `{object}` |  | The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionCustomScriptProtectedSetting` | secureObject | `{object}` |  | Any object that contains the extension specific protected settings. |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. |
+| `extensionAzureDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinConfig` | object | `{object}` |  | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinPassword` | secureString | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
 | `extensionDSCConfig` | object | `{object}` |  | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -608,14 +608,14 @@ extensionAntiMalwareConfig: {
 </details>
 <p>
 
-### Parameter Usage: `extensionDiskEncryptionConfig`
+### Parameter Usage: `extensionAzureDiskEncryptionConfig`
 
 <details>
 
 <summary>Parameter JSON format</summary>
 
 ```json
-"extensionDiskEncryptionConfig": {
+"extensionAzureDiskEncryptionConfig": {
   "value": {
     "enabled": true,
     "settings": {
@@ -639,7 +639,7 @@ extensionAntiMalwareConfig: {
 <summary>Bicep format</summary>
 
 ```bicep
-extensionDiskEncryptionConfig: {
+extensionAzureDiskEncryptionConfig: {
     enabled: true
     settings: {
         EncryptionOperation: 'EnableEncryption'
@@ -1140,7 +1140,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     extensionDependencyAgentConfig: {
       enabled: true
     }
-    extensionDiskEncryptionConfig: {
+    extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
@@ -1352,7 +1352,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "enabled": true
       }
     },
-    "extensionDiskEncryptionConfig": {
+    "extensionAzureDiskEncryptionConfig": {
       "value": {
         "enabled": true,
         "settings": {
@@ -1835,7 +1835,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     extensionDependencyAgentConfig: {
       enabled: true
     }
-    extensionDiskEncryptionConfig: {
+    extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
@@ -2062,7 +2062,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "enabled": true
       }
     },
-    "extensionDiskEncryptionConfig": {
+    "extensionAzureDiskEncryptionConfig": {
       "value": {
         "enabled": true,
         "settings": {

@@ -70,7 +70,7 @@ The following resources are required to be able to deploy this resource.
 | `extensionAntiMalwareConfig` | object | `{object}` |  | The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionCustomScriptConfig` | object | `{object}` |  | The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. |
+| `extensionAzureDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinConfig` | object | `{object}` |  | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinPassword` | secureString | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
 | `extensionDSCConfig` | object | `{object}` |  | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -529,14 +529,14 @@ extensionAntiMalwareConfig: {
 </details>
 <p>
 
-### Parameter Usage: `extensionDiskEncryptionConfig`
+### Parameter Usage: `extensionAzureDiskEncryptionConfig`
 
 <details>
 
 <summary>Parameter JSON format</summary>
 
 ```json
-"extensionDiskEncryptionConfig": {
+"extensionAzureDiskEncryptionConfig": {
     "value": {
         "enabled": true,
         "settings": {
@@ -560,7 +560,7 @@ extensionAntiMalwareConfig: {
 <summary>Bicep format</summary>
 
 ```bicep
-extensionDiskEncryptionConfig: {
+extensionAzureDiskEncryptionConfig: {
     enabled: true
     settings: {
         EncryptionOperation: 'EnableEncryption'
@@ -963,7 +963,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     extensionDependencyAgentConfig: {
       enabled: true
     }
-    extensionDiskEncryptionConfig: {
+    extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
@@ -1136,7 +1136,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "enabled": true
       }
     },
-    "extensionDiskEncryptionConfig": {
+    "extensionAzureDiskEncryptionConfig": {
       "value": {
         "enabled": true,
         "settings": {
@@ -1431,7 +1431,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     extensionDependencyAgentConfig: {
       enabled: true
     }
-    extensionDiskEncryptionConfig: {
+    extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
@@ -1593,7 +1593,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "enabled": true
       }
     },
-    "extensionDiskEncryptionConfig": {
+    "extensionAzureDiskEncryptionConfig": {
       "value": {
         "enabled": true,
         "settings": {
