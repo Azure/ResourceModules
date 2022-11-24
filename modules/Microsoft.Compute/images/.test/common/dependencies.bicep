@@ -200,7 +200,7 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 }
 
 @description('The URI of the created VHD.')
-output vhdUri string = 'https://${storageAccount.name}.blob.core.windows.net/vhds/${imageTemplateNamePrefix}.vhd'
+output vhdUri string = 'https://${storageAccount.name}.blob.${environment().suffixes.storage}/vhds/${imageTemplateNamePrefix}.vhd'
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
