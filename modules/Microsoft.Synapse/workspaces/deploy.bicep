@@ -226,7 +226,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
 module workspace_cmk_rbac './.bicep/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
   name: '${workspace.name}-cmk-rbac'
   params: {
-    workspaceIdentity: workspace.identity.principalId
+    workspaceIndentityPrincipalId: workspace.identity.principalId
     keyvaultName: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.name : ''
     usesRbacAuthorization: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.properties.enableRbacAuthorization : true
   }
