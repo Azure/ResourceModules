@@ -34,7 +34,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    maintenanceConfigurationName: 'dep-<<namePrefix>>-mc-${serviceShort}'
     location: location
   }
 }
@@ -88,7 +87,7 @@ module testDeployment '../../deploy.bicep' = {
     elasticPools: [
       {
         name: '<<namePrefix>>-${serviceShort}-ep-001'
-        maintenanceConfigurationId: resourceGroupResources.outputs.maintenanceConfigurationResourceId
+        maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_WestEurope_DB_1'
       }
     ]
     databases: [
