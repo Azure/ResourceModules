@@ -605,12 +605,12 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-swmin'
+  name: '${uniqueString(deployment().name)}-test-swmanv'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '<<namePrefix>>swmin001'
+    name: '<<namePrefix>>swmanv001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     allowedAadTenantIdsForLinking: [
@@ -642,7 +642,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "<<namePrefix>>swmin001"
+      "value": "<<namePrefix>>swmanv001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
