@@ -166,9 +166,6 @@ param backupVaultResourceGroup string = resourceGroup().name
 @description('Optional. Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault.')
 param backupPolicyName string = 'DefaultPolicy'
 
-@description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
-param enableServerSideEncryption bool = false
-
 // Child resources
 @description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
 param allowExtensionOperations bool = true
@@ -334,7 +331,6 @@ module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/deploy
     enableAutomaticUpdates: enableAutomaticUpdates
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     enableEvictionPolicy: enableEvictionPolicy
-    enableServerSideEncryption: enableServerSideEncryption
     encryptionAtHost: encryptionAtHost
     extensionAntiMalwareConfig: extensionAntiMalwareConfig
     extensionCustomScriptConfig: extensionCustomScriptConfig
