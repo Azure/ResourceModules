@@ -377,6 +377,14 @@ In special cases, manual actions may be required to provision certain resources 
 
 To successfully deploy the sites module using the `FunctionAppCommon/deploy.test.bicep` test, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
 
+Finally, the elements described above must further be configured in the following files:
+
+| File | Parameter | Notes |
+| - | - | - |
+| `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `appSettingsKeyValuePairs.EASYAUTH_SECRET` | Key Vault secret URI without version (e.g., 'https://Test-KeyVault.vault.azure.net/secrets/aBcDeFghIjK69Ln') |
+| `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App (e.g., '11111111-1111-1111-1111-11111111111') |
+| `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app (e.g., 'api://11111111-1111-1111-1111-11111111111') |
+
 # 5. Update module test files
 
 Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependencies pipeline ran once.
@@ -392,9 +400,6 @@ For this reason, make sure to update the references in the following modules onc
 | `modules\Microsoft.Compute\virtualMachineScaleSets\.test\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
 | `modules\Microsoft.Sql\managedInstances\.test\parameters.json` | `keys.value.uri` | |
 | `modules\Microsoft.Network\applicationGateways\.test\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
-| `modules\Microsoft.Web\sites\.test\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
-| `modules\Microsoft.Web\sites\.test\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
-| `modules\Microsoft.Web\sites\.test\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
 
 </details>
 

@@ -132,7 +132,7 @@ The following resources are required to be able to deploy this resource.
     "value": {
         "publisher": "MicrosoftWindowsServer",
         "offer": "WindowsServer",
-        "sku": "2016-Datacenter",
+        "sku": "2022-datacenter-azure-edition",
         "version": "latest"
     }
 }
@@ -149,7 +149,7 @@ The following resources are required to be able to deploy this resource.
 imageReference: {
     publisher: 'MicrosoftWindowsServer'
     offer: 'WindowsServer'
-    sku: '2016-Datacenter'
+    sku: '2022-datacenter-azure-edition'
     version: 'latest'
 }
 ```
@@ -903,9 +903,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     // Required parameters
     adminUsername: 'scaleSetAdmin'
     imageReference: {
-      offer: 'UbuntuServer'
+      offer: '0001-com-ubuntu-server-jammy'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     name: '<<namePrefix>>cvmsslin001'
@@ -1043,9 +1043,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "imageReference": {
       "value": {
-        "offer": "UbuntuServer",
+        "offer": "0001-com-ubuntu-server-jammy",
         "publisher": "Canonical",
-        "sku": "18.04-LTS",
+        "sku": "22_04-lts-gen2",
         "version": "latest"
       }
     },
@@ -1242,9 +1242,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     // Required parameters
     adminUsername: 'scaleSetAdmin'
     imageReference: {
-      offer: 'UbuntuServer'
+      offer: '0001-com-ubuntu-server-jammy'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     name: '<<namePrefix>>cvmsslinmin001'
@@ -1302,9 +1302,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "imageReference": {
       "value": {
-        "offer": "UbuntuServer",
+        "offer": "0001-com-ubuntu-server-jammy",
         "publisher": "Canonical",
-        "sku": "18.04-LTS",
+        "sku": "22_04-lts-gen2",
         "version": "latest"
       }
     },
@@ -1377,7 +1377,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2016-Datacenter'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
     name: '<<namePrefix>>cvmsswin001'
@@ -1510,7 +1510,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": {
         "offer": "WindowsServer",
         "publisher": "MicrosoftWindowsServer",
-        "sku": "2016-Datacenter",
+        "sku": "2022-datacenter-azure-edition",
         "version": "latest"
       }
     },
@@ -1698,7 +1698,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2016-Datacenter'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
     name: '<<namePrefix>>cvmsswinmin001'
@@ -1752,7 +1752,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": {
         "offer": "WindowsServer",
         "publisher": "MicrosoftWindowsServer",
-        "sku": "2016-Datacenter",
+        "sku": "2022-datacenter-azure-edition",
         "version": "latest"
       }
     },

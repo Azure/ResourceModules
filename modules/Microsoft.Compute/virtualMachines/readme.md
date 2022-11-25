@@ -128,7 +128,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
     "value": {
         "publisher": "MicrosoftWindowsServer",
         "offer": "WindowsServer",
-        "sku": "2016-Datacenter",
+        "sku": "2022-datacenter-azure-edition",
         "version": "latest"
     }
 }
@@ -143,7 +143,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 imageReference: {
       publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
-      sku: '2016-Datacenter'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
 }
 ```
@@ -1034,9 +1034,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Required parameters
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'UbuntuServer'
+      offer: '0001-com-ubuntu-server-focal'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      sku: '<sku>'
       version: 'latest'
     }
     nicConfigurations: [
@@ -1207,9 +1207,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "imageReference": {
       "value": {
-        "offer": "UbuntuServer",
+        "offer": "0001-com-ubuntu-server-focal",
         "publisher": "Canonical",
-        "sku": "18.04-LTS",
+        "sku": "<sku>",
         "version": "latest"
       }
     },
@@ -1441,9 +1441,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Required parameters
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'UbuntuServer'
+      offer: '0001-com-ubuntu-server-jammy'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     nicConfigurations: [
@@ -1501,9 +1501,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "imageReference": {
       "value": {
-        "offer": "UbuntuServer",
+        "offer": "0001-com-ubuntu-server-jammy",
         "publisher": "Canonical",
-        "sku": "18.04-LTS",
+        "sku": "22_04-lts-gen2",
         "version": "latest"
       }
     },
@@ -1578,9 +1578,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Required parameters
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'UbuntuServer'
+      offer: '0001-com-ubuntu-server-jammy'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     nicConfigurations: [
@@ -1637,9 +1637,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "imageReference": {
       "value": {
-        "offer": "UbuntuServer",
+        "offer": "0001-com-ubuntu-server-jammy",
         "publisher": "Canonical",
-        "sku": "18.04-LTS",
+        "sku": "22_04-lts-gen2",
         "version": "latest"
       }
     },
@@ -1713,7 +1713,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2019-Datacenter'
+      sku: '2019-datacenter'
       version: 'latest'
     }
     nicConfigurations: [
@@ -1899,7 +1899,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "offer": "WindowsServer",
         "publisher": "MicrosoftWindowsServer",
-        "sku": "2019-Datacenter",
+        "sku": "2019-datacenter",
         "version": "latest"
       }
     },
@@ -2148,7 +2148,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2019-Datacenter'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
     nicConfigurations: [
@@ -2199,7 +2199,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "offer": "WindowsServer",
         "publisher": "MicrosoftWindowsServer",
-        "sku": "2019-Datacenter",
+        "sku": "2022-datacenter-azure-edition",
         "version": "latest"
       }
     },

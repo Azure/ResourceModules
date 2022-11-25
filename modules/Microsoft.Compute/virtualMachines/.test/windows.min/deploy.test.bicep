@@ -48,8 +48,8 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}'
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
+      offer: 'WindowsServer'
       sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }

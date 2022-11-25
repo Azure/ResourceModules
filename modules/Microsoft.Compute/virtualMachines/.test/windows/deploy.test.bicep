@@ -71,9 +71,9 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}'
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2019-Datacenter'
+      offer: 'WindowsServer'
+      sku: '2019-datacenter'
       version: 'latest'
     }
     nicConfigurations: [
