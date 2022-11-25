@@ -20,7 +20,8 @@ This module deploys a SQL server.
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Sql/servers` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers) |
-| `Microsoft.Sql/servers/databases` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/databases) |
+| `Microsoft.Sql/servers/databases` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-11-01/servers/databases) |
+| `Microsoft.Sql/servers/elasticPools` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/elasticPools) |
 | `Microsoft.Sql/servers/firewallRules` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/firewallRules) |
 | `Microsoft.Sql/servers/securityAlertPolicies` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/securityAlertPolicies) |
 | `Microsoft.Sql/servers/virtualNetworkRules` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/virtualNetworkRules) |
@@ -47,6 +48,7 @@ This module deploys a SQL server.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
+| `elasticPools` | _[elasticPools](elasticPools/readme.md)_ array | `[]` |  | The Elastic Pools to create in the server. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the server. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -422,13 +424,20 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        elasticPoolId: '<elasticPoolId>'
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
         name: '<<namePrefix>>-sqlscomdb-001'
         skuCapacity: 12
         skuFamily: 'Gen5'
-        skuName: 'BC_Gen5'
-        skuTier: 'BusinessCritical'
+        skuName: 'GP_Gen5'
+        skuTier: 'GeneralPurpose'
+      }
+    ]
+    elasticPools: [
+      {
+        maintenanceConfigurationId: '<maintenanceConfigurationId>'
+        name: '<<namePrefix>>-sqlscom-ep-001'
       }
     ]
     firewallRules: [
@@ -524,13 +533,22 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "diagnosticLogsRetentionInDays": 7,
           "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "elasticPoolId": "<elasticPoolId>",
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
           "name": "<<namePrefix>>-sqlscomdb-001",
           "skuCapacity": 12,
           "skuFamily": "Gen5",
-          "skuName": "BC_Gen5",
-          "skuTier": "BusinessCritical"
+          "skuName": "GP_Gen5",
+          "skuTier": "GeneralPurpose"
+        }
+      ]
+    },
+    "elasticPools": {
+      "value": [
+        {
+          "maintenanceConfigurationId": "<maintenanceConfigurationId>",
+          "name": "<<namePrefix>>-sqlscom-ep-001"
         }
       ]
     },

@@ -89,16 +89,14 @@ module testDeployment '../../deploy.bicep' = {
         name: '<<namePrefix>>-${serviceShort}-ep-001'
         // Pre-existing 'public' configuration
         maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_WestEurope_DB_1'
-        skuTier: 'BusinessCritical'
-        skuName: 'BC_Gen5'
       }
     ]
     databases: [
       {
         name: '<<namePrefix>>-${serviceShort}db-001'
         collation: 'SQL_Latin1_General_CP1_CI_AS'
-        skuTier: 'BusinessCritical'
-        skuName: 'BC_Gen5'
+        skuTier: 'GeneralPurpose'
+        skuName: 'GP_Gen5'
         skuCapacity: 12
         skuFamily: 'Gen5'
         maxSizeBytes: 34359738368
