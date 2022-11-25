@@ -29,15 +29,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
   name: storageAccountName
 
-  resource queueServices 'queueServices@2021-06-01' existing = {
+  resource queueServices 'queueServices@2021-09-01' existing = {
     name: queueServicesName
   }
 }
 
-resource queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2019-06-01' = {
+resource queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-09-01' = {
   name: name
   parent: storageAccount::queueServices
   properties: {
@@ -52,6 +52,8 @@ module queue_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleA
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: queue.id
   }
 }]

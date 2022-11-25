@@ -46,7 +46,7 @@ The following paragraphs provide an overview of the different phases and shared 
 This paragraph provides an overview of the three phases performed by each module pipeline. Further details about the implementation and design of each phase are provided on the dedicated pages linked below.
 
 1. **Static Validation**: Runs a set of static Pester tests on the module and its templates to ensure they comply with the design principles of CARML. Further details for this phase are provided on the corresponding wiki page - see the [Static validation](./The%20CI%20environment%20-%20Static%20validation) section.
-1. **Deployment Validation**: An actual Azure deployment is run in a sandbox subscription leveraging a predefined set of parameter files, each validating a different configuration of the same Azure resource in parallel. The test suite is cleaned up by default, removing all test resources post-deployment. Further details for this phase are provided on the corresponding wiki page - see the [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation) section.
+1. **Deployment Validation**: An actual Azure deployment is run in a sandbox subscription leveraging a predefined set of module test files, each validating a different configuration of the same Azure resource in parallel. The test suite is cleaned up by default, removing all test resources post-deployment. Further details for this phase are provided on the corresponding wiki page - see the [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation) section.
 1. **Publishing**: Runs only if the previous steps are successful. A new module version is published to all configured target locations such as template specs, private Bicep registry and Azure DevOps Universal Packages. Published module versions can then be referenced by solutions using them. Further details for this phase are provided on the corresponding wiki page - see the [Publishing](./The%20CI%20environment%20-%20Publishing) page.
 
    <img src="./media/CIEnvironment/pipelineDesignPhases.png" alt="Pipeline phases" height="200">
@@ -72,7 +72,7 @@ In addition, workflows leverage the following composite actions:
 | Composite Action | Description |
 | - | - |
 | **getWorkflowInput** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it, we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example, the removal switch `removeDeployment`. |
-| **setEnvironmentVariables** | This action parses the variables file ([`global.variables.yml`](https://github.com/Azure/ResourceModules/blob/main/global.variables.yml)) and sets the key-value pairs in the `variables` list as environment variables. |
+| **setEnvironmentVariables** | This action parses the settings file ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) and sets the key-value pairs in the `variables` list as environment variables. |
 
 Technical documentation for each composite action, such as required input and output variables, is included in each `action.yml` file located in path `.github/actions/templates`.
 
@@ -118,7 +118,9 @@ In addition to module pipelines, the repository includes several platform pipeli
 
 ## Dependencies pipeline
 
-In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources need to be deployed beforehand.
+> NOTE: The dependencies deployed as part of this pipeline will be moved to the individual modules that depend on them once issue [1583](https://github.com/Azure/ResourceModules/issues/1583) is resolved. You can find further information about this effort [here](./The%20library%20-%20Module%20design#module-test-files).
+
+In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources may need to be deployed beforehand.
 
 For example, any instance of the \[Virtual Machine] module needs an existing virtual network to be connected to and a Key Vault hosting its required local admin credentials to be referenced.
 
@@ -157,7 +159,13 @@ Since also dependency resources are in turn subject to dependencies with each ot
 This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
 
   1. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
-      >**Note**: This resource has a global scope name.
+      >**Note**: This resource needs a global scope name.
+    Multiple instances are deployed:
+      - '_adp\<<namePrefix\>>azsax001_' : Default Storage.
+      - '_adp\<<namePrefix\>>azsafa001_' : Function App Data Storage.
+      - '_adp\<<namePrefix\>>azsalaw001_' : Diagnostic Storage.
+      - '_adp\<<namePrefix\>>azsasynapse001_' : Synapse DataLake Gen2 #1.
+      - '_adp\<<namePrefix\>>azsasynapse002_' : Synapse DataLake Gen2 #2.
   1. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
       >**Note**: This resource has a global scope name.
   1. Log analytics workspaces: These resources are leveraged by all resources supporting diagnostic settings on LAW. Multiple instances are deployed:
@@ -228,7 +236,30 @@ This group of resources has a dependency on one or more resources in the groups 
 This group of resources has a dependency on one or more resources in the groups above.
 
   1. Virtual Machine: This resource is depending on the \[virtual networks] and \[Key Vault] deployed above. This resource is leveraged by the \[network watcher] resource.
-  1. Private DNS zone: This resource is depending on the \[virtual networks] deployed above. This resource is leveraged by the \[private endpoint] resource.
+  1. Private DNS zones: This resource is depending on the \[virtual networks] deployed above. This resource is leveraged by the \[private endpoint] resource which is cross-referenced from all modules providing a private endpoint connection. Multiple instances are deployed:
+      - '_privatelink.azconfig.io_': Leveraged by the \[configuration store] resource.
+      - '_privatelink.azure-automation.net_': Leveraged by the \[automation account] resource.
+      - '_privatelink.batch.azure.com_': Leveraged by the \[batch account] resource.
+      - '_privatelink.redis.cache.windows.net_': Leveraged by the \[redis cache] resource.
+      - '_privatelink.cognitiveservices.azure.com_': Leveraged by the \[cognitive services account] resource.
+      - '_privatelink.azurecr.io_': Leveraged by the \[azure container registry] resource.
+      - '_privatelink.datafactory.azure.net_': Leveraged by the \[data factory] resource.
+      - '_privatelink.eventgrid.azure.net_': Leveraged by the \[event grid topic] resource.
+      - '_privatelink.servicebus.windows.net_': Leveraged by the \[service bus and event hub] resources.
+      - '_privatelink.monitor.azure.com_': Leveraged by the \[private link scope] resource.
+      - '_privatelink.api.azureml.ms_': Leveraged by the \[machine learning workspace] resource.
+      - '_privatelink.siterecovery.windowsazure.com_': Leveraged by the \[recovery services vault] resource.
+      - '_privatelink.azuresynapse.net_': Leveraged by the \[synapse private link hub] resource.
+      - '_privatelink.sql.azuresynapse.net_': Leveraged by the \[synapse workspace] resource.
+      - '_privatelink.database.windows.net_': Leveraged by the \[sql server] resource.
+      - '_privatelink.azurewebsites.net_': Leveraged by the \[web site] resource.
+      - '_privatelink.azurestaticapps.net_': Leveraged by the \[web static site] resource.
+      - '_privatelink.blob.azure.com_': Leveraged by the \[storage account (blob)] resource.
+      - '_privatelink.file.azure.com_': Leveraged by the \[storage account (file)] resource.
+      - '_privatelink.queue.azure.com_': Leveraged by the \[storage account (queue)] resource.
+      - '_privatelink.table.azure.com_': Leveraged by the \[storage account (table)] resource.
+      - '_privatelink.vaultcore.azure.net_': Leveraged by the \[key vault] resource.
+      - '_privatelink.webpubsub.azure.net_': Leveraged by the \[web pubsub] resource.
 
 ### Required secrets and keys
 

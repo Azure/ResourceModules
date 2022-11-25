@@ -7,30 +7,33 @@ This module deploys a scheduled query rule.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/scheduledQueryRules` | [2021-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-02-01-preview/scheduledQueryRules) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `criterias` | object | The rule criteria that defines the conditions of the scheduled query rule. |
 | `name` | string | The name of the Alert. |
 | `scopes` | array | The list of resource IDs that this scheduled query rule is scoped to. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Actions to invoke when the alert fires. |
 | `alertDescription` | string | `''` |  | The description of the scheduled query rule. |
 | `autoMitigate` | bool | `True` |  | The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert. |
-| `criterias` | object | `{object}` |  | The rule criteria that defines the conditions of the scheduled query rule. |
 | `enabled` | bool | `True` |  | The flag which indicates whether this scheduled query rule is enabled. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `evaluationFrequency` | string | `''` |  | How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
@@ -155,89 +158,18 @@ tags: {
 | `resourceGroupName` | string | The Resource Group of the created query rule. |
 | `resourceId` | string | The resource ID of the created query rule. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "myAlert01"
-        },
-        "alertDescription": {
-            "value": "My sample Alert"
-        },
-        "scopes": {
-            "value": [
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-            ]
-        },
-        "evaluationFrequency": {
-            "value": "PT5M"
-        },
-        "windowSize": {
-            "value": "PT5M"
-        },
-        "suppressForMinutes": {
-            "value": "PT5M"
-        },
-        "queryTimeRange": {
-            "value": "PT5M"
-        },
-        "autoMitigate": {
-            "value": false
-        },
-        "criterias": {
-            "value": {
-                "allOf": [
-                    {
-                        "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
-                        "timeAggregation": "Average",
-                        "metricMeasureColumn": "AggregatedValue",
-                        "dimensions": [
-                            {
-                                "name": "Computer",
-                                "operator": "Include",
-                                "values": [
-                                    "*"
-                                ]
-                            },
-                            {
-                                "name": "InstanceName",
-                                "operator": "Include",
-                                "values": [
-                                    "*"
-                                ]
-                            }
-                        ],
-                        "operator": "GreaterThan",
-                        "threshold": 0
-                    }
-                ]
-            }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -245,24 +177,12 @@ tags: {
 
 ```bicep
 module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-scheduledQueryRules'
+  name: '${uniqueString(deployment().name)}-test-isqrcom'
   params: {
-    name: 'myAlert01'
-    alertDescription: 'My sample Alert'
-    scopes: [
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    ]
-    evaluationFrequency: 'PT5M'
-    windowSize: 'PT5M'
-    suppressForMinutes: 'PT5M'
-    queryTimeRange: 'PT5M'
-    autoMitigate: false
+    // Required parameters
     criterias: {
       allOf: [
         {
-          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
-          timeAggregation: 'Average'
-          metricMeasureColumn: 'AggregatedValue'
           dimensions: [
             {
               name: 'Computer'
@@ -279,19 +199,118 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
               ]
             }
           ]
+          metricMeasureColumn: 'AggregatedValue'
           operator: 'GreaterThan'
+          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
           threshold: 0
+          timeAggregation: 'Average'
         }
       ]
     }
+    name: '<<namePrefix>>isqrcom001'
+    scopes: [
+      '<logAnalyticsWorkspaceResourceId>'
+    ]
+    // Non-required parameters
+    alertDescription: 'My sample Alert'
+    autoMitigate: false
+    evaluationFrequency: 'PT5M'
+    queryTimeRange: 'PT5M'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    suppressForMinutes: 'PT5M'
+    windowSize: 'PT5M'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "criterias": {
+      "value": {
+        "allOf": [
+          {
+            "dimensions": [
+              {
+                "name": "Computer",
+                "operator": "Include",
+                "values": [
+                  "*"
+                ]
+              },
+              {
+                "name": "InstanceName",
+                "operator": "Include",
+                "values": [
+                  "*"
+                ]
+              }
+            ],
+            "metricMeasureColumn": "AggregatedValue",
+            "operator": "GreaterThan",
+            "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
+            "threshold": 0,
+            "timeAggregation": "Average"
+          }
+        ]
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>isqrcom001"
+    },
+    "scopes": {
+      "value": [
+        "<logAnalyticsWorkspaceResourceId>"
+      ]
+    },
+    // Non-required parameters
+    "alertDescription": {
+      "value": "My sample Alert"
+    },
+    "autoMitigate": {
+      "value": false
+    },
+    "evaluationFrequency": {
+      "value": "PT5M"
+    },
+    "queryTimeRange": {
+      "value": "PT5M"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "suppressForMinutes": {
+      "value": "PT5M"
+    },
+    "windowSize": {
+      "value": "PT5M"
+    }
   }
 }
 ```

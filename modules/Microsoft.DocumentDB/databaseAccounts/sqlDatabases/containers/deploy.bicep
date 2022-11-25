@@ -59,7 +59,7 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
         kind: kind
       }
     }
-    options: {
+    options: contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? null : {
       throughput: throughput
     }
   }

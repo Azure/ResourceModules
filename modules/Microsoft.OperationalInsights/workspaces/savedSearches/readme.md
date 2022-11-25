@@ -7,6 +7,7 @@ This template deploys a saved search for a Log Analytics workspace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -17,6 +18,7 @@ This template deploys a saved search for a Log Analytics workspace.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `category` | string | Query category. |
@@ -25,11 +27,13 @@ This template deploys a saved search for a Log Analytics workspace.
 | `query` | string | Kusto Query to be stored. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `logAnalyticsWorkspaceName` | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -88,3 +92,7 @@ tags: {
 | `name` | string | The name of the deployed saved search. |
 | `resourceGroupName` | string | The resource group where the saved search is deployed. |
 | `resourceId` | string | The resource ID of the deployed saved search. |
+
+## Cross-referenced modules
+
+_None_

@@ -7,24 +7,27 @@ This module deploys an Action Group.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `microsoft.insights/actionGroups` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `groupShortName` | string | The short name of the action group. |
 | `name` | string | The name of the action group. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `armRoleReceivers` | array | `[]` | The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported. |
@@ -230,63 +233,18 @@ tags: {
 | `resourceGroupName` | string | The resource group the action group was deployed into. |
 | `resourceId` | string | The resource ID of the action group . |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ag-x-001"
-        },
-        "groupShortName": {
-            "value": "azagweux001"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "emailReceivers": {
-            "value": [
-                {
-                    "name": "TestUser_-EmailAction-",
-                    "emailAddress": "test.user@testcompany.com",
-                    "useCommonAlertSchema": true
-                },
-                {
-                    "name": "TestUser2",
-                    "emailAddress": "test.user2@testcompany.com",
-                    "useCommonAlertSchema": true
-                }
-            ]
-        },
-        "smsReceivers": {
-            "value": [
-                {
-                    "name": "TestUser_-SMSAction-",
-                    "countryCode": "1",
-                    "phoneNumber": "2345678901"
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -294,37 +252,139 @@ tags: {
 
 ```bicep
 module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-actionGroups'
+  name: '${uniqueString(deployment().name)}-test-iagcom'
   params: {
-    name: '<<namePrefix>>-az-ag-x-001'
-    groupShortName: 'azagweux001'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
+    // Required parameters
+    groupShortName: 'agiagcom001'
+    name: '<<namePrefix>>iagcom001'
+    // Non-required parameters
     emailReceivers: [
       {
-        name: 'TestUser_-EmailAction-'
         emailAddress: 'test.user@testcompany.com'
+        name: 'TestUser_-EmailAction-'
         useCommonAlertSchema: true
       }
       {
-        name: 'TestUser2'
         emailAddress: 'test.user2@testcompany.com'
+        name: 'TestUser2'
         useCommonAlertSchema: true
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
     smsReceivers: [
       {
-        name: 'TestUser_-SMSAction-'
         countryCode: '1'
+        name: 'TestUser_-SMSAction-'
         phoneNumber: '2345678901'
       }
     ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupShortName": {
+      "value": "agiagcom001"
+    },
+    "name": {
+      "value": "<<namePrefix>>iagcom001"
+    },
+    // Non-required parameters
+    "emailReceivers": {
+      "value": [
+        {
+          "emailAddress": "test.user@testcompany.com",
+          "name": "TestUser_-EmailAction-",
+          "useCommonAlertSchema": true
+        },
+        {
+          "emailAddress": "test.user2@testcompany.com",
+          "name": "TestUser2",
+          "useCommonAlertSchema": true
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "smsReceivers": {
+      "value": [
+        {
+          "countryCode": "1",
+          "name": "TestUser_-SMSAction-",
+          "phoneNumber": "2345678901"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-iagmin'
+  params: {
+    // Required parameters
+    groupShortName: 'agiagmin001'
+    name: '<<namePrefix>>iagmin001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupShortName": {
+      "value": "agiagmin001"
+    },
+    "name": {
+      "value": "<<namePrefix>>iagmin001"
+    }
   }
 }
 ```

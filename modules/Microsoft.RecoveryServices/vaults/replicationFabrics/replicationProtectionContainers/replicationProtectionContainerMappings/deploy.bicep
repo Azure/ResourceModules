@@ -44,7 +44,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource replicationContainer 'Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings@2021-12-01' = {
+resource replicationContainer 'Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings@2022-02-01' = {
   name: '${recoveryVaultName}/${replicationFabricName}/${sourceProtectionContainerName}/${mappingName}'
   properties: {
     targetProtectionContainerId: targetProtectionContainerResourceId

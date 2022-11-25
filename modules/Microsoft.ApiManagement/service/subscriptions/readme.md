@@ -7,6 +7,7 @@ This module deploys API Management Subscriptions.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -17,16 +18,19 @@ This module deploys API Management Subscriptions.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Subscription name. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `allowTracing` | bool | `True` | Determines whether tracing can be enabled. |
@@ -45,3 +49,7 @@ This module deploys API Management Subscriptions.
 | `name` | string | The name of the API management service subscription. |
 | `resourceGroupName` | string | The resource group the API management service subscription was deployed into. |
 | `resourceId` | string | The resource ID of the API management service subscription. |
+
+## Cross-referenced modules
+
+_None_

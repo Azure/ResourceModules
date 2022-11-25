@@ -385,3 +385,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# MacOS
+.DS_Store

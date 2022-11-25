@@ -43,7 +43,7 @@ In the context of CARML, we differentiate three personas:
 A **Solution Consumer** is an indirect persona. This person is rather a cloud administrator and not necessarily a developer. The focus of this persona is on **implementing and managing an end-to-end solution** (application/workload), rather than building one. A Solution Consumer can benefit from CARML's modules via a complex, multi-module solution that leverages a Bicep registry, a package, etc.; perhaps even a wizard or a click-to-deploy button.
 This persona will need to understand the required and optional configuration data (parameters) and will need to understand the architecture and "opinion" behind the solution.
 
-This persona isn’t consuming CARML directly, but is consuming CARML via a solution that relies on it:
+This persona isn't consuming CARML directly, but is consuming CARML via a solution that relies on it:
 
 - Examples:
   - Existing CARML solutions (These links provide examples of real world solutions using CARML):
@@ -71,7 +71,7 @@ This persona isn’t consuming CARML directly, but is consuming CARML via a solu
 ![SolutionDevelopers](./media/Personas/SolutionDevelopers.png)
 
 A **Solution Developer** is not a user. Their focus is on using CARML to **build end-to-end solutions** that are opinionated. These solutions will be published (publicly and/or privately) for consumption by others and will be used many times by many organizations/teams, in many environments/subscriptions/landing zones).
-A Solution Developer uses the CARML library (its public or organization/customer specific implementation), with a chosen preference for using its modules via Bicep registry (public, private), or template specs, or direct reference, or using Git submodules, etc. Solution Developers might benefit the most from overcoming the learning curve – because of the standardization and scale they can achieve with CARML.
+A Solution Developer uses the CARML library (its public or organization/customer specific implementation), with a chosen preference for using its modules via Bicep registry (public, private), or template specs, or direct reference, or using Git submodules, etc. Solution Developers might benefit the most from overcoming the learning curve - because of the standardization and scale they can achieve with CARML.
 
 - Modules: Use an existing code base to develop and test multi-module solutions (ex., a Landing Zone Accelerator, or an internal platform/workload team). This might also lead to creating/updating modules.
 - Continuous Integration: Use the provided CI environment to improve multi-module development and testing. This might also lead to improving CI.
@@ -85,14 +85,14 @@ A Solution Developer uses the CARML library (its public or organization/customer
 
 - Codify reference patterns (guidance, decisions, governance).
 - Focus on the requirements of the reference patterns.
-- Can adopt the toolkit’s infra-as-code guidance.
+- Can adopt the toolkit's infra-as-code guidance.
 - Simplify downstream usage for application/workload teams.
 
 ## Module Developer
 
 ![ModuleDevelopers](./media/Personas/ModuleDevelopers.png)
 
-A **Module Developer** is not a user. Their focus is on CARML itself. A Module Developer is tasked with improving the library – for their organization/customer or the whole world (open source community). They might want to add organization/company specifics to the library (either via conventions, parameters, extensions, or CI-specific changes). They might also implement/improve generic things, in a way that could be contributed back upstream, into the CARML open source repository for the greater public. A Module Developer is tasked with helping the CARML Solution Developer (see previous).
+A **Module Developer** is not a user. Their focus is on CARML itself. A Module Developer is tasked with improving the library - for their organization/customer or the whole world (open source community). They might want to add organization/company specifics to the library (either via conventions, parameters, extensions, or CI-specific changes). They might also implement/improve generic things, in a way that could be contributed back upstream, into the CARML open source repository for the greater public. A Module Developer is tasked with helping the CARML Solution Developer (see previous).
 
 - Modules: Create new. Update existing.
 - Continuous Integration: Improve the unit testing in the CI.

@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
@@ -26,4 +26,4 @@ jobs:
           if: ${{ github.event_name == 'pull_request' }}
           DEFAULT_BRANCH: ${{ github.base_ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILTER_REGEX_EXCLUDE: '[global.module.tests.ps1|Get\-ModulesAsMarkdownTable.ps1|.*yml]'
+          FILTER_REGEX_EXCLUDE: '[module.tests.ps1|Get\-ModulesAsMarkdownTable.ps1|.*yml]'

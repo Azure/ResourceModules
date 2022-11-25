@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<namePrefix>>-az-synws-encryptwsai-001"
+    },
+    "defaultDataLakeStorageAccountName": {
+      "value": "adp<<namePrefix>>azsasynapse001"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "synapsews"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
+    },
+    "encryption": {
+      "value": true
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+    },
+    "cMKKeyName": {
+      "value": "keyEncryptionKey"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": true
+    },
+    "encryptionActivateWorkspace": {
+      "value": true
+    }
+  }
+}

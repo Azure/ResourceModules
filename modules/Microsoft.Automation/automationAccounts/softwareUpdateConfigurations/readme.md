@@ -7,6 +7,7 @@ This module deploys an Azure Automation Account Software update Configuration.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -17,19 +18,22 @@ This module deploys an Azure Automation Account Software update Configuration.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `frequency` | string | `[OneTime, Hour, Day, Week, Month]` | The frequency of the deployment schedule. When using 'Hour', 'Day', 'Week' or 'Month', an interval needs to be provided. |
+| `frequency` | string | `[Day, Hour, Month, OneTime, Week]` | The frequency of the deployment schedule. When using 'Hour', 'Day', 'Week' or 'Month', an interval needs to be provided. |
 | `name` | string |  | The name of the Deployment schedule. |
-| `operatingSystem` | string | `[Windows, Linux]` | The operating system to be configured by the deployment schedule. |
-| `rebootSetting` | string | `[IfRequired, Never, RebootOnly, Always]` | Reboot setting for the deployment schedule. |
+| `operatingSystem` | string | `[Linux, Windows]` | The operating system to be configured by the deployment schedule. |
+| `rebootSetting` | string | `[Always, IfRequired, Never, RebootOnly]` | Reboot setting for the deployment schedule. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `azureVirtualMachines` | array | `[]` |  | List of azure resource IDs for azure virtual machines in scope for the deployment schedule. |
@@ -58,10 +62,11 @@ This module deploys an Azure Automation Account Software update Configuration.
 | `scopeByTagsOperation` | string | `'All'` | `[All, Any]` | Enables the scopeByTags to require All (Tag A and Tag B) or Any (Tag A or Tag B). |
 | `startTime` | string | `''` |  | The start time of the deployment schedule in ISO 8601 format. To specify a specific time use YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00. For schedules where we want to start the deployment as soon as possible, specify the time segment only in 24 hour format, HH:MM, 22:00. |
 | `timeZone` | string | `'UTC'` |  | Time zone for the deployment schedule. IANA ID or a Windows Time Zone ID. |
-| `updateClassifications` | array | `[Critical, Security]` | `[Critical, Security, UpdateRollup, FeaturePack, ServicePack, Definition, Tools, Updates, Other]` | Update classification included in the deployment schedule. |
-| `weekDays` | array | `[]` | `[Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]` | Required when used with frequency 'Week'. Specified the day of the week to run the deployment schedule. |
+| `updateClassifications` | array | `[Critical, Security]` | `[Critical, Definition, FeaturePack, Other, Security, ServicePack, Tools, UpdateRollup, Updates]` | Update classification included in the deployment schedule. |
+| `weekDays` | array | `[]` | `[Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday]` | Required when used with frequency 'Week'. Specified the day of the week to run the deployment schedule. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule. |
@@ -170,3 +175,7 @@ monthlyOccurrences: [
 | `name` | string | The name of the deployed softwareUpdateConfiguration. |
 | `resourceGroupName` | string | The resource group of the deployed softwareUpdateConfiguration. |
 | `resourceId` | string | The resource ID of the deployed softwareUpdateConfiguration. |
+
+## Cross-referenced modules
+
+_None_

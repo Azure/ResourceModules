@@ -8,6 +8,7 @@ This module deploys Kubernetes Configuration Flux Configurations.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Prerequisites
@@ -37,6 +38,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `clusterName` | string |  | The name of the AKS cluster that should be configured. |
@@ -46,6 +48,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `sourceKind` | string | `[Bucket, GitRepository]` | Source Kind to pull the configuration data from. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `bucket` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
@@ -65,50 +68,18 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `resourceGroupName` | string | The name of the resource group the flux configuration was deployed into. |
 | `resourceId` | string | The resource ID of the flux configuration. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "flux2"
-        },
-        "scope": {
-            "value": "cluster"
-        },
-        "clusterName": {
-            "value": "<<namePrefix>>-az-aks-kubenet-001"
-        },
-        "namespace": {
-            "value": "flux-system"
-        },
-        "sourceKind": {
-            "value": "GitRepository"
-        },
-        "gitRepository": {
-            "value": {
-                "url": "https://github.com/mspnp/aks-baseline",
-                "timeoutInSeconds": 180,
-                "syncIntervalInSeconds": 300,
-                "repositoryRef": {
-                    "branch": "main"
-                },
-                "sshKnownHosts": ""
-            }
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -116,21 +87,32 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 ```bicep
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-fluxConfigurations'
+  name: '${uniqueString(deployment().name)}-test-kcfccom'
   params: {
-    name: 'flux2'
-    scope: 'cluster'
-    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    // Required parameters
+    clusterName: '<clusterName>'
+    name: '<<namePrefix>>kcfccom001'
     namespace: 'flux-system'
     sourceKind: 'GitRepository'
+    // Non-required parameters
     gitRepository: {
-      url: 'https://github.com/mspnp/aks-baseline'
-      timeoutInSeconds: 180
-      syncIntervalInSeconds: 300
       repositoryRef: {
         branch: 'main'
       }
       sshKnownHosts: ''
+      syncIntervalInSeconds: 300
+      timeoutInSeconds: 180
+      url: 'https://github.com/mspnp/aks-baseline'
+    }
+    kustomizations: {
+      unified: {
+        dependsOn: []
+        force: false
+        path: './cluster-manifests'
+        prune: true
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 300
+      }
     }
   }
 }
@@ -139,60 +121,60 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "flux2"
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<clusterName>"
+    },
+    "name": {
+      "value": "<<namePrefix>>kcfccom001"
+    },
+    "namespace": {
+      "value": "flux-system"
+    },
+    "sourceKind": {
+      "value": "GitRepository"
+    },
+    // Non-required parameters
+    "gitRepository": {
+      "value": {
+        "repositoryRef": {
+          "branch": "main"
         },
-        "scope": {
-            "value": "cluster"
-        },
-        "clusterName": {
-            "value": "<<namePrefix>>-az-aks-kubenet-001"
-        },
-        "namespace": {
-            "value": "flux-system"
-        },
-        "sourceKind": {
-            "value": "GitRepository"
-        },
-        "gitRepository": {
-            "value": {
-                "url": "https://github.com/mspnp/aks-baseline",
-                "timeoutInSeconds": 180,
-                "syncIntervalInSeconds": 300,
-                "repositoryRef": {
-                    "branch": "main"
-                },
-                "sshKnownHosts": ""
-            }
-        },
-        "kustomizations": {
-            "value": {
-                "unified": {
-                    "path": "./cluster-manifests",
-                    "dependsOn": [],
-                    "timeoutInSeconds": 300,
-                    "syncIntervalInSeconds": 300,
-                    "prune": true,
-                    "force": false
-                }
-            }
+        "sshKnownHosts": "",
+        "syncIntervalInSeconds": 300,
+        "timeoutInSeconds": 180,
+        "url": "https://github.com/mspnp/aks-baseline"
+      }
+    },
+    "kustomizations": {
+      "value": {
+        "unified": {
+          "dependsOn": [],
+          "force": false,
+          "path": "./cluster-manifests",
+          "prune": true,
+          "syncIntervalInSeconds": 300,
+          "timeoutInSeconds": 300
         }
+      }
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Min</h3>
 
 <details>
 
@@ -200,30 +182,60 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 
 ```bicep
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-fluxConfigurations'
+  name: '${uniqueString(deployment().name)}-test-kcfcmin'
   params: {
-    name: 'flux2'
-    scope: 'cluster'
-    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    // Required parameters
+    clusterName: '<clusterName>'
+    name: '<<namePrefix>>kcfcmin001'
     namespace: 'flux-system'
     sourceKind: 'GitRepository'
     gitRepository: {
-      url: 'https://github.com/mspnp/aks-baseline'
-      timeoutInSeconds: 180
-      syncIntervalInSeconds: 300
       repositoryRef: {
         branch: 'main'
       }
       sshKnownHosts: ''
+      syncIntervalInSeconds: 300
+      timeoutInSeconds: 180
+      url: 'https://github.com/mspnp/aks-baseline'
     }
-    kustomizations: {
-      unified: {
-        path: './cluster-manifests'
-        dependsOn: []
-        timeoutInSeconds: 300
-        syncIntervalInSeconds: 300
-        prune: true
-        force: false
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<clusterName>"
+    },
+    "name": {
+      "value": "<<namePrefix>>kcfcmin001"
+    },
+    "namespace": {
+      "value": "flux-system"
+    },
+    "sourceKind": {
+      "value": "GitRepository"
+    },
+    "gitRepository": {
+      "value": {
+        "repositoryRef": {
+          "branch": "main"
+        },
+        "sshKnownHosts": "",
+        "syncIntervalInSeconds": 300,
+        "timeoutInSeconds": 180,
+        "url": "https://github.com/mspnp/aks-baseline"
       }
     }
   }

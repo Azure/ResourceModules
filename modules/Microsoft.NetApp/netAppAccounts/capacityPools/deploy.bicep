@@ -55,11 +55,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' existing = {
+resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-01-01' existing = {
   name: netAppAccountName
 }
 
-resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2021-06-01' = {
+resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2022-01-01' = {
   name: name
   parent: netAppAccount
   location: location
@@ -98,6 +98,8 @@ module capacityPool_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: capacityPool.id
   }
 }]

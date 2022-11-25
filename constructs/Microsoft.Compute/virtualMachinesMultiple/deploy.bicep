@@ -104,11 +104,11 @@ param bootDiagnosticStorageAccountName string = ''
 @description('Optional. Storage account boot diagnostic base URI.')
 param bootDiagnosticStorageAccountUri string = '.blob.${environment().suffixes.storage}/'
 
-@description('Optional. Resource name of a proximity placement group.')
-param proximityPlacementGroupName string = ''
+@description('Optional. Resource ID of a proximity placement group.')
+param proximityPlacementGroupResourceId string = ''
 
-@description('Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set.')
-param availabilitySetName string = ''
+@description('Optional. Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set.')
+param availabilitySetResourceId string = ''
 
 @description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set.')
 @allowed([
@@ -282,7 +282,7 @@ param provisionVMAgent bool = true
 @description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
 param enableAutomaticUpdates bool = true
 
-@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
+@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`.')
 param timeZone string = ''
 
 @description('Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object.')
@@ -313,7 +313,7 @@ module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/deploy
     vmSize: vmSize
     additionalUnattendContent: additionalUnattendContent
     allowExtensionOperations: allowExtensionOperations
-    availabilitySetName: availabilitySetName
+    availabilitySetResourceId: availabilitySetResourceId
     backupPolicyName: backupPolicyName
     backupVaultName: backupVaultName
     backupVaultResourceGroup: backupVaultResourceGroup
@@ -358,7 +358,7 @@ module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/deploy
     pipDiagnosticSettingsName: !empty(pipDiagnosticSettingsName) ? pipDiagnosticSettingsName : '${vmName}-diagnosticSettings'
     plan: plan
     provisionVMAgent: provisionVMAgent
-    proximityPlacementGroupName: proximityPlacementGroupName
+    proximityPlacementGroupResourceId: proximityPlacementGroupResourceId
     publicKeys: publicKeys
     roleAssignments: roleAssignments
     sasTokenValidityLength: sasTokenValidityLength

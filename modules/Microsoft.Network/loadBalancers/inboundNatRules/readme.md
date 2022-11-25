@@ -7,16 +7,18 @@ This module deploys load balancers inbound NAT rules.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/loadBalancers/inboundNatRules` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/inboundNatRules) |
+| `Microsoft.Network/loadBalancers/inboundNatRules` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/loadBalancers/inboundNatRules) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `frontendIPConfigurationName` | string | The name of the frontend IP address to set for the inbound NAT rule. |
@@ -24,11 +26,13 @@ This module deploys load balancers inbound NAT rules.
 | `name` | string | The name of the inbound NAT rule. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `loadBalancerName` | string | The name of the parent load balancer. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backendAddressPoolName` | string | `''` |  | Name of the backend address pool. |
@@ -49,3 +53,7 @@ This module deploys load balancers inbound NAT rules.
 | `name` | string | The name of the inbound NAT rule. |
 | `resourceGroupName` | string | The resource group the inbound NAT rule was deployed into. |
 | `resourceId` | string | The resource ID of the inbound NAT rule. |
+
+## Cross-referenced modules
+
+_None_

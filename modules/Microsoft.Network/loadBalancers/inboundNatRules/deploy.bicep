@@ -62,17 +62,17 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' existing = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' existing = {
   name: loadBalancerName
 }
 
-resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-05-01' = {
+resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-08-01' = {
   name: name
   properties: {
     frontendPort: frontendPort
     backendPort: backendPort
     backendAddressPool: !empty(backendAddressPoolName) ? {
-      id: az.resourceId('Microsoft.Network/loadBalancers/backendAddressPools', name, backendAddressPoolName)
+      id: '${loadBalancer.id}/backendAddressPools/${backendAddressPoolName}'
     } : null
     enableFloatingIP: enableFloatingIP
     enableTcpReset: enableTcpReset

@@ -87,13 +87,12 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
+@description('Optional. When true, this App Service Plan will perform availability zone balancing.')
+param zoneRedundant bool = false
+
 // =========== //
 // Variables   //
 // =========== //
-var hostingEnvironmentProfile = {
-  id: appServiceEnvironmentId
-}
-
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
@@ -127,12 +126,15 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   sku: sku
   properties: {
     workerTierName: workerTierName
-    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? hostingEnvironmentProfile : null
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? {
+      id: appServiceEnvironmentId
+    } : null
     perSiteScaling: perSiteScaling
     maximumElasticWorkerCount: maximumElasticWorkerCount
     reserved: serverOS == 'Linux'
     targetWorkerCount: targetWorkerCount
     targetWorkerSizeId: targetWorkerSize
+    zoneRedundant: zoneRedundant
   }
 }
 
@@ -165,6 +167,8 @@ module appServicePlan_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: appServicePlan.id
   }
 }]

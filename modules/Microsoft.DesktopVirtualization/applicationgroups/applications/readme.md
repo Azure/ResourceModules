@@ -7,6 +7,7 @@ This module deploys AVD Applications.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -17,6 +18,7 @@ This module deploys AVD Applications.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `filePath` | string | Specifies a path for the executable file for the application. |
@@ -24,11 +26,13 @@ This module deploys AVD Applications.
 | `name` | string | Name of the Application to be created in the Application Group. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `appGroupName` | string | The name of the parent Application Group to create the application(s) in. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `commandLineArguments` | string | `''` |  | Command-Line Arguments for Application. |
@@ -47,3 +51,7 @@ This module deploys AVD Applications.
 | `name` | string | The Name of the Application Group to register the Application in. |
 | `resourceGroupName` | string | The name of the Resource Group the AVD Application was created in. |
 | `resourceId` | string | The resource ID of the deployed Application. |
+
+## Cross-referenced modules
+
+_None_

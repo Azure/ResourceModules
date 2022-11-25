@@ -10,14 +10,16 @@ param location string = resourceGroup().location
 
 @description('Required. Type of site to deploy.')
 @allowed([
-  'functionapp'
-  'functionapp,linux'
-  'app'
+  'functionapp' // function app windows os
+  'functionapp,linux' // function app linux os
+  'functionapp,workflowapp' // logic app workflow
+  'functionapp,workflowapp,linux' // logic app docker container
+  'app' // normal web app
 ])
 param kind string
 
-@description('Optional. The resource ID of the app service plan to use for the site.')
-param serverFarmResourceId string = ''
+@description('Required. The resource ID of the app service plan to use for the site.')
+param serverFarmResourceId string
 
 @description('Optional. Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests.')
 param httpsOnly bool = true
@@ -33,6 +35,9 @@ param systemAssignedIdentity bool = false
 
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
+
+@description('Optional. The resource ID of the assigned identity to be used to access a key vault with.')
+param keyVaultAccessIdentityResourceId string = ''
 
 @description('Optional. Checks if Customer provided storage account is required.')
 param storageAccountRequired bool = false
@@ -69,7 +74,7 @@ param authSettingV2Configuration object = {}
 param lock string = ''
 
 // Private Endpoints
-@description('Optional. Configuration details for private endpoints.')
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 // Tags
@@ -194,6 +199,7 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
       id: appServiceEnvironmentId
     } : null
     storageAccountRequired: storageAccountRequired
+    keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId: null
     virtualNetworkSubnetId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
     siteConfig: siteConfig
   }
@@ -251,6 +257,8 @@ module app_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAss
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: app.id
   }
 }]
@@ -267,7 +275,7 @@ module app_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bic
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
@@ -292,3 +300,6 @@ output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app
 
 @description('The location the resource was deployed into.')
 output location string = app.location
+
+@description('Default hostname of the app.')
+output defaultHostname string = app.properties.defaultHostName

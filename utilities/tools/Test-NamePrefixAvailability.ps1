@@ -42,8 +42,8 @@ function Test-NamePrefixAvailability {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFile.ps1')
-        $root = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+        $repoRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+        . (Join-Path $repoRoot 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
     }
     process {
 
@@ -56,38 +56,32 @@ function Test-NamePrefixAvailability {
             'Microsoft.ContainerRegistry/registries'
             'Microsoft.KeyVault/vaults'
         )
-        $parameterFiles = (Get-ChildItem -Path $root -Recurse -Filter '*.json').FullName | ForEach-Object { $_.Replace('\', '/') }
+        $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter '*.json').FullName | ForEach-Object { $_.Replace('\', '/') }
         $parameterFiles = $parameterFiles | Where-Object { $_ -match '(?:{0}).*parameters\.json' -f ($relevantResourceTypes -join '|' -replace '/', '\/+') }
 
         # Replace parameter file tokens
         # -----------------------------
-        $ConvertTokensInputs = @{
-            Tokens = $Tokens
+
+        # Tokens in settings.yml
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $repoRoot 'settings.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
+
+        # Construct Token Configuration Input
+        $tokenConfiguration = @{
+            FilePathList = $parameterFiles
+            Tokens       = @{
+                'namePrefix' = $namePrefix
+            }
+            TokenPrefix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+            TokenSuffix  = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
-        # Tokens in settings.json
-        $settingsFilePath = Join-Path $root 'settings.json'
-        if (Test-Path $settingsFilePath) {
-            $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json -AsHashtable
-            $ConvertTokensInputs += @{
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-            }
+        # Add additional tokens provided by the user
+        $tokenConfiguration.Tokens += $Tokens
 
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
-            }
-        }
+        # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
+        $null = Convert-TokensInFileList @tokenConfiguration
 
         try {
-            # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
-
 
             # Extract Parameter Names
             # -----------------------
@@ -178,7 +172,7 @@ function Test-NamePrefixAvailability {
             # Restore parameter files
             # -----------------------
             Write-Verbose 'Restoring Tokens'
-            $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
+            $null = Convert-TokensInFileList @tokenConfiguration -SwapValueWithName $true
         }
     }
 

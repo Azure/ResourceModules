@@ -63,7 +63,15 @@ function Invoke-ResourcePostRemoval {
             if ($matchingKeyVault -and -not $matchingKeyVault.EnablePurgeProtection) {
                 Write-Verbose ("Purging key vault [$resourceName]") -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault with ID [{0}]' -f $matchingKeyVault.Id), 'Purge')) {
-                    $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location
+                    try {
+                        $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location -ErrorAction 'Stop'
+                    } catch {
+                        if ($_.Exception.Message -like '*DeletedVaultPurge*') {
+                            Write-Warning ('Purge protection for key vault [{0}] enabled. Skipping. Scheduled purge date is [{1}]' -f $resourceName, $matchingKeyVault.ScheduledPurgeDate)
+                        } else {
+                            throw $_
+                        }
+                    }
                 }
             }
             break

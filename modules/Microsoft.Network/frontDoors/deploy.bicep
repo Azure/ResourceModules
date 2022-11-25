@@ -24,31 +24,32 @@ param tags object = {}
 param enableDefaultTelemetry bool = true
 
 @description('Required. Backend address pool of the frontdoor resource.')
-param backendPools array = []
+param backendPools array
 
 @description('Optional. Enforce certificate name check of the frontdoor resource.')
 param enforceCertificateNameCheck string = 'Disabled'
 
 @description('Optional. Certificate name check time of the frontdoor resource.')
-param sendRecvTimeoutSeconds int = 600
+@maxValue(240)
+param sendRecvTimeoutSeconds int = 240
 
-@description('Required. State of the frontdoor resource.')
+@description('Optional. State of the frontdoor resource.')
 param enabledState string = 'Enabled'
 
-@description('Required. Friendly name of the frontdoor resource.')
+@description('Optional. Friendly name of the frontdoor resource.')
 param friendlyName string = ''
 
 @description('Required. Frontend endpoints of the frontdoor resource.')
-param frontendEndpoints array = []
+param frontendEndpoints array
 
 @description('Required. Heath probe settings of the frontdoor resource.')
-param healthProbeSettings array = []
+param healthProbeSettings array
 
 @description('Required. Load balancing settings of the frontdoor resource.')
-param loadBalancingSettings array = []
+param loadBalancingSettings array
 
 @description('Required. Routing rules settings of the frontdoor resource.')
-param routingRules array = []
+param routingRules array
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -164,6 +165,8 @@ module frontDoor_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (r
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: frontDoor.id
   }
 }]

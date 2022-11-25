@@ -114,10 +114,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var publicIPPrefix = {
-  id: publicIPPrefixResourceId
-}
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -130,7 +126,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -142,7 +138,9 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   properties: {
     publicIPAddressVersion: publicIPAddressVersion
     publicIPAllocationMethod: publicIPAllocationMethod
-    publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
+    publicIPPrefix: !empty(publicIPPrefixResourceId) ? {
+      id: publicIPPrefixResourceId
+    } : null
     idleTimeoutInMinutes: 4
     ipTags: []
   }
@@ -177,6 +175,8 @@ module publicIpAddress_roleAssignments '.bicep/nested_roleAssignments.bicep' = [
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: publicIpAddress.id
   }
 }]
@@ -191,7 +191,7 @@ output name string = publicIpAddress.name
 output resourceId string = publicIpAddress.id
 
 @description('The public IP address of the public IP address resource.')
-output ipAddress string = publicIpAddress.properties.ipAddress
+output ipAddress string = contains(publicIpAddress.properties, 'ipAddress') ? publicIpAddress.properties.ipAddress : ''
 
 @description('The location the resource was deployed into.')
 output location string = publicIpAddress.location

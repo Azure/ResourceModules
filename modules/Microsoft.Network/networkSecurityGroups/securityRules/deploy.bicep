@@ -81,11 +81,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-05-01' existing = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' existing = {
   name: networkSecurityGroupName
 }
 
-resource securityRule 'Microsoft.Network/networkSecurityGroups/securityRules@2021-05-01' = {
+resource securityRule 'Microsoft.Network/networkSecurityGroups/securityRules@2021-08-01' = {
   name: name
   parent: networkSecurityGroup
   properties: {

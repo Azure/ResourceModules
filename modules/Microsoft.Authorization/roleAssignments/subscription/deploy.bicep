@@ -41,7 +41,7 @@ param principalType string = ''
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var builtInRoleNames_var = {
+var builtInRoleNamesVar = {
   'AcrPush': '/providers/Microsoft.Authorization/roleDefinitions/8311e382-0749-4cb8-b61a-304f252e45ec'
   'API Management Service Contributor': '/providers/Microsoft.Authorization/roleDefinitions/312a565d-c81f-4fd8-895a-4e21e48d571c'
   'AcrPull': '/providers/Microsoft.Authorization/roleDefinitions/7f951dda-4ed3-4680-a7ca-43fe172d538d'
@@ -338,12 +338,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-var roleDefinitionId_var = (contains(builtInRoleNames_var, roleDefinitionIdOrName) ? builtInRoleNames_var[roleDefinitionIdOrName] : roleDefinitionIdOrName)
+var roleDefinitionIdVar = (contains(builtInRoleNamesVar, roleDefinitionIdOrName) ? builtInRoleNamesVar[roleDefinitionIdOrName] : roleDefinitionIdOrName)
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-  name: guid(subscriptionId, roleDefinitionId_var, principalId)
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(subscriptionId, roleDefinitionIdVar, principalId)
   properties: {
-    roleDefinitionId: roleDefinitionId_var
+    roleDefinitionId: roleDefinitionIdVar
     principalId: principalId
     description: !empty(description) ? description : null
     principalType: !empty(principalType) ? any(principalType) : null
@@ -357,7 +357,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
 output name string = roleAssignment.name
 
 @sys.description('The resource ID of the Role Assignment.')
-output scope string = subscription().id
+output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
 
 @sys.description('The scope this Role Assignment applies to.')
-output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
+output scope string = subscription().id

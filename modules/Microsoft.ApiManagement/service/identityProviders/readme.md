@@ -7,6 +7,7 @@ This module deploys API Management Service Identity Provider.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -17,11 +18,13 @@ This module deploys API Management Service Identity Provider.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Identity provider name. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
@@ -29,6 +32,7 @@ This module deploys API Management Service Identity Provider.
 | `identityProviderClientSecret` | secureString | `''` | Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -50,3 +54,7 @@ This module deploys API Management Service Identity Provider.
 | `name` | string | The name of the API management service identity provider. |
 | `resourceGroupName` | string | The resource group the API management service identity provider was deployed into. |
 | `resourceId` | string | The resource ID of the API management service identity provider. |
+
+## Cross-referenced modules
+
+_None_

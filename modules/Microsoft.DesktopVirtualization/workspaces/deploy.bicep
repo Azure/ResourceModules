@@ -4,7 +4,7 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Required. Resource IDs for the existing Application groups this workspace will group together.')
+@description('Optional. Resource IDs for the existing Application groups this workspace will group together.')
 param appGroupResourceIds array = []
 
 @description('Optional. The friendly name of the Workspace to be created.')
@@ -124,6 +124,8 @@ module workspace_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (r
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: workspace.id
   }
 }]

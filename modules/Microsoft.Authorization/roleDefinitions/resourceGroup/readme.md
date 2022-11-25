@@ -7,21 +7,24 @@ With this module you can create role definitions on a resource group level
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleDefinitions` | [2018-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions) |
+| `Microsoft.Authorization/roleDefinitions` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleDefinitions) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `roleName` | string | Name of the custom RBAC role to be created. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` | List of allowed actions. |
@@ -43,3 +46,7 @@ With this module you can create role definitions on a resource group level
 | `resourceGroupName` | string | The name of the resource group the role definition was created at. |
 | `resourceId` | string | The resource ID of the Role Definition. |
 | `scope` | string | The scope this Role Definition applies to. |
+
+## Cross-referenced modules
+
+_None_

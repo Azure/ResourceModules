@@ -7,6 +7,7 @@ This module deploys API Management Service Product APIs.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -17,17 +18,20 @@ This module deploys API Management Service Product APIs.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the product API. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 | `productName` | string | The name of the parent Product. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -40,3 +44,7 @@ This module deploys API Management Service Product APIs.
 | `name` | string | The name of the product API. |
 | `resourceGroupName` | string | The resource group the product API was deployed into. |
 | `resourceId` | string | The resource ID of the product API. |
+
+## Cross-referenced modules
+
+_None_

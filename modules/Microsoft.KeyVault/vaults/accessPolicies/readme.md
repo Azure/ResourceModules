@@ -7,6 +7,7 @@ This module deploys key vault access policies.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -17,11 +18,13 @@ This module deploys key vault access policies.
 ## Parameters
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `keyVaultName` | string | The name of the parent key vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `accessPolicies` | array | `[]` | An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. |
@@ -95,3 +98,7 @@ accessPolicies: [
 | `name` | string | The name of the access policies assignment. |
 | `resourceGroupName` | string | The name of the resource group the access policies assignment was created in. |
 | `resourceId` | string | The resource ID of the access policies assignment. |
+
+## Cross-referenced modules
+
+_None_

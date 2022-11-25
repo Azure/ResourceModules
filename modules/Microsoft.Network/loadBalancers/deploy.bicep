@@ -64,7 +64,7 @@ param inboundNatRules array = []
 @description('Optional. The outbound rules.')
 param outboundRules array = []
 
-var frontendIPConfigurations_var = [for (frontendIPConfiguration, index) in frontendIPConfigurations: {
+var frontendIPConfigurationsVar = [for (frontendIPConfiguration, index) in frontendIPConfigurations: {
   name: frontendIPConfiguration.name
   properties: {
     subnet: contains(frontendIPConfiguration, 'subnetId') && !empty(frontendIPConfiguration.subnetId) ? {
@@ -85,7 +85,7 @@ var frontendIPConfigurations_var = [for (frontendIPConfiguration, index) in fron
   }
 }]
 
-var loadBalancingRules_var = [for loadBalancingRule in loadBalancingRules: {
+var loadBalancingRulesVar = [for loadBalancingRule in loadBalancingRules: {
   name: loadBalancingRule.name
   properties: {
     backendAddressPool: {
@@ -108,7 +108,7 @@ var loadBalancingRules_var = [for loadBalancingRule in loadBalancingRules: {
   }
 }]
 
-var outboundRules_var = [for outboundRule in outboundRules: {
+var outboundRulesVar = [for outboundRule in outboundRules: {
   name: outboundRule.name
   properties: {
     frontendIPConfigurations: [
@@ -126,7 +126,7 @@ var outboundRules_var = [for outboundRule in outboundRules: {
   }
 }]
 
-var probes_var = [for probe in probes: {
+var probesVar = [for probe in probes: {
   name: probe.name
   properties: {
     protocol: contains(probe, 'protocol') ? probe.protocol : 'Tcp'
@@ -176,7 +176,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -184,11 +184,11 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' = {
     name: loadBalancerSku
   }
   properties: {
-    frontendIPConfigurations: frontendIPConfigurations_var
-    loadBalancingRules: loadBalancingRules_var
+    frontendIPConfigurations: frontendIPConfigurationsVar
+    loadBalancingRules: loadBalancingRulesVar
     backendAddressPools: backendAddressPoolNames
-    outboundRules: outboundRules_var
-    probes: probes_var
+    outboundRules: outboundRulesVar
+    probes: probesVar
   }
 }
 
@@ -253,6 +253,8 @@ module loadBalancer_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: loadBalancer.id
   }
 }]

@@ -7,6 +7,7 @@ With this module you can create policy set definitions on a management group lev
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -17,12 +18,14 @@ With this module you can create policy set definitions on a management group lev
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy Set Definition (Initiative). |
 | `policyDefinitions` | array | The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `description` | string | `''` | The description name of the Set Definition (Initiative). |
@@ -41,3 +44,7 @@ With this module you can create policy set definitions on a management group lev
 | :-- | :-- | :-- |
 | `name` | string | Policy Set Definition Name. |
 | `resourceId` | string | Policy Set Definition resource ID. |
+
+## Cross-referenced modules
+
+_None_

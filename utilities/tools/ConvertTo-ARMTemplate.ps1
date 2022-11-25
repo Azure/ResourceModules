@@ -56,7 +56,7 @@ param (
 )
 
 $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
-$modulesFolderPath = Join-Path -Path $rootPath -ChildPath 'modules'
+$modulesFolderPath = Join-Path $rootPath 'modules'
 if ($ConvertChildren) {
     $BicepFilesToConvert = Get-ChildItem -Path $modulesFolderPath -Filter 'deploy.bicep' -Recurse -Force
 } else {
@@ -66,7 +66,7 @@ if ($ConvertChildren) {
 #region Remove existing deploy.json files
 Write-Verbose 'Remove existing deploy.json files'
 
-if (Test-Path -Path (Join-Path -Path $modulesFolderPath -ChildPath 'deploy.bicep')) {
+if (Test-Path -Path (Join-Path $modulesFolderPath 'deploy.bicep')) {
     $JsonFilesToRemove = Get-ChildItem -Path $modulesFolderPath -Filter 'deploy.json' -Recurse -Force -File
     Write-Verbose "Remove existing deploy.json files - Remove [$($JsonFilesToRemove.count)] file(s)"
     if ($PSCmdlet.ShouldProcess("[$($JsonFilesToRemove.count)] deploy.json files(s) in path [$modulesFolderPath]", 'Remove-Item')) {
@@ -132,7 +132,7 @@ if (-not $SkipMetadataCleanup) {
             }
 
             $moduleFolderPath = $_.Directory.FullName
-            $JSONFilePath = Join-Path -Path $moduleFolderPath -ChildPath 'deploy.json'
+            $JSONFilePath = Join-Path $moduleFolderPath 'deploy.json'
             if (Test-Path -Path $JSONFilePath) {
                 $JSONFileContent = Get-Content -Path $JSONFilePath
                 $JSONObj = $JSONFileContent | ConvertFrom-Json
@@ -174,7 +174,7 @@ if (-not $SkipPipelineUpdate) {
     Write-Verbose 'Update pipeline files'
 
     # GitHub workflow files
-    $ghWorkflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
+    $ghWorkflowFolderPath = Join-Path -Path $rootPath '.github' 'workflows'
     if (Test-Path -Path $ghWorkflowFolderPath) {
         $ghWorkflowFilesToUpdate = Get-ChildItem -Path $ghWorkflowFolderPath -Filter 'ms.*.yml' -File -Force
         Write-Verbose ('Update workflow files - Processing [{0}] file(s)' -f $ghWorkflowFilesToUpdate.count)
@@ -190,7 +190,7 @@ if (-not $SkipPipelineUpdate) {
     }
 
     # Azure DevOps Pipelines
-    $adoPipelineFolderPath = Join-Path -Path $rootPath -ChildPath '.azuredevops\modulePipelines'
+    $adoPipelineFolderPath = Join-Path -Path $rootPath '.azuredevops' 'modulePipelines'
     if (Test-Path -Path $adoPipelineFolderPath) {
         $adoPipelineFilesToUpdate = Get-ChildItem -Path $adoPipelineFolderPath -Filter 'ms.*.yml' -File -Force
         Write-Verbose ('Update Azure DevOps pipeline files - Processing [{0}] file(s)' -f $adoPipelineFilesToUpdate.count)

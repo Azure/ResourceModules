@@ -8,6 +8,7 @@ This module deploys Kubernetes Configuration Extensions.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Prerequisites
@@ -27,6 +28,7 @@ az provider register --namespace Microsoft.KubernetesConfiguration
 ```
 
 For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -36,6 +38,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `clusterName` | string | The name of the AKS cluster that should be configured. |
@@ -43,6 +46,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `name` | string | The name of the Flux Configuration. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `configurationProtectedSettings` | object | `{object}` | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
@@ -63,39 +67,18 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `resourceGroupName` | string | The name of the resource group the extension was deployed into. |
 | `resourceId` | string | The resource ID of the extension. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "flux"
-        },
-        "extensionType": {
-            "value": "microsoft.flux"
-        },
-        "clusterName": {
-            "value": "<<namePrefix>>-az-aks-kubenet-001"
-        },
-        "releaseTrain": {
-            "value": "Stable"
-        },
-        "releaseNamespace": {
-            "value": "flux-system"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -103,13 +86,23 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 ```bicep
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-extensions'
+  name: '${uniqueString(deployment().name)}-test-kcecom'
   params: {
-    name: 'flux'
+    // Required parameters
+    clusterName: '<clusterName>'
     extensionType: 'microsoft.flux'
-    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    releaseTrain: 'Stable'
+    name: '<<namePrefix>>kcecom001'
+    // Non-required parameters
+    configurationSettings: {
+      'image-automation-controller.enabled': 'false'
+      'image-reflector-controller.enabled': 'false'
+      'kustomize-controller.enabled': 'true'
+      'notification-controller.enabled': 'false'
+      'source-controller.enabled': 'true'
+    }
     releaseNamespace: 'flux-system'
+    releaseTrain: 'Stable'
+    version: '0.5.2'
   }
 }
 ```
@@ -117,50 +110,52 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "flux"
-        },
-        "extensionType": {
-            "value": "microsoft.flux"
-        },
-        "clusterName": {
-            "value": "<<namePrefix>>-az-aks-kubenet-001"
-        },
-        "releaseTrain": {
-            "value": "Stable"
-        },
-        "releaseNamespace": {
-            "value": "flux-system"
-        },
-        "version": {
-            "value": "0.5.2"
-        },
-        "configurationSettings": {
-            "value": {
-                // "helm-controller.enabled": "false",
-                "source-controller.enabled": "true",
-                "kustomize-controller.enabled": "true",
-                "notification-controller.enabled": "false",
-                "image-automation-controller.enabled": "false",
-                "image-reflector-controller.enabled": "false"
-            }
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<clusterName>"
+    },
+    "extensionType": {
+      "value": "microsoft.flux"
+    },
+    "name": {
+      "value": "<<namePrefix>>kcecom001"
+    },
+    // Non-required parameters
+    "configurationSettings": {
+      "value": {
+        "image-automation-controller.enabled": "false",
+        "image-reflector-controller.enabled": "false",
+        "kustomize-controller.enabled": "true",
+        "notification-controller.enabled": "false",
+        "source-controller.enabled": "true"
+      }
+    },
+    "releaseNamespace": {
+      "value": "flux-system"
+    },
+    "releaseTrain": {
+      "value": "Stable"
+    },
+    "version": {
+      "value": "0.5.2"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Min</h3>
 
 <details>
 
@@ -168,20 +163,47 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 
 ```bicep
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-extensions'
+  name: '${uniqueString(deployment().name)}-test-kcemin'
   params: {
-    name: 'flux'
+    // Required parameters
+    clusterName: '<clusterName>'
     extensionType: 'microsoft.flux'
-    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-    releaseTrain: 'Stable'
+    name: '<<namePrefix>>kcemin001'
+    // Non-required parameters
     releaseNamespace: 'flux-system'
-    version: '0.5.2'
-    configurationSettings: {
-      'source-controller.enabled': 'true'
-      'kustomize-controller.enabled': 'true'
-      'notification-controller.enabled': 'false'
-      'image-automation-controller.enabled': 'false'
-      'image-reflector-controller.enabled': 'false'
+    releaseTrain: 'Stable'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<clusterName>"
+    },
+    "extensionType": {
+      "value": "microsoft.flux"
+    },
+    "name": {
+      "value": "<<namePrefix>>kcemin001"
+    },
+    // Non-required parameters
+    "releaseNamespace": {
+      "value": "flux-system"
+    },
+    "releaseTrain": {
+      "value": "Stable"
     }
   }
 }

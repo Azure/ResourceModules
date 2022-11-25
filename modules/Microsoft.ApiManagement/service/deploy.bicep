@@ -364,7 +364,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
   }
 }]
 
-module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
+module portalSettings_resource 'portalSettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
   name: '${uniqueString(deployment().name, location)}-Apim-PortalSetting-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
@@ -448,6 +448,8 @@ module apiManagementService_roleAssignments '.bicep/nested_roleAssignments.bicep
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: apiManagementService.id
   }
 }]
