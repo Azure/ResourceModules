@@ -603,11 +603,11 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
   ]
 }
 
-module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-VM-DiskEncryption'
+module vm_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-VM-AzureDiskEncryption'
   params: {
     virtualMachineName: vm.name
-    name: 'DiskEncryption'
+    name: 'AzureDiskEncryption'
     publisher: 'Microsoft.Azure.Security'
     type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
     typeHandlerVersion: contains(extensionAzureDiskEncryptionConfig, 'typeHandlerVersion') ? extensionAzureDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')

@@ -74,6 +74,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     osDisk: {
+      createOption: 'fromImage'
       diskSizeGB: '128'
       managedDisk: {
         storageAccountType: 'Premium_LRS'
@@ -84,6 +85,8 @@ module testDeployment '../../deploy.bicep' = {
     }
     dataDisks: [
       {
+        caching: 'ReadOnly'
+        createOption: 'Empty'
         diskSizeGB: '128'
         managedDisk: {
           storageAccountType: 'Premium_LRS'

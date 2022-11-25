@@ -1394,6 +1394,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     }
     name: '<<namePrefix>>cvmsslcmk001'
     osDisk: {
+      createOption: 'fromImage'
       diskSizeGB: '128'
       managedDisk: {
         diskEncryptionSet: {
@@ -1407,6 +1408,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     // Non-required parameters
     dataDisks: [
       {
+        caching: 'ReadOnly'
+        createOption: 'Empty'
         diskSizeGB: '128'
         managedDisk: {
           diskEncryptionSet: {
@@ -1472,6 +1475,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "osDisk": {
       "value": {
+        "createOption": "fromImage",
         "diskSizeGB": "128",
         "managedDisk": {
           "diskEncryptionSet": {
@@ -1491,6 +1495,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "dataDisks": {
       "value": [
         {
+          "caching": "ReadOnly",
+          "createOption": "Empty",
           "diskSizeGB": "128",
           "managedDisk": {
             "diskEncryptionSet": {

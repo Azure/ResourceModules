@@ -591,11 +591,11 @@ module vmss_customScriptExtension 'extensions/deploy.bicep' = if (extensionCusto
   ]
 }
 
-module vmss_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-VMSS-DiskEncryption'
+module vmss_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-VMSS-AzureDiskEncryption'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'DiskEncryption'
+    name: 'AzureDiskEncryption'
     publisher: 'Microsoft.Azure.Security'
     type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
     typeHandlerVersion: contains(extensionAzureDiskEncryptionConfig, 'typeHandlerVersion') ? extensionAzureDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
