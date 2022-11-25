@@ -35,7 +35,7 @@ param maintenanceConfigurationId string = ''
 @description('Optional. The storage limit for the database elastic pool in bytes.')
 param maxSizeBytes int = 34359738368
 
-@description('Optional. Minimal capacity that serverless pool will not shrink below, if not paused')
+@description('Optional. Minimal capacity that serverless pool will not shrink below, if not paused.')
 param minCapacity int = 2
 
 @description('Optional. The maximum capacity any one database can consume.')
