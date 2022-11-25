@@ -41,7 +41,7 @@ param enableDefaultTelemetry bool = true
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-var builtInRoleNamesVar = {
+var builtInRoleNames = {
   'AcrPush': '/providers/Microsoft.Authorization/roleDefinitions/8311e382-0749-4cb8-b61a-304f252e45ec'
   'API Management Service Contributor': '/providers/Microsoft.Authorization/roleDefinitions/312a565d-c81f-4fd8-895a-4e21e48d571c'
   'AcrPull': '/providers/Microsoft.Authorization/roleDefinitions/7f951dda-4ed3-4680-a7ca-43fe172d538d'
@@ -325,7 +325,7 @@ var builtInRoleNamesVar = {
   'Azure Maps Contributor': '/providers/Microsoft.Authorization/roleDefinitions/dba33070-676a-4fb0-87fa-064dc56ff7fb'
 }
 
-var roleDefinitionIdVar = (contains(builtInRoleNamesVar, roleDefinitionIdOrName) ? builtInRoleNamesVar[roleDefinitionIdOrName] : roleDefinitionIdOrName)
+var roleDefinitionIdVar = (contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName)
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
