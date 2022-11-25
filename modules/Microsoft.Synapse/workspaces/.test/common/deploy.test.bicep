@@ -44,7 +44,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
+    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
@@ -61,8 +61,8 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>${serviceShort}001'
-    defaultDataLakeStorageFilesystem: 'synapsews'
+    defaultDataLakeStorageAccountName: '${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}'
+    defaultDataLakeStorageFilesystem: dataLakeStorageFilesystem
     sqlAdministratorLogin: 'synwsadmin'
     initialWorkspaceAdminObjectID: resourceGroupResources.outputs.managedIdentityPrincipalId
     userAssignedIdentities: {
