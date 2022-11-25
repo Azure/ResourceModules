@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Insights/diagnosticSettings/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/**/*.md'
 
 variables:
   - template: '../../settings.yml'

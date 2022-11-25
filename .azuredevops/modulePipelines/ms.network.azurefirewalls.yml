@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Network/azureFirewalls/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/**/*.md'
 
 variables:
   - template: '../../settings.yml'

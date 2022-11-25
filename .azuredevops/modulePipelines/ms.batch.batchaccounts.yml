@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Batch/batchAccounts/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/**/*.md'
 
 variables:
   - template: '../../settings.yml'
