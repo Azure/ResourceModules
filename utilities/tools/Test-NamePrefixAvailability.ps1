@@ -8,17 +8,12 @@ Test if a given name prefix token placeholder is already taken. Tests resource n
 .PARAMETER namePrefix
 Parameter description
 
-.PARAMETER overwrittenServiceShort
-A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.
-If left blank the script will use the default value from parameter named 'serviceShort' from the respective the bicep file.
-
 .PARAMETER Tokens
 Optional. A hashtable parameter that contains tokens to be replaced in the paramter files
 
 .EXAMPLE
 $inputObject = @{
     NamePrefix = 'carml'
-    overwrittenServiceShort = ''
     Tokens     = @{
         Location          = 'westeurope'
         ResourceGroupName = 'validation-rg'
@@ -32,15 +27,25 @@ Test-NamePrefixAvailability @inputObject
 
 Test if namePrefix 'carml' is available.
 #>
+$inputObject = @{
+    NamePrefix = 'jpe01'
+    Tokens     = @{
+        Location          = 'westeurope'
+        ResourceGroupName = 'validation-rg'
+        SubscriptionId    = '00000000-0000-0000-0000-000000000000'
+        ManagementGroupId = '00000000-0000-0000-0000-000000000000'
+        RemoveDeployment  = $false
+        deploymentSpId    = '00000000-0000-0000-0000-000000000000'
+    }
+}
+Test-NamePrefixAvailability @inputObject
+
 function Test-NamePrefixAvailability {
 
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string] $namePrefix,
-
-        [Parameter(Mandatory = $false)]
-        [string] $overwrittenServiceShort,
 
         [Parameter(Mandatory = $false)]
         [Psobject] $Tokens = @{}
@@ -71,8 +76,8 @@ function Test-NamePrefixAvailability {
 
         $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter 'deploy.test.bicep').FullName | Where-Object {
             Test-Path (Join-Path (Split-Path $_ -Parent) 'dependencies.bicep') # Currently we only need to consider files that have ResourceGroup resources
-        } | ForEach-Object { 
-            $_.Replace('\', '/') 
+        } | ForEach-Object {
+            $_.Replace('\', '/')
         }
 
         foreach ($parameterFile in $parameterFiles) {
@@ -93,25 +98,21 @@ function Test-NamePrefixAvailability {
                         continue
                     }
                 }
-            
+
                 $temp = $null
+                $fileContent = Get-Content -Path $parameterFile
 
                 # determine if entry is of one of the resourceTypes using the filter variable
-                $temp = Get-Content -Path $parameterFile | ForEach-Object {
+                $temp = $fileContent | ForEach-Object {
                     if ($_ -match "$filter\s'") { $_ }
                 }
 
                 # determine serviceshort default value if no parameter has been supplied
-                if (-not $overwrittenServiceShort) {
-                    $serviceShort = Get-Content -Path $parameterFile | ForEach-Object {
-                        if ($_ -match "serviceShort string = ") { $_ }
+                $serviceShort = $fileContent | ForEach-Object {
+                    if ($_ -Match "^param serviceShort string = '(\[a-z]+)'$") {
+                        $matches[1]
+                        break
                     }
-                    $serviceShort = $serviceShort.Split("=")[-1] # split string to get the default value for serviceshort
-                    $serviceShort = $serviceShort.Replace("'", '') # remove trailing quotes
-                    $serviceShort = $serviceShort.Replace("'", '') # remove trailing quotes
-                }
-                else {
-                    $serviceShort = $overwrittenServiceShort
                 }
 
                 if ($temp) {
@@ -215,13 +216,12 @@ function Test-NamePrefixAvailability {
         Write-Host '======' -ForegroundColor 'Cyan'
         if (-not $prefixAvailable) {
             Write-Error "=> Prefix [$namePrefix] is not available for all resources. Please try a different one."
-        }
-        else {
+        } else {
             Write-Host "=> Prefix [$namePrefix] is available for all resources." -ForegroundColor 'Green'
         }
     }
 
     end {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
-    }   
+    }
 }
