@@ -272,7 +272,10 @@ osDisk: {
             "deleteOption": "Delete", // Optional. Can be 'Delete' or 'Detach'
             "diskSizeGB": "256",
             "managedDisk": {
-                "storageAccountType": "Premium_LRS"
+                "storageAccountType": "Premium_LRS",
+                "diskEncryptionSet": { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.
+                    "id": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>"
+                }
             }
         },
         {
@@ -280,7 +283,10 @@ osDisk: {
             "createOption": "Empty",
             "diskSizeGB": "128",
             "managedDisk": {
-                "storageAccountType": "Premium_LRS"
+                "storageAccountType": "Premium_LRS",
+                "diskEncryptionSet": { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.
+                    "id": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>"
+                }
             }
         }
     ]
@@ -302,6 +308,9 @@ dataDisks: [
         diskSizeGB: '256'
         managedDisk: {
             storageAccountType: 'Premium_LRS'
+            diskEncryptionSet: { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.
+                id: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>'
+            }
         }
     }
     {
@@ -310,6 +319,9 @@ dataDisks: [
         diskSizeGB: '128'
         managedDisk: {
             storageAccountType: 'Premium_LRS'
+            diskEncryptionSet: { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.
+                id: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>'
+            }
         }
     }
 ]
@@ -615,6 +627,7 @@ extensionAntiMalwareConfig: {
 
 ```json
 "extensionAzureDiskEncryptionConfig": {
+  // Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.
   "value": {
     "enabled": true,
     "settings": {
@@ -639,6 +652,7 @@ extensionAntiMalwareConfig: {
 
 ```bicep
 extensionAzureDiskEncryptionConfig: {
+    // Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.
     enabled: true
     settings: {
         EncryptionOperation: 'EnableEncryption'
