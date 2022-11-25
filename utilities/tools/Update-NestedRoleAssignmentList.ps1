@@ -30,6 +30,8 @@ function Update-NestedRoleAssignmentListInner {
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         # Load Get RoleAssignments List
+        $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
+        $modulesPath = Join-Path $repoRootPath 'modules'
         $utilitiesFolderPath = Split-Path $PSScriptRoot -Parent
         . (Join-Path $utilitiesFolderPath 'tools' 'Get-RoleAssignmentList')
         $fileNameToUpdate = 'nested_roleAssignments.bicep'
@@ -49,19 +51,39 @@ function Update-NestedRoleAssignmentListInner {
             '}'
         )
 
-        #######################
-        ##  Get old content  ##
-        #######################
-        $pathToFile = Join-Path $ProviderNamespace $ResourceType '.bicep' $fileNameToUpdate
-        $content = Get-Content $pathToFile -Raw
+        ##################################
+        ##  Create array of file names  ##
+        ##################################
+        $filesToProcess = @()
+        if ("$ProviderNamespace/$ResourceType" -eq 'Microsoft.Authorization/RoleAssignments') {
+            # for the module 'Microsoft.Authorization/RoleAssignments' looking recursiverly for
+            # all 'deploy.bicep' files in the module folder
+            Set-Location $modulesPath
+            $searchFile = Join-Path $modulesPath 'Microsoft.Authorization' 'roleAssignments' '**' 'deploy.bicep'
+            $rbacPathList = Get-ChildItem -Path $searchFile -Recurse
+            foreach ($item in $rbacPathList) {
+                $FullFilePath = $item.FullName
+                $relativeFilePath = ((Get-Item $FullFilePath | Resolve-Path -Relative) -replace '\\', '/') -replace '\.\/', ''
+                $filesToProcess += $relativeFilePath
+            }
+        } else {
+            # for all other modules adding 'nested_roleAssignments.bicep' file only
+            $filesToProcess += Join-Path $ProviderNamespace $ResourceType '.bicep' $fileNameToUpdate
+        }
 
-        #####################
-        ##  Update Conent  ##
-        #####################
-        $newContent = ($nestedRoles | Out-String).TrimEnd()
-        $content = ($content -replace '(?ms)^\s+var builtInRoleNames = {.*?}', $newContent).TrimEnd()
-        if ($PSCmdlet.ShouldProcess("File in path [$pathToFile]", 'Update')) {
-            Set-Content -Path $pathToFile -Value $content -Force -Encoding 'utf8'
+        #############################
+        ##  Processing files array ##
+        #############################
+        foreach ($fileToProcess in $filesToProcess) {
+            # Get existing content
+            $content = Get-Content $fileToProcess -Raw
+
+            # Update Content
+            $newContent = ($nestedRoles | Out-String).TrimEnd()
+            $content = ($content -replace '(?ms)^\s+var builtInRoleNames = {.*?}', $newContent).TrimEnd()
+            if ($PSCmdlet.ShouldProcess("File in path [$fileToProcess]", 'Update')) {
+                Set-Content -Path $fileToProcess -Value $content -Force -Encoding 'utf8'
+            }
         }
 
         # Return arrays
@@ -154,5 +176,3 @@ function Update-NestedRoleAssignmentList {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
-
-Update-NestedRoleAssignmentList
