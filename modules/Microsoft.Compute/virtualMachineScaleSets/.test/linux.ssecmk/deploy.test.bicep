@@ -74,7 +74,6 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     osDisk: {
-      createOption: 'fromImage'
       diskSizeGB: '128'
       managedDisk: {
         storageAccountType: 'Premium_LRS'
