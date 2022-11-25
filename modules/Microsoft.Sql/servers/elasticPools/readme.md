@@ -48,6 +48,7 @@ This module deploys an Azure SQL Server Elastic Pool.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `zoneRedundant` | bool | `False` |  | Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across multiple availability zones. |
 
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.

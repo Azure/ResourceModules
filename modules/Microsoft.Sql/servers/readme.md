@@ -418,6 +418,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     administratorLoginPassword: '<administratorLoginPassword>'
     databases: [
       {
+        capacity: 0
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
         diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -428,9 +429,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
         name: '<<namePrefix>>-sqlscomdb-001'
-        skuCapacity: 12
-        skuFamily: 'Gen5'
-        skuName: 'GP_Gen5'
+        skuName: 'ElasticPool'
         skuTier: 'GeneralPurpose'
       }
     ]
@@ -438,6 +437,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       {
         maintenanceConfigurationId: '<maintenanceConfigurationId>'
         name: '<<namePrefix>>-sqlscom-ep-001'
+        skuCapacity: 10
+        skuName: 'GP_Gen5'
+        skuTier: 'GeneralPurpose'
       }
     ]
     firewallRules: [
@@ -527,6 +529,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     "databases": {
       "value": [
         {
+          "capacity": 0,
           "collation": "SQL_Latin1_General_CP1_CI_AS",
           "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
           "diagnosticEventHubName": "<diagnosticEventHubName>",
@@ -537,9 +540,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
           "name": "<<namePrefix>>-sqlscomdb-001",
-          "skuCapacity": 12,
-          "skuFamily": "Gen5",
-          "skuName": "GP_Gen5",
+          "skuName": "ElasticPool",
           "skuTier": "GeneralPurpose"
         }
       ]
@@ -548,7 +549,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       "value": [
         {
           "maintenanceConfigurationId": "<maintenanceConfigurationId>",
-          "name": "<<namePrefix>>-sqlscom-ep-001"
+          "name": "<<namePrefix>>-sqlscom-ep-001",
+          "skuCapacity": 10,
+          "skuName": "GP_Gen5",
+          "skuTier": "GeneralPurpose"
         }
       ]
     },
