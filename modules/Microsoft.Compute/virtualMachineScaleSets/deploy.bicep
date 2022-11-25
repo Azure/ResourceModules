@@ -76,9 +76,6 @@ param maxPriceForLowPriorityVm string = ''
 ])
 param licenseType string = ''
 
-@description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
-param enableServerSideEncryption bool = false
-
 @description('Optional. Required if name is specified. Password of the user specified in user parameter.')
 @secure()
 param extensionDomainJoinPassword string = ''
@@ -408,23 +405,25 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2022-03-01' = {
           vhdContainers: contains(osDisk, 'vhdContainers') ? osDisk.vhdContainers : null
           managedDisk: {
             storageAccountType: osDisk.managedDisk.storageAccountType
-            diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
-          }
-        }
-        dataDisks: [for (item, j) in dataDisks: {
-          lun: j
-          diskSizeGB: item.diskSizeGB
-          createOption: item.createOption
-          caching: item.caching
-          writeAcceleratorEnabled: contains(osDisk, 'writeAcceleratorEnabled') ? osDisk.writeAcceleratorEnabled : null
-          managedDisk: {
-            storageAccountType: item.managedDisk.storageAccountType
             diskEncryptionSet: {
-              id: enableServerSideEncryption ? item.managedDisk.diskEncryptionSet.id : null
+              id: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet.id : null
             }
           }
-          diskIOPSReadWrite: contains(osDisk, 'diskIOPSReadWrite') ? item.diskIOPSReadWrite : null
-          diskMBpsReadWrite: contains(osDisk, 'diskMBpsReadWrite') ? item.diskMBpsReadWrite : null
+        }
+        dataDisks: [for (dataDisk, index) in dataDisks: {
+          lun: index
+          diskSizeGB: dataDisk.diskSizeGB
+          createOption: dataDisk.createOption
+          caching: dataDisk.caching
+          writeAcceleratorEnabled: contains(osDisk, 'writeAcceleratorEnabled') ? osDisk.writeAcceleratorEnabled : null
+          managedDisk: {
+            storageAccountType: dataDisk.managedDisk.storageAccountType
+            diskEncryptionSet: {
+              id: contains(dataDisk.managedDisk, 'diskEncryptionSet') ? dataDisk.managedDisk.diskEncryptionSet.id : null
+            }
+          }
+          diskIOPSReadWrite: contains(osDisk, 'diskIOPSReadWrite') ? dataDisk.diskIOPSReadWrite : null
+          diskMBpsReadWrite: contains(osDisk, 'diskMBpsReadWrite') ? dataDisk.diskMBpsReadWrite : null
         }]
       }
       networkProfile: {

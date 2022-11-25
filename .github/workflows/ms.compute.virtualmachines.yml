@@ -60,9 +60,9 @@ jobs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
 
-  # #########################
-  # #   Static validation   #
-  # #########################
+  #########################
+  #   Static validation   #
+  #########################
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Static validation'
