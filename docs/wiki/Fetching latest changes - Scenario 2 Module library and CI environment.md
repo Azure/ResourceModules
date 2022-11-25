@@ -11,9 +11,8 @@ The update process is the following:
 - [3. (Optional) Convert library to ARM](#3-optional-convert-library-to-arm)
 - [4. Apply specific settings to files](#4-apply-specific-settings-to-files)
 - [5. (Optional) Customize modules and CI environment](#5-optional-customize-modules-and-ci-environment)
-- [6. Update module test files](#6-update-module-test-files)
-- [7. Run dependencies pipeline](#7-run-dependencies-pipeline)
-- [8. Test and publish modules](#8-test-and-publish-modules)
+- [6. Run dependencies pipeline](#7-run-dependencies-pipeline)
+- [7. Test and publish modules](#8-test-and-publish-modules)
 
 # 1. Backup your local copy of the library
 

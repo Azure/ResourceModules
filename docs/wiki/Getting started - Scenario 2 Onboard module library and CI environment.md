@@ -6,7 +6,6 @@ This requires several steps:
 1. [Fork/clone the repository into your DevOps environment](#2-forkclone-the-repository-into-your-devops-environment)
 1. [Configure the CI environment](#3-configure-the-ci-environment)
 1. [Deploy dependencies](#4-deploy-dependencies)
-1. [Update module test files](#5-update-module-test-files)
 1. [(Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
 
 Depending on the DevOps environment you choose (GitHub or Azure DevOps), make sure you also account for the specific requirements outlined below.
@@ -371,11 +370,11 @@ In order to successfully deploy and test all modules in your desired environment
 
 Those resources are generally deployed by the module test files before the module to validate, so that you don't need to worry about setting up dependencies for each test and clean them up afterwards.
 
-In special cases, manual actions may be required to provision certain resources whose deployment is not covered by the module test files. In the following, you can find an overview of which modules require special attention before being validated:
+In special cases, manual actions may be required to provision certain resources whose deployment is not covered by the module test files. In the following, you can find an overview of which modules require special attention before being validated.
 
 ### Microsoft.Web/sites
 
-To successfully deploy the sites module using the `FunctionAppCommon/deploy.test.bicep` test, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
+To successfully deploy the sites module using the `functionAppCommon/deploy.test.bicep` test, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
 
 Finally, the elements described above must further be configured in the following files:
 
@@ -385,24 +384,8 @@ Finally, the elements described above must further be configured in the followin
 | `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App (e.g., '11111111-1111-1111-1111-11111111111') |
 | `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app (e.g., 'api://11111111-1111-1111-1111-11111111111') |
 
-# 5. Update module test files
-
-Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependencies pipeline ran once.
-
-For this reason, make sure to update the references in the following modules once the dependencies pipeline concluded:
-
-| File | Parameter | Notes |
-| - | - | - |
-| `modules\Microsoft.CognitiveServices\accounts\.test\encr.parameters.json` | `encryption.value.keyVaultProperties.identityClientId` | |
-| `modules\Microsoft.Compute\virtualMachines\.test\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Compute\virtualMachines\.test\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Compute\virtualMachineScaleSets\.test\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Compute\virtualMachineScaleSets\.test\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Sql\managedInstances\.test\parameters.json` | `keys.value.uri` | |
-| `modules\Microsoft.Network\applicationGateways\.test\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
-
 </details>
 
-# 6. (Optional) Convert library to ARM
+# 5. (Optional) Convert library to ARM
 
 Note that in case you don't want to use Bicep, you always have the option to use the utility `ConvertTo-ARMTemplate` we provide in path `utilities/tools` to convert the repository to an ARM-only repository. Due to the way Bicep works and the CI environment is set up, you should be able to use it with ARM templates in the same way as you would when using Bicep. For further information on how to use the tool, please refer to the tool-specific [documentation](./Interoperability%20-%20Bicep%20to%20ARM%20conversion).
