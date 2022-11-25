@@ -65,12 +65,11 @@ The following resources are required to be able to deploy this resource.
 | `enableAutomaticUpdates` | bool | `True` |  | Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableEvictionPolicy` | bool | `False` |  | Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
-| `enableServerSideEncryption` | bool | `False` |  | Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key. |
 | `encryptionAtHost` | bool | `True` |  | This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your virtual machine scale sets. |
 | `extensionAntiMalwareConfig` | object | `{object}` |  | The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed. |
+| `extensionAzureDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys. |
 | `extensionCustomScriptConfig` | object | `{object}` |  | The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinConfig` | object | `{object}` |  | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinPassword` | secureString | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
 | `extensionDSCConfig` | object | `{object}` |  | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -276,7 +275,10 @@ osDisk: {
             "diskSizeGB": "256",
             "writeAcceleratorEnabled": true,
             "managedDisk": {
-                "storageAccountType": "Premium_LRS"
+                "storageAccountType": "Premium_LRS",
+                "diskEncryptionSet": { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.
+                    "id": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>"
+                }
             }
         },
         {
@@ -285,7 +287,10 @@ osDisk: {
             "diskSizeGB": "128",
             "writeAcceleratorEnabled": true,
             "managedDisk": {
-                "storageAccountType": "Premium_LRS"
+                "storageAccountType": "Premium_LRS",
+                "diskEncryptionSet": { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.
+                    "id": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>"
+                }
             }
         }
     ]
@@ -307,6 +312,9 @@ dataDisks: [
         writeAcceleratorEnabled: true
         managedDisk: {
             storageAccountType: 'Premium_LRS'
+            diskEncryptionSet: { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.
+                id: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>'
+            }
         }
     }
     {
@@ -315,7 +323,9 @@ dataDisks: [
         diskSizeGB: '128'
         writeAcceleratorEnabled: true
         managedDisk: {
-            storageAccountType: 'Premium_LRS'
+            storageAccountType: 'Premium_LRS'diskEncryptionSet: { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.
+                id: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>'
+            }
         }
     }
 ]
@@ -529,14 +539,15 @@ extensionAntiMalwareConfig: {
 </details>
 <p>
 
-### Parameter Usage: `extensionDiskEncryptionConfig`
+### Parameter Usage: `extensionAzureDiskEncryptionConfig`
 
 <details>
 
 <summary>Parameter JSON format</summary>
 
 ```json
-"extensionDiskEncryptionConfig": {
+"extensionAzureDiskEncryptionConfig": {
+    // Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.
     "value": {
         "enabled": true,
         "settings": {
@@ -560,7 +571,8 @@ extensionAntiMalwareConfig: {
 <summary>Bicep format</summary>
 
 ```bicep
-extensionDiskEncryptionConfig: {
+extensionAzureDiskEncryptionConfig: {
+    // Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.
     enabled: true
     settings: {
         EncryptionOperation: 'EnableEncryption'
@@ -948,6 +960,19 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disablePasswordAuthentication: true
     encryptionAtHost: false
+    extensionAzureDiskEncryptionConfig: {
+      enabled: true
+      settings: {
+        EncryptionOperation: 'EnableEncryption'
+        KekVaultResourceId: '<KekVaultResourceId>'
+        KeyEncryptionAlgorithm: 'RSA-OAEP'
+        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
+        KeyVaultResourceId: '<KeyVaultResourceId>'
+        KeyVaultURL: '<KeyVaultURL>'
+        ResizeOSDisk: 'false'
+        VolumeType: 'All'
+      }
+    }
     extensionCustomScriptConfig: {
       enabled: true
       fileData: [
@@ -962,19 +987,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     }
     extensionDependencyAgentConfig: {
       enabled: true
-    }
-    extensionDiskEncryptionConfig: {
-      enabled: true
-      settings: {
-        EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: '<KekVaultResourceId>'
-        KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
-        KeyVaultResourceId: '<KeyVaultResourceId>'
-        KeyVaultURL: '<KeyVaultURL>'
-        ResizeOSDisk: 'false'
-        VolumeType: 'All'
-      }
     }
     extensionMonitoringAgentConfig: {
       enabled: true
@@ -1117,6 +1129,21 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "encryptionAtHost": {
       "value": false
     },
+    "extensionAzureDiskEncryptionConfig": {
+      "value": {
+        "enabled": true,
+        "settings": {
+          "EncryptionOperation": "EnableEncryption",
+          "KekVaultResourceId": "<KekVaultResourceId>",
+          "KeyEncryptionAlgorithm": "RSA-OAEP",
+          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
+          "KeyVaultResourceId": "<KeyVaultResourceId>",
+          "KeyVaultURL": "<KeyVaultURL>",
+          "ResizeOSDisk": "false",
+          "VolumeType": "All"
+        }
+      }
+    },
     "extensionCustomScriptConfig": {
       "value": {
         "enabled": true,
@@ -1134,21 +1161,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "extensionDependencyAgentConfig": {
       "value": {
         "enabled": true
-      }
-    },
-    "extensionDiskEncryptionConfig": {
-      "value": {
-        "enabled": true,
-        "settings": {
-          "EncryptionOperation": "EnableEncryption",
-          "KekVaultResourceId": "<KekVaultResourceId>",
-          "KeyEncryptionAlgorithm": "RSA-OAEP",
-          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
-          "KeyVaultResourceId": "<KeyVaultResourceId>",
-          "KeyVaultURL": "<KeyVaultURL>",
-          "ResizeOSDisk": "false",
-          "VolumeType": "All"
-        }
       }
     },
     "extensionMonitoringAgentConfig": {
@@ -1362,7 +1374,178 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 </details>
 <p>
 
-<h3>Example 3: Windows</h3>
+<h3>Example 3: Linux.Ssecmk</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-cvmsslcmk'
+  params: {
+    // Required parameters
+    adminUsername: 'scaleSetAdmin'
+    imageReference: {
+      offer: '0001-com-ubuntu-server-jammy'
+      publisher: 'Canonical'
+      sku: '22_04-lts-gen2'
+      version: 'latest'
+    }
+    name: '<<namePrefix>>cvmsslcmk001'
+    osDisk: {
+      createOption: 'fromImage'
+      diskSizeGB: '128'
+      managedDisk: {
+        diskEncryptionSet: {
+          id: '<id>'
+        }
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Linux'
+    skuName: 'Standard_B12ms'
+    // Non-required parameters
+    dataDisks: [
+      {
+        caching: 'ReadOnly'
+        createOption: 'Empty'
+        diskSizeGB: '128'
+        managedDisk: {
+          diskEncryptionSet: {
+            id: '<id>'
+          }
+          storageAccountType: 'Premium_LRS'
+        }
+      }
+    ]
+    disablePasswordAuthentication: true
+    location: '<location>'
+    nicConfigurations: [
+      {
+        ipConfigurations: [
+          {
+            name: 'ipconfig1'
+            properties: {
+              subnet: {
+                id: '<id>'
+              }
+            }
+          }
+        ]
+        nicSuffix: '-nic01'
+      }
+    ]
+    publicKeys: [
+      {
+        keyData: '<keyData>'
+        path: '/home/scaleSetAdmin/.ssh/authorized_keys'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "adminUsername": {
+      "value": "scaleSetAdmin"
+    },
+    "imageReference": {
+      "value": {
+        "offer": "0001-com-ubuntu-server-jammy",
+        "publisher": "Canonical",
+        "sku": "22_04-lts-gen2",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>cvmsslcmk001"
+    },
+    "osDisk": {
+      "value": {
+        "createOption": "fromImage",
+        "diskSizeGB": "128",
+        "managedDisk": {
+          "diskEncryptionSet": {
+            "id": "<id>"
+          },
+          "storageAccountType": "Premium_LRS"
+        }
+      }
+    },
+    "osType": {
+      "value": "Linux"
+    },
+    "skuName": {
+      "value": "Standard_B12ms"
+    },
+    // Non-required parameters
+    "dataDisks": {
+      "value": [
+        {
+          "caching": "ReadOnly",
+          "createOption": "Empty",
+          "diskSizeGB": "128",
+          "managedDisk": {
+            "diskEncryptionSet": {
+              "id": "<id>"
+            },
+            "storageAccountType": "Premium_LRS"
+          }
+        }
+      ]
+    },
+    "disablePasswordAuthentication": {
+      "value": true
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "nicConfigurations": {
+      "value": [
+        {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "<id>"
+                }
+              }
+            }
+          ],
+          "nicSuffix": "-nic01"
+        }
+      ]
+    },
+    "publicKeys": {
+      "value": [
+        {
+          "keyData": "<keyData>",
+          "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Windows</h3>
 
 <details>
 
@@ -1416,6 +1599,19 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         }
       }
     }
+    extensionAzureDiskEncryptionConfig: {
+      enabled: true
+      settings: {
+        EncryptionOperation: 'EnableEncryption'
+        KekVaultResourceId: '<KekVaultResourceId>'
+        KeyEncryptionAlgorithm: 'RSA-OAEP'
+        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
+        KeyVaultResourceId: '<KeyVaultResourceId>'
+        KeyVaultURL: '<KeyVaultURL>'
+        ResizeOSDisk: 'false'
+        VolumeType: 'All'
+      }
+    }
     extensionCustomScriptConfig: {
       enabled: true
       fileData: [
@@ -1430,19 +1626,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     }
     extensionDependencyAgentConfig: {
       enabled: true
-    }
-    extensionDiskEncryptionConfig: {
-      enabled: true
-      settings: {
-        EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: '<KekVaultResourceId>'
-        KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
-        KeyVaultResourceId: '<KeyVaultResourceId>'
-        KeyVaultURL: '<KeyVaultURL>'
-        ResizeOSDisk: 'false'
-        VolumeType: 'All'
-      }
     }
     extensionDSCConfig: {
       enabled: true
@@ -1574,6 +1757,21 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         }
       }
     },
+    "extensionAzureDiskEncryptionConfig": {
+      "value": {
+        "enabled": true,
+        "settings": {
+          "EncryptionOperation": "EnableEncryption",
+          "KekVaultResourceId": "<KekVaultResourceId>",
+          "KeyEncryptionAlgorithm": "RSA-OAEP",
+          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
+          "KeyVaultResourceId": "<KeyVaultResourceId>",
+          "KeyVaultURL": "<KeyVaultURL>",
+          "ResizeOSDisk": "false",
+          "VolumeType": "All"
+        }
+      }
+    },
     "extensionCustomScriptConfig": {
       "value": {
         "enabled": true,
@@ -1591,21 +1789,6 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "extensionDependencyAgentConfig": {
       "value": {
         "enabled": true
-      }
-    },
-    "extensionDiskEncryptionConfig": {
-      "value": {
-        "enabled": true,
-        "settings": {
-          "EncryptionOperation": "EnableEncryption",
-          "KekVaultResourceId": "<KekVaultResourceId>",
-          "KeyEncryptionAlgorithm": "RSA-OAEP",
-          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
-          "KeyVaultResourceId": "<KeyVaultResourceId>",
-          "KeyVaultURL": "<KeyVaultURL>",
-          "ResizeOSDisk": "false",
-          "VolumeType": "All"
-        }
       }
     },
     "extensionDSCConfig": {
@@ -1683,7 +1866,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 </details>
 <p>
 
-<h3>Example 4: Windows.Min</h3>
+<h3>Example 5: Windows.Min</h3>
 
 <details>
 
