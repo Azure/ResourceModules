@@ -87,7 +87,10 @@ module testDeployment '../../deploy.bicep' = {
     elasticPools: [
       {
         name: '<<namePrefix>>-${serviceShort}-ep-001'
+        // Pre-existing 'public' configuration
         maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_WestEurope_DB_1'
+        skuTier: 'BusinessCritical'
+        skuName: 'BC_Gen5'
       }
     ]
     databases: [
