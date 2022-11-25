@@ -69,7 +69,6 @@ The removal process will delete all resources created by the deployment. The lis
          - `Microsoft.Security/pricings`
          - `Microsoft.Security/securityContacts`
          - `Microsoft.Security/workspaceSettings`
-   1. Dependencies for different modules (e.g., the commonly used Log Analytics workspace).
 1. Moving specific resource types to the top of the list (if a certain order is required). For example, `diagnosticSettings` need to be removed before the resource to which they are applied, even though they are no child-resources.
 
 After a resource is removed (this happens after each resource in the list), if defined, the script will perform a **post removal operation**. This can be used for those resource types that require post-processing, like purging a soft-deleted Key Vault.
