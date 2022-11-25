@@ -910,7 +910,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslincom'
+  name: '${uniqueString(deployment().name)}-test-cvmsslin'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -920,7 +920,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsslincom001'
+    name: '<<namePrefix>>cvmsslin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1062,7 +1062,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsslincom001"
+      "value": "<<namePrefix>>cvmsslin001"
     },
     "osDisk": {
       "value": {
@@ -1553,7 +1553,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsswincom'
+  name: '${uniqueString(deployment().name)}-test-cvmsswin'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1563,7 +1563,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsswincom001'
+    name: '<<namePrefix>>cvmsswin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1698,7 +1698,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsswincom001"
+      "value": "<<namePrefix>>cvmsswin001"
     },
     "osDisk": {
       "value": {

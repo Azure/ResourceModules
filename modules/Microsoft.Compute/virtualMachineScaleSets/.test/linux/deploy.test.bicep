@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.compute.virtualmachinescalesets-${serviceSh
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'cvmsslincom'
+param serviceShort string = 'cvmsslin'
 
 // =========== //
 // Deployments //
