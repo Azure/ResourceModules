@@ -58,6 +58,8 @@ var builtInRoleNames = {
   'Azure Arc VMware Private Cloud User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','ce551c02-7c42-47e0-9deb-e3b6fc3a9a83')
   'Azure Arc VMware Private Clouds Onboarding': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','67d33e57-3129-45e6-bb0b-7cc522f762fa')
   'Azure Arc VMware VM Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b748a06d-6150-4f8a-aaa9-ce3940cd96cb')
+  'Azure Center for SAP solutions administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','7b0c7e81-271f-4c71-90bf-e30bdfdbc2f7')
+  'Azure Center for SAP solutions reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','05352d14-a920-4328-a0de-4cbe7430e26b')
   'BizTalk Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','5e3c6656-6cfa-4708-81fe-0de47ac73342')
   'CDN Endpoint Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','426e0c7f-0c7e-4658-b36f-ff54d6c29b45')
   'CDN Endpoint Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','871e35f6-b5c1-49cc-a043-bde969a0f2cd')

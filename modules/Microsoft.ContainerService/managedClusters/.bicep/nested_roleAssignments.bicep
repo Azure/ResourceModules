@@ -40,6 +40,7 @@ var builtInRoleNames = {
   'Azure Kubernetes Fleet Manager RBAC Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','30b27cfc-9c84-438e-b0ce-70e35255df80')
   'Azure Kubernetes Fleet Manager RBAC Writer': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','5af6afb3-c06c-4fa4-8848-71a8aee05683')
   'Azure Kubernetes Service Cluster Admin Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','0ab0b1a8-8aac-4efd-b8c2-3ee1fb270be8')
+  'Azure Kubernetes Service Cluster Monitoring User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','1afdec4b-e479-420e-99e7-f82237c7c5e6')
   'Azure Kubernetes Service Cluster User Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','4abbcc35-e782-43d8-92c5-2d3f1bd2253f')
   'Azure Kubernetes Service Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','ed7f3fbd-7b88-4dd4-9017-9adb7ce333f8')
   'Azure Kubernetes Service RBAC Admin': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','3498e952-d568-435e-9b2c-8d77e338d7f7')
