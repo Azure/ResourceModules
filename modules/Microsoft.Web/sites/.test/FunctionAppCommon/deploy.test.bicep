@@ -64,7 +64,7 @@ module testDeployment '../../deploy.bicep' = {
     appInsightId: resourceGroupResources.outputs.applicationInsightsResourceId
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
-      EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
+      EASYAUTH_SECRET: 'https://<<namePrefix>>-KeyVault.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     }
