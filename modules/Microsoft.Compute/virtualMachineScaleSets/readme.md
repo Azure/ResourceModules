@@ -1369,7 +1369,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslincmk'
+  name: '${uniqueString(deployment().name)}-test-cvmsslcmk'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1379,7 +1379,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsslincmk001'
+    name: '<<namePrefix>>cvmsslcmk001'
     osDisk: {
       diskSizeGB: '128'
       managedDisk: {
@@ -1455,7 +1455,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsslincmk001"
+      "value": "<<namePrefix>>cvmsslcmk001"
     },
     "osDisk": {
       "value": {
