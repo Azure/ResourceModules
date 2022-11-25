@@ -22,6 +22,7 @@ on:
       - 'modules/Microsoft.NetApp/netAppAccounts/**'
       - 'utilities/pipelines/**'
       - '!*/**/readme.md'
+
 env:
   variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.NetApp/netAppAccounts'

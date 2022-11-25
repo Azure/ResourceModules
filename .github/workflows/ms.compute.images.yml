@@ -22,6 +22,7 @@ on:
       - 'modules/Microsoft.Compute/images/**'
       - 'utilities/pipelines/**'
       - '!*/**/readme.md'
+
 env:
   variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Compute/images'

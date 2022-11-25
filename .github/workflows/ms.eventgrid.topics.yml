@@ -22,6 +22,7 @@ on:
       - 'modules/Microsoft.EventGrid/topics/**'
       - 'utilities/pipelines/**'
       - '!*/**/readme.md'
+
 env:
   variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.EventGrid/topics'

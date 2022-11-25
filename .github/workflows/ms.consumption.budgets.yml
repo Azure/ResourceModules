@@ -22,6 +22,7 @@ on:
       - 'modules/Microsoft.Consumption/budgets/**'
       - 'utilities/pipelines/**'
       - '!*/**/readme.md'
+
 env:
   variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Consumption/budgets'

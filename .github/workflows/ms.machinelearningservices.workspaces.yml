@@ -22,6 +22,7 @@ on:
       - 'modules/Microsoft.MachineLearningServices/workspaces/**'
       - 'utilities/pipelines/**'
       - '!*/**/readme.md'
+
 env:
   variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.MachineLearningServices/workspaces'
