@@ -30,7 +30,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
+    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
     storageContainerName: dataLakeStorageFilesystem
   }
 }
@@ -44,7 +44,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    defaultDataLakeStorageAccountName: '${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}'
+    defaultDataLakeStorageAccountName: resourceGroupResources.outputs.storageAccountName
     defaultDataLakeStorageFilesystem: dataLakeStorageFilesystem
     sqlAdministratorLogin: 'synwsadmin'
   }

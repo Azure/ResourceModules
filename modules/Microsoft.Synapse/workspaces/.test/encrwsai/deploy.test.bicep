@@ -36,7 +36,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
+    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
     storageContainerName: dataLakeStorageFilesystem
   }
 }
@@ -50,7 +50,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    defaultDataLakeStorageAccountName: '${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}'
+    defaultDataLakeStorageAccountName: resourceGroupResources.outputs.storageAccountName
     defaultDataLakeStorageFilesystem: dataLakeStorageFilesystem
     sqlAdministratorLogin: 'synwsadmin'
     encryption: true
