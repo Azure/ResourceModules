@@ -34,6 +34,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    maintenanceConfigurationName: 'dep-<<namePrefix>>-mc-${serviceShort}'
     location: location
   }
 }
@@ -84,6 +85,12 @@ module testDeployment '../../deploy.bicep' = {
       ]
       vulnerabilityAssessmentsStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     }
+    elasticPools: [
+      {
+        name: '<<namePrefix>>-${serviceShort}-ep-001'
+        maintenanceConfigurationId: resourceGroupResources.outputs.maintenanceConfigurationResourceId
+      }
+    ]
     databases: [
       {
         name: '<<namePrefix>>-${serviceShort}db-001'
@@ -99,6 +106,7 @@ module testDeployment '../../deploy.bicep' = {
         diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        elasticPoolId: '${resourceGroup.id}/providers/Microsoft.Sql/servers/<<namePrefix>>-${serviceShort}/elasticPools/<<namePrefix>>-${serviceShort}-ep-001'
       }
     ]
     firewallRules: [

@@ -7,6 +7,9 @@ param virtualNetworkName string
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
+@description('Required. The name of the Maintenance Configuration to create.')
+param maintenanceConfigurationName string
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
   name: managedIdentityName
   location: location
@@ -56,6 +59,14 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   }
 }
 
+resource maintenanceConfiguration 'Microsoft.Maintenance/maintenanceConfigurations@2021-05-01' = {
+  name: maintenanceConfigurationName
+  location: location
+  properties: {
+    maintenanceScope: 'SQLDB'
+  }
+}
+
 @description('The principal ID of the created managed identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
@@ -70,3 +81,6 @@ output serviceEndpointSubnetResourceId string = virtualNetwork.properties.subnet
 
 @description('The resource ID of the created Private DNS Zone.')
 output privateDNSResourceId string = privateDNSZone.id
+
+@description('The resource ID of the created Maintenance Configuration.')
+output maintenanceConfigurationResourceId string = maintenanceConfiguration.id
