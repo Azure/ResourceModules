@@ -13,7 +13,8 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'swmin'
 
-var dataLakeStorageFilesystem = 'synapsews'
+@description('Optional. Data Lake Storage Filesystem.')
+param dataLakeStorageFilesystem string = 'synapsews'
 // =========== //
 // Deployments //
 // =========== //
@@ -29,7 +30,6 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
     storageContainerName: dataLakeStorageFilesystem
   }

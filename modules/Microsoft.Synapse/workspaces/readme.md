@@ -321,8 +321,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-swcom'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swcom001'
-    defaultDataLakeStorageFilesystem: 'synapsews'
+    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
+    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swcom001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
@@ -380,10 +380,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>swcom001"
+      "value": "<defaultDataLakeStorageAccountName>"
     },
     "defaultDataLakeStorageFilesystem": {
-      "value": "synapsews"
+      "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
       "value": "<<namePrefix>>swcom001"
@@ -466,8 +466,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-swensa'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swensa001'
-    defaultDataLakeStorageFilesystem: 'synapsews'
+    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
+    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swensa001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
@@ -494,10 +494,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>swensa001"
+      "value": "<defaultDataLakeStorageAccountName>"
     },
     "defaultDataLakeStorageFilesystem": {
-      "value": "synapsews"
+      "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
       "value": "<<namePrefix>>swensa001"
@@ -539,8 +539,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-swenua'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swenua001'
-    defaultDataLakeStorageFilesystem: 'synapsews'
+    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
+    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swenua001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
@@ -566,10 +566,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>swenua001"
+      "value": "<defaultDataLakeStorageAccountName>"
     },
     "defaultDataLakeStorageFilesystem": {
-      "value": "synapsews"
+      "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
       "value": "<<namePrefix>>swenua001"
@@ -608,8 +608,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-swmin'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>swmin001'
-    defaultDataLakeStorageFilesystem: 'synapsews'
+    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
+    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swmin001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
@@ -636,10 +636,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "defaultDataLakeStorageAccountName": {
-      "value": "adp<<namePrefix>>swmin001"
+      "value": "<defaultDataLakeStorageAccountName>"
     },
     "defaultDataLakeStorageFilesystem": {
-      "value": "synapsews"
+      "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
       "value": "<<namePrefix>>swmin001"

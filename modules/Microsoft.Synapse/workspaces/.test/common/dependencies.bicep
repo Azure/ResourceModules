@@ -7,6 +7,12 @@ param managedIdentityName string
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
+@description('Required. The name of the Storage Account to create.')
+param storageAccountName string
+
+@description('Required. The name of the Container to create.')
+param storageContainerName string
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
     location: location
@@ -48,6 +54,26 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
     }
 }
 
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+    name: storageAccountName
+    location: location
+    sku: {
+        name: 'Standard_LRS'
+    }
+    kind: 'StorageV2'
+    properties: {
+        isHnsEnabled: true
+    }
+
+    resource blobService 'blobServices@2021-09-01' = {
+        name: 'default'
+
+        resource container 'containers@2021-09-01' = {
+            name: storageContainerName
+        }
+    }
+}
+
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
@@ -59,3 +85,6 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
 @description('The resource ID of the created Private DNS Zone.')
 output privateDNSResourceId string = privateDNSZone.id
+
+@description('The resource ID of the created Storage Account.')
+output storageAccountResourceId string = storageAccount.id
