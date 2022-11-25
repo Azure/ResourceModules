@@ -206,7 +206,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         enableBgp: false
         enableInternetSecurity: true
         enableRateLimiting: false
-        name: 'Connection-dep-<<namePrefix>>-vs-nvgcom'
+        name: '<name>'
         remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
         routingWeight: 0
         useLocalAzureIpAddress: false
@@ -269,7 +269,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
           "enableBgp": false,
           "enableInternetSecurity": true,
           "enableRateLimiting": false,
-          "name": "Connection-dep-<<namePrefix>>-vs-nvgcom",
+          "name": "<name>",
           "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
           "routingWeight": 0,
           "useLocalAzureIpAddress": false,

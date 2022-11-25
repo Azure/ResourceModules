@@ -51,7 +51,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         connectionBandwidth: 100
         enableBgp: false
-        name: 'Connection-dep-<<namePrefix>>-vs-${serviceShort}'
+        name: 'Connection-${last(split(resourceGroupResources.outputs.vpnSiteResourceId, '/'))}'
         remoteVpnSiteResourceId: resourceGroupResources.outputs.vpnSiteResourceId
         enableInternetSecurity: true
         vpnConnectionProtocolType: 'IKEv2'
