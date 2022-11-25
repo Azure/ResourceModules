@@ -403,9 +403,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         caching: contains(osDisk, 'caching') ? osDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
-          diskEncryptionSet: {
-            id: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet.id : null
-          }
+          diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? {
+            id: osDisk.managedDisk.diskEncryptionSet.id
+          } : null
         }
       }
       dataDisks: [for (dataDisk, index) in dataDisks: {
@@ -417,9 +417,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         caching: contains(dataDisk, 'caching') ? dataDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: dataDisk.managedDisk.storageAccountType
-          diskEncryptionSet: {
-            id: contains(dataDisk.managedDisk, 'diskEncryptionSet') ? dataDisk.managedDisk.diskEncryptionSet.id : null
-          }
+          diskEncryptionSet: contains(dataDisk.managedDisk, 'diskEncryptionSet') ? {
+            id: dataDisk.managedDisk.diskEncryptionSet.id
+          } : null
         }
       }]
     }
