@@ -61,8 +61,8 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    defaultDataLakeStorageAccountName: '${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}'
-    defaultDataLakeStorageFilesystem: dataLakeStorageFilesystem
+    defaultDataLakeStorageAccountName: 'adp<<namePrefix>>${serviceShort}001'
+    defaultDataLakeStorageFilesystem: 'synapsews'
     sqlAdministratorLogin: 'synwsadmin'
     initialWorkspaceAdminObjectID: resourceGroupResources.outputs.managedIdentityPrincipalId
     userAssignedIdentities: {
