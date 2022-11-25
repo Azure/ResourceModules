@@ -97,7 +97,6 @@ module testDeployment '../../deploy.bicep' = {
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         skuTier: 'GeneralPurpose'
         skuName: 'GP_Gen5'
-        skuCapacity: 12
         skuFamily: 'Gen5'
         maxSizeBytes: 34359738368
         licenseType: 'LicenseIncluded'
