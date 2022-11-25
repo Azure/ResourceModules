@@ -74,7 +74,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         name: 'frontEnd'
         properties: {
-          hostName: '${resourceName}.azurefd.net'
+          hostName: '${resourceName}.${environment().suffixes.azureFrontDoorEndpointSuffix}'
           sessionAffinityEnabledState: 'Disabled'
           sessionAffinityTtlSeconds: 60
         }

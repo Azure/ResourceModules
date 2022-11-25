@@ -53,7 +53,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // ============== //
 // Test Execution //
 // ============== //
-
+// For the below test case, please consider the guidelines described here: https://github.com/Azure/ResourceModules/wiki/Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#microsoftwebsites
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
@@ -64,7 +64,7 @@ module testDeployment '../../deploy.bicep' = {
     appInsightId: resourceGroupResources.outputs.applicationInsightsResourceId
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
-      EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
+      EASYAUTH_SECRET: 'https://<<namePrefix>>-KeyVault${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     }
