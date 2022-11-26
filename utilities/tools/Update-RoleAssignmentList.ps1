@@ -12,11 +12,11 @@ Mandatory. The Provider Namespace to fetch the role definitions for
 Mandatory. The ResourceType to fetch the role definitions for
 
 .EXAMPLE
-Update-NestedRoleAssignmentListInner -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+Update-RoleAssignmentListInner -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
 
 Update nested_roleassignments.bicep template for [Microsoft.KeyVault/vaults] module with latest available Role Definitions
 #>
-function Update-NestedRoleAssignmentListInner {
+function Update-RoleAssignmentListInner {
 
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -30,6 +30,8 @@ function Update-NestedRoleAssignmentListInner {
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         # Load Get RoleAssignments List
+        $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent
+        $modulesPath = Join-Path $repoRootPath 'modules'
         $utilitiesFolderPath = Split-Path $PSScriptRoot -Parent
         . (Join-Path $utilitiesFolderPath 'tools' 'Get-RoleAssignmentList')
         $fileNameToUpdate = 'nested_roleAssignments.bicep'
@@ -49,19 +51,39 @@ function Update-NestedRoleAssignmentListInner {
             '}'
         )
 
-        #######################
-        ##  Get old content  ##
-        #######################
-        $pathToFile = Join-Path $ProviderNamespace $ResourceType '.bicep' $fileNameToUpdate
-        $content = Get-Content $pathToFile -Raw
+        ##################################
+        ##  Create array of file names  ##
+        ##################################
+        $filesToProcess = @()
+        if ("$ProviderNamespace/$ResourceType" -eq 'Microsoft.Authorization/RoleAssignments') {
+            # for the module 'Microsoft.Authorization/RoleAssignments' looking recursiverly for
+            # all 'deploy.bicep' files in the module folder
+            Set-Location $modulesPath
+            $searchFile = Join-Path $modulesPath 'Microsoft.Authorization' 'roleAssignments' '**' 'deploy.bicep'
+            $rbacPathList = Get-ChildItem -Path $searchFile -Recurse
+            foreach ($item in $rbacPathList) {
+                $FullFilePath = $item.FullName
+                $relativeFilePath = ((Get-Item $FullFilePath | Resolve-Path -Relative) -replace '\\', '/') -replace '\.\/', ''
+                $filesToProcess += $relativeFilePath
+            }
+        } else {
+            # for all other modules adding 'nested_roleAssignments.bicep' file only
+            $filesToProcess += Join-Path $ProviderNamespace $ResourceType '.bicep' $fileNameToUpdate
+        }
 
-        #####################
-        ##  Update Conent  ##
-        #####################
-        $newContent = ($nestedRoles | Out-String).TrimEnd()
-        $content = ($content -replace '(?ms)^\s+var builtInRoleNames = {.*?}', $newContent).TrimEnd()
-        if ($PSCmdlet.ShouldProcess("File in path [$pathToFile]", 'Update')) {
-            Set-Content -Path $pathToFile -Value $content -Force -Encoding 'utf8'
+        #############################
+        ##  Processing files array ##
+        #############################
+        foreach ($fileToProcess in $filesToProcess) {
+            # Get existing content
+            $content = Get-Content $fileToProcess -Raw
+
+            # Update Content
+            $newContent = ($nestedRoles | Out-String).TrimEnd()
+            $content = ($content -replace '(?ms)^\s+var builtInRoleNames = {.*?}', $newContent).TrimEnd()
+            if ($PSCmdlet.ShouldProcess("File in path [$fileToProcess]", 'Update')) {
+                Set-Content -Path $fileToProcess -Value $content -Force -Encoding 'utf8'
+            }
         }
 
         # Return arrays
@@ -88,16 +110,16 @@ Optional. The Provider Namespace to fetch the role definitions for
 Optional. The ResourceType to fetch the role definitions for
 
 .EXAMPLE
-Update-NestedRoleAssignmentList
+Update-RoleAssignmentList
 
 Update all nested_roleassignments.bicep found in the library with latest available Role Definitions
 
 .EXAMPLE
-Update-NestedRoleAssignmentList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
+Update-RoleAssignmentList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
 
 Update nested_roleassignments.bicep template for [Microsoft.KeyVault/vaults] module with latest available Role Definitions
 #>
-function Update-NestedRoleAssignmentList {
+function Update-RoleAssignmentList {
 
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -121,7 +143,7 @@ function Update-NestedRoleAssignmentList {
             ## Update RBAC roles for single module #
             ########################################
             if ($PSCmdlet.ShouldProcess("Role Assignments for module [$ProviderNamespace/$ResourceType]", 'Update')) {
-                $null = Update-NestedRoleAssignmentListInner -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -Verbose
+                $null = Update-RoleAssignmentListInner -ProviderNamespace $ProviderNamespace -ResourceType $ResourceType -Verbose
             }
         } else {
             ############################################
@@ -138,8 +160,14 @@ function Update-NestedRoleAssignmentList {
                 $provider, $type = $relativeDirectoryPath -split '\/', 2
 
                 if ($PSCmdlet.ShouldProcess("Role Assignments for module [$relativeDirectoryPath]", 'Update')) {
-                    $null = Update-NestedRoleAssignmentListInner -ProviderNamespace $provider -ResourceType $type -Verbose
+                    $null = Update-RoleAssignmentListInner -ProviderNamespace $provider -ResourceType $type -Verbose
                 }
+            }
+            # also updating the roles in the [Microsoft.Authorization/RoleAssignments] module,
+            # which needs to be triggered separately, as the roles are not stored in the nested_roleAssignments.bicep
+            # and therefore it's not detected by the search
+            if ($PSCmdlet.ShouldProcess('Role Assignments for module [Microsoft.Authorization/RoleAssignments]', 'Update')) {
+                $null = Update-RoleAssignmentListInner -ProviderNamespace 'Microsoft.Authorization' -ResourceType 'RoleAssignments' -Verbose
             }
         }
     }
