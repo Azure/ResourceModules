@@ -8,7 +8,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 
 ## Status
 
-[![.Platform: Linter](https://github.com/Azure/ResourceModules/actions/workflows/linter.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/linter.yml)
+[![.Platform: Linter](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml)
 
 [![.Platform: Broken Links Check](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml)
 

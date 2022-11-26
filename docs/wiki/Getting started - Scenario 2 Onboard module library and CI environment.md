@@ -349,7 +349,9 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 ### 3.2.5 Azure Artifacts Universal Packages
 
 This section will explain what is required to publish the modules to [Azure Artifacts Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages?view=azure-devops). It will also assume you are publishing from Azure DevOps Pipelines.
+
 #### The dependent components are
+
 1. An Azure DevOps organization and project
 1. An Azure DevOps artifacts feed
    > Note: The default feed name is `ResourceModules` as configured in the [`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml) file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
@@ -358,6 +360,7 @@ This section will explain what is required to publish the modules to [Azure Arti
 1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
 #### Implementation Guidance
+
 Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1).
 
 </details>
@@ -383,8 +386,6 @@ Finally, the elements described above must further be configured in the followin
 | `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `appSettingsKeyValuePairs.EASYAUTH_SECRET` | Key Vault secret URI without version (e.g., 'https://Test-KeyVault.vault.azure.net/secrets/aBcDeFghIjK69Ln') |
 | `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App (e.g., '11111111-1111-1111-1111-11111111111') |
 | `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app (e.g., 'api://11111111-1111-1111-1111-11111111111') |
-
-</details>
 
 # 5. (Optional) Convert library to ARM
 

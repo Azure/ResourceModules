@@ -159,9 +159,6 @@ param backupVaultResourceGroup string = resourceGroup().name
 @description('Optional. Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault.')
 param backupPolicyName string = 'DefaultPolicy'
 
-@description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
-param enableServerSideEncryption bool = false
-
 // Child resources
 @description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
 param allowExtensionOperations bool = true
@@ -198,8 +195,8 @@ param extensionNetworkWatcherAgentConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed.')
-param extensionDiskEncryptionConfig object = {
+@description('Optional. The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.')
+param extensionAzureDiskEncryptionConfig object = {
   enabled: false
 }
 
@@ -406,7 +403,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         caching: contains(osDisk, 'caching') ? osDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
-          diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
+          diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? {
+            id: osDisk.managedDisk.diskEncryptionSet.id
+          } : null
         }
       }
       dataDisks: [for (dataDisk, index) in dataDisks: {
@@ -418,9 +417,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         caching: contains(dataDisk, 'caching') ? dataDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: dataDisk.managedDisk.storageAccountType
-          diskEncryptionSet: {
-            id: enableServerSideEncryption ? dataDisk.managedDisk.diskEncryptionSet.id : null
-          }
+          diskEncryptionSet: contains(dataDisk.managedDisk, 'diskEncryptionSet') ? {
+            id: dataDisk.managedDisk.diskEncryptionSet.id
+          } : null
         }
       }]
     }
@@ -604,18 +603,18 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
   ]
 }
 
-module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskEncryptionConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-VM-DiskEncryption'
+module vm_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-VM-AzureDiskEncryption'
   params: {
     virtualMachineName: vm.name
-    name: 'DiskEncryption'
+    name: 'AzureDiskEncryption'
     publisher: 'Microsoft.Azure.Security'
     type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
-    typeHandlerVersion: contains(extensionDiskEncryptionConfig, 'typeHandlerVersion') ? extensionDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
-    autoUpgradeMinorVersion: contains(extensionDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionDiskEncryptionConfig.autoUpgradeMinorVersion : true
-    enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
-    forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
-    settings: extensionDiskEncryptionConfig.settings
+    typeHandlerVersion: contains(extensionAzureDiskEncryptionConfig, 'typeHandlerVersion') ? extensionAzureDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
+    autoUpgradeMinorVersion: contains(extensionAzureDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionAzureDiskEncryptionConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionAzureDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionAzureDiskEncryptionConfig.enableAutomaticUpgrade : false
+    forceUpdateTag: contains(extensionAzureDiskEncryptionConfig, 'forceUpdateTag') ? extensionAzureDiskEncryptionConfig.forceUpdateTag : '1.0'
+    settings: extensionAzureDiskEncryptionConfig.settings
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
