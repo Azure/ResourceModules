@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.network.privateendpoints.yml'
       - 'modules/Microsoft.Network/privateEndpoints/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

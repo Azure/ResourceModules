@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.desktopvirtualization.hostpools.yml'
       - 'modules/Microsoft.DesktopVirtualization/hostpools/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

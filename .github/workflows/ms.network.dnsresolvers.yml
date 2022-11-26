@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.network.dnsresolvers.yml'
       - 'modules/Microsoft.Network/dnsResolvers/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

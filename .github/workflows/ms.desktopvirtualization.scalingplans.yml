@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.desktopvirtualization.scalingplans.yml'
       - 'modules/Microsoft.DesktopVirtualization/scalingplans/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

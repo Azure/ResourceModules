@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.DocumentDB/databaseAccounts/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

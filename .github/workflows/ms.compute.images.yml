@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.compute.images.yml'
       - 'modules/Microsoft.Compute/images/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

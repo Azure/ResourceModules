@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.eventgrid.topics.yml'
       - 'modules/Microsoft.EventGrid/topics/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.synapse.workspaces.yml'
       - 'modules/Microsoft.Synapse/workspaces/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

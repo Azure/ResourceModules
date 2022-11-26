@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.authorization.roledefinitions.yml'
       - 'modules/Microsoft.Authorization/roleDefinitions/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

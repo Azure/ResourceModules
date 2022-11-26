@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.Compute/virtualMachines/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

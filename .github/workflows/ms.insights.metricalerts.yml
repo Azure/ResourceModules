@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.insights.metricalerts.yml'
       - 'modules/Microsoft.Insights/metricAlerts/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

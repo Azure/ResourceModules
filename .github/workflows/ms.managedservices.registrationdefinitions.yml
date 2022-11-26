@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.managedservices.registrationdefinitions.yml'
       - 'modules/Microsoft.ManagedServices/registrationDefinitions/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

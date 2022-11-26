@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.dbforpostgresql.flexibleservers.yml'
       - 'modules/Microsoft.DBforPostgreSQL/flexibleServers/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

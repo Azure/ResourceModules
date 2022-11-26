@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.keyvault.vaults.yml'
       - 'modules/Microsoft.KeyVault/vaults/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

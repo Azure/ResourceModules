@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.sql.managedinstances.yml'
       - 'modules/Microsoft.Sql/managedInstances/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.authorization.policysetdefinitions.yml'
       - 'modules/Microsoft.Authorization/policySetDefinitions/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.servicebus.namespaces.yml'
       - 'modules/Microsoft.ServiceBus/namespaces/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

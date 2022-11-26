@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.network.azurefirewalls.yml'
       - 'modules/Microsoft.Network/azureFirewalls/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

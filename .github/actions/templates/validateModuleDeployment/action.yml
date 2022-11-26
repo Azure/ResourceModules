@@ -25,18 +25,6 @@
 ##   |=====================================================================================================================================================================================|
 ##
 #########################################################
-##
-##----------------------------------------##
-## ACTION OUTPUTS                         ##
-##----------------------------------------##
-##
-##   |================================================================|
-##   | Output           | Description                                 |
-##   |------------------|---------------------------------------------|
-##   | deploymentOutput | The module deployment output in json format |
-##   |================================================================|
-##
-##---------------------------------------------##
 
 name: 'Deploy module'
 description: 'Deploy module'
@@ -67,11 +55,6 @@ inputs:
     description: 'Set "true" to set module up for removal'
     default: 'true'
     required: false
-
-outputs:
-  deploymentOutput:
-    description: 'The module deployment output in json format'
-    value: ${{ steps.deploy_step.outputs.deploymentOutput }}
 
 runs:
   using: 'composite'
@@ -183,17 +166,6 @@ runs:
           Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
           # Invoke Token Replacement Functionality [For Module]
-          $null = Convert-TokensInFileList @ConvertTokensInputs
-
-          # Get target files for modules dependencies
-          $DependencyParameterFilePaths = [System.Collections.ArrayList]@()
-          $DependencyParameterFolders = Get-ChildItem -Path (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies') -Recurse -Filter 'parameters' -Directory
-          foreach ($FolderPath in $DependencyParameterFolders.FullName) {
-              $DependencyParameterFilePaths += Get-ChildItem -Path $FolderPath -Recurse -Filter '*.json'
-          }
-          $ConvertTokensInputs.FilePathList = $DependencyParameterFilePaths
-
-          # Invoke Token Replacement Functionality [For Dependencies]
           $null = Convert-TokensInFileList @ConvertTokensInputs
 
           Write-Output '::endgroup::'
@@ -357,7 +329,6 @@ runs:
 
           $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
           Write-Verbose "Deployment output: $deploymentOutput" -Verbose
-          Write-Output ('{0}={1}' -f 'deploymentOutput', $deploymentOutput) >> $env:GITHUB_OUTPUT
 
           if ($res.ContainsKey('exception')) {
             # Happens only if there is an exception

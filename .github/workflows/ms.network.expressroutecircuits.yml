@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.network.expressroutecircuits.yml'
       - 'modules/Microsoft.Network/expressRouteCircuits/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:
