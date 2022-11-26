@@ -4,15 +4,13 @@ Depending on the DevOps environment you are using (GitHub or Azure DevOps) the n
 
 The update process is the following:
 
-### _Navigation_
-
-- [1. Backup your local copy of the library](#1-backup-your-local-copy-of-the-library)
-- [2. Sync your copy of the library](#1-sync-your-copy-of-the-library)
-- [3. (Optional) Convert library to ARM](#3-optional-convert-library-to-arm)
-- [4. Apply specific settings to files](#4-apply-specific-settings-to-files)
-- [5. (Optional) Customize modules and CI environment](#5-optional-customize-modules-and-ci-environment)
-- [6. Run dependencies pipeline](#7-run-dependencies-pipeline)
-- [7. Test and publish modules](#8-test-and-publish-modules)
+1. [Backup your local copy of the library](#1-backup-your-local-copy-of-the-library)
+1. [Sync your copy of the library](#2-sync-your-copy-of-the-library)
+1. [Apply specific settings to files](#3-apply-specific-settings-to-files)
+1. [(Optional) Convert library to ARM](#4-optional-convert-library-to-arm)
+1. [Manual dependencies](#5-manual-dependencies)
+1. [(Optional) Customize modules and CI environment](#6-optional-customize-modules-and-ci-environment)
+1. [Test and publish modules](#7-test-and-publish-modules)
 
 # 1. Backup your local copy of the library
 
@@ -51,17 +49,21 @@ Clone/download CARML repository to create a local copy of it, as explained in Az
 </details>
 <p>
 
-# 3. (Optional) Convert library to ARM
-
-Follow instructions in [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%201%20Consume%20library#2-optional-convert-library-to-arm)
-
-# 4. Apply specific settings to files
+# 3. Apply specific settings to files
 
 Personalize files with your specific settings:
 1. [Update default name prefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#31-update-default-nameprefix)
 1. Update settings file ([`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml)) as explained in [Set up variables file](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#322-set-up-variables-file)
 
-# 5. (Optional) Customize modules and CI environment
+# 4. (Optional) Convert library to ARM
+
+Follow instructions in [(Optional) Convert library to ARM](./Getting%20started%20-%20Scenario%201%20Consume%20library#2-optional-convert-library-to-arm)
+
+# 5. Manual dependencies
+
+In special cases, manual actions may be required to provision certain resources whose deployment is not covered by the module test files. Based on the modules you require to test, follow the [Manual dependencies](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#4-manual-dependencies) guidance.
+
+# 6. (Optional) Customize modules and CI environment
 
 The backup folder from step 1, can be used to compare your local copy with your synced copy coming from the latest version. For example, the `'Compare selected'` [function](https://vscode.one/diff-vscode/) in Visual Studio Code can be leveraged for that purpose.
 
@@ -69,14 +71,6 @@ If your copy deviates from the upstream version due to customizations you applie
 
 > **Note**: If customizations are general improvements which may be useful for the public, the recommendation is to [contribute](./Contribution%20guide) to the public CARML repository so that your updates can improve the public library. This way, your changes will already be available the next time you fetch from upstream, as modules would already been tested, and would not conflict with your customizations.
 
-# 6. Update module test files
-
-Follow the [Update module test files](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#5-update-module-test-files) procedure
-
-# 7. Run dependencies pipeline
-
-Refer to the [Deploy dependencies](././Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#4-deploy-dependencies) section to run the '*dependencies pipeline*' and update dependencies configuration in your environment.
-
-# 8. Test and publish modules
+# 7. Test and publish modules
 
 Push the updated local code to your remote repository. If actions are enabled, test and publishing of modules will start automatically.
