@@ -32,8 +32,17 @@ You can find the used scripts under
 Both scripts work in the same way:
 
 1. The script fetches all current deployments at a given scope from Azure (i.e., Management-Group-scope or Subscription-scope).
+   - For example, it may find
+     - 120 successful deployments
+     - 10 failed deployments that are 3 weeks old
+     - 10 failed deployments that are 1 week old
+     - 10 running
 1. By default it then filters them down to non-running & non-failing deployments (can be modified) unless they are older than a provided time limit in which case they'd always be included.
+   - Following the example, and with a time limit of 2 weeks, it now only considers the
+     -  120 successful deployments
+     -  10 failed deployments that are 3 weeks old
 1. Lastly, it removes all matching deployments in chunks of 100 deployments each.
+   - In context of the example, this mean it deletes the deployments with to commands, first removing 100, and then 30.
 
 # How to use it
 
