@@ -37,7 +37,7 @@ function Clear-ManagementGroupDeployment {
         [string[]] $DeploymentStatusToExclude = @('running', 'failed'),
 
         [Parameter(Mandatory = $false)]
-        [int] $maxDeploymentRetentionInDays = 7
+        [int] $maxDeploymentRetentionInDays = 14
     )
 
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Enables web reponse
