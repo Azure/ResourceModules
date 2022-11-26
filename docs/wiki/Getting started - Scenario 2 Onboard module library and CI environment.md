@@ -5,8 +5,8 @@ This requires several steps:
 1. [Configure your Azure environment](#1-configure-your-azure-environment)
 1. [Fork/clone the repository into your DevOps environment](#2-forkclone-the-repository-into-your-devops-environment)
 1. [Configure the CI environment](#3-configure-the-ci-environment)
-1. [Deploy dependencies](#4-deploy-dependencies)
-1. [(Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
+1. [Manual dependencies](#4-manual-dependencies)
+1. [(Optional) Convert library to ARM](#5-optional-convert-library-to-arm)
 
 Depending on the DevOps environment you choose (GitHub or Azure DevOps), make sure you also account for the specific requirements outlined below.
 
@@ -367,7 +367,7 @@ Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops
 
 <p>
 
-# 4. Deploy dependencies
+# 4. Manual dependencies
 
 In order to successfully deploy and test all modules in your desired environment, some modules require resources to be deployed beforehand.
 
