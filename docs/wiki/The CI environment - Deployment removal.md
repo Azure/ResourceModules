@@ -31,7 +31,7 @@ You can find the used scripts under
 
 Both scripts work in the same way:
 
-1. The script fetches all current deployments from Azure.
+1. The script fetches all current deployments at a given scope from Azure (i.e., Management-Group-scope or Subscription-scope).
 1. By default it then filters them down to non-running & non-failing deployments (can be modified) unless they are older than a provided time limit in which case they'd always be included.
 1. Lastly, it removes all matching deployments in chunks of 100 deployments each.
 
