@@ -37,7 +37,7 @@ Both scripts work in the same way:
      - 10 failed deployments that are 3 weeks old
      - 10 failed deployments that are 1 week old
      - 10 running
-1. By default it then filters them down to non-running & non-failing deployments (can be modified) unless they are older than a provided time limit in which case they'd always be included.
+1. By default it then filters them down to non-running & non-failing deployments (can be modified). It only considers failed deployments if they are older than a provided time limit in which case they are included too.
    - Following the example, and with a time limit of 2 weeks, it now only considers the
      -  120 successful deployments
      -  10 failed deployments that are 3 weeks old
