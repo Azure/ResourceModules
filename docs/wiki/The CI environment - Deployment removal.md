@@ -6,6 +6,11 @@ The platform pipeline `platform.deployment.removal.yml` has an automatic schedul
 
 By default, the pipeline will cleanup both the Subscription, as well as Management Group scope using the used script's default configuration. In addition, you can specify a pipeline variable `maxDeploymentRetentionInDays` to define beyond which time frame deployments should always be deleted. Within the timeframe, only non-failed and non-running deployments are considered.
 
+> **NOTE**<br> In order for the pipeline to remove both Management-Group-Level as well as Subscription-Level deployments the used service principal needs the [permissions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-history-deletions?tabs=azure-powershell#required-permissions) either scope. If you use CARML to test deployments on any of these scopes your principal will already have the required permissions. <br>
+> In case the principal does not have the required permissions you can either:
+> - Not register the `platform.deployment.removal.yml` pipeline OR
+> - Adjust the pipeline's default behavior to not remove deployments on the scope you'd like to preserve (i.e., change `default: true` to `default: false`)
+
 ---
 
 ### _Navigation_

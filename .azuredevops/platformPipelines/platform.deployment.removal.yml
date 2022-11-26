@@ -4,11 +4,11 @@ parameters:
   - name: handleSubscriptionScope
     displayName: Include Subscription deployments
     type: boolean
-    default: true
+    default: true # Note: This requires your service principal to have permissions on the subscription scope.
   - name: handleManagementGroupScope
     displayName: Include Management Group deployments
     type: boolean
-    default: true # Note: This requires your service principal to have permissions over management group scope.
+    default: true # Note: This requires your service principal to have permissions on the management group scope.
   - name: maxDeploymentRetentionInDays
     displayName: The number of days to keep deployments with status [running] or [failed]
     type: number
