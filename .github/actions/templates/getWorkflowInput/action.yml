@@ -27,11 +27,11 @@
 ## ACTION OUTPUTS                         ##
 ##----------------------------------------##
 ##
-##   |==================================================================================================================|
-##   | Output           | Description                                                                                   |
-##   |------------------|-----------------------------------------------------------------------------------------------|
-##   | removeDeployment | A flag, set in the pipeline, to control whether deployment resources should be removed or not |
-##   |==================================================================================================================|
+##   |=============================================================================================|
+##   | Output           | Description                                                              |
+##   |------------------|--------------------------------------------------------------------------|
+##   | removeDeployment | A table of all pipeline input parameters and their value in JSON format. |
+##   |=============================================================================================|
 ##
 ##---------------------------------------------##
 
@@ -45,7 +45,7 @@ inputs:
 
 outputs:
   workflowInput:
-    description: 'A flag, set in the pipeline, to control whether deployment resources should be removed or not'
+    description: 'A table of all pipeline input parameters and their value in JSON format.'
     value: ${{ steps.get-input-param-action.outputs.workflowInput }}
 
 runs:
