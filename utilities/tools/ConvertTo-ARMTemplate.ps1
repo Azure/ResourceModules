@@ -169,7 +169,7 @@ function ConvertTo-ARMTemplate {
             Set-Content -Value $JSONFileContent -Path $JSONFilePath
         }
 
-        if ($PSCmdlet.ShouldProcess(('Metadata from [{0}] templates' -f ($BicepFilesToConvert.files)), 'Remove')) {
+        if ($PSCmdlet.ShouldProcess(('Metadata from [{0}] templates' -f ($BicepFilesToConvert.count)), 'Remove')) {
             if ($RunSynchronous) {
                 $BicepFilesToConvert | ForEach-Object $removeScriptBlock
             } else {
