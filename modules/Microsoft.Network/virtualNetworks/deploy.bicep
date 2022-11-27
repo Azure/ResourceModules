@@ -133,15 +133,15 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-08-01' = {
         delegations: contains(subnet, 'delegations') ? subnet.delegations : []
         ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
         natGateway: contains(subnet, 'natGatewayId') ? {
-          'id': subnet.natGatewayId
+          id: subnet.natGatewayId
         } : null
         networkSecurityGroup: contains(subnet, 'networkSecurityGroupId') ? {
-          'id': subnet.networkSecurityGroupId
+          id: subnet.networkSecurityGroupId
         } : null
         privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : null
         privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : null
         routeTable: contains(subnet, 'routeTableId') ? {
-          'id': subnet.routeTableId
+          id: subnet.routeTableId
         } : null
         serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
         serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []

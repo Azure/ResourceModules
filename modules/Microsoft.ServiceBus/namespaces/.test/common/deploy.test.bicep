@@ -59,7 +59,7 @@ module testDeployment '../../deploy.bicep' = {
     lock: 'CanNotDelete'
     skuName: 'Premium'
     tags: {
-      'test': 'true'
+      test: 'true'
     }
     roleAssignments: [
       {
