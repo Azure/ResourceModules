@@ -10,6 +10,7 @@ BeforeAll {
     $modulesFolderPath = Join-Path $rootPath 'modules'
     $toolsPath = Join-Path $rootPath 'utilities' 'tools'
 
+    # Load function
     . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1')
 
     # Collect original files
