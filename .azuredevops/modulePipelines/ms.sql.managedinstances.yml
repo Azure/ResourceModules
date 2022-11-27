@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.Sql/managedInstances/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

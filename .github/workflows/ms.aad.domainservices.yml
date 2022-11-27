@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.aad.domainservices.yml'
       - 'modules/Microsoft.AAD/DomainServices/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

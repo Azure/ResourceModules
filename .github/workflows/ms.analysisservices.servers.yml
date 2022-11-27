@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.analysisservices.servers.yml'
       - 'modules/Microsoft.AnalysisServices/servers/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

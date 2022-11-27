@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.kubernetesconfiguration.extensions.yml'
       - 'modules/Microsoft.KubernetesConfiguration/extensions/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

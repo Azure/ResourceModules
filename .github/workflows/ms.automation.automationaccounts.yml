@@ -22,7 +22,6 @@ on:
       - '.github/workflows/ms.automation.automationaccounts.yml'
       - 'modules/Microsoft.Automation/automationAccounts/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

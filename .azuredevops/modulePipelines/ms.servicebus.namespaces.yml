@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.ServiceBus/namespaces/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

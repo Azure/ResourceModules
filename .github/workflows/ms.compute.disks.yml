@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.compute.disks.yml'
       - 'modules/Microsoft.Compute/disks/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

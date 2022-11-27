@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.DataProtection/vaults/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

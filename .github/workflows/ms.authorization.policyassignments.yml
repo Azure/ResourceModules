@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.authorization.policyassignments.yml'
       - 'modules/Microsoft.Authorization/policyAssignments/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

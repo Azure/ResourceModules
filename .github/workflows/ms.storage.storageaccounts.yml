@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.storage.storageaccounts.yml'
       - 'modules/Microsoft.Storage/storageAccounts/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:

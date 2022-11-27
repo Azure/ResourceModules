@@ -21,7 +21,6 @@ on:
       - '.github/workflows/ms.web.hostingenvironments.yml'
       - 'modules/Microsoft.Web/hostingEnvironments/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
       - '!*/**/readme.md'
 
 env:
