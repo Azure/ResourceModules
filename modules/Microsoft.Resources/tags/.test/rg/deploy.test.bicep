@@ -34,6 +34,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     onlyUpdate: false
     resourceGroupName: resourceGroup.name
     tags: {
