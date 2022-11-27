@@ -42,7 +42,7 @@ This module deploys an alert based on metrics.
 | `alertDescription` | string | `''` |  | Description of the alert. |
 | `autoMitigate` | bool | `True` |  | The flag that indicates whether the alert should be auto resolved or not. |
 | `enabled` | bool | `True` |  | Indicates whether this alert is enabled. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `evaluationFrequency` | string | `'PT5M'` | `[PT15M, PT1H, PT1M, PT30M, PT5M]` | how often the metric alert is evaluated represented in ISO 8601 duration format. |
 | `location` | string | `'global'` |  | Location for all resources. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -416,7 +416,6 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
       '<actionGroupResourceId>'
     ]
     alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -470,9 +469,6 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
     },
     "alertCriteriaType": {
       "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "roleAssignments": {
       "value": [

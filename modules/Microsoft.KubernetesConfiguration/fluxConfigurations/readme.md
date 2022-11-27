@@ -53,7 +53,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | :-- | :-- | :-- | :-- |
 | `bucket` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
 | `configurationProtectedSettings` | object | `{object}` | Key-value pairs of protected configuration settings for the configuration. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gitRepository` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
 | `kustomizations` | object | `{object}` | Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster. |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
@@ -95,7 +95,6 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
     namespace: 'flux-system'
     sourceKind: 'GitRepository'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gitRepository: {
       repositoryRef: {
         branch: 'main'
@@ -145,9 +144,6 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
       "value": "GitRepository"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "gitRepository": {
       "value": {
         "repositoryRef": {
@@ -193,8 +189,6 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
     name: '<<namePrefix>>kcfcmin001'
     namespace: 'flux-system'
     sourceKind: 'GitRepository'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gitRepository: {
       repositoryRef: {
         branch: 'main'
@@ -232,10 +226,6 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
     },
     "sourceKind": {
       "value": "GitRepository"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "gitRepository": {
       "value": {

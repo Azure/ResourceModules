@@ -24,7 +24,7 @@ This module deploys a user assigned identity.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `name` | string | `[guid(resourceGroup().id)]` |  | Name of the User Assigned Identity. |
@@ -163,7 +163,6 @@ The following module usage examples are retrieved from the content of the files 
 module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-miuaicom'
   params: {
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     name: '<<namePrefix>>miuaicom001'
     roleAssignments: [
@@ -195,9 +194,6 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "lock": {
       "value": "CanNotDelete"
     },

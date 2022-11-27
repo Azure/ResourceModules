@@ -53,7 +53,7 @@ param location string = deployment().location
 @sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. If not provided, will use the current scope for deployment.')
 param subscriptionId string = subscription().subscriptionId
 
-@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 var identityVar = identity == 'SystemAssigned' ? {

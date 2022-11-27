@@ -33,7 +33,7 @@ This module deploys DBforPostgreSQL FlexibleServers Configurations.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `source` | string | `''` | Source of the configuration. |
 | `value` | string | `''` | Value of the configuration. |

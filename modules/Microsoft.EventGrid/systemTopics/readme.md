@@ -41,7 +41,7 @@ This module deploys an Event Grid System Topic.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -301,7 +301,6 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -354,9 +353,6 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -392,8 +388,6 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     name: '<<namePrefix>>egstmin001'
     source: '<source>'
     topicType: 'Microsoft.Storage.StorageAccounts'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -419,10 +413,6 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     },
     "topicType": {
       "value": "Microsoft.Storage.StorageAccounts"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

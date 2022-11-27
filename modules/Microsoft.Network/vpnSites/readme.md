@@ -39,7 +39,7 @@ This module deploys a VPN Site.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `deviceProperties` | object | `{object}` |  | List of properties of the device. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ipAddress` | string | `''` |  | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
 | `isSecuritySite` | bool | `False` |  | IsSecuritySite flag. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
@@ -352,7 +352,6 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     deviceProperties: {
       linkSpeedInMbps: 0
     }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     o365Policy: {
       breakOutCategories: {
@@ -432,9 +431,6 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
       "value": {
         "linkSpeedInMbps": 0
       }
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -521,7 +517,6 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     addressPrefixes: [
       '10.0.0.0/16'
     ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddress: '1.2.3.4'
   }
 }
@@ -551,9 +546,6 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
       "value": [
         "10.0.0.0/16"
       ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "ipAddress": {
       "value": "1.2.3.4"

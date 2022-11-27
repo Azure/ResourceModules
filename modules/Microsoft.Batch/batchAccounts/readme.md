@@ -50,7 +50,7 @@
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkProfileAllowedIpRanges` | array | `[]` |  | Array of IP ranges to filter client IP address. It is only applicable when publicNetworkAccess is not explicitly disabled. |
@@ -263,7 +263,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
@@ -328,9 +327,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -391,7 +387,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
       {
@@ -438,9 +433,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     },
     "cMKKeyVaultResourceId": {
       "value": "<cMKKeyVaultResourceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "poolAllocationMode": {
       "value": "BatchService"
@@ -489,8 +481,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>bbamin001'
     storageAccountId: '<storageAccountId>'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -513,10 +503,6 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     },
     "storageAccountId": {
       "value": "<storageAccountId>"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

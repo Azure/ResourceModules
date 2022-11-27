@@ -1,7 +1,7 @@
 @description('Required. Name of the Backup Vault.')
 param name string
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')

@@ -41,7 +41,7 @@ param trafficAnalyticsInterval int = 60
 @maxValue(365)
 param retentionInDays int = 365
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 var flowAnalyticsConfiguration = !empty(workspaceResourceId) && enabled == true ? {

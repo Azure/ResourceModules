@@ -13,7 +13,7 @@ param throughput int = 400
 @description('Optional. Tags of the SQL database resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false

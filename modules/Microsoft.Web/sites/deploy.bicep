@@ -82,7 +82,7 @@ param privateEndpoints array = []
 param tags object = {}
 
 // PID
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 // Role Assignments
@@ -199,7 +199,7 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
       id: appServiceEnvironmentId
     } : null
     storageAccountRequired: storageAccountRequired
-    keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : null
+    keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId: null
     virtualNetworkSubnetId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
     siteConfig: siteConfig
   }

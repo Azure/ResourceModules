@@ -7,7 +7,7 @@ param name string
 @description('Optional. An array of managed private endpoints objects created in the Data Factory managed virtual network.')
 param managedPrivateEndpoints array = []
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false

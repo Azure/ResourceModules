@@ -34,7 +34,7 @@ This module deploys a Sql Server Virtual Network Rule.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ignoreMissingVnetServiceEndpoint` | bool | `False` | Allow creating a firewall rule before the virtual network has vnet service endpoint enabled. |
 
 

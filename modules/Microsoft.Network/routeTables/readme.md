@@ -31,7 +31,7 @@ This module deploys a user defined route table.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `disableBgpRoutePropagation` | bool | `False` |  | Switch to disable BGP route propagation. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -261,7 +261,6 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nrtcom001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -303,9 +302,6 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
       "value": "<<namePrefix>>nrtcom001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -349,10 +345,7 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
 module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nrtmin'
   params: {
-    // Required parameters
     name: '<<namePrefix>>nrtmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -369,13 +362,8 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
       "value": "<<namePrefix>>nrtmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

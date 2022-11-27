@@ -28,7 +28,7 @@ param isSecuritySite bool = false
 @description('Optional. The Office365 breakout policy.')
 param o365Policy object = {}
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. List of all VPN site links.')

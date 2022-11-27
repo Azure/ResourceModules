@@ -4,7 +4,7 @@ param name string
 @description('Optional. Tags of the Gremlin graph resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Conditional. The name of the parent Database Account. Required if the template is used in a standalone deployment.')

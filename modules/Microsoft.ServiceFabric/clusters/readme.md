@@ -43,7 +43,7 @@ This module deploys a Service Fabric Cluster.
 | `clientCertificateThumbprints` | array | `[]` |  | The list of client certificates referenced by thumbprint that are allowed to manage the cluster. |
 | `clusterCodeVersion` | string | `''` |  | The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions. |
 | `diagnosticsStorageAccountConfig` | object | `{object}` |  | The storage account information for storing Service Fabric diagnostic logs. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `eventStoreServiceEnabled` | bool | `False` |  | Indicates if the event store service is enabled. |
 | `fabricSettings` | array | `[]` |  | The list of custom fabric settings to configure the cluster. |
 | `infrastructureServiceManager` | bool | `False` |  | Indicates if infrastructure service manager is enabled. |
@@ -276,7 +276,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
       x509StoreName: 'My'
     }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -328,9 +327,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
         "x509StoreName": "My"
       }
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -446,7 +442,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       storageAccountName: '<storageAccountName>'
       tableEndpoint: '<tableEndpoint>'
     }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     fabricSettings: [
       {
         name: 'Security'
@@ -651,9 +646,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         "tableEndpoint": "<tableEndpoint>"
       }
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "fabricSettings": {
       "value": [
         {
@@ -777,8 +769,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     reliabilityLevel: 'None'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -823,10 +813,6 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "reliabilityLevel": {
       "value": "None"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

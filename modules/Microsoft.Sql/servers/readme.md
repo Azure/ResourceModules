@@ -49,7 +49,7 @@ This module deploys a SQL server.
 | :-- | :-- | :-- | :-- | :-- |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
 | `elasticPools` | _[elasticPools](elasticPools/readme.md)_ array | `[]` |  | The Elastic Pools to create in the server. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the server. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -364,7 +364,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       sid: '<sid>'
       tenantId: '<tenantId>'
     }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -394,9 +393,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         "sid": "<sid>",
         "tenantId": "<tenantId>"
       }
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -446,7 +442,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         skuTier: 'GeneralPurpose'
       }
     ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallRules: [
       {
         endIpAddress: '0.0.0.0'
@@ -561,9 +556,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         }
       ]
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "firewallRules": {
       "value": [
         {
@@ -663,7 +655,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -701,9 +692,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     "administratorLoginPassword": {
       "value": "<administratorLoginPassword>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "privateEndpoints": {
       "value": [

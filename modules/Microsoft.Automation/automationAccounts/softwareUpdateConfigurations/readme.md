@@ -37,7 +37,7 @@ This module deploys an Azure Automation Account Software update Configuration.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `azureVirtualMachines` | array | `[]` |  | List of azure resource IDs for azure virtual machines in scope for the deployment schedule. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `excludeUpdates` | array | `[]` |  | KB numbers or Linux packages excluded in the deployment schedule. |
 | `expiryTime` | string | `''` |  | The end time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00. |
 | `expiryTimeOffsetMinutes` | int | `0` |  | The expiry time's offset in minutes. |

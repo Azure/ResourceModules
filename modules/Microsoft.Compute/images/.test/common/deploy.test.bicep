@@ -17,9 +17,6 @@ param serviceShort string = 'cicom'
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
-param enableDefaultTelemetry bool = true
-
 // =========== //
 // Deployments //
 // =========== //
@@ -53,7 +50,6 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
-    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     osAccountType: 'Premium_LRS'
     osDiskBlobUri: resourceGroupResources.outputs.vhdUri

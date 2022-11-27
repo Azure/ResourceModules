@@ -17,9 +17,6 @@ param serviceShort string = 'sqlspe'
 @secure()
 param password string = newGuid()
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
-param enableDefaultTelemetry bool = true
-
 // =========== //
 // Deployments //
 // =========== //
@@ -48,7 +45,6 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>-${serviceShort}'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password

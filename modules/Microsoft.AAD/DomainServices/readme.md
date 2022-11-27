@@ -46,7 +46,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `domainConfigurationType` | string | `'FullySynced'` | `[FullySynced, ResourceTrusting]` | The value is to provide domain configuration type. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `externalAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable the Secure LDAP for external services of Azure ADDS Services. |
 | `filteredSync` | string | `'Enabled'` |  | The value is to synchronize scoped users and groups. |
 | `kerberosArmoring` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to enable to provide a protected channel between the Kerberos client and the KDC. |
@@ -241,7 +241,6 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     name: '<<namePrefix>>aaddscom001'
     pfxCertificate: '<pfxCertificate>'
@@ -293,9 +292,6 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"

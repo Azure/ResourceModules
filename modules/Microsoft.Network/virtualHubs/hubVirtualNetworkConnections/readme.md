@@ -34,7 +34,7 @@ This module deploys virtual hub virtual network connections.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableInternetSecurity` | bool | `True` | Enable internet security. |
 | `routingConfiguration` | object | `{object}` | Routing Configuration indicating the associated and propagated route tables for this connection. |
 

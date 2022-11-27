@@ -21,7 +21,7 @@ This module deploys Resources Tags on a subscription scope.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `name` | string | `'default'` | The name of the tags resource. |
 | `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags. |

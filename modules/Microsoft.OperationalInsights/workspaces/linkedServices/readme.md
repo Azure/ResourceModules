@@ -34,7 +34,7 @@ This template deploys a linked service for a Log Analytics workspace.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `tags` | object | `{object}` | Tags to configure in the resource. |
 | `writeAccessResourceId` | string | `''` | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access. |
 

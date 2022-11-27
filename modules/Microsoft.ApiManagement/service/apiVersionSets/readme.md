@@ -27,7 +27,7 @@ This module deploys API Management Service APIs Version Set.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'default'` | API Version set name. |
 | `properties` | object | `{object}` | API Version set properties. |
 

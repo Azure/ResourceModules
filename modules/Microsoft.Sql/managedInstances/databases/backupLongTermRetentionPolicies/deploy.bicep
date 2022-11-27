@@ -19,7 +19,7 @@ param monthlyRetention string = 'P1Y'
 @description('Optional. The yearly retention policy for an LTR backup in an ISO 8601 format.')
 param yearlyRetention string = 'P5Y'
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

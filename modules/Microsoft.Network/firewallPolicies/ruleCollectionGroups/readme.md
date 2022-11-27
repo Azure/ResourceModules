@@ -34,7 +34,7 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ruleCollections` | array | `[]` | Group of Firewall Policy rule collections. |
 
 

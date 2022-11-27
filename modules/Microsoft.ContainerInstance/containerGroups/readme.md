@@ -32,7 +32,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `imageRegistryCredentials` | array | `[]` |  | The image registry credentials by which the container group is created from. |
 | `ipAddressPorts` | array | `[]` |  | Ports to open on the public IP address. Must include all ports assigned on container level. |
 | `ipAddressType` | string | `'Public'` |  | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private. |
@@ -237,7 +237,6 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     ]
     name: '<<namePrefix>>cicgcom001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
       {
         port: 80
@@ -322,9 +321,6 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": "<<namePrefix>>cicgcom001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "ipAddressPorts": {
       "value": [
         {
@@ -388,7 +384,6 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     ]
     name: '<<namePrefix>>cicgmin001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
       {
         port: 443
@@ -438,9 +433,6 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": "<<namePrefix>>cicgmin001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "ipAddressPorts": {
       "value": [
         {

@@ -4,7 +4,7 @@ param apiManagementServiceName string
 @description('Conditional. The name of the parent Product. Required if the template is used in a standalone deployment.')
 param productName string
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Required. Name of the product group.')

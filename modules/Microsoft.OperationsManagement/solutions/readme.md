@@ -29,7 +29,7 @@ This module deploys OperationsManagement Solutions.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `product` | string | `'OMSGallery'` | The product of the deployed solution. For Microsoft published gallery solution it should be `OMSGallery` and the target solution resource product will be composed as `OMSGallery/{name}`. For third party solution, it can be anything. This is case sensitive. |
 | `publisher` | string | `'Microsoft'` | The publisher name of the deployed solution. For Microsoft published gallery solution, it is `Microsoft`. |
@@ -68,8 +68,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
     name: 'Updates'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -92,10 +90,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     },
     "name": {
       "value": "Updates"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -118,7 +112,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
     name: 'AzureAutomation'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     product: 'OMSGallery'
     publisher: 'Microsoft'
   }
@@ -145,9 +138,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
       "value": "AzureAutomation"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "product": {
       "value": "OMSGallery"
     },
@@ -175,7 +165,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
     name: '<<namePrefix>>omsnonms001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
   }
@@ -202,9 +191,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
       "value": "<<namePrefix>>omsnonms001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "product": {
       "value": "nonmsTestSolutionProduct"
     },

@@ -30,7 +30,7 @@ This module controls the Network Security Group Flow Logs and analytics settings
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enabled` | bool | `True` |  | If the flow log should be enabled. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `formatVersion` | int | `2` | `[1, 2]` | The flow log format version. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `name` | string | `[format('{0}-{1}-flowlog', last(split(parameters('targetResourceId'), '/')), split(parameters('targetResourceId'), '/')[4])]` |  | Name of the resource. |

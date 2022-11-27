@@ -48,7 +48,7 @@ This module deploys a virtual network gateway.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `domainNameLabel` | array | `[]` |  | DNS name(s) of the Public IP resource(s). If you enabled active-active configuration, you need to provide 2 DNS names, if you want to use this feature. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com. |
 | `enableBgp` | bool | `True` |  | Value to specify if BGP is enabled or not. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gatewayPipName` | string | `[format('{0}-pip1', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -277,7 +277,6 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     domainNameLabel: [
       '<<namePrefix>>-dm-nvngavpn'
     ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     publicIpZones: [
       '1'
@@ -353,9 +352,6 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
         "<<namePrefix>>-dm-nvngavpn"
       ]
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -422,7 +418,6 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     domainNameLabel: [
       '<<namePrefix>>-dm-nvger'
     ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gatewayPipName: '<<namePrefix>>-pip-nvger'
     roleAssignments: [
       {
@@ -490,9 +485,6 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
         "<<namePrefix>>-dm-nvger"
       ]
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "gatewayPipName": {
       "value": "<<namePrefix>>-pip-nvger"
     },
@@ -548,7 +540,6 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     domainNameLabel: [
       '<<namePrefix>>-dm-nvgvpn'
     ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     publicIpZones: [
       '1'
@@ -614,9 +605,6 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
       "value": [
         "<<namePrefix>>-dm-nvgvpn"
       ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"

@@ -20,7 +20,7 @@ param regionEndpointEnabled bool = true
 @description('Optional. Whether or not zone redundancy is enabled for this container registry.')
 param zoneRedundancy string = 'Disabled'
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

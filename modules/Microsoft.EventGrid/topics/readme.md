@@ -41,7 +41,7 @@ This module deploys an event grid topic.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `inboundIpRules` | array | `[]` |  | This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -274,7 +274,6 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     inboundIpRules: [
       {
         action: 'Allow'
@@ -338,9 +337,6 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "inboundIpRules": {
       "value": [
         {
@@ -393,10 +389,7 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
 module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-egtmin'
   params: {
-    // Required parameters
     name: '<<namePrefix>>egtmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -413,13 +406,8 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
       "value": "<<namePrefix>>egtmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -441,7 +429,6 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>egtpe001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -474,9 +461,6 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
       "value": "<<namePrefix>>egtpe001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "privateEndpoints": {
       "value": [
         {

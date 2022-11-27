@@ -35,7 +35,7 @@ This module deploys VPN Gateways.
 | `bgpSettings` | object | `{object}` |  | BGP settings details. |
 | `connections` | _[connections](connections/readme.md)_ array | `[]` |  | The connections to create in the VPN gateway. |
 | `enableBgpRouteTranslationForNat` | bool | `False` |  | Enable BGP routes translation for NAT on this VPN gateway. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `isRoutingPreferenceInternet` | bool | `False` |  | Enable routing preference property for the public IP interface of the VPN gateway. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -214,7 +214,6 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         vpnConnectionProtocolType: 'IKEv2'
       }
     ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     natRules: [
       {
@@ -279,9 +278,6 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         }
       ]
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -324,8 +320,6 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nvgmin001'
     virtualHubResourceId: '<virtualHubResourceId>'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -348,10 +342,6 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
     },
     "virtualHubResourceId": {
       "value": "<virtualHubResourceId>"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

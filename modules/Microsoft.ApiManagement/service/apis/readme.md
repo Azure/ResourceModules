@@ -44,7 +44,7 @@ This module deploys API Management Service APIs.
 | `apiVersionDescription` | string | `''` |  | Description of the API Version. |
 | `apiVersionSetId` | string | `''` |  | Indicates the Version identifier of the API version set. |
 | `authenticationSettings` | object | `{object}` |  | Collection of authentication settings included into this API. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `format` | string | `'openapi'` | `[openapi, openapi-link, openapi+json, openapi+json-link, swagger-json, swagger-link-json, wadl-link-json, wadl-xml, wsdl, wsdl-link]` | Format of the Content in which the API is getting imported. |
 | `isCurrent` | bool | `True` |  | Indicates if API revision is current API revision. |
 | `policies` | _[policies](policies/readme.md)_ array | `[]` |  | Array of Policies to apply to the Service API. |

@@ -35,7 +35,7 @@ This module deploys an Azure SQL Server Elastic Pool.
 | :-- | :-- | :-- | :-- | :-- |
 | `databaseMaxCapacity` | int | `2` |  | The maximum capacity any one database can consume. |
 | `databaseMinCapacity` | int | `0` |  | The minimum capacity all databases are guaranteed. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `highAvailabilityReplicaCount` | int | `-1` |  | The number of secondary replicas associated with the elastic pool that are used to provide high availability. Applicable only to Hyperscale elastic pools. |
 | `licenseType` | string | `'LicenseIncluded'` | `[BasePrice, LicenseIncluded]` | The license type to apply for this elastic pool. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |

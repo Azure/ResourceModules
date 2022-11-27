@@ -32,7 +32,7 @@ param apiVersionDescription string = ''
 @description('Optional. Collection of authentication settings included into this API.')
 param authenticationSettings object = {}
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Description of the API. May include HTML formatting tags.')

@@ -13,9 +13,6 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'sasccom'
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
-param enableDefaultTelemetry bool = true
-
 // =========== //
 // Deployments //
 // =========== //
@@ -42,7 +39,6 @@ module resourceGroupResources 'dependencies.bicep' = {
 module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    enableDefaultTelemetry: enableDefaultTelemetry
     scope: '/subscriptions/${subscription().subscriptionId}'
     workspaceId: resourceGroupResources.outputs.logAnalyticsWorkspaceResourceId
     securityContactProperties: {

@@ -42,7 +42,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- | :-- |
 | `backendDescription` | string | `''` | Backend Description. |
 | `credentials` | object | `{object}` | Backend Credentials Contract Properties. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `protocol` | string | `'http'` | Backend communication protocol. - http or soap. |
 | `proxy` | object | `{object}` | Backend Proxy Contract Properties. |
 | `resourceId` | string | `''` | Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |

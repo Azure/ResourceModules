@@ -34,7 +34,7 @@ This module deploys custom RBAC Role Definitions across the management group, su
 | `assignableScopes` | array | `[]` | Role definition assignable scopes. If not provided, will use the current scope provided. |
 | `dataActions` | array | `[]` | List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
 | `description` | string | `''` | Description of the custom RBAC role to be created. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `notActions` | array | `[]` | List of denied actions. |
@@ -204,7 +204,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       '<id>'
     ]
     description: 'Test Custom Role Definition Standard (management group scope)'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     notActions: [
       'Microsoft.Compute/images/delete'
       'Microsoft.Compute/images/write'
@@ -245,9 +244,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     "description": {
       "value": "Test Custom Role Definition Standard (management group scope)"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "notActions": {
       "value": [
         "Microsoft.Compute/images/delete",
@@ -279,7 +275,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
     ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -306,9 +301,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         "Microsoft.Compute/galleries/images/read",
         "Microsoft.Compute/galleries/read"
       ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -341,7 +333,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Storage/storageAccounts/blobServices/*/read'
     ]
     description: 'Test Custom Role Definition Standard (resource group scope)'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     notActions: [
       'Microsoft.Compute/images/delete'
       'Microsoft.Compute/images/write'
@@ -390,9 +381,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     "description": {
       "value": "Test Custom Role Definition Standard (resource group scope)"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "notActions": {
       "value": [
         "Microsoft.Compute/images/delete",
@@ -429,7 +417,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
     ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -456,9 +443,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         "Microsoft.Compute/galleries/images/read",
         "Microsoft.Compute/galleries/read"
       ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -491,7 +475,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Storage/storageAccounts/blobServices/*/read'
     ]
     description: 'Test Custom Role Definition Standard (subscription scope)'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     notActions: [
       'Microsoft.Compute/images/delete'
       'Microsoft.Compute/images/write'
@@ -540,9 +523,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     "description": {
       "value": "Test Custom Role Definition Standard (subscription scope)"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "notActions": {
       "value": [
         "Microsoft.Compute/images/delete",
@@ -579,7 +559,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
     ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -607,9 +586,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         "Microsoft.Compute/galleries/images/read",
         "Microsoft.Compute/galleries/read"
       ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "subscriptionId": {
       "value": "<subscriptionId>"

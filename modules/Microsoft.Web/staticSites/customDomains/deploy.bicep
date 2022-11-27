@@ -7,7 +7,7 @@ param staticSiteName string
 @description('Optional. Validation method for adding a custom domain.')
 param validationMethod string = 'cname-delegation'
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')

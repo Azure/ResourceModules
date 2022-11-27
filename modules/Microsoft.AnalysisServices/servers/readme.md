@@ -39,7 +39,7 @@ This module deploys an Analysis Services Server.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallSettings` | object | `{object}` |  | The inbound firewall rules to define on the server. If not specified, firewall is disabled. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -187,7 +187,6 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -234,9 +233,6 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -287,7 +283,6 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     ]
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallSettings: {
       enablePowerBIService: true
       firewallRules: [
@@ -357,9 +352,6 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "firewallSettings": {
       "value": {
         "enablePowerBIService": true,
@@ -409,10 +401,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-assmin'
   params: {
-    // Required parameters
     name: '<<namePrefix>>assmin'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -429,13 +418,8 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
       "value": "<<namePrefix>>assmin"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

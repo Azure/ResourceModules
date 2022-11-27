@@ -39,7 +39,7 @@ This module deploys an Azure virtual desktop host pool.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hostpoolDescription` | string | `''` |  | The description of the Host Pool to be created. |
 | `hostpoolFriendlyName` | string | `''` |  | The friendly name of the Host Pool to be created. |
 | `hostpoolType` | string | `'Pooled'` | `[Personal, Pooled]` | Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
@@ -287,7 +287,6 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hostpoolDescription: 'My first AVD Host Pool'
     hostpoolFriendlyName: 'AVDv2'
     hostpoolType: 'Pooled'
@@ -360,9 +359,6 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "hostpoolDescription": {
       "value": "My first AVD Host Pool"

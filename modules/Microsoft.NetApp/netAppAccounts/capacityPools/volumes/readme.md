@@ -38,7 +38,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `creationToken` | string | `[parameters('name')]` |  | A unique file path for the volume. This is the name of the volume export. A volume is mounted using the export path. File path must start with an alphabetical character and be unique within the subscription. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `exportPolicyRules` | array | `[]` |  | Export policy rules. |
 | `location` | string | `[resourceGroup().location]` |  | Location of the pool volume. |
 | `protocolTypes` | array | `[]` |  | Set of protocol types. |

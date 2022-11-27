@@ -54,7 +54,7 @@ This module deploys an Azure Automation Account.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | Disable local authentication profile used within the resource. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the linked log analytics workspace. |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | List of jobSchedules to be created in the automation account. |
 | `linkedWorkspaceResourceId` | string | `''` |  | ID of the log analytics workspace to be linked to the deployed automation account. |
@@ -387,7 +387,6 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableLocalAuth: true
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gallerySolutions: [
       {
         name: 'Updates'
@@ -586,9 +585,6 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     },
     "disableLocalAuth": {
       "value": true
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "gallerySolutions": {
       "value": [
@@ -799,7 +795,6 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -833,9 +828,6 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -858,10 +850,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aamin'
   params: {
-    // Required parameters
     name: '<<namePrefix>>aamin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -878,13 +867,8 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
       "value": "<<namePrefix>>aamin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

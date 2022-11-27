@@ -27,7 +27,7 @@ param resourceGroupName string = resourceGroup().name
 @sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
 param assignableScopes array = []
 
-@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

@@ -46,7 +46,7 @@ This module deploys a key vault and its child resources.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enablePurgeProtection` | bool | `True` |  | Provide 'true' to enable Key Vault's purge protection feature. |
 | `enableRbacAuthorization` | bool | `False` |  | Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC. |
 | `enableSoftDelete` | bool | `True` |  | Switch to enable/disable Key Vault's soft delete feature. |
@@ -429,7 +429,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
     enableRbacAuthorization: false
     keys: [
@@ -574,9 +573,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "enablePurgeProtection": {
       "value": false
     },
@@ -696,7 +692,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>kvvmin002'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
   }
 }
@@ -719,9 +714,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       "value": "<<namePrefix>>kvvmin002"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "enablePurgeProtection": {
       "value": false
     }
@@ -745,7 +737,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>kvvpe001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
     privateEndpoints: [
       {
@@ -783,9 +774,6 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       "value": "<<namePrefix>>kvvpe001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "enablePurgeProtection": {
       "value": false
     },

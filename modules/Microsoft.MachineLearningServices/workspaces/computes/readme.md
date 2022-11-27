@@ -39,7 +39,7 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 | `deployCompute` | bool | `True` |  | Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource ID), as in this case the operation is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists. |
 | `description` | string | `''` |  | The description of the Machine Learning compute. |
 | `disableLocalAuth` | bool | `False` |  | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Specifies the location of the resource. |
 | `properties` | object | `{object}` |  | The properties of the compute. Will be ignored in case "resourceId" is set. |
 | `resourceId` | string | `''` |  | ARM resource ID of the underlying compute. |

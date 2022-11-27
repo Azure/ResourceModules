@@ -43,7 +43,7 @@ This module deploys Network Security Group Security Rules.
 | `destinationApplicationSecurityGroups` | array | `[]` |  | The application security group specified as destination. |
 | `destinationPortRange` | string | `''` |  | The destination port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports. |
 | `destinationPortRanges` | array | `[]` |  | The destination port ranges. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `sourceAddressPrefix` | string | `''` |  | The CIDR or source IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used. If this is an ingress rule, specifies where network traffic originates from. |
 | `sourceAddressPrefixes` | array | `[]` |  | The CIDR or source IP ranges. |
 | `sourceApplicationSecurityGroups` | array | `[]` |  | The application security group specified as source. |

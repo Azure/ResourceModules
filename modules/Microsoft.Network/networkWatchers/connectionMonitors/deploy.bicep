@@ -22,7 +22,7 @@ param testGroups array = []
 @description('Optional. Specify the Log Analytics Workspace Resource ID.')
 param workspaceResourceId string = ''
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 var outputs = !empty(workspaceResourceId) ? [

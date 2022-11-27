@@ -27,7 +27,7 @@ This module deploys DataProtection BackupVaults BackupPolicies.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'DefaultPolicy'` | The name of the backup policy. |
 | `properties` | object | `{object}` | The properties of the backup policy. |
 

@@ -35,7 +35,7 @@ This module deploys a Virtual Hub.
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBranchToBranchTraffic` | bool | `True` |  | Flag to control transit for VirtualRouter hub. |
 | `azureFirewallId` | string | `''` |  | Resource ID of the Azure Firewall to link to. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `expressRouteGatewayId` | string | `''` |  | Resource ID of the Express Route Gateway to link to. |
 | `hubRouteTables` | _[hubRouteTables](hubRouteTables/readme.md)_ array | `[]` |  | Route tables to create for the virtual hub. |
 | `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hubVirtualNetworkConnections/readme.md)_ array | `[]` |  | Virtual network connections to create for the virtual hub. |
@@ -130,7 +130,6 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     name: '<<namePrefix>>-nvhcom'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hubRouteTables: [
       {
         name: 'routeTable1'
@@ -185,9 +184,6 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       "value": "<virtualWanId>"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "hubRouteTables": {
       "value": [
         {
@@ -242,8 +238,6 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     addressPrefix: '10.0.0.0/16'
     name: '<<namePrefix>>-nvhmin'
     virtualWanId: '<virtualWanId>'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -269,10 +263,6 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

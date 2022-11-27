@@ -37,7 +37,7 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `[parameters('location')]` | The name of the fabric. |
 | `replicationContainers` | array | `[]` | Replication containers to create. |
 

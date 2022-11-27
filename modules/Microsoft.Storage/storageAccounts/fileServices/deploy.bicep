@@ -34,7 +34,7 @@ param diagnosticEventHubName string = ''
 @description('Optional. File shares to create.')
 param shares array = []
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')

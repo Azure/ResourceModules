@@ -37,7 +37,7 @@
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicIPAddressVersion` | string | `'IPv4'` | `[IPv4, IPv6]` | IP address version. |
@@ -189,7 +189,6 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     publicIPAllocationMethod: 'Static'
     roleAssignments: [
@@ -243,9 +242,6 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -290,10 +286,7 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
 module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-npiamin'
   params: {
-    // Required parameters
     name: '<<namePrefix>>npiamin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -310,13 +303,8 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
       "value": "<<namePrefix>>npiamin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

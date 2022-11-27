@@ -17,9 +17,6 @@ param serviceShort string = 'ncvtv'
 @secure()
 param password string = newGuid()
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
-param enableDefaultTelemetry bool = true
-
 // =========== //
 // Deployments //
 // =========== //
@@ -52,7 +49,6 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     virtualNetworkGateway1: {
       id: resourceGroupResources.outputs.primaryVNETGatewayResourceID

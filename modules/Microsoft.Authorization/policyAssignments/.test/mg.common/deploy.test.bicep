@@ -9,9 +9,6 @@ param serviceShort string = 'apamgcom'
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
-param enableDefaultTelemetry bool = true
-
 // ============== //
 // Test Execution //
 // ============== //
@@ -19,7 +16,6 @@ param enableDefaultTelemetry bool = true
 module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     description: '[Description] Policy Assignment at the management group scope'

@@ -93,7 +93,7 @@ param captureDescriptionSizeLimitInBytes int = 314572800
 @description('Optional. A value that indicates whether to Skip Empty Archives.')
 param captureDescriptionSkipEmptyArchives bool = false
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false

@@ -33,7 +33,7 @@ This template deploys an availability set
 | `availabilitySetFaultDomain` | int | `2` |  | The number of fault domains to use. |
 | `availabilitySetSku` | string | `'Aligned'` |  | SKU of the availability set.<p>- Use \'Aligned\' for virtual machines with managed disks.<p>- Use \'Classic\' for virtual machines with unmanaged disks.<p> |
 | `availabilitySetUpdateDomain` | int | `5` |  | The number of update domains to use. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `proximityPlacementGroupId` | string | `''` |  | Resource ID of a proximity placement group. |
@@ -174,7 +174,6 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>cascom001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     proximityPlacementGroupId: '<proximityPlacementGroupId>'
     roleAssignments: [
@@ -207,9 +206,6 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
       "value": "<<namePrefix>>cascom001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -244,10 +240,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-casmin'
   params: {
-    // Required parameters
     name: '<<namePrefix>>casmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -264,13 +257,8 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
       "value": "<<namePrefix>>casmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

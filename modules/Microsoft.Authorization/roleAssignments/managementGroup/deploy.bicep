@@ -35,7 +35,7 @@ param conditionVersion string = '2.0'
 ])
 param principalType string = ''
 
-@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 @sys.description('Optional. Location deployment metadata.')
