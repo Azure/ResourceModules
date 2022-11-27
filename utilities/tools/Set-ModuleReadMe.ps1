@@ -1135,7 +1135,7 @@ function Set-DeploymentExamplesSection {
 
                         $value = (($jsonParameterContentArray[$headerIndex] -split ':')[0] -replace '"').Trim()
                         $jsonParameterContentArray[$index] = ('{0}: "<{1}>"{2}' -f $prefix, $value, ($jsonParameterContentArray[$index].Trim() -like '*,' ? ',' : ''))
-                    } elseif ($jsonParameterContentArray[$index] -match '(\s*)"([a-zA-Z]+)": "\[.+\]"') {
+                    } elseif ($jsonParameterContentArray[$index] -match '(\s*)"([\w]+)": "\[.+\]"') {
                         # e.g. "name": "[format('{0}01', parameters('serviceShort'))]"
                         $jsonParameterContentArray[$index] = ('{0}"{1}": "<{1}>"{2}' -f $matches[1], $matches[2], ($jsonParameterContentArray[$index].Trim() -like '*,' ? ',' : ''))
                     } elseif ($jsonParameterContentArray[$index] -match '(\s*)"\[.+\]"') {
