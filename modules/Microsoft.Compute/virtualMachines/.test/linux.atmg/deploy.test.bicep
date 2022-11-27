@@ -52,6 +52,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     location: location
     name: '<<namePrefix>>${serviceShort}'
     adminUsername: 'localAdminUser'
