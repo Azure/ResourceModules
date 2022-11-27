@@ -44,7 +44,7 @@ This module deploys an App Configuration Store.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `False` |  | Disables all authentication methods other than AAD authentication. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enablePurgeProtection` | bool | `False` |  | Property specifying whether protection against purge is enabled for this configuration store. |
 | `keyValues` | _[keyValues](keyValues/readme.md)_ array | `[]` |  | All Key / Values to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |

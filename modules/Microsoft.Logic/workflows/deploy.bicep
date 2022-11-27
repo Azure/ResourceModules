@@ -10,7 +10,7 @@ param connectorEndpointsConfiguration object = {}
 @description('Optional. The access control configuration for accessing workflow run contents.')
 param contentsAccessControlConfiguration object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Parameters for the definition template.')

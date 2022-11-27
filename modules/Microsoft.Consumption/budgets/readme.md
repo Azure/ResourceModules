@@ -38,7 +38,7 @@ This module deploys budgets for subscriptions.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `category` | string | `'Cost'` | `[Cost, Usage]` | The category of the budget, whether the budget tracks cost or usage. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `endDate` | string | `''` |  | The end date for the budget. If not provided, it will default to 10 years from the start date. |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `resetPeriod` | string | `'Monthly'` | `[Annually, BillingAnnual, BillingMonth, BillingQuarter, Monthly, Quarterly]` | The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers. |

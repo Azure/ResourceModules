@@ -72,7 +72,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `dnsZonePartner` | string | `''` |  | The resource ID of another managed instance whose DNS zone this managed instance will share after creation. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `encryptionProtectorObj` | _[encryptionProtector](encryptionProtector/readme.md)_ object | `{object}` |  | The encryption protection configuration. |
 | `hardwareFamily` | string | `'Gen5'` |  | If the service has different generations of hardware, for the same SKU, then that can be captured here. |
 | `instancePoolResourceId` | string | `''` |  | The resource ID of the instance pool this managed server belongs to. |

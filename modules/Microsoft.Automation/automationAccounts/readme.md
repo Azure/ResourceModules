@@ -54,7 +54,7 @@ This module deploys an Azure Automation Account.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | Disable local authentication profile used within the resource. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the linked log analytics workspace. |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | List of jobSchedules to be created in the automation account. |
 | `linkedWorkspaceResourceId` | string | `''` |  | ID of the log analytics workspace to be linked to the deployed automation account. |

@@ -47,7 +47,7 @@ The following resources are required to be able to deploy this resource:
 | `applicationSecurityGroups` | array | `[]` |  | Application security groups in which the private endpoint IP configuration is included. |
 | `customDnsConfigs` | array | `[]` |  | Custom DNS configurations. |
 | `customNetworkInterfaceName` | string | `''` |  | The custom name of the network interface attached to the private endpoint. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `ipConfigurations` | array | `[]` |  | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |

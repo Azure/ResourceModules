@@ -31,7 +31,7 @@ This template deploys a proximity placement group.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `colocationStatus` | object | `{object}` |  | Describes colocation status of the Proximity Placement Group. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `intent` | object | `{object}` |  | Specifies the user intent of the proximity placement group. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |

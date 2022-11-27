@@ -55,7 +55,7 @@ This module deploys a service bus namespace resource.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disasterRecoveryConfigs` | _[disasterRecoveryConfigs](disasterRecoveryConfigs/readme.md)_ object | `{object}` |  | The disaster recovery configuration. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/readme.md)_ object | `{object}` |  | The migration configuration. |

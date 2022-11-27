@@ -63,7 +63,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableHierarchicalNamespace` | bool | `False` |  | If true, enables Hierarchical Namespace for the storage account. |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | File service and shares to deploy. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |

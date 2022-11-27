@@ -47,7 +47,7 @@ This module deploys a firewall.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Diagnostic Storage Account resource identifier. |
 | `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `firewallPolicyId` | string | `''` |  | Resource ID of the Firewall Policy that should be attached. |
 | `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |

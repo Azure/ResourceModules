@@ -36,7 +36,7 @@ This module deploys an Action Group.
 | `azureFunctionReceivers` | array | `[]` | The list of function receivers that are part of this action group. |
 | `emailReceivers` | array | `[]` | The list of email receivers that are part of this action group. |
 | `enabled` | bool | `True` | Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `itsmReceivers` | array | `[]` | The list of ITSM receivers that are part of this action group. |
 | `location` | string | `'global'` | Location for all resources. |
 | `logicAppReceivers` | array | `[]` | The list of logic app receivers that are part of this action group. |

@@ -42,7 +42,7 @@ This module deploys a bastion host.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableCopyPaste` | bool | `False` |  | Choose to disable or enable Copy Paste. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableFileCopy` | bool | `True` |  | Choose to disable or enable File Copy. |
 | `enableIpConnect` | bool | `False` |  | Choose to disable or enable IP Connect. |
 | `enableShareableLink` | bool | `False` |  | Choose to disable or enable Shareable Link. |

@@ -35,7 +35,7 @@ This module has some known **limitations**:
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `displayName` | string | `''` | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `parentId` | string | `[last(split(managementGroup().id, '/'))]` | The management group parent ID. Defaults to current scope. |
 

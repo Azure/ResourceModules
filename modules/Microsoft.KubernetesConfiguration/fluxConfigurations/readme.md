@@ -53,7 +53,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | :-- | :-- | :-- | :-- |
 | `bucket` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
 | `configurationProtectedSettings` | object | `{object}` | Key-value pairs of protected configuration settings for the configuration. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `gitRepository` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
 | `kustomizations` | object | `{object}` | Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster. |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |

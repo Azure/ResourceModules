@@ -29,7 +29,7 @@ This module deploys a WAF policy.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `customRules` | array | `[]` | The custom rules inside the policy. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `managedRules` | object | `{object}` | Describes the managedRules structure. |
 | `policySettings` | object | `{object}` | The PolicySettings for policy. |

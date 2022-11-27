@@ -39,7 +39,7 @@ This module deploys a VPN Site.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `deviceProperties` | object | `{object}` |  | List of properties of the device. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `ipAddress` | string | `''` |  | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
 | `isSecuritySite` | bool | `False` |  | IsSecuritySite flag. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |

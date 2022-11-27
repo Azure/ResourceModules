@@ -46,7 +46,7 @@
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `gitAccountName` | string | `''` |  | The account name. |
 | `gitCollaborationBranch` | string | `'main'` |  | The collaboration branch name. Default is 'main'. |
 | `gitConfigureLater` | bool | `True` |  | Boolean to define whether or not to configure git during template deployment. |

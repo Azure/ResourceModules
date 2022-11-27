@@ -31,7 +31,7 @@ This module deploys Network Private Link Services.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoApproval` | object | `{object}` |  | The auto-approval list of the private link service. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableProxyProtocol` | bool | `False` |  | Whether the private link service is enabled for proxy protocol or not. |
 | `extendedLocation` | object | `{object}` |  | The extended location of the load balancer. |
 | `fqdns` | array | `[]` |  | The list of Fqdn. |

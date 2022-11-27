@@ -1,7 +1,7 @@
 @description('Required. The name of the Flux Configuration.')
 param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Required. The name of the AKS cluster that should be configured.')

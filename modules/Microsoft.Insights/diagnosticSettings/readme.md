@@ -28,7 +28,7 @@ This module deploys a subscription wide export of the activity log.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `name` | string | `[format('{0}-ActivityLog', uniqueString(subscription().id))]` |  | Name of the ActivityLog diagnostic settings. |
 

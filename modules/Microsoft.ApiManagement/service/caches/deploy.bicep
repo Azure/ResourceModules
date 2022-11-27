@@ -7,7 +7,7 @@ param name string
 @description('Required. Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}}.')
 param connectionString string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Cache description.')

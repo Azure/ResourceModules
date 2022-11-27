@@ -34,7 +34,7 @@ This module deploys a compute image.
 | `dataDisks` | array | `[]` |  | Specifies the parameters that are used to add a data disk to a virtual machine. |
 | `diskEncryptionSetResourceId` | string | `''` |  | Specifies the customer managed disk encryption set resource ID for the managed image disk. |
 | `diskSizeGB` | int | `128` |  | Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. This value cannot be larger than 1023 GB. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `extendedLocation` | object | `{object}` |  | The extended location of the Image. |
 | `hyperVGeneration` | string | `'V1'` |  | Gets the HyperVGenerationType of the VirtualMachine created from the image. - V1 or V2. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |

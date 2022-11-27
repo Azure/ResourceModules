@@ -29,7 +29,7 @@ This module deploys OperationsManagement Solutions.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `product` | string | `'OMSGallery'` | The product of the deployed solution. For Microsoft published gallery solution it should be `OMSGallery` and the target solution resource product will be composed as `OMSGallery/{name}`. For third party solution, it can be anything. This is case sensitive. |
 | `publisher` | string | `'Microsoft'` | The publisher name of the deployed solution. For Microsoft published gallery solution, it is `Microsoft`. |

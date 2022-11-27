@@ -63,7 +63,7 @@ This module deploys a Machine Learning Services Workspace.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `discoveryUrl` | string | `''` |  | URL for the discovery service to identify regional endpoints for machine learning experimentation services. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hbiWorkspace` | bool | `False` |  | The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service. |
 | `imageBuildCompute` | string | `''` |  | The compute name for image build. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |

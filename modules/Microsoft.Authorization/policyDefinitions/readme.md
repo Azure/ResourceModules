@@ -32,7 +32,7 @@ With this module you can create policy definitions across the management group o
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string | `''` |  | The policy definition description. |
 | `displayName` | string | `''` |  | The display name of the policy definition. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` |  | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |

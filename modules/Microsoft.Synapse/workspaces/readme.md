@@ -51,7 +51,7 @@ This module deploys a Synapse Workspace.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `encryption` | bool | `False` |  | Double encryption using a customer-managed key. |
 | `encryptionActivateWorkspace` | bool | `False` |  | Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
 | `encryptionUserAssignedIdentity` | string | `''` |  | The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |

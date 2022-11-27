@@ -32,7 +32,7 @@ This template deploys a virtual network gateway connection.
 | :-- | :-- | :-- | :-- | :-- |
 | `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection. |
 | `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec]. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
